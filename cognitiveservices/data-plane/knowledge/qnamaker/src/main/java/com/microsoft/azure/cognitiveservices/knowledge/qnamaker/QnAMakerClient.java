@@ -96,6 +96,12 @@ public interface QnAMakerClient {
     QnAMakerClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
+     * Gets the EndpointSettings object to access its operations.
+     * @return the EndpointSettings object.
+     */
+    EndpointSettings endpointSettings();
+
+    /**
      * Gets the EndpointKeys object to access its operations.
      * @return the EndpointKeys object.
      */

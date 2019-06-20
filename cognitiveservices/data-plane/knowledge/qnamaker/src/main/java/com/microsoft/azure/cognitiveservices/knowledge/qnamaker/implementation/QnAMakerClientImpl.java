@@ -12,6 +12,7 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Alterations;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.EndpointKeys;
+import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.EndpointSettings;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Knowledgebases;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Operations;
 import com.microsoft.azure.cognitiveservices.knowledge.qnamaker.QnAMakerClient;
@@ -126,6 +127,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     }
 
     /**
+     * The EndpointSettings object to access its operations.
+     */
+    private EndpointSettings endpointSettings;
+
+    /**
+     * Gets the EndpointSettings object to access its operations.
+     * @return the EndpointSettings object.
+     */
+    public EndpointSettings endpointSettings() {
+        return this.endpointSettings;
+    }
+
+    /**
      * The EndpointKeys object to access its operations.
      */
     private EndpointKeys endpointKeys;
@@ -211,6 +225,7 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.endpointSettings = new EndpointSettingsImpl(restClient().retrofit(), this);
         this.endpointKeys = new EndpointKeysImpl(restClient().retrofit(), this);
         this.alterations = new AlterationsImpl(restClient().retrofit(), this);
         this.knowledgebases = new KnowledgebasesImpl(restClient().retrofit(), this);
