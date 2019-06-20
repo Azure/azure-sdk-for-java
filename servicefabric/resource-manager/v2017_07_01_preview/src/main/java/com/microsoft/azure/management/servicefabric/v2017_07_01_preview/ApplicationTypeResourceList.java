@@ -8,20 +8,37 @@
 
 package com.microsoft.azure.management.servicefabric.v2017_07_01_preview;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceFabricManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ApplicationTypeResourceListInner;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ApplicationTypeResourceInner;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing ApplicationTypeResourceList.
+ * The list of application type names.
  */
-public interface ApplicationTypeResourceList extends HasInner<ApplicationTypeResourceListInner>, HasManager<ServiceFabricManager> {
+public class ApplicationTypeResourceList {
     /**
-     * @return the value value.
+     * The value property.
      */
-    List<ApplicationTypeResourceInner> value();
+    @JsonProperty(value = "value")
+    private List<ApplicationTypeResource> value;
+
+    /**
+     * Get the value value.
+     *
+     * @return the value value
+     */
+    public List<ApplicationTypeResource> value() {
+        return this.value;
+    }
+
+    /**
+     * Set the value value.
+     *
+     * @param value the value value to set
+     * @return the ApplicationTypeResourceList object itself.
+     */
+    public ApplicationTypeResourceList withValue(List<ApplicationTypeResource> value) {
+        this.value = value;
+        return this;
+    }
 
 }

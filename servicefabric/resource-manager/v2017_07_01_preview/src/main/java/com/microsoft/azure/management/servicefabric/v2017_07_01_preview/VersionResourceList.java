@@ -8,20 +8,37 @@
 
 package com.microsoft.azure.management.servicefabric.v2017_07_01_preview;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceFabricManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.VersionResourceListInner;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.VersionResourceInner;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Type representing VersionResourceList.
+ * The list of version resources for the specified application type name.
  */
-public interface VersionResourceList extends HasInner<VersionResourceListInner>, HasManager<ServiceFabricManager> {
+public class VersionResourceList {
     /**
-     * @return the value value.
+     * The value property.
      */
-    List<VersionResourceInner> value();
+    @JsonProperty(value = "value")
+    private List<VersionResource> value;
+
+    /**
+     * Get the value value.
+     *
+     * @return the value value
+     */
+    public List<VersionResource> value() {
+        return this.value;
+    }
+
+    /**
+     * Set the value value.
+     *
+     * @param value the value value to set
+     * @return the VersionResourceList object itself.
+     */
+    public VersionResourceList withValue(List<VersionResource> value) {
+        this.value = value;
+        return this;
+    }
 
 }

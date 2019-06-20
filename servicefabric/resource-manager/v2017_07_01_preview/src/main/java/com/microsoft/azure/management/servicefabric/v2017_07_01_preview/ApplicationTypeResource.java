@@ -8,140 +8,55 @@
 
 package com.microsoft.azure.management.servicefabric.v2017_07_01_preview;
 
-import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ApplicationTypeResourceInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.servicefabric.v2017_07_01_preview.implementation.ServiceFabricManager;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * Type representing ApplicationTypeResource.
+ * The application type name resource.
  */
-public interface ApplicationTypeResource extends HasInner<ApplicationTypeResourceInner>, Indexable, Refreshable<ApplicationTypeResource>, Updatable<ApplicationTypeResource.Update>, HasManager<ServiceFabricManager> {
+@JsonFlatten
+public class ApplicationTypeResource extends ProxyResource {
     /**
-     * @return the id value.
+     * The current deployment or provisioning state, which only appears in the
+     * response.
      */
-    String id();
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
 
     /**
-     * @return the location value.
+     * Resource location.
      */
-    String location();
+    @JsonProperty(value = "location", required = true)
+    private String location;
 
     /**
-     * @return the name value.
+     * Get the current deployment or provisioning state, which only appears in the response.
+     *
+     * @return the provisioningState value
      */
-    String name();
-
-    /**
-     * @return the provisioningState value.
-     */
-    String provisioningState();
-
-    /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * The entirety of the ApplicationTypeResource definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCluster, DefinitionStages.WithApiVersion, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Grouping of ApplicationTypeResource definition stages.
+     * Get resource location.
+     *
+     * @return the location value
      */
-    interface DefinitionStages {
-        /**
-         * The first stage of a ApplicationTypeResource definition.
-         */
-        interface Blank extends WithCluster {
-        }
-
-        /**
-         * The stage of the applicationtyperesource definition allowing to specify Cluster.
-         */
-        interface WithCluster {
-           /**
-            * Specifies subscriptionId, resourceGroupName, clusterName.
-            * @param subscriptionId The customer subscription identifier
-            * @param resourceGroupName The name of the resource group
-            * @param clusterName The name of the cluster resource
-            * @return the next definition stage
-            */
-            WithApiVersion withExistingCluster(String subscriptionId, String resourceGroupName, String clusterName);
-        }
-
-        /**
-         * The stage of the applicationtyperesource definition allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-           /**
-            * Specifies apiVersion.
-            * @param apiVersion The version of the API
-            * @return the next definition stage
-            */
-            WithLocation withApiVersion(String apiVersion);
-        }
-
-        /**
-         * The stage of the applicationtyperesource definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            * @param location Resource location
-            * @return the next definition stage
-            */
-            WithCreate withLocation(String location);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<ApplicationTypeResource> {
-        }
-    }
-    /**
-     * The template for a ApplicationTypeResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<ApplicationTypeResource>, UpdateStages.WithApiVersion, UpdateStages.WithLocation {
+    public String location() {
+        return this.location;
     }
 
     /**
-     * Grouping of ApplicationTypeResource update stages.
+     * Set resource location.
+     *
+     * @param location the location value to set
+     * @return the ApplicationTypeResource object itself.
      */
-    interface UpdateStages {
-        /**
-         * The stage of the applicationtyperesource update allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-            /**
-             * Specifies apiVersion.
-             * @param apiVersion The version of the API
-             * @return the next update stage
-             */
-            Update withApiVersion(String apiVersion);
-        }
-
-        /**
-         * The stage of the applicationtyperesource update allowing to specify Location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies location.
-             * @param location Resource location
-             * @return the next update stage
-             */
-            Update withLocation(String location);
-        }
-
+    public ApplicationTypeResource withLocation(String location) {
+        this.location = location;
+        return this;
     }
+
 }
