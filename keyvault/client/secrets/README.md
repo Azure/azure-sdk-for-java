@@ -19,7 +19,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
@@ -257,9 +257,7 @@ secretAsyncClient.listSecrets()
 
 ## Troubleshooting
 ### General
-Key Vault clients raise exceptions defined in azure-core. For more detailed infromation about exceptions and how to deal with them, see [Azure Core exceptions][azure_core_exceptions].
-
-For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
+Key Vault clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error is returned, indicating resource not found. In the following snippet, the error is handled gracefully by catching the exception and displaying additional information about the error.
 ```java
 try {
     SecretClient.getSecret("deletedSecret")
@@ -267,8 +265,6 @@ try {
     System.out.println(e.getMessage());
 }
 ```
-### Logging [TODO]
-This SDK uses SLF4J logging library. The logging is enabled by default, just ensure your application/project takes dependency on SLF4J logging library.
 
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:
@@ -312,12 +308,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src
-[package]:https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault
+[package]: not-valid-link
 [api_documentation]: not-valid-link
 [azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
+[azure_subscription]: https://azure.microsoft.com/
 [azure_keyvault]: https://docs.microsoft.com/en-us/azure/key-vault/quick-create-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/keyvault/
@@ -325,13 +320,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]:https://github.com/g2vinay/azure-sdk-for-java/tree/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java
-[sample_helloWorld]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/HelloWorld.java
-[sample_helloWorldAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/HelloWorldAsync.java
-[sample_list]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ListOperations.java
-[sample_listAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ListOperationsAsync.java
-[sample_BackupRestore]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]:https://github.com/g2vinay/azure-sdk-for-java/blob/kv-secrets-samples-and-readme/keyvault/client/secrets/src/samples/java/ManagingDeletedSecretsAsync.java
+[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java
+[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/HelloWorld.java
+[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/HelloWorldAsync.java
+[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ListOperations.java
+[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ListOperationsAsync.java
+[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecretsAsync.java
 [azure_core_exceptions]:https://github.com/Azure/azure-sdk-for-java/tree/master/core/azure-core/src/main/java/com/azure/core/exception
