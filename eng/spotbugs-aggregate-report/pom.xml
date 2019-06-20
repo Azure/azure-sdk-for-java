@@ -119,6 +119,11 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
+          <artifactId>azure-core-amqp</artifactId>
+          <version>${azure-core-amqp.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
           <version>${azure-core-management.version}</version>
         </dependency>
