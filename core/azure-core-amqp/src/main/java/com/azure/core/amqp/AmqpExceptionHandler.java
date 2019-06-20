@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -29,15 +28,6 @@ public abstract class AmqpExceptionHandler {
     protected AmqpExceptionHandler(ClientLogger logger) {
         Objects.requireNonNull(logger);
         this.logger = logger;
-    }
-
-    /**
-     * Notifies the exception handler of an endpoint error.
-     *
-     * @param context The error context that caused the error.
-     */
-    public void onConnectionError(ErrorContext context) {
-        logger.asWarning().log("Connection error:" + context.toString(), context);
     }
 
     /**
