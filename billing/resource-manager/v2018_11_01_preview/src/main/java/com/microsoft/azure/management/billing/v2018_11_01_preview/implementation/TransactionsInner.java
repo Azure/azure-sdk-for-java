@@ -15,7 +15,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -76,6 +75,18 @@ public class TransactionsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByBillingAccountNameNext" })
         @GET
         Observable<Response<ResponseBody>> listByBillingAccountNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByBillingProfileNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByBillingProfileNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByCustomerNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByCustomerNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions listByInvoiceSectionNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByInvoiceSectionNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -344,10 +355,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByBillingProfileName(String billingAccountName, String billingProfileName, String startDate, String endDate) {
-        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByBillingProfileName(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByBillingProfileNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -361,8 +378,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByBillingProfileNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -373,15 +398,16 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
-        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -392,9 +418,33 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameWithServiceResponseAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate) {
+        return listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingProfileNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param billingProfileName Billing Profile Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameSinglePageAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -412,12 +462,12 @@ public class TransactionsInner {
         }
         final String filter = null;
         return service.listByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByBillingProfileNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByBillingProfileNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -436,10 +486,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByBillingProfileName(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
-        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByBillingProfileName(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final String filter) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate, filter).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByBillingProfileNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -454,8 +510,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final String filter, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate, filter),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByBillingProfileNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -467,15 +531,16 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
-        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final String filter) {
+        return listByBillingProfileNameWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -487,9 +552,34 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByBillingProfileNameWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameWithServiceResponseAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final String filter) {
+        return listByBillingProfileNameSinglePageAsync(billingAccountName, billingProfileName, startDate, endDate, filter)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingProfileNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName Billing Account Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingProfileName Billing Profile Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param startDate Start date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param endDate End date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameSinglePageAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate, final String filter) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -506,12 +596,12 @@ public class TransactionsInner {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
         return service.listByBillingProfileName(billingAccountName, billingProfileName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByBillingProfileNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByBillingProfileNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -519,9 +609,9 @@ public class TransactionsInner {
             });
     }
 
-    private ServiceResponse<TransactionsListResultInner> listByBillingProfileNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TransactionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TransactionsListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByBillingProfileNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -536,10 +626,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByCustomerName(String billingAccountName, String customerName, String startDate, String endDate) {
-        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByCustomerName(final String billingAccountName, final String customerName, final String startDate, final String endDate) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByCustomerNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -553,8 +649,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByCustomerNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -565,15 +669,16 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate) {
-        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -584,9 +689,33 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName, String startDate, String endDate) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameWithServiceResponseAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate) {
+        return listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByCustomerNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param customerName Customer Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameSinglePageAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -604,12 +733,12 @@ public class TransactionsInner {
         }
         final String filter = null;
         return service.listByCustomerName(billingAccountName, customerName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByCustomerNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByCustomerNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -628,10 +757,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByCustomerName(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
-        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByCustomerName(final String billingAccountName, final String customerName, final String startDate, final String endDate, final String filter) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate, filter).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByCustomerNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -646,8 +781,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate, final String filter, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate, filter),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByCustomerNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -659,15 +802,16 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
-        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate, final String filter) {
+        return listByCustomerNameWithServiceResponseAsync(billingAccountName, customerName, startDate, endDate, filter)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -679,9 +823,34 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByCustomerNameWithServiceResponseAsync(String billingAccountName, String customerName, String startDate, String endDate, String filter) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameWithServiceResponseAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate, final String filter) {
+        return listByCustomerNameSinglePageAsync(billingAccountName, customerName, startDate, endDate, filter)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByCustomerNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName Billing Account Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param customerName Customer Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param startDate Start date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param endDate End date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameSinglePageAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate, final String filter) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -698,12 +867,12 @@ public class TransactionsInner {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
         return service.listByCustomerName(billingAccountName, customerName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByCustomerNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByCustomerNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -711,9 +880,9 @@ public class TransactionsInner {
             });
     }
 
-    private ServiceResponse<TransactionsListResultInner> listByCustomerNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TransactionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TransactionsListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByCustomerNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -728,10 +897,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByInvoiceSectionName(String billingAccountName, String invoiceSectionName, String startDate, String endDate) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByInvoiceSectionName(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -745,8 +920,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -757,15 +940,16 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -776,9 +960,33 @@ public class TransactionsInner {
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameWithServiceResponseAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate) {
+        return listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param startDate Start date
+     * @param endDate End date
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameSinglePageAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -796,12 +1004,12 @@ public class TransactionsInner {
         }
         final String filter = null;
         return service.listByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByInvoiceSectionNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByInvoiceSectionNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -820,10 +1028,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TransactionsListResultInner object if successful.
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public TransactionsListResultInner listByInvoiceSectionName(String billingAccountName, String invoiceSectionName, String startDate, String endDate, String filter) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter).toBlocking().single().body();
+    public PagedList<TransactionsSummaryInner> listByInvoiceSectionName(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final String filter) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -838,8 +1052,16 @@ public class TransactionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter), serviceCallback);
+    public ServiceFuture<List<TransactionsSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final String filter, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -851,15 +1073,16 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<TransactionsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate, String filter) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
-            @Override
-            public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<TransactionsSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final String filter) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -871,9 +1094,34 @@ public class TransactionsInner {
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TransactionsListResultInner object
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> listByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate, String filter) {
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameWithServiceResponseAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final String filter) {
+        return listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, startDate, endDate, filter)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName Billing Account Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param invoiceSectionName InvoiceSection Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param startDate Start date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param endDate End date
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameSinglePageAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate, final String filter) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -890,12 +1138,12 @@ public class TransactionsInner {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
         return service.listByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransactionsListResultInner> clientResponse = listByInvoiceSectionNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByInvoiceSectionNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -903,9 +1151,9 @@ public class TransactionsInner {
             });
     }
 
-    private ServiceResponse<TransactionsListResultInner> listByInvoiceSectionNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TransactionsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TransactionsListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByInvoiceSectionNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1015,6 +1263,339 @@ public class TransactionsInner {
     }
 
     private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByBillingAccountNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
+     */
+    public PagedList<TransactionsSummaryInner> listByBillingProfileNameNext(final String nextPageLink) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByBillingProfileNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByBillingProfileNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TransactionsSummaryInner>> listByBillingProfileNameNextAsync(final String nextPageLink, final ServiceFuture<List<TransactionsSummaryInner>> serviceFuture, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingProfileNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByBillingProfileNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<Page<TransactionsSummaryInner>> listByBillingProfileNameNextAsync(final String nextPageLink) {
+        return listByBillingProfileNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByBillingProfileNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingProfileNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by billing profile name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByBillingProfileNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByBillingProfileNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByBillingProfileNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByBillingProfileNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
+     */
+    public PagedList<TransactionsSummaryInner> listByCustomerNameNext(final String nextPageLink) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByCustomerNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByCustomerNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TransactionsSummaryInner>> listByCustomerNameNextAsync(final String nextPageLink, final ServiceFuture<List<TransactionsSummaryInner>> serviceFuture, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByCustomerNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByCustomerNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<Page<TransactionsSummaryInner>> listByCustomerNameNextAsync(final String nextPageLink) {
+        return listByCustomerNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByCustomerNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByCustomerNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByCustomerNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByCustomerNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByCustomerNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByCustomerNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
+     */
+    public PagedList<TransactionsSummaryInner> listByInvoiceSectionNameNext(final String nextPageLink) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TransactionsSummaryInner>(response.body()) {
+            @Override
+            public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TransactionsSummaryInner>> listByInvoiceSectionNameNextAsync(final String nextPageLink, final ServiceFuture<List<TransactionsSummaryInner>> serviceFuture, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<Page<TransactionsSummaryInner>> listByInvoiceSectionNameNextAsync(final String nextPageLink) {
+        return listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
+                @Override
+                public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists the transactions by invoice section name for given start date and end date.
+     *
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listByInvoiceSectionNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByInvoiceSectionNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TransactionsSummaryInner>> result = listByInvoiceSectionNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TransactionsSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<TransactionsSummaryInner>> listByInvoiceSectionNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<TransactionsSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<TransactionsSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)

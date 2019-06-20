@@ -9,9 +9,9 @@
 package com.microsoft.azure.management.billing.v2018_11_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSummaryInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.BillingManager;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation.InvoiceSummaryInner;
 import java.util.List;
 import org.joda.time.DateTime;
 

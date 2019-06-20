@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.DepartmentListResult;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Department;
 
 class DepartmentsImpl extends WrapperImpl<DepartmentsInner> implements Departments {
@@ -33,13 +33,19 @@ class DepartmentsImpl extends WrapperImpl<DepartmentsInner> implements Departmen
     }
 
     @Override
-    public Observable<DepartmentListResult> listByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<Department> listByBillingAccountNameAsync(final String billingAccountName) {
         DepartmentsInner client = this.inner();
         return client.listByBillingAccountNameAsync(billingAccountName)
-        .map(new Func1<DepartmentListResultInner, DepartmentListResult>() {
+        .flatMapIterable(new Func1<Page<DepartmentInner>, Iterable<DepartmentInner>>() {
             @Override
-            public DepartmentListResult call(DepartmentListResultInner inner) {
-                return new DepartmentListResultImpl(inner, manager());
+            public Iterable<DepartmentInner> call(Page<DepartmentInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<DepartmentInner, Department>() {
+            @Override
+            public Department call(DepartmentInner inner) {
+                return wrapModel(inner);
             }
         });
     }

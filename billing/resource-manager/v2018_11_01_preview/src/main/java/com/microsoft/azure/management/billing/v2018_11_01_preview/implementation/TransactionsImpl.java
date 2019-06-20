@@ -14,7 +14,6 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.Transactions;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsSummary;
 
 class TransactionsImpl extends WrapperImpl<TransactionsInner> implements Transactions {
@@ -34,37 +33,55 @@ class TransactionsImpl extends WrapperImpl<TransactionsInner> implements Transac
     }
 
     @Override
-    public Observable<TransactionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
+    public Observable<TransactionsSummary> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate) {
         TransactionsInner client = this.inner();
         return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName, startDate, endDate)
-        .map(new Func1<TransactionsListResultInner, TransactionsListResult>() {
+        .flatMapIterable(new Func1<Page<TransactionsSummaryInner>, Iterable<TransactionsSummaryInner>>() {
             @Override
-            public TransactionsListResult call(TransactionsListResultInner inner) {
-                return new TransactionsListResultImpl(inner, manager());
+            public Iterable<TransactionsSummaryInner> call(Page<TransactionsSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<TransactionsSummaryInner, TransactionsSummary>() {
+            @Override
+            public TransactionsSummary call(TransactionsSummaryInner inner) {
+                return new TransactionsSummaryImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<TransactionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate) {
+    public Observable<TransactionsSummary> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate) {
         TransactionsInner client = this.inner();
         return client.listByCustomerNameAsync(billingAccountName, customerName, startDate, endDate)
-        .map(new Func1<TransactionsListResultInner, TransactionsListResult>() {
+        .flatMapIterable(new Func1<Page<TransactionsSummaryInner>, Iterable<TransactionsSummaryInner>>() {
             @Override
-            public TransactionsListResult call(TransactionsListResultInner inner) {
-                return new TransactionsListResultImpl(inner, manager());
+            public Iterable<TransactionsSummaryInner> call(Page<TransactionsSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<TransactionsSummaryInner, TransactionsSummary>() {
+            @Override
+            public TransactionsSummary call(TransactionsSummaryInner inner) {
+                return new TransactionsSummaryImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<TransactionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate) {
+    public Observable<TransactionsSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate) {
         TransactionsInner client = this.inner();
         return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName, startDate, endDate)
-        .map(new Func1<TransactionsListResultInner, TransactionsListResult>() {
+        .flatMapIterable(new Func1<Page<TransactionsSummaryInner>, Iterable<TransactionsSummaryInner>>() {
             @Override
-            public TransactionsListResult call(TransactionsListResultInner inner) {
-                return new TransactionsListResultImpl(inner, manager());
+            public Iterable<TransactionsSummaryInner> call(Page<TransactionsSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<TransactionsSummaryInner, TransactionsSummary>() {
+            @Override
+            public TransactionsSummary call(TransactionsSummaryInner inner) {
+                return new TransactionsSummaryImpl(inner, manager());
             }
         });
     }

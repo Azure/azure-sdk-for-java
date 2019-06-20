@@ -17,15 +17,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Agreements extends HasInner<AgreementsInner> {
     /**
-     * Lists all agreements for a billing account.
-     *
-     * @param billingAccountName Billing Account Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<AgreementListResult> listByBillingAccountNameAsync(String billingAccountName);
-
-    /**
      * Get the agreement by name.
      *
      * @param billingAccountName Billing Account Id.
@@ -34,5 +25,14 @@ public interface Agreements extends HasInner<AgreementsInner> {
      * @return the observable for the request
      */
     Observable<Agreement> getAsync(String billingAccountName, String agreementName);
+
+    /**
+     * Lists all agreements for a billing account.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Agreement> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

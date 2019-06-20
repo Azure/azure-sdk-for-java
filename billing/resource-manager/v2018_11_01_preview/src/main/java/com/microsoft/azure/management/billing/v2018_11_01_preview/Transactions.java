@@ -26,7 +26,7 @@ public interface Transactions extends HasInner<TransactionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransactionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName, String startDate, String endDate);
+    Observable<TransactionsSummary> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName, final String startDate, final String endDate);
 
     /**
      * Lists the transactions by invoice section name for given start date and end date.
@@ -38,7 +38,7 @@ public interface Transactions extends HasInner<TransactionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransactionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName, String startDate, String endDate);
+    Observable<TransactionsSummary> listByCustomerNameAsync(final String billingAccountName, final String customerName, final String startDate, final String endDate);
 
     /**
      * Lists the transactions by invoice section name for given start date and end date.
@@ -50,7 +50,7 @@ public interface Transactions extends HasInner<TransactionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransactionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String startDate, String endDate);
+    Observable<TransactionsSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String startDate, final String endDate);
 
     /**
      * Lists the transactions by billing account name for given start and end date.

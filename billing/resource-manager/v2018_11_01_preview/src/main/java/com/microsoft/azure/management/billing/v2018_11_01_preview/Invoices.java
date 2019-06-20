@@ -17,17 +17,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Invoices extends HasInner<InvoicesInner> {
     /**
-     * List of invoices for a billing account.
-     *
-     * @param billingAccountName Billing Account Id.
-     * @param periodStartDate Invoice period start date.
-     * @param periodEndDate Invoice period end date.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<InvoiceListResult> listByBillingAccountNameAsync(String billingAccountName, String periodStartDate, String periodEndDate);
-
-    /**
      * List of invoices for a billing profile.
      *
      * @param billingAccountName Billing Account Id.
@@ -37,7 +26,7 @@ public interface Invoices extends HasInner<InvoicesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceListResult> listByBillingProfileAsync(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate);
+    Observable<InvoiceSummary> listByBillingProfileAsync(final String billingAccountName, final String billingProfileName, final String periodStartDate, final String periodEndDate);
 
     /**
      * Get the invoice by name.
@@ -49,5 +38,16 @@ public interface Invoices extends HasInner<InvoicesInner> {
      * @return the observable for the request
      */
     Observable<InvoiceSummary> getAsync(String billingAccountName, String billingProfileName, String invoiceName);
+
+    /**
+     * List of invoices for a billing account.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param periodStartDate Invoice period start date.
+     * @param periodEndDate Invoice period end date.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<InvoiceSummary> listByBillingAccountNameAsync(final String billingAccountName, final String periodStartDate, final String periodEndDate);
 
 }

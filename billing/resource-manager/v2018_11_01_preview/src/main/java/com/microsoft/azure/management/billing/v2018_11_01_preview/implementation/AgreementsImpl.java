@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Agreements;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.AgreementListResult;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Agreement;
 
 class AgreementsImpl extends WrapperImpl<AgreementsInner> implements Agreements {
@@ -33,13 +33,19 @@ class AgreementsImpl extends WrapperImpl<AgreementsInner> implements Agreements 
     }
 
     @Override
-    public Observable<AgreementListResult> listByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<Agreement> listByBillingAccountNameAsync(final String billingAccountName) {
         AgreementsInner client = this.inner();
         return client.listByBillingAccountNameAsync(billingAccountName)
-        .map(new Func1<AgreementListResultInner, AgreementListResult>() {
+        .flatMapIterable(new Func1<Page<AgreementInner>, Iterable<AgreementInner>>() {
             @Override
-            public AgreementListResult call(AgreementListResultInner inner) {
-                return new AgreementListResultImpl(inner, manager());
+            public Iterable<AgreementInner> call(Page<AgreementInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AgreementInner, Agreement>() {
+            @Override
+            public Agreement call(AgreementInner inner) {
+                return wrapModel(inner);
             }
         });
     }

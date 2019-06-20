@@ -17,15 +17,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface EnrollmentAccounts extends HasInner<EnrollmentAccountsInner> {
     /**
-     * Lists all Enrollment Accounts for which a user has access.
-     *
-     * @param billingAccountName Billing Account Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<EnrollmentAccountListResult> listByBillingAccountNameAsync(String billingAccountName);
-
-    /**
      * Get the enrollment account by id.
      *
      * @param billingAccountName Billing Account Id.
@@ -34,5 +25,14 @@ public interface EnrollmentAccounts extends HasInner<EnrollmentAccountsInner> {
      * @return the observable for the request
      */
     Observable<EnrollmentAccount> getByEnrollmentAccountIdAsync(String billingAccountName, String enrollmentAccountName);
+
+    /**
+     * Lists all Enrollment Accounts for which a user has access.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<EnrollmentAccount> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

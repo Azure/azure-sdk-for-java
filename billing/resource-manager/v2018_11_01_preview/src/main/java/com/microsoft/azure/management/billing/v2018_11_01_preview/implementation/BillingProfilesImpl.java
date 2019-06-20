@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileListResult;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileCreationParameters;
 
@@ -34,13 +34,19 @@ class BillingProfilesImpl extends WrapperImpl<BillingProfilesInner> implements B
     }
 
     @Override
-    public Observable<BillingProfileListResult> listByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<BillingProfile> listByBillingAccountNameAsync(final String billingAccountName) {
         BillingProfilesInner client = this.inner();
         return client.listByBillingAccountNameAsync(billingAccountName)
-        .map(new Func1<BillingProfileListResultInner, BillingProfileListResult>() {
+        .flatMapIterable(new Func1<Page<BillingProfileInner>, Iterable<BillingProfileInner>>() {
             @Override
-            public BillingProfileListResult call(BillingProfileListResultInner inner) {
-                return new BillingProfileListResultImpl(inner, manager());
+            public Iterable<BillingProfileInner> call(Page<BillingProfileInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingProfileInner, BillingProfile>() {
+            @Override
+            public BillingProfile call(BillingProfileInner inner) {
+                return wrapModel(inner);
             }
         });
     }

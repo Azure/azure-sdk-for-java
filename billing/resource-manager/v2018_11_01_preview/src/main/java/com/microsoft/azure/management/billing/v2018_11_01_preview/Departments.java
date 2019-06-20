@@ -17,15 +17,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Departments extends HasInner<DepartmentsInner> {
     /**
-     * Lists all departments for which a user has access.
-     *
-     * @param billingAccountName Billing Account Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<DepartmentListResult> listByBillingAccountNameAsync(String billingAccountName);
-
-    /**
      * Get the department by id.
      *
      * @param billingAccountName Billing Account Id.
@@ -34,5 +25,14 @@ public interface Departments extends HasInner<DepartmentsInner> {
      * @return the observable for the request
      */
     Observable<Department> getAsync(String billingAccountName, String departmentName);
+
+    /**
+     * Lists all departments for which a user has access.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Department> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

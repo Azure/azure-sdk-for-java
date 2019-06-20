@@ -24,7 +24,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingSubscriptionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName);
+    Observable<BillingSubscriptionSummary> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName);
 
     /**
      * Lists billing subscription by customer name.
@@ -34,7 +34,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingSubscriptionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName);
+    Observable<BillingSubscriptionSummary> listByCustomerNameAsync(final String billingAccountName, final String customerName);
 
     /**
      * Get a single billing subscription by name.
@@ -55,7 +55,7 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingSubscriptionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName);
+    Observable<BillingSubscriptionSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName);
 
     /**
      * Get a single billing subscription by name.

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSummary;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Amount;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.DownloadProperties;
@@ -18,7 +19,8 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentPropert
 
 class InvoiceSummaryImpl extends WrapperImpl<InvoiceSummaryInner> implements InvoiceSummary {
     private final BillingManager manager;
-    InvoiceSummaryImpl(InvoiceSummaryInner inner, BillingManager manager) {
+
+    InvoiceSummaryImpl(InvoiceSummaryInner inner,  BillingManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -27,6 +29,8 @@ class InvoiceSummaryImpl extends WrapperImpl<InvoiceSummaryInner> implements Inv
     public BillingManager manager() {
         return this.manager;
     }
+
+
 
     @Override
     public Amount amountDue() {

@@ -17,15 +17,6 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Customers extends HasInner<CustomersInner> {
     /**
-     * Lists all customers which the current user can work with on-behalf of a partner.
-     *
-     * @param billingAccountName Billing Account Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<CustomerListResult> listByBillingAccountNameAsync(String billingAccountName);
-
-    /**
      * Get the customer by id.
      *
      * @param billingAccountName Billing Account Id.
@@ -34,5 +25,14 @@ public interface Customers extends HasInner<CustomersInner> {
      * @return the observable for the request
      */
     Observable<Customer> getAsync(String billingAccountName, String customerName);
+
+    /**
+     * Lists all customers which the current user can work with on-behalf of a partner.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Customer> listByBillingAccountNameAsync(final String billingAccountName);
 
 }

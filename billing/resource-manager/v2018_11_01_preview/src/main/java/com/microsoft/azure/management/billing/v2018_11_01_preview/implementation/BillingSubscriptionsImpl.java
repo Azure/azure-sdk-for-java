@@ -14,7 +14,6 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscri
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionSummary;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.TransferBillingSubscriptionResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ValidateSubscriptionTransferEligibilityResult;
@@ -37,25 +36,37 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<BillingSubscriptionsListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+    public Observable<BillingSubscriptionSummary> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName) {
         BillingSubscriptionsInner client = this.inner();
         return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName)
-        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+        .flatMapIterable(new Func1<Page<BillingSubscriptionSummaryInner>, Iterable<BillingSubscriptionSummaryInner>>() {
             @Override
-            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
-                return new BillingSubscriptionsListResultImpl(inner, manager());
+            public Iterable<BillingSubscriptionSummaryInner> call(Page<BillingSubscriptionSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+                return new BillingSubscriptionSummaryImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<BillingSubscriptionsListResult> listByCustomerNameAsync(String billingAccountName, String customerName) {
+    public Observable<BillingSubscriptionSummary> listByCustomerNameAsync(final String billingAccountName, final String customerName) {
         BillingSubscriptionsInner client = this.inner();
         return client.listByCustomerNameAsync(billingAccountName, customerName)
-        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+        .flatMapIterable(new Func1<Page<BillingSubscriptionSummaryInner>, Iterable<BillingSubscriptionSummaryInner>>() {
             @Override
-            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
-                return new BillingSubscriptionsListResultImpl(inner, manager());
+            public Iterable<BillingSubscriptionSummaryInner> call(Page<BillingSubscriptionSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+                return new BillingSubscriptionSummaryImpl(inner, manager());
             }
         });
     }
@@ -73,13 +84,19 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<BillingSubscriptionsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
+    public Observable<BillingSubscriptionSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName) {
         BillingSubscriptionsInner client = this.inner();
         return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)
-        .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
+        .flatMapIterable(new Func1<Page<BillingSubscriptionSummaryInner>, Iterable<BillingSubscriptionSummaryInner>>() {
             @Override
-            public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {
-                return new BillingSubscriptionsListResultImpl(inner, manager());
+            public Iterable<BillingSubscriptionSummaryInner> call(Page<BillingSubscriptionSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingSubscriptionSummaryInner, BillingSubscriptionSummary>() {
+            @Override
+            public BillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {
+                return new BillingSubscriptionSummaryImpl(inner, manager());
             }
         });
     }

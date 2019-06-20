@@ -13,8 +13,8 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccount;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountListResult;
 
 class BillingAccountsImpl extends WrapperImpl<BillingAccountsInner> implements BillingAccounts {
     private final BillingManager manager;
@@ -45,13 +45,19 @@ class BillingAccountsImpl extends WrapperImpl<BillingAccountsInner> implements B
     }
 
     @Override
-    public Observable<BillingAccountListResult> listAsync() {
+    public Observable<BillingAccount> listAsync() {
         BillingAccountsInner client = this.inner();
         return client.listAsync()
-        .map(new Func1<BillingAccountListResultInner, BillingAccountListResult>() {
+        .flatMapIterable(new Func1<Page<BillingAccountInner>, Iterable<BillingAccountInner>>() {
             @Override
-            public BillingAccountListResult call(BillingAccountListResultInner inner) {
-                return new BillingAccountListResultImpl(inner, manager());
+            public Iterable<BillingAccountInner> call(Page<BillingAccountInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingAccountInner, BillingAccount>() {
+            @Override
+            public BillingAccount call(BillingAccountInner inner) {
+                return new BillingAccountImpl(inner, manager());
             }
         });
     }

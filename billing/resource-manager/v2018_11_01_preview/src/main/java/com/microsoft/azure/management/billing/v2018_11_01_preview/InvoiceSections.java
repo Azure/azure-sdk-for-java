@@ -34,7 +34,7 @@ public interface InvoiceSections extends HasInner<InvoiceSectionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName);
+    Observable<InvoiceSection> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName);
 
     /**
      * Elevates the caller's access to match their billing profile access.
@@ -64,7 +64,7 @@ public interface InvoiceSections extends HasInner<InvoiceSectionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters);
+    Observable<BillingProfile> createAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters);
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
@@ -73,6 +73,6 @@ public interface InvoiceSections extends HasInner<InvoiceSectionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionListResult> listByCreateSubscriptionPermissionAsync(String billingAccountName);
+    Observable<InvoiceSection> listByCreateSubscriptionPermissionAsync(final String billingAccountName);
 
 }

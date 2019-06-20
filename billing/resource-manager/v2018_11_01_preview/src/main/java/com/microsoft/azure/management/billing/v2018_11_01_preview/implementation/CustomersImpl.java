@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Customers;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.CustomerListResult;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Customer;
 
 class CustomersImpl extends WrapperImpl<CustomersInner> implements Customers {
@@ -33,13 +33,19 @@ class CustomersImpl extends WrapperImpl<CustomersInner> implements Customers {
     }
 
     @Override
-    public Observable<CustomerListResult> listByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<Customer> listByBillingAccountNameAsync(final String billingAccountName) {
         CustomersInner client = this.inner();
         return client.listByBillingAccountNameAsync(billingAccountName)
-        .map(new Func1<CustomerListResultInner, CustomerListResult>() {
+        .flatMapIterable(new Func1<Page<CustomerInner>, Iterable<CustomerInner>>() {
             @Override
-            public CustomerListResult call(CustomerListResultInner inner) {
-                return new CustomerListResultImpl(inner, manager());
+            public Iterable<CustomerInner> call(Page<CustomerInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<CustomerInner, Customer>() {
+            @Override
+            public Customer call(CustomerInner inner) {
+                return wrapModel(inner);
             }
         });
     }

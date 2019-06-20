@@ -31,6 +31,6 @@ public interface BillingAccounts extends HasInner<BillingAccountsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingAccountListResult> listAsync();
+    Observable<BillingAccount> listAsync();
 
 }

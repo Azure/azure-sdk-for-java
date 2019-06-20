@@ -97,6 +97,10 @@ public class ProductsInner {
         @GET
         Observable<Response<ResponseBody>> listByBillingAccountNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Products listByInvoiceSectionNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByInvoiceSectionNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -330,10 +334,16 @@ public class ProductsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ProductsListResultInner object if successful.
+     * @return the PagedList&lt;ProductSummaryInner&gt; object if successful.
      */
-    public ProductsListResultInner listByInvoiceSectionName(String billingAccountName, String invoiceSectionName) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
+    public PagedList<ProductSummaryInner> listByInvoiceSectionName(final String billingAccountName, final String invoiceSectionName) {
+        ServiceResponse<Page<ProductSummaryInner>> response = listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName).toBlocking().single();
+        return new PagedList<ProductSummaryInner>(response.body()) {
+            @Override
+            public Page<ProductSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -345,8 +355,16 @@ public class ProductsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProductsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<ProductsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
+    public ServiceFuture<List<ProductSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName),
+            new Func1<String, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -355,15 +373,16 @@ public class ProductsInner {
      * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProductsListResultInner object
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ProductsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<ProductsListResultInner>, ProductsListResultInner>() {
-            @Override
-            public ProductsListResultInner call(ServiceResponse<ProductsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<ProductSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName)
+            .map(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Page<ProductSummaryInner>>() {
+                @Override
+                public Page<ProductSummaryInner> call(ServiceResponse<Page<ProductSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -372,9 +391,31 @@ public class ProductsInner {
      * @param billingAccountName Billing Account Id.
      * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProductsListResultInner object
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<ProductsListResultInner>> listByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameWithServiceResponseAsync(final String billingAccountName, final String invoiceSectionName) {
+        return listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName)
+            .concatMap(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(ServiceResponse<Page<ProductSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ProductSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameSinglePageAsync(final String billingAccountName, final String invoiceSectionName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -386,12 +427,12 @@ public class ProductsInner {
         }
         final String filter = null;
         return service.listByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<ProductsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ProductsListResultInner> clientResponse = listByInvoiceSectionNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<ProductSummaryInner>> result = listByInvoiceSectionNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ProductSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -408,10 +449,16 @@ public class ProductsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ProductsListResultInner object if successful.
+     * @return the PagedList&lt;ProductSummaryInner&gt; object if successful.
      */
-    public ProductsListResultInner listByInvoiceSectionName(String billingAccountName, String invoiceSectionName, String filter) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, filter).toBlocking().single().body();
+    public PagedList<ProductSummaryInner> listByInvoiceSectionName(final String billingAccountName, final String invoiceSectionName, final String filter) {
+        ServiceResponse<Page<ProductSummaryInner>> response = listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, filter).toBlocking().single();
+        return new PagedList<ProductSummaryInner>(response.body()) {
+            @Override
+            public Page<ProductSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -424,8 +471,16 @@ public class ProductsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProductsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String filter, final ServiceCallback<ProductsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, filter), serviceCallback);
+    public ServiceFuture<List<ProductSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String filter, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -435,15 +490,16 @@ public class ProductsInner {
      * @param invoiceSectionName InvoiceSection Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProductsListResultInner object
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ProductsListResultInner> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName, String filter) {
-        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, filter).map(new Func1<ServiceResponse<ProductsListResultInner>, ProductsListResultInner>() {
-            @Override
-            public ProductsListResultInner call(ServiceResponse<ProductsListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<ProductSummaryInner>> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName, final String filter) {
+        return listByInvoiceSectionNameWithServiceResponseAsync(billingAccountName, invoiceSectionName, filter)
+            .map(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Page<ProductSummaryInner>>() {
+                @Override
+                public Page<ProductSummaryInner> call(ServiceResponse<Page<ProductSummaryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -453,9 +509,32 @@ public class ProductsInner {
      * @param invoiceSectionName InvoiceSection Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ProductsListResultInner object
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<ProductsListResultInner>> listByInvoiceSectionNameWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String filter) {
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameWithServiceResponseAsync(final String billingAccountName, final String invoiceSectionName, final String filter) {
+        return listByInvoiceSectionNameSinglePageAsync(billingAccountName, invoiceSectionName, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(ServiceResponse<Page<ProductSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+    ServiceResponse<PageImpl<ProductSummaryInner>> * @param billingAccountName Billing Account Id.
+    ServiceResponse<PageImpl<ProductSummaryInner>> * @param invoiceSectionName InvoiceSection Id.
+    ServiceResponse<PageImpl<ProductSummaryInner>> * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ProductSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameSinglePageAsync(final String billingAccountName, final String invoiceSectionName, final String filter) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -466,12 +545,12 @@ public class ProductsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByInvoiceSectionName(billingAccountName, invoiceSectionName, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductsListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<ProductsListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ProductsListResultInner> clientResponse = listByInvoiceSectionNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<ProductSummaryInner>> result = listByInvoiceSectionNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ProductSummaryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -479,9 +558,9 @@ public class ProductsInner {
             });
     }
 
-    private ServiceResponse<ProductsListResultInner> listByInvoiceSectionNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ProductsListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ProductsListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<ProductSummaryInner>> listByInvoiceSectionNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ProductSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1225,6 +1304,117 @@ public class ProductsInner {
     }
 
     private ServiceResponse<PageImpl<ProductSummaryInner>> listByBillingAccountNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ProductSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ProductSummaryInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ProductSummaryInner&gt; object if successful.
+     */
+    public PagedList<ProductSummaryInner> listByInvoiceSectionNameNext(final String nextPageLink) {
+        ServiceResponse<Page<ProductSummaryInner>> response = listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ProductSummaryInner>(response.body()) {
+            @Override
+            public Page<ProductSummaryInner> nextPage(String nextPageLink) {
+                return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ProductSummaryInner>> listByInvoiceSectionNameNextAsync(final String nextPageLink, final ServiceFuture<List<ProductSummaryInner>> serviceFuture, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByInvoiceSectionNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(String nextPageLink) {
+                    return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
+     */
+    public Observable<Page<ProductSummaryInner>> listByInvoiceSectionNameNextAsync(final String nextPageLink) {
+        return listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Page<ProductSummaryInner>>() {
+                @Override
+                public Page<ProductSummaryInner> call(ServiceResponse<Page<ProductSummaryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByInvoiceSectionNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(ServiceResponse<Page<ProductSummaryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByInvoiceSectionNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists products by invoice section name.
+     *
+    ServiceResponse<PageImpl<ProductSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ProductSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listByInvoiceSectionNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByInvoiceSectionNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ProductSummaryInner>> result = listByInvoiceSectionNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ProductSummaryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ProductSummaryInner>> listByInvoiceSectionNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ProductSummaryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ProductSummaryInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)

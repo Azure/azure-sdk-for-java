@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountListResult;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccount;
 
 class EnrollmentAccountsImpl extends WrapperImpl<EnrollmentAccountsInner> implements EnrollmentAccounts {
@@ -33,13 +33,19 @@ class EnrollmentAccountsImpl extends WrapperImpl<EnrollmentAccountsInner> implem
     }
 
     @Override
-    public Observable<EnrollmentAccountListResult> listByBillingAccountNameAsync(String billingAccountName) {
+    public Observable<EnrollmentAccount> listByBillingAccountNameAsync(final String billingAccountName) {
         EnrollmentAccountsInner client = this.inner();
         return client.listByBillingAccountNameAsync(billingAccountName)
-        .map(new Func1<EnrollmentAccountListResultInner, EnrollmentAccountListResult>() {
+        .flatMapIterable(new Func1<Page<EnrollmentAccountInner>, Iterable<EnrollmentAccountInner>>() {
             @Override
-            public EnrollmentAccountListResult call(EnrollmentAccountListResultInner inner) {
-                return new EnrollmentAccountListResultImpl(inner, manager());
+            public Iterable<EnrollmentAccountInner> call(Page<EnrollmentAccountInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<EnrollmentAccountInner, EnrollmentAccount>() {
+            @Override
+            public EnrollmentAccount call(EnrollmentAccountInner inner) {
+                return wrapModel(inner);
             }
         });
     }

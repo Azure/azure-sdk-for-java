@@ -24,7 +24,7 @@ public interface Products extends HasInner<ProductsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProductsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName);
+    Observable<ProductSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName);
 
     /**
      * Get a single product by name.

@@ -10,16 +10,21 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfileCreationParameters;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesCreateHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesUpdateHeaders;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ErrorResponseException;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -29,6 +34,7 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -83,6 +89,10 @@ public class BillingProfilesInner {
         @PUT("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Body BillingProfileInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles listByBillingAccountNameNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByBillingAccountNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -92,10 +102,16 @@ public class BillingProfilesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BillingProfileListResultInner object if successful.
+     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
      */
-    public BillingProfileListResultInner listByBillingAccountName(String billingAccountName) {
-        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
+    public PagedList<BillingProfileInner> listByBillingAccountName(final String billingAccountName) {
+        ServiceResponse<Page<BillingProfileInner>> response = listByBillingAccountNameSinglePageAsync(billingAccountName).toBlocking().single();
+        return new PagedList<BillingProfileInner>(response.body()) {
+            @Override
+            public Page<BillingProfileInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -106,8 +122,16 @@ public class BillingProfilesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, final ServiceCallback<BillingProfileListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName), serviceCallback);
+    public ServiceFuture<List<BillingProfileInner>> listByBillingAccountNameAsync(final String billingAccountName, final ListOperationCallback<BillingProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameSinglePageAsync(billingAccountName),
+            new Func1<String, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -115,15 +139,16 @@ public class BillingProfilesInner {
      *
      * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BillingProfileListResultInner object
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
      */
-    public Observable<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName) {
-        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<BillingProfileListResultInner>, BillingProfileListResultInner>() {
-            @Override
-            public BillingProfileListResultInner call(ServiceResponse<BillingProfileListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<BillingProfileInner>> listByBillingAccountNameAsync(final String billingAccountName) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName)
+            .map(new Func1<ServiceResponse<Page<BillingProfileInner>>, Page<BillingProfileInner>>() {
+                @Override
+                public Page<BillingProfileInner> call(ServiceResponse<Page<BillingProfileInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -131,9 +156,30 @@ public class BillingProfilesInner {
      *
      * @param billingAccountName Billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BillingProfileListResultInner object
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
      */
-    public Observable<ServiceResponse<BillingProfileListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName) {
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameWithServiceResponseAsync(final String billingAccountName) {
+        return listByBillingAccountNameSinglePageAsync(billingAccountName)
+            .concatMap(new Func1<ServiceResponse<Page<BillingProfileInner>>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(ServiceResponse<Page<BillingProfileInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param billingAccountName Billing Account Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameSinglePageAsync(final String billingAccountName) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -142,12 +188,12 @@ public class BillingProfilesInner {
         }
         final String expand = null;
         return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingProfileListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<BillingProfileListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<BillingProfileListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<BillingProfileInner>> result = listByBillingAccountNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BillingProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -163,10 +209,16 @@ public class BillingProfilesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BillingProfileListResultInner object if successful.
+     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
      */
-    public BillingProfileListResultInner listByBillingAccountName(String billingAccountName, String expand) {
-        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand).toBlocking().single().body();
+    public PagedList<BillingProfileInner> listByBillingAccountName(final String billingAccountName, final String expand) {
+        ServiceResponse<Page<BillingProfileInner>> response = listByBillingAccountNameSinglePageAsync(billingAccountName, expand).toBlocking().single();
+        return new PagedList<BillingProfileInner>(response.body()) {
+            @Override
+            public Page<BillingProfileInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -178,8 +230,16 @@ public class BillingProfilesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand, final ServiceCallback<BillingProfileListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
+    public ServiceFuture<List<BillingProfileInner>> listByBillingAccountNameAsync(final String billingAccountName, final String expand, final ListOperationCallback<BillingProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameSinglePageAsync(billingAccountName, expand),
+            new Func1<String, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -188,15 +248,16 @@ public class BillingProfilesInner {
      * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BillingProfileListResultInner object
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
      */
-    public Observable<BillingProfileListResultInner> listByBillingAccountNameAsync(String billingAccountName, String expand) {
-        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponse<BillingProfileListResultInner>, BillingProfileListResultInner>() {
-            @Override
-            public BillingProfileListResultInner call(ServiceResponse<BillingProfileListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<BillingProfileInner>> listByBillingAccountNameAsync(final String billingAccountName, final String expand) {
+        return listByBillingAccountNameWithServiceResponseAsync(billingAccountName, expand)
+            .map(new Func1<ServiceResponse<Page<BillingProfileInner>>, Page<BillingProfileInner>>() {
+                @Override
+                public Page<BillingProfileInner> call(ServiceResponse<Page<BillingProfileInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -205,9 +266,31 @@ public class BillingProfilesInner {
      * @param billingAccountName Billing Account Id.
      * @param expand May be used to expand the invoiceSections.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BillingProfileListResultInner object
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
      */
-    public Observable<ServiceResponse<BillingProfileListResultInner>> listByBillingAccountNameWithServiceResponseAsync(String billingAccountName, String expand) {
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameWithServiceResponseAsync(final String billingAccountName, final String expand) {
+        return listByBillingAccountNameSinglePageAsync(billingAccountName, expand)
+            .concatMap(new Func1<ServiceResponse<Page<BillingProfileInner>>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(ServiceResponse<Page<BillingProfileInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+    ServiceResponse<PageImpl<BillingProfileInner>> * @param billingAccountName Billing Account Id.
+    ServiceResponse<PageImpl<BillingProfileInner>> * @param expand May be used to expand the invoiceSections.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameSinglePageAsync(final String billingAccountName, final String expand) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -215,12 +298,12 @@ public class BillingProfilesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByBillingAccountName(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingProfileListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<BillingProfileListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<BillingProfileListResultInner> clientResponse = listByBillingAccountNameDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<BillingProfileInner>> result = listByBillingAccountNameDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BillingProfileInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -228,9 +311,9 @@ public class BillingProfilesInner {
             });
     }
 
-    private ServiceResponse<BillingProfileListResultInner> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<BillingProfileListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<BillingProfileListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<BillingProfileInner>> listByBillingAccountNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -715,6 +798,117 @@ public class BillingProfilesInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, BillingProfilesUpdateHeaders.class);
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
+     */
+    public PagedList<BillingProfileInner> listByBillingAccountNameNext(final String nextPageLink) {
+        ServiceResponse<Page<BillingProfileInner>> response = listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BillingProfileInner>(response.body()) {
+            @Override
+            public Page<BillingProfileInner> nextPage(String nextPageLink) {
+                return listByBillingAccountNameNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BillingProfileInner>> listByBillingAccountNameNextAsync(final String nextPageLink, final ServiceFuture<List<BillingProfileInner>> serviceFuture, final ListOperationCallback<BillingProfileInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByBillingAccountNameNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(String nextPageLink) {
+                    return listByBillingAccountNameNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     */
+    public Observable<Page<BillingProfileInner>> listByBillingAccountNameNextAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BillingProfileInner>>, Page<BillingProfileInner>>() {
+                @Override
+                public Page<BillingProfileInner> call(ServiceResponse<Page<BillingProfileInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByBillingAccountNameNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BillingProfileInner>>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(ServiceResponse<Page<BillingProfileInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByBillingAccountNameNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all billing profiles for a user which that user has access to.
+     *
+    ServiceResponse<PageImpl<BillingProfileInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BillingProfileInner>>> listByBillingAccountNameNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByBillingAccountNameNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingProfileInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BillingProfileInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BillingProfileInner>> result = listByBillingAccountNameNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BillingProfileInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BillingProfileInner>> listByBillingAccountNameNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
 }

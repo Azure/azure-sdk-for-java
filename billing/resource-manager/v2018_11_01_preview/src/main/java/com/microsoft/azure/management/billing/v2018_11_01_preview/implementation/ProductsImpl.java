@@ -14,7 +14,6 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.Products;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductSummary;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.ValidateProductTransferEligibilityResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.UpdateAutoRenewOperationSummary;
@@ -37,13 +36,19 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     }
 
     @Override
-    public Observable<ProductsListResult> listByInvoiceSectionNameAsync(String billingAccountName, String invoiceSectionName) {
+    public Observable<ProductSummary> listByInvoiceSectionNameAsync(final String billingAccountName, final String invoiceSectionName) {
         ProductsInner client = this.inner();
         return client.listByInvoiceSectionNameAsync(billingAccountName, invoiceSectionName)
-        .map(new Func1<ProductsListResultInner, ProductsListResult>() {
+        .flatMapIterable(new Func1<Page<ProductSummaryInner>, Iterable<ProductSummaryInner>>() {
             @Override
-            public ProductsListResult call(ProductsListResultInner inner) {
-                return new ProductsListResultImpl(inner, manager());
+            public Iterable<ProductSummaryInner> call(Page<ProductSummaryInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ProductSummaryInner, ProductSummary>() {
+            @Override
+            public ProductSummary call(ProductSummaryInner inner) {
+                return new ProductSummaryImpl(inner, manager());
             }
         });
     }

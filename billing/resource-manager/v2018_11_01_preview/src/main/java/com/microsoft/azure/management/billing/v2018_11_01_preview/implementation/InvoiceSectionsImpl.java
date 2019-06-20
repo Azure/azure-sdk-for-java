@@ -14,8 +14,10 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection
 import rx.Observable;
 import rx.functions.Func1;
 import rx.Completable;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionListResult;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSection;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionCreationRequest;
 
 class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements InvoiceSections {
@@ -47,13 +49,19 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
-    public Observable<InvoiceSectionListResult> listByBillingProfileNameAsync(String billingAccountName, String billingProfileName) {
+    public Observable<InvoiceSection> listByBillingProfileNameAsync(final String billingAccountName, final String billingProfileName) {
         InvoiceSectionsInner client = this.inner();
         return client.listByBillingProfileNameAsync(billingAccountName, billingProfileName)
-        .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
+        .flatMapIterable(new Func1<Page<InvoiceSectionInner>, Iterable<InvoiceSectionInner>>() {
             @Override
-            public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {
-                return new InvoiceSectionListResultImpl(inner, manager());
+            public Iterable<InvoiceSectionInner> call(Page<InvoiceSectionInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
+            @Override
+            public InvoiceSection call(InvoiceSectionInner inner) {
+                return new InvoiceSectionImpl(inner, manager());
             }
         });
     }
@@ -77,25 +85,37 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
-    public Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
+    public Observable<BillingProfile> createAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
         InvoiceSectionsInner client = this.inner();
         return client.createAsync(billingAccountName, parameters)
-        .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
+        .flatMapIterable(new Func1<Page<BillingProfileInner>, Iterable<BillingProfileInner>>() {
             @Override
-            public InvoiceSection call(InvoiceSectionInner inner) {
-                return new InvoiceSectionImpl(inner, manager());
+            public Iterable<BillingProfileInner> call(Page<BillingProfileInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<BillingProfileInner, BillingProfile>() {
+            @Override
+            public BillingProfile call(BillingProfileInner inner) {
+                return new BillingProfileImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<InvoiceSectionListResult> listByCreateSubscriptionPermissionAsync(String billingAccountName) {
+    public Observable<InvoiceSection> listByCreateSubscriptionPermissionAsync(final String billingAccountName) {
         InvoiceSectionsInner client = this.inner();
         return client.listByCreateSubscriptionPermissionAsync(billingAccountName)
-        .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
+        .flatMapIterable(new Func1<Page<InvoiceSectionInner>, Iterable<InvoiceSectionInner>>() {
             @Override
-            public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {
-                return new InvoiceSectionListResultImpl(inner, manager());
+            public Iterable<InvoiceSectionInner> call(Page<InvoiceSectionInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
+            @Override
+            public InvoiceSection call(InvoiceSectionInner inner) {
+                return new InvoiceSectionImpl(inner, manager());
             }
         });
     }
