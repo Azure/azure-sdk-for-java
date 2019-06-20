@@ -46,9 +46,11 @@ public class ReactorReceiverTest {
         when(event.getLink()).thenReturn(receiver);
         when(receiver.getRemoteSource()).thenReturn(new Source());
 
-        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name");
+        final String entityPath = "test-entity-path";
+        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
+            "test-receiver-name", entityPath);
         tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", Duration.ofSeconds(30));
-        reactorReceiver = new ReactorReceiver("test-entityPath", receiver, receiverHandler, tokenManager);
+        reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager);
     }
 
     @After
