@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-<<<<<<< HEAD:eventhubs/client/azure-eventhubs/src/test/java/com/azure/messaging/eventhubs/RetryTest.java
-package com.azure.messaging.eventhubs;
-=======
 package com.azure.core.amqp;
->>>>>>> 781e0ffcaa... Move RetryTest to amqp-core. Fix test failures.:core/azure-core-amqp/src/test/java/com/azure/core/amqp/RetryTest.java
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;

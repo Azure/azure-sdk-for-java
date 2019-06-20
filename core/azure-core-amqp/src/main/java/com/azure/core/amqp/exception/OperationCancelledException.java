@@ -1,13 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-<<<<<<< HEAD:eventhubs/client/azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/OperationCancelledException.java
-package com.azure.messaging.eventhubs;
-
-import com.azure.core.amqp.exception.AmqpException;
-=======
 package com.azure.core.amqp.exception;
->>>>>>> e123f89908... Move OperationCancelledException to new package.:core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/OperationCancelledException.java
 
 /**
  * This exception is thrown when the underlying AMQP layer encounter an abnormal link abort or disconnect of connection
