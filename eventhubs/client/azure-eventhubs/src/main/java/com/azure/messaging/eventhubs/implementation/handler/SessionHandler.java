@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation.handler;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
+import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ReactorDispatcher;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -26,15 +27,15 @@ public class SessionHandler extends Handler {
     private final ReactorDispatcher reactorDispatcher;
 
     public SessionHandler(String connectionId, String hostname, String entityName, ReactorDispatcher reactorDispatcher,
-                   Duration openTimeout) {
+                          Duration openTimeout) {
         super(connectionId, hostname);
         this.entityName = entityName;
         this.openTimeout = openTimeout;
         this.reactorDispatcher = reactorDispatcher;
     }
 
-    public ErrorContext getContext(Throwable throwable) {
-        return new SessionErrorContext(throwable, getHostname(), entityName);
+    public ErrorContext getErrorContext() {
+        return new SessionErrorContext(getHostname(), entityName);
     }
 
     @Override
@@ -56,9 +57,9 @@ public class SessionHandler extends Handler {
 
             final String message = String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
                 getConnectionId(), this.entityName, ioException.getMessage());
-            final ErrorContext errorContext = new SessionErrorContext(new AmqpException(false, message, ioException), getConnectionId(), entityName);
+            final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
-            onNext(errorContext);
+            onNext(exception);
         }
     }
 
@@ -111,9 +112,10 @@ public class SessionHandler extends Handler {
 
         if (condition != null) {
             final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(), entityName));
-            final ErrorContext context = new SessionErrorContext(exception, getHostname(), entityName);
-            onNext(context);
+                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s]", getConnectionId(), entityName),
+                getErrorContext());
+
+            onNext(exception);
         }
     }
 
@@ -142,20 +144,5 @@ public class SessionHandler extends Handler {
         //     "SessionTimeoutHandler.onEvent - connectionId[{}], entityName[{}], session open timed out.",
         //     this.connectionId, this.entityName);
         // }
-    }
-
-    private static class SessionErrorContext extends ErrorContext {
-        private static final long serialVersionUID = 7031664116367058509L;
-        private final String entityPath;
-
-        SessionErrorContext(Throwable exception, String namespaceName, String entityPath) {
-            super(exception, namespaceName);
-            this.entityPath = entityPath;
-        }
-
-        @Override
-        public String toString() {
-            return String.format(Locale.US, "NS: %s. EntityPath: %s. Exception: %s", namespaceName(), entityPath, exception());
-        }
     }
 }
