@@ -50,7 +50,7 @@ public class NodeTypeDescription {
     private int httpGatewayEndpointPort;
 
     /**
-     * Nodetype durability Level. Possible values include: 'Bronze', 'Silver',
+     * Node type durability Level. Possible values include: 'Bronze', 'Silver',
      * 'Gold'.
      */
     @JsonProperty(value = "durabilityLevel")
@@ -63,7 +63,7 @@ public class NodeTypeDescription {
     private EndpointRangeDescription applicationPorts;
 
     /**
-     * System assgined application ports.
+     * System assigned application ports.
      */
     @JsonProperty(value = "ephemeralPorts")
     private EndpointRangeDescription ephemeralPorts;
@@ -187,7 +187,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Get nodetype durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
+     * Get node type durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
      *
      * @return the durabilityLevel value
      */
@@ -196,7 +196,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Set nodetype durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
+     * Set node type durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
      *
      * @param durabilityLevel the durabilityLevel value to set
      * @return the NodeTypeDescription object itself.
@@ -227,7 +227,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Get system assgined application ports.
+     * Get system assigned application ports.
      *
      * @return the ephemeralPorts value
      */
@@ -236,7 +236,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Set system assgined application ports.
+     * Set system assigned application ports.
      *
      * @param ephemeralPorts the ephemeralPorts value to set
      * @return the NodeTypeDescription object itself.

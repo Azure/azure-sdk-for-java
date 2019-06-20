@@ -44,7 +44,7 @@ public class ClusterUpdateParameters {
     private String clusterCodeVersion;
 
     /**
-     * This primay certificate will be used as cluster node to node security,
+     * This primary certificate will be used as cluster node to node security,
      * SSL certificate for cluster management endpoint and default admin
      * client, the certificate should exist in the virtual machine scale sets
      * or Azure key vault, before you add it. It will override original value.
@@ -79,7 +79,7 @@ public class ClusterUpdateParameters {
     private CertificateDescription reverseProxyCertificate;
 
     /**
-     * The list of nodetypes that make up the cluster, it will override.
+     * The list of node types that make up the cluster, it will override.
      */
     @JsonProperty(value = "properties.nodeTypes")
     private List<NodeTypeDescription> nodeTypes;
@@ -157,7 +157,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Get this primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value.
+     * Get this primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value.
      *
      * @return the certificate value
      */
@@ -166,7 +166,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Set this primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value.
+     * Set this primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value.
      *
      * @param certificate the certificate value to set
      * @return the ClusterUpdateParameters object itself.
@@ -257,7 +257,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Get the list of nodetypes that make up the cluster, it will override.
+     * Get the list of node types that make up the cluster, it will override.
      *
      * @return the nodeTypes value
      */
@@ -266,7 +266,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Set the list of nodetypes that make up the cluster, it will override.
+     * Set the list of node types that make up the cluster, it will override.
      *
      * @param nodeTypes the nodeTypes value to set
      * @return the ClusterUpdateParameters object itself.

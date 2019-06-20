@@ -68,7 +68,7 @@ public class OperationsInner {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-     * @param apiVersion The version of the ServiceFabric resouce provider api
+     * @param apiVersion The version of the ServiceFabric resource provider api
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorModelException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -87,7 +87,7 @@ public class OperationsInner {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-     * @param apiVersion The version of the ServiceFabric resouce provider api
+     * @param apiVersion The version of the ServiceFabric resource provider api
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -107,7 +107,7 @@ public class OperationsInner {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-     * @param apiVersion The version of the ServiceFabric resouce provider api
+     * @param apiVersion The version of the ServiceFabric resource provider api
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationResultInner&gt; object
      */
@@ -124,7 +124,7 @@ public class OperationsInner {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-     * @param apiVersion The version of the ServiceFabric resouce provider api
+     * @param apiVersion The version of the ServiceFabric resource provider api
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;OperationResultInner&gt; object
      */
@@ -145,7 +145,7 @@ public class OperationsInner {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-    ServiceResponse<PageImpl1<OperationResultInner>> * @param apiVersion The version of the ServiceFabric resouce provider api
+    ServiceResponse<PageImpl1<OperationResultInner>> * @param apiVersion The version of the ServiceFabric resource provider api
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;OperationResultInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
