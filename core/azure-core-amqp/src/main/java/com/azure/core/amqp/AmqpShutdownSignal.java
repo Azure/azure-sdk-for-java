@@ -14,7 +14,7 @@ public class AmqpShutdownSignal {
     private final String message;
 
     /**
-     * Creates a new instance of ShutdownSignal.
+     * Creates a new instance of the AmqpShutdownSignal.
      *
      * @param isTransient Whether the shutdown signal can be retried or not.
      * @param initiatedByClient {@code true} if the shutdown was initiated by the client; {@code false} otherwise.

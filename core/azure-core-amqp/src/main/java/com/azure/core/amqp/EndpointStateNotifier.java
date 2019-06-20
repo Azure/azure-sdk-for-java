@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.ErrorContext;
 import reactor.core.publisher.Flux;
 
 /**
@@ -23,7 +22,7 @@ public interface EndpointStateNotifier {
      *
      * @return A stream of errors that occurred in the AMQP endpoint.
      */
-    Flux<ErrorContext> getErrors();
+    Flux<Throwable> getErrors();
 
     /**
      * Gets the endpoint states for the AMQP endpoint.
