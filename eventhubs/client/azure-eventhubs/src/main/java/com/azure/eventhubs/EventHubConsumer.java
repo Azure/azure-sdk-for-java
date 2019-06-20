@@ -3,7 +3,6 @@
 
 package com.azure.eventhubs;
 
-import com.azure.core.amqp.AmqpLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.AmqpReceiveLink;
 import reactor.core.publisher.EmitterProcessor;

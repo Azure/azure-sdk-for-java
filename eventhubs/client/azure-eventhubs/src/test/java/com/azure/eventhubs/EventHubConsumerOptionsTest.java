@@ -6,8 +6,6 @@ package com.azure.eventhubs;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Optional;
-
 public class EventHubConsumerOptionsTest {
     /**
      * Verifies we set the correct defaults.
