@@ -358,6 +358,10 @@
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
               <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
                 <title>Azure Key Vault</title>
                 <packages>com.azure.keyvault*</packages>
               </group>
