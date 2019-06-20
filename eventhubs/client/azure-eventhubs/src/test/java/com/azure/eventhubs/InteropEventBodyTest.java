@@ -32,11 +32,11 @@ public class InteropEventBodyTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "testmsg";
 
-    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(InteropEventBodyTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
     private EventData receivedEvent;
 
     @Rule
@@ -53,10 +53,10 @@ public class InteropEventBodyTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
-        final EventReceiverOptions receiverOptions = new EventReceiverOptions().consumerGroup(getConsumerGroupName()).retry(Retry.getNoRetry());
-        sender = client.createSender(senderOptions);
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(), receiverOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions().retry(Retry.getNoRetry());
+        sender = client.createProducer(senderOptions);
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(), receiverOptions);
     }
 
     @Override

@@ -178,8 +178,8 @@ public class EventHubProducer implements Closeable {
         if (!ImplUtils.isNullOrEmpty(partitionKey)) {
             if (isPartitionSender) {
                 throw new IllegalArgumentException(String.format(Locale.US,
-                    "SendOptions.partitionKey() cannot be set when an EventSender is "
-                        + "created with EventSenderOptions.partitionId() set. This EventSender can only send events to partition '%s'.",
+                    "SendOptions.partitionKey() cannot be set when an EventHubProducer is "
+                        + "created with EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
                     senderOptions.partitionId()));
             } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
                 throw new IllegalArgumentException(String.format(Locale.US,

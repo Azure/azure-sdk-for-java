@@ -48,8 +48,8 @@ public class EventHubClientTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(EventHubClientTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
     private ExpectedData data;
     private ReactorHandlerProvider handlerProvider;
 
@@ -324,8 +324,8 @@ public class EventHubClientTest extends ApiTestBase {
 
         for (final EventHubClient ehClient : ehClients) {
 
-            final EventHubConsumer receiver = ehClient.createConsumer(partitionId, EventPosition.latest(),
-                new EventHubConsumerOptions().consumerGroup(getConsumerGroupName()));
+            final EventHubConsumer receiver = ehClient.createConsumer(getConsumerGroupName(), partitionId, EventPosition.latest(),
+                new EventHubConsumerOptions());
 
             final Flux<EventData> receivedData = receiver.receive();
             pushEventsToPartition(senderClient, new EventHubProducerOptions().partitionId(PARTITION_ID), 10);
@@ -344,12 +344,12 @@ public class EventHubClientTest extends ApiTestBase {
         return new ConnectionStringProperties(connectionString);
     }
 
-    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventSenderOptions senderOptions, final int numberOfClients) {
+    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventHubProducerOptions senderOptions, final int numberOfClients) {
         final Flux<EventData> events = Flux.range(0, numberOfClients).map(number -> {
             final EventData data = new EventData("testString".getBytes(UTF_8));
             return data;
         });
-        sender = client.createSender(senderOptions);
+        sender = client.createProducer(senderOptions);
         return sender.send(events);
     }
 

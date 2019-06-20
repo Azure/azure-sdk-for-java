@@ -20,12 +20,11 @@ import java.util.Random;
 
 public class EventDataBatchTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromSenderOption";
-    private static final String PARTITION_ID = "0";
 
-    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(EventDataBatchTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
+    private EventHubProducer sender;
     private ReactorHandlerProvider handlerProvider;
 
     @Rule
@@ -42,6 +41,10 @@ public class EventDataBatchTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions()
+            .retry(Retry.getNoRetry())
+            .timeout(Duration.ofSeconds(30));
+        sender = client.createProducer(senderOptions);
     }
 
     @Override
@@ -76,7 +79,7 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         final EventData within = new EventData(new byte[1024]);
         Assert.assertTrue(batch.tryAdd(within));
     }
@@ -87,18 +90,12 @@ public class EventDataBatchTest extends ApiTestBase {
     @Test
     public void sendSmallEventsFullBatch() {
         skipIfNotRecordMode();
-        // TODO: event data batch has to have partition key??
+
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
-
-        final EventSenderOptions senderOptions = new EventSenderOptions()
-            .partitionId(PARTITION_ID)
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(30));
-        sender = client.createSender(senderOptions);
 
         // Act & Assert
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
@@ -114,15 +111,10 @@ public class EventDataBatchTest extends ApiTestBase {
 
         // Arrange
         // Only Event Data batch has partition key information, none in SendOption and SenderOption
-        final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
-
-        final EventSenderOptions senderOptions = new EventSenderOptions()
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(10));
-        sender  = client.createSender(senderOptions);
 
         // Act & Assert
         StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
@@ -143,8 +135,6 @@ public class EventDataBatchTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(10));
-        sender = client.createSender(senderOptions);
         final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions();
@@ -178,17 +168,12 @@ public class EventDataBatchTest extends ApiTestBase {
         skipIfNotRecordMode();
         // EventDataBatch is only accessible from internal, so the partition key
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         final SendOptions sendOptions = new SendOptions();
 
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
-        final EventSenderOptions senderOptions = new EventSenderOptions()
-            .partitionId(PARTITION_ID)
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(30));
-        sender = client.createSender(senderOptions);
 
         // Act & Assert
         StepVerifier.create(sender.send(batch.getEvents(), sendOptions))

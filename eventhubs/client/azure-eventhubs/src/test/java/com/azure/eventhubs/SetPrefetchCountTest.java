@@ -23,14 +23,14 @@ public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     // since we cannot test receiving very large prefetch like 10000 - in a unit test
     // defaultPrefetchCount * 3 was chosen
-    private static final int EVENT_COUNT = EventReceiverOptions.DEFAULT_PREFETCH_COUNT * 3;
+    private static final int EVENT_COUNT = EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT * 3;
     private static final int MAX_RETRY_TO_DECLARE_RECEIVE_STUCK = 3;
 
-    private final ClientLogger logger = new ClientLogger(EventReceiverOptionsTest.class);
+    private final ClientLogger logger = new ClientLogger(SetPrefetchCountTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
 
     @Rule
     public TestName testName = new TestName();
@@ -74,17 +74,14 @@ public class SetPrefetchCountTest extends ApiTestBase {
     }
 
     /**
-     * Test for large prefetch count on EventReceiver
+     * Test for large prefetch count on EventHubConsumer
      */
     @Ignore
     @Test
     public void setLargePrefetchCount() {
         // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
-            new EventReceiverOptions()
-                .retry(Retry.getDefaultRetry())
-                .consumerGroup(getConsumerGroupName())
-                .prefetchCount(2000));
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
+            new EventHubConsumerOptions().retry(Retry.getDefaultRetry()).prefetchCount(2000));
 
         int eventReceived = 0;
         int retryCount = 0;
@@ -104,15 +101,14 @@ public class SetPrefetchCountTest extends ApiTestBase {
     }
 
     /**
-     * Test for small prefetch count on EventReceiver
+     * Test for small prefetch count on EventHubConsumer
      */
     @Ignore
     @Test
     public void setSmallPrefetchCount() {
         // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName())
-                .prefetchCount(11));
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
+            new EventHubConsumerOptions().prefetchCount(11));
         int eventReceived = 0;
         int retryCount = 0;
         // Act
@@ -129,14 +125,14 @@ public class SetPrefetchCountTest extends ApiTestBase {
         Assert.assertTrue(eventReceived >= EVENT_COUNT);
     }
 
-    private Mono<Void> pushEventsToPartition(final EventHubClient client, final int noOfEvents) {
-        final Flux<EventData> events = Flux.range(0, noOfEvents).map(number -> {
+    private Mono<Void> pushEventsToPartition(final EventHubClient client, final int numberOfEvents) {
+        final Flux<EventData> events = Flux.range(0, numberOfEvents).map(number -> {
             final EventData data = new EventData("testString".getBytes(UTF_8));
             return data;
         });
 
-        final EventSenderOptions senderOptions = new EventSenderOptions();
-        sender = client.createSender(senderOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions();
+        sender = client.createProducer(senderOptions);
         return sender.send(events);
     }
 }

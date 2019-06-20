@@ -36,8 +36,8 @@ public class BackCompatTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(BackCompatTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
     private ReactorHandlerProvider handlerProvider;
 
     @Rule
@@ -91,8 +91,8 @@ public class BackCompatTest extends ApiTestBase {
 
         final Message originalMessage = Proton.message();
         // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
+            new EventHubConsumerOptions());
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
         // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
         final HashMap<String, Object> appProperties = new HashMap<>();
@@ -109,7 +109,7 @@ public class BackCompatTest extends ApiTestBase {
 
         // Act & Assert
         Flux<EventData> receivedEventData = receiver.receive();
-        sender = client.createSender(new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
+        sender = client.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
         sender.send(msgEvent);
         StepVerifier.create(receivedEventData)
             .expectNextMatches(event -> {

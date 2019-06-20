@@ -26,11 +26,11 @@ public class EventPositionTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
 
-    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(EventPositionTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
 
     @Rule
     public TestName testName = new TestName();
@@ -43,12 +43,12 @@ public class EventPositionTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventReceiverOptions receiverOptions = new EventReceiverOptions().prefetchCount(2).consumerGroup(getConsumerGroupName());
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions().prefetchCount(2);
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        sender = client.createSender(senderOptions);
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.earliest(), receiverOptions);
+        sender = client.createProducer(senderOptions);
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.earliest(), receiverOptions);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class EventPositionTest extends ApiTestBase {
     public void receiveLatestMessage() {
         skipIfNotRecordMode();
         // Arrange
-        final EventReceiverOptions receiverOptions = new EventReceiverOptions().consumerGroup(getConsumerGroupName());
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(), receiverOptions);
+        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions();
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(), receiverOptions);
 
         // Act & Assert
         StepVerifier.create(receiver.receive().take(1))
@@ -241,8 +241,8 @@ public class EventPositionTest extends ApiTestBase {
 
 
     private Flux<EventData> receiveMessageHelper(EventPosition eventPosition, int numberOfEvents) {
-        receiver = client.createReceiver(PARTITION_ID, eventPosition,
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, eventPosition,
+            new EventHubConsumerOptions());
         final Flux<EventData> receivedData = receiver.receive();
         // Act
         StepVerifier.create(receivedData.take(numberOfEvents))
