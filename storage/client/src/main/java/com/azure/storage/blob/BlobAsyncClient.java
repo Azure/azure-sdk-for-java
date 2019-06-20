@@ -384,8 +384,12 @@ public class BlobAsyncClient {
         return sliceBlobRange(range, accessConditions, context)
             .flatMap(chunk -> blobAsyncRawClient
                     .download(chunk, accessConditions, rangeGetContentMD5, context)
+//                    .doOnNext(res ->
+//                        System.out.println("Downloaded " + chunk.toString() + " on thread " + Thread.currentThread().getName()))
                     .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
-            .ignoreElements()
+//                    .doOnTerminate(() ->
+//                        System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName())))
+            .then()
             .doOnTerminate(() -> {
                 try {
                     channel.close();
@@ -401,8 +405,9 @@ public class BlobAsyncClient {
         if (blobRange != null) {
             length = Mono.just(blobRange.count());
         } else {
-            length = getProperties(accessConditions, context).map(rb -> rb.value().blobSize());
+            length = Mono.empty();
         }
+        length = length.switchIfEmpty(getProperties(accessConditions, context).map(rb -> rb.value().blobSize() - offset));
         return length
             .map(l -> {
                 List<BlobRange> chunks = new ArrayList<>();

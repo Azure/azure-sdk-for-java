@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class LargeFileTest {
     private static final Random RANDOM = new Random();
-    private static final String filePath = "C:\\Users\\jianghlu\\test-downloaded.vhd";
+    private static final String filePath = "C:\\Users\\jianghlu\\10g.dat";
     private static StorageClient storageClient;
     private static ContainerClient containerClient;
 
@@ -22,8 +22,10 @@ public class LargeFileTest {
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient();
 
-        containerClient = storageClient.getContainerClient("testcontainer" + RANDOM.nextInt(1000));
-        containerClient.create();
+        containerClient = storageClient.getContainerClient("testcontainer-10g");
+        if (!containerClient.exists().value()) {
+            containerClient.create();
+        }
     }
 
     @Test
@@ -35,12 +37,12 @@ public class LargeFileTest {
     @Test
     public void downloadLargeBlockBlob() throws Exception {
         OffsetDateTime start = OffsetDateTime.now();
-        BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("testblob" + RANDOM.nextInt(1000));
-        blockBlobClient.uploadFromFile(filePath);
-        File uploadedFile = new File(filePath);
-        System.out.println("Upload " + uploadedFile.length() + " bytes took " + Duration.between(start, OffsetDateTime.now()).getSeconds() + " seconds");
-        start = OffsetDateTime.now();
-        String downloadName = "jdk-downloaded.exe";
+        BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("testblob-10g");
+//        blockBlobClient.uploadFromFile(filePath);
+//        File uploadedFile = new File(filePath);
+//        System.out.println("Upload " + uploadedFile.length() + " bytes took " + Duration.between(start, OffsetDateTime.now()).getSeconds() + " seconds");
+//        start = OffsetDateTime.now();
+        String downloadName = "C:\\Users\\jianghlu\\10g-downloaded.dat";
         File downloaded = new File(downloadName);
         downloaded.createNewFile();
         blockBlobClient.downloadToFile(downloadName);
