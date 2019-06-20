@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -216,7 +215,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         return connection;
     }
 
-    private static class ReactorExceptionHandler extends AmqpExceptionHandler {
+    private static final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super(new ClientLogger(ReactorExceptionHandler.class));
         }
