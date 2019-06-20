@@ -46,6 +46,7 @@
                 <source>..\..\appconfiguration\client\src\main\java</source>
                 <source>..\..\appconfiguration\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
+                <source>..\..\core\azure-core-amqp\src\main\java</source>
                 <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
@@ -113,6 +114,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
           <version>${azure-core.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-amqp</artifactId>
+          <version>${azure-core-amqp.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package contains classes common to AMQP.
+ * Package contains classes common to AMQP protocol.
  */
 package com.azure.core.amqp;

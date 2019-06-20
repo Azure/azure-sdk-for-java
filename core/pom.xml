@@ -54,6 +54,7 @@
 
   <modules>
     <module>azure-core</module>
+    <module>azure-core-amqp</module>
     <module>azure-core-auth</module>
     <module>azure-core-management</module>
     <module>azure-core-test</module>

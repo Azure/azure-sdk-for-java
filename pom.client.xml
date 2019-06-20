@@ -350,6 +350,10 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - AMQP</title>
+                <packages>com.azure.core.amqp*</packages>
+                </group>
+              <group>
                 <title>Azure Core - Authentication</title>
                 <packages>com.azure.core.auth*</packages>
               </group>
