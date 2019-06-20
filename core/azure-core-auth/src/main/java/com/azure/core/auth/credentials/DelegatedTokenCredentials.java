@@ -4,6 +4,7 @@
 package com.azure.core.auth.credentials;
 
 import com.azure.core.annotations.Beta;
+import com.azure.core.credentials.AccessToken;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
@@ -124,13 +125,13 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Mono<String> getToken(String resource) {
+    public synchronized Mono<AccessToken> getToken(String resource) {
         // Find exact match for the resource
         AuthenticationResult[] authenticationResult = new AuthenticationResult[1];
         authenticationResult[0] = tokens.get(resource);
         // Return if found and not expired
         if (authenticationResult[0] != null && authenticationResult[0].getExpiresOnDate().after(new Date())) {
-            return Mono.just(authenticationResult[0].getAccessToken());
+            return Mono.just(Util.parseAdal4jAuthenticationResult(authenticationResult[0]));
         }
         // If found then refresh
         boolean shouldRefresh = authenticationResult[0] != null;
@@ -144,9 +145,9 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
             return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
                     .onErrorResume(t -> acquireNewAccessToken(resource))
                     .doOnNext(ar -> tokens.put(resource, ar))
-                    .then(Mono.just(tokens.get(resource).getAccessToken())));
+                    .then(Mono.just(Util.parseAdal4jAuthenticationResult(tokens.get(resource)))));
         } else {
-            return Mono.just(tokens.get(resource).getAccessToken());
+            return Mono.just(Util.parseAdal4jAuthenticationResult(tokens.get(resource)));
         }
     }
 

@@ -133,6 +133,18 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
         }
 
         /**
+         * The stage of the hanainstance definition allowing to specify PartnerNodeId.
+         */
+        interface WithPartnerNodeId {
+            /**
+             * Specifies partnerNodeId.
+             * @param partnerNodeId ARM ID of another HanaInstance that will share a network with this HanaInstance
+             * @return the next definition stage
+             */
+            WithCreate withPartnerNodeId(String partnerNodeId);
+        }
+
+        /**
          * The stage of the hanainstance definition allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
@@ -149,13 +161,13 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<HanaInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHardwareProfile, DefinitionStages.WithNetworkProfile, DefinitionStages.WithOsProfile, DefinitionStages.WithStorageProfile {
+        interface WithCreate extends Creatable<HanaInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHardwareProfile, DefinitionStages.WithNetworkProfile, DefinitionStages.WithOsProfile, DefinitionStages.WithPartnerNodeId, DefinitionStages.WithStorageProfile {
         }
     }
     /**
      * The template for a HanaInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithHardwareProfile, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithStorageProfile {
+    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithHardwareProfile, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithPartnerNodeId, UpdateStages.WithStorageProfile {
     }
 
     /**
@@ -196,6 +208,18 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
              * @return the next update stage
              */
             Update withOsProfile(OSProfile osProfile);
+        }
+
+        /**
+         * The stage of the hanainstance update allowing to specify PartnerNodeId.
+         */
+        interface WithPartnerNodeId {
+            /**
+             * Specifies partnerNodeId.
+             * @param partnerNodeId ARM ID of another HanaInstance that will share a network with this HanaInstance
+             * @return the next update stage
+             */
+            Update withPartnerNodeId(String partnerNodeId);
         }
 
         /**

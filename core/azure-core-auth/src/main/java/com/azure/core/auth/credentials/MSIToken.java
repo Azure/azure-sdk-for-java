@@ -32,9 +32,12 @@ class MSIToken {
         return tokenType;
     }
 
+    OffsetDateTime expiresOn() {
+        return epoch.plusSeconds(Integer.parseInt(this.expiresOn));
+    }
+
     boolean isExpired() {
         OffsetDateTime now = OffsetDateTime.now();
-        OffsetDateTime expireOn = epoch.plusSeconds(Integer.parseInt(this.expiresOn));
-        return now.plusMinutes(5).isAfter(expireOn);
+        return now.plusMinutes(5).isAfter(expiresOn());
     }
 }

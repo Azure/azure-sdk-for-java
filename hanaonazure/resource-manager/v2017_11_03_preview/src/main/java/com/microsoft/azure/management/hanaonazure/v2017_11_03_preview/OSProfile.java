@@ -17,7 +17,7 @@ public class OSProfile {
     /**
      * Specifies the host OS name of the HANA instance.
      */
-    @JsonProperty(value = "computerName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "computerName")
     private String computerName;
 
     /**
@@ -35,7 +35,7 @@ public class OSProfile {
     /**
      * Specifies the SSH public key used to access the operating system.
      */
-    @JsonProperty(value = "sshPublicKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**
@@ -45,6 +45,17 @@ public class OSProfile {
      */
     public String computerName() {
         return this.computerName;
+    }
+
+    /**
+     * Set specifies the host OS name of the HANA instance.
+     *
+     * @param computerName the computerName value to set
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withComputerName(String computerName) {
+        this.computerName = computerName;
+        return this;
     }
 
     /**
@@ -72,6 +83,17 @@ public class OSProfile {
      */
     public String sshPublicKey() {
         return this.sshPublicKey;
+    }
+
+    /**
+     * Set specifies the SSH public key used to access the operating system.
+     *
+     * @param sshPublicKey the sshPublicKey value to set
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withSshPublicKey(String sshPublicKey) {
+        this.sshPublicKey = sshPublicKey;
+        return this;
     }
 
 }
