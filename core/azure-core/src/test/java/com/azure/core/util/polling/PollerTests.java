@@ -8,6 +8,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.junit.Assert.assertTrue;
@@ -40,11 +41,11 @@ public class PollerTests {
 
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
 
-                    int indexForIntermediateResponse = prePollResponse.getValue() == null || prePollResponse.getValue().intermediateResponseIndex >= intermediateOtherPollResponseList.size() ? 0:prePollResponse.getValue().intermediateResponseIndex;
+                    int indexForIntermediateResponse = prePollResponse.getValue() == null || prePollResponse.getValue().intermediateResponseIndex >= intermediateOtherPollResponseList.size() ? 0 : prePollResponse.getValue().intermediateResponseIndex;
 
                     PollResponse<CreateCertificateResponse> intermediatePollResponse = intermediateOtherPollResponseList.get(indexForIntermediateResponse);
 
-                    debug(" Service poll function called ", " returning intermediate response status, otherstatus, value " + intermediatePollResponse.getStatus().getState().toString() + "," + intermediatePollResponse.getStatus().getOtherStatus() + "," + intermediatePollResponse.getValue().response);
+                    debug(" Service poll function called ", " returning intermediate response status, otherstatus, value " + intermediatePollResponse.getStatus().toString() + "," + intermediatePollResponse.getOtherStatus() + "," + intermediatePollResponse.getValue().response);
                     intermediatePollResponse.getValue().intermediateResponseIndex = indexForIntermediateResponse + 1;
                     return Mono.just(intermediatePollResponse);
                 } else {
@@ -354,10 +355,10 @@ public class PollerTests {
     @Test
     public void subscribeToSpecificOtherOperationStatusTest() throws Exception {
 
-        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(new OperationStatus(OperationStatus.State.SUCCESSFULLY_COMPLETED), new CreateCertificateResponse("Created : Cert A"));
-        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(new OperationStatus(OperationStatus.State.IN_PROGRESS), new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(new OperationStatus(OperationStatus.State.OTHER, "OTHER_1"), new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(new OperationStatus(OperationStatus.State.OTHER, "OTHER_2"), new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_1", new CreateCertificateResponse("Starting : Cert A"), null);
+        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_2", new CreateCertificateResponse("Starting : Cert A"), null);
 
         ArrayList<PollResponse<CreateCertificateResponse>> inProgressPollResponseList = new ArrayList<>();
         inProgressPollResponseList.add(inProgressPollResponse);
@@ -373,8 +374,9 @@ public class PollerTests {
                 successPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
-        createCertPoller.getObserver().subscribe(pr -> {
-            debug("1 Got Observer() Response " + pr.getStatus().getState().toString() + " " + pr.getStatus().getOtherStatus() + " " + pr.getValue().response);
+        Flux<PollResponse<CreateCertificateResponse>> fluxPollResp =  createCertPoller.getObserver();
+        fluxPollResp.subscribe(pr -> {
+            debug("0 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
 
         // get Specific Event Observer
@@ -382,22 +384,37 @@ public class PollerTests {
         observeOtherStates.add("OTHER_1");
         observeOtherStates.add("OTHER_2");
 
-        List<OperationStatus.State> observeOperationStates = new ArrayList<>();
-        observeOperationStates.add(OperationStatus.State.SUCCESSFULLY_COMPLETED);
-
-        createCertPoller.getObserver(observeOperationStates, observeOtherStates).subscribe(pr -> {
-            debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().getState().toString() + " " + pr.getStatus().getOtherStatus() + " " + pr.getValue().response);
+        List<OperationStatus> observeOperationStates = new ArrayList<>();
+        observeOperationStates.add(OperationStatus.SUCCESSFULLY_COMPLETED);
+        Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
+        fluxPollResp.subscribe(pr -> {
+            debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
-        createCertPoller.getObserver().subscribe(pr -> {
-            debug("3 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().getState().toString() + " " + pr.getStatus().getOtherStatus() + " " + pr.getValue().response);
+        fluxPollRespFiltered.subscribe(pr -> {
+            debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
 
-        Thread.sleep(totalTimeoutInMillis + 3*pollInterval.toMillis());
-        Assert.assertTrue(createCertPoller.block().getStatus().getState() == OperationStatus.State.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.getStatus().getState() == OperationStatus.State.SUCCESSFULLY_COMPLETED);
+        Thread.sleep(totalTimeoutInMillis + 3 * pollInterval.toMillis());
+        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
+    private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeOperationStates, List<String> observeOtherStates) {
+        List<OperationStatus> operationStates = observeOperationStates != null ? observeOperationStates : new ArrayList<>();
+        if (currentPollResponse.getStatus() == OperationStatus.OTHER
+            && currentPollResponse.getStatus() != null
+            && observeOtherStates != null) {
+            if (observeOtherStates.contains(currentPollResponse.getOtherStatus())) {
+                return Mono.just(true);
+            }
+        } else {
+            if (operationStates.contains(currentPollResponse.getStatus())) {
+                return Mono.just(true);
+            }
+        }
+        return Mono.just(false);
+    }
     private void debug(String... messages) {
         if (debug) {
             StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
