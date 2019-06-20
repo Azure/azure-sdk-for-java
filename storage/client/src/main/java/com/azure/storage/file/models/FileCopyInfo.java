@@ -23,35 +23,35 @@ public final class FileCopyInfo {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileCopyInfo eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
-    public OffsetDateTime lastModified(final OffsetDateTime lastModified) {
+    public FileCopyInfo lastModified(final OffsetDateTime lastModified) {
         this.lastModified = lastModified;
-        return this.lastModified;
+        return this;
     }
 
     public String copyId() {
         return copyId;
     }
 
-    public String copyId(final String copyId) {
+    public FileCopyInfo copyId(final String copyId) {
         this.copyId = copyId;
-        return this.copyId;
+        return this;
     }
 
     public CopyStatusType copyStatus() {
         return copyStatus;
     }
 
-    public CopyStatusType copyStatus(final CopyStatusType copyStatus) {
+    public FileCopyInfo copyStatus(final CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
-        return this.copyStatus;
+        return this;
     }
 }

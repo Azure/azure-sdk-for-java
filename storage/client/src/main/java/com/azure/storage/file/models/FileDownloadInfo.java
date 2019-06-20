@@ -3,8 +3,10 @@
 
 package com.azure.storage.file.models;
 
+import io.netty.buffer.ByteBuf;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import reactor.core.publisher.Flux;
 
 public final class FileDownloadInfo {
     private String eTag;
@@ -13,67 +15,78 @@ public final class FileDownloadInfo {
     private Long contentLength;
     private String contentType;
     private String contentRange;
+    private Flux<ByteBuf> body;
 
-    public FileDownloadInfo(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata, final Long contentLength, final String contentType, final String contentRange) {
+    public FileDownloadInfo(final String eTag, final OffsetDateTime lastModified, final Map<String, String> metadata, final Long contentLength, final String contentType, final String contentRange, final Flux<ByteBuf> body) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
         this.contentLength = contentLength;
         this.contentType = contentType;
         this.contentRange = contentRange;
+        this.body = body;
     }
 
     public String eTag() {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileDownloadInfo eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
-    public OffsetDateTime lastModified(final OffsetDateTime lastModified) {
+    public FileDownloadInfo lastModified(final OffsetDateTime lastModified) {
         this.lastModified = lastModified;
-        return this.lastModified;
+        return this;
     }
 
     public Map<String, String> metadata() {
         return metadata;
     }
 
-    public Map<String, String> metadata(final Map<String, String> metadata) {
+    public FileDownloadInfo metadata(final Map<String, String> metadata) {
         this.metadata = metadata;
-        return this.metadata;
+        return this;
     }
 
     public Long contentLength() {
         return contentLength;
     }
 
-    public Long contentLength(final Long contentLength) {
+    public FileDownloadInfo contentLength(final Long contentLength) {
         this.contentLength = contentLength;
-        return this.contentLength;
+        return this;
     }
 
     public String contentType() {
         return contentType;
     }
 
-    public String contentType(final String contentType) {
+    public FileDownloadInfo contentType(final String contentType) {
         this.contentType = contentType;
-        return this.contentType;
+        return this;
     }
 
     public String contentRange() {
         return contentRange;
     }
 
-    public String contentRange(final String contentRange) {
+    public FileDownloadInfo contentRange(final String contentRange) {
         this.contentRange = contentRange;
-        return this.contentRange;
+        return this;
+    }
+
+    public Flux<ByteBuf> body() {
+        return body;
+    }
+
+    public FileDownloadInfo body(final Flux<ByteBuf> body) {
+        this.body = body;
+        return this;
     }
 }

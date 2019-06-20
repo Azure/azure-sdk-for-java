@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.file.implementation.AzureFileStorageBuilder;
 import com.azure.storage.file.implementation.AzureFileStorageImpl;
@@ -34,7 +35,13 @@ import com.azure.storage.file.models.FilesStartCopyResponse;
 import com.azure.storage.file.models.FilesUploadRangeResponse;
 import com.azure.storage.file.models.HandleItem;
 import io.netty.buffer.ByteBuf;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +52,8 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 public class FileAsyncClient {
+    private static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String filePath;
@@ -139,6 +148,58 @@ public class FileAsyncClient {
         return azureFileStorageClient.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, Context.NONE)
                     .map(VoidResponse::new);
     }
+
+    public Mono<Void> downloadToFile(String downloadFilePath) {
+        return downloadToFile(downloadFilePath, null);
+    }
+
+    public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
+        AsynchronousFileChannel channel;
+        try {
+            channel = AsynchronousFileChannel.open(Paths.get(downloadFilePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
+        return sliceFileRange(range)
+                   .flatMap(chunk -> FluxUtil.bytebufStreamToFile(downloadWithProperties(chunk, false)
+                                                                      .flatMapMany(dar -> dar.value().body())
+                       , channel, chunk.start() - (range == null ? 0 : range.start()))
+                                         .doOnTerminate(() ->
+                                                            System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName())))
+                   .then()
+                   .doOnTerminate(() -> {
+                       try {
+                           channel.close();
+                       } catch (IOException e) {
+                           throw new UncheckedIOException(e);
+                       }
+                   });
+    }
+
+    private Flux<FileRange> sliceFileRange(FileRange fileRange) {
+        long offset = fileRange == null ? 0L : fileRange.start();
+        Mono<Long> end;
+        if (fileRange != null) {
+            end = Mono.just(fileRange.end());
+        } else {
+            end = Mono.empty();
+        }
+        end = end.switchIfEmpty(getProperties().map(rb -> rb.value().contentLength()));
+        return end
+                   .map(e -> {
+                       List<FileRange> chunks = new ArrayList<>();
+                       for (long pos = offset; pos < e; pos += FILE_DEFAULT_BLOCK_SIZE) {
+                           long count = FILE_DEFAULT_BLOCK_SIZE;
+                           if (pos + count > e) {
+                               count = e - pos;
+                           }
+                           chunks.add(new FileRange(pos, pos + count));
+                       }
+                       return chunks;
+                   })
+                   .flatMapMany(Flux::fromIterable);
+    }
+
     /**
      * Download with properties
      * @return
@@ -215,12 +276,52 @@ public class FileAsyncClient {
      * @param length
      * @return
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, int offset, FileRangeWriteType type) {
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, long offset, FileRangeWriteType type) {
         FileRange range = new FileRange(offset, offset + length - 1);
         return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
                    .map(this::uploadResponse);
     }
 
+    public Mono<Void> uploadFromFile(String uploadFilePath) {
+        return uploadFromFile(uploadFilePath, FileRangeWriteType.UPDATE);
+    }
+
+    public Mono<Void> uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
+        AsynchronousFileChannel channel;
+        try {
+            channel = AsynchronousFileChannel.open(Paths.get(uploadFilePath), StandardOpenOption.READ);
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
+        return Flux.fromIterable(sliceFile(uploadFilePath))
+                   .flatMap(chunk -> {
+                       return upload(FluxUtil.byteBufStreamFromFile(channel, chunk.start(), chunk.end() - chunk.start()), chunk.end() - chunk.start(), chunk.start(), type);
+                   })
+                   .then()
+                   .doOnTerminate(() -> {
+                       try {
+                           channel.close();
+                       } catch (IOException e) {
+                           throw new UncheckedIOException(e);
+                       }
+                   });
+    }
+
+    private List<FileRange> sliceFile(String path) {
+        File file = new File(path);
+        assert file.exists();
+        List<FileRange> ranges = new ArrayList<>();
+        for (long pos = 0; pos < file.length(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+            long count = FILE_DEFAULT_BLOCK_SIZE;
+            if (pos + count > file.length()) {
+                count = file.length() - pos;
+            }
+            ranges.add(new FileRange(pos, pos + count));
+        }
+        return ranges;
+    }
+
+    /**
     /**
      * List ranges of a file.
      * @return
@@ -279,7 +380,7 @@ public class FileAsyncClient {
         return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
     }
 
-    private Publisher<? extends HandleItem> nextPageForHandles(final FilesListHandlesResponse response, final Integer maxResults) {
+    private Flux<HandleItem> nextPageForHandles(final FilesListHandlesResponse response, final Integer maxResults) {
         List<HandleItem> handleItems = response.value().handleList();
 
         if (response.value().nextMarker() == null) {
@@ -322,7 +423,8 @@ public class FileAsyncClient {
         Long contentLength = response.deserializedHeaders().contentLength();
         String contentType = response.deserializedHeaders().contentType();
         String contentRange = response.deserializedHeaders().contentRange();
-        FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange);
+        Flux<ByteBuf> body = response.value();
+        FileDownloadInfo fileDownloadInfo = new FileDownloadInfo(eTag, lastModified, metadata, contentLength, contentType, contentRange, body);
         return mapResponse(response, fileDownloadInfo);
     }
 

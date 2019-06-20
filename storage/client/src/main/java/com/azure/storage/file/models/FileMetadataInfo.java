@@ -13,17 +13,17 @@ public class FileMetadataInfo {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileMetadataInfo eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public Boolean isServerEncrypted(final Boolean serverEncrypted) {
+    public FileMetadataInfo isServerEncrypted(final Boolean serverEncrypted) {
         isServerEncrypted = serverEncrypted;
-        return isServerEncrypted;
+        return this;
     }
 }

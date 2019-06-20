@@ -54,152 +54,152 @@ public final class FileProperties {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileProperties eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
-    public OffsetDateTime lastModified(final OffsetDateTime lastModified) {
+    public FileProperties lastModified(final OffsetDateTime lastModified) {
         this.lastModified = lastModified;
-        return this.lastModified;
+        return this;
     }
 
     public Map<String, String> metadata() {
         return metadata;
     }
 
-    public Map<String, String> metadata(final Map<String, String> metadata) {
+    public FileProperties metadata(final Map<String, String> metadata) {
         this.metadata = metadata;
-        return this.metadata;
+        return this;
     }
 
     public Long contentLength() {
         return contentLength;
     }
 
-    public Long contentLength(final Long contentLength) {
+    public FileProperties contentLength(final Long contentLength) {
         this.contentLength = contentLength;
-        return this.contentLength;
+        return this;
     }
 
     public String contentType() {
         return contentType;
     }
 
-    public String contentType(final String contentType) {
+    public FileProperties contentType(final String contentType) {
         this.contentType = contentType;
-        return this.contentType;
+        return this;
     }
 
     public String fileType() {
         return fileType;
     }
 
-    public String fileType(final String fileType) {
+    public FileProperties fileType(final String fileType) {
         this.fileType = fileType;
-        return this.fileType;
+        return this;
     }
 
     public byte[] contentMD5() {
         return ImplUtils.clone(contentMD5);
     }
 
-    public byte[] contentMD5(final byte[] contentMD5) {
+    public FileProperties contentMD5(final byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
-        return this.contentMD5;
+        return this;
     }
 
     public String contentEncoding() {
         return contentEncoding;
     }
 
-    public String contentEncoding(final String contentEncoding) {
+    public FileProperties contentEncoding(final String contentEncoding) {
         this.contentEncoding = contentEncoding;
-        return this.contentEncoding;
+        return this;
     }
 
     public String cacheControl() {
         return cacheControl;
     }
 
-    public String cacheControl(final String cacheControl) {
+    public FileProperties cacheControl(final String cacheControl) {
         this.cacheControl = cacheControl;
-        return this.cacheControl;
+        return this;
     }
 
     public String contentDisposition() {
         return contentDisposition;
     }
 
-    public String contentDisposition(final String contentDisposition) {
+    public FileProperties contentDisposition(final String contentDisposition) {
         this.contentDisposition = contentDisposition;
-        return this.contentDisposition;
+        return this;
     }
 
     public OffsetDateTime copyCompletionTime() {
         return copyCompletionTime;
     }
 
-    public OffsetDateTime copyCompletionTime(final OffsetDateTime copyCompletionTime) {
+    public FileProperties copyCompletionTime(final OffsetDateTime copyCompletionTime) {
         this.copyCompletionTime = copyCompletionTime;
-        return this.copyCompletionTime;
+        return this;
     }
 
     public String copyStatusDescription() {
         return copyStatusDescription;
     }
 
-    public String copyStatusDescription(final String copyStatusDescription) {
+    public FileProperties copyStatusDescription(final String copyStatusDescription) {
         this.copyStatusDescription = copyStatusDescription;
-        return this.copyStatusDescription;
+        return this;
     }
 
     public String copyId() {
         return copyId;
     }
 
-    public String copyId(final String copyId) {
+    public FileProperties copyId(final String copyId) {
         this.copyId = copyId;
-        return this.copyId;
+        return this;
     }
 
     public String copyProgress() {
         return copyProgress;
     }
 
-    public String copyProgress(final String copyProgress) {
+    public FileProperties copyProgress(final String copyProgress) {
         this.copyProgress = copyProgress;
-        return this.copyProgress;
+        return this;
     }
 
     public String copySource() {
         return copySource;
     }
 
-    public String copySource(final String copySource) {
+    public FileProperties copySource(final String copySource) {
         this.copySource = copySource;
-        return this.copySource;
+        return this;
     }
 
     public CopyStatusType copyStatus() {
         return copyStatus;
     }
 
-    public CopyStatusType copyStatus(final CopyStatusType copyStatus) {
+    public FileProperties copyStatus(final CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
-        return this.copyStatus;
+        return this;
     }
 
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public Boolean isServerEncrypted(final Boolean serverEncrypted) {
+    public FileProperties isServerEncrypted(final Boolean serverEncrypted) {
         isServerEncrypted = serverEncrypted;
-        return this.isServerEncrypted;
+        return this;
     }
 }

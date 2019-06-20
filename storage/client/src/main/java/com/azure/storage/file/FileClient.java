@@ -4,6 +4,8 @@
 package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
+import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
@@ -21,24 +23,30 @@ import reactor.core.publisher.Flux;
 import java.util.Map;
 
 /**
- * This class provides a client that contains all the operations for interacting files under Azure storage file service.
+ * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
  * Operations allowed by the client are creating, uploading, copying, listing, downloading, and deleting files.
  *
- * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating a synchronous File Client</strong></p>
  *
- * {@codesnippet com.azure.storage.file.instantiation}
+ * <pre>
+ * FileClient client = FileClient.builder()
+ *        .connectionString(connectionString)
+ *        .endpoint(endpoint)
+ *        .buildSync();
+ * </pre>
  *
  * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
  * @see FileClientBuilder
- * @see com.azure.storage.common.credentials.SharedKeyCredential
- * @see com.azure.storage.common.credentials.SASTokenCredential
+ * @see FileAsyncClient
+ * @see SharedKeyCredential
+ * @see SASTokenCredential
  */
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Creates a FileClient that sends requests to the file service at {@code serviceEndpoint}.
+     * Creates a FileClient that wraps a FileAsyncClient and blocks requests to the file service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
      * @param fileAsyncClient The {@link FileAsyncClient} that the client routes its request through.
@@ -48,11 +56,11 @@ public class FileClient {
     }
 
     /**
-     * Get URL from fileAsyncClient. The URL contains {@code serviceEndpoint}
+     * Get URL from FileAsyncClient.
      *
-     * @return URL
+     * @return URL The URL contains {@code serviceEndpoint}
      * @throws MalformedURLException if no protocol is specified, or an
-     * unknown protocol is found, or {@code spec} is {@code null}.
+     *         unknown protocol is found, or {@code spec} is {@code null}.
      */
     public URL url() throws Exception {
         return fileAsyncClient.url();
@@ -67,10 +75,21 @@ public class FileClient {
         return new FileClientBuilder();
     }
 
+    /**
+     * Adds a configuration value in the service if that key does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
+     *
+     * {@codesnippet com.azure.applicationconfig.configurationclient.addSetting#string-string}
+     *
+
+     */
     public Response<FileInfo> create(long maxSize) {
         return fileAsyncClient.create(maxSize).block();
     }
-    
+
     public Response<FileInfo> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         return fileAsyncClient.create(maxSize, httpHeaders, metadata).block();
     }
@@ -94,6 +113,13 @@ public class FileClient {
         fileAsyncClient.abortCopy(copyId).block();
     }
 
+    public void downloadToFile(String downloadFilePath) {
+        downloadToFile(downloadFilePath, null);
+    }
+
+    public void downloadToFile(String downloadFilePath, FileRange fileRange) {
+        fileAsyncClient.downloadToFile(downloadFilePath, fileRange).block();
+    }
     /**
      * Download with properties
      * @return
@@ -147,6 +173,13 @@ public class FileClient {
         return fileAsyncClient.setMeatadata(meatadata).block();
     }
 
+    public void uploadFromFile(String uploadFilePath) {
+        uploadFromFile(uploadFilePath, FileRangeWriteType.UPDATE);
+    }
+
+    public void uploadFromFile(String uploadFilePath, FileRangeWriteType type) {
+        fileAsyncClient.uploadFromFile(uploadFilePath, type).block();
+    }
     /**
      * Upload file to storage.
      * @param data

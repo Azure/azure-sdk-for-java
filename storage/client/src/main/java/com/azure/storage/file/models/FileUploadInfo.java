@@ -23,35 +23,35 @@ public final class FileUploadInfo {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileUploadInfo eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
-    public OffsetDateTime lastModified(final OffsetDateTime lastModified) {
+    public FileUploadInfo lastModified(final OffsetDateTime lastModified) {
         this.lastModified = lastModified;
-        return this.lastModified;
+        return this;
     }
 
     public byte[] contentMD5() {
         return contentMD5;
     }
 
-    public byte[] contentMD5(final byte[] contentMD5) {
+    public FileUploadInfo contentMD5(final byte[] contentMD5) {
         this.contentMD5 = ImplUtils.clone(contentMD5);
-        return this.contentMD5;
+        return this;
     }
 
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public Boolean isServerEncrypted(final Boolean isServerEncrypted) {
+    public FileUploadInfo isServerEncrypted(final Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
-        return this.isServerEncrypted;
+        return this;
     }
 }

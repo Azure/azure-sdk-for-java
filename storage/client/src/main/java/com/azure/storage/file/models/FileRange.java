@@ -16,18 +16,18 @@ public final class FileRange {
         return start;
     }
 
-    public long start(final long start) {
+    public FileRange start(final long start) {
         this.start = start;
-        return this.start;
+        return this;
     }
 
     public long end() {
         return end;
     }
 
-    public long end(final long end) {
+    public FileRange end(final long end) {
         this.end = end;
-        return this.end;
+        return this;
     }
 
     @Override

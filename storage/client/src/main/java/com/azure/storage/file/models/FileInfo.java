@@ -20,26 +20,26 @@ public final class FileInfo {
         return eTag;
     }
 
-    public String eTag(final String eTag) {
+    public FileInfo eTag(final String eTag) {
         this.eTag = eTag;
-        return this.eTag;
+        return this;
     }
 
     public OffsetDateTime lastModified() {
         return lastModified;
     }
 
-    public OffsetDateTime lastModified(final OffsetDateTime lastModified) {
+    public FileInfo lastModified(final OffsetDateTime lastModified) {
         this.lastModified = lastModified;
-        return this.lastModified;
+        return this;
     }
 
     public Boolean isServerEncrypted() {
         return isServerEncrypted;
     }
 
-    public Boolean isServerEncrypted(final Boolean serverEncrypted) {
+    public FileInfo isServerEncrypted(final Boolean serverEncrypted) {
         this.isServerEncrypted = serverEncrypted;
-        return this.isServerEncrypted;
+        return this;
     }
 }
