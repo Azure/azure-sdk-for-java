@@ -24,7 +24,7 @@ public class ClusterUpgradePolicy {
 
     /**
      * The maximum amount of time to block processing of an upgrade domain and
-     * revent loss of availability when there are unexpected issues. When this
+     * prevent loss of availability when there are unexpected issues. When this
      * timeout expires, processing of the upgrade domain will proceed
      * regardless of availability loss issues. The timeout is reset at the
      * start of each upgrade domain. The timeout can be in either hh:mm:ss or
@@ -106,7 +106,7 @@ public class ClusterUpgradePolicy {
     }
 
     /**
-     * Get the maximum amount of time to block processing of an upgrade domain and revent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
+     * Get the maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
      *
      * @return the upgradeReplicaSetCheckTimeout value
      */
@@ -115,7 +115,7 @@ public class ClusterUpgradePolicy {
     }
 
     /**
-     * Set the maximum amount of time to block processing of an upgrade domain and revent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
+     * Set the maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
      *
      * @param upgradeReplicaSetCheckTimeout the upgradeReplicaSetCheckTimeout value to set
      * @return the ClusterUpgradePolicy object itself.

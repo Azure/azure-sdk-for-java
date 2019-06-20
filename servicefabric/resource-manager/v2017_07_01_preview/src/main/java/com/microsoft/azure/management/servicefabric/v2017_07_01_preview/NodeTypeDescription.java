@@ -63,7 +63,7 @@ public class NodeTypeDescription {
     private EndpointRangeDescription applicationPorts;
 
     /**
-     * The range of empheral ports that nodes in this node type should be
+     * The range of ephemeral ports that nodes in this node type should be
      * configured with.
      */
     @JsonProperty(value = "ephemeralPorts")
@@ -231,7 +231,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Get the range of empheral ports that nodes in this node type should be configured with.
+     * Get the range of ephemeral ports that nodes in this node type should be configured with.
      *
      * @return the ephemeralPorts value
      */
@@ -240,7 +240,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Set the range of empheral ports that nodes in this node type should be configured with.
+     * Set the range of ephemeral ports that nodes in this node type should be configured with.
      *
      * @param ephemeralPorts the ephemeralPorts value to set
      * @return the NodeTypeDescription object itself.

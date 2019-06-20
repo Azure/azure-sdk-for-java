@@ -51,11 +51,11 @@ public class ServiceFabricManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The version of the ServiceFabric resouce provider api. */
+    /** The version of the ServiceFabric resource provider api. */
     private String apiVersion;
 
     /**
-     * Gets The version of the ServiceFabric resouce provider api.
+     * Gets The version of the ServiceFabric resource provider api.
      *
      * @return the apiVersion value.
      */

@@ -19,7 +19,7 @@ public interface Operations extends HasInner<OperationsInner> {
     /**
      * Lists all of the available ServiceFabric Resource Manager REST API operations.
      *
-     * @param apiVersion The version of the ServiceFabric resouce provider api
+     * @param apiVersion The version of the ServiceFabric resource provider api
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
