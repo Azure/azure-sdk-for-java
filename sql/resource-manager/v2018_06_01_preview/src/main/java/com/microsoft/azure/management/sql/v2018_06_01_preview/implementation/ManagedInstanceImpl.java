@@ -8,31 +8,67 @@
 
 package com.microsoft.azure.management.sql.v2018_06_01_preview.implementation;
 
+import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstance;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.ResourceIdentity;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceLicenseType;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedServerCreateMode;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceProxyOverride;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceUpdate;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.Sku;
-import java.util.Map;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedServerCreateMode;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceLicenseType;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceProxyOverride;
+import rx.functions.Func1;
 
-class ManagedInstanceImpl extends WrapperImpl<ManagedInstanceInner> implements ManagedInstance {
-    private final SqlManager manager;
-
-    ManagedInstanceImpl(ManagedInstanceInner inner,  SqlManager manager) {
-        super(inner);
-        this.manager = manager;
+class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
+    private ManagedInstanceUpdate updateParameter;
+    ManagedInstanceImpl(String name, ManagedInstanceInner inner, SqlManager manager) {
+        super(name, inner, manager);
+        this.updateParameter = new ManagedInstanceUpdate();
     }
 
     @Override
-    public SqlManager manager() {
-        return this.manager;
+    public Observable<ManagedInstance> createResourceAsync() {
+        ManagedInstancesInner client = this.manager().inner().managedInstances();
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(new Func1<ManagedInstanceInner, ManagedInstanceInner>() {
+               @Override
+               public ManagedInstanceInner call(ManagedInstanceInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
+            .map(innerToFluentMap(this));
     }
 
+    @Override
+    public Observable<ManagedInstance> updateResourceAsync() {
+        ManagedInstancesInner client = this.manager().inner().managedInstances();
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
+            .map(new Func1<ManagedInstanceInner, ManagedInstanceInner>() {
+               @Override
+               public ManagedInstanceInner call(ManagedInstanceInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
+            .map(innerToFluentMap(this));
+    }
 
+    @Override
+    protected Observable<ManagedInstanceInner> getInnerAsync() {
+        ManagedInstancesInner client = this.manager().inner().managedInstances();
+        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
+
+    private void resetCreateUpdateParameters() {
+        this.updateParameter = new ManagedInstanceUpdate();
+    }
 
     @Override
     public String administratorLogin() {
@@ -65,11 +101,6 @@ class ManagedInstanceImpl extends WrapperImpl<ManagedInstanceInner> implements M
     }
 
     @Override
-    public String id() {
-        return this.inner().id();
-    }
-
-    @Override
     public ResourceIdentity identity() {
         return this.inner().identity();
     }
@@ -85,18 +116,8 @@ class ManagedInstanceImpl extends WrapperImpl<ManagedInstanceInner> implements M
     }
 
     @Override
-    public String location() {
-        return this.inner().location();
-    }
-
-    @Override
     public ManagedServerCreateMode managedInstanceCreateMode() {
         return this.inner().managedInstanceCreateMode();
-    }
-
-    @Override
-    public String name() {
-        return this.inner().name();
     }
 
     @Override
@@ -140,23 +161,179 @@ class ManagedInstanceImpl extends WrapperImpl<ManagedInstanceInner> implements M
     }
 
     @Override
-    public Map<String, String> tags() {
-        return this.inner().getTags();
-    }
-
-    @Override
     public String timezoneId() {
         return this.inner().timezoneId();
     }
 
     @Override
-    public String type() {
-        return this.inner().type();
+    public Integer vCores() {
+        return this.inner().vCores();
     }
 
     @Override
-    public Integer vCores() {
-        return this.inner().vCores();
+    public ManagedInstanceImpl withIdentity(ResourceIdentity identity) {
+        this.inner().withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withAdministratorLogin(String administratorLogin) {
+        if (isInCreateMode()) {
+            this.inner().withAdministratorLogin(administratorLogin);
+        } else {
+            this.updateParameter.withAdministratorLogin(administratorLogin);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withAdministratorLoginPassword(String administratorLoginPassword) {
+        if (isInCreateMode()) {
+            this.inner().withAdministratorLoginPassword(administratorLoginPassword);
+        } else {
+            this.updateParameter.withAdministratorLoginPassword(administratorLoginPassword);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withCollation(String collation) {
+        if (isInCreateMode()) {
+            this.inner().withCollation(collation);
+        } else {
+            this.updateParameter.withCollation(collation);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withDnsZonePartner(String dnsZonePartner) {
+        if (isInCreateMode()) {
+            this.inner().withDnsZonePartner(dnsZonePartner);
+        } else {
+            this.updateParameter.withDnsZonePartner(dnsZonePartner);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withInstancePoolId(String instancePoolId) {
+        if (isInCreateMode()) {
+            this.inner().withInstancePoolId(instancePoolId);
+        } else {
+            this.updateParameter.withInstancePoolId(instancePoolId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withLicenseType(ManagedInstanceLicenseType licenseType) {
+        if (isInCreateMode()) {
+            this.inner().withLicenseType(licenseType);
+        } else {
+            this.updateParameter.withLicenseType(licenseType);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
+        if (isInCreateMode()) {
+            this.inner().withManagedInstanceCreateMode(managedInstanceCreateMode);
+        } else {
+            this.updateParameter.withManagedInstanceCreateMode(managedInstanceCreateMode);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
+        if (isInCreateMode()) {
+            this.inner().withProxyOverride(proxyOverride);
+        } else {
+            this.updateParameter.withProxyOverride(proxyOverride);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
+        if (isInCreateMode()) {
+            this.inner().withPublicDataEndpointEnabled(publicDataEndpointEnabled);
+        } else {
+            this.updateParameter.withPublicDataEndpointEnabled(publicDataEndpointEnabled);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withRestorePointInTime(DateTime restorePointInTime) {
+        if (isInCreateMode()) {
+            this.inner().withRestorePointInTime(restorePointInTime);
+        } else {
+            this.updateParameter.withRestorePointInTime(restorePointInTime);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withSourceManagedInstanceId(String sourceManagedInstanceId) {
+        if (isInCreateMode()) {
+            this.inner().withSourceManagedInstanceId(sourceManagedInstanceId);
+        } else {
+            this.updateParameter.withSourceManagedInstanceId(sourceManagedInstanceId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withStorageSizeInGB(Integer storageSizeInGB) {
+        if (isInCreateMode()) {
+            this.inner().withStorageSizeInGB(storageSizeInGB);
+        } else {
+            this.updateParameter.withStorageSizeInGB(storageSizeInGB);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withSubnetId(String subnetId) {
+        if (isInCreateMode()) {
+            this.inner().withSubnetId(subnetId);
+        } else {
+            this.updateParameter.withSubnetId(subnetId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withTimezoneId(String timezoneId) {
+        if (isInCreateMode()) {
+            this.inner().withTimezoneId(timezoneId);
+        } else {
+            this.updateParameter.withTimezoneId(timezoneId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withVCores(Integer vCores) {
+        if (isInCreateMode()) {
+            this.inner().withVCores(vCores);
+        } else {
+            this.updateParameter.withVCores(vCores);
+        }
+        return this;
     }
 
 }

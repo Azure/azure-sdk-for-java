@@ -8,22 +8,32 @@
 
 package com.microsoft.azure.management.sql.v2018_06_01_preview.implementation;
 
+import com.microsoft.azure.arm.collection.InnerSupportsGet;
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
+import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceUpdate;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -34,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in ManagedInstances.
  */
-public class ManagedInstancesInner {
+public class ManagedInstancesInner implements InnerSupportsGet<ManagedInstanceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<ManagedInstanceInner> {
     /** The Retrofit service to perform REST calls. */
     private ManagedInstancesService service;
     /** The service client containing this operation class. */
@@ -56,14 +66,1161 @@ public class ManagedInstancesInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface ManagedInstancesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listMetricDefinitions" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/metricDefinitions")
+        Observable<Response<ResponseBody>> listMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listMetrics" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/metrics")
+        Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("metric") String metric, @Query("timespan") String timespan, @Query("aggregation") String aggregation, @Query("interval") String interval, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances")
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances getByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances createOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances beginCreateOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceUpdate parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances beginUpdate" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}")
+        Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("managedInstanceName") String managedInstanceName, @Path("subscriptionId") String subscriptionId, @Body ManagedInstanceUpdate parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listByInstancePool" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/managedInstances")
         Observable<Response<ResponseBody>> listByInstancePool(@Path("resourceGroupName") String resourceGroupName, @Path("instancePoolName") String instancePoolName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/managedInstances")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listMetricDefinitionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listMetricsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listByInstancePoolNext" })
         @GET
         Observable<Response<ResponseBody>> listByInstancePoolNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     */
+    public PagedList<MetricDefinitionInner> listMetricDefinitions(final String resourceGroupName, final String managedInstanceName) {
+        ServiceResponse<Page<MetricDefinitionInner>> response = listMetricDefinitionsSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
+        return new PagedList<MetricDefinitionInner>(response.body()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listMetricDefinitionsSinglePageAsync(resourceGroupName, managedInstanceName),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return listMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<Page<MetricDefinitionInner>> listMetricDefinitionsAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, managedInstanceName)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefinitionsWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listMetricDefinitionsSinglePageAsync(resourceGroupName, managedInstanceName)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefinitionsSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listMetricDefinitions(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = listMetricDefinitionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;MetricInner&gt; object if successful.
+     */
+    public PagedList<MetricInner> listMetrics(final String resourceGroupName, final String managedInstanceName) {
+        ServiceResponse<Page<MetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, managedInstanceName).toBlocking().single();
+        return new PagedList<MetricInner>(response.body()) {
+            @Override
+            public Page<MetricInner> nextPage(String nextPageLink) {
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricInner>> listMetricsAsync(final String resourceGroupName, final String managedInstanceName, final ListOperationCallback<MetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listMetricsSinglePageAsync(resourceGroupName, managedInstanceName),
+            new Func1<String, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(String nextPageLink) {
+                    return listMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<Page<MetricInner>> listMetricsAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listMetricsWithServiceResponseAsync(resourceGroupName, managedInstanceName)
+            .map(new Func1<ServiceResponse<Page<MetricInner>>, Page<MetricInner>>() {
+                @Override
+                public Page<MetricInner> call(ServiceResponse<Page<MetricInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName) {
+        return listMetricsSinglePageAsync(resourceGroupName, managedInstanceName)
+            .concatMap(new Func1<ServiceResponse<Page<MetricInner>>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(ServiceResponse<Page<MetricInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;MetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String managedInstanceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String metric = null;
+        final String timespan = null;
+        final String aggregation = null;
+        final String interval = null;
+        return service.listMetrics(resourceGroupName, managedInstanceName, this.client.subscriptionId(), metric, timespan, aggregation, interval, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricInner>> result = listMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param metric Name of the metrics to get.
+     * @param timespan The timespan for the metric.
+     * @param aggregation The aggregation type to use.
+     * @param interval The time step to be used to summarize the metric values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;MetricInner&gt; object if successful.
+     */
+    public PagedList<MetricInner> listMetrics(final String resourceGroupName, final String managedInstanceName, final String metric, final String timespan, final String aggregation, final String interval) {
+        ServiceResponse<Page<MetricInner>> response = listMetricsSinglePageAsync(resourceGroupName, managedInstanceName, metric, timespan, aggregation, interval).toBlocking().single();
+        return new PagedList<MetricInner>(response.body()) {
+            @Override
+            public Page<MetricInner> nextPage(String nextPageLink) {
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param metric Name of the metrics to get.
+     * @param timespan The timespan for the metric.
+     * @param aggregation The aggregation type to use.
+     * @param interval The time step to be used to summarize the metric values.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricInner>> listMetricsAsync(final String resourceGroupName, final String managedInstanceName, final String metric, final String timespan, final String aggregation, final String interval, final ListOperationCallback<MetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listMetricsSinglePageAsync(resourceGroupName, managedInstanceName, metric, timespan, aggregation, interval),
+            new Func1<String, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(String nextPageLink) {
+                    return listMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param metric Name of the metrics to get.
+     * @param timespan The timespan for the metric.
+     * @param aggregation The aggregation type to use.
+     * @param interval The time step to be used to summarize the metric values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<Page<MetricInner>> listMetricsAsync(final String resourceGroupName, final String managedInstanceName, final String metric, final String timespan, final String aggregation, final String interval) {
+        return listMetricsWithServiceResponseAsync(resourceGroupName, managedInstanceName, metric, timespan, aggregation, interval)
+            .map(new Func1<ServiceResponse<Page<MetricInner>>, Page<MetricInner>>() {
+                @Override
+                public Page<MetricInner> call(ServiceResponse<Page<MetricInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param metric Name of the metrics to get.
+     * @param timespan The timespan for the metric.
+     * @param aggregation The aggregation type to use.
+     * @param interval The time step to be used to summarize the metric values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String managedInstanceName, final String metric, final String timespan, final String aggregation, final String interval) {
+        return listMetricsSinglePageAsync(resourceGroupName, managedInstanceName, metric, timespan, aggregation, interval)
+            .concatMap(new Func1<ServiceResponse<Page<MetricInner>>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(ServiceResponse<Page<MetricInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+    ServiceResponse<PageImpl<MetricInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+    ServiceResponse<PageImpl<MetricInner>> * @param managedInstanceName The name of the managed instance.
+    ServiceResponse<PageImpl<MetricInner>> * @param metric Name of the metrics to get.
+    ServiceResponse<PageImpl<MetricInner>> * @param timespan The timespan for the metric.
+    ServiceResponse<PageImpl<MetricInner>> * @param aggregation The aggregation type to use.
+    ServiceResponse<PageImpl<MetricInner>> * @param interval The time step to be used to summarize the metric values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;MetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String managedInstanceName, final String metric, final String timespan, final String aggregation, final String interval) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listMetrics(resourceGroupName, managedInstanceName, this.client.subscriptionId(), metric, timespan, aggregation, interval, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricInner>> result = listMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
+     */
+    public PagedList<ManagedInstanceInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<ManagedInstanceInner>(response.body()) {
+            @Override
+            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagedInstanceInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<Page<ManagedInstanceInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
+                @Override
+                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+    ServiceResponse<PageImpl<ManagedInstanceInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedInstanceInner object if successful.
+     */
+    public ManagedInstanceInner getByResourceGroup(String resourceGroupName, String managedInstanceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, managedInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedInstanceInner> getByResourceGroupAsync(String resourceGroupName, String managedInstanceName, final ServiceCallback<ManagedInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, managedInstanceName), serviceCallback);
+    }
+
+    /**
+     * Gets a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ManagedInstanceInner> getByResourceGroupAsync(String resourceGroupName, String managedInstanceName) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, managedInstanceName).map(new Func1<ServiceResponse<ManagedInstanceInner>, ManagedInstanceInner>() {
+            @Override
+            public ManagedInstanceInner call(ServiceResponse<ManagedInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ServiceResponse<ManagedInstanceInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String managedInstanceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getByResourceGroup(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ManagedInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ManagedInstanceInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ManagedInstanceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedInstanceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ManagedInstanceInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedInstanceInner object if successful.
+     */
+    public ManagedInstanceInner createOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedInstanceInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters, final ServiceCallback<ManagedInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ManagedInstanceInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).map(new Func1<ServiceResponse<ManagedInstanceInner>, ManagedInstanceInner>() {
+            @Override
+            public ManagedInstanceInner call(ServiceResponse<ManagedInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ManagedInstanceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, managedInstanceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ManagedInstanceInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedInstanceInner object if successful.
+     */
+    public ManagedInstanceInner beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedInstanceInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters, final ServiceCallback<ManagedInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ManagedInstanceInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).map(new Func1<ServiceResponse<ManagedInstanceInner>, ManagedInstanceInner>() {
+            @Override
+            public ManagedInstanceInner call(ServiceResponse<ManagedInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ServiceResponse<ManagedInstanceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreateOrUpdate(resourceGroupName, managedInstanceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ManagedInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ManagedInstanceInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ManagedInstanceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedInstanceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ManagedInstanceInner>() { }.getType())
+                .register(201, new TypeToken<ManagedInstanceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String managedInstanceName) {
+        deleteWithServiceResponseAsync(resourceGroupName, managedInstanceName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String managedInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, managedInstanceName), serviceCallback);
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String managedInstanceName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, managedInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String managedInstanceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDelete(String resourceGroupName, String managedInstanceName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, managedInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, managedInstanceName), serviceCallback);
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, managedInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String managedInstanceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(resourceGroupName, managedInstanceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedInstanceInner object if successful.
+     */
+    public ManagedInstanceInner update(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedInstanceInner> updateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters, final ServiceCallback<ManagedInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters), serviceCallback);
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ManagedInstanceInner> updateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        return updateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).map(new Func1<ServiceResponse<ManagedInstanceInner>, ManagedInstanceInner>() {
+            @Override
+            public ManagedInstanceInner call(ServiceResponse<ManagedInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ManagedInstanceInner>> updateWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, managedInstanceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ManagedInstanceInner>() { }.getType());
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedInstanceInner object if successful.
+     */
+    public ManagedInstanceInner beginUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedInstanceInner> beginUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters, final ServiceCallback<ManagedInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters), serviceCallback);
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ManagedInstanceInner> beginUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, managedInstanceName, parameters).map(new Func1<ServiceResponse<ManagedInstanceInner>, ManagedInstanceInner>() {
+            @Override
+            public ManagedInstanceInner call(ServiceResponse<ManagedInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a managed instance.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param parameters The requested managed instance resource state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedInstanceInner object
+     */
+    public Observable<ServiceResponse<ManagedInstanceInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceUpdate parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (managedInstanceName == null) {
+            throw new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginUpdate(resourceGroupName, managedInstanceName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ManagedInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ManagedInstanceInner> clientResponse = beginUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ManagedInstanceInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedInstanceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ManagedInstanceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -190,6 +1347,446 @@ public class ManagedInstancesInner {
     }
 
     /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
+     */
+    public PagedList<ManagedInstanceInner> list() {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<ManagedInstanceInner>(response.body()) {
+            @Override
+            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagedInstanceInner>> listAsync(final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<Page<ManagedInstanceInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
+                @Override
+                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     */
+    public PagedList<MetricDefinitionInner> listMetricDefinitionsNext(final String nextPageLink) {
+        ServiceResponse<Page<MetricDefinitionInner>> response = listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<MetricDefinitionInner>(response.body()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
+                return listMetricDefinitionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink, final ServiceFuture<List<MetricDefinitionInner>> serviceFuture, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listMetricDefinitionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return listMetricDefinitionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<Page<MetricDefinitionInner>> listMetricDefinitionsNextAsync(final String nextPageLink) {
+        return listMetricDefinitionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefinitionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listMetricDefinitionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listMetricDefinitionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metric definitions.
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefinitionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricDefinitionsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = listMetricDefinitionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefinitionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;MetricInner&gt; object if successful.
+     */
+    public PagedList<MetricInner> listMetricsNext(final String nextPageLink) {
+        ServiceResponse<Page<MetricInner>> response = listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<MetricInner>(response.body()) {
+            @Override
+            public Page<MetricInner> nextPage(String nextPageLink) {
+                return listMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricInner>> listMetricsNextAsync(final String nextPageLink, final ServiceFuture<List<MetricInner>> serviceFuture, final ListOperationCallback<MetricInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(String nextPageLink) {
+                    return listMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<Page<MetricInner>> listMetricsNextAsync(final String nextPageLink) {
+        return listMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricInner>>, Page<MetricInner>>() {
+                @Override
+                public Page<MetricInner> call(ServiceResponse<Page<MetricInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;MetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<MetricInner>>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(ServiceResponse<Page<MetricInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instance metrics.
+     *
+    ServiceResponse<PageImpl<MetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;MetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricInner>>> listMetricsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listMetricsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricInner>> result = listMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricInner>> listMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
+     */
+    public PagedList<ManagedInstanceInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ManagedInstanceInner>(response.body()) {
+            @Override
+            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagedInstanceInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceInner>> serviceFuture, final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<Page<ManagedInstanceInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
+                @Override
+                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of managed instances in a resource group.
+     *
+    ServiceResponse<PageImpl<ManagedInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Gets a list of all managed instances in an instance pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -294,6 +1891,117 @@ public class ManagedInstancesInner {
     }
 
     private ServiceResponse<PageImpl<ManagedInstanceInner>> listByInstancePoolNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object if successful.
+     */
+    public PagedList<ManagedInstanceInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<ManagedInstanceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ManagedInstanceInner>(response.body()) {
+            @Override
+            public Page<ManagedInstanceInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ManagedInstanceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ManagedInstanceInner>> serviceFuture, final ListOperationCallback<ManagedInstanceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<Page<ManagedInstanceInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Page<ManagedInstanceInner>>() {
+                @Override
+                public Page<ManagedInstanceInner> call(ServiceResponse<Page<ManagedInstanceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ManagedInstanceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ManagedInstanceInner>>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(ServiceResponse<Page<ManagedInstanceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all managed instances in the subscription.
+     *
+    ServiceResponse<PageImpl<ManagedInstanceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ManagedInstanceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ManagedInstanceInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagedInstanceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ManagedInstanceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ManagedInstanceInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ManagedInstanceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ManagedInstanceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ManagedInstanceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ManagedInstanceInner>>() { }.getType())
                 .registerError(CloudException.class)
