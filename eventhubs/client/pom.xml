@@ -12,7 +12,7 @@
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
-  <groupId>com.azure.messaging</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
