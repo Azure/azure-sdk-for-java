@@ -3,8 +3,8 @@
 
 package com.azure.identity;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.ManagedIdentityCredential;
 import org.junit.Assert;
 import org.junit.Test;

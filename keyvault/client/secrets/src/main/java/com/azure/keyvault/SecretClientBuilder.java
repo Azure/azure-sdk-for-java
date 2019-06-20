@@ -104,7 +104,7 @@ public final class SecretClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, new Configuration()));
         policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretClient.KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
