@@ -32,6 +32,7 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
+
     /**
      * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
      * response body.
@@ -71,7 +72,6 @@ public class MockHttpResponse extends HttpResponse {
         this.withRequest(request);
     }
 
-    
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the given
      * {@code headers}, and response body that is JSON serialized from {@code serializable}.

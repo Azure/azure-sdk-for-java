@@ -3,7 +3,6 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;

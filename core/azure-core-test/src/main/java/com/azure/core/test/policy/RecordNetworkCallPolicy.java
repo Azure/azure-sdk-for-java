@@ -98,7 +98,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 headerValueToStore = "0";
                 addedRetryAfter = true;
             }
-            responseData.put(header.name().toLowerCase(Locale.US), headerValueToStore);
+            responseData.put(header.name(), headerValueToStore);
         }
 
         if (!addedRetryAfter) {

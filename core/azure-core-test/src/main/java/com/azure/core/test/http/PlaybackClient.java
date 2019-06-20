@@ -99,8 +99,9 @@ public final class PlaybackClient implements HttpClient {
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
+
         for (Map.Entry<String, String> pair : networkCallRecord.response().entrySet()) {
-            if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body") && !pair.getKey().equals("Content-Length")) {
+            if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
                 String rawHeader = pair.getValue();
                 for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
                     if (rule.getValue() != null) {
@@ -122,7 +123,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             bytes = rawBody.getBytes(StandardCharsets.UTF_8);
-            if (("0").equals(headers.get("content-length"))) {
+            if (("0").equals(headers.get("Content-Length"))) {
                 headers.put("Content-Length", String.valueOf(bytes.length));
             }
         }

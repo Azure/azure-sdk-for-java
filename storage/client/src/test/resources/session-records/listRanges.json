@@ -1,65 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile24395747",
+    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile4154410f",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 20 Jun 2019 03:08:43 GMT",
-      "content-length" : "0",
-      "last-modified" : "Thu, 20 Jun 2019 03:08:43 GMT",
-      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-11-09",
-      "etag" : "\"0x8D6F52C9A828593\"",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F5A6603D9FB4\"",
+      "Last-Modified" : "Thu, 20 Jun 2019 17:40:24 GMT",
       "retry-after" : "0",
+      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ca002c6f-901a-0065-5715-277ecf000000",
-      "x-ms-request-server-encrypted" : "true"
+      "x-ms-request-id" : "26f10eb3-d01a-0040-4e8f-27e67c000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 20 Jun 2019 17:40:24 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile24395747?comp=range",
+    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile4154410f?comp=range",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "date" : "Thu, 20 Jun 2019 03:08:43 GMT",
-      "content-length" : "0",
-      "last-modified" : "Thu, 20 Jun 2019 03:08:44 GMT",
-      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-version" : "2018-11-09",
-      "content-md5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "etag" : "\"0x8D6F52C9AAB71C4\"",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F5A6605CED2A\"",
+      "Last-Modified" : "Thu, 20 Jun 2019 17:40:24 GMT",
       "retry-after" : "0",
+      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "51d46b69-401a-000a-4e15-27d61b000000",
-      "x-ms-request-server-encrypted" : "true"
+      "x-ms-request-id" : "74b34cab-a01a-0022-3f8f-27a1a4000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 20 Jun 2019 17:40:24 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg=="
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile24395747?comp=rangelist",
+    "Uri" : "https://sima.file.core.windows.net/storagefiletests/testdir%2ffile4154410f?comp=rangelist",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
-      "date" : "Thu, 20 Jun 2019 03:08:44 GMT",
-      "last-modified" : "Thu, 20 Jun 2019 03:08:44 GMT",
-      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
+      "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-length" : "1024",
-      "content-type" : "application/xml",
-      "etag" : "\"0x8D6F52C9AAB71C4\"",
+      "ETag" : "\"0x8D6F5A6605CED2A\"",
+      "Last-Modified" : "Thu, 20 Jun 2019 17:40:24 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "3d2f398d-a01a-000b-3715-27d7e6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Ranges><Range><Start>0</Start><End>511</End></Range></Ranges>"
+      "x-ms-request-id" : "c664ae4f-301a-002c-538f-274daf000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Ranges><Range><Start>0</Start><End>511</End></Range></Ranges>",
+      "Date" : "Thu, 20 Jun 2019 17:40:24 GMT",
+      "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "file24395747" ]
+  "variables" : [ "file4154410f" ]
 }

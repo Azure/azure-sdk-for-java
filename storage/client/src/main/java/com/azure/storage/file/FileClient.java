@@ -15,52 +15,62 @@ import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import io.netty.buffer.ByteBuf;
+import java.net.MalformedURLException;
 import java.net.URL;
 import reactor.core.publisher.Flux;
 import java.util.Map;
 
+/**
+ * This class provides a client that contains all the operations for interacting files under Azure storage file service.
+ * Operations allowed by the client are creating, uploading, copying, listing, downloading, and deleting files.
+ *
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.storage.file.instantiation}
+ *
+ * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see FileClientBuilder
+ * @see com.azure.storage.common.credentials.SharedKeyCredential
+ * @see com.azure.storage.common.credentials.SASTokenCredential
+ */
 public class FileClient {
     private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Constructor for file async fileAsyncClient
-     * @param fileAsyncClient
+     * Creates a FileClient that sends requests to the file service at {@code serviceEndpoint}.
+     * Each service call goes through the {@code pipeline}.
+     *
+     * @param fileAsyncClient The {@link FileAsyncClient} that the client routes its request through.
      */
     FileClient(FileAsyncClient fileAsyncClient) {
         this.fileAsyncClient = fileAsyncClient;
     }
 
     /**
-     * Get URL from fileAsyncClient.
-     * @return
+     * Get URL from fileAsyncClient. The URL contains {@code serviceEndpoint}
+     *
+     * @return URL
+     * @throws MalformedURLException if no protocol is specified, or an
+     * unknown protocol is found, or {@code spec} is {@code null}.
      */
     public URL url() throws Exception {
         return fileAsyncClient.url();
     }
+
     /**
-     * Builder of File fileAsyncClient.
-     * @return
+     * Creates a builder that can configure options for the FileClient before creating an instance of it.
+     *
+     * @return A new {@link FileClientBuilder} to create a ConfigurationClient.
      */
     public static FileClientBuilder builder() {
         return new FileClientBuilder();
     }
 
-    /**
-     * Create a new file in storage.
-     * @param maxSize
-     * @return
-     */
     public Response<FileInfo> create(long maxSize) {
         return fileAsyncClient.create(maxSize).block();
     }
-
-    /**
-     * Create a new file in storage.
-     * @param maxSize
-     * @param httpHeaders
-     * @param metadata
-     * @return
-     */
+    
     public Response<FileInfo> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         return fileAsyncClient.create(maxSize, httpHeaders, metadata).block();
     }
