@@ -13,15 +13,15 @@ import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Ignore;
 import reactor.test.StepVerifier;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 public class SecretAsyncClientTest extends SecretClientTestBase {
 

@@ -14,16 +14,15 @@ import com.azure.keyvault.keys.models.KeyBase;
 import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Ignore;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
 
