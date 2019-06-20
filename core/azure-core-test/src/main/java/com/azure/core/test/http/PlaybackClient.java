@@ -122,7 +122,9 @@ public final class PlaybackClient implements HttpClient {
             }
 
             bytes = rawBody.getBytes(StandardCharsets.UTF_8);
-            headers.put("Content-Length", String.valueOf(bytes.length));
+            if (("0").equals(headers.get("content-length"))) {
+                headers.put("Content-Length", String.valueOf(bytes.length));
+            }
         }
 
         HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);

@@ -108,7 +108,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    // TODO: need to be able to get current blob client's endpoint
+    // TODO: need to be able to get current blob fileAsyncClient's endpoint
 //    def "Stage block context"() {
 //        setup:
 //        bu = BlockBlobClient.blockBlobClientBuilder().endpoint("http://dummy").addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()

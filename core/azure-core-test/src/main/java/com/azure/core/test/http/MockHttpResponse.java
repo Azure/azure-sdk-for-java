@@ -71,6 +71,7 @@ public class MockHttpResponse extends HttpResponse {
         this.withRequest(request);
     }
 
+    
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, contains the given
      * {@code headers}, and response body that is JSON serialized from {@code serializable}.

@@ -3,6 +3,7 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -13,6 +14,7 @@ import com.azure.storage.file.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.models.CopyStatusType;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
+import com.azure.storage.file.models.FileGetPropertiesHeaders;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileInfo;
 import com.azure.storage.file.models.FileMetadataInfo;
@@ -20,6 +22,7 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
+import com.azure.storage.file.models.FileUploadRangeHeaders;
 import com.azure.storage.file.models.FilesCreateResponse;
 import com.azure.storage.file.models.FilesDownloadResponse;
 import com.azure.storage.file.models.FilesForceCloseHandlesResponse;
@@ -43,24 +46,24 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 public class FileAsyncClient {
-    private final AzureFileStorageImpl client;
+    private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String filePath;
     private final String shareSnapshot;
 
     /**
      * Constructor of FileAsyncClient
-     * @param client
+     * @param azureFileStorageClient
      * @param shareName
      * @param filePath
      */
-    FileAsyncClient(AzureFileStorageImpl client, String shareName, String filePath, String shareSnapshot) {
+    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String shareSnapshot) {
         this.shareName = shareName;
         this.filePath = filePath;
         this.shareSnapshot = shareSnapshot;
-        this.client = new AzureFileStorageBuilder().pipeline(client.httpPipeline())
-                            .url(client.url())
-                            .version(client.version())
+        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(azureFileStorageClient.httpPipeline())
+                            .url(azureFileStorageClient.url())
+                            .version(azureFileStorageClient.version())
                             .build();
     }
 
@@ -75,9 +78,17 @@ public class FileAsyncClient {
         this.shareName = shareName;
         this.filePath = filePath;
         this.shareSnapshot = shareSnapshot;
-        this.client = new AzureFileStorageBuilder().pipeline(httpPipeline)
+        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
                           .url(endpoint.toString())
                           .build();
+    }
+
+    /**
+     * Get URL from azureFileStorageClient.
+     * @return
+     */
+    public URL url() throws Exception {
+        return new URL(azureFileStorageClient.url());
     }
 
     /**
@@ -105,7 +116,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileInfo>> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return client.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, Context.NONE)
+        return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, Context.NONE)
             .map(this::createResponse);
     }
 
@@ -116,7 +127,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileCopyInfo>> startCopy(String sourceUrl, Map<String, String> metadata) {
-        return client.files().startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, Context.NONE)
+        return azureFileStorageClient.files().startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null, metadata, Context.NONE)
                     .map(this::startCopyResponse);
     }
 
@@ -126,8 +137,15 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<VoidResponse> abortCopy(String copyId) {
-        return client.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, Context.NONE)
+        return azureFileStorageClient.files().abortCopyWithRestResponseAsync(shareName, filePath, copyId, Context.NONE)
                     .map(VoidResponse::new);
+    }
+    /**
+     * Download with properties
+     * @return
+     */
+    public Mono<Response<FileDownloadInfo>> downloadWithProperties() {
+        return downloadWithProperties(null, null);
     }
 
     /**
@@ -136,7 +154,8 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileDownloadInfo>> downloadWithProperties(FileRange range, Boolean rangeGetContentMD5) {
-        return client.files().downloadWithRestResponseAsync(shareName, filePath, null, range.toString(), rangeGetContentMD5, Context.NONE)
+        String rangeString = range == null ? null : range.toString();
+        return azureFileStorageClient.files().downloadWithRestResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5, Context.NONE)
                     .map(this::downloadWithPropertiesResponse);
     }
 
@@ -145,7 +164,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<VoidResponse> delete() {
-        return client.files().deleteWithRestResponseAsync(shareName, filePath, Context.NONE)
+        return azureFileStorageClient.files().deleteWithRestResponseAsync(shareName, filePath, Context.NONE)
                     .map(VoidResponse::new);
     }
 
@@ -154,7 +173,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileProperties>> getProperties() {
-        return client.files().getPropertiesWithRestResponseAsync(shareName, filePath, shareSnapshot, null, Context.NONE)
+        return azureFileStorageClient.files().getPropertiesWithRestResponseAsync(shareName, filePath, shareSnapshot, null, Context.NONE)
                     .map(this::getPropertiesResponse);
     }
 
@@ -165,7 +184,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileInfo>> setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders) {
-        return client.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, newFileSize, httpHeaders, Context.NONE)
+        return azureFileStorageClient.files().setHTTPHeadersWithRestResponseAsync(shareName, filePath, null, newFileSize, httpHeaders, Context.NONE)
                         .map(this::setHttpHeadersResponse);
     }
 
@@ -175,7 +194,7 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileMetadataInfo>> setMeatadata(Map<String, String> meatadata) {
-        return client.files().setMetadataWithRestResponseAsync(shareName,  filePath, null, meatadata, Context.NONE)
+        return azureFileStorageClient.files().setMetadataWithRestResponseAsync(shareName,  filePath, null, meatadata, Context.NONE)
                     .map(this::setMeatadataResponse);
     }
 
@@ -186,7 +205,8 @@ public class FileAsyncClient {
      * @return
      */
     public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length) {
-        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, null, null, length, data, null, null, Context.NONE)
+        FileRange range = new FileRange(0, length - 1);
+        return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), FileRangeWriteType.UPDATE, length, data, null, null, Context.NONE)
             .map(this::uploadResponse);
     }
 
@@ -196,8 +216,9 @@ public class FileAsyncClient {
      * @param length
      * @return
      */
-    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, FileRange range, FileRangeWriteType type) {
-        return client.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
+    public Mono<Response<FileUploadInfo>> upload(Flux<ByteBuf> data, long length, int offset, FileRangeWriteType type) {
+        FileRange range = new FileRange(offset, offset + length - 1);
+        return azureFileStorageClient.files().uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), type, length, data, null, null, Context.NONE)
                    .map(this::uploadResponse);
     }
 
@@ -206,7 +227,7 @@ public class FileAsyncClient {
      * @return
      */
     public Flux<FileRange> listRanges() {
-        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, null, Context.NONE)
+        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, null, Context.NONE)
                    .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
     }
 
@@ -216,8 +237,16 @@ public class FileAsyncClient {
      * @return
      */
     public Flux<FileRange> listRanges(FileRange range) {
-        return client.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, range.toString(), Context.NONE)
+        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, range.toString(), Context.NONE)
                     .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
+    }
+
+    /**
+     * List handles of a file.
+     * @return
+     */
+    public Flux<HandleItem> listHandles() {
+        return listHandles(null);
     }
 
     /**
@@ -225,8 +254,8 @@ public class FileAsyncClient {
      * @param maxResults
      * @return
      */
-    public Flux<HandleItem> listHandles(int maxResults) {
-        return client.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, shareSnapshot, Context.NONE)
+    public Flux<HandleItem> listHandles(Integer maxResults) {
+        return azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, shareSnapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForHandles(response, maxResults));
     }
 
@@ -236,7 +265,7 @@ public class FileAsyncClient {
      * @return
      */
     public Flux<Integer> forceCloseHandles(String handleId) {
-        return client.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, shareSnapshot, Context.NONE)
+        return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, shareSnapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
     }
 
@@ -246,32 +275,21 @@ public class FileAsyncClient {
         if (response.deserializedHeaders().marker() == null) {
             return Flux.fromIterable(handleCount);
         }
-        Mono<FilesForceCloseHandlesResponse> listResponse = client.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, Context.NONE);
+        Mono<FilesForceCloseHandlesResponse> listResponse = azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, Context.NONE);
         Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId));
         return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
     }
 
     private Publisher<? extends HandleItem> nextPageForHandles(final FilesListHandlesResponse response, final Integer maxResults) {
-        List<HandleItem> handleItems = getNumOfResults(response, maxResults);
+        List<HandleItem> handleItems = response.value().handleList();
 
-        if (response.value().nextMarker() == null || maxResults <= handleItems.size()) {
+        if (response.value().nextMarker() == null) {
             return Flux.fromIterable(handleItems);
         }
         final Integer results = maxResults - handleItems.size();
-        Mono<FilesListHandlesResponse> listResponse = client.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), results, null, shareSnapshot,  Context.NONE);
+        Mono<FilesListHandlesResponse> listResponse = azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), results, null, shareSnapshot,  Context.NONE);
         Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, results));
         return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
-    }
-
-    private List<HandleItem> getNumOfResults(FilesListHandlesResponse response, Integer maxResult) {
-        List<HandleItem> handleItems = new ArrayList<>();
-        int i = 0;
-        while (i < maxResult && response.value().handleList().iterator().hasNext()) {
-            HandleItem handleItem = response.value().handleList().iterator().next();
-            handleItems.add(handleItem);
-            i++;
-        }
-        return handleItems;
     }
 
     private Response<FileInfo> createResponse(final FilesCreateResponse response) {
@@ -310,23 +328,29 @@ public class FileAsyncClient {
     }
 
     private Response<FileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        Map<String, String> metadata = response.deserializedHeaders().metadata();
-        String fileType = response.deserializedHeaders().fileType();
-        Long contentLength = response.deserializedHeaders().contentLength();
-        String contentType = response.deserializedHeaders().contentType();
-        byte[] contentMD5 = response.deserializedHeaders().contentMD5();
-        String contentEncoding = response.deserializedHeaders().contentEncoding();
-        String cacheControl = response.deserializedHeaders().cacheControl();
-        String contentDisposition = response.deserializedHeaders().contentDisposition();
-        OffsetDateTime copyCompletionTime = response.deserializedHeaders().copyCompletionTime();
-        String copyStatusDescription = response.deserializedHeaders().copyStatusDescription();
-        String copyId = response.deserializedHeaders().copyId();
-        String copyProgress = response.deserializedHeaders().copyProgress();
-        String copySource = response.deserializedHeaders().copySource();
-        CopyStatusType copyStatus = response.deserializedHeaders().copyStatus();
-        Boolean isServerEncrpted = response.deserializedHeaders().isServerEncrypted();
+        FileGetPropertiesHeaders headers = response.deserializedHeaders();
+        String eTag = headers.eTag();
+        OffsetDateTime lastModified = headers.lastModified();
+        Map<String, String> metadata = headers.metadata();
+        String fileType = headers.fileType();
+        Long contentLength = headers.contentLength();
+        String contentType = headers.contentType();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.contentMD5();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        String contentEncoding = headers.contentEncoding();
+        String cacheControl = headers.cacheControl();
+        String contentDisposition = headers.contentDisposition();
+        OffsetDateTime copyCompletionTime = headers.copyCompletionTime();
+        String copyStatusDescription = headers.copyStatusDescription();
+        String copyId = headers.copyId();
+        String copyProgress = headers.copyProgress();
+        String copySource = headers.copySource();
+        CopyStatusType copyStatus = headers.copyStatus();
+        Boolean isServerEncrpted = headers.isServerEncrypted();
         FileProperties fileProperties = new FileProperties(eTag, lastModified, metadata, fileType, contentLength, contentType, contentMD5,
             contentEncoding, cacheControl, contentDisposition, copyCompletionTime, copyStatusDescription, copyId, copyProgress,
             copySource, copyStatus, isServerEncrpted);
@@ -334,10 +358,16 @@ public class FileAsyncClient {
     }
 
     private Response<FileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
-        String eTag = response.deserializedHeaders().eTag();
-        OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
-        byte[] contentMD5 = response.deserializedHeaders().contentMD5();
-        Boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
+        FileUploadRangeHeaders headers = response.deserializedHeaders();
+        String eTag = headers.eTag();
+        OffsetDateTime lastModified = headers.lastModified();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.contentMD5();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        Boolean isServerEncrypted = headers.isServerEncrypted();
         FileUploadInfo fileUploadInfo = new FileUploadInfo(eTag, lastModified, contentMD5, isServerEncrypted);
         return mapResponse(response, fileUploadInfo);
     }

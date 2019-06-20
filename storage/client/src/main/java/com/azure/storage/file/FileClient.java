@@ -15,22 +15,30 @@ import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
 import com.azure.storage.file.models.HandleItem;
 import io.netty.buffer.ByteBuf;
+import java.net.URL;
 import reactor.core.publisher.Flux;
 import java.util.Map;
 
 public class FileClient {
-    private final FileAsyncClient client;
+    private final FileAsyncClient fileAsyncClient;
 
     /**
-     * Constructor for file async client
-     * @param client
+     * Constructor for file async fileAsyncClient
+     * @param fileAsyncClient
      */
-    FileClient(FileAsyncClient client) {
-        this.client = client;
+    FileClient(FileAsyncClient fileAsyncClient) {
+        this.fileAsyncClient = fileAsyncClient;
     }
 
     /**
-     * Builder of File client.
+     * Get URL from fileAsyncClient.
+     * @return
+     */
+    public URL url() throws Exception {
+        return fileAsyncClient.url();
+    }
+    /**
+     * Builder of File fileAsyncClient.
      * @return
      */
     public static FileClientBuilder builder() {
@@ -43,7 +51,7 @@ public class FileClient {
      * @return
      */
     public Response<FileInfo> create(long maxSize) {
-        return client.create(maxSize).block();
+        return fileAsyncClient.create(maxSize).block();
     }
 
     /**
@@ -54,7 +62,7 @@ public class FileClient {
      * @return
      */
     public Response<FileInfo> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        return client.create(maxSize, httpHeaders, metadata).block();
+        return fileAsyncClient.create(maxSize, httpHeaders, metadata).block();
     }
 
     /**
@@ -64,7 +72,7 @@ public class FileClient {
      * @return
      */
     public Response<FileCopyInfo> startCopy(String sourceUrl, Map<String, String> metadata) {
-        return client.startCopy(sourceUrl, metadata).block();
+        return fileAsyncClient.startCopy(sourceUrl, metadata).block();
     }
 
     /**
@@ -73,7 +81,7 @@ public class FileClient {
      * @return
      */
     public void abortCopy(String copyId) {
-        client.abortCopy(copyId).block();
+        fileAsyncClient.abortCopy(copyId).block();
     }
 
     /**
@@ -81,7 +89,7 @@ public class FileClient {
      * @return
      */
     public Response<FileDownloadInfo> downloadWithProperties() {
-        return client.downloadWithProperties(null, null).block();
+        return fileAsyncClient.downloadWithProperties(null, null).block();
     }
 
     /**
@@ -91,7 +99,7 @@ public class FileClient {
      * @return
      */
     public Response<FileDownloadInfo> downloadWithProperties(FileRange range, Boolean rangeGetContentMD5) {
-        return client.downloadWithProperties(range, rangeGetContentMD5).block();
+        return fileAsyncClient.downloadWithProperties(range, rangeGetContentMD5).block();
     }
 
     /**
@@ -99,7 +107,7 @@ public class FileClient {
      * @return
      */
     public void delete() {
-        client.delete().block();
+        fileAsyncClient.delete().block();
     }
 
     /**
@@ -107,7 +115,7 @@ public class FileClient {
      * @return
      */
     public Response<FileProperties> getProperties() {
-        return client.getProperties().block();
+        return fileAsyncClient.getProperties().block();
     }
 
     /**
@@ -117,7 +125,7 @@ public class FileClient {
      * @return
      */
     public Response<FileInfo> setHttpHeaders(long newFileSize, FileHTTPHeaders httpHeaders) {
-        return client.setHttpHeaders(newFileSize, httpHeaders).block();
+        return fileAsyncClient.setHttpHeaders(newFileSize, httpHeaders).block();
     }
 
     /**
@@ -126,7 +134,7 @@ public class FileClient {
      * @return
      */
     public Response<FileMetadataInfo> setMeatadata(Map<String, String> meatadata) {
-        return client.setMeatadata(meatadata).block();
+        return fileAsyncClient.setMeatadata(meatadata).block();
     }
 
     /**
@@ -135,12 +143,12 @@ public class FileClient {
      * @param length
      * @return
      */
-    public Response<FileUploadInfo> upload(Flux<ByteBuf> data, long length) {
-        return client.upload(data, length).block();
+    public Response<FileUploadInfo> upload(ByteBuf data, long length) {
+        return fileAsyncClient.upload(Flux.just(data), length).block();
     }
 
-    public Response<FileUploadInfo> upload(ByteBuf data, long length, FileRange range, FileRangeWriteType type) {
-        return client.upload(Flux.just(data), length, range, type).block();
+    public Response<FileUploadInfo> upload(ByteBuf data, long length, int offset, FileRangeWriteType type) {
+        return fileAsyncClient.upload(Flux.just(data), length, offset, type).block();
     }
 
     /**
@@ -148,7 +156,7 @@ public class FileClient {
      * @return
      */
     public Iterable<FileRange> listRanges() {
-        return client.listRanges(null).toIterable();
+        return fileAsyncClient.listRanges(null).toIterable();
     }
 
     /**
@@ -156,7 +164,7 @@ public class FileClient {
      * @return
      */
     public Iterable<FileRange> listRanges(FileRange range) {
-        return client.listRanges(range).toIterable();
+        return fileAsyncClient.listRanges(range).toIterable();
     }
 
     /**
@@ -173,7 +181,7 @@ public class FileClient {
      * @return
      */
     public Iterable<HandleItem> listHandles(Integer maxResults) {
-        return client.listHandles(maxResults).toIterable();
+        return fileAsyncClient.listHandles(maxResults).toIterable();
     }
 
     /**
@@ -182,7 +190,7 @@ public class FileClient {
      * @return
      */
     public Iterable<Integer> forceCloseHandles(String handleId) {
-        return client.forceCloseHandles(handleId).toIterable();
+        return fileAsyncClient.forceCloseHandles(handleId).toIterable();
     }
 }
 

@@ -40,7 +40,11 @@ public class FileClientBuilder {
     private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private String shareSnapshot;
-
+    String dir;
+    public FileClientBuilder dir(String dir) {
+        this.dir = dir;
+        return this;
+    }
     FileClientBuilder() {
         retryPolicy = new RetryPolicy();
         logLevel = HttpLogDetailLevel.NONE;

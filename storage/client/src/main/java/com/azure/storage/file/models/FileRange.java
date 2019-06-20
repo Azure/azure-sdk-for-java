@@ -32,6 +32,6 @@ public final class FileRange {
 
     @Override
     public String toString() {
-        return "bytes=" + start + "=" + end;
+        return "bytes=" + start + "-" + end;
     }
 }
