@@ -11,6 +11,7 @@ import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.UpdatedMessage;
 
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public final class QueueClient {
     /**
      * @return the URL of the queue
      */
-    public String getUrl() {
+    public URL getUrl() {
         return client.getUrl();
     }
 

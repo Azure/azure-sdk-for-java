@@ -21,6 +21,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,12 @@ public final class QueueServiceAsyncClient {
     /**
      * @return URL of the storage account queue endpoint
      */
-    public String getUrl() {
-        return client.url();
+    public URL getUrl() {
+        try {
+            return new URL(client.url());
+        } catch (MalformedURLException ex) {
+            throw new IllegalStateException("Storage account URL is malformed");
+        }
     }
 
     /**

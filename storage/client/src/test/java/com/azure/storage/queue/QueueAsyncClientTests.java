@@ -4,7 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.SignedIdentifier;
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class QueueAsyncClientTests extends QueueClientTestsBase {
-    private final ServiceLogger logger = new ServiceLogger(QueueAsyncClientTests.class);
+    private final ClientLogger logger = new ClientLogger(QueueAsyncClientTests.class);
 
     private QueueAsyncClient client;
 
@@ -87,8 +87,8 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
-                assertEquals(metadata, response.value().metadata());
+                assertEquals(0, response.value().getApproximateMessagesCount());
+                assertEquals(metadata, response.value().getMetadata());
             })
             .verifyComplete();
     }
@@ -161,8 +161,8 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
-                assertEquals(metadata, response.value().metadata());
+                assertEquals(0, response.value().getApproximateMessagesCount());
+                assertEquals(metadata, response.value().getMetadata());
             })
             .verifyComplete();
     }
@@ -190,8 +190,8 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
-                assertEquals(metadata, response.value().metadata());
+                assertEquals(0, response.value().getApproximateMessagesCount());
+                assertEquals(metadata, response.value().getMetadata());
             })
             .verifyComplete();
     }
@@ -231,8 +231,8 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
-                assertEquals(metadata, response.value().metadata());
+                assertEquals(0, response.value().getApproximateMessagesCount());
+                assertEquals(metadata, response.value().getMetadata());
             })
             .verifyComplete();
 
@@ -243,7 +243,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(Collections.EMPTY_MAP, response.value().metadata());
+                assertEquals(Collections.EMPTY_MAP, response.value().getMetadata());
             })
             .verifyComplete();
     }
@@ -526,7 +526,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(3, response.value().approximateMessagesCount());
+                assertEquals(3, response.value().getApproximateMessagesCount());
             })
             .verifyComplete();
 
@@ -537,7 +537,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
+                assertEquals(0, response.value().getApproximateMessagesCount());
             })
             .verifyComplete();
     }
@@ -568,7 +568,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
                 helper.assertResponseStatusCode(response, 200);
-                assertEquals(0, response.value().approximateMessagesCount());
+                assertEquals(0, response.value().getApproximateMessagesCount());
             })
             .verifyComplete();
     }

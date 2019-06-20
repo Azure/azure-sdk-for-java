@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -14,6 +12,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -111,12 +111,12 @@ public final class QueueServiceAsyncClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated QueueServiceAsyncClientBuilder object
      */
-    public QueueServiceAsyncClientBuilder credentials(SASTokenCredential credentials) {
-        this.sasTokenCredential = credentials;
+    public QueueServiceAsyncClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
         return this;
     }
 

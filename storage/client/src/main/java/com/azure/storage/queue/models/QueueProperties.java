@@ -22,11 +22,11 @@ public final class QueueProperties {
         this.approximateMessagesCount = approximateMessagesCount;
     }
 
-    public Map<String, String> metadata() {
+    public Map<String, String> getMetadata() {
         return this.metadata; // Clone this?
     }
 
-    public int approximateMessagesCount() {
+    public int getApproximateMessagesCount() {
         return approximateMessagesCount;
     }
 }

@@ -5,7 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.PeekedMessage;
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class QueueClientTests extends QueueClientTestsBase {
-    private final ServiceLogger logger = new ServiceLogger(QueueClientTests.class);
+    private final ClientLogger logger = new ClientLogger(QueueClientTests.class);
 
     private QueueClient client;
 
@@ -89,7 +89,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         helper.assertResponseStatusCode(client.create(metadata), 201);
 
         QueueProperties properties = client.getProperties().value();
-        assertEquals(metadata, properties.metadata());
+        assertEquals(metadata, properties.getMetadata());
     }
 
     @Override
@@ -154,8 +154,8 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().approximateMessagesCount());
-        assertEquals(metadata, response.value().metadata());
+        assertEquals(0, response.value().getApproximateMessagesCount());
+        assertEquals(metadata, response.value().getMetadata());
     }
 
     @Override
@@ -180,8 +180,8 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().approximateMessagesCount());
-        assertEquals(metadata, response.value().metadata());
+        assertEquals(0, response.value().getApproximateMessagesCount());
+        assertEquals(metadata, response.value().getMetadata());
     }
 
     @Override
@@ -221,15 +221,15 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().approximateMessagesCount());
-        assertEquals(metadata, response.value().metadata());
+        assertEquals(0, response.value().getApproximateMessagesCount());
+        assertEquals(metadata, response.value().getMetadata());
 
         helper.assertResponseStatusCode(client.setMetadata(null), 204);
 
         response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().approximateMessagesCount());
-        assertEquals(Collections.EMPTY_MAP, response.value().metadata());
+        assertEquals(0, response.value().getApproximateMessagesCount());
+        assertEquals(Collections.EMPTY_MAP, response.value().getMetadata());
     }
 
     @Override
@@ -489,13 +489,13 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(3, response.value().approximateMessagesCount());
+        assertEquals(3, response.value().getApproximateMessagesCount());
 
         helper.assertResponseStatusCode(client.clearMessages(), 204);
 
         response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().approximateMessagesCount());
+        assertEquals(0, response.value().getApproximateMessagesCount());
     }
 
     @Override
@@ -524,7 +524,7 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
         helper.assertResponseStatusCode(propertiesResponse, 200);
-        assertEquals(0, propertiesResponse.value().approximateMessagesCount());
+        assertEquals(0, propertiesResponse.value().getApproximateMessagesCount());
     }
 
     @Override

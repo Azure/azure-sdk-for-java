@@ -6,7 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 public class QueueServiceClientTests extends QueueServiceClientTestsBase {
-    private final ServiceLogger logger = new ServiceLogger(QueueServiceClientTests.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceClientTests.class);
 
     private QueueServiceClient serviceClient;
 
@@ -95,7 +95,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
         helper.assertResponseStatusCode(propertiesResponse, 200);
-        assertEquals(metadata, propertiesResponse.value().metadata());
+        assertEquals(metadata, propertiesResponse.value().getMetadata());
     }
 
     @Override

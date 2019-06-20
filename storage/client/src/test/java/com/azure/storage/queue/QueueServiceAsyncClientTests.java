@@ -4,7 +4,7 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
 import com.azure.storage.queue.models.QueueItem;
@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
-    private final ServiceLogger logger = new ServiceLogger(QueueServiceAsyncClientTests.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceAsyncClientTests.class);
 
     private QueueServiceAsyncClient serviceClient;
 
@@ -85,7 +85,7 @@ public class QueueServiceAsyncClientTests extends QueueServiceClientTestsBase {
 
         StepVerifier.create(client.getProperties())
             .assertNext(response -> {
-                assertEquals(metadata, response.value().metadata());
+                assertEquals(metadata, response.value().getMetadata());
             })
             .verifyComplete();
     }

@@ -11,6 +11,7 @@ import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.StorageServiceStats;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -33,7 +34,7 @@ public final class QueueServiceClient {
     /**
      * @return URL of the storage account queue endpoint
      */
-    public String getUrl() {
+    public URL getUrl() {
         return client.getUrl();
     }
 

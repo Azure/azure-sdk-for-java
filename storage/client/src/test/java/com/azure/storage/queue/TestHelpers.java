@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
-import com.azure.core.configuration.ConfigurationManager;
 import com.azure.core.http.rest.Response;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.queue.models.CorsRule;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
@@ -31,7 +31,7 @@ class TestHelpers {
     private final String azureStorageConnectionString = "AZURE_STORAGE_CONNECTION_STRING";
     private final String azureStorageQueueEndpoint = "AZURE_STORAGE_QUEUE_ENDPOINT";
 
-    <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlaybackMode, ServiceLogger logger) {
+    <T> T setupClient(BiFunction<String, String, T> clientBuilder, boolean isPlaybackMode, ClientLogger logger) {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         String queueEndpoint = "https://teststorage.queue.core.windows.net/";
 

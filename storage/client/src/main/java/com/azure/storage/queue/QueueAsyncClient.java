@@ -23,6 +23,7 @@ import com.azure.storage.queue.models.UpdatedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -73,8 +74,12 @@ public final class QueueAsyncClient {
     /**
      * @return the URL of the queue
      */
-    public String getUrl() {
-        return client.url();
+    public URL getUrl() {
+        try {
+            return new URL(client.url());
+        } catch (MalformedURLException ex) {
+            throw new IllegalStateException("Queue URL is malformed");
+        }
     }
 
     /**
