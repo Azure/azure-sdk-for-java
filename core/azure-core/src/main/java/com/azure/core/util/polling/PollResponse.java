@@ -60,7 +60,7 @@ public final class PollResponse<T> {
         OTHER
     }
     /*
-     * Creates a new {@link PollResponse} with status, value and retryAfter.
+     * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
      * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter}
@@ -164,6 +164,19 @@ public final class PollResponse<T> {
      */
     public PollResponse(OperationStatus status, T value) {
         this(status, value, null);
+    }
+
+    /**
+     * Creates a new {@link PollResponse} with status and value.
+     *
+     *<p><strong>Code Sample Creating PollResponse Object</strong></p>
+     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+     *
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @throws NullPointerException If {@code status} is {@code null}.
+     */
+    public PollResponse(OperationStatus status) {
+        this(status, null);
     }
 
     /**
