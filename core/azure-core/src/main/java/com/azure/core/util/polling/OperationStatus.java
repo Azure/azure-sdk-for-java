@@ -6,6 +6,7 @@ public class OperationStatus {
     /**
      * An enum to represent all possible states that a long-running operation may find itself in.
      * The poll operation is considered complete when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
+     * The state {@code OTHER} does not represent long-running operation is complete. This is one of the custom intermediate state.
      */
     public enum State {
         /**
@@ -38,17 +39,26 @@ public class OperationStatus {
         /**
          * When long-running operation state could not be represented by any state in {@link State}, this state represents
          * a custom state Azure service could be in. This custom state is not considered as complete long-running operation.
-         * It must have valid value for {@code otherStatus}.
+         * It must have valid value for {@code otherStatus} as {@link String}.
          */
         OTHER
     }
     private State state;
     private String otherStatus;
 
+    /**
+     *
+     * @param state in which the long-running operation find itself in.
+     */
     public OperationStatus(State state) {
         this.state = state;
     }
 
+    /**
+     * This is normally used for {@link State#OTHER}.
+     * @param state in which long-running operation find itself in.
+     * @param otherStatus The string representation of custom state the long-running operation find itself in.
+     */
     public OperationStatus(State state, String otherStatus) {
         this(state);
         if (state == State.OTHER ) {

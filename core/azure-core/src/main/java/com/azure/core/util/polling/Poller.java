@@ -198,6 +198,13 @@ public class Poller<T> {
         return this.fluxHandle;
     }
 
+    /*
+     * Matches {@Code currentPollResponse} with state which user want to observe.
+     * @param currentPollResponse
+     * @param observeOperationStates
+     * @param observeOtherStates
+     * @return
+     */
     private Mono<Boolean> matchesState(PollResponse<T> currentPollResponse, List<OperationStatus.State> observeOperationStates, List<String> observeOtherStates) {
         List<OperationStatus.State> operationStates = observeOperationStates != null ? observeOperationStates : new ArrayList<>();
 
@@ -219,8 +226,10 @@ public class Poller<T> {
     /**
      * This method returns a {@link Flux} that can be subscribed to, enabling a subscriber to receive notification of
      * every {@link PollResponse}, as it is received.
-     * This will return updated {@link Flux} if user had made call to {@link Poller#getObserver(List, List)} earlier.
-     * 
+     *
+     * This will return updated {@link Flux} if user had made call to {@link Poller#getObserver(List, List)} earlier and will selectively receive notification for
+     * only those {@link com.azure.core.util.polling.OperationStatus.State} specified in {@link Poller#getObserver(List, List)}.
+     *
      * @return A {@link Flux} that can be subscribed to receive poll responses as the long-running operation executes.
      */
     public Flux<PollResponse<T>> getObserver() {
