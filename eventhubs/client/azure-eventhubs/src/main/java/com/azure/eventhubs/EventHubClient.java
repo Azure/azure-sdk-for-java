@@ -175,7 +175,7 @@ public class EventHubClient implements Closeable {
      *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
-     * @return An new {@link EventHubConsumer} that receives events from the partition at the given position.
+     * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
      *         string.
