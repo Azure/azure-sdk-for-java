@@ -240,12 +240,8 @@ public class EventHubClient implements Closeable {
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
             .cast(EventHubSession.class)
             .flatMap(session -> {
-                final Long priority = options.ownerLevel().isPresent()
-                    ? options.ownerLevel().get()
-                    : null;
-
                 return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
-                    clonedOptions.retry(), priority, options.identifier());
+                    clonedOptions.retry(), options.ownerLevel(), options.identifier());
             })
             .cast(AmqpReceiveLink.class);
 
