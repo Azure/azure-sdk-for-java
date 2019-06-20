@@ -28,31 +28,6 @@ public final class PollResponse<T> {
     private final Map<Object, Object> properties;
 
     /**
-     * An enum to represent all possible states that a long-running operation may find itself in.
-     * The poll operation is considered complete when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
-     */
-    public enum OperationStatus {
-        /** Represents that polling has not yet started for this long-running operation.*/
-        NOT_STARTED,
-
-        /** Represents that this long-running operation is in progress and not yet complete.*/
-        IN_PROGRESS,
-
-        /** Represent that this long-running operation is completed successfully.*/
-        SUCCESSFULLY_COMPLETED,
-
-        /**
-         * Represents that this long-running operation has failed to successfully complete, however this is still
-         * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it is complete.
-         */
-        FAILED,
-
-        /** Represents that this long-running operation is cancelled by user, however this is still
-         * considered as complete long-running operation.*/
-        USER_CANCELLED
-    }
-
-    /**
      * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
@@ -101,6 +76,19 @@ public final class PollResponse<T> {
      */
     public PollResponse(OperationStatus status, T value) {
         this(status, value, null);
+    }
+
+    /**
+     * Creates a new {@link PollResponse} with status and value.
+     *
+     *<p><strong>Code Sample Creating PollResponse Object</strong></p>
+     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+     *
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @throws NullPointerException If {@code status} is {@code null}.
+     */
+    public PollResponse(OperationStatus status) {
+        this(status, null);
     }
 
     /**
