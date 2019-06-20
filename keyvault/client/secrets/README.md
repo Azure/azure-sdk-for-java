@@ -119,11 +119,6 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.name(
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-SecretClient secretClient = SecretClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-
 Secret secret = secretClient.getSecret("secret_name").value();
 System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
 ```
@@ -132,13 +127,8 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.name
 
 Update an existing Secret by calling `updateSecret`.
 ```Java
-SecretClient secretClient = SecretClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-
 // Get the secret to update.
-Secret secret = secretClient.getSecret("secret_name", "secret_value").value();
+Secret secret = secretClient.getSecret("secret_name").value();
 // Update the expiry time of the secret.
 secret.expires(OffsetDateTime.now().plusDays(30));
 SecretBase updatedSecret = secretClient.updateSecret(secret).value();
@@ -149,11 +139,6 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecret.expires().
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-SecretClient secretClient = SecretClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-
 DeletedSecret deletedSecret = client.deleteSecret("secret_name").value();
 System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate().toString());
 ```
@@ -162,11 +147,6 @@ System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate
 
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
-SecretClient secretClient = SecretClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-        
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -> 
   System.out.printf("Received secret with name %s and value %s", secretResponse.value().name(), secretResponse.value().value()));
@@ -198,11 +178,6 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretRespo
 
 Retrieve a previously stored Secret by calling `getSecret`.
 ```Java
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-        
 secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
   System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(),
   secretResponse.value().value()));
@@ -212,11 +187,6 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse ->
 
 Update an existing Secret by calling `updateSecret`.
 ```Java
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-
 secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
      // Get the Secret
      Secret secret = secretResponse.value();
@@ -231,11 +201,6 @@ secretAsyncClient.getSecret("secretName").subscribe(secretResponse -> {
 
 Delete an existing Secret by calling `deleteSecret`.
 ```Java
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-        
 secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
    System.out.printf("Deleted Secret's deletion time %s \n", deletedSecretResponse.value().deletedDate().toString()));
 ```
@@ -244,11 +209,6 @@ secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse ->
 
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
-        .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
-        .build();
-       
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
 secretAsyncClient.listSecrets()
   .flatMap(secretAsyncClient::getSecret).subscribe(secretResponse ->
@@ -329,4 +289,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperationsAsync.java
 [sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecretsAsync.java
-[azure_core_exceptions]:https://github.com/Azure/azure-sdk-for-java/tree/master/core/azure-core/src/main/java/com/azure/core/exception
