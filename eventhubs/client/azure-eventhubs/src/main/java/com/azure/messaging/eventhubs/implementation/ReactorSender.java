@@ -199,6 +199,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
+    public ErrorContext getErrorContext() {
+        return handler.getErrorContext(sender);
+    }
+
+    @Override
     public String getLinkName() {
         return sender.getName();
     }

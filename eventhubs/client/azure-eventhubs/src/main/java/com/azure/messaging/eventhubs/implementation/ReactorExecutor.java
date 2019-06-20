@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.HandlerException;
@@ -32,9 +33,10 @@ class ReactorExecutor implements Closeable {
     private final String connectionId;
     private final Duration timeout;
     private final AmqpExceptionHandler exceptionHandler;
+    private final String hostname;
 
     ReactorExecutor(Reactor reactor, Scheduler scheduler, String connectionId, AmqpExceptionHandler exceptionHandler,
-                    Duration timeout) {
+                    Duration timeout, String hostname) {
         Objects.requireNonNull(reactor);
         Objects.requireNonNull(scheduler);
         Objects.requireNonNull(connectionId);
@@ -46,6 +48,7 @@ class ReactorExecutor implements Closeable {
         this.connectionId = connectionId;
         this.timeout = timeout;
         this.exceptionHandler = exceptionHandler;
+        this.hostname = hostname;
     }
 
     /**
@@ -116,16 +119,17 @@ class ReactorExecutor implements Closeable {
                 : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
+            final ErrorContext errorContext = new ErrorContext(hostname);
 
             if (cause instanceof UnresolvedAddressException) {
                 exception = new AmqpException(true,
                     String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network configuration. Check correctness of namespace information. %s",
                         message, StringUtil.getTrackingIDAndTimeToLog()),
-                    cause);
+                    cause, errorContext);
             } else {
                 exception = new AmqpException(true,
                     String.format(Locale.US, "%s, %s", message, StringUtil.getTrackingIDAndTimeToLog()),
-                    cause);
+                    cause, errorContext);
             }
 
             this.exceptionHandler.onConnectionError(exception);

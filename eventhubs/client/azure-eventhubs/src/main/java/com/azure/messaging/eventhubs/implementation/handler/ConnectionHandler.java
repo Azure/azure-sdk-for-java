@@ -241,6 +241,10 @@ public class ConnectionHandler extends Handler {
         close();
     }
 
+    public ErrorContext getErrorContext() {
+        return new ErrorContext(getHostname());
+    }
+
     private static SslDomain createSslDomain(SslDomain.Mode mode) {
         final SslDomain domain = Proton.sslDomain();
         domain.init(mode);
@@ -260,9 +264,10 @@ public class ConnectionHandler extends Handler {
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one
-        final String error = condition.getCondition().toString();
-        final ErrorContext context = new ErrorContext(ExceptionUtil.toException(error, condition.getDescription()), getHostname());
-        onNext(context);
+        final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
+            condition.getDescription(), getErrorContext());
+
+        onNext(exception);
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
