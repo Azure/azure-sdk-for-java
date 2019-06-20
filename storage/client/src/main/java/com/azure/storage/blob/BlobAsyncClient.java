@@ -375,20 +375,28 @@ public class BlobAsyncClient {
      */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
-        Path path = Paths.get(filePath);
+        AsynchronousFileChannel channel;
+        try {
+            channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
         return sliceBlobRange(range, accessConditions, context)
-            .flatMap(chunk -> Flux.using(
-                () -> AsynchronousFileChannel.open(path, StandardOpenOption.READ, StandardOpenOption.WRITE),
-                channel -> blobAsyncRawClient
+            .flatMap(chunk -> blobAsyncRawClient
                     .download(chunk, accessConditions, rangeGetContentMD5, context)
-                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))),
-                channel -> {
-                    try {
-                        channel.close();
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                })).ignoreElements();
+//                    .doOnNext(res ->
+//                        System.out.println("Downloaded " + chunk.toString() + " on thread " + Thread.currentThread().getName()))
+                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
+//                    .doOnTerminate(() ->
+//                        System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName())))
+            .then()
+            .doOnTerminate(() -> {
+                try {
+                    channel.close();
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            });
     }
 
     private Flux<BlobRange> sliceBlobRange(BlobRange blobRange, BlobAccessConditions accessConditions, Context context) {
@@ -397,8 +405,9 @@ public class BlobAsyncClient {
         if (blobRange != null) {
             length = Mono.just(blobRange.count());
         } else {
-            length = getProperties(accessConditions, context).map(rb -> rb.value().blobSize());
+            length = Mono.empty();
         }
+        length = length.switchIfEmpty(getProperties(accessConditions, context).map(rb -> rb.value().blobSize() - offset));
         return length
             .map(l -> {
                 List<BlobRange> chunks = new ArrayList<>();
