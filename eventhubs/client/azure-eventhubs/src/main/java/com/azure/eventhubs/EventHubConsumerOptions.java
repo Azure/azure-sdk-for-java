@@ -33,7 +33,7 @@ public class EventHubConsumerOptions implements Cloneable {
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
     private String identifier;
-    private Long priority;
+    private Long ownerLevel;
     private Retry retryPolicy;
     private Scheduler scheduler;
     private int prefetchCount;
@@ -86,7 +86,7 @@ public class EventHubConsumerOptions implements Cloneable {
             throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
         }
 
-        this.priority = priority;
+        this.ownerLevel = priority;
         return this;
     }
 
@@ -166,8 +166,8 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @return An optional owner level for this consumer.
      */
-    public Optional<Long> ownerLevel() {
-        return Optional.ofNullable(priority);
+    public Long ownerLevel() {
+        return ownerLevel;
     }
 
     /**
@@ -212,11 +212,7 @@ public class EventHubConsumerOptions implements Cloneable {
         clone.identifier(this.identifier());
         clone.prefetchCount(this.prefetchCount());
         clone.retry(this.retry());
-
-        Optional<Long> priority = this.ownerLevel();
-        if (priority.isPresent()) {
-            clone.ownerLevel(priority.get());
-        }
+        clone.ownerLevel(this.ownerLevel());
 
         return clone;
     }

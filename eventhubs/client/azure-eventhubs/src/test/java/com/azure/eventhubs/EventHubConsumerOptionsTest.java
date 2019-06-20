@@ -99,8 +99,6 @@ public class EventHubConsumerOptionsTest {
         }
 
         // Assert
-        final Optional<Long> setPriority = options.ownerLevel();
-        Assert.assertTrue(setPriority.isPresent());
-        Assert.assertEquals(Long.valueOf(ownerLevel), setPriority.get());
+        Assert.assertEquals(Long.valueOf(ownerLevel), options.ownerLevel());
     }
 }
