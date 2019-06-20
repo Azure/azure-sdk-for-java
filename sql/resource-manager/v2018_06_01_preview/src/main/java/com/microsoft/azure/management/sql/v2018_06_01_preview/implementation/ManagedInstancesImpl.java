@@ -22,8 +22,6 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.MetricDefinition;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.Metric;
 
 class ManagedInstancesImpl extends GroupableResourcesCoreImpl<ManagedInstance, ManagedInstanceImpl, ManagedInstanceInner, ManagedInstancesInner, SqlManager>  implements ManagedInstances {
     protected ManagedInstancesImpl(SqlManager manager) {
@@ -153,50 +151,6 @@ class ManagedInstancesImpl extends GroupableResourcesCoreImpl<ManagedInstance, M
     @Override
     protected ManagedInstanceImpl wrapModel(String name) {
         return new ManagedInstanceImpl(name, new ManagedInstanceInner(), this.manager());
-    }
-
-    private MetricDefinitionImpl wrapMetricDefinitionModel(MetricDefinitionInner inner) {
-        return  new MetricDefinitionImpl(inner, manager());
-    }
-
-    private MetricImpl wrapMetricModel(MetricInner inner) {
-        return  new MetricImpl(inner, manager());
-    }
-
-    @Override
-    public Observable<MetricDefinition> listMetricDefinitionsAsync(final String resourceGroupName, final String managedInstanceName) {
-        ManagedInstancesInner client = this.inner();
-        return client.listMetricDefinitionsAsync(resourceGroupName, managedInstanceName)
-        .flatMapIterable(new Func1<Page<MetricDefinitionInner>, Iterable<MetricDefinitionInner>>() {
-            @Override
-            public Iterable<MetricDefinitionInner> call(Page<MetricDefinitionInner> page) {
-                return page.items();
-            }
-        })
-        .map(new Func1<MetricDefinitionInner, MetricDefinition>() {
-            @Override
-            public MetricDefinition call(MetricDefinitionInner inner) {
-                return wrapMetricDefinitionModel(inner);
-            }
-        });
-    }
-
-    @Override
-    public Observable<Metric> listMetricsAsync(final String resourceGroupName, final String managedInstanceName) {
-        ManagedInstancesInner client = this.inner();
-        return client.listMetricsAsync(resourceGroupName, managedInstanceName)
-        .flatMapIterable(new Func1<Page<MetricInner>, Iterable<MetricInner>>() {
-            @Override
-            public Iterable<MetricInner> call(Page<MetricInner> page) {
-                return page.items();
-            }
-        })
-        .map(new Func1<MetricInner, Metric>() {
-            @Override
-            public Metric call(MetricInner inner) {
-                return wrapMetricModel(inner);
-            }
-        });
     }
 
 }

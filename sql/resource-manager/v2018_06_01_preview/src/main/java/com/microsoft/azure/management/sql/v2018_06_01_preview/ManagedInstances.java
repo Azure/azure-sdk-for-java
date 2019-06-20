@@ -17,8 +17,6 @@ import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGro
 import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.implementation.ManagedInstancesInner;
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.MetricDefinition;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.Metric;
 
 /**
  * Type representing ManagedInstances.
@@ -33,25 +31,5 @@ public interface ManagedInstances extends SupportsCreating<ManagedInstance.Defin
      * @return the observable for the request
      */
     Observable<ManagedInstance> listByInstancePoolAsync(final String resourceGroupName, final String instancePoolName);
-
-    /**
-     * Gets a list of managed instance metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<MetricDefinition> listMetricDefinitionsAsync(final String resourceGroupName, final String managedInstanceName);
-
-    /**
-     * Gets a list of managed instance metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Metric> listMetricsAsync(final String resourceGroupName, final String managedInstanceName);
 
 }
