@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.configuration.Configuration;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -15,7 +17,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -48,7 +51,8 @@ public final class ContainerClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
-    private ICredentials credentials = new AnonymousCredentials();
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -73,7 +77,14 @@ public final class ContainerClientBuilder {
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(credentials); // This needs to be a different credential type.
+
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
+        } else {
+            policies.add(new AnonymousCredentialPolicy());
+        }
 
         policies.add(retryPolicy);
 
@@ -129,8 +140,8 @@ public final class ContainerClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(SharedKeyCredentials credentials) {
-        this.credentials = credentials;
+    public ContainerClientBuilder credentials(SharedKeyCredential credentials) {
+        this.sharedKeyCredential = credentials;
         return this;
     }
 
@@ -139,8 +150,8 @@ public final class ContainerClientBuilder {
      * @param credentials authorization credentials
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(TokenCredentials credentials) {
-        this.credentials = credentials;
+    public ContainerClientBuilder credentials(TokenCredential credentials) {
+        this.tokenCredential = credentials;
         return this;
     }
 
@@ -149,7 +160,8 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder anonymousCredentials() {
-        this.credentials = new AnonymousCredentials();
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -175,9 +187,7 @@ public final class ContainerClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
-        credentials = new SharedKeyCredentials(accountName, accountKey);
-
-        return this;
+        return credentials(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**

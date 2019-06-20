@@ -4,6 +4,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,7 +24,7 @@ public class Sample {
     public void sample() throws IOException {
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credentials(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -75,7 +76,7 @@ public class Sample {
     public void asyncSample() throws IOException {
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credentials(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
@@ -155,7 +156,7 @@ public class Sample {
 
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credentials(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -185,7 +186,7 @@ public class Sample {
 
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credentials(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 

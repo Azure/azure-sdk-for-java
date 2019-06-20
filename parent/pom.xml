@@ -127,6 +127,7 @@
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
+    <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -350,6 +351,12 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-core-test</artifactId>
         <version>${azure-core-test.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure-identity.version}</version>
       </dependency>
 
       <dependency>
