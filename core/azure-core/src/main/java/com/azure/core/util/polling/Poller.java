@@ -183,8 +183,8 @@ public class Poller<T> {
     }
 
     /**
-     * This method returns a updated {@link Flux} that is observing specified {@link com.azure.core.util.polling.OperationStatus.State} and can be subscribed to, enabling a subscriber to receive notification of
-     * specified {@link PollResponse}, as it is received.
+     * This method returns an updated {@link Flux} that is observing specified {@link com.azure.core.util.polling.OperationStatus.State} and
+     * can be subscribed to, enabling a subscriber to receive these specific notification of {@link PollResponse}, as it is received.
      * @param observeState which user want to observe, must specify complete {@link com.azure.core.util.polling.OperationStatus.State} if interested.
      * User not required to specify {@link com.azure.core.util.polling.OperationStatus.State#OTHER} here if interested in other state.
      * @param observeOtherStates which user is interested to observe.
@@ -194,6 +194,10 @@ public class Poller<T> {
         if (observeState == null && (observeOtherStates == null || observeOtherStates.size() == 0)) {
             throw new IllegalArgumentException("observeOperationStates and observeStates both can not be null or empty.");
         }
+        //TODO : Design discussion, We may decide to add complete state. If user did not added them, we may never listen them and LRO would never complete.
+        //observeState.add(OperationStatus.State.SUCCESSFULLY_COMPLETED);
+        //observeState.add(OperationStatus.State.USER_CANCELLED);
+        //observeState.add(OperationStatus.State.FAILED);
         this.fluxHandle = this.fluxHandle.filterWhen(tPollResponse -> matchesState(tPollResponse, observeState, observeOtherStates));
         return this.fluxHandle;
     }
@@ -216,7 +220,6 @@ public class Poller<T> {
             }
         } else {
             if (operationStates.contains(currentPollResponse.getStatus().getState())) {
-                System.out.println("Poller.matchesState  Matched  with final:" + currentPollResponse.getStatus().getState().toString() + "," + currentPollResponse.getStatus().getOtherStatus());
                 return Mono.just(true);
             }
         }
