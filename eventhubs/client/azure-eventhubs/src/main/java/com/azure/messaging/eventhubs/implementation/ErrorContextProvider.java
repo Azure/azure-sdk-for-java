@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.eventhubs.implementation;
+package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.LinkErrorContext;
