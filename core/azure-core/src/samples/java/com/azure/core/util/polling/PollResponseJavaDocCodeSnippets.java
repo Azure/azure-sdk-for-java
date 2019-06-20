@@ -77,7 +77,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, "mycustom response",
+            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, null, "mycustom response",
             Duration.ofMillis(2000), prop);
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
     }
@@ -95,7 +95,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // Lets say we want to crete poll response with status as IN_PROGRESS
         // If nextRetry should happen after 2 seconds ...
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS,  "my custom response",
+            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, null, "my custom response",
             Duration.ofMillis(2000));
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter
     }

@@ -355,12 +355,10 @@ public class PollerTests {
     @Test
     public void subscribeToSpecificOtherOperationStatusTest() throws Exception {
 
-
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>("OTHER_1", new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>("OTHER_2", new CreateCertificateResponse("Starting : Cert A"));
-
+        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_1", new CreateCertificateResponse("Starting : Cert A"), null);
+        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_2", new CreateCertificateResponse("Starting : Cert A"), null);
 
         ArrayList<PollResponse<CreateCertificateResponse>> inProgressPollResponseList = new ArrayList<>();
         inProgressPollResponseList.add(inProgressPollResponse);
@@ -393,12 +391,10 @@ public class PollerTests {
         List<OperationStatus> observeOperationStates = new ArrayList<>();
         observeOperationStates.add(OperationStatus.SUCCESSFULLY_COMPLETED);
 
-        Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse ->  matchesState(tPollResponse, observeOperationStates, observeOtherStates));
-
-        fluxPollResp.subscribe(pr1 -> {
-            debug("1 Got Observer() Response " + pr1.getStatus().toString() + " " + pr1.getOtherStatus() + " " + pr1.getValue().response);
+        Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
+        fluxPollResp.subscribe(pr -> {
+            debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
-
         fluxPollRespFiltered.subscribe(pr -> {
             debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
@@ -424,8 +420,6 @@ public class PollerTests {
         }
         return Mono.just(false);
     }
-
-
     private void debug(String... messages) {
         if (debug) {
             StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
