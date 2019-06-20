@@ -62,19 +62,6 @@ public class SapTableSource extends CopySource {
     private Object customRfcReadTableFunctionModule;
 
     /**
-     * The partition mechanism that will be used for SAP table read in
-     * parallel.
-     */
-    @JsonProperty(value = "partitionOption")
-    private Object partitionOption;
-
-    /**
-     * The settings that will be leveraged for SAP table source partitioning.
-     */
-    @JsonProperty(value = "partitionSettings")
-    private SapTablePartitionSettings partitionSettings;
-
-    /**
      * Get the number of rows to be retrieved. Type: integer(or Expression with resultType integer).
      *
      * @return the rowCount value
@@ -191,46 +178,6 @@ public class SapTableSource extends CopySource {
      */
     public SapTableSource withCustomRfcReadTableFunctionModule(Object customRfcReadTableFunctionModule) {
         this.customRfcReadTableFunctionModule = customRfcReadTableFunctionModule;
-        return this;
-    }
-
-    /**
-     * Get the partition mechanism that will be used for SAP table read in parallel.
-     *
-     * @return the partitionOption value
-     */
-    public Object partitionOption() {
-        return this.partitionOption;
-    }
-
-    /**
-     * Set the partition mechanism that will be used for SAP table read in parallel.
-     *
-     * @param partitionOption the partitionOption value to set
-     * @return the SapTableSource object itself.
-     */
-    public SapTableSource withPartitionOption(Object partitionOption) {
-        this.partitionOption = partitionOption;
-        return this;
-    }
-
-    /**
-     * Get the settings that will be leveraged for SAP table source partitioning.
-     *
-     * @return the partitionSettings value
-     */
-    public SapTablePartitionSettings partitionSettings() {
-        return this.partitionSettings;
-    }
-
-    /**
-     * Set the settings that will be leveraged for SAP table source partitioning.
-     *
-     * @param partitionSettings the partitionSettings value to set
-     * @return the SapTableSource object itself.
-     */
-    public SapTableSource withPartitionSettings(SapTablePartitionSettings partitionSettings) {
-        this.partitionSettings = partitionSettings;
         return this;
     }
 

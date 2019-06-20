@@ -19,27 +19,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SapCloudForCustomerSink")
 public class SapCloudForCustomerSink extends CopySink {
     /**
-     * The write behavior for the operation. Default is 'Insert'.
+     * The write behavior for the operation. Default is 'Insert'. Possible
+     * values include: 'Insert', 'Update'.
      */
     @JsonProperty(value = "writeBehavior")
-    private Object writeBehavior;
+    private SapCloudForCustomerSinkWriteBehavior writeBehavior;
 
     /**
-     * Get the write behavior for the operation. Default is 'Insert'.
+     * Get the write behavior for the operation. Default is 'Insert'. Possible values include: 'Insert', 'Update'.
      *
      * @return the writeBehavior value
      */
-    public Object writeBehavior() {
+    public SapCloudForCustomerSinkWriteBehavior writeBehavior() {
         return this.writeBehavior;
     }
 
     /**
-     * Set the write behavior for the operation. Default is 'Insert'.
+     * Set the write behavior for the operation. Default is 'Insert'. Possible values include: 'Insert', 'Update'.
      *
      * @param writeBehavior the writeBehavior value to set
      * @return the SapCloudForCustomerSink object itself.
      */
-    public SapCloudForCustomerSink withWriteBehavior(Object writeBehavior) {
+    public SapCloudForCustomerSink withWriteBehavior(SapCloudForCustomerSinkWriteBehavior writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
     }
