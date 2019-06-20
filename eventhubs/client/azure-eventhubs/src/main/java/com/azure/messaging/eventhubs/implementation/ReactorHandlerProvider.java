@@ -69,8 +69,8 @@ public class ReactorHandlerProvider {
      * @param senderName Name of the send link.
      * @return A new {@link SendLinkHandler}.
      */
-    SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName) {
-        return new SendLinkHandler(connectionId, host, senderName);
+    SendLinkHandler createSendLinkHandler(String connectionId, String host, String senderName, String entityPath) {
+        return new SendLinkHandler(connectionId, host, senderName, entityPath);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ReactorHandlerProvider {
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName) {
-        return new ReceiveLinkHandler(connectionId, host, receiverName);
+    ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String host, String receiverName, String entityPath) {
+        return new ReceiveLinkHandler(connectionId, host, receiverName, entityPath);
     }
 }
