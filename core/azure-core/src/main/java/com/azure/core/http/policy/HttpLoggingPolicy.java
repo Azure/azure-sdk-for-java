@@ -9,7 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.FluxUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -58,7 +58,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         Optional<Object> data = context.getData("caller-method");
         String callerMethod = (String) data.orElse("");
         //
-        final ServiceLogger logger = new ServiceLogger(callerMethod);
+        final ClientLogger logger = new ClientLogger(callerMethod);
         final long startNs = System.nanoTime();
         //
         Mono<Void> logRequest = logRequest(logger, context.httpRequest());
@@ -68,7 +68,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .doOnError(throwable -> logger.asWarning().log("<-- HTTP FAILED: ", throwable));
     }
 
-    private Mono<Void> logRequest(final ServiceLogger logger, final HttpRequest request) {
+    private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
         if (detailLevel.shouldLogURL()) {
             logger.asInfo().log("--> {} {}", request.httpMethod(), request.url());
         }
@@ -111,7 +111,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         return reqBodyLoggingMono;
     }
 
-    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ServiceLogger logger, final URL url, final long startNs) {
+    private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final ClientLogger logger, final URL url, final long startNs) {
         return (HttpResponse response) -> {
             long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
             //
@@ -157,7 +157,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         };
     }
 
-    private String prettyPrintIfNeeded(ServiceLogger logger, String contentType, String body) {
+    private String prettyPrintIfNeeded(ClientLogger logger, String contentType, String body) {
         String result = body;
         if (prettyPrintJSON && contentType != null && (contentType.startsWith("application/json") || contentType.startsWith("text/json"))) {
             try {

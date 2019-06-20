@@ -53,7 +53,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-app-configuration</artifactId>
+      <artifactId>azure-data-appconfiguration</artifactId>
       <version>${version}</version>
     </dependency>
     <dependency>

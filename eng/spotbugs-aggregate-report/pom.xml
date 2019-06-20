@@ -19,7 +19,7 @@
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
-    <azure-app-configuration.version>1.0.0-SNAPSHOT</azure-app-configuration.version>
+    <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
   </properties>
   <distributionManagement>
     <site>
@@ -42,8 +42,8 @@
             </goals>
             <configuration>
               <sources>
-                <source>..\..\applicationconfig\client\src\main\java</source>
-                <source>..\..\applicationconfig\client\src\samples\java</source>
+                <source>..\..\appconfiguration\client\src\main\java</source>
+                <source>..\..\appconfiguration\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
                 <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
@@ -134,8 +134,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-app-configuration</artifactId>
-          <version>${azure-app-configuration.version}</version>
+          <artifactId>azure-data-appconfiguration</artifactId>
+          <version>${azure-data-appconfiguration.version}</version>
         </dependency>
       </dependencies>
       <properties>
