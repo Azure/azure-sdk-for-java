@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.EndpointStateNotifier;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.Disposable;
@@ -19,7 +18,7 @@ import java.util.Objects;
 
 abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Closeable {
     private final ReplayProcessor<AmqpEndpointState> connectionStateProcessor = ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final DirectProcessor<ErrorContext> errorContextProcessor = DirectProcessor.create();
+    private final DirectProcessor<Throwable> errorContextProcessor = DirectProcessor.create();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();
     private final Disposable subscription;
 
@@ -39,7 +38,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     }
 
     @Override
-    public Flux<ErrorContext> getErrors() {
+    public Flux<Throwable> getErrors() {
         return errorContextProcessor;
     }
 
@@ -53,7 +52,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
         return shutdownSignalProcessor;
     }
 
-    void notifyError(ErrorContext error) {
+    void notifyError(Throwable error) {
         Objects.requireNonNull(error);
 
         logger.asInfo().log("Notify error: {}", error);
