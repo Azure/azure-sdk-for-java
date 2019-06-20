@@ -143,10 +143,10 @@ public class TaskTests  extends BatchIntegrationTestBase {
                     outputSas = generateContainerSasToken(container);
                 }
                 // UPLOAD LOG
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaaSPool.id(), task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaasPoolId, task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
                 Assert.assertNotNull(uploadBatchServiceLogsResult);
                 Assert.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
-                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().toLowerCase().contains(liveIaaSPool.id().toLowerCase()));
+                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
             }
 
             // DELETE
