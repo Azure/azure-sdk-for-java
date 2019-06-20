@@ -16,33 +16,35 @@ import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
- * Describes Batch AI Workspace.
+ * Batch AI Workspace information.
  */
 @JsonFlatten
 @SkipParentValidation
 public class WorkspaceInner extends Resource {
     /**
+     * Creation time.
      * Time when the Workspace was created.
      */
     @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
-     * The provisioned state of the workspace. Possible values include:
+     * Provisioning state.
+     * The provisioned state of the Workspace. Possible values include:
      * 'creating', 'succeeded', 'failed', 'deleting'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * The time at which the workspace entered its current provisioning state.
+     * Provisioning state transition time.
      * The time at which the workspace entered its current provisioning state.
      */
     @JsonProperty(value = "properties.provisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime provisioningStateTransitionTime;
 
     /**
-     * Get the creationTime value.
+     * Get time when the Workspace was created.
      *
      * @return the creationTime value
      */
@@ -51,7 +53,7 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioned state of the Workspace. Possible values include: 'creating', 'succeeded', 'failed', 'deleting'.
      *
      * @return the provisioningState value
      */
@@ -60,7 +62,7 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningStateTransitionTime value.
+     * Get the time at which the workspace entered its current provisioning state.
      *
      * @return the provisioningStateTransitionTime value
      */

@@ -5,7 +5,9 @@ package com.azure.core.auth.credentials;
 
 import com.azure.core.AzureEnvironment;
 import com.azure.core.AzureEnvironment.Endpoint;
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.util.ScopeUtil;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -17,8 +19,7 @@ import java.util.Map;
  * AzureTokenCredentials represents a credentials object with access to Azure
  * Resource management.
  */
-public abstract class AzureTokenCredentials extends TokenCredential {
-    private static final String SCHEME = "Bearer ";
+public abstract class AzureTokenCredentials implements TokenCredential {
     private final AzureEnvironment environment;
     private final String domain;
     private String defaultSubscription;
@@ -42,7 +43,7 @@ public abstract class AzureTokenCredentials extends TokenCredential {
      * @param uri the url
      * @return the token
      */
-    private Mono<String> getTokenFromUri(String uri) {
+    private Mono<AccessToken> getTokenFromUri(String uri) {
         URL url = null;
         try {
             url = new URL(uri);
@@ -81,11 +82,12 @@ public abstract class AzureTokenCredentials extends TokenCredential {
      * @param resource the resource the access token is for
      * @return the token to access the resource
      */
-    public abstract Mono<String> getToken(String resource);
+    public abstract Mono<AccessToken> getToken(String resource);
 
     @Override
-    public Mono<String> getTokenAsync(String resource) {
-        return getTokenFromUri(resource).map(token -> SCHEME + token);
+    public Mono<AccessToken> getToken(String... scopes) {
+        String resource = ScopeUtil.scopesToResource(scopes);
+        return getTokenFromUri(resource);
     }
 
     /**
