@@ -88,9 +88,7 @@ public class EventSenderTest {
         final List<Message> messagesSent = messagesCaptor.getValue();
         Assert.assertEquals(count, messagesSent.size());
 
-        messagesSent.forEach(message -> {
-            Assert.assertEquals(Section.SectionType.Data, message.getBody().getType());
-        });
+        messagesSent.forEach(message -> Assert.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
     /**

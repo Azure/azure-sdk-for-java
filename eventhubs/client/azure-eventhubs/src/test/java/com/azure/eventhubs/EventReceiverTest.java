@@ -5,7 +5,7 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.Retry;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
@@ -13,19 +13,13 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class EventReceiverTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
@@ -34,16 +28,13 @@ public class EventReceiverTest extends ApiTestBase {
     private static final String PROPERTY_VALUE1 = "something1";
     private static final String PROPERTY2 = MessageConstant.MESSAGE_ID.getValue(); // TODO: need to verify it
     private static final String PROPERTY_VALUE2 = "something2";
-    private static final int NUMBER_OF_EVENTS = 10;
 
-    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
 
-    private EventData resendEventData;
     private EventHubClient client;
     private EventSender sender;
     private EventReceiver receiver;
-    private EventSenderOptions senderOptions;
-    private ReactorHandlerProvider handlerProvider;
+    private EventData resendEventData;
 
     @Rule
     public TestName testName = new TestName();
@@ -56,10 +47,10 @@ public class EventReceiverTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
-        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        senderOptions = new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        sender = client.createSender(senderOptions);
     }
 
     @Override
@@ -88,250 +79,31 @@ public class EventReceiverTest extends ApiTestBase {
     }
 
     /**
-     *  Test for a simple receiving message
-     */
-    @Ignore
-    @Test
-    public void receiveMessage() {
-        skipIfNotRecordMode();
-
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.earliest(),
-            new EventReceiverOptions().prefetchCount(2).consumerGroup(getConsumerGroupName()));
-
-        // Act & Assert
-        StepVerifier.create(receiver.receive())
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-    }
-
-    /**
-     * Test for receiving from start of stream
-     */
-    @Ignore
-    @Test
-    public void testReceiverStartOfStreamFilters() {
-        skipIfNotRecordMode();
-
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.earliest(),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> offsetReceivedData = receiver.receive();
-        // Act & Assert
-        StepVerifier.create(offsetReceivedData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> dateTimeReceivedData = receiver.receive();
-        // Act & Assert
-        StepVerifier.create(dateTimeReceivedData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-
-        Iterator<EventData> dateTimeDataIterator = dateTimeReceivedData.toIterable().iterator();
-        Iterable<EventData> offsetDataIterable = offsetReceivedData.toIterable();
-
-        // Act & Assert
-        for (EventData offsetData : offsetDataIterable) {
-            if (!dateTimeDataIterator.hasNext()) {
-                break;
-            }
-            EventData dateTimeEventData = dateTimeDataIterator.next();
-            // Check if both received data has matched offset
-            Assert.assertTrue(
-                String.format(Locale.US, "START_OF_STREAM offset: %s, EPOCH offset: %s", offsetData.offset(), dateTimeEventData.offset()),
-                offsetData.offset().equalsIgnoreCase(dateTimeEventData.offset()));
-        }
-    }
-
-    /**
-     * Test receiving message from a receiver with latest event position
-     */
-    @Ignore
-    @Test
-    public void testReceiverLatestFilter() {
-        skipIfNotRecordMode();
-
-        // Arrange
-        // TODO: latest operation not working or misunderstood
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()).prefetchCount(2));
-
-        // Act & Assert
-        StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
-            .expectNextCount(0)
-            .verifyComplete();
-
-        final Mono<Void> sentData = pushEventsToPartition(client, senderOptions, NUMBER_OF_EVENTS);
-        StepVerifier.create(sentData)
-            .verifyComplete();
-
-        StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-    }
-
-    /**
-     * Test a receiver with inclusive offset
-     */
-    @Ignore
-    @Test
-    public void testReceiverOffsetInclusiveFilter() {
-        skipIfNotRecordMode();
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> enqueuedTimeData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
-
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromOffset(enqueuedTimeEvent.offset(), true),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> offsetData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(offsetData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData offsetEvent = offsetData.toIterable().iterator().next();
-
-        Assert.assertEquals(offsetEvent.offset(), enqueuedTimeEvent.offset());
-        Assert.assertEquals(offsetEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
-    }
-
-    /**
-     * Test for receiving offset without inclusive filter
-     */
-    @Ignore
-    @Test
-    public void testReceiverOffsetNonInclusiveFilter() {
-        skipIfNotRecordMode();
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> enqueuedTimeData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData event = enqueuedTimeData.toIterable().iterator().next();
-
-        // Arrange
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromOffset(event.offset(), false),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> offsetData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(offsetData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData offsetEvent = offsetData.toIterable().iterator().next();
-        Assert.assertEquals(offsetEvent.sequenceNumber(), event.sequenceNumber() + 1);
-    }
-
-    /**
-     * Test for receiving sequence number with inclusive filter
-     */
-    @Ignore
-    @Test
-    public void testReceiverSequenceNumberInclusiveFilter() {
-        skipIfNotRecordMode();
-        // Arrange: EventPosition.fromEnqueuedTime
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> enqueuedTimeData = receiver.receive();
-        // Act & Assert
-        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
-
-        // Arrange: EventPosition.fromSequenceNumber
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromSequenceNumber(enqueuedTimeEvent.sequenceNumber(), true),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> sequenceNumData = receiver.receive();
-        // Act & Assert
-        StepVerifier.create(sequenceNumData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData sequenceNumEvent = sequenceNumData.toIterable().iterator().next();
-
-        Assert.assertEquals(sequenceNumEvent.offset(), enqueuedTimeEvent.offset());
-        Assert.assertEquals(sequenceNumEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
-    }
-
-    /**
-     * Test for receiving sequence number without inclusive filter
-     */
-    @Ignore
-    @Test
-    public void testReceiverSequenceNumberNonInclusiveFilter() {
-        skipIfNotRecordMode();
-        // Arrange: EventPosition.fromEnqueuedTime
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> enqueuedTimeData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(enqueuedTimeData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData enqueuedTimeEvent = enqueuedTimeData.toIterable().iterator().next();
-
-        // Arrange: EventPosition.fromSequenceNumber
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.fromSequenceNumber(enqueuedTimeEvent.sequenceNumber(), false),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
-        final Flux<EventData> sequenceNumData = receiver.receive();
-
-        // Act & Assert
-        StepVerifier.create(sequenceNumData.take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
-        final EventData sequenceNumEvent = sequenceNumData.toIterable().iterator().next();
-
-        Assert.assertEquals(sequenceNumEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber() + 1);
-    }
-
-    /**
      * Test for received body and properties of a same event
      */
     @Ignore
     @Test
     public void testReceivedBodyAndProperties() {
         skipIfNotRecordMode();
-        // Data
-        final EventData event = new EventData(PAYLOAD.getBytes());
-        event.properties().put(PROPERTY2, PROPERTY_VALUE2);
-        event.properties().put(PROPERTY1, PROPERTY_VALUE1);
 
         // Arrange
+        final EventData event = new EventData(PAYLOAD.getBytes());
+        event.properties().put(PROPERTY1, PROPERTY_VALUE1);
+        event.properties().put(PROPERTY2, PROPERTY_VALUE2);
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
             new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
 
-        final EventSender sender = client.createSender(senderOptions);
-        sender.send(event);
-
         // Act & Assert
-        StepVerifier.create(receiver.receive())
-            .expectNextMatches(data -> {
+        StepVerifier.create(receiver.receive().take(1))
+            .then(() -> sender.send(event).block())
+            .assertNext(data -> {
                 validateReceivedEvent(data);
                 resendEventData = data;
-                return true;
             })
             .verifyComplete();
 
-        // Act & Assert
-        sender.send(resendEventData);
-        StepVerifier.create(receiver.receive())
+        StepVerifier.create(receiver.receive().take(1))
+            .then(() -> sender.send(resendEventData).block())
             .assertNext(data -> validateReceivedEvent(data))
             .verifyComplete();
     }
@@ -353,14 +125,5 @@ public class EventReceiverTest extends ApiTestBase {
         Assert.assertTrue(eventData.sequenceNumber() > 0);
         Assert.assertNull(eventData.partitionKey());
 //        Assert.assertNull(eventData.publisher()); //TODO: double check if publisher is needed in track 2
-    }
-
-    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventSenderOptions senderOptions, final int noOfEvents) {
-        final Flux<EventData> events = Flux.range(0, noOfEvents).map(number -> {
-            final EventData data = new EventData("testString".getBytes(UTF_8));
-            return data;
-        });
-        sender = client.createSender(senderOptions);
-        return sender.send(events);
     }
 }

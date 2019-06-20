@@ -5,11 +5,10 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -20,10 +19,10 @@ import java.time.Duration;
 import java.util.Random;
 
 public class EventDataBatchTest extends ApiTestBase {
-    private static final String PARTITION_KEY = "key1";
+    private static final String PARTITION_KEY = "PartitionIDCopyFromSenderOption";
     private static final String PARTITION_ID = "0";
 
-    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
 
     private EventHubClient client;
     private EventSender sender;
@@ -85,7 +84,6 @@ public class EventDataBatchTest extends ApiTestBase {
     /**
      * Test for sending full batch without partition key
      */
-    @Ignore
     @Test
     public void sendSmallEventsFullBatch() {
         skipIfNotRecordMode();
@@ -131,12 +129,10 @@ public class EventDataBatchTest extends ApiTestBase {
             .verifyComplete();
     }
 
-    @Ignore
     @Test
     public void sendBatchPartitionKeyValidate() {
         // TODO: after understand EventHubClient Runtime info functionality
         skipIfNotRecordMode();
-
     }
 
     /**
@@ -175,12 +171,12 @@ public class EventDataBatchTest extends ApiTestBase {
 
     /**
      * Test for sending full batch with both sender's partitionID and batch's partitionKey
+     * Both event data batch a
      */
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void sendBatchWithPartitionKeyOnPartitionSenderTest() {
         skipIfNotRecordMode();
-
+        // EventDataBatch is only accessible from internal, so the partition key
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventSender.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         final SendOptions sendOptions = new SendOptions();

@@ -4,7 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.apache.qpid.proton.Proton;
@@ -21,7 +21,6 @@ import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class BackCompatTest extends ApiTestBase {
     private static final String INT_APPLICATION_PROPERTY = "intProp";
     private static final String PAYLOAD = "testmsg";
 
-    private final ServiceLogger logger = new ServiceLogger(BackCompatTest.class);
+    private final ClientLogger logger = new ClientLogger(BackCompatTest.class);
 
     private EventHubClient client;
     private EventSender sender;
@@ -61,25 +60,25 @@ public class BackCompatTest extends ApiTestBase {
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
 
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
-            }
-        }
-
-        if (receiver != null) {
-            try {
-                receiver.close();
-            } catch (IOException e) {
-                logger.asError().log(String.format("[%s]: Receiver doesn't close properly.", testName.getMethodName()), e);
-            }
-        }
+//        if (client != null) {
+//            client.close();
+//        }
+//
+//        if (sender != null) {
+//            try {
+//                sender.close();
+//            } catch (IOException e) {
+//                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
+//            }
+//        }
+//
+//        if (receiver != null) {
+//            try {
+//                receiver.close();
+//            } catch (IOException e) {
+//                logger.asError().log(String.format("[%s]: Receiver doesn't close properly.", testName.getMethodName()), e);
+//            }
+//        }
     }
 
     /**

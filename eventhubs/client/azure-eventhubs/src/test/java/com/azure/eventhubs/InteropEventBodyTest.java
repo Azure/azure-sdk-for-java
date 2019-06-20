@@ -4,7 +4,7 @@
 package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
 import org.apache.qpid.proton.Proton;
@@ -19,7 +19,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -30,21 +29,15 @@ import java.util.LinkedList;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class InteropEventBodyTest extends ApiTestBase {
-    private final ServiceLogger logger = new ServiceLogger(EventReceiverTest.class);
-
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "testmsg";
-    private static final Message ORIGINAL_MESSAGE = Proton.message();
 
-    private static EventData msgEvent;
-    private static EventData receivedEvent;
+    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
 
     private EventHubClient client;
     private EventSender sender;
     private EventReceiver receiver;
-    private EventSenderOptions senderOptions;
-    private EventReceiverOptions receiverOptions;
-    private ReactorHandlerProvider handlerProvider;
+    private EventData receivedEvent;
 
     @Rule
     public TestName testName = new TestName();
@@ -58,11 +51,10 @@ public class InteropEventBodyTest extends ApiTestBase {
     protected void beforeTest() {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
 
-        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-
-        senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
-        receiverOptions = new EventReceiverOptions().consumerGroup(getConsumerGroupName()).retry(Retry.getNoRetry());
+        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
+        final EventReceiverOptions receiverOptions = new EventReceiverOptions().consumerGroup(getConsumerGroupName()).retry(Retry.getNoRetry());
         sender = client.createSender(senderOptions);
         receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(), receiverOptions);
     }
@@ -101,49 +93,46 @@ public class InteropEventBodyTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        ORIGINAL_MESSAGE.setBody(new AmqpValue(PAYLOAD));
-        ORIGINAL_MESSAGE.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
-        msgEvent = new EventData(ORIGINAL_MESSAGE);
-        // Action & Verify
-        sender.send(msgEvent);
+        final Message originalMessage = Proton.message();
+        originalMessage.setBody(new AmqpValue(PAYLOAD));
+        originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
+        final EventData msgEvent = new EventData(originalMessage);
+
+        // Act & Assert
         StepVerifier.create(receiver.receive())
-            .expectNextMatches(event -> {
-                Assert.assertTrue(PAYLOAD.equals(UTF_8.decode(event.body()).toString()));
+            .then(() -> sender.send(msgEvent))
+            .assertNext(event -> {
+                Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString());
                 receivedEvent = event;
-                return true;
             })
             .verifyComplete();
 
-        sender.send(receivedEvent);
         StepVerifier.create(receiver.receive())
-            .expectNextMatches(event -> {
-                Assert.assertTrue(PAYLOAD.equals(UTF_8.decode(event.body()).toString()));
-                return true;
-            })
+            .then(() -> sender.send(receivedEvent))
+            .assertNext(event -> Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString()))
             .verifyComplete();
     }
 
     /**
      * Test for interoperable with Proton Amqp messaging body as sequence.
      */
-    @Ignore
+    @Ignore("can't convert ByteBuffer to List<Data>")
     @Test
     public void interopWithProtonAmqpMessageBodyAsAmqpSequence() {
         skipIfNotRecordMode();
 
         // TODO: Refactor it
-        final Message originalMessage = Proton.message();
-        final LinkedList<Data> datas = new LinkedList<>();
+        final LinkedList<Data> dataList = new LinkedList<>();
+        dataList.add(new Data(new Binary(PAYLOAD.getBytes())));
 
-        datas.add(new Data(new Binary(PAYLOAD.getBytes())));
-        originalMessage.setBody(new AmqpSequence(datas));
+        final Message originalMessage = Proton.message();
+        originalMessage.setBody(new AmqpSequence(dataList));
         originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
 
         final EventData msgEvent = new EventData(originalMessage);
 
-        final Flux<EventData> receivedEvent = receiver.receive();
 
-        StepVerifier.create(receivedEvent)
+        StepVerifier.create(receiver.receive())
             .then(() -> sender.send(Mono.just(msgEvent)))
             .expectNextMatches(event -> {
                 // TODO: can't convert ByteBuffer to List<Data>
@@ -152,7 +141,7 @@ public class InteropEventBodyTest extends ApiTestBase {
             })
             .verifyComplete();
 
-        StepVerifier.create(receivedEvent)
+        StepVerifier.create(receiver.receive())
             .then(() -> sender.send(receivedEvent))
             .expectNextMatches(v -> PAYLOAD.equals(UTF_8.decode(v.body()).toString()))
             .verifyComplete();
