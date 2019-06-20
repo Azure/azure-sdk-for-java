@@ -20,6 +20,7 @@
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
+    <azure-messaging-eventhubs.version>1.0.0-SNAPSHOT</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>
     <site>
@@ -49,6 +50,7 @@
                 <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
+                <source>..\..\eventhubs\client\src\main\java</source>
               </sources>
             </configuration>
           </execution>
@@ -142,6 +144,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
           <version>${azure-data-appconfiguration.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-messaging-eventhubs</artifactId>
+          <version>${azure-messaging-eventhubs.version}</version>
         </dependency>
       </dependencies>
       <properties>
