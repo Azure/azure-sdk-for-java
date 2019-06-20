@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class EventSenderTest {
+public class EventHubProducerTest {
 
     @Mock
     private AmqpSendLink sendLink;
@@ -75,8 +75,8 @@ public class EventSenderTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         // Act
         StepVerifier.create(sender.send(testData, options))
@@ -105,8 +105,8 @@ public class EventSenderTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         // Act
         StepVerifier.create(sender.send(testData, options))
@@ -133,12 +133,12 @@ public class EventSenderTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions().partitionKey("Some partition key");
-        final EventSenderOptions senderOptions = new EventSenderOptions()
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions()
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30))
             .partitionId("my-partition-id");
 
-        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         // Act & Assert
         try {
@@ -164,8 +164,8 @@ public class EventSenderTest {
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventSenderOptions senderOptions = new EventSenderOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventSender sender = new EventSender(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
 
         StepVerifier.create(sender.send(testData, options))
             .verifyErrorMatches(error -> error instanceof AmqpException
