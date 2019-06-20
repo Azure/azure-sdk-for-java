@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Contains information about a snapshot of a Share in the storage File service.
  */
-public final class ShareSnapshotInfo {
+public final class  ShareSnapshotInfo {
     private String snapshot;
     private String eTag;
     private OffsetDateTime lastModified;

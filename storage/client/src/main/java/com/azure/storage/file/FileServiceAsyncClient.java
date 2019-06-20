@@ -295,7 +295,7 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * Creates a share in the storage account with the specified name and metadata and returns a ShareAsyncClient to
+     * Creates a share in the storage account with the specified name, metadata, and quota and returns a ShareAsyncClient to
      * interact with it.
      *
      * <p><strong>Code Samples</strong></p>
