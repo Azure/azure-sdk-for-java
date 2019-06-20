@@ -14,29 +14,27 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.Context;
 import com.azure.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.keyvault.keys.implementation.KeyBasePage;
-import com.azure.keyvault.keys.models.Key;
-import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.azure.keyvault.keys.models.DeletedKey;
 import com.azure.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.keyvault.keys.models.Key;
 import com.azure.keyvault.keys.models.KeyBase;
+import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.azure.keyvault.keys.models.KeyImportOptions;
 import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.core.util.Context;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -58,6 +56,8 @@ public final class KeyAsyncClient extends ServiceClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+
     private String endpoint;
     private final KeyService service;
 
@@ -413,7 +413,7 @@ public final class KeyAsyncClient extends ServiceClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
-    public Mono<Response<Key>> updateKey(KeyBase key, KeyOperation ... keyOperations) {
+    public Mono<Response<Key>> updateKey(KeyBase key, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
                 .tags(key.tags())

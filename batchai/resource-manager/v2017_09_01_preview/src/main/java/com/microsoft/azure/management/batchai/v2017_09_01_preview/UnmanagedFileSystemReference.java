@@ -50,7 +50,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Get the relativeMountPath value.
+     * Get note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
      *
      * @return the relativeMountPath value
      */
@@ -59,7 +59,7 @@ public class UnmanagedFileSystemReference {
     }
 
     /**
-     * Set the relativeMountPath value.
+     * Set note that all file shares will be mounted under $AZ_BATCHAI_MOUNT_ROOT location.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the UnmanagedFileSystemReference object itself.

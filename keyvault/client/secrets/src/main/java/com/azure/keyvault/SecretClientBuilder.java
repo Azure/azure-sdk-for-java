@@ -3,12 +3,14 @@
 
 package com.azure.keyvault;
 
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -110,7 +112,7 @@ public final class SecretClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         policies.add(retryPolicy);
-        policies.add(new TokenCredentialPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretClient.KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
@@ -127,7 +129,7 @@ public final class SecretClientBuilder {
      *
      * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated Builder object.
-     * @throws IllegalStateException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public SecretClientBuilder endpoint(String endpoint) {
         try {
