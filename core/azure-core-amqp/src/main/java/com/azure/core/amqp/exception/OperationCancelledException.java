@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+<<<<<<< HEAD:eventhubs/client/azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/OperationCancelledException.java
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
+=======
+package com.azure.core.amqp.exception;
+>>>>>>> e123f89908... Move OperationCancelledException to new package.:core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/OperationCancelledException.java
 
 /**
  * This exception is thrown when the underlying AMQP layer encounter an abnormal link abort or disconnect of connection
@@ -16,9 +20,10 @@ public class OperationCancelledException extends AmqpException {
      * Creates an instance of this exception with provided {@code message}.
      *
      * @param message Message associated with this exception.
+     * @param context The context that caused this OperationCancelledException.
      */
-    public OperationCancelledException(final String message) {
-        super(false, message);
+    public OperationCancelledException(String message, ErrorContext context) {
+        super(false, message, context);
     }
 
     /**
@@ -26,8 +31,9 @@ public class OperationCancelledException extends AmqpException {
      *
      * @param message Message associated with this exception.
      * @param cause The throwable that caused this exception to be thrown.
+     * @param context The context that caused this OperationCancelledException.
      */
-    public OperationCancelledException(final String message, final Throwable cause) {
-        super(false, message, cause);
+    public OperationCancelledException(final String message, final Throwable cause, ErrorContext context) {
+        super(false, message, cause, context);
     }
 }
