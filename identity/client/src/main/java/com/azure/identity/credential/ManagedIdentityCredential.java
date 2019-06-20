@@ -3,11 +3,11 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
 import com.azure.identity.implementation.AppServiceMSICredential;

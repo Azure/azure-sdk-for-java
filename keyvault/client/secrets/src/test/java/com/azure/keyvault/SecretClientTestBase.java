@@ -3,6 +3,7 @@
 
 package com.azure.keyvault;
 
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
@@ -19,13 +20,14 @@ import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Objects;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,9 +36,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
 
 public abstract class SecretClientTestBase extends TestBase {
 
@@ -60,11 +62,11 @@ public abstract class SecretClientTestBase extends TestBase {
             : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
         final String tenantId = interceptorManager.isPlaybackMode()
-                ? ""
+                ? "some-tenant"
                 : System.getenv("MICROSOFT_AD_TENANT_ID");
 
         final String clientId = interceptorManager.isPlaybackMode()
-                ? ""
+                ? "some-client-id"
                 : System.getenv("ARM_CLIENT_ID");
 
         final String clientKey = interceptorManager.isPlaybackMode()
@@ -76,17 +78,15 @@ public abstract class SecretClientTestBase extends TestBase {
         Objects.requireNonNull(clientKey, "ARM_CLIENT_KEY expected to be set.");
         Objects.requireNonNull(tenantId, "MICROSOFT_AD_TENANT_ID expected to be set.");
 
+        TokenCredential credential = resource -> {
+            if (interceptorManager.isPlaybackMode()) {
+                return Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+            }
 
-        TokenCredential credential = new TokenCredential() {
-            @Override
-            public Mono<String> getTokenAsync(String resource) {
-                String token = "";
-                try {
-                    token =  getAccessToken(tenantId, clientId, clientKey);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return Mono.just(token);
+            try {
+                return Mono.just(getAccessToken(tenantId, clientId, clientKey));
+            } catch (Exception e) {
+                return Mono.error(e);
             }
         };
 
@@ -98,7 +98,7 @@ public abstract class SecretClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
-    private String getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
+    private AccessToken getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
         String authority = "https://login.microsoftonline.com/{tenantId}";
         String auth = authority.replace("{tenantId}", tenantId);
 
@@ -110,8 +110,12 @@ public abstract class SecretClientTestBase extends TestBase {
                 new ClientCredential(clientId, clientKey),
                 null
         );
-        String token = result.get().getAccessToken();
-        return token;
+
+        final AuthenticationResult authenticationResult = result.get();
+        final String token = authenticationResult.getAccessToken();
+        final OffsetDateTime expiresOn = authenticationResult.getExpiresOnDate().toInstant().atOffset(ZoneOffset.UTC);
+
+        return new AccessToken(token, expiresOn);
     }
 
     @Test

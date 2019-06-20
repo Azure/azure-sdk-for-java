@@ -56,6 +56,8 @@ public final class KeyAsyncClient extends ServiceClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+
     private String endpoint;
     private final KeyService service;
 
