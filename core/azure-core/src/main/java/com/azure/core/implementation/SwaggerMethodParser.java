@@ -256,26 +256,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
-        final List<EncodedParameter> result = new ArrayList<>();
-        if (querySubstitutions != null) {
-            final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-
-            for (Substitution querySubstitution : querySubstitutions) {
-                final int parameterIndex = querySubstitution.methodParameterIndex();
-                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                    final Object methodArgument = swaggerMethodArguments[querySubstitution.methodParameterIndex()];
-                    String parameterValue = serialize(methodArgument);
-                    if (parameterValue != null) {
-                        if (querySubstitution.shouldEncode() && escaper != null) {
-                            parameterValue = escaper.escape(parameterValue);
-                        }
-
-                        result.add(new EncodedParameter(querySubstitution.urlParameterName(), parameterValue));
-                    }
-                }
-            }
-        }
-        return result;
+        return encodeParameters(swaggerMethodArguments, querySubstitutions);
     }
 
     /**
@@ -287,23 +268,27 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return an Iterable with the encoded form parameters
      */
     public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
-        if (formSubstitutions == null) {
+        return encodeParameters(swaggerMethodArguments, formSubstitutions);
+    }
+
+    private Iterable<EncodedParameter> encodeParameters(Object[] swaggerMethodArguments,
+        List<Substitution> substitutions) {
+        if (substitutions == null) {
             return Collections.emptyList();
         }
+        
         final List<EncodedParameter> result = new ArrayList<>();
         final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-
-        for (Substitution formSubstitution : formSubstitutions) {
-            final int parameterIndex = formSubstitution.methodParameterIndex();
+        for (Substitution substitution : substitutions) {
+            final int parameterIndex = substitution.methodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
+                final Object methodArgument = swaggerMethodArguments[substitution.methodParameterIndex()];
                 String parameterValue = serialize(methodArgument);
                 if (parameterValue != null) {
-                    if (formSubstitution.shouldEncode() && escaper != null) {
+                    if (substitution.shouldEncode() && escaper != null) {
                         parameterValue = escaper.escape(parameterValue);
                     }
-
-                    result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
+                    result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
                 }
             }
         }

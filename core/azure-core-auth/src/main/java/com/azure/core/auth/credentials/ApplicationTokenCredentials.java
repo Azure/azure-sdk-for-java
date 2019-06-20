@@ -4,6 +4,7 @@
 package com.azure.core.auth.credentials;
 
 import com.azure.core.AzureEnvironment;
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.util.ImplUtils;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
@@ -122,15 +123,15 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Mono<String> getToken(String resource) {
+    public synchronized Mono<AccessToken> getToken(String resource) {
         AuthenticationResult authenticationResult = tokens.get(resource);
         if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Mono.just(authenticationResult.getAccessToken());
+            return Mono.just(Util.parseAdal4jAuthenticationResult(authenticationResult));
         } else {
             return acquireAccessToken(resource)
                     .map(ar -> {
                         tokens.put(resource, ar);
-                        return ar.getAccessToken();
+                        return Util.parseAdal4jAuthenticationResult(ar);
                     });
         }
     }

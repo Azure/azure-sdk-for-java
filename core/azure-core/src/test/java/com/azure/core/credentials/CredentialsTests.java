@@ -1,21 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core;
+package com.azure.core.credentials;
 
-import com.azure.core.credentials.BasicAuthenticationCredential;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpClient;
-import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.time.OffsetDateTime;
 
 public class CredentialsTests {
 
@@ -31,9 +30,12 @@ public class CredentialsTests {
         //
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new TokenCredentialPolicy(credentials), auditorPolicy)
+            .policies((context, next) -> credentials.getToken("scope./default")
+                .flatMap(token -> {
+                    context.httpRequest().headers().put("Authorization", "Basic " + token.token());
+                    return next.process();
+                }), auditorPolicy)
             .build();
-
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         pipeline.send(request).block();
@@ -41,10 +43,10 @@ public class CredentialsTests {
 
     @Test
     public void tokenCredentialTest() throws Exception {
-        TokenCredential credentials = new TokenCredential("Bearer") {
+        TokenCredential credentials = new TokenCredential() {
             @Override
-            public Mono<String> getTokenAsync(String resource) {
-                return Mono.just("this_is_a_token");
+            public Mono<AccessToken> getToken(String... scopes) {
+                return Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
             }
         };
 
@@ -56,7 +58,7 @@ public class CredentialsTests {
 
         final HttpPipeline pipeline = HttpPipeline.builder()
             .httpClient(new MockHttpClient())
-            .policies(new TokenCredentialPolicy(credentials), auditorPolicy)
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));

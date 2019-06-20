@@ -8,8 +8,9 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import org.junit.Ignore;
@@ -47,7 +48,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final int RESOURCE_LENGTH = 16;
     private static String connectionString;
 
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationClientTestBase.class);
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 
     String keyPrefix;
     String labelPrefix;

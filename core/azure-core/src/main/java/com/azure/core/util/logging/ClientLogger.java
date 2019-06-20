@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.logging;
+package com.azure.core.util.logging;
 
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
@@ -15,81 +15,111 @@ import java.util.Arrays;
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ServiceLogger#asVerbose() verbose} logging the
+ * argument of the format varargs and the logger is enabled for {@link ClientLogger#asVerbose() verbose} logging the
  * stack trace for the throwable will be included in the log message.</p>
  *
  * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
- * environment configuration, by default logging is disabled. The default logging level for messages is
- * {@link ServiceLogger#asInfo() info}.</p>
+ * environment configuration, by default logging is disabled.</p>
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- *     <li>{@link ServiceLogger#asError() Error}</li>
- *     <li>{@link ServiceLogger#asWarning() Warning}</li>
- *     <li>{@link ServiceLogger#asInfo() Info}</li>
- *     <li>{@link ServiceLogger#asVerbose() Verbose}</li>
+ * <li>{@link ClientLogger#asError() Error}</li>
+ * <li>{@link ClientLogger#asWarning() Warning}</li>
+ * <li>{@link ClientLogger#asInfo() Info}</li>
+ * <li>{@link ClientLogger#asVerbose() Verbose}</li>
  * </ol>
  *
  * @see Configuration
  */
-public class ServiceLogger implements ServiceLoggerAPI {
-    private static final NoopServiceLogger NOOP_LOGGER = new NoopServiceLogger();
-
+public class ClientLogger {
     private final Logger logger;
 
+    /*
+     * Indicate that log level is at trace level.
+     */
+    private static final int TRACE_LEVEL = 0;
+
+    /*
+     * Indicate that log level is at verbose level.
+     */
+    private static final int VERBOSE_LEVEL = 1;
+
+    /*
+     * Indicate that log level is at information level.
+     */
+    private static final int INFORMATIONAL_LEVEL = 2;
+
+    /*
+     * Indicate that log level is at warning level.
+     */
+    private static final int WARNING_LEVEL = 3;
+
+    /*
+     * Indicate that log level is at error level.
+     */
+    private static final int ERROR_LEVEL = 4;
+
+    /*
+     * Indicate that logging is disabled.
+     */
+    private static final int DISABLED_LEVEL = 5;
+
+    private static final int DEFAULT_LOG_LEVEL = DISABLED_LEVEL;
     private int level = DEFAULT_LOG_LEVEL;
 
     private int configurationLevel;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
+     *
      * @param clazz Class creating the logger.
      */
-    public ServiceLogger(Class clazz) {
+    public ClientLogger(Class clazz) {
         this(clazz.getName());
     }
 
     /**
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
+     *
      * @param className Class name creating the logger.
      */
-    public ServiceLogger(String className) {
+    public ClientLogger(String className) {
         logger = LoggerFactory.getLogger(className);
     }
 
     /**
      * Sets the logger to the verbose logging level.
-     * @return Updated ServiceLogger if debug is enabled, otherwise a no-op logger.
+     *
+     * @return Updated ClientLogger if verbose is enabled.
      */
-    @Override
-    public ServiceLoggerAPI asVerbose() {
+    public ClientLogger asVerbose() {
         return asLevel(VERBOSE_LEVEL);
     }
 
     /**
      * Sets the logger to the info logging level.
-     * @return Updated ServiceLogger if info is enabled, otherwise a no-op logger.
+     *
+     * @return Updated ClientLogger if info is enabled.
      */
-    @Override
-    public ServiceLoggerAPI asInfo() {
+    public ClientLogger asInfo() {
         return asLevel(INFORMATIONAL_LEVEL);
     }
 
     /**
      * Sets the logger to the warning logging level.
-     * @return Updated ServiceLogger if warn is enabled, otherwise a no-op logger.
+     *
+     * @return Updated ClientLogger if warn is enabled.
      */
-    @Override
-    public ServiceLoggerAPI asWarning() {
+    public ClientLogger asWarning() {
         return asLevel(WARNING_LEVEL);
     }
 
     /**
      * Sets the logger to the error logging level.
-     * @return Updated ServiceLogger if error is enabled, otherwise a no-op logger.
+     *
+     * @return Updated ClientLogger if error is enabled..
      */
-    @Override
-    public ServiceLoggerAPI asError() {
+    public ClientLogger asError() {
         return asLevel(ERROR_LEVEL);
     }
 
@@ -97,22 +127,22 @@ public class ServiceLogger implements ServiceLoggerAPI {
      * Logs a format-able message that uses {@code {}} as the placeholder.
      *
      * <p><strong>Code Samples</strong></p>
-     *
+     * <p>
      * Logging a message with the default log level
      * <pre>
-     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * ClientLogger logger = new ClientLogger(Example.class);
      * logger.log("A message");
      * </pre>
-     *
+     * <p>
      * Logging a format-able warning
      * <pre>
-     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * ClientLogger logger = new ClientLogger(Example.class);
      * logger.asWarning().log("A format-able message. Hello, {}", name);
      * </pre>
-     *
+     * <p>
      * Logging an error with stack trace
      * <pre>
-     * ServiceLogger logger = new ServiceLogger(Example.class);
+     * ClientLogger logger = new ClientLogger(Example.class);
      * try {
      *    upload(resource);
      * } catch (Throwable ex) {
@@ -121,16 +151,12 @@ public class ServiceLogger implements ServiceLoggerAPI {
      * </pre>
      *
      * @param format Format-able message.
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param args   Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    @Override
     public void log(String format, Object... args) {
         if (canLogAtLevel(level)) {
             performLogging(format, args);
         }
-
-        // Reset the logging level to the default for the next logging request.
-        level = DEFAULT_LOG_LEVEL;
     }
 
     /*
@@ -166,15 +192,14 @@ public class ServiceLogger implements ServiceLoggerAPI {
     /*
      * Helper method to set the logging level.
      * @param level Logging level
-     * @return Updated ServiceLogger if the level is enabled, otherwise a no-op logger.
+     * @return Updated ClientLogger if the level is enabled.
      */
-    private ServiceLoggerAPI asLevel(int level) {
+    private ClientLogger asLevel(int level) {
         if (canLogAtLevel(level)) {
             this.level = level;
-            return this;
         }
 
-        return NOOP_LOGGER;
+        return this;
     }
 
     /*

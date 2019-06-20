@@ -15,7 +15,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
@@ -47,7 +47,7 @@ import java.util.Objects;
 public final class ConfigurationAsyncClient extends ServiceClient {
     private static final String SPAN_NAME_TEMPLATE = "Azure.AppConfig/%s";
 
-    private final ServiceLogger logger = new ServiceLogger(ConfigurationAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
     private static final String ETAG_ANY = "*";
     private static final String RANGE_QUERY = "items=%s";
