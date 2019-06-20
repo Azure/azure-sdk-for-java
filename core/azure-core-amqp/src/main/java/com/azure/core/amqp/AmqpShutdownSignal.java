@@ -27,6 +27,26 @@ public class AmqpShutdownSignal {
     }
 
     /**
+     * Gets whether or not this shutdown signal is transient or if it can be restarted.
+     *
+     * @return {@code true} if the shutdown signal is transient and the connection, session, or link can be recreated.
+     *         {@code false} otherwise.
+     */
+    public boolean isTransient() {
+        return isTransient;
+    }
+
+    /**
+     * Gets whether or not this shutdown signal was initiated by the client.
+     *
+     * @return {@code true} if the shutdown signal was initiated by the client, {@code false} if the shutdown signal
+     *         occurred in the underlying AMQP layer or from the AMQP message broker.
+     */
+    public boolean initiatedByClient() {
+        return initiatedByClient;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
