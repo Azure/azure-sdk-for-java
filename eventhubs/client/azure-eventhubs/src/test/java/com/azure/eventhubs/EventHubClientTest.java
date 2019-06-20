@@ -252,22 +252,22 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventSender sender = client.createSender(senderOptions)) {
+        try (EventHubProducer sender = client.createProducer(senderOptions)) {
             StepVerifier.create(sender.send(events))
                 .verifyComplete();
         }
     }
 
     /**
-     * Verifies that we can create an EventSender that does not care about partitions and lets the service distribute
-     * the events.
+     * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
+     * distribute the events.
      */
     @Test
     public void sendMessage() throws IOException {
@@ -280,7 +280,7 @@ public class EventHubClientTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventSender sender = client.createSender()) {
+        try (EventHubProducer sender = client.createProducer()) {
             StepVerifier.create(sender.send(events))
                 .verifyComplete();
         }
@@ -293,9 +293,10 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Arrange
         final int numberOfEvents = 10;
-        final EventReceiverOptions options = new EventReceiverOptions()
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .prefetchCount(2);
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.earliest(), options);
+        final EventHubConsumer receiver = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
+            PARTITION_ID, EventPosition.earliest(), options);
 
         // Act & Assert
         StepVerifier.create(receiver.receive().take(numberOfEvents))
@@ -323,11 +324,11 @@ public class EventHubClientTest extends ApiTestBase {
 
         for (final EventHubClient ehClient : ehClients) {
 
-            final EventReceiver receiver = ehClient.createReceiver(partitionId, EventPosition.latest(),
-                new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
+            final EventHubConsumer receiver = ehClient.createConsumer(partitionId, EventPosition.latest(),
+                new EventHubConsumerOptions().consumerGroup(getConsumerGroupName()));
 
             final Flux<EventData> receivedData = receiver.receive();
-            pushEventsToPartition(senderClient, new EventSenderOptions().partitionId(PARTITION_ID), 10);
+            pushEventsToPartition(senderClient, new EventHubProducerOptions().partitionId(PARTITION_ID), 10);
 
             StepVerifier.create(receivedData.take(10))
                 .expectNextCount(10)

@@ -20,8 +20,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
-
-public class EventReceiverTest extends ApiTestBase {
+public class EventHubConsumerTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "TestMessage1";
     private static final String PROPERTY1 = "property1";
@@ -29,11 +28,11 @@ public class EventReceiverTest extends ApiTestBase {
     private static final String PROPERTY2 = MessageConstant.MESSAGE_ID.getValue(); // TODO: need to verify it
     private static final String PROPERTY_VALUE2 = "something2";
 
-    private final ClientLogger logger = new ClientLogger(EventReceiverTest.class);
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
 
     private EventHubClient client;
-    private EventSender sender;
-    private EventReceiver receiver;
+    private EventHubProducer sender;
+    private EventHubConsumer receiver;
     private EventData resendEventData;
 
     @Rule
@@ -49,8 +48,8 @@ public class EventReceiverTest extends ApiTestBase {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventSenderOptions senderOptions = new EventSenderOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        sender = client.createSender(senderOptions);
+        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        sender = client.createProducer(senderOptions);
     }
 
     @Override
@@ -90,8 +89,7 @@ public class EventReceiverTest extends ApiTestBase {
         final EventData event = new EventData(PAYLOAD.getBytes());
         event.properties().put(PROPERTY1, PROPERTY_VALUE1);
         event.properties().put(PROPERTY2, PROPERTY_VALUE2);
-        receiver = client.createReceiver(PARTITION_ID, EventPosition.latest(),
-            new EventReceiverOptions().consumerGroup(getConsumerGroupName()));
+        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
 
         // Act & Assert
         StepVerifier.create(receiver.receive().take(1))

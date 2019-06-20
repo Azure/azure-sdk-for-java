@@ -298,6 +298,19 @@
               <propertyName>surefireArgLine</propertyName>
             </configuration>
           </execution>
+          <execution>
+            <!-- This generates the unit test reports for individual modules.
+              jacoco-test-coverage generates aggregate reports for all modules -->
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <!-- Sets the output directory for the code coverage report. -->
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
