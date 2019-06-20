@@ -204,7 +204,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *         context of this group. The name of the consumer group that is created by default is
-     *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
+     *         {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
@@ -220,9 +220,9 @@ public class EventHubClient implements Closeable {
         Objects.requireNonNull(options);
 
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
         }
-        if (ImplUtils.isNullOrEmpty(consumerGroup)) {
+        if (ImplUtils.isNullOrEmpty(partitionId)) {
             throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
         }
 
