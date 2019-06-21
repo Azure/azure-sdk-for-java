@@ -1,8 +1,6 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.File;
 import java.time.Duration;
@@ -15,7 +13,7 @@ public class LargeFileTest {
     private static StorageClient storageClient;
     private static ContainerClient containerClient;
 
-    @BeforeClass
+    //@BeforeClass
     public static void setup() {
         storageClient = StorageClient.storageClientBuilder()
             .credentials(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
@@ -29,13 +27,13 @@ public class LargeFileTest {
         }
     }
 
-    @Test
+    //@Test
     public void uploadLargeBlockBlob() throws Exception {
         BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("testblob" + RANDOM.nextInt(1000));
         blockBlobClient.uploadFromFile(filePath);
     }
 
-    @Test
+    //@Test
     public void downloadLargeBlockBlob() throws Exception {
         OffsetDateTime start = OffsetDateTime.now();
         BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("testblob-10g");

@@ -31,7 +31,6 @@ class BlockBlobAPITest extends APISpec {
         HttpHeaders headers = response.headers()
 
         expect:
-        notThrown(StorageException)
         response.statusCode() == 201
         headers.value("Content-MD5") != null
         headers.value("x-ms-request-id") != null
@@ -530,10 +529,13 @@ class BlockBlobAPITest extends APISpec {
 //        response.headers().blobContentLength() == defaultDataSize * 2L
     }
 
-//    def "Get block list min"() {
-//        expect:
-//        bu.listBlocks(BlockListType.ALL).statusCode() == 200
-//    }
+    def "Get block list min"() {
+        when:
+        bu.listBlocks(BlockListType.ALL)
+
+        then:
+        notThrown(StorageErrorException)
+    }
 
     @Unroll
     def "Get block list type"() {
