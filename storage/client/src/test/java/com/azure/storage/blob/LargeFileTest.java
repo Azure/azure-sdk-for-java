@@ -1,5 +1,6 @@
 package com.azure.storage.blob;
 
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,7 +18,7 @@ public class LargeFileTest {
     @BeforeClass
     public static void setup() {
         storageClient = StorageClient.storageClientBuilder()
-            .credentials(new SharedKeyCredentials(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
+            .credentials(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient();

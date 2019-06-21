@@ -5,6 +5,7 @@ package com.azure.core.auth.credentials;
 
 import com.azure.core.AzureEnvironment;
 import com.azure.core.annotations.Beta;
+import com.azure.core.credentials.AccessToken;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -100,7 +101,7 @@ final class AzureCliSubscription {
         } else {
             credentialInstance = new UserTokenCredentials(clientId(), tenant(), null, null, environment()) {
                 @Override
-                public synchronized Mono<String> getToken(String resource) {
+                public synchronized Mono<AccessToken> getToken(String resource) {
                     AzureCliToken token = userTokens.get(resource);
                     // Management endpoint also works for resource manager
                     if (token == null && (resource.equalsIgnoreCase(super.environment().resourceManagerEndpoint()))) {
@@ -108,7 +109,7 @@ final class AzureCliSubscription {
                     }
                     // Exact match and token hasn't expired
                     if (token != null && !token.expired()) {
-                        return Mono.just(token.accessToken());
+                        return Mono.just(Util.parseAzureCliToken(token));
                     }
                     // If found then refresh
                     boolean shouldRefresh = token != null;
@@ -124,7 +125,7 @@ final class AzureCliSubscription {
                                     try {
                                         AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
                                         userTokens.put(resource, newToken);
-                                        return newToken.accessToken();
+                                        return Util.parseAzureCliToken(newToken);
                                     } catch (CloneNotSupportedException cnse) {
                                         throw Exceptions.propagate(cnse);
                                     }

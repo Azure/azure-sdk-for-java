@@ -4,11 +4,14 @@
 package com.azure.core.implementation.util;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.BufferedOutputStream;
@@ -245,6 +248,19 @@ public class FluxUtilTests {
         final byte[] byteArray = FluxUtil.byteBufToArray(byteBuffer);
         assertArrayEquals(new byte[] { 0, 1, 2, 3, 4 }, byteArray);
         assertEquals(5, byteBuffer.readableBytes());
+    }
+
+    @Test
+    public void testCollectByteBufStream() {
+        Flux<ByteBuf> byteBufFlux = Flux
+            .just(Unpooled.copyInt(1), Unpooled.copyInt(255), Unpooled.copyInt(256));
+        Mono<ByteBuf> result = FluxUtil.collectByteBufStream(byteBufFlux, false);
+        byte[] bytes = ByteBufUtil.getBytes(result.block());
+        assertEquals(12, bytes.length);
+        assertArrayEquals(new byte[]{
+            0, 0, 0, 1,
+            0, 0, 0, (byte) 255,
+            0, 0, 1, 0}, bytes);
     }
 //
     private static byte[] toBytes(ByteBuf bb) {

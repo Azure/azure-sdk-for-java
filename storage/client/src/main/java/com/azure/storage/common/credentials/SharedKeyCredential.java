@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -35,7 +36,7 @@ public final class SharedKeyCredential {
     private final byte[] accountKey;
 
     /**
-     * Initializes a new instance of SharedKeyCredentials contains an account's name and its primary or secondary
+     * Initializes a new instance of SharedKeyCredential contains an account's name and its primary or secondary
      * accountKey.
      *
      * @param accountName The account name associated with the request.
@@ -70,6 +71,15 @@ public final class SharedKeyCredential {
     }
 
     /**
+     * Gets the account name associated with the request.
+     *
+     * @return The account name.
+     */
+    public String accountName() {
+        return accountName;
+    }
+
+    /**
      * Generates the SharedKey Authorization value from information in the request.
      * @param requestURL URL of the request
      * @param httpMethod HTTP method being used
@@ -78,6 +88,30 @@ public final class SharedKeyCredential {
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
         return computeHMACSHA256(buildStringToSign(requestURL, httpMethod, headers));
+    }
+
+    /**
+     * Computes a signature for the specified string using the HMAC-SHA256 algorithm.
+     * Package-private because it is used to generate SAS signatures.
+     *
+     * @param stringToSign The UTF-8-encoded string to sign.
+     * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
+     * @throws InvalidKeyException If the accountKey is not a valid Base64-encoded string.
+     */
+    public String computeHmac256(final String stringToSign) throws InvalidKeyException {
+        try {
+            /*
+            We must get a new instance of the Mac calculator for each signature calculated because the instances are
+            not threadsafe and there is some suggestion online that they may not even be safe for reuse, so we use a
+            new one each time to be sure.
+             */
+            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+            hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
+            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
+            return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
+        } catch (final  NoSuchAlgorithmException e) {
+            throw new Error(e);
+        }
     }
 
     private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers) {

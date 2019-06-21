@@ -22,133 +22,137 @@ import com.microsoft.azure.management.batchai.v2018_05_01.BatchAIError;
 import com.microsoft.azure.management.batchai.v2018_05_01.NodeStateCounts;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.rest.SkipParentValidation;
-import com.microsoft.azure.Resource;
+import com.microsoft.azure.ProxyResource;
 
 /**
- * Contains information about a Cluster.
+ * Information about a Cluster.
  */
 @JsonFlatten
-@SkipParentValidation
-public class ClusterInner extends Resource {
+public class ClusterInner extends ProxyResource {
     /**
-     * The size of the virtual machines in the cluster.
-     * All virtual machines in a cluster are the same size. For information
-     * about available VM sizes for clusters using images from the Virtual
-     * Machines Marketplace (see Sizes for Virtual Machines (Linux) or Sizes
-     * for Virtual Machines (Windows). Batch AI service supports all Azure VM
-     * sizes except STANDARD_A0 and those with premium storage (STANDARD_GS,
-     * STANDARD_DS, and STANDARD_DSV2 series).
+     * VM size.
+     * The size of the virtual machines in the cluster. All nodes in a cluster
+     * have the same VM size.
      */
     @JsonProperty(value = "properties.vmSize")
     private String vmSize;
 
     /**
-     * dedicated or lowpriority.
-     * The default value is dedicated. The node can get preempted while the
-     * task is running if lowpriority is choosen. This is best suited if the
-     * workload is checkpointing and can be restarted. Possible values include:
-     * 'dedicated', 'lowpriority'.
+     * VM priority.
+     * VM priority of cluster nodes. Possible values include: 'dedicated',
+     * 'lowpriority'.
      */
     @JsonProperty(value = "properties.vmPriority")
     private VmPriority vmPriority;
 
     /**
-     * Desired scale for the Cluster.
+     * Scale settings.
+     * Scale settings of the cluster.
      */
     @JsonProperty(value = "properties.scaleSettings")
     private ScaleSettings scaleSettings;
 
     /**
-     * Settings for OS image and mounted data volumes.
+     * VM configuration.
+     * Virtual machine configuration (OS image) of the compute nodes. All nodes
+     * in a cluster have the same OS image configuration.
      */
     @JsonProperty(value = "properties.virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
-     * Setup to be done on all compute nodes in the Cluster.
+     * Node setup.
+     * Setup (mount file systems, performance counters settings and custom
+     * setup task) to be performed on each compute node in the cluster.
      */
     @JsonProperty(value = "properties.nodeSetup")
     private NodeSetup nodeSetup;
 
     /**
-     * Settings for user account of compute nodes.
+     * User account settings.
+     * Administrator user account settings which can be used to SSH to compute
+     * nodes.
      */
     @JsonProperty(value = "properties.userAccountSettings")
     private UserAccountSettings userAccountSettings;
 
     /**
-     * Specifies the identifier of the subnet.
+     * Subnet.
+     * Virtual network subnet resource ID the cluster nodes belong to.
      */
     @JsonProperty(value = "properties.subnet")
     private ResourceId subnet;
 
     /**
-     * The creation time of the cluster.
+     * Creation time.
+     * The time when the cluster was created.
      */
     @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
-     * Specifies the provisioning state of the cluster.
-     * Possible value are: creating - Specifies that the cluster is being
-     * created. succeeded - Specifies that the cluster has been created
-     * successfully. failed - Specifies that the cluster creation has failed.
-     * deleting - Specifies that the cluster is being deleted. Possible values
-     * include: 'creating', 'succeeded', 'failed', 'deleting'.
+     * Provisioning state.
+     * Provisioning state of the cluster. Possible value are: creating -
+     * Specifies that the cluster is being created. succeeded - Specifies that
+     * the cluster has been created successfully. failed - Specifies that the
+     * cluster creation has failed. deleting - Specifies that the cluster is
+     * being deleted. Possible values include: 'creating', 'succeeded',
+     * 'failed', 'deleting'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * The provisioning state transition time of the cluster.
+     * Provisioning State Transition time.
+     * Time when the provisioning state was changed.
      */
     @JsonProperty(value = "properties.provisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime provisioningStateTransitionTime;
 
     /**
-     * Indicates whether the cluster is resizing.
-     * Possible values are: steady and resizing. steady state indicates that
-     * the cluster is not resizing. There are no changes to the number of
+     * Allocation state.
+     * Allocation state of the cluster. Possible values are: steady - Indicates
+     * that the cluster is not resizing. There are no changes to the number of
      * compute nodes in the cluster in progress. A cluster enters this state
      * when it is created and when no operations are being performed on the
-     * cluster to change the number of compute nodes. resizing state indicates
-     * that the cluster is resizing; that is, compute nodes are being added to
-     * or removed from the cluster. Possible values include: 'steady',
-     * 'resizing'.
+     * cluster to change the number of compute nodes. resizing - Indicates that
+     * the cluster is resizing; that is, compute nodes are being added to or
+     * removed from the cluster. Possible values include: 'steady', 'resizing'.
      */
     @JsonProperty(value = "properties.allocationState", access = JsonProperty.Access.WRITE_ONLY)
     private AllocationState allocationState;
 
     /**
+     * Allocation state transition time.
      * The time at which the cluster entered its current allocation state.
      */
     @JsonProperty(value = "properties.allocationStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime allocationStateTransitionTime;
 
     /**
-     * Contains details of various errors on the cluster including resize and
-     * node setup task.
-     * This element contains all the errors encountered by various compute
-     * nodes during node setup.
+     * Errors.
+     * Collection of errors encountered by various compute nodes during node
+     * setup.
      */
     @JsonProperty(value = "properties.errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<BatchAIError> errors;
 
     /**
+     * Current node count.
      * The number of compute nodes currently assigned to the cluster.
      */
     @JsonProperty(value = "properties.currentNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentNodeCount;
 
     /**
+     * Node state counts.
      * Counts of various node states on the cluster.
      */
     @JsonProperty(value = "properties.nodeStateCounts", access = JsonProperty.Access.WRITE_ONLY)
     private NodeStateCounts nodeStateCounts;
 
     /**
-     * Get the vmSize value.
+     * Get the size of the virtual machines in the cluster. All nodes in a cluster have the same VM size.
      *
      * @return the vmSize value
      */
@@ -157,7 +161,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the vmSize value.
+     * Set the size of the virtual machines in the cluster. All nodes in a cluster have the same VM size.
      *
      * @param vmSize the vmSize value to set
      * @return the ClusterInner object itself.
@@ -168,7 +172,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the vmPriority value.
+     * Get vM priority of cluster nodes. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @return the vmPriority value
      */
@@ -177,7 +181,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the vmPriority value.
+     * Set vM priority of cluster nodes. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @param vmPriority the vmPriority value to set
      * @return the ClusterInner object itself.
@@ -188,7 +192,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the scaleSettings value.
+     * Get scale settings of the cluster.
      *
      * @return the scaleSettings value
      */
@@ -197,7 +201,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the scaleSettings value.
+     * Set scale settings of the cluster.
      *
      * @param scaleSettings the scaleSettings value to set
      * @return the ClusterInner object itself.
@@ -208,7 +212,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the virtualMachineConfiguration value.
+     * Get virtual machine configuration (OS image) of the compute nodes. All nodes in a cluster have the same OS image configuration.
      *
      * @return the virtualMachineConfiguration value
      */
@@ -217,7 +221,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the virtualMachineConfiguration value.
+     * Set virtual machine configuration (OS image) of the compute nodes. All nodes in a cluster have the same OS image configuration.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the ClusterInner object itself.
@@ -228,7 +232,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the nodeSetup value.
+     * Get setup (mount file systems, performance counters settings and custom setup task) to be performed on each compute node in the cluster.
      *
      * @return the nodeSetup value
      */
@@ -237,7 +241,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the nodeSetup value.
+     * Set setup (mount file systems, performance counters settings and custom setup task) to be performed on each compute node in the cluster.
      *
      * @param nodeSetup the nodeSetup value to set
      * @return the ClusterInner object itself.
@@ -248,7 +252,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the userAccountSettings value.
+     * Get administrator user account settings which can be used to SSH to compute nodes.
      *
      * @return the userAccountSettings value
      */
@@ -257,7 +261,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the userAccountSettings value.
+     * Set administrator user account settings which can be used to SSH to compute nodes.
      *
      * @param userAccountSettings the userAccountSettings value to set
      * @return the ClusterInner object itself.
@@ -268,7 +272,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the subnet value.
+     * Get virtual network subnet resource ID the cluster nodes belong to.
      *
      * @return the subnet value
      */
@@ -277,7 +281,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the subnet value.
+     * Set virtual network subnet resource ID the cluster nodes belong to.
      *
      * @param subnet the subnet value to set
      * @return the ClusterInner object itself.
@@ -288,7 +292,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the creationTime value.
+     * Get the time when the cluster was created.
      *
      * @return the creationTime value
      */
@@ -297,7 +301,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the cluster. Possible value are: creating - Specifies that the cluster is being created. succeeded - Specifies that the cluster has been created successfully. failed - Specifies that the cluster creation has failed. deleting - Specifies that the cluster is being deleted. Possible values include: 'creating', 'succeeded', 'failed', 'deleting'.
      *
      * @return the provisioningState value
      */
@@ -306,7 +310,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningStateTransitionTime value.
+     * Get time when the provisioning state was changed.
      *
      * @return the provisioningStateTransitionTime value
      */
@@ -315,7 +319,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the allocationState value.
+     * Get allocation state of the cluster. Possible values are: steady - Indicates that the cluster is not resizing. There are no changes to the number of compute nodes in the cluster in progress. A cluster enters this state when it is created and when no operations are being performed on the cluster to change the number of compute nodes. resizing - Indicates that the cluster is resizing; that is, compute nodes are being added to or removed from the cluster. Possible values include: 'steady', 'resizing'.
      *
      * @return the allocationState value
      */
@@ -324,7 +328,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the allocationStateTransitionTime value.
+     * Get the time at which the cluster entered its current allocation state.
      *
      * @return the allocationStateTransitionTime value
      */
@@ -333,7 +337,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the errors value.
+     * Get collection of errors encountered by various compute nodes during node setup.
      *
      * @return the errors value
      */
@@ -342,7 +346,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the currentNodeCount value.
+     * Get the number of compute nodes currently assigned to the cluster.
      *
      * @return the currentNodeCount value
      */
@@ -351,7 +355,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the nodeStateCounts value.
+     * Get counts of various node states on the cluster.
      *
      * @return the nodeStateCounts value
      */

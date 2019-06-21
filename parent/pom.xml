@@ -98,7 +98,7 @@
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
 
     <!-- Dependency Versions -->
-    <jackson.version>2.9.6</jackson.version>
+    <jackson.version>2.9.9</jackson.version>
     <client-runtime.version>1.6.5</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
@@ -118,7 +118,7 @@
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
-    <guava.version>20.0</guava.version>
+    <guava.version>24.1.1-jre</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
     <jgit.version>4.5.0.201609210915-r</jgit.version>
     <commons-net.version>3.3</commons-net.version>
@@ -127,8 +127,9 @@
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
+    <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
-    <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
+    <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
     <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
     <azure-mgmt-resources-test.version>1.3.1-SNAPSHOT</azure-mgmt-resources-test.version>
@@ -140,8 +141,8 @@
     <slf4j-test.version>1.2.0</slf4j-test.version>
     <reactor-test.version>3.2.3.RELEASE</reactor-test.version>
     <wiremock-standalone.version>2.15.0</wiremock-standalone.version>
-    <jetty-http.version>9.4.8.v20171121</jetty-http.version>
-    <jetty-server.version>9.4.8.v20171121</jetty-server.version>
+    <jetty-http.version>9.4.11.v20180605</jetty-http.version>
+    <jetty-server.version>9.4.11.v20180605</jetty-server.version>
     <junit.version>4.12</junit.version>
     <commons-io.version>2.4</commons-io.version>
 
@@ -350,6 +351,12 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-core-test</artifactId>
         <version>${azure-core-test.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure-identity.version}</version>
       </dependency>
 
       <dependency>

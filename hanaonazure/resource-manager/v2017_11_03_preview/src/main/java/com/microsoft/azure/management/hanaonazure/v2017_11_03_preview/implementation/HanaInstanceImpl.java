@@ -118,6 +118,12 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     }
 
     @Override
+    public HanaInstanceImpl withPartnerNodeId(String partnerNodeId) {
+        this.inner().withPartnerNodeId(partnerNodeId);
+        return this;
+    }
+
+    @Override
     public HanaInstanceImpl withStorageProfile(StorageProfile storageProfile) {
         this.inner().withStorageProfile(storageProfile);
         return this;
