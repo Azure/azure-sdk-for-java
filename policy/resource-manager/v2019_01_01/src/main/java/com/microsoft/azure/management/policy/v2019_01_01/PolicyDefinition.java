@@ -130,7 +130,7 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMode {
             /**
              * Specifies mode.
-             * @param mode The policy definition mode
+             * @param mode The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data
              * @return the next definition stage
              */
             WithCreate withMode(String mode);
@@ -232,7 +232,7 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMode {
             /**
              * Specifies mode.
-             * @param mode The policy definition mode
+             * @param mode The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data
              * @return the next update stage
              */
             Update withMode(String mode);

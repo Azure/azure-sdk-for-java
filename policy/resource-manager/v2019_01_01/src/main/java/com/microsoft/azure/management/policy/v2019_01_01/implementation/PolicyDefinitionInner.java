@@ -27,7 +27,8 @@ public class PolicyDefinitionInner extends ProxyResource {
     private PolicyType policyType;
 
     /**
-     * The policy definition mode.
+     * The policy definition mode. Some examples are All, Indexed,
+     * Microsoft.KeyVault.Data.
      */
     @JsonProperty(value = "properties.mode")
     private String mode;
@@ -83,7 +84,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the policy definition mode.
+     * Get the policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      *
      * @return the mode value
      */
@@ -92,7 +93,7 @@ public class PolicyDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policy definition mode.
+     * Set the policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      *
      * @param mode the mode value to set
      * @return the PolicyDefinitionInner object itself.
