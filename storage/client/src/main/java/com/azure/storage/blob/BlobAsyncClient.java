@@ -18,8 +18,11 @@ import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.ByteBufFlux;
 
 import java.io.File;
@@ -34,8 +37,10 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -374,21 +379,24 @@ public class BlobAsyncClient {
      *         its parent, forming a linked list.
      */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, BlobAccessConditions accessConditions,
-            boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
+                                     boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
         AsynchronousFileChannel channel;
         try {
             channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
         } catch (IOException e) {
             return Mono.error(e);
         }
-        return sliceBlobRange(range, accessConditions, context)
+        return Mono.justOrEmpty(range)
+            .switchIfEmpty(getFullBlobRange(accessConditions, context))
+            .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg)))
             .flatMap(chunk -> blobAsyncRawClient
-                    .download(chunk, accessConditions, rangeGetContentMD5, context)
-//                    .doOnNext(res ->
-//                        System.out.println("Downloaded " + chunk.toString() + " on thread " + Thread.currentThread().getName()))
-                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
-//                    .doOnTerminate(() ->
-//                        System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName())))
+                .download(chunk, accessConditions, rangeGetContentMD5, context)
+                .subscribeOn(Schedulers.elastic())
+                .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset())))
+                .timeout(Duration.ofSeconds(300))
+                .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)
+                .doOnTerminate(() ->
+                    System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName() + " of total " + Thread.activeCount() + " threads")))
             .then()
             .doOnTerminate(() -> {
                 try {
@@ -399,28 +407,22 @@ public class BlobAsyncClient {
             });
     }
 
-    private Flux<BlobRange> sliceBlobRange(BlobRange blobRange, BlobAccessConditions accessConditions, Context context) {
-        long offset = blobRange == null ? 0L : blobRange.offset();
-        Mono<Long> length;
-        if (blobRange != null) {
-            length = Mono.just(blobRange.count());
-        } else {
-            length = Mono.empty();
+    private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions, Context context) {
+        return getProperties(accessConditions, context).map(rb -> new BlobRange(0, rb.value().blobSize()));
+    }
+
+    private List<BlobRange> sliceBlobRange(BlobRange blobRange) {
+        long offset = blobRange.offset();
+        long length = blobRange.count();
+        List<BlobRange> chunks = new ArrayList<>();
+        for (long pos = offset; pos < offset + length; pos += BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE) {
+            long count = BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
+            if (pos + count > offset + length) {
+                count = offset + length - pos;
+            }
+            chunks.add(new BlobRange(pos, count));
         }
-        length = length.switchIfEmpty(getProperties(accessConditions, context).map(rb -> rb.value().blobSize() - offset));
-        return length
-            .map(l -> {
-                List<BlobRange> chunks = new ArrayList<>();
-                for (long pos = offset; pos < offset + l; pos += BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE) {
-                    long count = BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE;
-                    if (pos + count > offset + l) {
-                        count = offset + l - pos;
-                    }
-                    chunks.add(new BlobRange(pos, count));
-                }
-                return chunks;
-            })
-            .flatMapMany(Flux::fromIterable);
+        return chunks;
     }
 
     /**

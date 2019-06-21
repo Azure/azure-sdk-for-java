@@ -32,7 +32,7 @@ class ReactorNettyClient implements HttpClient {
      * Creates default ReactorNettyClient.
      */
     ReactorNettyClient() {
-        this(reactor.netty.http.client.HttpClient.create(ConnectionProvider.newConnection()));
+        this(reactor.netty.http.client.HttpClient.create());
     }
 
     /**

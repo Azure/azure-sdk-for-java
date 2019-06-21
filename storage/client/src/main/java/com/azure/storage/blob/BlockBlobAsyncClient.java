@@ -35,6 +35,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
 
 /**
@@ -171,22 +173,23 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
-            BlobAccessConditions accessConditions, Context context) {
+                                     BlobAccessConditions accessConditions, Context context) {
         AsynchronousFileChannel channel;
         try {
             channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
         } catch (IOException e) {
             return Mono.error(e);
         }
+        final SortedMap<Long, String> blockIds = new TreeMap<>();
         return Flux.fromIterable(sliceFile(filePath))
+            .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
             .flatMap(chunk -> {
-                    String blockId = getBlockID();
-                    return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context)
-                        .map(rb -> blockId)/*.doOnNext(bid ->
+                String blockId = blockIds.get(chunk.offset());
+                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context)
+                        /*.doOnNext(bid ->
                             System.out.println("Staged block " + bid + " on thread " + Thread.currentThread().getName()))*/;
-                })
-            .collectList()
-            .flatMap(blocks -> commitBlockList(blocks, headers, metadata, accessConditions, context))
+            })
+            .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions, context)))
             .then()
             .doOnTerminate(() -> {
                 try {

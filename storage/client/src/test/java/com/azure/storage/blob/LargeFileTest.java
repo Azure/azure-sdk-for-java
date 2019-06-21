@@ -42,7 +42,7 @@ public class LargeFileTest {
 //        File uploadedFile = new File(filePath);
 //        System.out.println("Upload " + uploadedFile.length() + " bytes took " + Duration.between(start, OffsetDateTime.now()).getSeconds() + " seconds");
 //        start = OffsetDateTime.now();
-        String downloadName = "C:\\Users\\jianghlu\\10g-downloaded.dat";
+        String downloadName = "D:\\10g-downloaded.dat";
         File downloaded = new File(downloadName);
         downloaded.createNewFile();
         blockBlobClient.downloadToFile(downloadName);
