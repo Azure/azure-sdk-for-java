@@ -12,6 +12,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
@@ -20,6 +21,7 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -603,7 +605,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
+    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
 
@@ -624,7 +626,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    Flux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
         final Context contextWithSpanName = setSpanName("listSettings", context);
 
@@ -643,8 +645,19 @@ public final class ConfigurationAsyncClient extends ServiceClient {
                 .doOnSuccess(response -> logger.asInfo().log("Listed all ConfigurationSettings"))
                 .doOnError(error -> logger.asWarning().log("Failed to list all ConfigurationSetting", error));
         }
+        return new PagedFlux<>(result, nextPageLink -> getNextPage(nextPageLink, contextWithSpanName));
+    }
 
-        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, contextWithSpanName));
+    private Mono<PagedResponse<ConfigurationSetting>> getNextPage(String nextPageLink,
+        Context context) {
+        if (nextPageLink == null || nextPageLink.isEmpty()) {
+            return Mono.empty();
+        }
+
+        return service.listKeyValues(serviceEndpoint, nextPageLink, context)
+            .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
     }
 
     /**
@@ -728,7 +741,6 @@ public final class ConfigurationAsyncClient extends ServiceClient {
             .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
-
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
