@@ -11,15 +11,15 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Properties for configuring proxy for Event Hubs.
+ * Properties for configuring proxies with Event Hubs.
  */
 public class ProxyConfiguration implements AutoCloseable {
     /**
-     * The environment variable used to
+     * The configuration key for containing the username who authenticates with the proxy.
      */
     public static final String PROXY_USERNAME = "PROXY_USERNAME";
     /**
-     * The environment variable
+     * The configuration key for containing the password for the username who authenticates with the proxy.
      */
     public static final String PROXY_PASSWORD = "PROXY_PASSWORD";
 
@@ -33,11 +33,12 @@ public class ProxyConfiguration implements AutoCloseable {
      */
     public static final ProxyConfiguration SYSTEM_DEFAULTS = new ProxyConfiguration();
 
-    ProxyConfiguration() {
+    private ProxyConfiguration() {
         this.credentials = null;
         this.proxyAddress = null;
         this.authentication = null;
     }
+
     /**
      * Creates a proxy configuration that uses the {@code proxyAddress} and authenticates with provided
      * {@code username}, {@code password} and {@code authentication}.
@@ -53,7 +54,7 @@ public class ProxyConfiguration implements AutoCloseable {
      * @throws IllegalArgumentException if {@code authentication} is {@link ProxyAuthenticationType#BASIC} or
      * {@link ProxyAuthenticationType#DIGEST} and {@code username} or {@code password} are {@code null}.
      */
-    ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username, String password) {
+    public ProxyConfiguration(ProxyAuthenticationType authentication, Proxy proxyAddress, String username, String password) {
         Objects.requireNonNull(authentication);
         this.authentication = authentication;
         this.proxyAddress = proxyAddress;
@@ -67,7 +68,7 @@ public class ProxyConfiguration implements AutoCloseable {
     }
 
     /**
-     * Gets the proxy authentication type
+     * Gets the proxy authentication type.
      *
      * @return the proxy authentication type to use. Returns {@code null} if no authentication type was set.
      * This occurs when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
@@ -77,7 +78,7 @@ public class ProxyConfiguration implements AutoCloseable {
     }
 
     /**
-     * Gets the proxy address
+     * Gets the proxy address.
      *
      * @return the proxy address. Return {@code null} if no proxy address was set
      * This occurs when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
@@ -87,7 +88,7 @@ public class ProxyConfiguration implements AutoCloseable {
     }
 
     /**
-     * Gets the credentials user provided for authentication of proxy server
+     * Gets the credentials user provided for authentication of proxy server.
      *
      * @return the username and password to use. Return {@code null} if no credential was set.
      * This occurs when user uses {@link ProxyConfiguration#SYSTEM_DEFAULTS}.
@@ -115,6 +116,9 @@ public class ProxyConfiguration implements AutoCloseable {
         return proxyAddress != null && proxyAddress.address() != null;
     }
 
+    /**
+     * Disposes of the configuration along with potential credentials.
+     */
     @Override
     public void close() {
         if (credentials != null) {
