@@ -14,6 +14,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -60,7 +61,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
     }
 
     @Override
-    public Mono<Void> authorize(final String tokenAudience) {
+    public Mono<OffsetDateTime> authorize(final String tokenAudience) {
         final Message request = Proton.message();
         final Map<String, Object> properties = new HashMap<>();
         properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
@@ -72,7 +73,8 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         return credential.getToken(tokenAudience).flatMap(accessToken -> {
             request.setBody(new AmqpValue(accessToken.token()));
 
-            return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher())).then();
+            return cbsChannelMono.flatMap(x -> x.sendWithAck(request, provider.getReactorDispatcher()))
+                .then(Mono.fromCallable(accessToken::expiresOn));
         });
     }
 
