@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.credentials.SharedKeyCredential;
+
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -186,8 +188,8 @@ final class AccountSASSignatureValues {
      *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
-        Utility.assertNotNull("SharedKeyCredentials", sharedKeyCredentials);
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+        Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);
@@ -209,9 +211,9 @@ final class AccountSASSignatureValues {
                 null, this.permissions, signature, null, null, null, null, null, null);
     }
 
-    private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {
+    private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
-                sharedKeyCredentials.getAccountName(),
+                sharedKeyCredentials.accountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,

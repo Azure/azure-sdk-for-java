@@ -7,11 +7,12 @@ import com.azure.core.implementation.util.Base64Util;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
+import java.time.OffsetDateTime;
 
 /**
  * Basic Auth credentials for use with a REST Service Client.
  */
-public class BasicAuthenticationCredential extends TokenCredential {
+public class BasicAuthenticationCredential implements TokenCredential {
     /**
      * Basic auth user name.
      */
@@ -29,7 +30,6 @@ public class BasicAuthenticationCredential extends TokenCredential {
      * @param password basic auth password
      */
     public BasicAuthenticationCredential(String userName, String password) {
-        super("Basic");
         this.userName = userName;
         this.password = password;
     }
@@ -38,7 +38,7 @@ public class BasicAuthenticationCredential extends TokenCredential {
      * @throws RuntimeException If the UTF-8 encoding isn't supported.
      */
     @Override
-    public Mono<String> getTokenAsync(String resource) {
+    public Mono<AccessToken> getToken(String... scopes) {
         String credential = userName + ":" + password;
         String encodedCredential;
         try {
@@ -48,6 +48,6 @@ public class BasicAuthenticationCredential extends TokenCredential {
             throw new RuntimeException(e);
         }
 
-        return Mono.just(encodedCredential);
+        return Mono.just(new AccessToken(encodedCredential, OffsetDateTime.MAX));
     }
 }

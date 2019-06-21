@@ -19,6 +19,7 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.batchai.v2018_05_01.WorkspaceCreateParameters;
 import com.microsoft.azure.management.batchai.v2018_05_01.WorkspacesListByResourceGroupOptions;
 import com.microsoft.azure.management.batchai.v2018_05_01.WorkspacesListOptions;
+import com.microsoft.azure.management.batchai.v2018_05_01.WorkspaceUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -27,12 +28,14 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -82,6 +85,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Workspaces beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Body WorkspaceCreateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Workspaces update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}")
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body WorkspaceUpdateParameters parameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Workspaces delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}", method = "DELETE", hasBody = true)
@@ -727,6 +734,181 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
         return this.client.restClient().responseBuilderFactory().<WorkspaceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkspaceInner object if successful.
+     */
+    public WorkspaceInner update(String resourceGroupName, String workspaceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, workspaceName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName, final ServiceCallback<WorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, workspaceName), serviceCallback);
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkspaceInner object
+     */
+    public Observable<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, workspaceName).map(new Func1<ServiceResponse<WorkspaceInner>, WorkspaceInner>() {
+            @Override
+            public WorkspaceInner call(ServiceResponse<WorkspaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkspaceInner object
+     */
+    public Observable<ServiceResponse<WorkspaceInner>> updateWithServiceResponseAsync(String resourceGroupName, String workspaceName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Map<String, String> tags = null;
+        WorkspaceUpdateParameters parameters = new WorkspaceUpdateParameters();
+        parameters.withTags(null);
+        return service.update(resourceGroupName, workspaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkspaceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkspaceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkspaceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param tags Tags. The user specified tags associated with the Workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WorkspaceInner object if successful.
+     */
+    public WorkspaceInner update(String resourceGroupName, String workspaceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, workspaceName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param tags Tags. The user specified tags associated with the Workspace.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName, Map<String, String> tags, final ServiceCallback<WorkspaceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, workspaceName, tags), serviceCallback);
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param tags Tags. The user specified tags associated with the Workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkspaceInner object
+     */
+    public Observable<WorkspaceInner> updateAsync(String resourceGroupName, String workspaceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, workspaceName, tags).map(new Func1<ServiceResponse<WorkspaceInner>, WorkspaceInner>() {
+            @Override
+            public WorkspaceInner call(ServiceResponse<WorkspaceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates properties of a Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param tags Tags. The user specified tags associated with the Workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WorkspaceInner object
+     */
+    public Observable<ServiceResponse<WorkspaceInner>> updateWithServiceResponseAsync(String resourceGroupName, String workspaceName, Map<String, String> tags) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        WorkspaceUpdateParameters parameters = new WorkspaceUpdateParameters();
+        parameters.withTags(tags);
+        return service.update(resourceGroupName, workspaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WorkspaceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<WorkspaceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WorkspaceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<WorkspaceInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WorkspaceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

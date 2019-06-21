@@ -527,7 +527,6 @@ public final class ContainerAsyncClient {
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     * Actual blobs are emitted first and blob prefixes are emitted at the end.
      *
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
@@ -539,8 +538,8 @@ public final class ContainerAsyncClient {
      * <p>
      * will return the following results when prefix="foo/":
      * <p><ul>
-     *     <li>foo1 (isPrefix = false)
-     *     <li>foo2 (isPrefix = false)
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
      * @return
@@ -558,7 +557,6 @@ public final class ContainerAsyncClient {
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     * Actual blobs are emitted first and blob prefixes are emitted at the end.
      *
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
@@ -570,8 +568,8 @@ public final class ContainerAsyncClient {
      * <p>
      * will return the following results when prefix="foo/":
      * <p><ul>
-     *     <li>foo1 (isPrefix = false)
-     *     <li>foo2 (isPrefix = false)
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
      * @param options

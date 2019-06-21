@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
@@ -301,11 +302,11 @@ final class ServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials
-     *         A {@link SharedKeyCredentials} object used to sign the SAS values.
+     *         A {@link SharedKeyCredential} object used to sign the SAS values.
      *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 
@@ -419,12 +420,12 @@ final class ServiceSASSignatureValues {
     }
 
     private String stringToSign(final String verifiedPermissions, final String resource,
-            final SharedKeyCredentials sharedKeyCredentials) {
+            final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                getCanonicalName(sharedKeyCredentials.getAccountName()),
+                getCanonicalName(sharedKeyCredentials.accountName()),
                 this.identifier == null ? "" : this.identifier,
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : protocol.toString(),

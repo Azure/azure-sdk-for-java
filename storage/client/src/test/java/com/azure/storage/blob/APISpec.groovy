@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.credentials.AccessToken
+import com.azure.core.credentials.TokenCredential
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
+import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.blob.models.*
+import com.azure.storage.common.credentials.SharedKeyCredential
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
 import org.junit.Assume
@@ -87,10 +90,10 @@ class APISpec extends Specification {
     Credentials for various kinds of accounts.
      */
     @Shared
-    static SharedKeyCredentials primaryCreds
+    static SharedKeyCredential primaryCreds
 
     @Shared
-    static SharedKeyCredentials alternateCreds
+    static SharedKeyCredential alternateCreds
 
     /*
     URLs to various kinds of accounts.
@@ -196,7 +199,7 @@ class APISpec extends Specification {
                 "these credentials will fail.")
             return null
         }
-        return new SharedKeyCredentials(accountName, accountKey)
+        return new SharedKeyCredential(accountName, accountKey)
     }
 
     static HttpClient getHttpClient() {
@@ -210,7 +213,7 @@ class APISpec extends Specification {
         } else return HttpClient.createDefault()
     }
 
-    static StorageClient getGenericServiceURL(SharedKeyCredentials creds) {
+    static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
         return StorageClient.storageClientBuilder()
@@ -570,17 +573,9 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        String tenantId = getEnvironmentVariable("MICROSOFT_AD_TENANT_ID");
-        String servicePrincipalId = getEnvironmentVariable("ARM_CLIENTID");
-        String servicePrincipalKey = getEnvironmentVariable("ARM_CLIENTKEY");
-
-        def authority = String.format("https://login.microsoftonline.com/%s/oauth2/token",tenantId);
-        def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
-        def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
-
         return StorageClient.storageClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
-            .credentials(new TokenCredentials(token))
+            .credentials(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()
     }
 
