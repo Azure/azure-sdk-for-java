@@ -23,20 +23,20 @@ public class ErrorContext implements Serializable {
 
     private static final long serialVersionUID = -2819764407122954922L;
 
-    private final String namespaceName;
+    private final String namespace;
 
     /**
-     * Creates a new instance with the provided {@code namespaceName}.
+     * Creates a new instance with the provided {@code namespace}.
      *
-     * @param namespaceName The service namespace of the error.
-     * @throws IllegalArgumentException when {@code namespaceName} is {@code null} or empty.
+     * @param namespace The service namespace of the error.
+     * @throws IllegalArgumentException when {@code namespace} is {@code null} or empty.
      */
-    public ErrorContext(String namespaceName) {
-        if (ImplUtils.isNullOrEmpty(namespaceName)) {
-            throw new IllegalArgumentException("'namespaceName' cannot be null or empty");
+    public ErrorContext(String namespace) {
+        if (ImplUtils.isNullOrEmpty(namespace)) {
+            throw new IllegalArgumentException("'namespace' cannot be null or empty");
         }
 
-        this.namespaceName = namespaceName;
+        this.namespace = namespace;
     }
 
     /**
@@ -45,7 +45,7 @@ public class ErrorContext implements Serializable {
      * @return The namespace for this error.
      */
     public String getNamespace() {
-        return namespaceName;
+        return namespace;
     }
 
     /**

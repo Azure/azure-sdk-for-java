@@ -18,19 +18,19 @@ public class LinkErrorContext extends SessionErrorContext {
     private final Integer linkCredit;
 
     /**
-     * Creates a new instance with the AMQP link's {@code namespaceName} and {@code entityPath} information. Allows for
+     * Creates a new instance with the AMQP link's {@code namespace} and {@code entityPath} information. Allows for
      * optional information about the link if it was successfully open such as {@code linkCredit} and {@code trackingId}.
      *
-     * @param namespaceName The service namespace of the error context.
+     * @param namespace The service namespace of the error context.
      * @param entityPath The remote container the AMQP receive link is fetching messages from.
      * @param trackingId The tracking id for the error. Tracking id can be {@code null} if the error was not thrown from
      *         the remote AMQP message broker.
      * @param linkCredit the number of link credits the current AMQP link has when this error occurred, can be
      *         {@code null} if the receive link has not opened yet.
-     * @throws IllegalArgumentException if {@code namespaceName} or {@code entityPath} is {@code null} or empty.
+     * @throws IllegalArgumentException if {@code namespace} or {@code entityPath} is {@code null} or empty.
      */
-    public LinkErrorContext(String namespaceName, String entityPath, String trackingId, Integer linkCredit) {
-        super(namespaceName, entityPath);
+    public LinkErrorContext(String namespace, String entityPath, String trackingId, Integer linkCredit) {
+        super(namespace, entityPath);
 
         this.trackingId = trackingId;
         this.linkCredit = linkCredit;
