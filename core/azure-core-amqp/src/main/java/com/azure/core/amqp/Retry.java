@@ -54,18 +54,19 @@ public abstract class Retry {
     }
 
     /**
-     * Get default configured Retry.
+     * Creates a Retry policy that does not retry failed requests.
      *
-     * @return Retry which has all default property set up.
+     * @return A new Retry policy that does not retry failed requests.
      */
     public static Retry getNoRetry() {
         return new ExponentialRetry(Duration.ZERO, Duration.ZERO, 0);
     }
 
     /**
-     * Get default configured Retry.
+     * Creates a Retry policy that retries failed requests up to {@link #DEFAULT_MAX_RETRY_COUNT 10} times. As the
+     * number of retry attempts increase, the period between retry attempts increases.
      *
-     * @return A new instance with all the default Retry values configured.
+     * @return A new instance with the default Retry values configured.
      */
     public static Retry getDefaultRetry() {
         return new ExponentialRetry(DEFAULT_RETRY_MIN_BACKOFF, DEFAULT_RETRY_MAX_BACKOFF, DEFAULT_MAX_RETRY_COUNT);
