@@ -98,7 +98,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 headerValueToStore = "0";
                 addedRetryAfter = true;
             }
-            responseData.put(header.name().toLowerCase(Locale.US), headerValueToStore);
+            responseData.put(header.name(), headerValueToStore);
         }
 
         if (!addedRetryAfter) {
@@ -109,7 +109,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         if (contentType == null) {
             return Mono.just(responseData);
         } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
-            return response.bodyAsString().map(content -> {
+            return response.bodyAsString().switchIfEmpty(Mono.just("")).map(content -> {
                 responseData.put("Body", content);
                 return responseData;
             });
