@@ -21,7 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -30,7 +29,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +106,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
-            .assertNext(ids -> Assert.assertEquals(data.properties.partitionIds().length, ids.length))
+            .expectNextCount(data.properties.partitionIds().length)
             .verifyComplete();
     }
 
@@ -146,14 +144,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Act
         final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
-            .flatMapMany(ids -> {
-                final List<Mono<PartitionProperties>> results = new ArrayList<>();
-                for (String id : ids) {
-                    results.add(client.getPartitionProperties(id));
-                }
-
-                return Flux.merge(results);
-            });
+            .flatMap(partitionId -> client.getPartitionProperties(partitionId));
 
         // Assert
         StepVerifier.create(partitionProperties)

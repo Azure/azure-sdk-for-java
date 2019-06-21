@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,76 +14,111 @@ import java.time.Duration;
 public class RetryTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
 
+    /**
+     * Verifies that when the service is busy and we retry an exception multiple times, the retry duration gets longer.
+     */
     @Test
     public void defaultRetryPolicy() {
-        Retry retry = Retry.getDefaultRetry();
-        AmqpException exception = new AmqpException(true, "error message", errorContext);
-        Duration sixtySec = Duration.ofSeconds(60);
+        // Arrange
+        final Retry retry = Retry.getDefaultRetry();
+        final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
+        final Duration remainingTime = Duration.ofSeconds(60);
 
+        // Act
         retry.incrementRetryCount();
-        Duration firstRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
+        final Duration firstRetryInterval = retry.getNextRetryInterval(exception, remainingTime);
         Assert.assertNotNull(firstRetryInterval);
 
         retry.incrementRetryCount();
-        Duration secondRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
+        final Duration leftoverTime = remainingTime.minus(firstRetryInterval);
+        final Duration secondRetryInterval = retry.getNextRetryInterval(exception, leftoverTime);
+
+        // Assert
         Assert.assertNotNull(secondRetryInterval);
-        Assert.assertTrue(secondRetryInterval.getSeconds() > firstRetryInterval.getSeconds()
-            || (secondRetryInterval.getSeconds() == firstRetryInterval.getSeconds()
-            && secondRetryInterval.getNano() > firstRetryInterval.getNano()));
+        Assert.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
     }
 
+    /**
+     * Verifies we can increment the retry count.
+     */
     @Test
-    public void atomicIntegerProperty() {
+    public void canIncrementRetryCount() {
         Retry retry = Retry.getDefaultRetry();
         Assert.assertEquals(0, retry.getRetryCount());
+        Assert.assertEquals(0, retry.incrementRetryCount());
 
-        retry.incrementRetryCount();
         Assert.assertEquals(1, retry.getRetryCount());
+        Assert.assertEquals(1, retry.incrementRetryCount());
 
-        retry.incrementRetryCount();
         Assert.assertEquals(2, retry.getRetryCount());
+        Assert.assertEquals(2, retry.incrementRetryCount());
 
         retry.resetRetryInterval();
-        Assert.assertEquals(0, retry.getRetryCount());
 
-        retry.incrementRetryCount();
+        Assert.assertEquals(0, retry.getRetryCount());
+        Assert.assertEquals(0, retry.incrementRetryCount());
+
         Assert.assertEquals(1, retry.getRetryCount());
     }
 
     @Test
-    public void isRetriable() {
-        Exception exception = new AmqpException(true, "error message", errorContext);
+    public void isRetriableException() {
+        final Exception exception = new AmqpException(true, "error message", errorContext);
         Assert.assertTrue(Retry.isRetriableException(exception));
     }
 
     @Test
-    public void notRetriable() {
-        Exception invalidException = new RuntimeException("invalid exception");
+    public void notRetriableException() {
+        final Exception invalidException = new RuntimeException("invalid exception");
         Assert.assertFalse(Retry.isRetriableException(invalidException));
     }
 
     @Test
-    public void noRetryPolicy() {
-        Retry noRetry = Retry.getNoRetry();
-        Exception exception = new AmqpException(true, "error message", errorContext);
-        Duration sixtySec = Duration.ofSeconds(60);
-        Duration nullDuration = noRetry.getNextRetryInterval(exception, sixtySec);
-        int ct = noRetry.incrementRetryCount();
-        Assert.assertEquals(1, ct);
-        Assert.assertNull(nullDuration);
+    public void notRetriableExceptionNotTransient() {
+        final Exception invalidException = new AmqpException(false, "Some test exception", errorContext);
+        Assert.assertFalse(Retry.isRetriableException(invalidException));
     }
 
+    /**
+     * Verifies that using no retry policy does not allow us to retry a failed request.
+     */
+    @Test
+    public void noRetryPolicy() {
+        // Arrange
+        final Retry noRetry = Retry.getNoRetry();
+        final Exception exception = new AmqpException(true, "error message", errorContext);
+        final Duration remainingTime = Duration.ofSeconds(60);
+
+        // Act
+        final Duration nextRetryInterval = noRetry.getNextRetryInterval(exception, remainingTime);
+        int retryCount = noRetry.incrementRetryCount();
+
+        // Assert
+        Assert.assertEquals(0, retryCount);
+        Assert.assertNull(nextRetryInterval);
+    }
+
+    /**
+     * Verifies that if we exceed the number of allowed retry attempts, the next retry interval, even if there is time
+     * remaining, is null.
+     */
     @Test
     public void excessMaxRetry() {
-        Retry retry = Retry.getDefaultRetry();
-        Exception exception = new AmqpException(true, "error message", errorContext);
-        Duration sixtySec = Duration.ofSeconds(60);
+        // Arrange
+        final Retry retry = Retry.getDefaultRetry();
+        final Exception exception = new AmqpException(true, "error message", errorContext);
+        final Duration sixtySec = Duration.ofSeconds(60);
 
-        for (int i = 0; i < Retry.DEFAULT_MAX_RETRY_COUNT; i++) {
+        // Simulates that we've tried to retry the max number of requests this allows.
+        for (int i = 0; i < retry.getMaxRetryCount(); i++) {
             retry.incrementRetryCount();
         }
-        Assert.assertEquals(retry.getRetryCount(), Retry.DEFAULT_MAX_RETRY_COUNT);
-        Duration firstRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
-        Assert.assertNull(firstRetryInterval);
+
+        // Act
+        final Duration nextRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
+
+        // Assert
+        Assert.assertEquals(Retry.DEFAULT_MAX_RETRY_COUNT, retry.getRetryCount());
+        Assert.assertNull(nextRetryInterval);
     }
 }

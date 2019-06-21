@@ -14,8 +14,8 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-parent</artifactId>
-  <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>Microsoft Azure client library for Event Hubs (Parent)</name>
   <description>This package contains the Microsoft Azure Event Hubs client library.</description>
@@ -78,21 +78,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <!-- Now that all checkstyle issues have been resolved, override the
-       default behavior to make checkstyle fail on error and violation. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
   <modules>
     <module>azure-eventhubs</module>

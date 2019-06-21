@@ -88,6 +88,9 @@ public class EventData implements Comparable<EventData> {
         this.systemProperties = new SystemProperties(Collections.emptyMap());
     }
 
+    /*
+     * Creates an event from a message
+     */
     EventData(Message message) {
         if (message == null) {
             throw new IllegalArgumentException("'message' cannot be null");

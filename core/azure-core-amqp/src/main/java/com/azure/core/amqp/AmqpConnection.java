@@ -27,7 +27,7 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
     String getHost();
 
     /**
-     * Gets the maximum framesize for the connection.
+     * Gets the maximum frame size for the connection.
      *
      * @return The maximum frame size for the connection.
      */
@@ -48,7 +48,7 @@ public interface AmqpConnection extends EndpointStateNotifier, Closeable {
     Mono<CBSNode> getCBSNode();
 
     /**
-     * Creates a new session with the given entity path.
+     * Creates a new session with the given session name.
      *
      * @param sessionName Name of the session.
      * @return The AMQP session that was created.

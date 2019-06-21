@@ -4,8 +4,8 @@
 package com.azure.core.amqp.exception;
 
 /**
- * This exception is thrown when the underlying AMQP layer encounter an abnormal link abort or disconnect of connection
- * in an unexpected fashion.
+ * This exception is thrown when the underlying AMQP layer encounters an abnormal link abort or the connection is
+ * disconnected in an unexpected fashion.
  */
 public class OperationCancelledException extends AmqpException {
     private static final long serialVersionUID = 1L;

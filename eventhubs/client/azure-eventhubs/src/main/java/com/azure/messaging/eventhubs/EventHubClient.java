@@ -19,6 +19,7 @@ import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -73,15 +74,6 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Creates a builder that can configure options for the {@link EventHubClient} before creating an instance of it.
-     *
-     * @return A new {@link EventHubClientBuilder} to create an EventHubClient from.
-     */
-    public static EventHubClientBuilder builder() {
-        return new EventHubClientBuilder();
-    }
-
-    /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
      * @return The set of information for the Event Hub that this client is associated with.
@@ -91,12 +83,12 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Retrieves the set of identifiers for the partitions of an Event Hub.
+     * Retrieves the identifiers for the partitions of an Event Hub.
      *
-     * @return The set of identifiers for the partitions of an Event Hub.
+     * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    public Mono<String[]> getPartitionIds() {
-        return getProperties().map(EventHubProperties::partitionIds);
+    public Flux<String> getPartitionIds() {
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.partitionIds()));
     }
 
     /**
@@ -173,7 +165,7 @@ public class EventHubClient implements Closeable {
      *
      * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
      *         context of this group. The name of the consumer group that is created by default is
-     *         {@link #DEFAULT_CONSUMER_GROUP_NAME}.
+     *         {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.

@@ -85,7 +85,7 @@ public class ReactorSessionTest {
 
         Assert.assertSame(session, reactorSession.session());
         Assert.assertEquals(NAME, reactorSession.getSessionName());
-        Assert.assertEquals(TIMEOUT, reactorSession.getOpenTimeout());
+        Assert.assertEquals(TIMEOUT, reactorSession.getOperationTimeout());
     }
 
     @Test

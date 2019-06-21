@@ -31,34 +31,38 @@ public class EventHubClientBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void missingConnectionString() {
-        final EventHubClientBuilder builder = EventHubClient.builder();
+        final EventHubClientBuilder builder = new EventHubClientBuilder();
         builder.build();
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        final EventHubClient client = builder.credential(CORRECT_CONNECTION_STRING).build();
+        final EventHubClient client = builder.connectionString(CORRECT_CONNECTION_STRING).build();
 
         Assert.assertNotNull(client);
     }
 
     @Test
     public void customNoneProxyConfigurationBuilder() {
-        final EventHubClientBuilder builder = EventHubClient.builder();
+        // Arrange
         final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
 
-        builder.credential(CORRECT_CONNECTION_STRING)
-            .proxyConfiguration(proxyConfig)
-            .build();
+        // Act
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .proxyConfiguration(proxyConfig);
+
+        // Assert
+        Assert.assertNotNull(builder.build());
     }
 
-    private static URI getURI(String endpointFormat, String namespaceName, String domainName) {
+    private static URI getURI(String endpointFormat, String namespace, String domainName) {
         try {
-            return new URI(String.format(Locale.US, endpointFormat, namespaceName, domainName));
+            return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
         } catch (URISyntaxException exception) {
             throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespaceName), exception);
+                "Invalid namespace name: %s", namespace), exception);
         }
     }
 

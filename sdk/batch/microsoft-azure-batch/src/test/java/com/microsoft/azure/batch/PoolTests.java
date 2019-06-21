@@ -305,7 +305,6 @@ public class PoolTests extends BatchIntegrationTestBase {
     }
 
     //Temporarily disabling this test - REST API is missing the logic for this case.
-    @Ignore
     @Test
     public void shouldFailOnCreateLinuxPoolWithWindowsConfig() throws Exception {
         String poolId = getStringIdWithUserNamePrefix("-createLinuxPool");
@@ -344,7 +343,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
                         Assert.assertEquals(
-                                "The value provided for one of the properties in the request body is invalid.",
+                                "The user configuration for user account 'testaccount' has a mismatch with the OS (Windows/Linux) configuration specified in VirtualMachineConfiguration",
                                 err.body().values().get(i).value());
                         return;
                     }

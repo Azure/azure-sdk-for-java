@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * <ul>
  * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
- * value, then Event Hubs service will guarantee only 1 active receiver exists per partitionId and consumer group
+ * value, then Event Hubs service will guarantee only one active receiver exists per partitionId and consumer group
  * combination. This is the recommended approach to create a {@link EventHubConsumer}.</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
  * {@link EventHubConsumerOptions#ownerLevel()} when creating receivers.</li>
@@ -45,7 +45,6 @@ public class EventHubConsumer implements Closeable {
     private final EmitterProcessor<EventData> emitterProcessor;
     private final Flux<EventData> messageFlux;
 
-    private volatile PartitionProperties partitionInformation = null;
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
@@ -98,15 +97,6 @@ public class EventHubConsumer implements Closeable {
 
             emitterProcessor.dispose();
         }
-    }
-
-    /**
-     * Gets the most recent information about a partition by the current receiver.
-     *
-     * @return If {@link EventHubConsumerOptions}
-     */
-    public PartitionProperties partitionInformation() {
-        return partitionInformation;
     }
 
     /**

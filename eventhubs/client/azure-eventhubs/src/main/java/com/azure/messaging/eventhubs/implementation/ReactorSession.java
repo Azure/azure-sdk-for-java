@@ -111,7 +111,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
     }
 
     @Override
-    public Duration getOpenTimeout() {
+    public Duration getOperationTimeout() {
         return openTimeout;
     }
 

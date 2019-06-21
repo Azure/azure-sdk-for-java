@@ -15,14 +15,14 @@ public class SessionErrorContext extends ErrorContext {
     private final String entityPath;
 
     /**
-     * Creates a new instance with the {@code namespaceName} and {@code entityPath}.
+     * Creates a new instance with the {@code namespace} and {@code entityPath}.
      *
-     * @param namespaceName The service namespace of the error.
+     * @param namespace The service namespace of the error.
      * @param entityPath The remote endpoint this AMQP session is connected to when the error occurred.
-     * @throws IllegalArgumentException if {@code namespaceName} or {@code entityPath} is {@code null} or empty.
+     * @throws IllegalArgumentException if {@code namespace} or {@code entityPath} is {@code null} or empty.
      */
-    public SessionErrorContext(String namespaceName, String entityPath) {
-        super(namespaceName);
+    public SessionErrorContext(String namespace, String entityPath) {
+        super(namespace);
         if (ImplUtils.isNullOrEmpty(entityPath)) {
             throw new IllegalArgumentException("'entityPath' cannot be null or empty");
         }
