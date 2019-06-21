@@ -13,7 +13,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-eventhubs-parent</artifactId>
+  <artifactId>azure-messaging-eventhubs-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
 
@@ -37,7 +37,7 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
+      <artifactId>azure-core-amqp</artifactId>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
