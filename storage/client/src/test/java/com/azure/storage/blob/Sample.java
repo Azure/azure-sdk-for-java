@@ -5,7 +5,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +23,7 @@ public class Sample {
     private final static String accountName = "";
     private final static String accountKey = "";
 
-    @Test
+    //@Test
     public void sample() throws IOException {
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
@@ -76,7 +75,7 @@ public class Sample {
         }
     }
 
-    @Test
+    //@Test
     public void asyncSample() throws IOException {
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
@@ -147,7 +146,7 @@ public class Sample {
             .blockLast();
     }
 
-    @Test
+    //@Test
     public void uploadDownloadFromFile() throws IOException {
         final String data = "TEST DATA" + UUID.randomUUID();
         final String folderPath = "C:/Users/jaschrep/Desktop/temp";
@@ -177,7 +176,7 @@ public class Sample {
         blobClient.downloadToFile(endFile.getAbsolutePath());
     }
 
-    @Test
+    //@Test
     public void uploadDownloadFromFileAsync() throws IOException {
         final String data = "TEST DATA" + UUID.randomUUID();
         final String folderPath = "C:/Users/jaschrep/Desktop/temp";

@@ -3,7 +3,6 @@ package com.azure.storage.blob;
 import com.azure.identity.credential.EnvironmentCredential;
 import com.azure.storage.blob.models.ContainerItem;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.util.Random;
 
@@ -20,7 +19,7 @@ public class AadLoginTest {
             .buildClient();
     }
 
-    @Test
+    //@Test
     public void listContainers() {
         for (ContainerItem item : storageClient.listContainers()) {
             System.out.println(item.name());
