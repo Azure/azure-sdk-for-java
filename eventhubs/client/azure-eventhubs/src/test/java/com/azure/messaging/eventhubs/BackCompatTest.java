@@ -53,7 +53,7 @@ public class BackCompatTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
         producer = client.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
     }
 
@@ -88,7 +88,7 @@ public class BackCompatTest extends ApiTestBase {
         final EventData msgEvent = new EventData(originalMessage);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive())
+        StepVerifier.create(consumer.receive().take(1))
             .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> validateAmqpPropertiesInEventData(event, originalMessage))
             .verifyComplete();

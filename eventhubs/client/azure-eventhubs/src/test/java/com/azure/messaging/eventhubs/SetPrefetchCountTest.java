@@ -59,7 +59,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
     @Test
     public void setLargePrefetchCount() {
         // Arrange
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest(),
             new EventHubConsumerOptions().retry(Retry.getDefaultRetry()).prefetchCount(2000));
 
         int eventReceived = 0;
@@ -89,7 +89,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
     @Test
     public void setSmallPrefetchCount() {
         // Arrange
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest(),
             new EventHubConsumerOptions().prefetchCount(11));
         int eventReceived = 0;
         int retryCount = 0;

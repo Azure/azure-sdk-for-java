@@ -148,10 +148,6 @@ public abstract class ApiTestBase extends TestBase {
         return EventHubClient.builder().credential(TEST_CONNECTION_STRING);
     }
 
-    protected String getConsumerGroupName() {
-        return "$Default";
-    }
-
     protected void closeProducer(EventHubProducer producer, TestName testName, ClientLogger logger) {
         if (producer != null) {
             try {

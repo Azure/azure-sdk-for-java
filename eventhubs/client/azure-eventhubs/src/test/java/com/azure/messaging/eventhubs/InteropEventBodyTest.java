@@ -54,7 +54,7 @@ public class InteropEventBodyTest extends ApiTestBase {
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         producer = client.createProducer(producerOptions);
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
 
     @Override

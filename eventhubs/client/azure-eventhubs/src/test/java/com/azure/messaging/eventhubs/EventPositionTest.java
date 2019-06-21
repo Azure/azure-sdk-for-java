@@ -68,7 +68,7 @@ public class EventPositionTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.earliest());
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest());
 
         // Act & Assert
         producer.send(new EventData("testString".getBytes(UTF_8))).block(TIMEOUT);
@@ -86,7 +86,7 @@ public class EventPositionTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID,  EventPosition.latest());
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,  EventPosition.latest());
 
         // Act & Assert
         StepVerifier.create(consumer.receive().take(1))
@@ -105,7 +105,7 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
-        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
 
         // Act & Assert
         StepVerifier.create(consumer.receive().take(1))
@@ -124,9 +124,9 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition earliestEventPosition = EventPosition.earliest();
-        final EventHubConsumer earliestConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, earliestEventPosition);
+        final EventHubConsumer earliestConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, earliestEventPosition);
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
 
         final Flux<EventData> earliestOffsetReceivedData = earliestConsumer.receive().take(NUMBER_OF_EVENTS);
         final Flux<EventData> enqueuedTimeReceivedData = enqueuedTimeConsumer.receive().take(NUMBER_OF_EVENTS);
@@ -163,7 +163,7 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
         // get the first event data
         StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
             .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
@@ -171,7 +171,7 @@ public class EventPositionTest extends ApiTestBase {
             .verifyComplete();
 
         final EventPosition inclusiveSequenceNumberEventPosition = EventPosition.fromOffset(enqueuedEventData.offset(), true);
-        final EventHubConsumer offsetConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, inclusiveSequenceNumberEventPosition);
+        final EventHubConsumer offsetConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, inclusiveSequenceNumberEventPosition);
 
         // Act & Assert
         StepVerifier.create(offsetConsumer.receive().take(1))
@@ -195,7 +195,7 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
         // get the first event data
         StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
             .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
@@ -203,7 +203,7 @@ public class EventPositionTest extends ApiTestBase {
             .verifyComplete();
 
         final EventPosition exclusiveSequenceNumberEventPosition = EventPosition.fromOffset(enqueuedEventData.offset(), false);
-        final EventHubConsumer offsetConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, exclusiveSequenceNumberEventPosition);
+        final EventHubConsumer offsetConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, exclusiveSequenceNumberEventPosition);
 
         // Act & Assert
         StepVerifier.create(offsetConsumer.receive().take(1))
@@ -227,7 +227,7 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
         // get the first event data
         StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
             .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
@@ -235,7 +235,7 @@ public class EventPositionTest extends ApiTestBase {
             .verifyComplete();
 
         final EventPosition inclusiveSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedEventData.sequenceNumber(), true);
-        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, inclusiveSequenceNumberEventPosition);
+        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, inclusiveSequenceNumberEventPosition);
 
         // Act & Assert
         StepVerifier.create(sequenceNumberConsumer.receive().take(1))
@@ -259,7 +259,7 @@ public class EventPositionTest extends ApiTestBase {
 
         // Arrange
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
-        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, enqueuedTimeEventPosition);
         // get the first event data
         StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
             .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
@@ -267,7 +267,7 @@ public class EventPositionTest extends ApiTestBase {
             .verifyComplete();
 
         final EventPosition exclusiveSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedEventData.sequenceNumber(), false);
-        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, exclusiveSequenceNumberEventPosition);
+        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, exclusiveSequenceNumberEventPosition);
 
         // Act & Assert
         StepVerifier.create(sequenceNumberConsumer.receive().take(1))

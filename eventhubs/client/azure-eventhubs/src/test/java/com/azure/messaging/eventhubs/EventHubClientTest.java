@@ -305,7 +305,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         for (final EventHubClient ehClient : ehClients) {
             // Arrange
-            final EventHubConsumer consumer = ehClient.createConsumer(getConsumerGroupName(), partitionId, EventPosition.latest());
+            final EventHubConsumer consumer = ehClient.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId, EventPosition.latest());
             final Flux<EventData> events = Flux.range(0, numberOfEvents).map(number -> new EventData("testString".getBytes(UTF_8)));
             final EventHubProducer producer = ehClient.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
             // Act & Assert
