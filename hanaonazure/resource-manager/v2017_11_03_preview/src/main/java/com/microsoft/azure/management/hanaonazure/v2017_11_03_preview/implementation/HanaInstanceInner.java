@@ -13,6 +13,7 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StoragePro
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaProvisioningStatesEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -72,6 +73,21 @@ public class HanaInstanceInner extends Resource {
      */
     @JsonProperty(value = "properties.hwRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String hwRevision;
+
+    /**
+     * ARM ID of another HanaInstance that will share a network with this
+     * HanaInstance.
+     */
+    @JsonProperty(value = "properties.partnerNodeId")
+    private String partnerNodeId;
+
+    /**
+     * State of provisioning of the HanaInstance. Possible values include:
+     * 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting',
+     * 'Migrating'.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private HanaProvisioningStatesEnum provisioningState;
 
     /**
      * Get specifies the hardware settings for the HANA instance.
@@ -187,6 +203,35 @@ public class HanaInstanceInner extends Resource {
      */
     public String hwRevision() {
         return this.hwRevision;
+    }
+
+    /**
+     * Get aRM ID of another HanaInstance that will share a network with this HanaInstance.
+     *
+     * @return the partnerNodeId value
+     */
+    public String partnerNodeId() {
+        return this.partnerNodeId;
+    }
+
+    /**
+     * Set aRM ID of another HanaInstance that will share a network with this HanaInstance.
+     *
+     * @param partnerNodeId the partnerNodeId value to set
+     * @return the HanaInstanceInner object itself.
+     */
+    public HanaInstanceInner withPartnerNodeId(String partnerNodeId) {
+        this.partnerNodeId = partnerNodeId;
+        return this;
+    }
+
+    /**
+     * Get state of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'.
+     *
+     * @return the provisioningState value
+     */
+    public HanaProvisioningStatesEnum provisioningState() {
+        return this.provisioningState;
     }
 
 }

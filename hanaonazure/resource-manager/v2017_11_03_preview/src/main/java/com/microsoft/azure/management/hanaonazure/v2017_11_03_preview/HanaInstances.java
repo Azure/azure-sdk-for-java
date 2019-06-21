@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview;
 
+import com.microsoft.azure.arm.collection.SupportsCreating;
+import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
@@ -19,7 +22,7 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing HanaInstances.
  */
-public interface HanaInstances extends SupportsGettingByResourceGroup<HanaInstance>, SupportsListingByResourceGroup<HanaInstance>, SupportsListing<HanaInstance>, HasInner<HanaInstancesInner> {
+public interface HanaInstances extends SupportsCreating<HanaInstance.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<HanaInstance>, SupportsListingByResourceGroup<HanaInstance>, SupportsListing<HanaInstance>, HasInner<HanaInstancesInner> {
     /**
      * The operation to restart a SAP HANA instance.
      *

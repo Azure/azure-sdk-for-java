@@ -14,6 +14,11 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstan
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstance;
 import rx.Observable;
 import rx.Completable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import com.microsoft.azure.arm.resources.ResourceUtilsCore;
+import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
@@ -33,7 +38,39 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         HanaInstancesInner client = this.inner();
-        return Completable.error(new Throwable("Delete by RG not supported for this resource")); // NOP Delete by RG not supported
+        return client.deleteAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(Collection<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Observable.empty();
+        }
+        Collection<Observable<String>> observables = new ArrayList<>();
+        for (String id : ids) {
+            final String resourceGroupName = ResourceUtilsCore.groupFromResourceId(id);
+            final String name = ResourceUtilsCore.nameFromResourceId(id);
+            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o);
+        }
+        return Observable.mergeDelayError(observables);
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(String...ids) {
+        return this.deleteByIdsAsync(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public void deleteByIds(Collection<String> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            this.deleteByIdsAsync(ids).toBlocking().last();
+        }
+    }
+
+    @Override
+    public void deleteByIds(String...ids) {
+        this.deleteByIds(new ArrayList<String>(Arrays.asList(ids)));
     }
 
     @Override
@@ -85,6 +122,11 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
     }
 
     @Override
+    public HanaInstanceImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
     public Completable restartAsync(String resourceGroupName, String hanaInstanceName) {
         HanaInstancesInner client = this.inner();
         return client.restartAsync(resourceGroupName, hanaInstanceName).toCompletable();
@@ -103,7 +145,7 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
 
     @Override
     protected HanaInstanceImpl wrapModel(String name) {
-        return null; // Model is not creatable
+        return new HanaInstanceImpl(name, new HanaInstanceInner(), this.manager());
     }
 
 }
