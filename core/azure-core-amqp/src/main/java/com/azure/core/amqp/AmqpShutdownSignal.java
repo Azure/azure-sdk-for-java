@@ -10,19 +10,19 @@ import java.util.Locale;
  */
 public class AmqpShutdownSignal {
     private final boolean isTransient;
-    private final boolean initiatedByClient;
+    private final boolean isInitiatedByClient;
     private final String message;
 
     /**
      * Creates a new instance of the AmqpShutdownSignal.
      *
      * @param isTransient Whether the shutdown signal can be retried or not.
-     * @param initiatedByClient {@code true} if the shutdown was initiated by the client; {@code false} otherwise.
+     * @param isInitiatedByClient {@code true} if the shutdown was initiated by the client; {@code false} otherwise.
      * @param message Message associated with the shutdown.
      */
-    public AmqpShutdownSignal(boolean isTransient, boolean initiatedByClient, String message) {
+    public AmqpShutdownSignal(boolean isTransient, boolean isInitiatedByClient, String message) {
         this.isTransient = isTransient;
-        this.initiatedByClient = initiatedByClient;
+        this.isInitiatedByClient = isInitiatedByClient;
         this.message = message;
     }
 
@@ -42,8 +42,8 @@ public class AmqpShutdownSignal {
      * @return {@code true} if the shutdown signal was initiated by the client, {@code false} if the shutdown signal
      *         occurred in the underlying AMQP layer or from the AMQP message broker.
      */
-    public boolean initiatedByClient() {
-        return initiatedByClient;
+    public boolean isInitiatedByClient() {
+        return isInitiatedByClient;
     }
 
     /**
@@ -51,6 +51,6 @@ public class AmqpShutdownSignal {
      */
     @Override
     public String toString() {
-        return String.format(Locale.US, "%s, isTransient[%s], initiatedByClient[%s]", message, isTransient, initiatedByClient);
+        return String.format(Locale.US, "%s, isTransient[%s], initiatedByClient[%s]", message, isTransient, isInitiatedByClient);
     }
 }
