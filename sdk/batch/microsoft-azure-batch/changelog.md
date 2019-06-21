@@ -1,4 +1,12 @@
 # Azure Batch SDK for Java release notes
+## Changes in 6.0.0
+### Features
+- **[Breaking]** Replaced PoolOperations.ListNodeAgentSkus with PoolOperations.ListSupportedImages. ListSupportedImages contains all of the same information originally available in ListNodeAgentSKUs but in a clearer format. New non-verified images are also now returned. Additional information about Capabilities and BatchSupportEndOfLife is accessible on the ImageInformation object returned by ListSupportedImages.
+- Now support network security rules blocking network access to a CloudPool based on the source port of the traffic. This is done via the SourcePortRanges property on NetworkSecurityGroupRule.
+- When running a container, Batch now supports executing the task in the container working directory or in the Batch task working directory. This is controlled by the WorkingDirectory property on TaskContainerSettings.
+
+### REST API version
+This version of the Batch .NET client library targets version 2019-06-01.9.0 of the Azure Batch REST API.
 
 ## Changes in 5.0.1
 ### Features
