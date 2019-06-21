@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -221,7 +220,7 @@ public final class BlockBlobClient extends BlobClient {
         data.read(bufferedData);
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
-            Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions, context);
+            Flux.just(Unpooled.wrappedBuffer(bufferedData)).switchIfEmpty(Mono.just(Unpooled.buffer())), length, leaseAccessConditions, context);
         if (timeout == null) {
             return response.block();
         } else {

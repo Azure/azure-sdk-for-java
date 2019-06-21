@@ -202,7 +202,7 @@ class APISpec extends Specification {
             .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
-            .credentials(primaryCreds)
+            .credentials(creds)
             .buildClient()
     }
 
