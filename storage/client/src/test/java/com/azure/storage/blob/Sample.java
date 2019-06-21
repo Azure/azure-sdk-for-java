@@ -9,16 +9,20 @@ import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class Sample {
 
-    final static String accountEndpoint = "";
-    final static String accountName = "";
-    final static String accountKey = "";
+    private final static String accountEndpoint = "";
+    private final static String accountName = "";
+    private final static String accountKey = "";
 
     @Test
     public void sample() throws IOException {
