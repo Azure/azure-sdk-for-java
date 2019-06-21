@@ -32,6 +32,19 @@ public class SimpleResponse<T> implements Response<T> {
     }
 
     /**
+     * Creates a SimpleResponse from a response and a value.
+     *
+     * @param response the response the needs to be mapped
+     * @param value the value to put into the new response
+     */
+    public SimpleResponse(Response<?> response, T value) {
+        this.request = response.request();
+        this.statusCode = response.statusCode();
+        this.headers = response.headers();
+        this.value = value;
+    }
+
+    /**
      * @return the request which resulted in this RestResponse.
      */
     @Override
