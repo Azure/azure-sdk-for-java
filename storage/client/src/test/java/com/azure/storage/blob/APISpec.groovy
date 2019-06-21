@@ -236,14 +236,18 @@ class APISpec extends Specification {
         }
     }
 
+    static byte[] getRandomByteArray(int size) {
+        Random rand = new Random(getRandomSeed())
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
+    }
+
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
     static ByteBuffer getRandomData(int size) {
-        Random rand = new Random(getRandomSeed())
-        byte[] data = new byte[size]
-        rand.nextBytes(data)
-        return ByteBuffer.wrap(data)
+        return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
     /*
@@ -382,17 +386,17 @@ class APISpec extends Specification {
         return request
     }
 
-//    def waitForCopy(ContainerClient bu, CopyStatusType status) {
-//        OffsetDateTime start = OffsetDateTime.now()
-//        while (status != CopyStatusType.SUCCESS) {
-//            status = bu.getProperties().
-//            OffsetDateTime currentTime = OffsetDateTime.now()
-//            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
-//                throw new Exception("Copy failed or took too long")
-//            }
-//            sleep(1000)
-//        }
-//    }
+    def waitForCopy(ContainerClient bu, String status) {
+        OffsetDateTime start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS.toString()) {
+            status = bu.getProperties().headers().value("x-ms-copy-status")
+            OffsetDateTime currentTime = OffsetDateTime.now()
+            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
+                throw new Exception("Copy failed or took too long")
+            }
+            sleep(1000)
+        }
+    }
 
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
@@ -421,6 +425,19 @@ class APISpec extends Specification {
             headers.value("content-md5") == (contentMD5 == null ? null : new String((byte[]) contentMD5)) &&
             headers.value("content-type") == contentType
 
+    }
+
+    static Metadata getMetadataFromHeaders(HttpHeaders headers) {
+        Metadata metadata = new Metadata()
+
+        for (Map.Entry<String, String> header : headers.toMap()) {
+            if (header.getKey().startsWith("x-ms-meta-")) {
+                String metadataKey = header.getKey().substring(10)
+                metadata.put(metadataKey, header.getValue())
+            }
+        }
+
+        return metadata
     }
 
     def enableSoftDelete() {
