@@ -217,7 +217,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
     private static final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
-            super(new ClientLogger(ReactorExceptionHandler.class));
+            super();
         }
 
         @Override
