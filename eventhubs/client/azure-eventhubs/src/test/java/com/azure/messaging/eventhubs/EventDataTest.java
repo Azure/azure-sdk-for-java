@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.eventhubs;
+package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
 import org.apache.qpid.proton.Proton;
