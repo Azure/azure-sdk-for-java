@@ -14,8 +14,8 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-parent</artifactId>
-  <packaging>pom</packaging>
   <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <name>Microsoft Azure client library for Event Hubs (Parent)</name>
   <description>This package contains the Microsoft Azure Event Hubs client library.</description>
