@@ -440,6 +440,14 @@
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
+      <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD,NP_LOAD_OF_KNOWN_NULL_VALUE,DLS_DEAD_LOCAL_STORE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- Field initialized by jackson property annotation -->
   <Match>
     <Class name="com.azure.keyvault.keys.models.webkey.JsonWebKey"/>
