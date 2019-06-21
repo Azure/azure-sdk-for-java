@@ -6,17 +6,26 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
+import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Random;
+
+import static org.mockito.Mockito.when;
 
 public class EventDataBatchTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
@@ -27,8 +36,20 @@ public class EventDataBatchTest extends ApiTestBase {
     private EventHubProducer producer;
     private ReactorHandlerProvider handlerProvider;
 
+    @Mock private ErrorContextProvider errorContextProvider;
+
     @Rule
     public TestName testName = new TestName();
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @After
+    public void teardown() {
+        Mockito.framework().clearInlineMocks();
+    }
 
     @Override
     protected String testName() {
@@ -53,13 +74,15 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Test(expected = IllegalArgumentException.class)
     public void nullEventData() {
-        final EventDataBatch batch = new EventDataBatch(1, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(1, PARTITION_KEY, null);
         batch.tryAdd(null);
     }
 
     @Test
     public void payloadExceededException() {
-        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
+        when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED.getErrorCondition()));
+
+        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, errorContextProvider);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);
@@ -72,7 +95,7 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Test
     public void withinPayloadSize() {
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
         final EventData within = new EventData(new byte[1024]);
         Assert.assertTrue(batch.tryAdd(within));
     }
@@ -81,17 +104,17 @@ public class EventDataBatchTest extends ApiTestBase {
      * Test for sending full batch without partition key
      */
     @Test
-    public void sendSmallEventsFullBatch() {
+    public void sendSmallEventsFullBatchWithoutPartitionKey() {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, null, null);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
 
         // Act & Assert
-        StepVerifier.create(producer.send(batch.getEvents(), new SendOptions()))
+        StepVerifier.create(producer.send(batch.getEvents()))
             .verifyComplete();
     }
 
@@ -104,13 +127,13 @@ public class EventDataBatchTest extends ApiTestBase {
 
         // Arrange
         // Only Event Data batch has partition key information, none in SendOption and producerOption
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
 
         // Act & Assert
-        StepVerifier.create(producer.send(batch.getEvents(), new SendOptions()))
+        StepVerifier.create(producer.send(batch.getEvents()))
             .verifyComplete();
     }
 
@@ -128,7 +151,7 @@ public class EventDataBatchTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, null);
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions();
         int count = 0;
@@ -161,7 +184,7 @@ public class EventDataBatchTest extends ApiTestBase {
         // EventDataBatch is only accessible from internal, so the partition key
 
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
         final SendOptions sendOptions = new SendOptions();
 
         while (batch.tryAdd(new EventData("a".getBytes()))) {

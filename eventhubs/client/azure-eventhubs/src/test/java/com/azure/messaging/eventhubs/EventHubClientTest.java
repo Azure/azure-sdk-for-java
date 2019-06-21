@@ -173,6 +173,7 @@ public class EventHubClientTest extends ApiTestBase {
     /**
      * Verifies that error conditions are handled for fetching Event Hub metadata.
      */
+    @Ignore
     @Test
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
         skipIfNotRecordMode();

@@ -14,7 +14,7 @@ import com.azure.core.amqp.exception.SessionErrorContext;
  * @see LinkErrorContext
  */
 @FunctionalInterface
-public interface ErrorContextProvider {
+public interface  ErrorContextProvider {
     /**
      * Gets the context this error occurred on.
      *
