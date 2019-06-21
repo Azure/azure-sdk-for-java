@@ -14,6 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
