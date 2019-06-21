@@ -46,6 +46,12 @@ public class ClusterInner extends Resource {
     private String metricId;
 
     /**
+     * Status of the Cluster resource.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
+
+    /**
      * Get properties of the cluster SKU.
      *
      * @return the sku value
@@ -90,6 +96,15 @@ public class ClusterInner extends Resource {
      */
     public String metricId() {
         return this.metricId;
+    }
+
+    /**
+     * Get status of the Cluster resource.
+     *
+     * @return the status value
+     */
+    public String status() {
+        return this.status;
     }
 
 }

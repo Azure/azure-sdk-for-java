@@ -14,9 +14,16 @@ import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Cluster;
 import rx.Observable;
 import rx.Completable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import com.microsoft.azure.arm.resources.ResourceUtilsCore;
+import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.AvailableCluster;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.EHNamespaceIdListResult;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, EventHubManager>  implements Clusters {
     protected ClustersImpl(EventHubManager manager) {
@@ -32,7 +39,39 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         ClustersInner client = this.inner();
-        return Completable.error(new Throwable("Delete by RG not supported for this resource")); // NOP Delete by RG not supported
+        return client.deleteAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(Collection<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Observable.empty();
+        }
+        Collection<Observable<String>> observables = new ArrayList<>();
+        for (String id : ids) {
+            final String resourceGroupName = ResourceUtilsCore.groupFromResourceId(id);
+            final String name = ResourceUtilsCore.nameFromResourceId(id);
+            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o);
+        }
+        return Observable.mergeDelayError(observables);
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(String...ids) {
+        return this.deleteByIdsAsync(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public void deleteByIds(Collection<String> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            this.deleteByIdsAsync(ids).toBlocking().last();
+        }
+    }
+
+    @Override
+    public void deleteByIds(String...ids) {
+        this.deleteByIds(new ArrayList<String>(Arrays.asList(ids)));
     }
 
     @Override
@@ -60,13 +99,48 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     }
 
     @Override
+    public ClusterImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
+    public Observable<AvailableCluster> listAsync() {
+        ClustersInner client = this.inner();
+        return client.listAsync()
+        .flatMap(new Func1<Page<AvailableClusterInner>, Observable<AvailableClusterInner>>() {
+            @Override
+            public Observable<AvailableClusterInner> call(Page<AvailableClusterInner> innerPage) {
+                return Observable.from(innerPage.items());
+            }
+        })
+        .map(new Func1<AvailableClusterInner, AvailableCluster>() {
+            @Override
+            public AvailableCluster call(AvailableClusterInner inner) {
+                return new AvailableClusterImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     protected ClusterImpl wrapModel(ClusterInner inner) {
         return  new ClusterImpl(inner.name(), inner, manager());
     }
 
     @Override
     protected ClusterImpl wrapModel(String name) {
-        return null; // Model is not creatable
+        return new ClusterImpl(name, new ClusterInner(), this.manager());
+    }
+
+    @Override
+    public Observable<EHNamespaceIdListResult> listNamespacesAsync(String resourceGroupName, String clusterName) {
+        ClustersInner client = this.inner();
+        return client.listNamespacesAsync(resourceGroupName, clusterName)
+        .map(new Func1<EHNamespaceIdListResultInner, EHNamespaceIdListResult>() {
+            @Override
+            public EHNamespaceIdListResult call(EHNamespaceIdListResultInner inner) {
+                return new EHNamespaceIdListResultImpl(inner, manager());
+            }
+        });
     }
 
 }

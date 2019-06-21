@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
+import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.EventHubManager;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.ClusterInner;
@@ -39,10 +40,45 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
     ClusterSku sku();
 
     /**
+     * @return the status value.
+     */
+    String status();
+
+    /**
      * @return the updated value.
      */
     String updated();
 
+    /**
+     * The entirety of the Cluster definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
+    }
+
+    /**
+     * Grouping of Cluster definition stages.
+     */
+    interface DefinitionStages {
+        /**
+         * The first stage of a Cluster definition.
+         */
+        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
+        }
+
+        /**
+         * The stage of the Cluster definition allowing to specify the resource group.
+         */
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate> {
+        }
+    }
     /**
      * The template for a Cluster update operation, containing all the settings that can be modified.
      */

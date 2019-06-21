@@ -140,9 +140,9 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     }
 
     @Override
-    public Observable<NamespaceSharedAccessAuthorizationRuleResource> posttAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
+    public Observable<NamespaceSharedAccessAuthorizationRuleResource> postAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
         EventHubsInner client = this.inner();
-        return client.posttAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
+        return client.postAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
         .map(new Func1<SharedAccessAuthorizationRuleResourceInner, NamespaceSharedAccessAuthorizationRuleResource>() {
             @Override
             public NamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
