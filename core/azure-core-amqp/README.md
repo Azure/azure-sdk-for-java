@@ -21,24 +21,19 @@ own AMQP client library that abstracts from the underlying transport library's i
 
 ## Key concepts
 
-The concepts for AMQP are well documented in
-[OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0 ](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
+The concepts for AMQP are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
+1.0](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
 
 ## Examples
 
-TODO: Fill something out.
-
 ## Troubleshooting
-
-TODO: Fill something out.
 
 ## Next steps
 
-TODO: Fill something out. Maybe read the docs?
-
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft
+Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
