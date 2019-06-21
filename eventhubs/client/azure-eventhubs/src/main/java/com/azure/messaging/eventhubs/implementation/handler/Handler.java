@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.implementation.handler;
 
-import com.azure.core.amqp.exception.ErrorContext;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;
@@ -15,9 +14,9 @@ import java.io.Closeable;
 
 public abstract class Handler extends BaseHandler implements Closeable {
     private final ReplayProcessor<EndpointState> endpointStateProcessor = ReplayProcessor.cacheLastOrDefault(EndpointState.UNINITIALIZED);
-    private final UnicastProcessor<ErrorContext> errorContextProcessor = UnicastProcessor.create();
+    private final UnicastProcessor<Throwable> errorContextProcessor = UnicastProcessor.create();
     private final FluxSink<EndpointState> endpointSink = endpointStateProcessor.sink();
-    private final FluxSink<ErrorContext> errorSink = errorContextProcessor.sink();
+    private final FluxSink<Throwable> errorSink = errorContextProcessor.sink();
     private final String connectionId;
     private final String hostname;
 
@@ -38,7 +37,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
         return endpointStateProcessor.distinct();
     }
 
-    public Flux<ErrorContext> getErrors() {
+    public Flux<Throwable> getErrors() {
         return errorContextProcessor;
     }
 
@@ -46,7 +45,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
         endpointSink.next(state);
     }
 
-    void onNext(ErrorContext context) {
+    void onNext(Throwable context) {
         errorSink.next(context);
     }
 

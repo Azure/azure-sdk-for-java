@@ -8,8 +8,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
+import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.OperationCancelledException;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -34,7 +34,6 @@ import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -143,8 +142,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         try {
             encodedSize = message.encode(bytes, 0, allocationSize);
         } catch (BufferOverflowException exception) {
-            return Mono.error(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Error sending. Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024)));
+            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024);
+            final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
+                exception, handler.getErrorContext(sender));
+
+            return Mono.error(error);
         }
 
         return send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
@@ -183,13 +185,21 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
                 final String message = String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSizeTemp / 1024);
-                return Mono.error(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception));
+                final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
+                    exception, handler.getErrorContext(sender));
+
+                return Mono.error(error);
             }
 
             byteArrayOffset = byteArrayOffset + encodedSize;
         }
 
         return send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
+    }
+
+    @Override
+    public ErrorContext getErrorContext() {
+        return handler.getErrorContext(sender);
     }
 
     @Override
@@ -291,9 +301,12 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     delivery.free();
                 }
 
-                workItem.sink().error(sendException != null
-                    ? new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed. Please see cause for more details", entityPath), sendException)
-                    : new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed while advancing delivery(tag: %s).", entityPath, deliveryTag)));
+                final ErrorContext context = handler.getErrorContext(sender);
+                final Throwable exception = sendException != null
+                    ? new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed. Please see cause for more details", entityPath), sendException, context)
+                    : new OperationCancelledException(String.format(Locale.US, "Entity(%s): send operation failed while advancing delivery(tag: %s).", entityPath, deliveryTag), context);
+
+                workItem.sink().error(exception);
             }
         }
     }
@@ -323,7 +336,8 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         } else if (outcome instanceof Rejected) {
             final Rejected rejected = (Rejected) outcome;
             final org.apache.qpid.proton.amqp.transport.ErrorCondition error = rejected.getError();
-            final Exception exception = ExceptionUtil.toException(error.getCondition().toString(), error.getDescription());
+            final Exception exception = ExceptionUtil.toException(error.getCondition().toString(),
+                error.getDescription(), handler.getErrorContext(sender));
 
             if (isGeneralSendError(error.getCondition())) {
                 synchronized (errorConditionLock) {
@@ -345,14 +359,17 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     this.cleanupFailedSend(
                         workItem,
                         new AmqpException(false,
-                            String.format(Locale.US, "Entity(%s): send operation failed while scheduling a retry on Reactor, see cause for more details.",
-                                entityPath), schedulerException));
+                            String.format(Locale.US, "Entity(%s): send operation failed while scheduling a"
+                                + " retry on Reactor, see cause for more details.", entityPath),
+                            schedulerException, handler.getErrorContext(sender)));
                 }
             }
         } else if (outcome instanceof Released) {
-            this.cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString()));
+            this.cleanupFailedSend(workItem, new OperationCancelledException(outcome.toString(),
+                handler.getErrorContext(sender)));
         } else {
-            this.cleanupFailedSend(workItem, new AmqpException(false, outcome.toString()));
+            this.cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
+                handler.getErrorContext(sender)));
         }
     }
 
@@ -361,7 +378,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
             logger.asError().log("Error scheduling work on reactor.", e);
-            //TODO (conniey): any error handling?
+            notifyError(e);
         }
     }
 
@@ -406,8 +423,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
      * Keeps track of Messages that have been sent, but may not have been acknowledged by the service.
      */
     private class SendTimeout extends TimerTask {
-        private static final String SEND_TIMED_OUT = "Send operation timed out";
-
         private final String deliveryTag;
 
         SendTimeout(String deliveryTag) {
@@ -441,15 +456,17 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                     : null;
             }
 
-            final boolean isClientSideTimeout = !(exceptionUsed instanceof AmqpException);
-            final AmqpException exception = isClientSideTimeout
-                ? new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, String.format(Locale.US, "Entity(%s): %s at %s.", entityPath, SEND_TIMED_OUT, ZonedDateTime.now()))
-                : (AmqpException) exceptionUsed;
-            final ErrorContext context = new ErrorContext(exception, handler.getHostname());
+            // If it is a type of AmqpException, we received this error from the service, otherwise, it is a client-side
+            // error.
+            final AmqpException exception;
+            if (exceptionUsed instanceof AmqpException) {
+                exception = (AmqpException) exceptionUsed;
+            } else {
+                exception = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR,
+                    String.format(Locale.US, "Entity(%s): Send operation timed out", entityPath),
+                    handler.getErrorContext(sender));
+            }
 
-            exception.setContext(context);
-
-            //TODO (conniey): Perform a retry rather than erroring out.
             workItem.sink().error(exception);
         }
     }

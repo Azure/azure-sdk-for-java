@@ -36,7 +36,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 class ReactorSession extends EndpointStateNotifierBase implements EventHubSession {
-    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":enable-receiver-runtime-metric");
     private static final Symbol EPOCH = Symbol.valueOf(AmqpConstants.VENDOR + ":epoch");
     private static final Symbol RECEIVER_IDENTIFIER_NAME = Symbol.valueOf(AmqpConstants.VENDOR + ":receiver-name");
 
@@ -69,11 +68,11 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
         this.subscriptions = Disposables.composite(
             this.sessionHandler.getEndpointStates().subscribe(
                 this::notifyEndpointState,
-                error -> notifyError(sessionHandler.getContext(error)),
+                this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)),
             this.sessionHandler.getErrors().subscribe(
                 this::notifyError,
-                error -> notifyError(sessionHandler.getContext(error)),
+                this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         session.open();
@@ -139,7 +138,8 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 sender.setSource(source);
                 sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
-                final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
+                final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
+                    sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
                 BaseHandler.setHandler(sender, sendLinkHandler);
 
                 try {
@@ -218,7 +218,8 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
                 //    receiver.setDesiredCapabilities(new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME});
                 // }
 
-                final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName);
+                final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
+                    sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
                 BaseHandler.setHandler(receiver, receiveLinkHandler);
 
                 try {

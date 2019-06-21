@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpExceptionHandler;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.CBSNode;
-import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -82,11 +81,11 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
                 this::notifyEndpointState,
-                error -> notifyError(new ErrorContext(error, getHost())),
+                this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)),
             this.handler.getErrors().subscribe(
                 this::notifyError,
-                error -> notifyError(new ErrorContext(error, getHost())),
+                this::notifyError,
                 () -> notifyEndpointState(EndpointState.CLOSED)));
 
         tokenResourceProvider = new TokenResourceProvider(connectionOptions.authorizationType(), connectionOptions.host());
@@ -208,21 +207,22 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         final Connection connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
         reactorExceptionHandler = new ReactorExceptionHandler();
-        executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId, reactorExceptionHandler, connectionOptions.timeout());
+        executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId, reactorExceptionHandler,
+            connectionOptions.timeout(), connectionOptions.host());
+
         executor.start();
 
         return connection;
     }
 
-    private static class ReactorExceptionHandler extends AmqpExceptionHandler {
-        @Override
-        public void onConnectionError(Throwable exception) {
-            super.onConnectionError(exception);
+    private static final class ReactorExceptionHandler extends AmqpExceptionHandler {
+        private ReactorExceptionHandler() {
+            super(new ClientLogger(ReactorExceptionHandler.class));
         }
 
         @Override
-        public void onConnectionError(ErrorContext context) {
-            super.onConnectionError(context);
+        public void onConnectionError(Throwable exception) {
+            super.onConnectionError(exception);
         }
     }
 }

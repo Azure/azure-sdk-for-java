@@ -7,6 +7,7 @@ import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.exception.AzureException;
 import org.junit.After;
 import org.junit.Before;
@@ -112,7 +113,8 @@ public class ActiveClientTokenManagerTest {
     public void getAuthorizationResultsRetriableError() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out");
+        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out",
+            new ErrorContext("Test-context-namespace"));
         when(cbsNode.authorize(any())).thenReturn(Mono.empty(), Mono.error(error), Mono.empty(), Mono.empty(), Mono.empty());
 
         // Act & Assert
