@@ -75,7 +75,7 @@ public class EventHubClientBuilder {
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      *         string.
      */
-    public EventHubClientBuilder credential(String connectionString) {
+    public EventHubClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
@@ -101,7 +101,7 @@ public class EventHubClientBuilder {
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      *         string.
      */
-    public EventHubClientBuilder credential(String connectionString, String eventHubPath) {
+    public EventHubClientBuilder connectionString(String connectionString, String eventHubPath) {
         if (ImplUtils.isNullOrEmpty(eventHubPath)) {
             throw new IllegalArgumentException("'eventHubPath' cannot be null or empty");
         }
@@ -229,7 +229,7 @@ public class EventHubClientBuilder {
      * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link #credential(String)}
+     * @throws IllegalArgumentException if the credentials have not been set using either {@link #connectionString(String)}
      *         or {@link #credential(String, String, TokenCredential)}.
      */
     public EventHubClient build() {
@@ -244,7 +244,7 @@ public class EventHubClientBuilder {
                     + "not set in the '" + AZURE_EVENT_HUBS_CONNECTION_STRING + "' environment variable.");
             }
 
-            credential(connectionString);
+            connectionString(connectionString);
         }
 
         if (timeout == null) {
