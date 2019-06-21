@@ -10,6 +10,8 @@ package com.microsoft.azure.cognitiveservices.anomalydetector;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.anomalydetector.models.ChangePointDetectRequest;
+import com.microsoft.azure.cognitiveservices.anomalydetector.models.ChangePointDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.EntireDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.LastDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.Request;
@@ -105,6 +107,12 @@ public interface AnomalyDetectorClient {
     AnomalyDetectorClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
+     * Gets the TimeSeries object to access its operations.
+     * @return the TimeSeries object.
+     */
+    TimeSeries timeSeries();
+
+    /**
      * Detect anomalies for the entire series in batch.
      * This operation generates a model using an entire series, each point is detected with the same model. With this method, points before and after a certain point are used to determine whether it is an anomaly. The entire detection can give user an overall status of the time series.
      *
@@ -189,5 +197,48 @@ public interface AnomalyDetectorClient {
      * @return the observable to the LastDetectResponse object
      */
     Observable<ServiceResponse<LastDetectResponse>> lastDetectWithServiceResponseAsync(Request body);
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ChangePointDetectResponse object if successful.
+     */
+    ChangePointDetectResponse changePointDetect(ChangePointDetectRequest body);
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body, final ServiceCallback<ChangePointDetectResponse> serviceCallback);
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ChangePointDetectResponse object
+     */
+    Observable<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body);
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ChangePointDetectResponse object
+     */
+    Observable<ServiceResponse<ChangePointDetectResponse>> changePointDetectWithServiceResponseAsync(ChangePointDetectRequest body);
 
 }

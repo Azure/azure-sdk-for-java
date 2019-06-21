@@ -25,10 +25,8 @@ public class Request {
     private List<Point> series;
 
     /**
-     * Can only be one of yearly, monthly, weekly, daily, hourly or minutely.
-     * Granularity is used for verify whether input series is valid. Possible
-     * values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly',
-     * 'minutely'.
+     * Possible values include: 'yearly', 'monthly', 'weekly', 'daily',
+     * 'hourly', 'minutely'.
      */
     @JsonProperty(value = "granularity", required = true)
     private Granularity granularity;
@@ -84,7 +82,7 @@ public class Request {
     }
 
     /**
-     * Get can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly', 'minutely'.
+     * Get possible values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly', 'minutely'.
      *
      * @return the granularity value
      */
@@ -93,7 +91,7 @@ public class Request {
     }
 
     /**
-     * Set can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly', 'minutely'.
+     * Set possible values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly', 'minutely'.
      *
      * @param granularity the granularity value to set
      * @return the Request object itself.

@@ -14,9 +14,12 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.anomalydetector.AnomalyDetectorClient;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.anomalydetector.models.ChangePointDetectRequest;
+import com.microsoft.azure.cognitiveservices.anomalydetector.models.ChangePointDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.EntireDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.LastDetectResponse;
 import com.microsoft.azure.cognitiveservices.anomalydetector.models.Request;
+import com.microsoft.azure.cognitiveservices.anomalydetector.TimeSeries;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -143,6 +146,19 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
     }
 
     /**
+     * The TimeSeries object to access its operations.
+     */
+    private TimeSeries timeSeries;
+
+    /**
+     * Gets the TimeSeries object to access its operations.
+     * @return the TimeSeries object.
+     */
+    public TimeSeries timeSeries() {
+        return this.timeSeries;
+    }
+
+    /**
      * Initializes an instance of AnomalyDetectorClient client.
      *
      * @param credentials the management credentials for Azure
@@ -176,6 +192,7 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.timeSeries = new TimeSeriesImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -206,6 +223,10 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.anomalydetector.AnomalyDetectorClient lastDetect" })
         @POST("timeseries/last/detect")
         Observable<Response<ResponseBody>> lastDetect(@Body Request body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.anomalydetector.AnomalyDetectorClient changePointDetect" })
+        @POST("timeseries/changepoint/detect")
+        Observable<Response<ResponseBody>> changePointDetect(@Body ChangePointDetectRequest body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -262,14 +283,14 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
      * @return the observable to the EntireDetectResponse object
      */
     public Observable<ServiceResponse<EntireDetectResponse>> entireDetectWithServiceResponseAsync(Request body) {
-        if (this.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (body == null) {
             throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         }
         Validator.validate(body);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.entireDetect(body, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntireDetectResponse>>>() {
                 @Override
@@ -344,14 +365,14 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
      * @return the observable to the LastDetectResponse object
      */
     public Observable<ServiceResponse<LastDetectResponse>> lastDetectWithServiceResponseAsync(Request body) {
-        if (this.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (body == null) {
             throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         }
         Validator.validate(body);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.lastDetect(body, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LastDetectResponse>>>() {
                 @Override
@@ -369,6 +390,88 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
     private ServiceResponse<LastDetectResponse> lastDetectDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<LastDetectResponse, APIErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<LastDetectResponse>() { }.getType())
+                .registerError(APIErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ChangePointDetectResponse object if successful.
+     */
+    public ChangePointDetectResponse changePointDetect(ChangePointDetectRequest body) {
+        return changePointDetectWithServiceResponseAsync(body).toBlocking().single().body();
+    }
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body, final ServiceCallback<ChangePointDetectResponse> serviceCallback) {
+        return ServiceFuture.fromResponse(changePointDetectWithServiceResponseAsync(body), serviceCallback);
+    }
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ChangePointDetectResponse object
+     */
+    public Observable<ChangePointDetectResponse> changePointDetectAsync(ChangePointDetectRequest body) {
+        return changePointDetectWithServiceResponseAsync(body).map(new Func1<ServiceResponse<ChangePointDetectResponse>, ChangePointDetectResponse>() {
+            @Override
+            public ChangePointDetectResponse call(ServiceResponse<ChangePointDetectResponse> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Detect change point for the entire series.
+     * Evaluate change point score of every series point.
+     *
+     * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the request if needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ChangePointDetectResponse object
+     */
+    public Observable<ServiceResponse<ChangePointDetectResponse>> changePointDetectWithServiceResponseAsync(ChangePointDetectRequest body) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        }
+        Validator.validate(body);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.changePointDetect(body, this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ChangePointDetectResponse>>>() {
+                @Override
+                public Observable<ServiceResponse<ChangePointDetectResponse>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ChangePointDetectResponse> clientResponse = changePointDetectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ChangePointDetectResponse> changePointDetectDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ChangePointDetectResponse, APIErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ChangePointDetectResponse>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }
