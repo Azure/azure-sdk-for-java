@@ -21,7 +21,6 @@ import com.azure.core.implementation.tracing.TracerProxy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscription;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

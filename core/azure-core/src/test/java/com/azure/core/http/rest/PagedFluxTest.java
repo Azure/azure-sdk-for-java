@@ -13,7 +13,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -23,17 +26,25 @@ import reactor.test.StepVerifier;
 public class PagedFluxTest {
     private List<PagedResponse<Integer>> pagedResponses;
 
+    @Rule
+    public TestName testName = new TestName();
+
+    @Before
+    public void setup() {
+        System.out.println("-------------- Running " + testName.getMethodName() + " -----------------------------");
+    }
+
     @Test
     public void testEmptyFirstPage() {
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(Mono.empty(),
             pageLink -> getNextPage(pageLink, pagedResponses));
-        StepVerifier.create(pagedFlux).verifyComplete();
+        StepVerifier.create(pagedFlux.log()).verifyComplete();
     }
 
     @Test
     public void testPagedFluxSubscribeToItems() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        StepVerifier.create(pagedFlux)
+        StepVerifier.create(pagedFlux.log())
             .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
             .verifyComplete();
     }
@@ -41,7 +52,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPages() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        StepVerifier.create(pagedFlux.byPage())
+        StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
                 pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
@@ -50,7 +61,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPageWithContinuationToken() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        StepVerifier.create(pagedFlux.byPage("3"))
+        StepVerifier.create(pagedFlux.byPage("3").log())
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
     }
