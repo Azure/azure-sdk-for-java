@@ -8,21 +8,9 @@ import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.implementation.util.ImplUtils;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretClient secret client},
@@ -62,19 +50,10 @@ import java.util.Objects;
  * @see SecretClient
  * */
 public final class SecretClientBuilder {
-    private final List<HttpPipelinePolicy> policies;
-    private TokenCredential credential;
-    private HttpPipeline pipeline;
-    private URL endpoint;
-    private HttpClient httpClient;
-    private HttpLogDetailLevel httpLogDetailLevel;
-    private RetryPolicy retryPolicy;
-    private Configuration configuration;
+    private final SecretAsyncClientBuilder builder;
 
     SecretClientBuilder() {
-        retryPolicy = new RetryPolicy();
-        httpLogDetailLevel = HttpLogDetailLevel.NONE;
-        policies = new ArrayList<>();
+        builder = SecretAsyncClient.builder();
     }
 
     /**
@@ -92,36 +71,7 @@ public final class SecretClientBuilder {
      * {@link SecretClientBuilder#endpoint(String)} have not been set.
      */
     public SecretClient build() {
-
-        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
-        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
-
-        if (buildEndpoint == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        }
-
-        if (pipeline != null) {
-            return new SecretClient(endpoint, pipeline);
-        }
-
-        if (credential == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
-        }
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
-        policies.add(retryPolicy);
-        policies.add(new BearerTokenAuthenticationPolicy(credential, SecretClient.KEY_VAULT_SCOPE));
-        policies.addAll(this.policies);
-        policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
-
-        HttpPipeline pipeline = HttpPipeline.builder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
-
-        return new SecretClient(endpoint, pipeline);
+        return new SecretClient(builder.build());
     }
 
     /**
@@ -132,11 +82,7 @@ public final class SecretClientBuilder {
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public SecretClientBuilder endpoint(String endpoint) {
-        try {
-            this.endpoint = new URL(endpoint);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
-        }
+        builder.endpoint(endpoint);
         return this;
     }
 
@@ -148,8 +94,7 @@ public final class SecretClientBuilder {
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public SecretClientBuilder credential(TokenCredential credential) {
-        Objects.requireNonNull(credential);
-        this.credential = credential;
+        builder.credential(credential);
         return this;
     }
 
@@ -163,8 +108,7 @@ public final class SecretClientBuilder {
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public SecretClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
-        Objects.requireNonNull(logLevel);
-        httpLogDetailLevel = logLevel;
+        builder.httpLogDetailLevel(logLevel);
         return this;
     }
 
@@ -177,8 +121,7 @@ public final class SecretClientBuilder {
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy);
-        policies.add(policy);
+        builder.addPolicy(policy);
         return this;
     }
 
@@ -190,8 +133,7 @@ public final class SecretClientBuilder {
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretClientBuilder httpClient(HttpClient client) {
-        Objects.requireNonNull(client);
-        this.httpClient = client;
+        builder.httpClient(client);
         return this;
     }
 
@@ -205,8 +147,7 @@ public final class SecretClientBuilder {
      * @return the updated {@link SecretClientBuilder} object.
      */
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
-        Objects.requireNonNull(pipeline);
-        this.pipeline = pipeline;
+        builder.pipeline(pipeline);
         return this;
     }
 
@@ -220,24 +161,7 @@ public final class SecretClientBuilder {
      * @return The updated SecretClientBuilder object.
      */
     public SecretClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        builder.configuration(configuration);
         return this;
-    }
-
-    private URL getBuildEndpoint(Configuration configuration) {
-        if (endpoint != null) {
-            return endpoint;
-        }
-
-        String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
-            return null;
-        }
-
-        try {
-            return new URL(configEndpoint);
-        } catch (MalformedURLException ex) {
-            return null;
-        }
     }
 }

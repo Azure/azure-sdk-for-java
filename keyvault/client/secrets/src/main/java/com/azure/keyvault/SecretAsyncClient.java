@@ -10,9 +10,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.logging.ServiceLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.keyvault.implementation.SecretBasePage;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
@@ -52,7 +52,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     private String endpoint;
     private final SecretService service;
-    private final ServiceLogger logger = new ServiceLogger(SecretAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
 
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to service requests

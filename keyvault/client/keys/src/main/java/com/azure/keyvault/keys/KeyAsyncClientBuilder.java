@@ -3,6 +3,7 @@
 
 package com.azure.keyvault.keys;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -13,6 +14,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.configuration.ConfigurationManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -65,6 +67,7 @@ public final class KeyAsyncClientBuilder {
     private HttpClient httpClient;
     private HttpLogDetailLevel httpLogDetailLevel;
     private RetryPolicy retryPolicy;
+    private Configuration configuration;
 
     KeyAsyncClientBuilder() {
         retryPolicy = new RetryPolicy();
@@ -87,8 +90,10 @@ public final class KeyAsyncClientBuilder {
      * {@link KeyAsyncClientBuilder#endpoint(String)} have not been set.
      */
     public KeyAsyncClient build() {
+        Configuration buildConfiguration = (configuration == null) ? ConfigurationManager.getConfiguration().clone() : configuration;
+        URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
-        if (endpoint == null) {
+        if (buildEndpoint == null) {
             throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
@@ -102,7 +107,7 @@ public final class KeyAsyncClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, new Configuration()));
+        policies.add(new UserAgentPolicy(AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION, buildConfiguration));
         policies.add(retryPolicy);
         policies.add(new BearerTokenAuthenticationPolicy(credential, KeyAsyncClient.KEY_VAULT_SCOPE));
         policies.addAll(this.policies);
@@ -200,5 +205,36 @@ public final class KeyAsyncClientBuilder {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
         return this;
+    }
+
+    /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated KeyAsyncClientBuilder object.
+     */
+    public KeyAsyncClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    private URL getBuildEndpoint(Configuration configuration) {
+        if (endpoint != null) {
+            return endpoint;
+        }
+
+        String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
+        if (ImplUtils.isNullOrEmpty(configEndpoint)) {
+            return null;
+        }
+
+        try {
+            return new URL(configEndpoint);
+        } catch (MalformedURLException ex) {
+            return null;
+        }
     }
 }

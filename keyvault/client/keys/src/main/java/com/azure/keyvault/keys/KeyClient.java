@@ -3,20 +3,11 @@
 
 package com.azure.keyvault.keys;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.Context;
-import com.azure.keyvault.keys.implementation.DeletedKeyPage;
-import com.azure.keyvault.keys.implementation.KeyBasePage;
 import com.azure.keyvault.keys.models.Key;
 import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.azure.keyvault.keys.models.DeletedKey;
@@ -28,14 +19,8 @@ import com.azure.keyvault.keys.models.webkey.JsonWebKey;
 import com.azure.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
-import org.reactivestreams.Publisher;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -47,27 +32,16 @@ import java.util.Objects;
  *
  * @see KeyClientBuilder
  */
-public final class KeyClient extends ServiceClient {
-    static final String API_VERSION = "7.0";
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-
-    private String endpoint;
-    private final KeyService service;
+public final class KeyClient {
+    private KeyAsyncClient client;
 
     /**
      * Creates a KeyClient that uses {@code pipeline} to service requests
      *
-     * @param endpoint URL for the Azure KeyVault service.
-     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param client The {@link KeyAsyncClient} that the client routes its request through.
      */
-    KeyClient(URL endpoint, HttpPipeline pipeline) {
-        super(pipeline);
-        Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
-        this.endpoint = endpoint.toString();
-        this.service = RestProxy.create(KeyService.class, this);
+    KeyClient(KeyAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -97,8 +71,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createKey(String name, KeyType keyType) {
-        KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
-        return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.createKey(name, keyType).block();
     }
 
     /**
@@ -129,12 +102,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createKey(KeyCreateOptions keyCreateOptions) {
-        Objects.requireNonNull(keyCreateOptions, "The key options parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-                .kty(keyCreateOptions.keyType())
-                .keyOps(keyCreateOptions.keyOperations())
-                .keyAttributes(new KeyRequestAttributes(keyCreateOptions));
-        return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.createKey(keyCreateOptions).block();
     }
 
     /**
@@ -167,13 +135,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(rsaKeyCreateOptions.keyType())
-            .keySize(rsaKeyCreateOptions.keySize())
-            .keyOps(rsaKeyCreateOptions.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
-        return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.createRsaKey(rsaKeyCreateOptions).block();
     }
 
     /**
@@ -207,13 +169,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     public Response<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .kty(ecKeyCreateOptions.keyType())
-            .curve(ecKeyCreateOptions.curve())
-            .keyOps(ecKeyCreateOptions.keyOperations())
-            .keyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
-        return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.createEcKey(ecKeyCreateOptions).block();
     }
 
     /**
@@ -233,8 +189,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
     public Response<Key> importKey(String name, JsonWebKey keyMaterial) {
-        KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
-        return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.importKey(name, keyMaterial).block();
     }
 
     /**
@@ -263,12 +218,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
     public Response<Key> importKey(KeyImportOptions keyImportOptions) {
-        Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
-        KeyImportRequestParameters parameters = new KeyImportRequestParameters()
-                .key(keyImportOptions.keyMaterial())
-                .hsm(keyImportOptions.hsm())
-                .keyAttributes(new KeyRequestAttributes(keyImportOptions));
-        return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.importKey(keyImportOptions).block();
     }
 
     /**
@@ -289,11 +239,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     public Response<Key> getKey(String name, String version) {
-        String keyVersion = "";
-        if (version != null) {
-            keyVersion = version;
-        }
-        return service.getKey(endpoint, name, keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getKey(name, version).block();
     }
 
     /**
@@ -335,9 +281,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     public Response<Key> getKey(KeyBase keyBase) {
-        Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        String keyVersion = "";
-        return service.getKey(endpoint, keyBase.name(), keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getKey(keyBase).block();
     }
 
     /**
@@ -361,12 +305,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Response<Key> updateKey(KeyBase key) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-            .tags(key.tags())
-            .keyAttributes(new KeyRequestAttributes(key));
-
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.updateKey(key).block();
     }
 
     /**
@@ -391,13 +330,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Response<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
-        Objects.requireNonNull(key, "The key input parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-                .tags(key.tags())
-                .keyOps(Arrays.asList(keyOperations))
-                .keyAttributes(new KeyRequestAttributes(key));
-
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.updateKey(key, keyOperations).block();
     }
 
     /**
@@ -420,7 +353,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     public Response<DeletedKey> deleteKey(String name) {
-        return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.deleteKey(name).block();
     }
 
     /**
@@ -442,7 +375,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     public Response<DeletedKey> getDeletedKey(String name) {
-        return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.getDeletedKey(name).block();
     }
 
     /**
@@ -463,7 +396,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link VoidResponse}.
      */
     public VoidResponse purgeDeletedKey(String name) {
-        return service.purgeDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.purgeDeletedKey(name).block();
     }
 
     /**
@@ -485,7 +418,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
      */
     public Response<Key> recoverDeletedKey(String name) {
-        return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.recoverDeletedKey(name).block();
     }
 
     /**
@@ -511,9 +444,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up key blob.
      */
     public Response<byte[]> backupKey(String name) {
-        return service.backupKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
-                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value()))).block();
+        return client.backupKey(name).block();
     }
 
     /**
@@ -538,8 +469,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
      */
     public Response<Key> restoreKey(byte[] backup) {
-        KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().keyBackup(backup);
-        return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).block();
+        return client.restoreKey(backup).block();
     }
 
     /**
@@ -557,7 +487,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
     public List<KeyBase> listKeys() {
-        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, Context.NONE)).collectList().block();
+        return client.listKeys().collectList().block();
     }
 
     /**
@@ -575,7 +505,7 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
     public List<DeletedKey> listDeletedKeys() {
-        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, Context.NONE)).collectList().block();
+        return client.listDeletedKeys().collectList().block();
     }
 
     /**
@@ -593,36 +523,6 @@ public final class KeyClient extends ServiceClient {
      * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
     public List<KeyBase> listKeyVersions(String name) {
-        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, Context.NONE)).collectList().block();
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listKeys()}.
-     *
-     * @param nextPageLink The {@link KeyBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
-     */
-    private Flux<KeyBase> listKeysNext(String nextPageLink, Context context) {
-        return service.getKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, context));
-    }
-
-    private Publisher<KeyBase> extractAndFetchKeys(PagedResponse<KeyBase> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listKeysNext);
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listDeletedKeys()}.
-     *
-     * @param nextPageLink The {@link DeletedKeyPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
-     */
-    private Flux<DeletedKey> listDeletedKeysNext(String nextPageLink, Context context) {
-        return service.getDeletedKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, context));
-    }
-
-    private Publisher<DeletedKey> extractAndFetchDeletedKeys(PagedResponse<DeletedKey> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listDeletedKeysNext);
+        return client.listKeyVersions(name).collectList().block();
     }
 }
