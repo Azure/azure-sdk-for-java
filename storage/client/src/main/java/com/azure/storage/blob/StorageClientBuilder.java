@@ -47,6 +47,8 @@ import java.util.Objects;
 public final class StorageClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ENDPOINT_PROTOCOL = "DefaultEndpointsProtocol".toLowerCase();
+    private static final String ENDPOINT_SUFFIX = "EndpointSuffix".toLowerCase();
 
     private final List<HttpPipelinePolicy> policies;
 
@@ -180,9 +182,16 @@ public final class StorageClientBuilder {
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+        }
+
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            String endpoint = String.format("%s://%s.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            endpoint(endpoint);
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.

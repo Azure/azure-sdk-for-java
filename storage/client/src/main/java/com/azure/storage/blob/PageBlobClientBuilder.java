@@ -47,10 +47,14 @@ import java.util.Objects;
 public final class PageBlobClientBuilder {
     private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ENDPOINT_PROTOCOL = "DefaultEndpointsProtocol".toLowerCase();
+    private static final String ENDPOINT_SUFFIX = "EndpointSuffix".toLowerCase();
 
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
+    private String containerName;
+    private String blobName;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
@@ -93,7 +97,7 @@ public final class PageBlobClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(endpoint.toString())
+            .url(String.format("%s/%s/%s", endpoint.toString(), containerName, blobName))
             .pipeline(pipeline);
     }
 
@@ -112,18 +116,51 @@ public final class PageBlobClientBuilder {
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated PageBlobClientBuilder object
      */
     public PageBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
+        URL url;
         try {
-            this.endpoint = new URL(endpoint);
+            url = new URL(endpoint);
+            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
+            String path = url.getPath();
+            if (path != null && !path.isEmpty() && !path.equals("/")) {
+                path = path.replaceAll("^/", "").replaceAll("/$", "");
+                String[] segments = path.split("/", 2);
+                if (segments.length != 2) {
+                    throw new IllegalArgumentException("Endpoint should contain 0 or at least 2 path segments");
+                } else {
+                    this.containerName = segments[0];
+                    this.blobName = segments[1];
+                }
+            }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the name of the container this client is connecting to.
+     * @param containerName the name of the container
+     * @return the updated PageBlobClientBuilder object
+     */
+    public PageBlobClientBuilder containerName(String containerName) {
+        this.containerName = containerName;
+        return this;
+    }
+
+    /**
+     * Sets the name of the blob this client is connecting to.
+     * @param blobName the name of the blob
+     * @return the updated PageBlobClientBuilder object
+     */
+    public PageBlobClientBuilder blobName(String blobName) {
+        this.blobName = blobName;
         return this;
     }
 
@@ -173,9 +210,16 @@ public final class PageBlobClientBuilder {
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
+        }
+
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            String endpoint = String.format("%s://%s.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            endpoint(endpoint);
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
