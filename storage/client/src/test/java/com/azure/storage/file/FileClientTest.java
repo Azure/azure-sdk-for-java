@@ -47,8 +47,7 @@ public class FileClientTest extends FileClientTestBase{
                              .shareName(shareName)
                              .filePath(filePath)
                              .endpoint(endpoint)
-                            // .httpClient(HttpClient.createDefault().wiretap(true))
-                                                                     .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).wiretap(true))
+                             .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .addPolicy(interceptorManager.getRecordPolicy())
                              .build());

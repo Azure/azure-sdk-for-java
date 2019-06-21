@@ -42,7 +42,7 @@ public class LargeFileTest extends StorageTestBase {
         }
 
         client = setupClient((connectionString, endpoint) -> FileClient.builder()
-                                                                 .connectionString(connectionString)
+                                                                 //.connectionString(connectionString)
                                                                  .shareName("storagefiletests")
                                                                  .filePath(LARGE_TEST_FOLDER + fileName)
                                                                  .endpoint(endpoint)
@@ -78,71 +78,10 @@ public class LargeFileTest extends StorageTestBase {
         }
     }
 
-    private static String getFileChecksum(File file) throws Exception
-    {
+    private static String getFileChecksum(File file) throws Exception {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(Files.readAllBytes(Paths.get(file.getPath())));
         byte[] digest = md.digest();
         return DatatypeConverter.printHexBinary(digest).toUpperCase();
-        //Get file input stream for reading the file content
-//        FileInputStream fis = new FileInputStream(file);
-//
-//        //Create byte array to read data in chunks
-//        byte[] byteArray = new byte[1024];
-//        int bytesCount = 0;
-//
-//        //Read file data and update in message digest
-//        while ((bytesCount = fis.read(byteArray)) != -1) {
-//            digest.update(byteArray, 0, bytesCount);
-//        };
-//
-//        //close the stream; We don't need it now.
-//        fis.close();
-//
-//        //Get the hash's bytes
-//        byte[] bytes = digest.digest();
-//
-//        //This bytes[] has bytes in decimal format;
-//        //Convert it to hexadecimal format
-//        StringBuilder sb = new StringBuilder();
-//        for(int i=0; i< bytes.length ;i++)
-//        {
-//            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-//        }
-//
-//        //return complete hash
-//        return sb.toString();
     }
-//
-//    @Test
-//    public void downloadLargeBlockBlob() throws Exception {
-//        uploadLargeFile();
-//        OffsetDateTime start = OffsetDateTime.now();
-//        File downloaded = new File(filePath);
-//        downloaded.createNewFile();
-//        client.downloadToFile(filePath);
-//        System.out.println("Download " + downloaded.length() + " bytes took " + Duration.between(start, OffsetDateTime.now()).getSeconds() + " seconds");
-//        Path path = Paths.get(filePath);
-//        if (Files.exists(path)) {
-//            Files.delete(path);
-//        } else {
-//            fail("Did not find the download file.");
-//        }
-//    }
-
-    //  private boolean createSparseFile(String filePath, Long fileSize) {
-//        boolean success = true;
-//        String command = "dd if=/dev/zero of=%s bs=1 count=1 seek=%s";
-//        String formmatedCommand = String.format(command, filePath, fileSize);
-//        String s;
-//        Process p;
-//        try {
-//            p = Runtime.getRuntime().exec(formmatedCommand);
-//            p.waitFor();
-//            p.destroy();
-//        } catch (IOException | InterruptedException e) {
-//            fail(e.getLocalizedMessage());
-//        }
-//        return success;
-    //   }
 }

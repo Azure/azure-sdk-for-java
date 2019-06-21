@@ -14,7 +14,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -22,12 +21,10 @@ import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FileClientBuilder {
+    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
     private final List<HttpPipelinePolicy> policies;
     private final RetryPolicy retryPolicy;
 
@@ -100,18 +97,18 @@ public class FileClientBuilder {
     public FileClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
         try {
-            UrlBuilder urlBuilder = UrlBuilder.parse(endpoint);
-            this.endpoint = new UrlBuilder().withScheme(urlBuilder.scheme()).withHost(urlBuilder.host()).toURL();
+            URL fullURL = new URL(endpoint);
+            this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
-            // Attempt to get the share name and file path from the URL passed
-            String[] pathSegments = urlBuilder.path().split("/");
+            // Attempt to get the queue name from the URL passed
+            String[] pathSegments = fullURL.getPath().split("/");
             int length = pathSegments.length;
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
             String[] filePathParams = length >= 3 ? Arrays.copyOfRange(pathSegments, 2, length) : null;
             this.filePath = filePathParams != null ? String.join("/", filePathParams) : this.filePath;
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(urlBuilder.query());
+            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
             if (credential != null) {
                 this.sasTokenCredential = credential;
             }
@@ -140,7 +137,23 @@ public class FileClientBuilder {
     public FileClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
         this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
+        getEndPointFromConnectionString(connectionString);
         return this;
+    }
+
+    private void getEndPointFromConnectionString(String connectionString) {
+        HashMap<String, String> connectionStringPieces = new HashMap<>();
+        for (String connectionStringPiece : connectionString.split(";")) {
+            String[] kvp = connectionStringPiece.split("=", 2);
+            connectionStringPieces.put(kvp[0].toLowerCase(), kvp[1]);
+        }
+        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
+        try {
+            this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. " +
+                "Connection String: %s", connectionString));
+        }
     }
 
     public FileClientBuilder shareName (String shareName) {

@@ -27,7 +27,7 @@ public class StorageTestBase extends TestBase {
     }
 
     public <T> T setupClient(BiFunction<String, String, T> clientBuilder) {
-        if (ImplUtils.isNullOrEmpty(azureStorageConnectionString) || ImplUtils.isNullOrEmpty(azureStorageFileEndpoint)) {
+        if (ImplUtils.isNullOrEmpty(azureStorageConnectionString) && ImplUtils.isNullOrEmpty(azureStorageFileEndpoint)) {
             logger.asWarning().log("Connection string and endpoint must be set to build the testing client");
             fail();
             return null;
