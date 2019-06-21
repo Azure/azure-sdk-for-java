@@ -19,6 +19,7 @@ import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -91,12 +92,12 @@ public class EventHubClient implements Closeable {
     }
 
     /**
-     * Retrieves the set of identifiers for the partitions of an Event Hub.
+     * Retrieves the identifiers for the partitions of an Event Hub.
      *
-     * @return The set of identifiers for the partitions of an Event Hub.
+     * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    public Mono<String[]> getPartitionIds() {
-        return getProperties().map(EventHubProperties::partitionIds);
+    public Flux<String> getPartitionIds() {
+        return getProperties().flatMapMany(properties -> Flux.fromArray(properties.partitionIds()));
     }
 
     /**

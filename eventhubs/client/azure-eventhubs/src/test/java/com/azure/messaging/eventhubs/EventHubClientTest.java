@@ -102,7 +102,7 @@ public class EventHubClientTest extends ApiTestBase {
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
-            .assertNext(ids -> Assert.assertEquals(data.properties.partitionIds().length, ids.length))
+            .expectNextCount(data.properties.partitionIds().length)
             .verifyComplete();
     }
 
@@ -132,21 +132,13 @@ public class EventHubClientTest extends ApiTestBase {
      * 1. Gets information about the Event Hub
      * 2. Queries for partition information about each partition.
      */
-    @Ignore
     @Test
     public void getPartitionPropertiesMultipleCalls() {
         skipIfNotRecordMode();
 
         // Act
         final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
-            .flatMapMany(ids -> {
-                final List<Mono<PartitionProperties>> results = new ArrayList<>();
-                for (String id : ids) {
-                    results.add(client.getPartitionProperties(id));
-                }
-
-                return Flux.merge(results);
-            });
+            .flatMap(partitionId -> client.getPartitionProperties(partitionId));
 
         // Assert
         StepVerifier.create(partitionProperties)
