@@ -101,7 +101,7 @@ public abstract class Retry {
      *
      * @return The maximum number of retry attempts.
      */
-    public int maxRetryCount() {
+    public int getMaxRetryCount() {
         return maxRetryCount;
     }
 

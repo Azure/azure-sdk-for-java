@@ -53,9 +53,9 @@ public final class ExponentialRetry extends Retry {
 
     private double computeRetryFactor() {
         final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
-        if (deltaBackoff <= 0 || super.maxRetryCount() <= 0) {
+        if (deltaBackoff <= 0 || super.getMaxRetryCount() <= 0) {
             return 0;
         }
-        return Math.log(deltaBackoff) / Math.log(super.maxRetryCount());
+        return Math.log(deltaBackoff) / Math.log(super.getMaxRetryCount());
     }
 }
