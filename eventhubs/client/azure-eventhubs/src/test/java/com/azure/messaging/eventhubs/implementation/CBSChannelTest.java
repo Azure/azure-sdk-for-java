@@ -20,6 +20,7 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 public class CBSChannelTest extends ApiTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
@@ -80,6 +81,7 @@ public class CBSChannelTest extends ApiTestBase {
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience))
+            .assertNext(expiration -> OffsetDateTime.now().isBefore(expiration))
             .verifyComplete();
     }
 
