@@ -126,6 +126,20 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Sets the configuration store that is used during construction of the service client.
+     *
+     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
+     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     *
+     * @param configuration The configuration store used to
+     * @return The updated EventHubClientBuilder object.
+     */
+    public EventHubClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
@@ -154,6 +168,29 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Sets the proxy configuration for EventHubClient.
+     *
+     * @param proxyConfiguration The proxy configuration to use.
+     * @return The updated EventHubClientBuilder object.
+     */
+    public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
+        this.proxyConfiguration = proxyConfiguration;
+        return this;
+    }
+
+    /**
+     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
+     * specified, an elastic pool is used.
+     *
+     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
+     * @return The updated EventHubClientBuilder object.
+     */
+    public EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+        return this;
+    }
+
+    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs.
      * Default value is {@link TransportType#AMQP}.
      *
@@ -177,29 +214,6 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated EventHubClientBuilder object.
-     */
-    public EventHubClientBuilder scheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
-        return this;
-    }
-
-    /**
-     * Sets the proxy configuration for EventHubClient.
-     *
-     * @param proxyConfiguration The proxy configuration to use.
-     * @return The updated EventHubClientBuilder object.
-     */
-    public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
-        this.proxyConfiguration = proxyConfiguration;
-        return this;
-    }
-
-    /**
      * Sets the retry policy for EventHubClient.
      *
      * @param retry The retry policy to use.
@@ -211,26 +225,12 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the configuration store that is used during construction of the service client.
-     *
-     * The default configuration store is a clone of the {@link ConfigurationManager#getConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated EventHubClientBuilder object.
-     */
-    public EventHubClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /**
      * Creates a new {@link EventHubClient} based on the configuration set in this builder.
      * Use the default not null values if the Connection parameters are not provided.
      *
      * @return A new {@link EventHubClient} instance.
-     * @throws IllegalArgumentException if the credentials have not been set using either {@link #connectionString(String)}
-     *         or {@link #credential(String, String, TokenCredential)}.
+     * @throws IllegalArgumentException if the credentials have not been set using either
+     *         {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}.
      */
     public EventHubClient build() {
         configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
@@ -248,22 +248,23 @@ public class EventHubClientBuilder {
         }
 
         if (timeout == null) {
-            timeout = Duration.ofSeconds(60);
+            timeout = ClientConstants.OPERATION_TIMEOUT;
         }
-
-        final ReactorProvider provider = new ReactorProvider();
-        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
         if (retry == null) {
             retry = Retry.getDefaultRetry();
         }
 
-        proxyConfiguration = constructDefaultProxyConfiguration(configuration);
+        if (proxyConfiguration == null) {
+            proxyConfiguration = constructDefaultProxyConfiguration(configuration);
+        }
 
         if (scheduler == null) {
             scheduler = Schedulers.elastic();
         }
 
+        final ReactorProvider provider = new ReactorProvider();
+        final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
         final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedAccessKeyCredential
             ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CBSAuthorizationType.JSON_WEB_TOKEN;

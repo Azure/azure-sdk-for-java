@@ -11,14 +11,19 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * A configuration object for Proxy
+ * Properties for configuring proxy for Event Hubs.
  */
 public class ProxyConfiguration implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ProxyConfiguration.class);
-
+    /**
+     * The environment variable used to
+     */
     public static final String PROXY_USERNAME = "PROXY_USERNAME";
+    /**
+     * The environment variable
+     */
     public static final String PROXY_PASSWORD = "PROXY_PASSWORD";
 
+    private final ClientLogger logger = new ClientLogger(ProxyConfiguration.class);
     private final PasswordAuthentication credentials;
     private final Proxy proxyAddress;
     private final ProxyAuthenticationType authentication;
