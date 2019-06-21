@@ -12,9 +12,7 @@ public abstract class AmqpExceptionHandler {
     private final ClientLogger logger = new ClientLogger(AmqpExceptionHandler.class);
 
     /**
-     * Creates the exception handler with the provided logger.
-     *
-     * @param logger Logger to use when issuing logs.
+     * Creates a new instance of the exception handler.
      */
     protected AmqpExceptionHandler() {
     }
