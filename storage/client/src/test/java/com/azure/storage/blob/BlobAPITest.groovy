@@ -7,10 +7,18 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
+import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobHTTPHeaders
 import com.azure.storage.blob.models.BlobItem
+import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseAccessConditions
+import com.azure.storage.blob.models.LeaseDurationType
+import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ModifiedAccessConditions
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.file.models.DeleteSnapshotsOptionType
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -909,7 +917,7 @@ class BlobAPITest extends APISpec {
         setup:
         setupBlobLeaseCondition(bu, receivedLeaseID)
 
-        then:
+        expect:
         bu.breakLease().statusCode() == 202
     }
 
@@ -924,7 +932,7 @@ class BlobAPITest extends APISpec {
             .ifMatch(match)
             .ifNoneMatch(noneMatch)
 
-        then:
+        expect:
         bu.breakLease(null, mac, null).statusCode() == 202
 
         where:
@@ -1366,7 +1374,7 @@ class BlobAPITest extends APISpec {
     def "Abort copy lease fail"() {
         // Data has to be large enough and copied between accounts to give us enough time to abort
         bu.asBlockBlobClient()
-            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024, null, null, null, null, null)
+            .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024)
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
@@ -1441,7 +1449,7 @@ class BlobAPITest extends APISpec {
 
         when:
         String copyID =
-            bu2.startCopyFromURL(bu.getUrl(), null, null, null, null).value()
+            bu2.startCopyFromURL(bu.getUrl()).value()
 
         then:
         bu2.abortCopyFromURL(copyID).statusCode() == 204
@@ -1487,7 +1495,7 @@ class BlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.abortCopyFromURL("id", null, null)
+        bu.abortCopyFromURL("id")
 
         then:
         thrown(StorageException)

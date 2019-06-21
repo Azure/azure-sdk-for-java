@@ -3,17 +3,14 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.credentials.AccessToken
-import com.azure.core.credentials.TokenCredential
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
+import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
-import com.microsoft.aad.adal4j.AuthenticationContext
-import com.microsoft.aad.adal4j.ClientCredential
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
@@ -25,7 +22,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
-import java.util.concurrent.Executors
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -56,7 +52,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = true
+    static boolean enableDebugging = false
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -174,25 +170,9 @@ class APISpec extends Specification {
         return generateResourceName(specificationContext, blobPrefix, iterationNo, entityNo)
     }
 
-    static void setupFeatureRecording(String sceneName) {
-
-    }
-
-    static void scrubAuthHeader(String sceneName) {
-
-    }
-
-    static getEnvironmentVariable(String variable){
-        String envVariable = System.getenv().get(variable)
-        if(envVariable == null){
-            envVariable =  ""
-        }
-        return envVariable
-    }
-
     static getGenericCreds(String accountType) {
-        String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
-        String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
+        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
+        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
 
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
@@ -210,14 +190,16 @@ class APISpec extends Specification {
                     return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
                 }
             })
-        } else return HttpClient.createDefault()
+        } else {
+            return HttpClient.createDefault()
+        }
     }
 
     static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
         return StorageClient.storageClientBuilder()
-            .endpoint("https://" + creds.getAccountName() + ".blob.core.windows.net")
+            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
             .credentials(primaryCreds)
@@ -226,14 +208,14 @@ class APISpec extends Specification {
 
     static void cleanupContainers() throws MalformedURLException {
         StorageClient serviceURL = StorageClient.storageClientBuilder()
-            .endpoint("http://" + primaryCreds.accountName + ".blob.core.windows.net")
+            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
             .credentials(primaryCreds)
             .buildClient()
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainers()) {
             ContainerClient containerURL = serviceURL.getContainerClient(c.name())
-            if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null, null).block()
+            if (c.properties().leaseState() == LeaseStateType.LEASED) {
+                containerURL.breakLease(0, null, null)
             }
             containerURL.delete()
         }
@@ -332,8 +314,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            BlobProperties properties = bu.getProperties(null, null).value()
-            return properties.eTag()
+            return bu.getProperties().headers().value("ETag")
         } else {
             return match
         }
@@ -367,7 +348,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getProperties().eTag()
+            return cu.getProperties().headers().value("ETag")
         } else {
             return match
         }
@@ -375,7 +356,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1).block().deserializedHeaders().leaseId()
+            return cu.acquireLease(null, -1).value()
         } else {
             return leaseID
         }
@@ -495,7 +476,7 @@ class APISpec extends Specification {
 
             @Override
             Flux<ByteBuffer> body() {
-                return Flowable.empty()
+                return Flux.empty()
             }
 
             @Override
@@ -562,19 +543,20 @@ class APISpec extends Specification {
 
     def getContextStubPolicy(int successCode, Class responseHeadersType) {
         return Mock(HttpPipelinePolicy) {
-            sendAsync(_) >> { HttpRequest request ->
-                if (!request.context().getData(defaultContextKey).isPresent()) {
-                    return Mono.error(new RuntimeException("Context key not present."))
-                } else {
-                    return Mono.just(getStubResponse(successCode, responseHeadersType))
-                }
+            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
+                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+                    if (context.getData(defaultContextKey).isPresent()) {
+                        return Mono.error(new RuntimeException("Context key not present."))
+                    } else {
+                        return Mono.just(getStubResponse(successCode, responseHeadersType))
+                    }
             }
         }
     }
 
     def getOAuthServiceURL() {
         return StorageClient.storageClientBuilder()
-            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
+            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credentials(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()
     }
