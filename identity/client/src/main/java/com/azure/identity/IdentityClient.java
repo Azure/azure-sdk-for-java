@@ -30,6 +30,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -78,7 +79,7 @@ public final class IdentityClient {
                 resource,
                 new ClientCredential(clientId, clientSecret),
                 Adal4jUtil.authenticationDelegate(callback));
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
             .doFinally(s -> executor.shutdown());
     }
 
@@ -105,7 +106,7 @@ public final class IdentityClient {
             } catch (IOException e) {
                 callback.error(e);
             }
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
             .doFinally(s -> executor.shutdown());
     }
 
@@ -131,7 +132,7 @@ public final class IdentityClient {
             } catch (IOException e) {
                 callback.error(e);
             }
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.from(ar.getExpiresOnDate().toInstant())))
+        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
             .doFinally(s -> executor.shutdown());
     }
 
