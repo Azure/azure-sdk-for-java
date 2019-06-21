@@ -8,8 +8,8 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
@@ -247,6 +247,6 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
 
     private ActiveClientTokenManager createTokenManager(String entityPath) {
         final String tokenAudience = audienceProvider.getResourceString(entityPath);
-        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL);
+        return new ActiveClientTokenManager(cbsNodeSupplier, tokenAudience);
     }
 }

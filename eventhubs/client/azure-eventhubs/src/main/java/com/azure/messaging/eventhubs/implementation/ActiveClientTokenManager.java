@@ -14,9 +14,12 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Manages the re-authorization of the client to the token audience against the CBS node.
@@ -27,16 +30,17 @@ class ActiveClientTokenManager implements Closeable {
     private final AtomicBoolean hasDisposed = new AtomicBoolean();
     private final Mono<CBSNode> cbsNode;
     private final String tokenAudience;
-    private final Duration refreshInterval;
     private final Timer timer;
     private final Flux<AmqpResponseCode> authorizationResults;
     private FluxSink<AmqpResponseCode> sink;
 
-    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience, Duration refreshInterval) {
+    // last refresh interval in milliseconds.
+    private AtomicLong lastRefreshInterval = new AtomicLong();
+
+    ActiveClientTokenManager(Mono<CBSNode> cbsNode, String tokenAudience) {
         this.timer = new Timer(tokenAudience + "-tokenManager");
         this.cbsNode = cbsNode;
         this.tokenAudience = tokenAudience;
-        this.refreshInterval = refreshInterval;
         this.authorizationResults = Flux.create(sink -> {
             if (hasDisposed.get()) {
                 sink.complete();
@@ -44,6 +48,8 @@ class ActiveClientTokenManager implements Closeable {
                 this.sink = sink;
             }
         });
+
+        lastRefreshInterval.set(Duration.ofMinutes(1).getSeconds() * 1000);
     }
 
     /**
@@ -65,13 +71,23 @@ class ActiveClientTokenManager implements Closeable {
         }
 
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))
-            .then()
-            .doOnSuccess(x -> {
+            .map(expiresOn -> {
                 if (!hasScheduled.getAndSet(true)) {
                     logger.asInfo().log("Scheduling refresh token.");
-                    this.timer.schedule(new RefreshAuthorizationToken(), refreshInterval.toMillis());
+                    Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
+
+                    // We want to refresh the token when 90% of the time before expiry has elapsed.
+                    long refreshSeconds = (long) Math.floor(between.getSeconds() * 0.9);
+                    long refreshIntervalMS = refreshSeconds * 1000;
+
+                    lastRefreshInterval.set(refreshIntervalMS);
+
+                    // This converts it to milliseconds
+                    this.timer.schedule(new RefreshAuthorizationToken(), refreshIntervalMS);
                 }
-            });
+
+                return expiresOn;
+            }).then();
     }
 
     @Override
@@ -95,7 +111,7 @@ class ActiveClientTokenManager implements Closeable {
                 }, error -> {
                     if ((error instanceof AmqpException) && ((AmqpException) error).isTransient()) {
                         logger.asError().log("Error is transient. Rescheduling authorization task.", error);
-                        timer.schedule(new RefreshAuthorizationToken(), refreshInterval.toMillis());
+                        timer.schedule(new RefreshAuthorizationToken(), lastRefreshInterval.get());
                     } else {
                         logger.asError().log("Error occurred while refreshing token that is not retriable. Not scheduling"
                             + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
@@ -108,7 +124,7 @@ class ActiveClientTokenManager implements Closeable {
                     sink.next(AmqpResponseCode.ACCEPTED);
 
                     if (hasScheduled.getAndSet(true)) {
-                        timer.schedule(new RefreshAuthorizationToken(), refreshInterval.toMillis());
+                        timer.schedule(new RefreshAuthorizationToken(), lastRefreshInterval.get());
                     }
                 });
         }
