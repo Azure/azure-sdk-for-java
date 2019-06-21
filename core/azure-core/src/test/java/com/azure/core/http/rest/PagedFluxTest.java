@@ -17,13 +17,22 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+/**
+ * Unit tests for {@link PagedFlux}
+ */
 public class PagedFluxTest {
-
     private List<PagedResponse<Integer>> pagedResponses;
+
+    @Test
+    public void testEmptyFirstPage() {
+        PagedFlux<Integer> pagedFlux = new PagedFlux<>(Mono.empty(),
+            pageLink -> getNextPage(pageLink, pagedResponses));
+        StepVerifier.create(pagedFlux).verifyComplete();
+    }
+
     @Test
     public void testPagedFluxSubscribeToItems() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        pagedFlux.log().subscribe(x -> System.out.println(x));
         StepVerifier.create(pagedFlux)
             .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
             .verifyComplete();
@@ -32,7 +41,6 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPages() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        pagedFlux.byPage().log().subscribe(x -> System.out.println(x.items()));
         StepVerifier.create(pagedFlux.byPage())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
                 pagedResponses.get(3), pagedResponses.get(4))
@@ -42,30 +50,33 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPageWithContinuationToken() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        pagedFlux.byPage("3").log().subscribe(x -> System.out.println(x.items()));
         StepVerifier.create(pagedFlux.byPage("3"))
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux() throws MalformedURLException {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
         pagedResponses = IntStream.range(0, 5)
             .boxed()
-            .map(
-                i -> new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
-                    httpHeaders,
-                    getItems(i),
-                    i < 4 ? String.valueOf(i + 1) : null,
-                    deserializedHeaders)).
-                collect(Collectors.toList());
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i))
+            .collect(Collectors.toList());
         Mono<PagedResponse<Integer>> firstPage = Mono.just(pagedResponses.get(0));
         return new PagedFlux<>(firstPage,
             pageLink -> getNextPage(pageLink, pagedResponses));
+    }
+
+    private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
+        HttpHeaders httpHeaders, String deserializedHeaders, Integer i) {
+        return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
+            httpHeaders,
+            getItems(i),
+            i < 4 ? String.valueOf(i + 1) : null,
+            deserializedHeaders);
     }
 
     private Mono<PagedResponse<Integer>> getNextPage(String pageLink,
@@ -73,10 +84,7 @@ public class PagedFluxTest {
         if (pageLink == null || pageLink.isEmpty()) {
             return Mono.empty();
         }
-
-        Mono<PagedResponse<Integer>> result = Mono
-            .just(pagedResponses.get(Integer.valueOf(pageLink)));
-        return result;
+        return Mono.just(pagedResponses.get(Integer.valueOf(pageLink)));
     }
 
     private List<Integer> getItems(Integer i) {
