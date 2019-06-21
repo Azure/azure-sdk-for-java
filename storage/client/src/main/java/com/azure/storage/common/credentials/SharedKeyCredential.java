@@ -8,7 +8,6 @@ import io.netty.handler.codec.http.QueryStringDecoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -119,23 +118,32 @@ public final class SharedKeyCredential {
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : headers.getOrDefault("Date", "");
+        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers,"Date");
 
         return String.join("\n",
             httpMethod,
-            headers.getOrDefault("Content-Encoding", ""),
-            headers.getOrDefault("Content-Language", ""),
+            getStandardHeaderValue(headers,"Content-Encoding"),
+            getStandardHeaderValue(headers,"Content-Language"),
             contentLength,
-            headers.getOrDefault("Content-MD5", ""),
-            headers.getOrDefault("Content-Type", ""),
+            getStandardHeaderValue(headers,"Content-MD5"),
+            getStandardHeaderValue(headers,"Content-Type"),
             dateHeader,
-            headers.getOrDefault("If-Modified-Since", ""),
-            headers.getOrDefault("If-Match", ""),
-            headers.getOrDefault("If-None-Match", ""),
-            headers.getOrDefault("If-Unmodified-Since", ""),
-            headers.getOrDefault("Range", ""),
+            getStandardHeaderValue(headers,"If-Modified-Since"),
+            getStandardHeaderValue(headers,"If-Match"),
+            getStandardHeaderValue(headers, "If-None-Match"),
+            getStandardHeaderValue(headers,"If-Unmodified-Since"),
+            getStandardHeaderValue(headers, "Range"),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));
+    }
+
+    /*
+     * Returns an empty string if the header value is null or empty.
+     */
+    private String getStandardHeaderValue(Map<String, String> headers, String headerName) {
+        final String headerValue = headers.get(headerName);
+
+        return headerValue == null ? "" : headerValue;
     }
 
     private String getAdditionalXmsHeaders(Map<String, String> headers) {
