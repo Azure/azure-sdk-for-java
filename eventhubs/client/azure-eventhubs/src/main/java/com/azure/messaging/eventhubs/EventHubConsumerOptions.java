@@ -39,7 +39,7 @@ public class EventHubConsumerOptions implements Cloneable {
     private int prefetchCount;
 
     /**
-     * Creates a new instance with a position at the beginning of the partition stream, and the default prefetch amount.
+     * Creates a new instance with the default prefetch amount.
      */
     public EventHubConsumerOptions() {
         this.prefetchCount = DEFAULT_PREFETCH_COUNT;

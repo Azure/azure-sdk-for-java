@@ -70,8 +70,9 @@ public class EventHubProducer implements Closeable {
     private final boolean isPartitionSender;
 
     /**
-     * Creates a new instance of this {@link EventHubProducer} with batches that are {@code maxMessageSize} and sends
-     * messages to {@code partitionId}.
+     * Creates a new instance of this {@link EventHubProducer} that sends messages to
+     * {@link EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
+     * otherwise, allows the service to load balance the messages amongst available partitions.
      */
     EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
         // Caching the created link so we don't invoke another link creation.
