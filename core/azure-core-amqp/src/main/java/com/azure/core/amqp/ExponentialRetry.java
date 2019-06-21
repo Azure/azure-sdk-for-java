@@ -31,6 +31,9 @@ public final class ExponentialRetry extends Retry {
         this.retryFactor = computeRetryFactor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Duration calculateNextRetryInterval(final Exception lastException,
                                                   final Duration remainingTime,

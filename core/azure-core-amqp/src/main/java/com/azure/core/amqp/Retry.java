@@ -65,48 +65,48 @@ public abstract class Retry {
     /**
      * Get default configured Retry.
      *
-     * @return Retry which has all default property set up.
+     * @return A new instance with all the default Retry values configured.
      */
     public static Retry getDefaultRetry() {
         return new ExponentialRetry(DEFAULT_RETRY_MIN_BACKOFF, DEFAULT_RETRY_MAX_BACKOFF, DEFAULT_MAX_RETRY_COUNT);
     }
 
     /**
-     * Increase one count to current count value.
+     * Increments the number of retry attempts and returns the previous number of retry counts.
      *
-     * @return current AtomicInteger value.
+     * @return The number of retry attempts before it was incremented.
      */
     public int incrementRetryCount() {
-        return retryCount.incrementAndGet();
+        return retryCount.getAndIncrement();
     }
 
     /**
-     * Get the current retried count.
+     * Gets the current number of retry attempts for this instance.
      *
-     * @return current AtomicInteger value.
+     * @return The current number of retry attempts.
      */
     public int getRetryCount() {
         return retryCount.get();
     }
 
     /**
-     * Reset AtomicInteger to value zero.
+     * Resets the number of retry attempts for this instance.
      */
     public void resetRetryInterval() {
         retryCount.set(0);
     }
 
     /**
-     * Get the maximum allowed retry count.
+     * Gets the maximum number of retry attempts that are allowed.
      *
-     * @return maximum allowed retry count value.
+     * @return The maximum number of retry attempts.
      */
     public int maxRetryCount() {
         return maxRetryCount;
     }
 
     /**
-     * Calculates the amount of time to delay before the next retry attempt
+     * Calculates the amount of time to delay before the next retry attempt.
      *
      * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
