@@ -123,7 +123,7 @@ public final class PlaybackClient implements HttpClient {
             }
 
             bytes = rawBody.getBytes(StandardCharsets.UTF_8);
-            if (("0").equals(headers.get("Content-Length"))) {
+            if (bytes.length > 0) {
                 headers.put("Content-Length", String.valueOf(bytes.length));
             }
         }
