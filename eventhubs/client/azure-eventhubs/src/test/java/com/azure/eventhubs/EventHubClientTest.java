@@ -48,8 +48,7 @@ public class EventHubClientTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(EventHubClientTest.class);
 
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubConsumer consumer;
     private ExpectedData data;
     private ReactorHandlerProvider handlerProvider;
 
@@ -67,37 +66,20 @@ public class EventHubClientTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(2);
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
         data = new ExpectedData(getTestMode(), getConnectionStringProperties());
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
-
-        if (receiver != null) {
-            try {
-                receiver.close();
-            } catch (IOException e) {
-                logger.asError().log(String.format("[%s]: Receiver doesn't close properly.", testName.getMethodName()), e);
-            }
-        }
+        closeClient(client, null, consumer, testName, logger);
     }
 
     @Test(expected = NullPointerException.class)
-    public void nullConstructor() {
-        new EventHubClient(null, null, null);
+    public void nullConstructor() throws NullPointerException {
+        client = new EventHubClient(null, null, null);
     }
 
     /**
@@ -151,7 +133,7 @@ public class EventHubClientTest extends ApiTestBase {
 
     /**
      * Verifies that we can make multiple service calls one after the other. This is a typical user scenario when
-     * consumers want to create a receiver.
+     * consumers want to create a consumer.
      * 1. Gets information about the Event Hub
      * 2. Queries for partition information about each partition.
      */
@@ -252,15 +234,15 @@ public class EventHubClientTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
             new EventData("Event 2".getBytes(UTF_8)),
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer sender = client.createProducer(senderOptions)) {
-            StepVerifier.create(sender.send(events))
+        try (EventHubProducer producer = client.createProducer(producerOptions)) {
+            StepVerifier.create(producer.send(events))
                 .verifyComplete();
         }
     }
@@ -280,32 +262,28 @@ public class EventHubClientTest extends ApiTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        try (EventHubProducer sender = client.createProducer()) {
-            StepVerifier.create(sender.send(events))
+        try (EventHubProducer producer = client.createProducer()) {
+            StepVerifier.create(producer.send(events))
                 .verifyComplete();
         }
     }
 
-    @Ignore("can't close receiver: [main] ERROR reactor.core.publisher.Operators - Operator called default onErrorDropped")
+    @Ignore("can't close consumer: [main] ERROR reactor.core.publisher.Operators - Operator called default onErrorDropped")
     @Test
     public void receiveMessage() {
         skipIfNotRecordMode();
 
         // Arrange
         final int numberOfEvents = 10;
-        final EventHubConsumerOptions options = new EventHubConsumerOptions()
-            .prefetchCount(2);
-        final EventHubConsumer receiver = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
-            PARTITION_ID, EventPosition.earliest(), options);
 
         // Act & Assert
-        StepVerifier.create(receiver.receive().take(numberOfEvents))
+        StepVerifier.create(consumer.receive().take(numberOfEvents))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
     }
 
     /**
-     * Test for multiple EventHub receivers
+     * Test for multiple EventHub consumers
      */
     @Ignore
     @Test
@@ -314,25 +292,26 @@ public class EventHubClientTest extends ApiTestBase {
 
         final String partitionId = "0";
         final int numberOfClients = 4;
+        final int numberOfEvents = 10;
 
+        // Arrange
         final EventHubClient[] ehClients = new EventHubClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
             ehClients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        final EventHubClient senderClient = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
-
         for (final EventHubClient ehClient : ehClients) {
-
-            final EventHubConsumer receiver = ehClient.createConsumer(getConsumerGroupName(), partitionId, EventPosition.latest(),
-                new EventHubConsumerOptions());
-
-            final Flux<EventData> receivedData = receiver.receive();
-            pushEventsToPartition(senderClient, new EventHubProducerOptions().partitionId(PARTITION_ID), 10);
-
-            StepVerifier.create(receivedData.take(10))
-                .expectNextCount(10)
+            // Arrange
+            final EventHubConsumer consumer = ehClient.createConsumer(getConsumerGroupName(), partitionId, EventPosition.latest());
+            final Flux<EventData> events = Flux.range(0, numberOfEvents).map(number -> new EventData("testString".getBytes(UTF_8)));
+            final EventHubProducer producer = ehClient.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+            // Act & Assert
+            StepVerifier.create(consumer.receive().take(numberOfEvents))
+                .then(() -> producer.send(events).block())
+                .expectNextCount(numberOfEvents)
                 .verifyComplete();
+
+            closeClient(ehClient, producer, consumer, testName, logger);
         }
     }
 
@@ -342,15 +321,6 @@ public class EventHubClientTest extends ApiTestBase {
             sasKeyName, sasKeyValue, eventHubPath);
 
         return new ConnectionStringProperties(connectionString);
-    }
-
-    private Mono<Void> pushEventsToPartition(final EventHubClient client, final EventHubProducerOptions senderOptions, final int numberOfClients) {
-        final Flux<EventData> events = Flux.range(0, numberOfClients).map(number -> {
-            final EventData data = new EventData("testString".getBytes(UTF_8));
-            return data;
-        });
-        sender = client.createProducer(senderOptions);
-        return sender.send(events);
     }
 
     /**

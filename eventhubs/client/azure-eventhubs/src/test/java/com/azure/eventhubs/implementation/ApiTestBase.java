@@ -9,6 +9,9 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.eventhubs.EventHubConsumer;
+import com.azure.eventhubs.EventHubProducer;
 import com.azure.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.eventhubs.EventHubClient;
 import com.azure.eventhubs.EventHubClientBuilder;
@@ -19,6 +22,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
+import org.junit.rules.TestName;
 import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -35,6 +39,7 @@ import static org.mockito.Mockito.when;
  * Test base for running live and offline tests.
  */
 public abstract class ApiTestBase extends TestBase {
+    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     private static final String TEST_CONNECTION_STRING = "Endpoint=sb://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=myaccount;SharedAccessKey=ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=;EntityPath=eventhub1;";
@@ -144,5 +149,34 @@ public abstract class ApiTestBase extends TestBase {
 
     protected String getConsumerGroupName() {
         return "$Default";
+    }
+
+    protected void closeProducer(EventHubProducer producer, TestName testName, ClientLogger logger) {
+        if (producer != null) {
+            try {
+                producer.close();
+            } catch (IOException e) {
+                logger.asError().log("[{}]: producer doesn't close properly.", testName.getMethodName(), e);
+            }
+        }
+    }
+
+    protected void closeConsumer(EventHubConsumer consumer, TestName testName, ClientLogger logger) {
+        if (consumer != null) {
+            try {
+                consumer.close();
+            } catch (IOException e) {
+                logger.asError().log(String.format("[%s]: consumer doesn't close properly.", testName.getMethodName()), e);
+            }
+        }
+    }
+
+    protected void closeClient(EventHubClient client, EventHubProducer producer, EventHubConsumer consumer, TestName testName, ClientLogger logger) {
+        closeConsumer(consumer, testName, logger);
+        closeProducer(producer, testName, logger);
+
+        if (client != null) {
+            client.close();
+        }
     }
 }

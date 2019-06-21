@@ -18,7 +18,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
@@ -36,8 +35,8 @@ public class BackCompatTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(BackCompatTest.class);
 
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubProducer producer;
+    private EventHubConsumer consumer;
     private ReactorHandlerProvider handlerProvider;
 
     @Rule
@@ -54,31 +53,14 @@ public class BackCompatTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
+        producer = client.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-//        if (client != null) {
-//            client.close();
-//        }
-//
-//        if (sender != null) {
-//            try {
-//                sender.close();
-//            } catch (IOException e) {
-//                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
-//            }
-//        }
-//
-//        if (receiver != null) {
-//            try {
-//                receiver.close();
-//            } catch (IOException e) {
-//                logger.asError().log(String.format("[%s]: Receiver doesn't close properly.", testName.getMethodName()), e);
-//            }
-//        }
+        closeClient(client, producer, consumer, testName, logger);
     }
 
     /**
@@ -89,10 +71,9 @@ public class BackCompatTest extends ApiTestBase {
     public void backCompatWithJavaSDKOlderThan0110() {
         skipIfNotRecordMode();
 
-        final Message originalMessage = Proton.message();
         // Arrange
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(),
-            new EventHubConsumerOptions());
+        final Message originalMessage = Proton.message();
+
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
         // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
         final HashMap<String, Object> appProperties = new HashMap<>();
@@ -106,16 +87,10 @@ public class BackCompatTest extends ApiTestBase {
         originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
         final EventData msgEvent = new EventData(originalMessage);
 
-
         // Act & Assert
-        Flux<EventData> receivedEventData = receiver.receive();
-        sender = client.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30)));
-        sender.send(msgEvent);
-        StepVerifier.create(receivedEventData)
-            .expectNextMatches(event -> {
-                validateAmqpPropertiesInEventData(event, originalMessage);
-                return true;
-            })
+        StepVerifier.create(consumer.receive())
+            .then(() -> producer.send(msgEvent).block(TIMEOUT))
+            .assertNext(event -> validateAmqpPropertiesInEventData(event, originalMessage))
             .verifyComplete();
     }
 

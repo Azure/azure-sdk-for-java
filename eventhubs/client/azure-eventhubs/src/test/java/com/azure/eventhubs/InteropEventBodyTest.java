@@ -19,10 +19,9 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -35,8 +34,8 @@ public class InteropEventBodyTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(InteropEventBodyTest.class);
 
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubProducer producer;
+    private EventHubConsumer consumer;
     private EventData receivedEvent;
 
     @Rule
@@ -53,35 +52,15 @@ public class InteropEventBodyTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions().retry(Retry.getNoRetry());
-        sender = client.createProducer(senderOptions);
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(), receiverOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        producer = client.createProducer(producerOptions);
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
-
-        if (receiver != null) {
-            try {
-                receiver.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
+        closeClient(client, producer, consumer, testName, logger);
     }
 
     /**
@@ -99,16 +78,16 @@ public class InteropEventBodyTest extends ApiTestBase {
         final EventData msgEvent = new EventData(originalMessage);
 
         // Act & Assert
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(msgEvent))
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> {
                 Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString());
                 receivedEvent = event;
             })
             .verifyComplete();
 
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(receivedEvent))
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(receivedEvent).block(TIMEOUT))
             .assertNext(event -> Assert.assertEquals(PAYLOAD, UTF_8.decode(event.body()).toString()))
             .verifyComplete();
     }
@@ -128,22 +107,19 @@ public class InteropEventBodyTest extends ApiTestBase {
         final Message originalMessage = Proton.message();
         originalMessage.setBody(new AmqpSequence(dataList));
         originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
-
         final EventData msgEvent = new EventData(originalMessage);
 
-
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(Mono.just(msgEvent)))
-            .expectNextMatches(event -> {
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(msgEvent).block(TIMEOUT))
+            .assertNext(event -> {
                 // TODO: can't convert ByteBuffer to List<Data>
-                String val = UTF_8.decode(event.body()).toString();
-                return PAYLOAD.equals(UTF_8.decode(event.body()).toString());
+                PAYLOAD.equals(UTF_8.decode(event.body()).toString());
             })
             .verifyComplete();
 
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(receivedEvent))
-            .expectNextMatches(v -> PAYLOAD.equals(UTF_8.decode(v.body()).toString()))
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(receivedEvent).block(TIMEOUT))
+            .assertNext(v -> PAYLOAD.equals(UTF_8.decode(v.body()).toString()))
             .verifyComplete();
     }
 }

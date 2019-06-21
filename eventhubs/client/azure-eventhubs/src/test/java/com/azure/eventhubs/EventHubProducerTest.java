@@ -59,7 +59,7 @@ public class EventHubProducerTest {
     }
 
     /**
-     * Verifies that sending multiple events will result in calling sender.send(List<Message>).
+     * Verifies that sending multiple events will result in calling producer.send(List<Message>).
      */
     @Test
     public void sendMultipleMessages() {
@@ -75,11 +75,11 @@ public class EventHubProducerTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
         // Act
-        StepVerifier.create(sender.send(testData, options))
+        StepVerifier.create(producer.send(testData, options))
             .verifyComplete();
 
         // Assert
@@ -92,7 +92,7 @@ public class EventHubProducerTest {
     }
 
     /**
-     * Verifies that sending a single event data will result in calling sender.send(Message).
+     * Verifies that sending a single event data will result in calling producer.send(Message).
      */
     @Test
     public void sendSingleMessage() {
@@ -103,11 +103,11 @@ public class EventHubProducerTest {
 
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
         // Act
-        StepVerifier.create(sender.send(testData, options))
+        StepVerifier.create(producer.send(testData, options))
             .verifyComplete();
 
         // Assert
@@ -119,10 +119,10 @@ public class EventHubProducerTest {
     }
 
     /**
-     * Verifies that a partitioned sender cannot also send events with a partition key.
+     * Verifies that a partitioned producer cannot also send events with a partition key.
      */
     @Test
-    public void partitionSenderCannotSendWithPartitionKey() {
+    public void partitionProducerCannotSendWithPartitionKey() {
         // Arrange
         final Flux<EventData> testData = Flux.just(
             new EventData(CONTENTS.getBytes(UTF_8)),
@@ -131,16 +131,16 @@ public class EventHubProducerTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         final SendOptions options = new SendOptions().partitionKey("Some partition key");
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions()
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30))
             .partitionId("my-partition-id");
 
-        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
+        final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
         // Act & Assert
         try {
-            sender.send(testData, options).block(Duration.ofSeconds(10));
+            producer.send(testData, options).block(Duration.ofSeconds(10));
             Assert.fail("Should have thrown an exception.");
         } catch (IllegalArgumentException e) {
             // This is what we expect.
@@ -162,10 +162,10 @@ public class EventHubProducerTest {
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventHubProducer sender = new EventHubProducer(Mono.just(sendLink), senderOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
-        StepVerifier.create(sender.send(testData, options))
+        StepVerifier.create(producer.send(testData, options))
             .verifyErrorMatches(error -> error instanceof AmqpException
                 && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 

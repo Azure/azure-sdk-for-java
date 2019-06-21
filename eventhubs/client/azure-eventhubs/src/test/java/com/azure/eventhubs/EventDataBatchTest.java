@@ -5,6 +5,7 @@ package com.azure.eventhubs;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.eventhubs.implementation.ApiTestBase;
 import com.azure.eventhubs.implementation.ReactorHandlerProvider;
@@ -14,17 +15,16 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Random;
 
 public class EventDataBatchTest extends ApiTestBase {
-    private static final String PARTITION_KEY = "PartitionIDCopyFromSenderOption";
+    private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
     private final ClientLogger logger = new ClientLogger(EventDataBatchTest.class);
 
     private EventHubClient client;
-    private EventHubProducer sender;
+    private EventHubProducer producer;
     private ReactorHandlerProvider handlerProvider;
 
     @Rule
@@ -41,27 +41,14 @@ public class EventDataBatchTest extends ApiTestBase {
 
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions()
-            .retry(Retry.getNoRetry())
-            .timeout(Duration.ofSeconds(30));
-        sender = client.createProducer(senderOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        producer = client.createProducer(producerOptions);
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log(String.format("[%s]: Sender doesn't close properly.", testName.getMethodName()), e);
-            }
-        }
+        closeClient(client, producer, null, testName, logger);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -70,11 +57,17 @@ public class EventDataBatchTest extends ApiTestBase {
         batch.tryAdd(null);
     }
 
-    @Test(expected = AmqpException.class)
+    @Test
     public void payloadExceededException() {
         final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
-        batch.tryAdd(tooBig);
+        try {
+            batch.tryAdd(tooBig);
+            Assert.fail("Expected an exception");
+        } catch (AmqpException e) {
+            Assert.assertFalse(e.isTransient());
+            Assert.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
+        }
     }
 
     @Test
@@ -98,7 +91,7 @@ public class EventDataBatchTest extends ApiTestBase {
         }
 
         // Act & Assert
-        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
+        StepVerifier.create(producer.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
 
@@ -110,14 +103,14 @@ public class EventDataBatchTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        // Only Event Data batch has partition key information, none in SendOption and SenderOption
+        // Only Event Data batch has partition key information, none in SendOption and producerOption
         final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         while (batch.tryAdd(new EventData("a".getBytes()))) {
             logger.asVerbose().log("Batch size: {}", batch.getSize());
         }
 
         // Act & Assert
-        StepVerifier.create(sender.send(batch.getEvents(), new SendOptions()))
+        StepVerifier.create(producer.send(batch.getEvents(), new SendOptions()))
             .verifyComplete();
     }
 
@@ -155,18 +148,18 @@ public class EventDataBatchTest extends ApiTestBase {
 
         // Act & Assert
         Assert.assertEquals(count, batch.getSize());
-        StepVerifier.create(sender.send(batch.getEvents(), sendOptions))
+        StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }
 
     /**
-     * Test for sending full batch with both sender's partitionID and batch's partitionKey
-     * Both event data batch a
+     * Test for sending full batch with both producer's partitionID and batch's partitionKey
      */
     @Test
-    public void sendBatchWithPartitionKeyOnPartitionSenderTest() {
+    public void sendBatchWithPartitionKeyOnPartitionProducerTest() {
         skipIfNotRecordMode();
         // EventDataBatch is only accessible from internal, so the partition key
+
         // Arrange
         final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY);
         final SendOptions sendOptions = new SendOptions();
@@ -176,7 +169,7 @@ public class EventDataBatchTest extends ApiTestBase {
         }
 
         // Act & Assert
-        StepVerifier.create(sender.send(batch.getEvents(), sendOptions))
+        StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }
 }

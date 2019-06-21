@@ -28,9 +28,13 @@ public class EventPositionTest extends ApiTestBase {
 
     private final ClientLogger logger = new ClientLogger(EventPositionTest.class);
 
+    private static EventData sequenceNumberEvent;
+    private static EventData enqueuedEventData;
+    private static EventData offsetEventData;
+
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubProducer producer;
+    private EventHubConsumer consumer;
 
     @Rule
     public TestName testName = new TestName();
@@ -43,47 +47,32 @@ public class EventPositionTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions().prefetchCount(2);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        sender = client.createProducer(senderOptions);
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.earliest(), receiverOptions);
+        producer = client.createProducer(producerOptions);
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        // TODO: close() will fail or hold the tests
-//        if (client != null) {
-//            client.close();
-//        }
-
-//        if (sender != null) {
-//            try {
-//                sender.close();
-//            } catch (IOException e) {
-//                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
-//            }
-//        }
-//
-//        if (receiver != null) {
-//            try {
-//                receiver.close();
-//            } catch (IOException e) {
-//                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
-//            }
-//        }
+        closeClient(client, producer, consumer, testName, logger);
     }
 
     /**
      * Test for receiving message from earliest offset
      */
+    @Ignore
     @Test
     public void receiveEarliestMessage() {
         skipIfNotRecordMode();
+
+        // Arrange
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.earliest());
+
         // Act & Assert
-        StepVerifier.create(receiver.receive().take(1))
+        producer.send(new EventData("testString".getBytes(UTF_8))).block(TIMEOUT);
+        StepVerifier.create(consumer.receive().take(1))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -91,35 +80,17 @@ public class EventPositionTest extends ApiTestBase {
     /**
      * Test for receiving message from latest offset
      */
-//        [AMQPConnection-6] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onLinkFlow senderName[cbs], linkName[cbs:sender], unsettled[1], credit[99]
-//        [AMQPConnection-6] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onDelivery senderName[cbs], linkName[cbs:sender], unsettled[1], credit[99], deliveryState[Accepted{}], delivery.isBuffered[false], delivery.id[ecc096da9bda4897bcc3d68c693f0d30]
-//        [AMQPConnection-6] INFO com.azure.eventhubs.implementation.ActiveClientTokenManager - Scheduling refresh token.
-//[AMQPConnection-6] INFO com.azure.eventhubs.implementation.handler.ReceiveLinkHandler - onDelivery receiverName[cbs], linkName[cbs:receiver], updatedLinkCredit[0], remoteCredit[0], remoteCondition[Error{condition=null, description='null', info=null}], delivery.isPartial[false]
-//        [AMQPConnection-6] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onLinkLocalOpen senderName[PS_baf7ec_1560987086073], linkName[PS_baf7ec_1560987086073], localTarget[Target{address='conniey-test/Partitions/0', durable=NONE, expiryPolicy=SESSION_END, timeout=0, dynamic=false, dynamicNodeProperties=null, capabilities=null}]
-//        [AMQPConnection-10] WARN com.azure.eventhubs.implementation.ReactorSender - Not connected. Not processing send work.
-//        [AMQPConnection-7] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onLinkRemoteOpen senderName[PS_baf7ec_1560987086073], linkName[PS_baf7ec_1560987086073], remoteTarget[Target{address='conniey-test/Partitions/0', durable=NONE, expiryPolicy=SESSION_END, timeout=0, dynamic=false, dynamicNodeProperties=null, capabilities=null}]
-//        [AMQPConnection-7] WARN com.azure.eventhubs.implementation.ReactorSender - Connection state: ACTIVE
-//[AMQPConnection-7] WARN com.azure.eventhubs.implementation.ReactorSender - Credits added: 1000
-//        [AMQPConnection-7] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onLinkFlow senderName[PS_baf7ec_1560987086073], linkName[PS_baf7ec_1560987086073], unsettled[0], credit[1000]
-//        [AMQPConnection-9] WARN com.azure.eventhubs.implementation.ReactorSender - entityPath[conniey-test/Partitions/0], clinkName[PS_baf7ec_1560987086073], deliveryTag[57ec52456ac841199a4c79fbf66cb869]: Sent message
-//[AMQPConnection-8] WARN com.azure.eventhubs.implementation.ReactorSender - Credits added: 999
-//        [AMQPConnection-8] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onLinkFlow senderName[PS_baf7ec_1560987086073], linkName[PS_baf7ec_1560987086073], unsettled[1], credit[999]
-//        [AMQPConnection-9] INFO com.azure.eventhubs.implementation.handler.SendLinkHandler - onDelivery senderName[PS_baf7ec_1560987086073], linkName[PS_baf7ec_1560987086073], unsettled[1], credit[999], deliveryState[Accepted{}], delivery.isBuffered[false], delivery.id[57ec52456ac841199a4c79fbf66cb869]
-//        [AMQPConnection-9] WARN com.azure.eventhubs.implementation.ReactorSender - entityPath[conniey-test/Partitions/0], clinkName[PS_baf7ec_1560987086073], deliveryTag[57ec52456ac841199a4c79fbf66cb869]: process delivered message
-//[AMQPConnection-4] INFO com.azure.eventhubs.implementation.handler.ConnectionHandler - onConnectionRemoteOpen hostname[event-hubs-1.servicebus.windows.net:5671], connectionId[MF_19a49e_1560987085718], remoteContainer[69a0dbbb0bf24309ba1c191108d8236c_G11]
-//        [AMQPConnection-3] INFO com.azure.eventhubs.implementation.handler.ConnectionHandler - onConnectionRemoteClose hostname[event-hubs-1.servicebus.windows.net:5671], connectionId[MF_19a49e_1560987085718], errorCondition[amqp:connection:forced], errorDescription[The connection was inactive for more than the allowed 60000 milliseconds and is closed by container 'LinkTracker'. TrackingId:547d31b640a749f58dff23017f768834_G1, SystemTracker:gateway5, Timestamp:2019-06-19T23:32:27]
-//
     @Ignore("Connection closed but test keeping running ")
     @Test
     public void receiveLatestMessage() {
         skipIfNotRecordMode();
+
         // Arrange
-        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions();
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(), receiverOptions);
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID,  EventPosition.latest());
 
         // Act & Assert
-        StepVerifier.create(receiver.receive().take(1))
-            .then(() -> sender.send(new EventData("testString".getBytes(UTF_8))).block())
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -127,11 +98,20 @@ public class EventPositionTest extends ApiTestBase {
     /**
      * Test for receiving messages start at enqueued time
      */
+    @Ignore
     @Test
     public void receiveMessageFromEnqueuedTime() {
         skipIfNotRecordMode();
-        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        receiveMessageHelper(enqueuedTimeEventPosition, 1);
+
+        // Arrange
+        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+
+        // Act & Assert
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     /**
@@ -139,15 +119,22 @@ public class EventPositionTest extends ApiTestBase {
      */
     @Ignore
     @Test
-    public void testReceiverStartOfStreamFilters() {
+    public void startOfStreamFilters() {
         skipIfNotRecordMode();
 
+        // Arrange
         final EventPosition earliestEventPosition = EventPosition.earliest();
+        final EventHubConsumer earliestConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, earliestEventPosition);
         final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final Flux<EventData> earliestOffsetReceivedData = receiveMessageHelper(earliestEventPosition, NUMBER_OF_EVENTS);
-        final Flux<EventData> enqueuedTimeReceivedData = receiveMessageHelper(enqueuedTimeEventPosition, NUMBER_OF_EVENTS);
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
 
-        //Assert
+        final Flux<EventData> earliestOffsetReceivedData = earliestConsumer.receive().take(NUMBER_OF_EVENTS);
+        final Flux<EventData> enqueuedTimeReceivedData = enqueuedTimeConsumer.receive().take(NUMBER_OF_EVENTS);
+
+        // Act & Assert
+        StepVerifier.create(earliestOffsetReceivedData).expectNextCount(NUMBER_OF_EVENTS).verifyComplete();
+        StepVerifier.create(enqueuedTimeReceivedData).expectNextCount(NUMBER_OF_EVENTS).verifyComplete();
+
         Iterable<EventData> earliestOffsetDataIterable = earliestOffsetReceivedData.toIterable();
         Iterator<EventData> enqueuedTimeDataIterator = enqueuedTimeReceivedData.toIterable().iterator();
 
@@ -161,24 +148,41 @@ public class EventPositionTest extends ApiTestBase {
                 String.format(Locale.US, "START_OF_STREAM offset: %s, EPOCH offset: %s", offsetData.offset(), dateTimeEventData.offset()),
                 offsetData.offset().equalsIgnoreCase(dateTimeEventData.offset()));
         }
+
+        closeConsumer(enqueuedTimeConsumer, testName, logger);
+        closeConsumer(earliestConsumer, testName, logger);
     }
 
     /**
-     * Test a receiver with inclusive offset
+     * Test a consumer with inclusive offset
      */
     @Ignore
     @Test
-    public void testReceiverOffsetInclusiveFilter() {
+    public void offsetInclusiveFilterFromEnqueuedTime() {
         skipIfNotRecordMode();
-        // Arrange
-        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final EventData enqueuedTimeEvent = receiveMessageHelper(enqueuedTimeEventPosition, 1).toIterable().iterator().next();
 
-        final EventPosition offsetEventPosition = EventPosition.fromOffset(enqueuedTimeEvent.offset(), true);
-        final EventData offsetEvent = receiveMessageHelper(offsetEventPosition, 1).toIterable().iterator().next();
-        // Assert
-        Assert.assertEquals(offsetEvent.offset(), enqueuedTimeEvent.offset());
-        Assert.assertEquals(offsetEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
+        // Arrange
+        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        // get the first event data
+        StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> enqueuedEventData = event)
+            .verifyComplete();
+
+        final EventPosition inclusiveSequenceNumberEventPosition = EventPosition.fromOffset(enqueuedEventData.offset(), true);
+        final EventHubConsumer offsetConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, inclusiveSequenceNumberEventPosition);
+
+        // Act & Assert
+        StepVerifier.create(offsetConsumer.receive().take(1))
+            .assertNext(event -> offsetEventData = event)
+            .verifyComplete();
+
+        Assert.assertEquals(enqueuedEventData.offset(), offsetEventData.offset());
+        Assert.assertEquals(enqueuedEventData.sequenceNumber(), offsetEventData.sequenceNumber());
+
+        closeConsumer(enqueuedTimeConsumer, testName, logger);
+        closeConsumer(offsetConsumer, testName, logger);
     }
 
     /**
@@ -186,18 +190,31 @@ public class EventPositionTest extends ApiTestBase {
      */
     @Ignore
     @Test
-    public void testReceiverOffsetNonInclusiveFilter() {
+    public void offsetNonInclusiveFilterFromEnqueuedTime() {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final EventData enqueuedTimeEvent = receiveMessageHelper(enqueuedTimeEventPosition, 1).toIterable().iterator().next();
+        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        // get the first event data
+        StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> enqueuedEventData = event)
+            .verifyComplete();
 
-        final EventPosition offsetEventPosition = EventPosition.fromOffset(enqueuedTimeEvent.offset(), false);
-        final EventData offsetEvent = receiveMessageHelper(offsetEventPosition, 1).toIterable().iterator().next();
+        final EventPosition exclusiveSequenceNumberEventPosition = EventPosition.fromOffset(enqueuedEventData.offset(), false);
+        final EventHubConsumer offsetConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, exclusiveSequenceNumberEventPosition);
 
-        // Assert
-        Assert.assertEquals(offsetEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber() + 1);
+        // Act & Assert
+        StepVerifier.create(offsetConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> offsetEventData = event)
+            .verifyComplete();
+
+        Assert.assertEquals(enqueuedEventData.sequenceNumber() + 1, offsetEventData.sequenceNumber());
+
+        closeConsumer(enqueuedTimeConsumer, testName, logger);
+        closeConsumer(offsetConsumer, testName, logger);
     }
 
     /**
@@ -205,19 +222,31 @@ public class EventPositionTest extends ApiTestBase {
      */
     @Ignore
     @Test
-    public void testReceiverSequenceNumberInclusiveFilter() {
+    public void sequenceNumberInclusiveFilterFromEnqueuedTime() {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final EventData enqueuedTimeEvent = receiveMessageHelper(enqueuedTimeEventPosition, 1).toIterable().iterator().next();
+        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        // get the first event data
+        StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> enqueuedEventData = event)
+            .verifyComplete();
 
-        final EventPosition nextSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedTimeEvent.sequenceNumber(), true);
-        final EventData sequenceNumEvent = receiveMessageHelper(nextSequenceNumberEventPosition, 1).toIterable().iterator().next();
+        final EventPosition inclusiveSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedEventData.sequenceNumber(), true);
+        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, inclusiveSequenceNumberEventPosition);
 
-        // Assert
-        Assert.assertEquals(sequenceNumEvent.offset(), enqueuedTimeEvent.offset());
-        Assert.assertEquals(sequenceNumEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber());
+        // Act & Assert
+        StepVerifier.create(sequenceNumberConsumer.receive().take(1))
+            .assertNext(event -> offsetEventData = event)
+            .verifyComplete();
+
+        Assert.assertEquals(enqueuedEventData.offset(), offsetEventData.offset());
+        Assert.assertEquals(enqueuedEventData.sequenceNumber(), offsetEventData.sequenceNumber());
+
+        closeConsumer(enqueuedTimeConsumer, testName, logger);
+        closeConsumer(sequenceNumberConsumer, testName, logger);
     }
 
     /**
@@ -229,26 +258,26 @@ public class EventPositionTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.EPOCH);
-        final EventData enqueuedTimeEvent = receiveMessageHelper(enqueuedTimeEventPosition, 1).toIterable().iterator().next();
-
-        final EventPosition nextSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedTimeEvent.sequenceNumber(), false);
-        final EventData sequenceNumberEvent = receiveMessageHelper(nextSequenceNumberEventPosition, 1).toIterable().iterator().next();
-
-        // Assert
-        Assert.assertEquals(sequenceNumberEvent.sequenceNumber(), enqueuedTimeEvent.sequenceNumber() + 1);
-    }
-
-
-    private Flux<EventData> receiveMessageHelper(EventPosition eventPosition, int numberOfEvents) {
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, eventPosition,
-            new EventHubConsumerOptions());
-        final Flux<EventData> receivedData = receiver.receive();
-        // Act
-        StepVerifier.create(receivedData.take(numberOfEvents))
-            .expectNextCount(numberOfEvents)
+        final EventPosition enqueuedTimeEventPosition = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumer enqueuedTimeConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, enqueuedTimeEventPosition);
+        // get the first event data
+        StepVerifier.create(enqueuedTimeConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> enqueuedEventData = event)
             .verifyComplete();
 
-        return receivedData;
+        final EventPosition exclusiveSequenceNumberEventPosition = EventPosition.fromSequenceNumber(enqueuedEventData.sequenceNumber(), false);
+        final EventHubConsumer sequenceNumberConsumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, exclusiveSequenceNumberEventPosition);
+
+        // Act & Assert
+        StepVerifier.create(sequenceNumberConsumer.receive().take(1))
+            .then(() -> producer.send(new EventData("test".getBytes())).block(TIMEOUT))
+            .assertNext(event -> sequenceNumberEvent = event)
+            .verifyComplete();
+
+        Assert.assertEquals(enqueuedEventData.sequenceNumber() + 1, sequenceNumberEvent.sequenceNumber());
+
+        closeConsumer(enqueuedTimeConsumer, testName, logger);
+        closeConsumer(sequenceNumberConsumer, testName, logger);
     }
 }

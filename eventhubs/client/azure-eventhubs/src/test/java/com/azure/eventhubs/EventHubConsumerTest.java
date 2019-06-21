@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
@@ -31,8 +30,8 @@ public class EventHubConsumerTest extends ApiTestBase {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
 
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubProducer producer;
+    private EventHubConsumer consumer;
     private EventData resendEventData;
 
     @Rule
@@ -48,33 +47,15 @@ public class EventHubConsumerTest extends ApiTestBase {
         logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        sender = client.createProducer(senderOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        producer = client.createProducer(producerOptions);
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
-
-        if (receiver != null) {
-            try {
-                receiver.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
+        closeClient(client, producer, consumer, testName, logger);
     }
 
     /**
@@ -89,19 +70,18 @@ public class EventHubConsumerTest extends ApiTestBase {
         final EventData event = new EventData(PAYLOAD.getBytes());
         event.properties().put(PROPERTY1, PROPERTY_VALUE1);
         event.properties().put(PROPERTY2, PROPERTY_VALUE2);
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
 
         // Act & Assert
-        StepVerifier.create(receiver.receive().take(1))
-            .then(() -> sender.send(event).block())
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(event).block())
             .assertNext(data -> {
                 validateReceivedEvent(data);
                 resendEventData = data;
             })
             .verifyComplete();
 
-        StepVerifier.create(receiver.receive().take(1))
-            .then(() -> sender.send(resendEventData).block())
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(resendEventData).block())
             .assertNext(data -> validateReceivedEvent(data))
             .verifyComplete();
     }

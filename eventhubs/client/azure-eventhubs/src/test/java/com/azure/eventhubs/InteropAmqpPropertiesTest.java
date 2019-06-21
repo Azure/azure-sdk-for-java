@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.HashMap;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -37,8 +37,8 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     private static final String PAYLOAD = "testmsg";
 
     private EventHubClient client;
-    private EventHubProducer sender;
-    private EventHubConsumer receiver;
+    private EventHubProducer producer;
+    private EventHubConsumer consumer;
     private EventData resendEventData;
 
     @Rule
@@ -56,35 +56,15 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
 
-        final EventHubProducerOptions senderOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final EventHubConsumerOptions receiverOptions = new EventHubConsumerOptions().retry(Retry.getNoRetry());
-        sender = client.createProducer(senderOptions);
-        receiver = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest(), receiverOptions);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        producer = client.createProducer(producerOptions);
+        consumer = client.createConsumer(getConsumerGroupName(), PARTITION_ID, EventPosition.latest());
     }
 
     @Override
     protected void afterTest() {
         logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-
-        if (client != null) {
-            client.close();
-        }
-
-        if (sender != null) {
-            try {
-                sender.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Sender doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
-
-        if (receiver != null) {
-            try {
-                receiver.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: Receiver doesn't close properly.", testName.getMethodName(), e);
-            }
-        }
+        closeClient(client, producer, consumer, testName, logger);
     }
 
     /**
@@ -121,16 +101,16 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         final EventData msgEvent = new EventData(originalMessage);
 
         // Act & Assert
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(msgEvent))
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> {
                 validateAmqpPropertiesInEventData(event, originalMessage);
                 resendEventData = event;
             })
             .verifyComplete();
 
-        StepVerifier.create(receiver.receive())
-            .then(() -> sender.send(resendEventData))
+        StepVerifier.create(consumer.receive().take(1))
+            .then(() -> producer.send(resendEventData).block(TIMEOUT))
             .assertNext(event -> validateAmqpPropertiesInEventData(event, originalMessage))
             .verifyComplete();
     }
