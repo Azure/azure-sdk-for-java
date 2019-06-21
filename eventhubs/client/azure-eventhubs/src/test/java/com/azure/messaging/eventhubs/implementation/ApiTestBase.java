@@ -145,7 +145,7 @@ public abstract class ApiTestBase extends TestBase {
     }
 
     protected EventHubClientBuilder getEventHubClientBuilder() {
-        return EventHubClient.builder().credential(TEST_CONNECTION_STRING);
+        return new EventHubClientBuilder().connectionString(TEST_CONNECTION_STRING);
     }
 
     protected void closeProducer(EventHubProducer producer, TestName testName, ClientLogger logger) {
