@@ -39,12 +39,10 @@ import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.UserAgentContainer;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
+import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import rx.Completable;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -52,9 +50,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+;
 
 public class GlobalAddressResolver implements IAddressResolver {
     private final static int MaxBackupReadRegions = 3;
@@ -70,10 +69,10 @@ public class GlobalAddressResolver implements IAddressResolver {
 
     private GatewayAddressCache gatewayAddressCache;
     private AddressResolver addressResolver;
-    private CompositeHttpClient<ByteBuf, ByteBuf> httpClient;
+    private HttpClient httpClient;
 
     public GlobalAddressResolver(
-            CompositeHttpClient<ByteBuf, ByteBuf> httpClient,
+            HttpClient httpClient,
             GlobalEndpointManager endpointManager,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
@@ -104,25 +103,23 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    Completable openAsync(DocumentCollection collection) {
-        Single<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.id(), null, null);
-        return routingMap.flatMapCompletable(collectionRoutingMap -> {
-            if (collectionRoutingMap == null) {
-                return Completable.complete();
-            }
+    Mono<Void> openAsync(DocumentCollection collection) {
+        Mono<CollectionRoutingMap> routingMap = this.routingMapProvider.tryLookupAsync(collection.id(), null, null);
+        return routingMap.flatMap(collectionRoutingMap -> {
 
             List<PartitionKeyRangeIdentity> ranges = ((List<PartitionKeyRange>)collectionRoutingMap.getOrderedPartitionKeyRanges()).stream().map(range ->
                     new PartitionKeyRangeIdentity(collection.resourceId(), range.id())).collect(Collectors.toList());
-            List<Completable> tasks = new ArrayList<>();
+            List<Mono<Void>> tasks = new ArrayList<>();
             for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 tasks.add(endpointCache.addressCache.openAsync(collection, ranges));
             }
-            return Completable.mergeDelayError(tasks);
-        });
+            //  TODO: Not sure if this will work.
+            return Mono.whenDelayError(tasks);
+        }).switchIfEmpty(Mono.defer(Mono::empty));
     }
 
     @Override
-    public Single<AddressInformation[]> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
+    public Mono<AddressInformation[]> resolveAsync(RxDocumentServiceRequest request, boolean forceRefresh) {
         IAddressResolver resolver = this.getAddressResolver(request);
         return resolver.resolveAsync(request, forceRefresh);
     }
@@ -153,10 +150,10 @@ public class GlobalAddressResolver implements IAddressResolver {
             List<URL> allEndpoints = new ArrayList(this.endpointManager.getWriteEndpoints());
             allEndpoints.addAll(this.endpointManager.getReadEndpoints());
             Collections.reverse(allEndpoints);
-            Queue<URL> endpoints = new LinkedList<>(allEndpoints);
+            LinkedList<URL> endpoints = new LinkedList<>(allEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (endpoints.size() > 0) {
-                    URL dequeueEnpoint = ((LinkedList<URL>) endpoints).pop();
+                    URL dequeueEnpoint = endpoints.pop();
                     if (this.addressCacheByEndpoint.get(dequeueEnpoint) != null) {
                         this.addressCacheByEndpoint.remove(dequeueEnpoint);
                     }

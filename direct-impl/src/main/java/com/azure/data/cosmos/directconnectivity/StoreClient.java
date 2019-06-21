@@ -45,12 +45,12 @@ import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.functions.Func0;
-import rx.functions.Func1;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 /**
  * Instantiated to issue direct connectivity requests to the backend on:
@@ -89,16 +89,21 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Single<RxDocumentServiceResponse> processMessageAsync(RxDocumentServiceRequest request, IRetryPolicy retryPolicy, Func1<RxDocumentServiceRequest, Single<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
+    public Mono<RxDocumentServiceResponse> processMessageAsync(RxDocumentServiceRequest request, IRetryPolicy retryPolicy, Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
         if (request == null) {
             throw new NullPointerException("request");
         }
 
-        Func0<Single<StoreResponse>> storeResponseDelegate = () -> this.replicatedResourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
+        Callable<Mono<StoreResponse>> storeResponseDelegate = () -> this.replicatedResourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
 
-        Single<StoreResponse> storeResponse = retryPolicy != null
-            ? BackoffRetryUtility.executeRetry(storeResponseDelegate, retryPolicy)
-            : storeResponseDelegate.call();
+        Mono<StoreResponse> storeResponse;
+        try {
+            storeResponse = retryPolicy != null
+                ? BackoffRetryUtility.executeRetry(storeResponseDelegate, retryPolicy)
+                : storeResponseDelegate.call();
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
 
         storeResponse = storeResponse.doOnError(e -> {
                 try {
@@ -120,9 +125,9 @@ public class StoreClient implements IStoreClient {
 
         return storeResponse.flatMap(sr -> {
             try {
-                return Single.just(this.completeResponse(sr, request));
+                return Mono.just(this.completeResponse(sr, request));
             } catch (Exception e) {
-                return Single.error(e);
+                return Mono.error(e);
             }
         });
     }

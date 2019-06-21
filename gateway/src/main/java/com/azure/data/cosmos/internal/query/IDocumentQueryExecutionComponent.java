@@ -24,7 +24,7 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -32,5 +32,5 @@ import rx.Observable;
  */
 public interface IDocumentQueryExecutionComponent<T extends Resource> {
 
-    Observable<FeedResponse<T>> drainAsync(int maxPageSize);
+    Flux<FeedResponse<T>> drainAsync(int maxPageSize);
 }

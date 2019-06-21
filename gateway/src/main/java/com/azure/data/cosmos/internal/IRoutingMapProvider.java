@@ -24,7 +24,7 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.routing.Range;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -43,9 +43,9 @@ public interface IRoutingMapProvider {
         /// <param name="range">This method will return all ranges which overlap this range.</param>
         /// <param name="forceRefresh">Whether forcefully refreshing the routing map is necessary</param>
         /// <returns>List of effective partition key ranges for a collection or null if collection doesn't exist.</returns>
-        Single<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionResourceId, Range<String> range,
-                                                                     boolean forceRefresh /* = false */, Map<String, Object> properties);
+        Mono<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionResourceId, Range<String> range,
+                                                                   boolean forceRefresh /* = false */, Map<String, Object> properties);
 
-        Single<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
+        Mono<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties);
 }

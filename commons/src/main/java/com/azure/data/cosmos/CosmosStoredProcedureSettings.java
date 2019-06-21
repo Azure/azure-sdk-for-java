@@ -38,6 +38,16 @@ public class CosmosStoredProcedureSettings extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return return the Cosmos stored procedure settings with id set
+     */
+    public CosmosStoredProcedureSettings id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Constructor.
      *
      * @param jsonString the json string that represents the stored procedure.

@@ -67,6 +67,8 @@ public class Configs {
     private static final int CPU_CNT = Runtime.getRuntime().availableProcessors();
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
 
+    private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -149,6 +151,10 @@ public class Configs {
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
+    }
+
+    public String getReactorNettyConnectionPoolName() {
+        return REACTOR_NETTY_CONNECTION_POOL_NAME;
     }
 
     private static String getJVMConfigAsString(String propName, String defaultValue) {

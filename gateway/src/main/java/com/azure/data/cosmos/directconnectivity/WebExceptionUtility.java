@@ -25,7 +25,6 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.internal.Utils;
 import io.netty.channel.ChannelException;
-import io.reactivex.netty.client.PoolExhaustedException;
 
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLPeerUnverifiedException;
@@ -51,9 +50,6 @@ public class WebExceptionUtility {
     }
 
     private static boolean isWebExceptionRetriableInternal(Exception ex) {
-        if (ex instanceof PoolExhaustedException) {
-            return true;
-        }
 
         IOException webEx = Utils.as(ex, IOException.class);
         if (webEx == null) {

@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -39,5 +39,5 @@ public interface RxStoreModel {
      * @param request
      * @return
      */
-    Observable<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
+    Flux<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
 }

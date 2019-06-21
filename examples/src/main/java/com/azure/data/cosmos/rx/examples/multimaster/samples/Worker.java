@@ -31,9 +31,9 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Completable;
-import rx.Scheduler;
-import rx.schedulers.Schedulers;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,11 +57,11 @@ public class Worker {
         this.client = client;
         this.documentCollectionUri = String.format("/dbs/%s/colls/%s", databaseName, collectionName);
         this.executor = Executors.newSingleThreadExecutor();
-        this.schedulerForBlockingWork = Schedulers.from(executor);
+        this.schedulerForBlockingWork = Schedulers.fromExecutor(executor);
     }
 
-    public Completable runLoopAsync(int documentsToInsert) {
-        return Completable.defer(() -> {
+    public Mono<Void> runLoopAsync(int documentsToInsert) {
+        return Mono.defer(() -> {
 
             int iterationCount = 0;
 
@@ -73,7 +73,7 @@ public class Worker {
                 d.id(UUID.randomUUID().toString());
 
                 this.client.createDocument(this.documentCollectionUri, d, null, false)
-                        .subscribeOn(schedulerForBlockingWork).toBlocking().single();
+                        .subscribeOn(schedulerForBlockingWork).single().block();
 
                 long endTick = System.currentTimeMillis();
 
@@ -88,16 +88,16 @@ public class Worker {
                     this.client.getWriteEndpoint(),
                     latency.get(p50Index));
 
-            return Completable.complete();
+            return Mono.empty();
 
         });
 
     }
 
 
-    public Completable readAllAsync(int expectedNumberOfDocuments) {
+    public Mono<Void> readAllAsync(int expectedNumberOfDocuments) {
 
-        return Completable.defer(() -> {
+        return Mono.defer(() -> {
 
             while (true) {
                 int totalItemRead = 0;
@@ -107,8 +107,8 @@ public class Worker {
                     FeedOptions options = new FeedOptions();
                     options.requestContinuation(response != null ? response.continuationToken() : null);
 
-                    response = this.client.readDocuments(this.documentCollectionUri, options).first()
-                            .subscribeOn(schedulerForBlockingWork).toBlocking().single();
+                    response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
+                            .subscribeOn(schedulerForBlockingWork).single().block();
 
                     totalItemRead += response.results().size();
                 } while (response.continuationToken() != null);
@@ -132,7 +132,7 @@ public class Worker {
                 }
             }
 
-            return Completable.complete();
+            return Mono.empty();
         });
     }
 
@@ -144,8 +144,8 @@ public class Worker {
             FeedOptions options = new FeedOptions();
             options.requestContinuation(response != null ? response.continuationToken() : null);
 
-            response = this.client.readDocuments(this.documentCollectionUri, options).first()
-                    .subscribeOn(schedulerForBlockingWork).toBlocking().single();
+            response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
+                    .subscribeOn(schedulerForBlockingWork).single().block();
 
             documents.addAll(response.results());
         } while (response.continuationToken() != null);
@@ -153,7 +153,7 @@ public class Worker {
         for (Document document : documents) {
             try {
                 this.client.deleteDocument(document.selfLink(), null)
-                        .subscribeOn(schedulerForBlockingWork).toBlocking().single();
+                        .subscribeOn(schedulerForBlockingWork).single().block();
             } catch (RuntimeException exEx) {
                 CosmosClientException dce = getDocumentClientExceptionCause(exEx);
 

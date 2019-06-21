@@ -76,6 +76,8 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 return ((CosmosUserDefinedFunctionResponse)resourceResponse).settings();
             } else if (resourceResponse instanceof CosmosUserResponse) {
                 return ((CosmosUserResponse)resourceResponse).settings();
+            } else if (resourceResponse instanceof CosmosPermissionResponse) {
+                return ((CosmosPermissionResponse) resourceResponse).settings();
             }
             return null;
         }
@@ -248,6 +250,29 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(CosmosUserDefinedFunctionResponse resourceResponse) {
                     assertThat(resourceResponse.settings().body()).isEqualTo(functionBody);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withPermissionMode(PermissionMode mode) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.settings().permissionMode()).isEqualTo(mode);
+                }
+            });
+            return this;
+
+        }
+
+        public Builder<T> withPermissionResourceLink(String resourceLink) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.settings().resourceLink()).isEqualTo(resourceLink);
                 }
             });
             return this;

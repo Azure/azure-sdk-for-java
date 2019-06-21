@@ -52,7 +52,7 @@ public class CosmosConflictProperties extends Resource {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
+    public String operationKind() {
         return super.getString(Constants.Properties.OPERATION_TYPE);
     }
 
@@ -61,7 +61,7 @@ public class CosmosConflictProperties extends Resource {
      *
      * @return the resource type.
      */
-    public String getResouceType() {
+    public String resouceType() {
         return super.getString(Constants.Properties.RESOURCE_TYPE);
     }
 
@@ -69,7 +69,7 @@ public class CosmosConflictProperties extends Resource {
      * Gets the resource ID for the conflict in the Azure Cosmos DB service.
      * @return resource Id for the conflict.
      */
-    public String getSourceResourceId() {
+    public String sourceResourceId() {
         return super.getString(Constants.Properties.SOURCE_RESOURCE_ID);
     }
 
@@ -93,7 +93,7 @@ public class CosmosConflictProperties extends Resource {
             return null;
         }
     }
-    
+
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {
         return results.stream().map(conflict -> new CosmosConflictProperties(conflict.toJson()))
                 .collect(Collectors.toList());

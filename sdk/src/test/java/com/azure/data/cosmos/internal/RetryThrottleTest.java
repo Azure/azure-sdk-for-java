@@ -34,13 +34,12 @@ import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.rx.ResourceResponseValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,11 +76,11 @@ public class RetryThrottleTest extends TestSuiteBase {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 
         // create a document to ensure collection is cached
-        client.createDocument(getCollectionLink(collection), getDocumentDefinition(), null, false).toBlocking().single();
+        client.createDocument(getCollectionLink(collection), getDocumentDefinition(), null, false).blockFirst();
 
-        List<Observable<ResourceResponse<Document>>> list = new ArrayList<>();
+        List<Flux<ResourceResponse<Document>>> list = new ArrayList<>();
         for(int i = 0; i < TOTAL_DOCS; i++) {
-            Observable<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false);
+            Flux<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false);
             list.add(obs);
         }
 
@@ -89,19 +88,16 @@ public class RetryThrottleTest extends TestSuiteBase {
         AtomicInteger totalCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
 
-        doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
-            @Override
-            public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
+        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getResourceType() ==  ResourceType.Document && req.getOperationType() == OperationType.Create) {
                     // increment the counter per Document CREATE operations
                     totalCount.incrementAndGet();
                 }
                 return client.getOrigGatewayStoreModel().processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
-            }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
-        List<ResourceResponse<Document>> rsps = Observable.merge(list, 100).toList().toSingle().toBlocking().value();
+        List<ResourceResponse<Document>> rsps = Flux.merge(Flux.fromIterable(list), 100).collectList().single().block();
         System.out.println("total: " + totalCount.get());
         assertThat(rsps).hasSize(TOTAL_DOCS);
         assertThat(successCount.get()).isEqualTo(TOTAL_DOCS);
@@ -113,28 +109,25 @@ public class RetryThrottleTest extends TestSuiteBase {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
         // create a document to ensure collection is cached
-        client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).toBlocking().single();
+        client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).blockFirst();
 
         Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
+        Flux<ResourceResponse<Document>> createObservable = client
                 .createDocument(collection.selfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
-        doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
-            @Override
-            public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
+        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getOperationType() != OperationType.Create) {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
-                    return Observable.error(new CosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
+                    return Flux.error(new CosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }
-            }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         // validate

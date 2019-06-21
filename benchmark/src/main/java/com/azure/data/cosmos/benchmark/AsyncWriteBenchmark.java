@@ -25,12 +25,12 @@ package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.ResourceResponse;
-import com.azure.data.cosmos.benchmark.Configuration.Operation;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
+import org.reactivestreams.Subscription;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
 
@@ -39,30 +39,34 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
     private final String uuid;
     private final String dataFieldValue;
 
-    class LatencySubscriber<T> extends Subscriber<T> {
+    class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
-        Subscriber<T> subscriber;
+        BaseSubscriber<ResourceResponse<Document>> baseSubscriber;
 
-        LatencySubscriber(Subscriber<T> subscriber) {
-            this.subscriber = subscriber;
+        LatencySubscriber(BaseSubscriber<ResourceResponse<Document>> baseSubscriber) {
+            this.baseSubscriber = baseSubscriber;
         }
 
         @Override
-        public void onCompleted() {
+        protected void hookOnSubscribe(Subscription subscription) {
+            super.hookOnSubscribe(subscription);
+        }
+
+        @Override
+        protected void hookOnNext(T value) {
+        }
+
+        @Override
+        protected void hookOnComplete() {
             context.stop();
-            subscriber.onCompleted();
+            baseSubscriber.onComplete();
         }
 
         @Override
-        public void onError(Throwable e) {
+        protected void hookOnError(Throwable throwable) {
             context.stop();
-            subscriber.onError(e);
-        }
-
-        @Override
-        public void onNext(T t) {
-            subscriber.onNext(t);
+            baseSubscriber.onError(throwable);
         }
     }
 
@@ -73,7 +77,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
     }
 
     @Override
-    protected void performWorkload(Subscriber<ResourceResponse<Document>> subs, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<ResourceResponse<Document>> baseSubscriber, long i) throws InterruptedException {
 
         String idString = uuid + i;
         Document newDoc = new Document();
@@ -84,18 +88,17 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         newDoc.set("dataField3", dataFieldValue);
         newDoc.set("dataField4", dataFieldValue);
         newDoc.set("dataField5", dataFieldValue);
-        Observable<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(), newDoc, null,
+        Flux<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(), newDoc, null,
                 false);
 
         concurrencyControlSemaphore.acquire();
 
-        if (configuration.getOperationType() == Operation.WriteThroughput) {
-            obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        if (configuration.getOperationType() == Configuration.Operation.WriteThroughput) {
+            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
         } else {
-            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(
-                    subs);
+            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(baseSubscriber);
             latencySubscriber.context = latency.time();
-            obs.subscribeOn(Schedulers.computation()).subscribe(latencySubscriber);
+            obs.subscribeOn(Schedulers.parallel()).subscribe(latencySubscriber);
         }
     }
 }

@@ -50,7 +50,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.concurrent.Queues;
-import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -149,7 +148,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>(1);
-        queryObservable.publishOn(Schedulers.elastic()).subscribe(subscriber);
+        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 40000;
         int i = 0;
 
@@ -200,7 +199,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
                 docDefList);
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
-                .flatMap(p -> Observable.from(p.results())).toList().toBlocking().single().size();
+                .flatMap(p -> Flux.fromIterable(p.results())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         warmUp();

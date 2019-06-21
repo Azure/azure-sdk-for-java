@@ -37,11 +37,11 @@ import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * ReplicatedResourceClient uses the ConsistencyReader to make requests to
@@ -109,9 +109,9 @@ public class ReplicatedResourceClient {
         return true;
     }
 
-    public Single<StoreResponse> invokeAsync(RxDocumentServiceRequest request,
-            Func1<RxDocumentServiceRequest, Single<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
-        Func2<Quadruple<Boolean, Boolean, Duration, Integer>, RxDocumentServiceRequest, Single<StoreResponse>> mainFuncDelegate = (
+    public Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request,
+                                           Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
+        BiFunction<Quadruple<Boolean, Boolean, Duration, Integer>, RxDocumentServiceRequest, Mono<StoreResponse>> mainFuncDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout,
                 RxDocumentServiceRequest documentServiceRequest) -> {
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.CLIENT_RETRY_ATTEMPT_COUNT,
@@ -122,19 +122,17 @@ public class ReplicatedResourceClient {
                         forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
 
         };
-        Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<StoreResponse>> funcDelegate = (
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> funcDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
             if (prepareRequestAsyncDelegate != null) {
-                return prepareRequestAsyncDelegate.call(request).flatMap(responseReq -> {
-                    return mainFuncDelegate.call(forceRefreshAndTimeout, responseReq);
-                });
+                return prepareRequestAsyncDelegate.apply(request).flatMap(responseReq -> mainFuncDelegate.apply(forceRefreshAndTimeout, responseReq));
             } else {
-                return mainFuncDelegate.call(forceRefreshAndTimeout, request);
+                return mainFuncDelegate.apply(forceRefreshAndTimeout, request);
             }
 
         };
 
-        Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<StoreResponse>> inBackoffFuncDelegate = null;
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffFuncDelegate = null;
 
         // we will enable fallback to other regions if the following conditions are met:
         // 1. request is a read operation AND
@@ -149,17 +147,15 @@ public class ReplicatedResourceClient {
                 RxDocumentServiceRequest readRequestClone = freshRequest.clone();
 
                 if (prepareRequestAsyncDelegate != null) {
-                    return prepareRequestAsyncDelegate.call(readRequestClone).flatMap(responseReq -> {
-                        logger.trace(String.format("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}",
-                                forceRefreshAndTimeout.getValue3()));
+                    return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
+                        logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                         responseReq.requestContext.RouteToLocation(forceRefreshAndTimeout.getValue3(), true);
                         return invokeAsync(responseReq, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
                                 forceRefreshAndTimeout.getValue1(),
                                 forceRefreshAndTimeout.getValue0());
                     });
                 } else {
-                    logger.trace(String.format("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}",
-                            forceRefreshAndTimeout.getValue3()));
+                    logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                     readRequestClone.requestContext.RouteToLocation(forceRefreshAndTimeout.getValue3(), true);
                     return invokeAsync(readRequestClone, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
                             forceRefreshAndTimeout.getValue1(),
@@ -178,7 +174,7 @@ public class ReplicatedResourceClient {
                         ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS));
     }
 
-    private Single<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
+    private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
             boolean isInRetry, boolean forceRefresh) {
 
         if (request.getOperationType().equals(OperationType.ExecuteJavaScript)) {

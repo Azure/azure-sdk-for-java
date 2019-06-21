@@ -30,9 +30,8 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
-import io.netty.buffer.ByteBuf;
+import com.azure.data.cosmos.internal.http.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -58,7 +57,7 @@ public class SessionTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private String collectionId = "+ -_,:.|~" + UUID.randomUUID().toString() + " +-_,:.|~";
-    private SpyClientUnderTestFactory.SpyBaseClass<HttpClientRequest<ByteBuf>> spyClient;
+    private SpyClientUnderTestFactory.SpyBaseClass<HttpRequest> spyClient;
     private AsyncDocumentClient houseKeepingClient;
     private ConnectionMode connectionMode;
     private RequestOptions options;
@@ -110,7 +109,6 @@ public class SessionTest extends TestSuiteBase {
         safeDeleteCollection(houseKeepingClient, createdCollection);
         safeClose(houseKeepingClient);
         safeClose(spyClient);
-        
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -120,19 +118,19 @@ public class SessionTest extends TestSuiteBase {
 
     private List<String> getSessionTokensInRequests() {
         return spyClient.getCapturedRequests().stream()
-                .map(r -> r.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
+                .map(r -> r.headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).collect(Collectors.toList());
     }
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
     public void sessionConsistency_ReadYourWrites(boolean isNameBased) {
-        spyClient.readCollection(getCollectionLink(isNameBased), null).toBlocking().single();
-        spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false).toBlocking().single();
+        spyClient.readCollection(getCollectionLink(isNameBased), null).blockFirst();
+        spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false).blockFirst();
 
         spyClient.clearCapturedRequests();
         
         for (int i = 0; i < 10; i++) {
             Document documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), new Document(), null, false)
-                    .toBlocking().single().getResource();
+                    .blockFirst().getResource();
 
             // We send session tokens on Writes in GATEWAY mode
             if (connectionMode == ConnectionMode.GATEWAY) {
@@ -140,12 +138,12 @@ public class SessionTest extends TestSuiteBase {
                 assertThat(getSessionTokensInRequests().get(3 * i + 0)).isNotEmpty();
             }
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).toBlocking().single();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
 
             assertThat(getSessionTokensInRequests()).hasSize(3 * i + 2);
             assertThat(getSessionTokensInRequests().get(3 * i + 1)).isNotEmpty();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).toBlocking().single();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).blockFirst();
 
             assertThat(getSessionTokensInRequests()).hasSize(3 * i + 3);
             assertThat(getSessionTokensInRequests().get(3 * i + 2)).isNotEmpty();
@@ -157,18 +155,19 @@ public class SessionTest extends TestSuiteBase {
         Document document = new Document();
         document.id(UUID.randomUUID().toString());
         document.set("pk", "pk");
-        document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false).toBlocking().single()
+        document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
+                .blockFirst()
                 .getResource();
 
         final String documentLink = getDocumentLink(document, isNameBased);
-        spyClient.readDocument(documentLink, options).toBlocking().single()
+        spyClient.readDocument(documentLink, options).blockFirst()
                 .getResource();
 
-        List<HttpClientRequest<ByteBuf>> documentReadHttpRequests = spyClient.getCapturedRequests().stream()
-                .filter(r -> r.getMethod() == HttpMethod.GET)
+        List<HttpRequest> documentReadHttpRequests = spyClient.getCapturedRequests().stream()
+                .filter(r -> r.httpMethod() == HttpMethod.GET)
                 .filter(r -> {
                     try {
-                        return URLDecoder.decode(r.getUri().replaceAll("\\+", "%2b"), "UTF-8").contains(
+                        return URLDecoder.decode(r.uri().toString().replaceAll("\\+", "%2b"), "UTF-8").contains(
                                 StringUtils.removeEnd(documentLink, "/"));
                     } catch (UnsupportedEncodingException e) {
                         return false;
@@ -177,7 +176,7 @@ public class SessionTest extends TestSuiteBase {
 
         // DIRECT mode may make more than one call (multiple replicas)
         assertThat(documentReadHttpRequests.size() >= 1).isTrue();
-        assertThat(documentReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
+        assertThat(documentReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
@@ -186,13 +185,13 @@ public class SessionTest extends TestSuiteBase {
             throw new SkipException("Master resource access is only through gateway");
         }
         String collectionLink = getCollectionLink(isNameBased);
-        spyClient.readCollection(collectionLink, null).toBlocking().single();
+        spyClient.readCollection(collectionLink, null).blockFirst();
 
-        List<HttpClientRequest<ByteBuf>> collectionReadHttpRequests = spyClient.getCapturedRequests().stream()
-                .filter(r -> r.getMethod() == HttpMethod.GET)
+        List<HttpRequest> collectionReadHttpRequests = spyClient.getCapturedRequests().stream()
+                .filter(r -> r.httpMethod() == HttpMethod.GET)
                 .filter(r -> {
                     try {
-                        return URLDecoder.decode(r.getUri().replaceAll("\\+", "%2b"), "UTF-8").contains(
+                        return URLDecoder.decode(r.uri().toString().replaceAll("\\+", "%2b"), "UTF-8").contains(
                                 StringUtils.removeEnd(collectionLink, "/"));
                     } catch (UnsupportedEncodingException e) {
                         return false;
@@ -201,7 +200,7 @@ public class SessionTest extends TestSuiteBase {
                 .collect(Collectors.toList());
 
         assertThat(collectionReadHttpRequests).hasSize(1);
-        assertThat(collectionReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+        assertThat(collectionReadHttpRequests.get(0).headers().value(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
     }
 
     private String getCollectionLink(boolean isNameBased) {

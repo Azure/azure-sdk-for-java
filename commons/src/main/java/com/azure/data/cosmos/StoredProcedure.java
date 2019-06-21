@@ -51,6 +51,16 @@ public class StoredProcedure extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current stored procedure
+     */
+    public StoredProcedure id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Get the body of the stored procedure.
      *
      * @return the body of the stored procedure.

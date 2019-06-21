@@ -26,21 +26,18 @@ import com.azure.data.cosmos.ClientUnderTestBuilder;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
-import rx.Observable;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
 
 /**
@@ -49,11 +46,10 @@ import static org.mockito.Mockito.doAnswer;
  */
 public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
 
-    public CompositeHttpClient<ByteBuf, ByteBuf> spyHttpClient;
-    public CompositeHttpClient<ByteBuf, ByteBuf> origHttpClient;
+    public HttpClient spyHttpClient;
+    public HttpClient origHttpClient;
 
-    public List<HttpClientRequest<ByteBuf>> httpRequests = Collections.synchronizedList(
-            new ArrayList<HttpClientRequest<ByteBuf>>());
+    public List<HttpRequest> httpRequests = Collections.synchronizedList(new ArrayList<>());
 
     public RxDocumentClientUnderTest(URI serviceEndpoint,
                                      String masterKey,
@@ -70,27 +66,16 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            CompositeHttpClient<ByteBuf, ByteBuf> rxOrigClient) {
+            HttpClient rxOrigClient) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
 
-        doAnswer((Answer<Observable<HttpClientResponse<ByteBuf>>>) invocationOnMock -> {
-
-            RxClient.ServerInfo serverInfo =
-                    invocationOnMock.getArgumentAt(0, RxClient.ServerInfo.class);
-
-            HttpClientRequest<ByteBuf> request
-                    = invocationOnMock.getArgumentAt(1, HttpClientRequest.class);
-
-            httpRequests.add(request);
-
-            Observable<HttpClientResponse<ByteBuf>> httpRespObs =
-                    origHttpClient.submit(serverInfo, request);
-
-            return httpRespObs;
-        }).when(spyHttpClient).submit( anyObject(),
-                (HttpClientRequest) anyObject());
+        doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
+            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            httpRequests.add(httpRequest);
+            return origHttpClient.send(httpRequest);
+        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class));
 
         return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,

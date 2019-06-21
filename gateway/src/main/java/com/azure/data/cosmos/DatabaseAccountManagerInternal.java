@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos;
 
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.net.URI;
 
@@ -34,7 +34,7 @@ public interface DatabaseAccountManagerInternal {
      * @param endpoint the endpoint from which gets the database account
      * @return the database account.
      */
-    Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint);
+    Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint);
 
     /**
      * Gets the connection policy

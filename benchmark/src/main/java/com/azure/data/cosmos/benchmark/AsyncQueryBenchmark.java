@@ -27,10 +27,9 @@ import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.benchmark.Configuration.Operation;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Random;
 
@@ -54,49 +53,49 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
     }
 
     @Override
-    protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {
+    protected void performWorkload(BaseSubscriber<FeedResponse<Document>> baseSubscriber, long i) throws InterruptedException {
 
-        Observable<FeedResponse<Document>> obs;
+        Flux<FeedResponse<Document>> obs;
         Random r = new Random();
         FeedOptions options = new FeedOptions();
 
-        if (configuration.getOperationType() == Operation.QueryCross) {
+        if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
 
             int index = r.nextInt(1000);
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c where c._rid = \"" + docsToRead.get(index).resourceId() + "\"";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QuerySingle) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
             int index = r.nextInt(1000);
             String pk = docsToRead.get(index).getString("pk");
             options.partitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c.pk = \"" + pk + "\"";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QueryParallel) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
             options.maxItemCount(10);
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QueryOrderby) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
             options.maxItemCount(10);
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select * from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QueryAggregate) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
             options.maxItemCount(10);
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select value max(c._ts) from c";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QueryAggregateTopOrderby) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
 
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
             obs = client.queryDocuments(getCollectionLink(), sqlQuery, options);
-        } else if (configuration.getOperationType() == Operation.QueryTopOrderby) {
+        } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
 
             options.enableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1000 * from c order by c._ts";
@@ -106,6 +105,6 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
         }
         concurrencyControlSemaphore.acquire();
 
-        obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }

@@ -14,6 +14,15 @@ public class CosmosUserSettings extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of cosmos user settings
+     */
+    public CosmosUserSettings id(String id) {
+        return (CosmosUserSettings) super.id(id);
+    }
+
+    /**
      * Initialize a user object from json string.
      *
      * @param jsonString the json string that represents the database user.

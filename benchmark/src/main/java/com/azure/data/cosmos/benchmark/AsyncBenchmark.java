@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -41,10 +41,11 @@ import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Subscriber;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -74,11 +75,11 @@ abstract class AsyncBenchmark<T> {
 
     AsyncBenchmark(Configuration cfg) {
         client = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(cfg.getServiceEndpoint())
-                .withMasterKeyOrResourceToken(cfg.getMasterKey())
-                .withConnectionPolicy(cfg.getConnectionPolicy())
-                .withConsistencyLevel(cfg.getConsistencyLevel())
-                .build();
+            .withServiceEndpoint(cfg.getServiceEndpoint())
+            .withMasterKeyOrResourceToken(cfg.getMasterKey())
+            .withConnectionPolicy(cfg.getConnectionPolicy())
+            .withConsistencyLevel(cfg.getConsistencyLevel())
+            .build();
 
         logger = LoggerFactory.getLogger(this.getClass());
 
@@ -89,7 +90,7 @@ abstract class AsyncBenchmark<T> {
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
         configuration = cfg;
 
-        ArrayList<Observable<Document>> createDocumentObservables = new ArrayList<>();
+        ArrayList<Flux<Document>> createDocumentObservables = new ArrayList<>();
 
         if (configuration.getOperationType() != Operation.WriteLatency
                 && configuration.getOperationType() != Operation.WriteThroughput
@@ -105,13 +106,13 @@ abstract class AsyncBenchmark<T> {
                 newDoc.set("dataField3", dataFieldValue);
                 newDoc.set("dataField4", dataFieldValue);
                 newDoc.set("dataField5", dataFieldValue);
-                Observable<Document> obs = client.createDocument(collection.selfLink(), newDoc, null, false)
-                        .map(ResourceResponse::getResource);
+                Flux<Document> obs = client.createDocument(collection.selfLink(), newDoc, null, false)
+                                                 .map(ResourceResponse::getResource);
                 createDocumentObservables.add(obs);
             }
         }
 
-        docsToRead = Observable.merge(createDocumentObservables, 100).toList().toBlocking().single();
+        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
         init();
 
         if (configuration.isEnableJvmStats()) {
@@ -123,14 +124,14 @@ abstract class AsyncBenchmark<T> {
         if (configuration.getGraphiteEndpoint() != null) {
             final Graphite graphite = new Graphite(new InetSocketAddress(configuration.getGraphiteEndpoint(), configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                    .prefixedWith(configuration.getOperationType().name())
-                    .convertRatesTo(TimeUnit.SECONDS)
-                    .convertDurationsTo(TimeUnit.MILLISECONDS)
-                    .filter(MetricFilter.ALL)
-                    .build(graphite);
+                                       .prefixedWith(configuration.getOperationType().name())
+                                       .convertRatesTo(TimeUnit.SECONDS)
+                                       .convertDurationsTo(TimeUnit.MILLISECONDS)
+                                       .filter(MetricFilter.ALL)
+                                       .build(graphite);
         } else {
             reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                    .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+                                      .convertDurationsTo(TimeUnit.MILLISECONDS).build();
         }
     }
 
@@ -163,7 +164,7 @@ abstract class AsyncBenchmark<T> {
         }
     }
 
-    protected abstract void performWorkload(Subscriber<T> subs, long i) throws Exception;
+    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
 
     private boolean shouldContinue(long startTimeMillis, long iterationCount) {
         Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
@@ -199,14 +200,19 @@ abstract class AsyncBenchmark<T> {
         long i;
         for ( i = 0; shouldContinue(startTime, i); i++) {
 
-            Subscriber<T> subs = new Subscriber<T>() {
-
+            BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
                 @Override
-                public void onStart() {
+                protected void hookOnSubscribe(Subscription subscription) {
+                    super.hookOnSubscribe(subscription);
                 }
 
                 @Override
-                public void onCompleted() {
+                protected void hookOnNext(T value) {
+
+                }
+
+                @Override
+                protected void hookOnComplete() {
                     successMeter.mark();
                     concurrencyControlSemaphore.release();
                     AsyncBenchmark.this.onSuccess();
@@ -218,25 +224,21 @@ abstract class AsyncBenchmark<T> {
                 }
 
                 @Override
-                public void onError(Throwable e) {
+                protected void hookOnError(Throwable throwable) {
                     failureMeter.mark();
                     logger.error("Encountered failure {} on thread {}" ,
-                                 e.getMessage(), Thread.currentThread().getName(), e);
+                        throwable.getMessage(), Thread.currentThread().getName(), throwable);
                     concurrencyControlSemaphore.release();
-                    AsyncBenchmark.this.onError(e);
+                    AsyncBenchmark.this.onError(throwable);
 
                     synchronized (count) {
                         count.incrementAndGet();
                         count.notify();
                     }
                 }
-
-                @Override
-                public void onNext(T value) {
-                }
             };
 
-            performWorkload(subs, i);
+            performWorkload(baseSubscriber, i);
         }
 
         synchronized (count) {
@@ -247,7 +249,7 @@ abstract class AsyncBenchmark<T> {
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
-                    configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
+            configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
 
         reporter.report();
         reporter.close();

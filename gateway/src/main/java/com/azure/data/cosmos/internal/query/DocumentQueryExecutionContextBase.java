@@ -41,8 +41,8 @@ import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import rx.Observable;
-import rx.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -82,7 +82,7 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     @Override
-    abstract public Observable<FeedResponse<T>> executeAsync();
+    abstract public Flux<FeedResponse<T>> executeAsync();
 
     public String getPartitionKeyId() {
         // TODO Auto-generated method stub
@@ -115,20 +115,20 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    public Single<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
+    public Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(request)
                 : this.executeReadFeedRequestAsync(request));
     }
 
-    public Single<FeedResponse<T>> executeQueryRequestAsync(RxDocumentServiceRequest request) {
+    public Mono<FeedResponse<T>> executeQueryRequestAsync(RxDocumentServiceRequest request) {
         return this.getFeedResponse(this.executeQueryRequestInternalAsync(request));
     }
 
-    public Single<FeedResponse<T>> executeReadFeedRequestAsync(RxDocumentServiceRequest request) {
+    public Mono<FeedResponse<T>> executeReadFeedRequestAsync(RxDocumentServiceRequest request) {
         return this.getFeedResponse(this.client.readFeedAsync(request));
     }
 
-    protected Single<FeedResponse<T>> getFeedResponse(Single<RxDocumentServiceResponse> response) {
+    protected Mono<FeedResponse<T>> getFeedResponse(Mono<RxDocumentServiceResponse> response) {
         return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, resourceType));
     }
 
@@ -139,7 +139,7 @@ implements IDocumentQueryExecutionContext<T> {
         return options;
     }
 
-    private Single<RxDocumentServiceResponse> executeQueryRequestInternalAsync(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceResponse> executeQueryRequestInternalAsync(RxDocumentServiceRequest request) {
         return this.client.executeQueryAsync(request);
     }
 

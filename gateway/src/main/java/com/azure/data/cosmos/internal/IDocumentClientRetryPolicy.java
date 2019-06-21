@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -63,8 +63,8 @@ public interface IDocumentClientRetryPolicy extends IRetryPolicy {
         }
 
         @Override
-        public Single<ShouldRetryResult> shouldRetry(Exception e) {
-            return Single.just(ShouldRetryResult.error(e));
+        public Mono<ShouldRetryResult> shouldRetry(Exception e) {
+            return Mono.just(ShouldRetryResult.error(e));
         }
     }
 }

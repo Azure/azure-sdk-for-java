@@ -29,7 +29,7 @@ import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -41,7 +41,7 @@ public class GoneException extends CosmosClientException {
         this(msg, null);
     }
     public GoneException() {
-        this(RMResources.Gone, (String) null);
+        this(RMResources.Gone, null);
     }
 
     public GoneException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
@@ -51,40 +51,40 @@ public class GoneException extends CosmosClientException {
     }
 
     public GoneException(String message, String requestUri) {
-        this(message, (Exception) null, new HashMap<>(), requestUri);
+        this(message, null, new HashMap<>(), requestUri);
     }
 
     public GoneException(String message,
                          Exception innerException,
                          URI requestUri,
                          String localIpAddress) {
-        this(message(localIpAddress, message), innerException, (HttpResponseHeaders) null, requestUri);
+        this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
     public GoneException(Exception innerException) {
-        this(RMResources.Gone, innerException, new HashMap<>(), (String) null);
+        this(RMResources.Gone, innerException, new HashMap<>(), null);
     }
 
-    public GoneException(String message, HttpResponseHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUri != null ? requestUri.toString() : null);
+    public GoneException(String message, HttpHeaders headers, URI requestUrl) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null ? requestUrl.toString() : null);
     }
 
-    public GoneException(String message, HttpResponseHeaders headers, String requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUri);
+    public GoneException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
     public GoneException(String message,
                          Exception innerException,
-                         HttpResponseHeaders headers,
-                         URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUri != null ? requestUri.toString() : null);
+                         HttpHeaders headers,
+                         URI requestUrl) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null ? requestUrl.toString() : null);
     }
 
     public GoneException(String message,
                          Exception innerException,
                          Map<String, String> headers,
-                         String requestUri) {
-        super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUri);
+                         String requestUriString) {
+        super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
     public GoneException(Error error, Map<String, String> headers) {

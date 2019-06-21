@@ -24,79 +24,73 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.HttpClientFactory;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.Paths;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpClientConfig;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
+import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.rx.FeedResponseListValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import com.azure.data.cosmos.rx.TestSuiteBase;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import org.apache.commons.io.IOUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import rx.Observable;
+import reactor.core.scheduler.Schedulers;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosPartitionKeyTests extends TestSuiteBase {
+public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
     private final static String NON_PARTITIONED_CONTAINER_ID = "NonPartitionContainer" + UUID.randomUUID().toString();
     private final static String NON_PARTITIONED_CONTAINER_DOCUEMNT_ID = "NonPartitionContainer_Document" + UUID.randomUUID().toString();
 
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
-    private CosmosClientBuilder clientBuilder;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosPartitionKeyTests(CosmosClientBuilder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+        super(clientBuilder);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws URISyntaxException, IOException {
-        client = clientBuilder.build();
+        assertThat(this.client).isNull();
+        client = clientBuilder().build();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(createdDatabase);
-        safeClose(client);
+        assertThat(this.client).isNotNull();
+        this.client.close();
     }
 
     private void createContainerWithoutPk() throws URISyntaxException, IOException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        HttpClientFactory factory = new HttpClientFactory(new Configs())
+        HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
                 .withMaxIdleConnectionTimeoutInMillis(connectionPolicy.idleConnectionTimeoutInMillis())
                 .withPoolSize(connectionPolicy.maxPoolSize())
                 .withHttpProxy(connectionPolicy.proxy())
                 .withRequestTimeoutInMillis(connectionPolicy.requestTimeoutInMillis());
 
-        CompositeHttpClient<ByteBuf, ByteBuf> httpClient = factory.toHttpClientBuilder().build();
+        HttpClient httpClient = HttpClient.createFixed(httpClientConfig);
         
         // CREATE a non partitioned collection using the rest API and older version
         String resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id();
@@ -118,22 +112,10 @@ public class CosmosPartitionKeyTests extends TestSuiteBase {
             0] + "//" + Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/";
         URI uri = new URI(resourceUri);
 
-        HttpClientRequest<ByteBuf> httpRequest = HttpClientRequest.create(HttpMethod.POST, uri.toString());
-
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            httpRequest.withHeader(entry.getKey(), entry.getValue());
-        }
-
-        httpRequest.withContent(request.getContent());
-
-        RxClient.ServerInfo serverInfo = new RxClient.ServerInfo(uri.getHost(), uri.getPort());
-
-        InputStream responseStream = httpClient.submit(serverInfo, httpRequest).flatMap(clientResponse -> {
-            return toInputStream(clientResponse.getContent());
-        })
-        .toBlocking().single();
-        String createdContainerAsString = IOUtils.readLines(responseStream, "UTF-8").get(0);
-        assertThat(createdContainerAsString).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        httpRequest.withBody(request.getContent());
+        String body = httpClient.send(httpRequest).block().bodyAsString().block();
+        assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
         
         // CREATE a document in the non partitioned collection using the rest API and older version
         resourceId = Paths.DATABASES_PATH_SEGMENT + "/" + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.id();
@@ -151,24 +133,14 @@ public class CosmosPartitionKeyTests extends TestSuiteBase {
                 + createdDatabase.id() + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + collection.id() + "/" + Paths.DOCUMENTS_PATH_SEGMENT + "/";
         uri = new URI(resourceUri);
 
-        httpRequest = HttpClientRequest.create(HttpMethod.POST, uri.toString());
+        httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
+        httpRequest.withBody(request.getContent());
 
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            httpRequest.withHeader(entry.getKey(), entry.getValue());
-        }
-
-        httpRequest.withContent(request.getContent());
-
-        serverInfo = new RxClient.ServerInfo(uri.getHost(), uri.getPort());
-
-        responseStream = httpClient.submit(serverInfo, httpRequest).flatMap(clientResponse -> {
-            return toInputStream(clientResponse.getContent());
-        }).toBlocking().single();
-        String createdItemAsString = IOUtils.readLines(responseStream, "UTF-8").get(0);
-        assertThat(createdItemAsString).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
+        body = httpClient.send(httpRequest).block().bodyAsString().block();
+        assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    @Test(groups = { "simple" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "simple" })
     public void testNonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();
         CosmosContainer createdContainer = createdDatabase.getContainer(NON_PARTITIONED_CONTAINER_ID);
@@ -304,19 +276,6 @@ public class CosmosPartitionKeyTests extends TestSuiteBase {
         CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
                 .withId(IdOfDocumentWithNoPk).build();
         validateSuccess(readMono, validator);
-    }
-
-    private Observable<InputStream> toInputStream(Observable<ByteBuf> contentObservable) {
-        return contentObservable.reduce(new ByteArrayOutputStream(), (out, bb) -> {
-            try {
-                bb.readBytes(out, bb.readableBytes());
-                return out;
-            } catch (java.io.IOException e) {
-                throw new RuntimeException(e);
-            }
-        }).map(out -> {
-            return new ByteArrayInputStream(out.toByteArray());
-        });
     }
 
 }

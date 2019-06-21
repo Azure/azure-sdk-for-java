@@ -36,17 +36,17 @@ import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.SessionContainer;
 import com.azure.data.cosmos.rx.FailureValidator;
+import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.functions.Func1;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public class ReplicatedResourceClientPartitionSplitTest {
     protected static final int TIMEOUT = 120000;
@@ -145,8 +145,8 @@ public class ReplicatedResourceClientPartitionSplitTest {
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId(partitionKeyRangeIdBeforeSplit);
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
 
-        Func1<RxDocumentServiceRequest, Single<RxDocumentServiceRequest>> prepareRequestAsyncDelegate = null;
-        Single<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
+        Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate = null;
+        Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
 
         if (partitionIsSplitting < Integer.MAX_VALUE) {
 
@@ -164,50 +164,50 @@ public class ReplicatedResourceClientPartitionSplitTest {
         }
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, TIMEOUT);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
         TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator) {
         validateSuccess(single, validator, TIMEOUT);
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator, long timeout) {
         TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
 
-    public static void validateFailure(Single<StoreResponse> single, FailureValidator validator, long timeout) {
+    public static void validateFailure(Mono<StoreResponse> single, FailureValidator validator, long timeout) {
 
         TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        Assertions.assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        Assertions.assertThat(testSubscriber.errorCount()).isEqualTo(1);
+        validator.validate(testSubscriber.errors().get(0));
     }
 
     private PartitionKeyRange partitionKeyRangeWithId(String id) {

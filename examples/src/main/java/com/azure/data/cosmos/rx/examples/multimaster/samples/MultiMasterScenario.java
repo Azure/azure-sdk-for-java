@@ -30,7 +30,7 @@ import com.azure.data.cosmos.rx.examples.multimaster.ConfigurationManager;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Completable;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,7 +100,7 @@ public class MultiMasterScenario {
 
         logger.info("1) Starting insert loops across multiple regions ...");
 
-        List<Completable> basicTask = new ArrayList<Completable>();
+        List<Mono<Void>> basicTask = new ArrayList<>();
 
         int documentsToInsertPerWorker = 100;
 
@@ -108,7 +108,7 @@ public class MultiMasterScenario {
             basicTask.add(worker.runLoopAsync(documentsToInsertPerWorker));
         }
 
-        Completable.merge(basicTask).await();
+        Mono.when(basicTask).block();
 
         basicTask.clear();
 
@@ -119,7 +119,7 @@ public class MultiMasterScenario {
             basicTask.add(worker.readAllAsync(expectedDocuments));
         }
 
-        Completable.merge(basicTask).await();
+        Mono.when(basicTask).block();
 
         basicTask.clear();
 

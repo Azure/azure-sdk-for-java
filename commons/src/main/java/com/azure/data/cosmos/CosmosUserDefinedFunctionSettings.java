@@ -50,6 +50,16 @@ public class CosmosUserDefinedFunctionSettings extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of cosmos user defined function settings
+     */
+    public CosmosUserDefinedFunctionSettings id(String id) {
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Get the body of the user defined function.
      *
      * @return the body.

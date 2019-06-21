@@ -29,10 +29,11 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import rx.Observable;
-import rx.observables.StringObservable;
+import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -67,7 +68,7 @@ public class RxDocumentServiceRequest {
 
     public DocumentServiceRequestContext requestContext;
 
-    private Observable<byte[]> contentObservable;
+    private Flux<byte[]> contentObservable;
     private byte[] byteContent;
     
     // NOTE: TODO: these fields are copied from .Net SDK
@@ -212,7 +213,7 @@ public class RxDocumentServiceRequest {
     private RxDocumentServiceRequest(OperationType operationType,
             String resourceId,
             ResourceType resourceType,
-            Observable<byte[]> contentObservable,
+            Flux<byte[]> contentObservable,
             byte[] content,
             String path,
             Map<String, String> headers,
@@ -238,7 +239,7 @@ public class RxDocumentServiceRequest {
     private RxDocumentServiceRequest(OperationType operationType,
             ResourceType resourceType,
             String path,
-            Observable<byte[]> contentObservable,
+            Flux<byte[]> contentObservable,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
         this(operationType, extractIdFromUri(path), resourceType, contentObservable, null, path, headers, authorizationTokenType);
@@ -293,7 +294,7 @@ public class RxDocumentServiceRequest {
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
-            Observable<byte[]> content,
+            Flux<byte[]> content,
             Map<String, String> headers) {
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
@@ -311,7 +312,7 @@ public class RxDocumentServiceRequest {
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
-            Observable<byte[]> content,
+            Flux<byte[]> content,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, authorizationTokenType);
@@ -330,10 +331,9 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String relativePath,
             InputStream inputStream,
-            Map<String, String> headers) {
-        // StringObservable is mis-named. It doesn't make any assumptions on character set
-        // and handles bytes only
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, StringObservable.from(inputStream), headers, AuthorizationTokenType.PrimaryMasterKey);
+            Map<String, String> headers) throws IOException {
+        Flux<byte[]> byteFlux = Flux.just(IOUtils.toByteArray(inputStream));
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, byteFlux, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /** Creates a DocumentServiceRequest with a stream.
@@ -351,10 +351,9 @@ public class RxDocumentServiceRequest {
             String relativePath,
             InputStream inputStream,
             Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
-        // StringObservable is mis-named. It doesn't make any assumptions on character set
-        // and handles bytes only
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, StringObservable.from(inputStream), headers, authorizationTokenType);
+            AuthorizationTokenType authorizationTokenType) throws IOException {
+        Flux<byte[]> byteFlux = Flux.just(IOUtils.toByteArray(inputStream));
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, byteFlux, headers, authorizationTokenType);
     }
 
     /**
@@ -481,7 +480,7 @@ public class RxDocumentServiceRequest {
             break;
         }
 
-        Observable<byte[]> body = StringObservable.encode(Observable.just(queryText), StandardCharsets.UTF_8);
+        Flux<byte[]> body = Flux.just(queryText).map(s -> StandardCharsets.UTF_8.encode(s).array());
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, body, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -995,7 +994,7 @@ public class RxDocumentServiceRequest {
         this.requestContext.resolvedPartitionKeyRange = null;
     }
 
-    public Observable<byte[]> getContentObservable() {
+    public Flux<byte[]> getContentObservable() {
         return contentObservable;
     }
 

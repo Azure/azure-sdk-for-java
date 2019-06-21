@@ -29,7 +29,6 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -78,8 +77,8 @@ public class CosmosConflictTest extends TestSuiteBase {
         }
         assertThat(numberOfResults).isEqualTo(expectedNumberOfConflicts);
     }
-    
-    
+
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder().build();

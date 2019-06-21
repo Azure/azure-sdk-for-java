@@ -35,13 +35,13 @@ import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -92,20 +92,20 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
     }
 
     @Override
-    public Observable<FeedResponse<T>> executeAsync() {
+    public Flux<FeedResponse<T>> executeAsync() {
 
-        Func1<? super Throwable, ? extends Observable<? extends FeedResponse<T>>> func  = t -> { 
+        Function<? super Throwable, ? extends Flux<? extends FeedResponse<T>>> func  = t -> {
 
             logger.debug("Received non result message from gateway", t);
             if (!(t instanceof Exception)) {
                 logger.error("Unexpected failure", t);
-                return Observable.error(t);
+                return Flux.error(t);
             }
             
             if (!isCrossPartitionQuery((Exception) t)) {
                 // If this is not a cross partition query then propagate error
                 logger.debug("Failure from gateway", t);
-                return Observable.error(t);
+                return Flux.error(t);
             }
 
             logger.debug("Setting up query pipeline using the query plan received form gateway");
@@ -122,29 +122,27 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
             DefaultDocumentQueryExecutionContext<T> queryExecutionContext =
                     (DefaultDocumentQueryExecutionContext<T>) this.innerExecutionContext;
 
-            Single<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.resourceId(),
+            Mono<List<PartitionKeyRange>> partitionKeyRanges = queryExecutionContext.getTargetPartitionKeyRanges(collection.resourceId(),
                     partitionedQueryExecutionInfo.getQueryRanges());
 
-            Observable<IDocumentQueryExecutionContext<T>> exContext = partitionKeyRanges.toObservable()
-                    .flatMap(pkranges -> {
-                        return DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
-                                this.client,
-                                this.resourceTypeEnum,
-                                this.resourceType,
-                                this.query,
-                                this.feedOptions,
-                                this.resourceLink,
-                                isContinuationExpected,
-                                partitionedQueryExecutionInfo,
-                                pkranges,
-                                this.collection.resourceId(),
-                                this.correlatedActivityId);
-                        });
+            Flux<IDocumentQueryExecutionContext<T>> exContext = partitionKeyRanges.flux()
+                    .flatMap(pkranges -> DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
+                            this.client,
+                            this.resourceTypeEnum,
+                            this.resourceType,
+                            this.query,
+                            this.feedOptions,
+                            this.resourceLink,
+                            isContinuationExpected,
+                            partitionedQueryExecutionInfo,
+                            pkranges,
+                            this.collection.resourceId(),
+                            this.correlatedActivityId));
 
-            return exContext.flatMap(context -> context.executeAsync());
+            return exContext.flatMap(IDocumentQueryExecutionContext::executeAsync);
         };
 
-        return this.innerExecutionContext.executeAsync().onErrorResumeNext(func);
+        return this.innerExecutionContext.executeAsync().onErrorResume(func);
     }
 
     private boolean isCrossPartitionQuery(Exception exception) {
@@ -159,10 +157,10 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.CROSS_PARTITION_QUERY_NOT_SERVABLE));
     }
 
-    public static <T extends Resource> Observable<ProxyDocumentQueryExecutionContext<T>> createAsync(IDocumentQueryClient client,
-            ResourceType resourceTypeEnum, Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions,
-            String resourceLink, DocumentCollection collection, boolean isContinuationExpected,
-            UUID correlatedActivityId) {
+    public static <T extends Resource> Flux<ProxyDocumentQueryExecutionContext<T>> createAsync(IDocumentQueryClient client,
+                                                                                               ResourceType resourceTypeEnum, Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions,
+                                                                                               String resourceLink, DocumentCollection collection, boolean isContinuationExpected,
+                                                                                               UUID correlatedActivityId) {
 
         IDocumentQueryExecutionContext<T> innerExecutionContext =
                 new DefaultDocumentQueryExecutionContext<T>(
@@ -175,7 +173,7 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                         correlatedActivityId,
                         isContinuationExpected);
 
-        return Observable.just(new ProxyDocumentQueryExecutionContext<T>(innerExecutionContext, client,
+        return Flux.just(new ProxyDocumentQueryExecutionContext<T>(innerExecutionContext, client,
                 resourceTypeEnum,
                 resourceType,
                 query,

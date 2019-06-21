@@ -37,15 +37,15 @@ import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.exceptions.Exceptions;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
 public class BarrierRequestHelper {
     private final static Logger logger = LoggerFactory.getLogger(BarrierRequestHelper.class);
 
-    public static Single<RxDocumentServiceRequest> createAsync(
+    public static Mono<RxDocumentServiceRequest> createAsync(
             RxDocumentServiceRequest request,
             IAuthorizationTokenProvider authorizationTokenProvider,
             Long targetLsn,
@@ -123,7 +123,7 @@ public class BarrierRequestHelper {
                 String unknownAuthToken = "Unknown authorization token kind for read request";
                 assert false : unknownAuthToken;
                 logger.error(unknownAuthToken);
-                Exceptions.propagate(new InternalServerErrorException(RMResources.InternalServerError));
+                throw Exceptions.propagate(new InternalServerErrorException(RMResources.InternalServerError));
         }
 
         barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
@@ -139,7 +139,7 @@ public class BarrierRequestHelper {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));
         }
 
-        return Single.just(barrierLsnRequest);
+        return Mono.just(barrierLsnRequest);
     }
 
     static boolean isCollectionHeadBarrierRequest(ResourceType resourceType, OperationType operationType) {

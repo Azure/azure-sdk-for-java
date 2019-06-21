@@ -25,8 +25,8 @@ package com.azure.data.cosmos;
 public class CosmosConflictResponse extends CosmosResponse<CosmosConflictProperties> {
     private CosmosContainer container;
     private CosmosConflict conflictClient;
-    
-    public CosmosConflictResponse(ResourceResponse<Conflict> response, CosmosContainer container) {
+
+    CosmosConflictResponse(ResourceResponse<Conflict> response, CosmosContainer container) {
         super(response);
         if(response.getResource() == null){
             super.resourceSettings(null);

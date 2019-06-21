@@ -45,6 +45,16 @@ public class Document extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of the Document
+     */
+    public Document id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Initialize a document object from json string.
      *
      * @param jsonString the json string that represents the document object.

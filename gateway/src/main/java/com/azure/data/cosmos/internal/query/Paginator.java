@@ -30,11 +30,10 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Observer;
-import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.observables.AsyncOnSubscribe;
+import reactor.core.publisher.Flux;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -44,62 +43,53 @@ public class Paginator {
 
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
-    public static <T extends Resource> Observable<FeedResponse<T>> getPaginatedChangeFeedQueryResultAsObservable(
-            ChangeFeedOptions feedOptions, Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedChangeFeedQueryResultAsObservable(
+            ChangeFeedOptions feedOptions, BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize, true);
     }
 
-    public static <T extends Resource> Observable<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             FeedOptions feedOptions,
-            Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
         return getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize);
     }
 
-    public static <T extends Resource> Observable<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             FeedOptions options,
-            Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize) {
         return getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, resourceType,
                 top, maxPageSize, false);
     }
 
-    private static <T extends Resource> Observable<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             FeedOptionsBase options,
-            Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc, Class<T> resourceType,
+            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize, boolean isChangeFeed) {
 
-        Observable<FeedResponse<T>> obs = Observable.defer(() -> {
-            return Observable.create(new AsyncOnSubscribe<Fetcher, FeedResponse<T>>() {
-                @Override
-                protected Fetcher generateState() {
-                    return new Fetcher(createRequestFunc, executeFunc, options, isChangeFeed, top, maxPageSize);
-                }
+        return Flux.defer(() -> {
+            Flux<Flux<FeedResponse<T>>> generate = Flux.generate(() ->
+                    new Fetcher<>(createRequestFunc, executeFunc, options, isChangeFeed, top, maxPageSize),
+                    (tFetcher, sink) -> {
+                        if (tFetcher.shouldFetchMore()) {
+                            Flux<FeedResponse<T>> nextPage = tFetcher.nextPage();
+                            sink.next(nextPage);
+                        } else {
+                            logger.debug("No more results");
+                            sink.complete();
+                        }
+                        return tFetcher;
+            });
 
-                @Override
-                protected Fetcher next(Fetcher fetcher, long requested, Observer<Observable<? extends FeedResponse<T>>> observer) {
-                    assert requested == 1 : "requested amount expected to be 1"; // as there is a rebatchRequests(1)
-
-                    if (fetcher.shouldFetchMore()) {
-                        Observable<FeedResponse<T>> respObs = fetcher.nextPage();
-                        observer.onNext(respObs);
-                    } else {
-                        logger.debug("No more results");
-                        observer.onCompleted();
-                    }
-
-                    return fetcher;
-                }
-            }).rebatchRequests(1);
+            return generate.flatMapSequential(feedResponseFlux -> feedResponseFlux, 1);
         });
-
-        return obs;
     }
 }

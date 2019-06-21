@@ -24,8 +24,6 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +34,7 @@ import java.util.List;
  * This asynchronous client is used to configure and execute requests
  * against the service.
  */
-public class CosmosClient {
+public class CosmosClient implements AutoCloseable {
 
     //Document client wrapper
     private final Configs configs;
@@ -199,8 +197,8 @@ public class CosmosClient {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.id(databaseSettings.id());
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
-                new CosmosDatabaseResponse(databaseResourceResponse, this)).toSingle()));
+        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
+                new CosmosDatabaseResponse(databaseResourceResponse, this)).single();
     }
 
     /**
@@ -244,9 +242,9 @@ public class CosmosClient {
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     public Flux<FeedResponse<CosmosDatabaseSettings>> listDatabases(FeedOptions options) {
-        return RxJava2Adapter.flowableToFlux(RxJavaInterop.toV2Flowable(getDocClientWrapper().readDatabases(options)
+        return getDocClientWrapper().readDatabases(options)
                 .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseSettings.getFromV2Results(response.results()),
-                        response.responseHeaders()))));
+                        response.responseHeaders()));
     }
 
     /**
@@ -290,14 +288,14 @@ public class CosmosClient {
      * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
      */
     public Flux<FeedResponse<CosmosDatabaseSettings>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
-        return RxJava2Adapter.flowableToFlux(RxJavaInterop.toV2Flowable(getDocClientWrapper().queryDatabases(querySpec, options)
+        return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response-> BridgeInternal.createFeedResponse(
                         CosmosDatabaseSettings.getFromV2Results(response.results()),
-                        response.responseHeaders()))));
+                        response.responseHeaders()));
     }
 
     Mono<DatabaseAccount> getDatabaseAccount() {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(asyncDocumentClient.getDatabaseAccount().toSingle()));
+        return asyncDocumentClient.getDatabaseAccount().single();
     }
 
     /**
@@ -313,6 +311,7 @@ public class CosmosClient {
     /**
      * Close this {@link CosmosClient} instance and cleans up the resources.
      */
+    @Override
     public void close() {
         asyncDocumentClient.close();
     }

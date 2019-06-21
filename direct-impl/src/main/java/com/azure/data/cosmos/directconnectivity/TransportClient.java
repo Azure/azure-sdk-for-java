@@ -24,19 +24,18 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
 public abstract class TransportClient implements AutoCloseable {
 
     // Uses requests's ResourceOperation to determine the operation
-    public Single<StoreResponse> invokeResourceOperationAsync(URI physicalAddress, RxDocumentServiceRequest request) {
-        return this.invokeStoreAsync(physicalAddress, new ResourceOperation(request.getOperationType(), request.getResourceType()), request);
+    public Mono<StoreResponse> invokeResourceOperationAsync(URI physicalAddress, RxDocumentServiceRequest request) {
+        return this.invokeStoreAsync(physicalAddress, request);
     }
 
-    protected abstract Single<StoreResponse> invokeStoreAsync(
+    protected abstract Mono<StoreResponse> invokeStoreAsync(
         URI physicalAddress,
-        ResourceOperation resourceOperation,
         RxDocumentServiceRequest request);
 }

@@ -192,34 +192,8 @@ SOFTWARE.
       <version>${commons-io.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.github.davidmoten</groupId>
-      <artifactId>rxjava-extras</artifactId>
-      <version>${rxjava-extras.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>${rxjava.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxjava-string</artifactId>
-      <version>${rxjava-string.version}</version>
-    </dependency>
-    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxnetty</artifactId>
-      <version>${rxnetty.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-transport-native-epoll</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
@@ -277,20 +251,9 @@ SOFTWARE.
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.projectreactor.addons</groupId>
-      <artifactId>reactor-adapter</artifactId>
-      <version>${reactor-addons.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.akarnokd</groupId>
-      <artifactId>rxjava2-interop</artifactId>
-      <version>${rxjava2interop.verison}</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex.rxjava2</groupId>

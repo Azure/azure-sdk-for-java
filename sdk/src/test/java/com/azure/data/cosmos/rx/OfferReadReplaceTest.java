@@ -33,11 +33,11 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class OfferReadReplaceTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
@@ -55,7 +55,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readAndReplaceOffer() {
 
-        client.readOffers(null).toBlocking().subscribe((offersFeed) -> {
+        client.readOffers(null).subscribe((offersFeed) -> {
             try {
                 int i;
                 List<Offer> offers = offersFeed.results();
@@ -65,10 +65,10 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                     }
                 }
 
-                Offer rOffer = client.readOffer(offers.get(i).selfLink()).toBlocking().single().getResource();
+                Offer rOffer = client.readOffer(offers.get(i).selfLink()).single().block().getResource();
                 int oldThroughput = rOffer.getThroughput();
                 
-                Observable<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).selfLink());
+                Flux<ResourceResponse<Offer>> readObservable = client.readOffer(offers.get(i).selfLink());
 
                 // validate offer read
                 ResourceResponseValidator<Offer> validatorForRead = new ResourceResponseValidator.Builder<Offer>()
@@ -81,7 +81,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 // update offer
                 int newThroughput = oldThroughput + 100;
                 offers.get(i).setThroughput(newThroughput);
-                Observable<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
+                Flux<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
 
                 // validate offer replace
                 ResourceResponseValidator<Offer> validatorForReplace = new ResourceResponseValidator.Builder<Offer>()

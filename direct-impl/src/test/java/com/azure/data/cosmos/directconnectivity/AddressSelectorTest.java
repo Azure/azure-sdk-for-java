@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableList;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -110,9 +110,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Single.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
 
-        URI res = selector.resolvePrimaryUriAsync(request, false).toBlocking().value();
+        URI res = selector.resolvePrimaryUriAsync(request, false).block();
 
         assertThat(res).isEqualTo(URI.create("https://cosmos2"));
     }
@@ -133,9 +133,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Single.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
 
-        List<URI> res = selector.resolveAllUriAsync(request, true, false).toBlocking().value();
+        List<URI> res = selector.resolveAllUriAsync(request, true, false).block();
 
         assertThat(res).isEqualTo(ImmutableList.of(URI.create("https://cosmos1"), URI.create("https://cosmos2"), URI.create("https://cosmos3")));
     }
@@ -156,9 +156,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Single.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
 
-        List<AddressInformation> res = selector.resolveAddressesAsync(request, false).toBlocking().value();
+        List<AddressInformation> res = selector.resolveAddressesAsync(request, false).block();
 
         assertThat(res).isEqualTo(replicaAddresses.stream().filter(a -> a.getProtocolName().equals(Protocol.HTTPS.toString())).collect(Collectors.toList()));
     }
@@ -179,9 +179,9 @@ public class AddressSelectorTest {
         replicaAddresses.add(new AddressInformation(true, true, "https://cosmos2", Protocol.HTTPS));
         replicaAddresses.add(new AddressInformation(true, false, "https://cosmos3", Protocol.HTTPS));
 
-        Mockito.doReturn(Single.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
+        Mockito.doReturn(Mono.just(replicaAddresses.toArray(new AddressInformation[0]))).when(addressResolver).resolveAsync(Mockito.any(RxDocumentServiceRequest.class), Matchers.eq(false));
 
-        List<URI> res = selector.resolveAllUriAsync(request, true, false).toBlocking().value();
+        List<URI> res = selector.resolveAllUriAsync(request, true, false).block();
 
         assertThat(res).isEqualTo(ImmutableList.of(URI.create("rntbd://cosmos1"), URI.create("rntbd://cosmos2")));
     }

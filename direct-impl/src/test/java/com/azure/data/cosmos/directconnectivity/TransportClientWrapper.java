@@ -32,7 +32,7 @@ import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -142,7 +142,7 @@ public class TransportClientWrapper {
                     Function2WithCheckedException function = responseFunctionDictionary.get(physicalUri);
                     if (function == null) {
                         valid.set(false);
-                        return Single.error(new IllegalStateException("no registered function for replica " + physicalUri));
+                        return Mono.error(new IllegalStateException("no registered function for replica " + physicalUri));
                     }
                     int current;
                     synchronized (transportClient) {
@@ -158,9 +158,9 @@ public class TransportClientWrapper {
                     }
 
                     try {
-                        return Single.just(function.apply(current, request));
+                        return Mono.just(function.apply(current, request));
                     } catch (Exception e) {
-                        return Single.error(e);
+                        return Mono.error(e);
                     }
 
                 }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));
@@ -199,14 +199,14 @@ public class TransportClientWrapper {
                     int current = i.getAndIncrement();
                     if (current >= list.size()) {
                         valid.set(false);
-                        return Single.error(new IllegalStateException());
+                        return Mono.error(new IllegalStateException());
                     }
                     Object obj = list.get(current);
                     StoreResponse response = Utils.as(obj, StoreResponse.class);
                     if (response != null) {
-                        return Single.just(response);
+                        return Mono.just(response);
                     } else {
-                        return Single.error((Exception) obj);
+                        return Mono.error((Exception) obj);
                     }
 
                 }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));
@@ -307,7 +307,7 @@ public class TransportClientWrapper {
                     if (list == null || list.isEmpty()) {
                         // unknown
                         valid.set(false);
-                        return Single.error(new IllegalStateException(tuple.toString()));
+                        return Mono.error(new IllegalStateException(tuple.toString()));
                     }
 
                     Result result = list.get(0);
@@ -316,9 +316,9 @@ public class TransportClientWrapper {
                         list.remove(0);
                     }
                     if (result.storeResponse != null) {
-                        return Single.just(result.storeResponse);
+                        return Mono.just(result.storeResponse);
                     } else {
-                        return Single.error(result.exception);
+                        return Mono.error(result.exception);
                     }
 
                 }).when(transportClient).invokeResourceOperationAsync(Mockito.any(URI.class), Mockito.any(RxDocumentServiceRequest.class));

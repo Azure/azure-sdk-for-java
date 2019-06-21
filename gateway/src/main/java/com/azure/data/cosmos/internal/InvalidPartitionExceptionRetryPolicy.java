@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -61,7 +61,7 @@ public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetr
     }
 
     @Override
-    public Single<ShouldRetryResult> shouldRetry(Exception e) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
         if (clientException != null && 
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
@@ -77,9 +77,9 @@ public class InvalidPartitionExceptionRetryPolicy implements IDocumentClientRetr
                 }
 
                 this.retried = true;
-                return Single.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+                return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
             } else {
-                return Single.just(ShouldRetryResult.error(e));
+                return Mono.just(ShouldRetryResult.error(e));
             }
         }
 

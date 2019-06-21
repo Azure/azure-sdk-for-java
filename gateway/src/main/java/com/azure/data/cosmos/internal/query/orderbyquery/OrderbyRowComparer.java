@@ -58,8 +58,7 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             }
 
             if (result1.size() != this.sortOrders.size()) {
-                throw new IllegalStateException(
-                        String.format("OrderByItems cannot have a different size than sort orders."));
+                throw new IllegalStateException("OrderByItems cannot have a different size than sort orders.");
             }
 
             if (this.itemTypes == null) {

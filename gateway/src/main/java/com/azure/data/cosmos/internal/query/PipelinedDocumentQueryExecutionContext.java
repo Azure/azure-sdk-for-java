@@ -29,7 +29,7 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.Utils;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,14 +61,14 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         // this.actualPageSize));
     }
 
-    public static <T extends Resource> Observable<PipelinedDocumentQueryExecutionContext<T>> createAsync(
+    public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createAsync(
             IDocumentQueryClient client, ResourceType resourceTypeEnum, Class<T> resourceType, SqlQuerySpec expression,
             FeedOptions feedOptions, String resourceLink, String collectionRid,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, List<PartitionKeyRange> targetRanges,
             int initialPageSize, boolean isContinuationExpected, boolean getLazyFeedResponse,
             UUID correlatedActivityId) {
         // Use nested callback pattern to unwrap the continuation token at each level.
-        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction;
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction;
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
 
@@ -92,7 +92,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             };
         }
 
-        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createAggregateComponentFunction;
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createAggregateComponentFunction;
         if (queryInfo.hasAggregates()) {
             createAggregateComponentFunction = (continuationToken) -> {
                 return AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
@@ -102,7 +102,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createAggregateComponentFunction = createBaseComponentFunction;
         }
 
-        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
         if (queryInfo.hasTop()) {
             createTopComponentFunction = (continuationToken) -> {
                 return TopDocumentQueryExecutionContext.createAsync(createAggregateComponentFunction,
@@ -125,7 +125,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     }
 
     @Override
-    public Observable<FeedResponse<T>> executeAsync() {
+    public Flux<FeedResponse<T>> executeAsync() {
         // TODO Auto-generated method stub
 
         // TODO add more code here

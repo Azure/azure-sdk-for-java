@@ -40,7 +40,7 @@ import com.azure.data.cosmos.rx.ResourceResponseValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -276,19 +276,20 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
             partitionKeyDefinition.paths(paths);
             documentCollection.setPartitionKey(partitionKeyDefinition);
 
-            DocumentCollection collection = client.createCollection(createdDatabase.selfLink(), documentCollection, null).toBlocking().first().getResource();
+            DocumentCollection collection = client.createCollection(createdDatabase.selfLink(), documentCollection
+                    , null).blockFirst().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey("1"));
 
             Document documentDefinition = new Document();
             documentDefinition.id("1");
-            Document document = client.createDocument(collection.selfLink(), documentDefinition, requestOptions, false).toBlocking().first().getResource();
+            Document document = client.createDocument(collection.selfLink(), documentDefinition, requestOptions, false).blockFirst().getResource();
 
-            Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.selfLink(), requestOptions);
+            Flux<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.selfLink(), requestOptions);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .nullResource().build();
             validateSuccess(deleteObservable, validator);
-            Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.selfLink(), requestOptions);
+            Flux<ResourceResponse<Document>> readObservable = client.readDocument(document.selfLink(), requestOptions);
             FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().unknownSubStatusCode().build();
             validateFailure(readObservable, notFoundValidator);
 

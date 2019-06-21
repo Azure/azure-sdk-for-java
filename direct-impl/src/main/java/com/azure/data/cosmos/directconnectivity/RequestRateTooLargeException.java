@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -46,30 +46,30 @@ public class RequestRateTooLargeException extends CosmosClientException {
     }
 
     public RequestRateTooLargeException(String message, URI requestUri) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, requestUri);
+        this(message, null, null, requestUri);
     }
 
     public RequestRateTooLargeException(String message,
                                         Exception innerException,
                                         URI requestUri) {
-        this(message, innerException, (HttpResponseHeaders) null, requestUri);
+        this(message, innerException, null, requestUri);
     }
 
     public RequestRateTooLargeException(Exception innerException) {
-        this(RMResources.TooManyRequests, innerException, (HttpResponseHeaders) null, null);
+        this(RMResources.TooManyRequests, innerException, null, null);
     }
 
-    public RequestRateTooLargeException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri != null ? requestUri.toString() : null);
     }
 
-    public RequestRateTooLargeException(String message, HttpResponseHeaders headers, String requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri);
+    public RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
     public RequestRateTooLargeException(String message,
                                         Exception innerException,
-                                        HttpResponseHeaders headers,
+                                        HttpHeaders headers,
                                         URI requestUri) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri != null ? requestUri.toString() : null);
     }

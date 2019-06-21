@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -45,14 +45,14 @@ public class MethodNotAllowedException extends CosmosClientException {
     }
 
     public MethodNotAllowedException(String message) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+        this(message, null, null, null);
     }
 
-    public MethodNotAllowedException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public MethodNotAllowedException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
-    public MethodNotAllowedException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public MethodNotAllowedException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
@@ -62,12 +62,12 @@ public class MethodNotAllowedException extends CosmosClientException {
 
     public MethodNotAllowedException(String message,
                                  Exception innerException,
-                                 HttpResponseHeaders headers,
-                                 String requestUri) {
+                                     HttpHeaders headers,
+                                 String requestUriString) {
         super(String.format("%s: %s", RMResources.MethodNotAllowed, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.METHOD_NOT_ALLOWED,
-                requestUri != null ? requestUri.toString() : null);
+                requestUriString);
     }
 }

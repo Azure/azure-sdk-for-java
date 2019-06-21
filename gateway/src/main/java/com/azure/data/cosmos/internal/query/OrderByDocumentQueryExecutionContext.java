@@ -42,11 +42,8 @@ import com.azure.data.cosmos.internal.query.orderbyquery.OrderbyRowComparer;
 import com.azure.data.cosmos.internal.routing.Range;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import rx.Observable;
-import rx.Observable.Transformer;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx.functions.Func3;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -70,7 +68,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    private Observable<OrderByRowResult<T>> orderByObservable;
+    private Flux<OrderByRowResult<T>> orderByObservable;
     private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     private OrderByDocumentQueryExecutionContext(
@@ -96,7 +94,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         targetRangeToOrderByContinuationTokenMap = new HashMap<>();
     }
 
-    public static <T extends Resource> Observable<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
@@ -132,9 +130,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     initialPageSize,
                     feedOptions.requestContinuation());
 
-            return Observable.just(context);
+            return Flux.just(context);
         } catch (CosmosClientException dce) {
-            return Observable.error(dce);
+            return Flux.error(dce);
         }
     }
 
@@ -385,9 +383,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             FeedOptions feedOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc,
-            Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
+            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
         return new OrderByDocumentProducer<T>(consumeComparer,
                 client,
                 collectionRid,
@@ -406,7 +404,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     }
 
     private static class ItemToPageTransformer<T extends Resource>
-            implements Transformer<OrderByRowResult<T>, FeedResponse<T>> {
+            implements Function<Flux<OrderByRowResult<T>>, Flux<FeedResponse<T>>> {
         private final static int DEFAULT_PAGE_SIZE = 100;
         private final RequestChargeTracker tracker;
         private final int maxPageSize;
@@ -444,12 +442,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         }
 
         @Override
-        public Observable<FeedResponse<T>> call(
-                Observable<OrderByRowResult<T>> source) {
+        public Flux<FeedResponse<T>> apply(Flux<OrderByRowResult<T>> source) {
             return source
                     // .windows: creates an observable of observable where inner observable
                     // emits max maxPageSize elements
-                    .window(maxPageSize).map(o -> o.toList())
+                    .window(maxPageSize).map(Flux::collectList)
                     // flattens the observable<Observable<List<OrderByRowResult<T>>>> to
                     // Observable<List<OrderByRowResult<T>>>
                     .flatMap(resultListObs -> resultListObs,
@@ -472,8 +469,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     })
                     // Emit an empty page so the downstream observables know when there are no more
                     // results.
-                    .concatWith(Observable.defer(() -> {
-                        return Observable.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
+                    .concatWith(Flux.defer(() -> {
+                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
                                 null));
                     }))
                     // CREATE pairs from the stream to allow the observables downstream to "peek"
@@ -521,16 +518,16 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                                 feedOfOrderByRowResults.responseHeaders(),
                                 feedOfOrderByRowResults.queryMetrics());
-                    }).switchIfEmpty(Observable.defer(() -> {
+                    }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                        return Observable.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
+                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
                                 headerResponse(tracker.getAndResetCharge())));
                     }));
         }
     }
 
     @Override
-    public Observable<FeedResponse<T>> drainAsync(
+    public Flux<FeedResponse<T>> drainAsync(
             int maxPageSize) {
         //// In order to maintain the continuation token for the user we must drain with
         //// a few constraints
@@ -565,14 +562,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         return this.orderByObservable.compose(new ItemToPageTransformer<T>(tracker,
                 maxPageSize,
                 this.queryMetricMap,
-                (
-                        orderByRowResult) -> {
-                    return this.getContinuationToken(orderByRowResult);
-                }));
+                this::getContinuationToken));
     }
 
     @Override
-    public Observable<FeedResponse<T>> executeAsync() {
+    public Flux<FeedResponse<T>> executeAsync() {
         return drainAsync(feedOptions.maxItemCount());
     }
 

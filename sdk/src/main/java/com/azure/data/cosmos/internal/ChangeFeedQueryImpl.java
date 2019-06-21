@@ -29,13 +29,12 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.query.Paginator;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 class ChangeFeedQueryImpl<T extends Resource> {
 
@@ -134,18 +133,17 @@ class ChangeFeedQueryImpl<T extends Resource> {
         return newOps;
     }
     
-    public Observable<FeedResponse<T>> executeAsync() {
+    public Flux<FeedResponse<T>> executeAsync() {
 
-        Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createDocumentServiceRequest(continuationToken, pageSize);
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = this::createDocumentServiceRequest;
 
-        // TODO: clean up if we want to use single vs observable.
-        Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = request -> this.executeRequestAsync(request).toObservable();
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = this::executeRequestAsync;
 
         return Paginator.getPaginatedChangeFeedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, options.maxItemCount() != null ? options.maxItemCount(): -1);
     }
 
-    private Single<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-        return client.readFeed(request).toSingle()
+    private Flux<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
+        return client.readFeed(request)
                 .map( rsp -> BridgeInternal.toChaneFeedResponsePage(rsp, klass));
     }
 }

@@ -44,6 +44,16 @@ public final class Database extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of Database
+     */
+    public Database id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Initialize a database object from json string.
      *
      * @param jsonString the json string.

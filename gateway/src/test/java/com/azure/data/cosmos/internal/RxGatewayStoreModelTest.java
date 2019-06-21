@@ -26,21 +26,22 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.rx.FailureValidator;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.timeout.ReadTimeoutException;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+;
 
 public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
@@ -53,9 +54,9 @@ public class RxGatewayStoreModelTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URL("https://localhost"))
                 .when(globalEndpointManager).resolveServiceEndpoint(Mockito.any());
-        CompositeHttpClient<ByteBuf, ByteBuf> httpClient = Mockito.mock(CompositeHttpClient.class);
-        Mockito.doReturn(Observable.error(ReadTimeoutException.INSTANCE))
-                .when(httpClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
+                .when(httpClient).send(Mockito.any(HttpRequest.class));
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
                 sessionContainer,
@@ -70,7 +71,7 @@ public class RxGatewayStoreModelTest {
         dsr.getHeaders().put("key", "value");
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
 
-        Observable<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
+        Flux<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
                 .instanceOf(CosmosClientException.class)
                 .causeInstanceOf(ReadTimeoutException.class)
@@ -78,21 +79,20 @@ public class RxGatewayStoreModelTest {
                 .statusCode(0).build());
     }
 
-    public void validateFailure(Observable<RxDocumentServiceResponse> observable,
+    public void validateFailure(Flux<RxDocumentServiceResponse> observable,
                                 FailureValidator validator) {
         validateFailure(observable, validator, TIMEOUT);
     }
 
-    public static void validateFailure(Observable<RxDocumentServiceResponse> observable,
+    public static void validateFailure(Flux<RxDocumentServiceResponse> observable,
                                        FailureValidator validator,
                                        long timeout) {
         TestSubscriber<RxDocumentServiceResponse> testSubscriber = new TestSubscriber<>();
-
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errorCount()).isEqualTo(1);
+        validator.validate(testSubscriber.errors().get(0));
     }
 }

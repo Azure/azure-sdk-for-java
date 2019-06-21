@@ -24,7 +24,6 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdObjectMapper;
@@ -41,8 +40,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.SingleEmitter;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -50,13 +49,12 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.azure.data.cosmos.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
-public final class RntbdTransportClient extends TransportClient implements AutoCloseable {
+public final class RntbdTransportClient extends TransportClient {
 
     // region Fields
 
@@ -106,9 +104,8 @@ public final class RntbdTransportClient extends TransportClient implements AutoC
     }
 
     @Override
-    public Single<StoreResponse> invokeStoreAsync(
-        final URI physicalAddress, final ResourceOperation unused, final RxDocumentServiceRequest request
-    ) {
+    public Mono<StoreResponse> invokeStoreAsync(final URI physicalAddress, final RxDocumentServiceRequest request) {
+
         checkNotNull(physicalAddress, "physicalAddress");
         checkNotNull(request, "request");
         this.throwIfClosed();
@@ -125,23 +122,17 @@ public final class RntbdTransportClient extends TransportClient implements AutoC
 
         final RntbdRequestRecord requestRecord = endpoint.request(requestArgs);
 
-        return Single.fromEmitter((SingleEmitter<StoreResponse> emitter) -> {
+        requestRecord.whenComplete((response, error) -> {
+            this.metrics.incrementResponseCount();
+            if (error != null) {
+                this.metrics.incrementErrorResponseCount();
+            }
+        });
 
-            requestRecord.whenComplete((response, error) -> {
-
-                requestArgs.traceOperation(logger, null, "emitSingle", response, error);
-                this.metrics.incrementResponseCount();
-
-                if (error == null) {
-                    emitter.onSuccess(response);
-                } else {
-                    reportIssueUnless(error instanceof CosmosClientException, logger, requestRecord, "", error);
-                    this.metrics.incrementErrorResponseCount();
-                    emitter.onError(error);
-                }
-
-                requestArgs.traceOperation(logger, null, "emitSingleComplete");
-            });
+        return Mono.fromFuture(requestRecord).doFinally(signal -> {
+            if (signal == SignalType.CANCEL) {
+                requestRecord.cancel(false);
+            }
         });
     }
 

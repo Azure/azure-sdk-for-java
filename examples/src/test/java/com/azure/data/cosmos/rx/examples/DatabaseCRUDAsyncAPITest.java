@@ -31,17 +31,16 @@ import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.ResourceResponse;
-import com.google.common.util.concurrent.ListenableFuture;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.observable.ListenableFutureObservable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -65,9 +64,9 @@ import static org.hamcrest.Matchers.greaterThan;
  * do the same thing without lambda expression.
  * </ul>
  * <p>
- * Also if you need to work with Future or ListenableFuture it is possible to
- * transform an observable to ListenableFuture. Please see
- * {@link #transformObservableToGoogleGuavaListenableFuture()}
+ * Also if you need to work with Future or CompletableFuture it is possible to
+ * transform a flux to CompletableFuture. Please see
+ * {@link #transformObservableToCompletableFuture()}
  */
 public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     private final static int TIMEOUT = 60000;
@@ -113,7 +112,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_Async() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
+        Flux<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
                                                                                                      null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -137,23 +136,23 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_Async_withoutLambda() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
+        Flux<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
                                                                                                      null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
-        Action1<ResourceResponse<Database>> onDatabaseCreationAction = new Action1<ResourceResponse<Database>>() {
+        Consumer<ResourceResponse<Database>> onDatabaseCreationAction = new Consumer<ResourceResponse<Database>>() {
 
             @Override
-            public void call(ResourceResponse<Database> resourceResponse) {
+            public void accept(ResourceResponse<Database> resourceResponse) {
                 // Database is created
                 System.out.println(resourceResponse.getActivityId());
                 completionLatch.countDown();
             }
         };
 
-        Action1<Throwable> onError = new Action1<Throwable>() {
+        Consumer<Throwable> onError = new Consumer<Throwable>() {
             @Override
-            public void call(Throwable error) {
+            public void accept(Throwable error) {
                 System.err
                         .println("an error occurred while creating the database: actual cause: " + error.getMessage());
                 completionLatch.countDown();
@@ -172,12 +171,12 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_toBlocking() {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
+        Flux<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
                                                                                                      null);
 
         // toBlocking() converts to a blocking observable.
         // single() gets the only result.
-        createDatabaseObservable.toBlocking().single();
+        createDatabaseObservable.single().block();
     }
 
     /**
@@ -190,15 +189,15 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_toBlocking_DatabaseAlreadyExists_Fails() {
         Database databaseDefinition = getDatabaseDefinition();
-        client.createDatabase(databaseDefinition, null).toBlocking().single();
+        client.createDatabase(databaseDefinition, null).single().block();
 
         // CREATE the database for test.
-        Observable<ResourceResponse<Database>> databaseForTestObservable = client
+        Flux<ResourceResponse<Database>> databaseForTestObservable = client
                 .createDatabase(databaseDefinition, null);
 
         try {
-            databaseForTestObservable.toBlocking() // Blocks
-                    .single(); // Gets the single result
+            databaseForTestObservable.single() // Single
+                    .block(); // Blocks to get the result
             assertThat("Should not reach here", false);
         } catch (Exception e) {
             assertThat("Database already exists.", ((CosmosClientException) e.getCause()).statusCode(),
@@ -207,16 +206,13 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     }
 
     /**
-     * You can convert an Observable to a ListenableFuture.
-     * ListenableFuture (part of google guava library) is a popular extension
-     * of Java's Future which allows registering listener callbacks:
-     * https://github.com/google/guava/wiki/ListenableFutureExplained
+     * You can convert a Flux to a CompletableFuture.
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
-    public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
+    public void transformObservableToCompletableFuture() throws Exception {
+        Flux<ResourceResponse<Database>> createDatabaseObservable = client.createDatabase(getDatabaseDefinition(),
                                                                                                      null);
-        ListenableFuture<ResourceResponse<Database>> future = ListenableFutureObservable.to(createDatabaseObservable);
+        CompletableFuture<ResourceResponse<Database>> future = createDatabaseObservable.single().toFuture();
 
         ResourceResponse<Database> rrd = future.get();
 
@@ -230,10 +226,10 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createAndReadDatabase() throws Exception {
         // CREATE a database
-        Database database = client.createDatabase(getDatabaseDefinition(), null).toBlocking().single().getResource();
+        Database database = client.createDatabase(getDatabaseDefinition(), null).single().block().getResource();
 
         // READ the created database using async api
-        Observable<ResourceResponse<Database>> readDatabaseObservable = client.readDatabase("dbs/" + database.id(),
+        Flux<ResourceResponse<Database>> readDatabaseObservable = client.readDatabase("dbs/" + database.id(),
                                                                                                  null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -258,10 +254,10 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createAndDeleteDatabase() throws Exception {
         // CREATE a database
-        Database database = client.createDatabase(getDatabaseDefinition(), null).toBlocking().single().getResource();
+        Database database = client.createDatabase(getDatabaseDefinition(), null).single().block().getResource();
 
         // DELETE the created database using async api
-        Observable<ResourceResponse<Database>> deleteDatabaseObservable = client
+        Flux<ResourceResponse<Database>> deleteDatabaseObservable = client
                 .deleteDatabase("dbs/" + database.id(), null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
@@ -287,15 +283,15 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
     public void databaseCreateAndQuery() throws Exception {
         // CREATE a database
         Database databaseDefinition = getDatabaseDefinition();
-        client.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
+        client.createDatabase(databaseDefinition, null).single().block().getResource();
 
         // Query the created database using async api
-        Observable<FeedResponse<Database>> queryDatabaseObservable = client
+        Flux<FeedResponse<Database>> queryDatabaseObservable = client
                 .queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseDefinition.id()), null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
-        queryDatabaseObservable.toList().subscribe(databaseFeedResponseList -> {
+        queryDatabaseObservable.collectList().subscribe(databaseFeedResponseList -> {
             // toList() should return a list of size 1
             assertThat(databaseFeedResponseList.size(), equalTo(1));
 

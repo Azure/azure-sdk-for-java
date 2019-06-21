@@ -83,14 +83,6 @@ public class AggregateQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-    // Notes:
-    // I've seen this test time out in my development environment. I test against a debug instance of the public
-    // emulator and so what I'm seeing could be the result of a public emulator performance issue. Of course, it
-    // might also be the result of a TCP protocol performance problem.
-
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
@@ -99,7 +91,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         options.populateQueryMetrics(qmEnabled);
         options.maxDegreeOfParallelism(2);
 
-        for (QueryConfig queryConfig : queryConfigs) {    
+        for (QueryConfig queryConfig : queryConfigs) {
 
             Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.queryItems(queryConfig.query, options);
 
@@ -115,7 +107,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        bulkInsertBlocking(createdCollection, docs);
+        voidBulkInsertBlocking(createdCollection, docs);
     }
 
     public void generateTestData() {
@@ -206,7 +198,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT * 2)
     public void beforeClass() throws Exception {
         client = this.clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

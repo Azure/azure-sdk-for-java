@@ -34,16 +34,12 @@ import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.UserAgentContainer;
 import com.azure.data.cosmos.internal.Utils;
-import io.netty.buffer.ByteBuf;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import org.apache.commons.lang3.StringUtils;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Action1;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -77,11 +73,11 @@ public class GatewayServiceConfigurationReader {
     private final BaseAuthorizationTokenProvider baseAuthorizationTokenProvider;
     private final boolean hasAuthKeyResourceToken;
     private final String authKeyResourceToken;
-    private CompositeHttpClient<ByteBuf, ByteBuf> httpClient;
+    private HttpClient httpClient;
 
     public GatewayServiceConfigurationReader(URI serviceEndpoint, boolean hasResourceToken, String resourceToken,
             ConnectionPolicy connectionPolicy, BaseAuthorizationTokenProvider baseAuthorizationTokenProvider,
-            CompositeHttpClient<ByteBuf, ByteBuf> httpClient) {
+            HttpClient httpClient) {
         this.serviceEndpoint = serviceEndpoint;
         this.baseAuthorizationTokenProvider = baseAuthorizationTokenProvider;
         this.hasAuthKeyResourceToken = hasResourceToken;
@@ -119,11 +115,10 @@ public class GatewayServiceConfigurationReader {
         return this.queryEngineConfiguration;
     }
 
-    private Single<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
-        HttpClientRequest<ByteBuf> httpRequest = HttpClientRequest.create(HttpMethod.GET,
-                this.serviceEndpoint.toString());
+    private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
 
-        httpRequest.withHeader(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
 
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         String userAgentSuffix = this.connectionPolicy.userAgentSuffix();
@@ -131,30 +126,28 @@ public class GatewayServiceConfigurationReader {
             userAgentContainer.setSuffix(userAgentSuffix);
         }
 
-        httpRequest.withHeader(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-        httpRequest.withHeader(HttpConstants.HttpHeaders.API_TYPE, Constants.Properties.SQL_API_TYPE);
-        String authorizationToken = StringUtils.EMPTY;
+        httpHeaders.set(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+        httpHeaders.set(HttpConstants.HttpHeaders.API_TYPE, Constants.Properties.SQL_API_TYPE);
+        String authorizationToken;
         if (this.hasAuthKeyResourceToken || baseAuthorizationTokenProvider == null) {
             authorizationToken = HttpUtils.urlEncode(this.authKeyResourceToken);
         } else {
             // Retrieve the document service properties.
             String xDate = Utils.nowAsRFC1123();
-            httpRequest.withHeader(HttpConstants.HttpHeaders.X_DATE, xDate);
+            httpHeaders.set(HttpConstants.HttpHeaders.X_DATE, xDate);
             Map<String, String> header = new HashMap<>();
             header.put(HttpConstants.HttpHeaders.X_DATE, xDate);
             authorizationToken = baseAuthorizationTokenProvider
                     .generateKeyAuthorizationSignature(HttpConstants.HttpMethods.GET, serviceEndpoint, header);
         }
+        httpHeaders.set(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
 
-        httpRequest.withHeader(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
-        RxClient.ServerInfo serverInfo = new RxClient.ServerInfo(serviceEndpoint.getHost(), serviceEndpoint.getPort());
-
-        Observable<HttpClientResponse<ByteBuf>> clientResponseObservable = this.httpClient.submit(serverInfo,
-                httpRequest);
-        return toDatabaseAccountObservable(clientResponseObservable.toSingle());
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, serviceEndpoint, serviceEndpoint.getPort(), httpHeaders);
+        Mono<HttpResponse> httpResponse = httpClient.send(httpRequest);
+        return toDatabaseAccountObservable(httpResponse, httpRequest);
     }
 
-    public Single<DatabaseAccount> initializeReaderAsync() {
+    public Mono<DatabaseAccount> initializeReaderAsync() {
         try {
             return GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.serviceEndpoint.toURL(),
 
@@ -164,28 +157,22 @@ public class GatewayServiceConfigurationReader {
                         } catch (URISyntaxException e) {
                             throw new IllegalArgumentException("URI " + url);
                         }
-                    }).doOnSuccess(new Action1<DatabaseAccount>() {
-
-                        @Override
-                        public void call(DatabaseAccount databaseAccount) {
-                            userReplicationPolicy = BridgeInternal.getReplicationPolicy(databaseAccount);
-                            systemReplicationPolicy = BridgeInternal.getSystemReplicationPolicy(databaseAccount);
-                            queryEngineConfiguration = BridgeInternal.getQueryEngineConfiuration(databaseAccount);
-                            consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel();
-                            initialized = true;
-                        }
+                    }).doOnSuccess(databaseAccount -> {
+                        userReplicationPolicy = BridgeInternal.getReplicationPolicy(databaseAccount);
+                        systemReplicationPolicy = BridgeInternal.getSystemReplicationPolicy(databaseAccount);
+                        queryEngineConfiguration = BridgeInternal.getQueryEngineConfiuration(databaseAccount);
+                        consistencyLevel = BridgeInternal.getConsistencyPolicy(databaseAccount).getDefaultConsistencyLevel();
+                        initialized = true;
                     });
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(this.serviceEndpoint.toString(), e);
         }
     }
 
-    private Single<DatabaseAccount> toDatabaseAccountObservable(
-            Single<HttpClientResponse<ByteBuf>> clientResponseObservable) {
-        return clientResponseObservable.flatMap(clientResponse -> {
-            return HttpClientUtils.parseResponseAsync(clientResponse)
-                    .map(rxDocumentServiceResponse -> rxDocumentServiceResponse.getResource(DatabaseAccount.class));
-        });
+    private Mono<DatabaseAccount> toDatabaseAccountObservable(Mono<HttpResponse> httpResponse, HttpRequest httpRequest) {
+
+        return HttpClientUtils.parseResponseAsync(httpResponse, httpRequest)
+                .map(rxDocumentServiceResponse -> rxDocumentServiceResponse.getResource(DatabaseAccount.class));
     }
 
     private void throwIfNotInitialized() {

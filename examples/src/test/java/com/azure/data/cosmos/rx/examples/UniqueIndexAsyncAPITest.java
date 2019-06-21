@@ -36,11 +36,12 @@ import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.UniqueKey;
 import com.azure.data.cosmos.UniqueKeyPolicy;
 import com.google.common.collect.ImmutableList;
+import io.reactivex.subscribers.TestSubscriber;
+import org.hamcrest.Matchers;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +49,6 @@ import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 
 public class UniqueIndexAsyncAPITest extends DocumentClientTest {
 
@@ -72,18 +72,18 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         partitionKeyDef.paths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
-        DocumentCollection collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single().getResource();
+        DocumentCollection collection = client.createCollection(getDatabaseLink(), collectionDefinition, null).single().block().getResource();
 
         Document doc1 = new Document("{ 'name':'Alan Turning', 'field': 'Mathematics', 'other' : 'Logic' }");
         Document doc2 = new Document("{ 'name':'Al-Khwarizmi', 'field': 'Mathematics' , 'other' : 'Algebra '}");
         Document doc3 = new Document("{ 'name':'Alan Turning', 'field': 'Mathematics', 'other' : 'CS' }");
 
-        client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single().getResource();
-        client.createDocument(getCollectionLink(collection), doc2, null, false).toBlocking().single().getResource();
+        client.createDocument(getCollectionLink(collection), doc1, null, false).single().block().getResource();
+        client.createDocument(getCollectionLink(collection), doc2, null, false).single().block().getResource();
 
         // doc1 got inserted with the same values for 'name' and 'field'
         // so inserting a new one with the same values will violate unique index constraint.
-        Observable<ResourceResponse<Document>> docCreation =
+        Flux<ResourceResponse<Document>> docCreation =
                 client.createDocument(getCollectionLink(collection), doc3, null, false);
 
         TestSubscriber<ResourceResponse<Document>> subscriber = new TestSubscriber<>();
@@ -91,10 +91,10 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
 
         subscriber.awaitTerminalEvent();
         subscriber.assertError(CosmosClientException.class);
-        assertThat(subscriber.getOnErrorEvents(), hasSize(1));
+        assertThat(subscriber.errorCount(), Matchers.equalTo(1));
 
         // error code for failure is conflict
-        assertThat(((CosmosClientException) subscriber.getOnErrorEvents().get(0)).statusCode(), equalTo(409));
+        assertThat(((CosmosClientException) subscriber.getEvents().get(1).get(0)).statusCode(), equalTo(409));
     }
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)

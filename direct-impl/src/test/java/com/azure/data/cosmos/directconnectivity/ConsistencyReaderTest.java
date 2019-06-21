@@ -41,11 +41,11 @@ import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.VectorSessionToken;
 import com.azure.data.cosmos.rx.FailureValidator;
 import com.google.common.collect.ImmutableList;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -206,7 +206,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeout = Mockito.mock(TimeoutHelper.class);
         boolean forceRefresh = false;
         boolean isInRetry = false;
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(request, timeout, isInRetry, forceRefresh);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(request, timeout, isInRetry, forceRefresh);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSNGreaterThanOrEqualTo(51)
@@ -324,7 +324,7 @@ public class ConsistencyReaderTest {
         TimeoutHelper timeout = Mockito.mock(TimeoutHelper.class);
         boolean forceRefresh = false;
         boolean isInRetry = false;
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(request, timeout, isInRetry, forceRefresh);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(request, timeout, isInRetry, forceRefresh);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(fasterReplicaLSN)
@@ -435,7 +435,7 @@ public class ConsistencyReaderTest {
 
         Mockito.doReturn(sessionToken.v).when(sessionContainer).resolvePartitionLocalSessionToken(Mockito.eq(dsr), Mockito.anyString());
 
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
         StoreResponseValidator validator = StoreResponseValidator.create().isSameAs(storeResponse).isSameAs(storeResponse).build();
         validateSuccess(storeResponseSingle, validator);
@@ -502,7 +502,7 @@ public class ConsistencyReaderTest {
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                     authTokenProvider);
 
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
         FailureValidator failureValidator = FailureValidator.builder().resourceNotFound().instanceOf(NotFoundException.class).unknownSubStatusCode().build();
         validateException(storeResponseSingle, failureValidator);
@@ -568,7 +568,7 @@ public class ConsistencyReaderTest {
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                     authTokenProvider);
 
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
         FailureValidator failureValidator = FailureValidator.builder().resourceNotFound().instanceOf(NotFoundException.class).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
         validateException(storeResponseSingle, failureValidator);
@@ -632,7 +632,7 @@ public class ConsistencyReaderTest {
                                                                     gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                     authTokenProvider);
 
-        Single<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
+        Mono<StoreResponse> storeResponseSingle = consistencyReader.readAsync(dsr, timeoutHelper, false, false);
 
 
         FailureValidator failureValidator = FailureValidator.builder().instanceOf(RequestRateTooLargeException.class).unknownSubStatusCode().build();
@@ -701,7 +701,7 @@ public class ConsistencyReaderTest {
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(51)
@@ -719,57 +719,57 @@ public class ConsistencyReaderTest {
 
     // TODO: add more mocking tests for when one replica lags behind and we need to do barrier request.
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator,
                                        long timeout) {
         TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator,
                                        long timeout) {
         TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
 
-    public static <T> void validateException(Single<T> single,
+    public static <T> void validateException(Mono<T> single,
                                              FailureValidator validator,
                                              long timeout) {
         TestSubscriber<T> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errorCount()).isEqualTo(1);
+        validator.validate(testSubscriber.errors().get(0));
     }
 
-    public static <T> void validateException(Single<T> single,
+    public static <T> void validateException(Mono<T> single,
                                              FailureValidator validator) {
         validateException(single, validator, TIMEOUT);
     }

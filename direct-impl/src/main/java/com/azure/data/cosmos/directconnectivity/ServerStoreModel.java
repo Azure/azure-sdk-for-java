@@ -33,8 +33,8 @@ import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.RxStoreModel;
 import com.azure.data.cosmos.internal.Strings;
 import org.apache.commons.lang3.EnumUtils;
-import rx.Observable;
-import rx.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class ServerStoreModel implements RxStoreModel {
     private final StoreClient storeClient;
@@ -43,7 +43,7 @@ public class ServerStoreModel implements RxStoreModel {
         this.storeClient = storeClient;
     }
 
-    public Observable<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+    public Flux<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
         String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         request.requestContext.originalRequestConsistencyLevel = null;
@@ -52,7 +52,7 @@ public class ServerStoreModel implements RxStoreModel {
             ConsistencyLevel requestConsistencyLevel;
 
             if ((requestConsistencyLevel = EnumUtils.getEnum(ConsistencyLevel.class, Strings.fromCamelCaseToUpperCase(requestConsistencyLevelHeaderValue))) == null) {
-                return Observable.error(new BadRequestException(
+                return Flux.error(new BadRequestException(
                     String.format(
                         RMResources.InvalidHeaderValue,
                         requestConsistencyLevelHeaderValue,
@@ -66,7 +66,7 @@ public class ServerStoreModel implements RxStoreModel {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, ConsistencyLevel.STRONG.toString());
         }
 
-        Single<RxDocumentServiceResponse> response = this.storeClient.processMessageAsync(request);
-        return response.toObservable();
+        Mono<RxDocumentServiceResponse> response = this.storeClient.processMessageAsync(request);
+        return response.flux();
     }
 }

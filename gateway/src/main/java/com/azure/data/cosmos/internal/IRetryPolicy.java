@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal;
 
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -42,7 +42,7 @@ public interface IRetryPolicy  {
     /// <param name="exception">Exception during the callback method invocation</param>
     /// <param name="cancellationToken"></param>
     /// <returns>If the retry needs to be attempted or not</returns>
-    Single<ShouldRetryResult> shouldRetry(Exception e);
+    Mono<ShouldRetryResult> shouldRetry(Exception e);
 
 
     class ShouldRetryResult {

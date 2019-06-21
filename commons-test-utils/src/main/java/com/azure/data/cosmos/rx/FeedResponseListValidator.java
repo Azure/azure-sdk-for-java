@@ -132,7 +132,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                     List<String> actualIds = feedList
                             .stream()
                             .flatMap(f -> f.results().stream())
-                            .map(r -> r.resourceId())
+                            .map(Resource::resourceId)
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")

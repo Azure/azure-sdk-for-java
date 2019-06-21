@@ -31,13 +31,13 @@ import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.rx.FailureValidator;
+import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
@@ -71,22 +71,22 @@ public class ReplicatedResourceClientTest {
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document));
 
         Mockito.when(addressResolver.resolveAsync(Matchers.any(), Matchers.anyBoolean()))
-                .thenReturn(Single.error(new GoneException()));
-        Single<StoreResponse> response = resourceClient.invokeAsync(request, null);
+                .thenReturn(Mono.error(new GoneException()));
+        Mono<StoreResponse> response = resourceClient.invokeAsync(request, null);
 
         validateFailure(response, validator, TIMEOUT);
         //method will fail 7 time (first try ,last try , and 5 retries within 30 sec(1,2,4,8,15 wait))
         Mockito.verify(addressResolver, Mockito.times(7)).resolveAsync(Matchers.any(), Matchers.anyBoolean());
     }
 
-    public static void validateFailure(Single<StoreResponse> single, FailureValidator validator, long timeout) {
+    public static void validateFailure(Mono<StoreResponse> single, FailureValidator validator, long timeout) {
 
         TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        Assertions.assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        Assertions.assertThat(testSubscriber.errorCount()).isEqualTo(1);
+        validator.validate(testSubscriber.errors().get(0));
     }
 }

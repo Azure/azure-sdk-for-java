@@ -26,7 +26,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.ISessionContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -59,7 +59,7 @@ public class ClearingSessionContainerClientRetryPolicy implements IDocumentClien
     }
 
     @Override
-    public Single<ShouldRetryResult> shouldRetry(Exception e) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
         return this.retryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
@@ -70,7 +70,7 @@ public class ClearingSessionContainerClientRetryPolicy implements IDocumentClien
                 if (this.request == null) {
                     // someone didn't call OnBeforeSendRequest - nothing we can do
                     logger.error("onBeforeSendRequest is not invoked, encountered failure due to request being null", e);
-                    return Single.just(ShouldRetryResult.error(e));
+                    return Mono.just(ShouldRetryResult.error(e));
                 }
 
                 if (clientException != null && this.request.getIsNameBased() &&
@@ -86,7 +86,7 @@ public class ClearingSessionContainerClientRetryPolicy implements IDocumentClien
                 }
             }
 
-            return Single.just(shouldRetryResult);
+            return Mono.just(shouldRetryResult);
         });
     }
 }

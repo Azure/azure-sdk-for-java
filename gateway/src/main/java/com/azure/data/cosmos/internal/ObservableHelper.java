@@ -22,9 +22,10 @@
  */
 package com.azure.data.cosmos.internal;
 
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func0;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.Callable;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -33,26 +34,34 @@ import rx.functions.Func0;
  **/
 public class ObservableHelper {
 
-    static public <T> Single<T> inlineIfPossible(Func0<Single<T>> function, IRetryPolicy retryPolicy) {
+    static public <T> Mono<T> inlineIfPossible(Callable<Mono<T>> function, IRetryPolicy retryPolicy) {
 
         if (retryPolicy == null) {
             // shortcut
-            return function.call();
+            try {
+                return function.call();
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
         } else {
             return BackoffRetryUtility.executeRetry(function, retryPolicy);
         }
     }
 
-    static public <T> Observable<T> inlineIfPossibleAsObs(Func0<Observable<T>> function, IRetryPolicy retryPolicy) {
+    static public <T> Flux<T> inlineIfPossibleAsObs(Callable<Flux<T>> function, IRetryPolicy retryPolicy) {
 
         if (retryPolicy == null) {
             // shortcut
-            return Observable.defer(() -> {
-                return function.call();
+            return Flux.defer(() -> {
+                try {
+                    return function.call();
+                } catch (Exception e) {
+                    return Flux.error(e);
+                }
             });
 
         } else {
-            return BackoffRetryUtility.executeRetry(() -> function.call().toSingle(), retryPolicy).toObservable();
+            return BackoffRetryUtility.executeRetry(() -> function.call().single(), retryPolicy).flux();
         }
     }
 }

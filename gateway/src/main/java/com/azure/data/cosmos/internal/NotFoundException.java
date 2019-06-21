@@ -26,7 +26,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -49,18 +49,18 @@ public class NotFoundException extends CosmosClientException {
     }
 
     public NotFoundException(String message) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+        this(message, null, (HttpHeaders) null, null);
     }
 
     public NotFoundException(String message, Map<String, String> headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
 
-    public NotFoundException(String message, HttpResponseHeaders headers, String requestUri) {
+    public NotFoundException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
 
-    public NotFoundException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public NotFoundException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
@@ -70,7 +70,7 @@ public class NotFoundException extends CosmosClientException {
 
     public NotFoundException(String message,
                                  Exception innerException,
-                                 HttpResponseHeaders headers,
+                                 HttpHeaders headers,
                                  String requestUri) {
         this(message, innerException, HttpUtils.asMap(headers), requestUri);
     }

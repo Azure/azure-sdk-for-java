@@ -48,6 +48,16 @@ public class Permission extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of permission
+     */
+    public Permission id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Gets the self-link of resource to which the permission applies.
      *
      * @return the resource link.

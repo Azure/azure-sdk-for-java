@@ -28,7 +28,7 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
@@ -180,7 +180,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getContent()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
-        Observable<byte[]> inputStream = Observable.just(document.toJson().getBytes(StandardCharsets.UTF_8));
+        Flux<byte[]> inputStream = Flux.just(document.toJson().getBytes(StandardCharsets.UTF_8));
         request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, inputStream,
                 new HashedMap<String, String>(), AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.SecondaryMasterKey);
@@ -222,7 +222,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceId()).isNull();
 
         Document document = getDocumentDefinition();
-        Observable<byte[]> inputStream = Observable.just(document.toJson().getBytes(StandardCharsets.UTF_8));
+        Flux<byte[]> inputStream = Flux.just(document.toJson().getBytes(StandardCharsets.UTF_8));
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,

@@ -27,37 +27,37 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import rx.Single;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
+import reactor.core.publisher.Mono;
 
 public class HttpClientUtils {
 
-    public static Single<RxDocumentServiceResponse> parseResponseAsync(HttpClientResponse<ByteBuf> responseMessage) {
+    static Mono<RxDocumentServiceResponse> parseResponseAsync(Mono<HttpResponse> httpResponse, HttpRequest httpRequest) {
+        return httpResponse.flatMap(response -> {
+            if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
 
-        if (responseMessage.getStatus().code() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
+                return ResponseUtils.toStoreResponse(response, httpRequest).map(RxDocumentServiceResponse::new);
 
-            Single<StoreResponse> storeResponse = ResponseUtils.toStoreResponse(responseMessage);
-            return storeResponse.map(sr -> new RxDocumentServiceResponse(sr));
+                // TODO: to break the dependency between RxDocumentServiceResponse and StoreResponse
+                // we should factor out the  RxDocumentServiceResponse(StoreResponse) constructor to a helper class
 
-            // TODO: to break the dependency between RxDocumentServiceResponse and StoreResponse
-            // we should factor out the  RxDocumentServiceResponse(StoreResponse) constructor to a helper class
-
-        } else {
-            return HttpClientUtils.createDocumentClientException(responseMessage).flatMap(e -> Single.error(e));
-        }
+            } else {
+                return HttpClientUtils
+                        .createDocumentClientException(response).flatMap(Mono::error);
+            }
+        });
     }
 
-    private static Single<CosmosClientException> createDocumentClientException(HttpClientResponse<ByteBuf> responseMessage) {
-        Single<String> readStream = ResponseUtils.toString(responseMessage.getContent()).toSingle();
+    private static Mono<CosmosClientException> createDocumentClientException(HttpResponse httpResponse) {
+        Mono<String> readStream = ResponseUtils.toString(httpResponse.body());
 
         return readStream.map(body -> {
             Error error = new Error(body);
 
             // TODO: we should set resource address in the Document Client Exception
-
-            return new CosmosClientException(responseMessage.getStatus().code(), error,
-                    HttpUtils.asMap(responseMessage.getHeaders()));
+            return new CosmosClientException(httpResponse.statusCode(), error,
+                    httpResponse.headers().toMap());
         });
     }
 }

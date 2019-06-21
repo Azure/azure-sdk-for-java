@@ -23,30 +23,23 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Single;
+import io.netty.handler.codec.http.HttpMethod;
+import org.apache.commons.lang3.StringUtils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 class ResponseUtils {
     private final static int INITIAL_RESPONSE_BUFFER_SIZE = 1024;
-    private final static Logger logger = LoggerFactory.getLogger(ResponseUtils.class);
 
-    public static Observable<String> toString(Observable<ByteBuf> contentObservable) {
+    public static Mono<String> toString(Flux<ByteBuf> contentObservable) {
         return contentObservable
                 .reduce(
                         new ByteArrayOutputStream(INITIAL_RESPONSE_BUFFER_SIZE),
@@ -58,67 +51,30 @@ class ResponseUtils {
                                 throw new RuntimeException(e);
                             }
                         })
-                .map(out -> {
-                    return new String(out.toByteArray(), StandardCharsets.UTF_8);
-                });
+                .map(out -> new String(out.toByteArray(), StandardCharsets.UTF_8));
     }
 
-    public static Single<StoreResponse> toStoreResponse(HttpClientResponse<ByteBuf> clientResponse) {
+    static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, HttpRequest httpRequest) {
 
-        HttpResponseHeaders httpResponseHeaders = clientResponse.getHeaders();
-        HttpResponseStatus httpResponseStatus = clientResponse.getStatus();
+        HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Observable<String> contentObservable;
+        Mono<String> contentObservable;
 
-        if (clientResponse.getContent() == null) {
+        if (httpRequest.httpMethod() == HttpMethod.DELETE) {
             // for delete we don't expect any body
-            contentObservable = Observable.just(null);
+            contentObservable = Mono.just(StringUtils.EMPTY);
         } else {
-            // transforms the observable<ByteBuf> to Observable<InputStream>
-            contentObservable = toString(clientResponse.getContent());
+            contentObservable = toString(httpClientResponse.body());
         }
 
-        Observable<StoreResponse> storeResponseObservable = contentObservable
-                .flatMap(content -> {
-                    try {
-                        // transforms to Observable<StoreResponse>
-                        StoreResponse rsp = new StoreResponse(httpResponseStatus.code(), HttpUtils.unescape(httpResponseHeaders.entries()), content);
-                        return Observable.just(rsp);
-                    } catch (Exception e) {
-                        return Observable.error(e);
-                    }
-                });
-
-        return storeResponseObservable.toSingle();
-    }
-
-    private static void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpResponseHeaders headers, String body,
-                                        InputStream inputStream) throws CosmosClientException {
-
-        int statusCode = status.code();
-
-        if (statusCode >= HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
-            if (body == null && inputStream != null) {
-                try {
-                    body = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    logger.error("Failed to get content from the http response", e);
-                    throw new IllegalStateException("Failed to get content from the http response", e);
-                } finally {
-                    IOUtils.closeQuietly(inputStream);
-                }
+        return contentObservable.flatMap(content -> {
+            try {
+                // transforms to Mono<StoreResponse>
+                StoreResponse rsp = new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()), content);
+                return Mono.just(rsp);
+            } catch (Exception e) {
+                return Mono.error(e);
             }
-
-            String statusCodeString = status.reasonPhrase() != null
-                    ? status.reasonPhrase().replace(" ", "")
-                    : "";
-            Error error = null;
-            error = (body != null) ? new Error(body) : new Error();
-            error = new Error(statusCodeString,
-                    String.format("%s, StatusCode: %s", error.getMessage(), statusCodeString),
-                    error.getPartitionedQueryExecutionInfo());
-
-            throw new CosmosClientException(statusCode, error, HttpUtils.asMap(headers));
-        }
+        });
     }
 }

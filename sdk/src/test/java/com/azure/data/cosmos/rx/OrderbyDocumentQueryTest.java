@@ -33,6 +33,7 @@ import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryAnalyzer;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
@@ -49,7 +50,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -248,9 +248,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<CosmosItemProperties, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                .filter(d -> d.getMap().containsKey(propName)) // removes undefined
-                .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
-                .map(d -> d.resourceId()).collect(Collectors.toList());
+                               .filter(d -> d.getMap().containsKey(propName)) // removes undefined
+                               .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
+                               .map(Resource::resourceId).collect(Collectors.toList());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -456,7 +456,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client)
                 .readPartitionKeyRanges("dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id(), null)
-                .flatMap(p -> Observable.from(p.results())).toList().toBlocking().single().size();
+                .flatMap(p -> Flux.fromIterable(p.results())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
     }

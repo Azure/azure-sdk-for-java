@@ -61,15 +61,13 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.Subscriber;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.net.ConnectException;
 import java.net.URI;
@@ -83,6 +81,7 @@ import java.util.stream.Stream;
 import static com.azure.data.cosmos.internal.HttpConstants.HttpHeaders;
 import static com.azure.data.cosmos.internal.HttpConstants.HttpMethods;
 import static com.azure.data.cosmos.internal.HttpConstants.SubStatusCodes;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
@@ -647,27 +646,15 @@ public final class RntbdTransportClientTest {
                 builder.build()
             );
 
-            final Single<StoreResponse> responseSingle = transportClient.invokeStoreAsync(physicalAddress, null, request);
+            final Mono<StoreResponse> responseMono = transportClient.invokeStoreAsync(physicalAddress, request);
 
-            responseSingle.toObservable().toBlocking().subscribe(new Subscriber<StoreResponse>() {
-                @Override
-                public void onCompleted() {
-                }
-
-                @Override
-                public void onError(final Throwable error) {
-                    final String format = "Expected %s, not %s";
-                    assertTrue(error instanceof GoneException, String.format(format, GoneException.class, error.getClass()));
-                    final Throwable cause = error.getCause();
-                    if (cause != null) {
-                        // assumption: cosmos isn't listening on 10251
-                        assertTrue(cause instanceof ConnectException, String.format(format, ConnectException.class, error.getClass()));
-                    }
-                }
-
-                @Override
-                public void onNext(final StoreResponse response) {
-                    fail(String.format("Expected GoneException, not a StoreResponse: %s", response));
+            responseMono.subscribe(response -> { }, error -> {
+                final String format = "Expected %s, not %s";
+                assertTrue(error instanceof GoneException, String.format(format, GoneException.class, error.getClass()));
+                final Throwable cause = error.getCause();
+                if (cause != null) {
+                    // assumption: cosmos isn't listening on 10251
+                    assertTrue(cause instanceof ConnectException, String.format(format, ConnectException.class, error.getClass()));
                 }
             });
 
@@ -717,15 +704,15 @@ public final class RntbdTransportClientTest {
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, timeout, response)) {
 
-            final Single<StoreResponse> responseSingle;
+            final Mono<StoreResponse> responseMono;
 
             try {
-                responseSingle = client.invokeStoreAsync(physicalAddress, null, request);
+                responseMono = client.invokeStoreAsync(physicalAddress, request);
             } catch (final Exception error) {
                 throw new AssertionError(String.format("%s: %s", error.getClass(), error));
             }
 
-            this.validateFailure(responseSingle, builder.build());
+            this.validateFailure(responseMono, builder.build());
         }
     }
 
@@ -750,21 +737,22 @@ public final class RntbdTransportClientTest {
         return new RntbdTransportClient(new FakeEndpoint.Provider(options, sslContext, expected));
     }
 
-    private void validateFailure(final Single<? extends StoreResponse> single, final FailureValidator validator) {
-        validateFailure(single, validator, requestTimeout.toMillis());
+    private void validateFailure(final Mono<? extends StoreResponse> responseMono, final FailureValidator validator) {
+        validateFailure(responseMono, validator, requestTimeout.toMillis());
     }
 
     private static void validateFailure(
-        final Single<? extends StoreResponse> single, final FailureValidator validator, final long timeout
+        final Mono<? extends StoreResponse> mono, final FailureValidator validator, final long timeout
     ) {
 
-        final TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        single.toObservable().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        Assertions.assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        final TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
+        mono.subscribe(subscriber);
+
+        subscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
+        assertThat(subscriber.errorCount()).isEqualTo(1);
+        subscriber.assertSubscribed();
+        subscriber.assertNoValues();
+        validator.validate(subscriber.errors().get(0));
     }
 
     // region Types

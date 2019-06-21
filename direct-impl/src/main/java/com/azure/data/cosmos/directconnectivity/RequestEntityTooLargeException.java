@@ -27,7 +27,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.util.Map;
 
@@ -56,8 +56,8 @@ public class RequestEntityTooLargeException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, resourceAddress);
     }
 
-    public RequestEntityTooLargeException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public RequestEntityTooLargeException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
     public RequestEntityTooLargeException(Exception innerException) {
@@ -66,12 +66,12 @@ public class RequestEntityTooLargeException extends CosmosClientException {
 
     public RequestEntityTooLargeException(String message,
                                           Exception innerException,
-                                          HttpResponseHeaders headers,
-                                          String requestUri) {
+                                          HttpHeaders headers,
+                                          String requestUriString) {
         super(String.format(RMResources.RequestEntityTooLarge, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE,
-                requestUri);
+                requestUriString);
     }
 }

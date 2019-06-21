@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 public class CosmosPermissionSettings extends Resource {
 
-
     public static List<CosmosPermissionSettings> getFromV2Results(List<Permission> results) {
         return results.stream().map(permission -> new CosmosPermissionSettings(permission.toJson())).collect(Collectors.toList());
     }
@@ -40,6 +39,17 @@ public class CosmosPermissionSettings extends Resource {
      */
     public CosmosPermissionSettings() {
         super();
+    }
+
+    /**
+     * Sets the id
+     *
+     * @param id the name of the resource.
+     * @return the cosmos permission settings with id set
+     */
+    public CosmosPermissionSettings id(String id) {
+        super.id(id);
+        return this;
     }
 
     /**
@@ -56,7 +66,7 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @return the resource link.
      */
-    public String getResourceLink() {
+    public String resourceLink() {
         return super.getString(Constants.Properties.RESOURCE_LINK);
     }
 
@@ -65,8 +75,9 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param resourceLink the resource link.
      */
-    public void setResourceLink(String resourceLink) {
+    public CosmosPermissionSettings resourceLink(String resourceLink) {
         super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
+        return this;
     }
 
     /**
@@ -74,7 +85,7 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @return the permission mode.
      */
-    public PermissionMode getPermissionMode() {
+    public PermissionMode permissionMode() {
         String value = super.getString(Constants.Properties.PERMISSION_MODE);
         return PermissionMode.valueOf(StringUtils.upperCase(value));
     }
@@ -84,9 +95,10 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param permissionMode the permission mode.
      */
-    public void setPermissionMode(PermissionMode permissionMode) {
+    public CosmosPermissionSettings permissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
                 permissionMode.toString().toLowerCase());
+        return this;
     }
 
     /**
@@ -94,7 +106,7 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @return the access token.
      */
-    public String getToken() {
+    public String token() {
         return super.getString(Constants.Properties.TOKEN);
     }
 
@@ -120,11 +132,12 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param partitionkey the partition key.
      */
-    public void setResourcePartitionKey(PartitionKey partitionkey) {
+    public CosmosPermissionSettings resourcePartitionKey(PartitionKey partitionkey) {
         super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionkey.getInternalPartitionKey().toJson());
+        return this;
     }
 
-    public Permission getV2Permissions() {
-        return null;
+    Permission getV2Permissions() {
+        return new Permission(this.toJson());
     }
 }

@@ -54,16 +54,22 @@ public abstract class CosmosClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method) {
+        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+                method.getDeclaringClass().getSimpleName(),
+                method.getName());
 
-        String connectionMode = this.clientBuilder.getConnectionPolicy().connectionMode() == ConnectionMode.DIRECT
-            ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
-            : "Gateway";
+        if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.getConfigs() != null) {
+            String connectionMode = this.clientBuilder.getConnectionPolicy().connectionMode() == ConnectionMode.DIRECT
+                    ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
+                    : "Gateway";
 
-        this.testName = Strings.lenientFormat("%s::%s[%s with %s consistency]",
-            method.getDeclaringClass().getSimpleName(),
-            method.getName(),
-            connectionMode,
-            clientBuilder.getDesiredConsistencyLevel());
+            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+                    testClassAndMethodName,
+                    connectionMode,
+                    clientBuilder.getDesiredConsistencyLevel());
+        } else {
+            this.testName = testClassAndMethodName;
+        }
     }
 
     @AfterMethod(alwaysRun = true)

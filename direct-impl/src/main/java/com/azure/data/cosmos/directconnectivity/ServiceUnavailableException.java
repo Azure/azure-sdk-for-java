@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -45,14 +45,14 @@ public class ServiceUnavailableException extends CosmosClientException {
     }
 
     public ServiceUnavailableException(String message) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+        this(message, null, null, null);
     }
 
-    public ServiceUnavailableException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
-    public ServiceUnavailableException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
@@ -62,12 +62,12 @@ public class ServiceUnavailableException extends CosmosClientException {
 
     public ServiceUnavailableException(String message,
                                        Exception innerException,
-                                       HttpResponseHeaders headers,
-                                       String requestUri) {
+                                       HttpHeaders headers,
+                                       String requestUriString) {
         super(String.format("%s: %s", RMResources.ServiceUnavailable, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                requestUri != null ? requestUri.toString() : null);
+                requestUriString);
     }
 }

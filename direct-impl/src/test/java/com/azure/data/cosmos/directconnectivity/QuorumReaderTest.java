@@ -36,11 +36,11 @@ import com.azure.data.cosmos.rx.DocumentServiceRequestContextValidator;
 import com.azure.data.cosmos.rx.DocumentServiceRequestValidator;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -130,7 +130,7 @@ public class QuorumReaderTest {
         IAuthorizationTokenProvider authTokenProvider = Mockito.mock(IAuthorizationTokenProvider.class);
         QuorumReader quorumReader = new QuorumReader(configs, transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, storeReader, serviceConfigurator, authTokenProvider);
 
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         StoreResponseValidator.Builder validatorBuilder = StoreResponseValidator.create()
                 .withBELocalLSN(localLSN)
@@ -256,7 +256,7 @@ public class QuorumReaderTest {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(expectedQuorumLsn)
@@ -408,7 +408,7 @@ public class QuorumReaderTest {
 
         Stopwatch stopwatch = Stopwatch.createStarted();
 
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(expectedQuorumLsn)
@@ -526,7 +526,7 @@ public class QuorumReaderTest {
                 .add(requestChargePerHead.multiply(BigDecimal.valueOf(0)))
                 .setScale(4, RoundingMode.FLOOR).doubleValue();
 
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                 .withBELSN(primaryLSN)
@@ -633,45 +633,45 @@ public class QuorumReaderTest {
 
         int replicaCountToRead = 1;
         ReadMode readMode = ReadMode.Strong;
-        Single<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
+        Mono<StoreResponse> storeResponseSingle = quorumReader.readStrongAsync(request, replicaCountToRead, readMode);
 
         validateSuccess(storeResponseSingle, storeResponseValidator);
         endpointMock.validate(verification);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator,
                                        long timeout) {
         TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<StoreResponse> single,
+    public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator,
                                        long timeout) {
         TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 }

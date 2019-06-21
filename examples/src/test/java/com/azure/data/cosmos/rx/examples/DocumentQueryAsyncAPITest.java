@@ -34,27 +34,29 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.google.common.util.concurrent.ListenableFuture;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.reactivestreams.Subscription;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.observable.ListenableFutureObservable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -79,9 +81,9 @@ import static org.hamcrest.Matchers.notNullValue;
  * the same thing without lambda expression.
  * </ul>
  * <p>
- * Also if you need to work with Future or ListenableFuture it is possible to
- * transform an observable to ListenableFuture. Please see
- * {@link #transformObservableToGoogleGuavaListenableFuture()}
+ * Also if you need to work with Future or CompletableFuture it is possible to
+ * transform a flux to CompletableFuture. Please see
+ * {@link #transformObservableToCompletableFuture()}
  */
 public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
@@ -120,13 +122,13 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // CREATE collection
         createdCollection = client
                 .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
-                .toBlocking().single().getResource();
+                .single().block().getResource();
 
         numberOfDocuments = 20;
         // Add documents
         for (int i = 0; i < numberOfDocuments; i++) {
             Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
-            client.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
+            client.createDocument(getCollectionLink(), doc, null, true).single().block();
         }
     }
 
@@ -148,15 +150,14 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = client
+        Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
 
         final CountDownLatch resultsCountDown = new CountDownLatch(numberOfDocuments);
 
-        // forEach(.) is an alias for subscribe(.)
-        documentQueryObservable.forEach(page -> {
+        documentQueryObservable.subscribe(page -> {
             try {
                 // Waits on the barrier
                 mainThreadBarrier.await();
@@ -195,18 +196,18 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = client
+        Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
 
         final CountDownLatch resultsCountDown = new CountDownLatch(numberOfDocuments);
 
-        Action1<FeedResponse<Document>> actionPerPage = new Action1<FeedResponse<Document>>() {
+        Consumer<FeedResponse<Document>> actionPerPage = new Consumer<FeedResponse<Document>>() {
 
             @SuppressWarnings("unused")
             @Override
-            public void call(FeedResponse<Document> t) {
+            public void accept(FeedResponse<Document> t) {
 
                 try {
                     // waits on the barrier
@@ -220,8 +221,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             }
         };
 
-        // forEach(.) is an alias for subscribe(.)
-        documentQueryObservable.forEach(actionPerPage);
+        documentQueryObservable.subscribe(actionPerPage);
         // The following code will run concurrently
 
         System.out.println("action is subscribed to the observable");
@@ -245,14 +245,13 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<Double> totalChargeObservable = client
+        Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
                 .map(FeedResponse::requestCharge) // Map the page to its request charge
-                .reduce((totalCharge, charge) -> totalCharge + charge); // Sum up all the request charges
+                .reduce(Double::sum).flux(); // Sum up all the request charges
 
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
-        // subscribe(.) is the same as forEach(.)
         totalChargeObservable.subscribe(totalCharge -> {
             System.out.println(totalCharge);
             successfulCompletionLatch.countDown();
@@ -271,7 +270,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> requestChargeObservable = client
+        Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         AtomicInteger onNextCounter = new AtomicInteger();
@@ -279,23 +278,15 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         AtomicInteger onErrorCounter = new AtomicInteger();
 
         // Subscribe to the pages of Documents emitted by the observable
-        requestChargeObservable.subscribe(new Subscriber<FeedResponse<Document>>() {
-
-            @Override
-            public void onCompleted() {
-                onCompletedCounter.incrementAndGet();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                onErrorCounter.incrementAndGet();
-            }
-
-            @Override
-            public void onNext(FeedResponse<Document> page) {
-                onNextCounter.incrementAndGet();
-                unsubscribe();
-            }
+        AtomicReference<Subscription> s = new AtomicReference<>();
+        requestChargeObservable.subscribe(documentFeedResponse -> {
+            onNextCounter.incrementAndGet();
+            s.get().cancel();
+        }, error -> {
+            onErrorCounter.incrementAndGet();
+        }, onCompletedCounter::incrementAndGet, subscription -> {
+            s.set(subscription);
+            subscription.request(1);
         });
 
         Thread.sleep(4000);
@@ -316,10 +307,10 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Func1<Document, Boolean> isPrimeNumber = new Func1<Document, Boolean>() {
+        Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
             @Override
-            public Boolean call(Document doc) {
+            public boolean test(Document doc) {
                 int n = doc.getInt("counter");
                 if (n <= 1)
                     return false;
@@ -335,7 +326,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
 
         client.queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
               .map(FeedResponse::results) // Map the page to the list of documents
-              .concatMap(Observable::from) // Flatten the observable<list<document>> to observable<document>
+              .concatMap(Flux::fromIterable) // Flatten the Flux<list<document>> to Flux<document>
               .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
               .subscribe(doc -> resultList.add(doc)); // Collect the results
 
@@ -376,12 +367,12 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = client
+        Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         // Covert the observable to a blocking observable, then convert the blocking
         // observable to an iterator
-        Iterator<FeedResponse<Document>> it = documentQueryObservable.toBlocking().getIterator();
+        Iterator<FeedResponse<Document>> it = documentQueryObservable.toIterable().iterator();
 
         int pageCounter = 0;
         int numberOfResults = 0;
@@ -417,7 +408,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             Document doc = new Document(String.format("{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", i,
                                                       RandomStringUtils.randomAlphabetic(2), i));
             client.createDocument("dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(),
-                                       doc, null, true).toBlocking().single();
+                                       doc, null, true).single().block();
         }
 
         // Query for the documents order by the prop field
@@ -431,16 +422,16 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         options.maxDegreeOfParallelism(2);
 
         // Get the observable order by query documents
-        Observable<FeedResponse<Document>> documentQueryObservable = client.queryDocuments(
+        Flux<FeedResponse<Document>> documentQueryObservable = client.queryDocuments(
                 "dbs/" + createdDatabase.id() + "/colls/" + multiPartitionCollection.id(), query, options);
 
         List<String> resultList = Collections.synchronizedList(new ArrayList<>());
 
         documentQueryObservable.map(FeedResponse::results)
                 // Map the logical page to the list of documents in the page
-                .concatMap(Observable::from) // Flatten the list of documents
-                .map(doc -> doc.id()) // Map to the document Id
-                .forEach(docId -> resultList.add(docId)); // Add each document Id to the resultList
+                .concatMap(Flux::fromIterable) // Flatten the list of documents
+                .map(Resource::id) // Map to the document Id
+                .subscribe(resultList::add); // Add each document Id to the resultList
 
         Thread.sleep(4000);
 
@@ -454,26 +445,23 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     }
 
     /**
-     * You can convert an Observable to a ListenableFuture.
-     * ListenableFuture (part of google guava library) is a popular extension
-     * of Java's Future which allows registering listener callbacks:
-     * https://github.com/google/guava/wiki/ListenableFutureExplained
+     * You can convert a Flux to a CompletableFuture.
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
-    public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
+    public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<FeedResponse<Document>> documentQueryObservable = client
+        Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         // Convert to observable of list of pages
-        Observable<List<FeedResponse<Document>>> allPagesObservable = documentQueryObservable.toList();
+        Mono<List<FeedResponse<Document>>> allPagesObservable = documentQueryObservable.collectList();
 
         // Convert the observable of list of pages to a Future
-        ListenableFuture<List<FeedResponse<Document>>> future = ListenableFutureObservable.to(allPagesObservable);
+        CompletableFuture<List<FeedResponse<Document>>> future = allPagesObservable.toFuture();
 
         List<FeedResponse<Document>> pageList = future.get();
 
@@ -501,7 +489,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         collectionDefinition.id(collectionId);
         collectionDefinition.setPartitionKey(partitionKeyDef);
         DocumentCollection createdCollection = client.createCollection(databaseLink, collectionDefinition, options)
-                                                     .toBlocking().single().getResource();
+                                                     .single().block().getResource();
 
         return createdCollection;
     }

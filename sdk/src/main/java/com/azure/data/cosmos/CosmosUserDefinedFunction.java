@@ -23,11 +23,9 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Mono;
 
-public class CosmosUserDefinedFunction extends CosmosResource{
+public class CosmosUserDefinedFunction extends CosmosResource {
 
     private CosmosContainer container;
 
@@ -40,39 +38,39 @@ public class CosmosUserDefinedFunction extends CosmosResource{
      * READ a user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the read user defined 
+     * The {@link Mono} upon successful completion will contain a single resource response for the read user defined
      * function.
      * In case of failure the {@link Mono} will error.
+     *
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
-    public Mono<CosmosUserDefinedFunctionResponse> read(RequestOptions options){
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), options)
-                .map(response -> new CosmosUserDefinedFunctionResponse(response, container)).toSingle()));
+    public Mono<CosmosUserDefinedFunctionResponse> read(RequestOptions options) {
+        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), options)
+                .map(response -> new CosmosUserDefinedFunctionResponse(response, container)).single();
     }
 
     /**
      * Replaces a cosmos user defined function.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced user 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced user
      * defined function.
      * In case of failure the {@link Mono} will error.
      *
-     * @param udfSettings   the cosmos user defined function settings.
-     * @param options       the request options.
-     * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function 
+     * @param udfSettings the cosmos user defined function settings.
+     * @param options     the request options.
+     * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
      * or an error.
      */
     public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionSettings udfSettings,
-            RequestOptions options){
-        return RxJava2Adapter.singleToMono(
-                RxJavaInterop.toV2Single(container.getDatabase()
-                                                 .getDocClientWrapper()
-                                                 .replaceUserDefinedFunction(new UserDefinedFunction(udfSettings.toJson())
-                                                         , options)
-                                                 .map(response -> new CosmosUserDefinedFunctionResponse(response, container))
-                                                 .toSingle()));
+                                                           RequestOptions options) {
+        return container.getDatabase()
+                .getDocClientWrapper()
+                .replaceUserDefinedFunction(new UserDefinedFunction(udfSettings.toJson())
+                        , options)
+                .map(response -> new CosmosUserDefinedFunctionResponse(response, container))
+                .single();
     }
 
     /**
@@ -86,13 +84,12 @@ public class CosmosUserDefinedFunction extends CosmosResource{
      * @return an {@link Mono} containing the single resource response for the deleted cosmos user defined function or
      * an error.
      */
-    public Mono<CosmosResponse> delete(CosmosRequestOptions options){
-        return RxJava2Adapter.singleToMono(
-                RxJavaInterop.toV2Single(container.getDatabase()
-                                                 .getDocClientWrapper()
-                                                 .deleteUserDefinedFunction(this.getLink(), options.toRequestOptions())
-                                                 .map(response -> new CosmosResponse(response.getResource()))
-                                                 .toSingle()));
+    public Mono<CosmosResponse> delete(CosmosRequestOptions options) {
+        return container.getDatabase()
+                .getDocClientWrapper()
+                .deleteUserDefinedFunction(this.getLink(), options.toRequestOptions())
+                .map(response -> new CosmosResponse(response.getResource()))
+                .single();
     }
 
     @Override

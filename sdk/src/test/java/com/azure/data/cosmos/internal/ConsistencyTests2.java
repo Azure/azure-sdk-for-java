@@ -40,9 +40,8 @@ import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import org.apache.commons.lang3.Range;
 import org.testng.annotations.Test;
-import rx.Completable;
-import rx.Observable;
-import rx.functions.Action1;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +65,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
-        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(), null, false).toBlocking().first().getResource();
+        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+                                                           null, false).blockFirst().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateReadSession(document);
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
@@ -86,7 +86,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION).build();
 
-        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(), null, false).toBlocking().first().getResource();
+        Document document = this.initClient.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+                                                           null, false).blockFirst().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateWriteSession(document);
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
@@ -195,12 +196,13 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .build();
         try {
             // CREATE collection
-            DocumentCollection parentResource = writeClient.createCollection(createdDatabase.selfLink(), getCollectionDefinition(), null).toBlocking().first().getResource();
+            DocumentCollection parentResource = writeClient.createCollection(createdDatabase.selfLink(),
+                                                                             getCollectionDefinition(), null).blockFirst().getResource();
 
             // Document to lock pause/resume clients
             Document documentDefinition = getDocumentDefinition();
             documentDefinition.id("test" + documentDefinition.id());
-            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.selfLink(), documentDefinition, null, true).toBlocking().first();
+            ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.selfLink(), documentDefinition, null, true).blockFirst();
             logger.info("Created {} child resource", childResource.getResource().resourceId());
 
             String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
@@ -209,7 +211,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             feedOptions.partitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             feedOptions.sessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Observable<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.selfLink(), feedOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.selfLink(), feedOptions);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -228,7 +230,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     // Note that we need multiple CONSISTENCY_TEST_TIMEOUT
     // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
-    @Test(groups = {"direct"}, timeOut = 2 * CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, timeOut = 4 * CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionTokenAsync() {
         // Validate that document query never fails
         // with NotFoundException
@@ -248,54 +250,51 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 .build();
 
         try {
-            Document lastDocument = client.createDocument(createdCollection.selfLink(), getDocumentDefinition(), null, true)
-                .toBlocking()
-                .first()
-                .getResource();
+            Document lastDocument = client.createDocument(createdCollection.selfLink(), getDocumentDefinition(),
+                                                          null, true)
+                    .blockFirst()
+                    .getResource();
 
-            Completable task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, new Action1<Integer>() {
-                @Override
-                public void call(Integer index) {
-                    client.createDocument(createdCollection.selfLink(), documents.get(index % documents.size()), null, true).toBlocking().first();
-                }
-            });
+            Mono<Void> task1 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> client.createDocument(createdCollection.selfLink(), documents.get(index % documents.size()),
+                                  null, true)
+                    .blockFirst());
 
-            Completable task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, new Action1<Integer>() {
-                @Override
-                public void call(Integer index) {
-                    try {
-                        FeedOptions feedOptions = new FeedOptions();
-                        feedOptions.enableCrossPartitionQuery(true);
-                        FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.selfLink(), "SELECT * FROM c WHERE c.Id = 'foo'", feedOptions).toBlocking().first();
-                        String lsnHeaderValue = queryResponse.responseHeaders().get(WFConstants.BackendHeaders.LSN);
-                        long lsn = Long.valueOf(lsnHeaderValue);
-                        String sessionTokenHeaderValue = queryResponse.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                        ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
-                        logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
-                        assertThat(lsn).isEqualTo(sessionToken.getLSN());
-                    } catch (Exception ex) {
-                        CosmosClientException clientException = (CosmosClientException) ex.getCause();
-                        if (clientException.statusCode() != 0) {
-                            if (clientException.statusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
-                                // ignore
-                            } else if (clientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                                String lsnHeaderValue = clientException.responseHeaders().get(WFConstants.BackendHeaders.LSN);
-                                long lsn = Long.valueOf(lsnHeaderValue);
-                                String sessionTokenHeaderValue = clientException.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                                ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
+            Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
+                try {
+                    FeedOptions feedOptions = new FeedOptions();
+                    feedOptions.enableCrossPartitionQuery(true);
+                    FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.selfLink(),
+                                                                                 "SELECT * FROM c WHERE c.Id = " +
+                                                                                         "'foo'", feedOptions)
+                            .blockFirst();
+                    String lsnHeaderValue = queryResponse.responseHeaders().get(WFConstants.BackendHeaders.LSN);
+                    long lsn = Long.valueOf(lsnHeaderValue);
+                    String sessionTokenHeaderValue = queryResponse.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                    ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
+                    logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
+                    assertThat(lsn).isEqualTo(sessionToken.getLSN());
+                } catch (Exception ex) {
+                    CosmosClientException clientException = (CosmosClientException) ex.getCause();
+                    if (clientException.statusCode() != 0) {
+                        if (clientException.statusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT) {
+                            // ignore
+                        } else if (clientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            String lsnHeaderValue = clientException.responseHeaders().get(WFConstants.BackendHeaders.LSN);
+                            long lsn = Long.valueOf(lsnHeaderValue);
+                            String sessionTokenHeaderValue = clientException.responseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                            ISessionToken sessionToken = SessionTokenHelper.parse(sessionTokenHeaderValue);
 
-                                logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
-                                assertThat(lsn).isEqualTo(sessionToken.getLSN());
-                            } else {
-                                throw ex;
-                            }
+                            logger.info("SESSION Token = {}, LSN = {}", sessionToken.convertToString(), lsn);
+                            assertThat(lsn).isEqualTo(sessionToken.getLSN());
                         } else {
                             throw ex;
                         }
+                    } else {
+                        throw ex;
                     }
                 }
             });
-            Completable.mergeDelayError(task1, task2).await();
+            Mono.whenDelayError(task1, task2).block();
         } finally {
             safeClose(client);
         }

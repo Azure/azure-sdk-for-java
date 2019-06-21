@@ -23,32 +23,23 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import io.netty.buffer.ByteBuf;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.handler.codec.http.DefaultHttpHeaders;
-import io.netty.handler.codec.http.DefaultHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import rx.Observable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+;
 
 public class HttpClientMockWrapper {
     public static HttpClientBehaviourBuilder httpClientBehaviourBuilder() {
@@ -58,7 +49,7 @@ public class HttpClientMockWrapper {
     public static class HttpClientBehaviourBuilder {
         private int status;
         private String content;
-        private HttpHeaders httpHeaders = new DefaultHttpHeaders();
+        private HttpHeaders httpHeaders = new HttpHeaders();
         private Exception networkFailure;
 
         public HttpClientBehaviourBuilder withNetworkFailure(Exception networkFailure) {
@@ -82,7 +73,7 @@ public class HttpClientMockWrapper {
             }
 
             for(int i = 0; i < pairs.length/ 2; i++) {
-                this.httpHeaders.add(pairs[2*i], pairs[2*i +1]);
+                this.httpHeaders.set(pairs[2*i], pairs[2*i +1]);
             }
 
             return this;
@@ -94,42 +85,30 @@ public class HttpClientMockWrapper {
         }
 
         public HttpClientBehaviourBuilder withHeaderLSN(long lsn) {
-            this.httpHeaders.add(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
+            this.httpHeaders.set(WFConstants.BackendHeaders.LSN, Long.toString(lsn));
             return this;
         }
 
         public HttpClientBehaviourBuilder withHeaderPartitionKeyRangeId(String partitionKeyRangeId) {
-            this.httpHeaders.add(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+            this.httpHeaders.set(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
             return this;
         }
 
         public HttpClientBehaviourBuilder withHeaderSubStatusCode(int subStatusCode) {
-            this.httpHeaders.add(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
+            this.httpHeaders.set(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(subStatusCode));
             return this;
         }
 
-        public HttpClientResponse<ByteBuf> asHttpClientResponse() {
+        public HttpResponse asHttpResponse() {
             if (this.networkFailure != null) {
                 return null;
             }
 
-            HttpClientResponse<ByteBuf> resp = Mockito.mock(HttpClientResponse.class);
-            Mockito.doReturn(HttpResponseStatus.valueOf(status)).when(resp).getStatus();
-            Mockito.doReturn(Observable.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, content))).when(resp).getContent();
-
-            DefaultHttpResponse httpResponse = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.valueOf(status), httpHeaders);
-
-            try {
-                Constructor<HttpResponseHeaders> constructor = HttpResponseHeaders.class.getDeclaredConstructor(HttpResponse.class);
-                constructor.setAccessible(true);
-                HttpResponseHeaders httpResponseHeaders = constructor.newInstance(httpResponse);
-                Mockito.doReturn(httpResponseHeaders).when(resp).getHeaders();
-
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                throw new IllegalStateException("Failed to instantiate class object.", e);
-            }
-
+            HttpResponse resp = Mockito.mock(HttpResponse.class);
+            Mockito.doReturn(this.status).when(resp).statusCode();
+            Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, this.content))).when(resp).body();
+            Mockito.doReturn(Mono.just(this.content)).when(resp).bodyAsString(StandardCharsets.UTF_8);
+            Mockito.doReturn(this.httpHeaders).when(resp).headers();
             return resp;
         }
 
@@ -148,60 +127,54 @@ public class HttpClientMockWrapper {
         }
     }
 
-    private final CompositeHttpClient httpClient;
-    private final List<ImmutablePair<HttpClientRequest<ByteBuf>, RxClient.ServerInfo>> requests = Collections.synchronizedList(new ArrayList<>());
+    private final HttpClient httpClient;
+    private final List<HttpRequest> requests = Collections.synchronizedList(new ArrayList<>());
 
-    public HttpClientMockWrapper(long responseAfterMillis, HttpClientResponse<ByteBuf> httpClientResponse) {
-        this(responseAfterMillis, httpClientResponse, null);
+    public HttpClientMockWrapper(long responseAfterMillis, HttpResponse httpResponse) {
+        this(responseAfterMillis, httpResponse, null);
     }
 
-    private static Observable<HttpClientResponse<ByteBuf>> httpClientResponseOrException(HttpClientResponse<ByteBuf> httpClientResponse, Exception e) {
-        assert ((httpClientResponse != null && e == null) || (httpClientResponse == null && e != null));
-        return httpClientResponse != null ? Observable.just(httpClientResponse) : Observable.error(e);
+    private static Mono<HttpResponse> httpResponseOrException(HttpResponse httpResponse, Exception e) {
+        assert ((httpResponse != null && e == null) || (httpResponse == null && e != null));
+        return httpResponse != null ? Mono.just(httpResponse) : Mono.error(e);
     }
 
     public HttpClientMockWrapper(long responseAfterMillis, Exception e) {
         this(responseAfterMillis, null, e);
     }
 
-    public HttpClientMockWrapper(HttpClientResponse<ByteBuf> httpClientResponse) {
-        this(0, httpClientResponse);
+    public HttpClientMockWrapper(HttpResponse httpResponse) {
+        this(0, httpResponse);
     }
 
-    private HttpClientMockWrapper(long responseAfterMillis, final HttpClientResponse<ByteBuf> httpClientResponse, final Exception e) {
-        httpClient = Mockito.mock(CompositeHttpClient.class);
-        assert httpClientResponse == null || e == null;
+    private HttpClientMockWrapper(long responseAfterMillis, final HttpResponse httpResponse, final Exception e) {
+        httpClient = Mockito.mock(HttpClient.class);
+        assert httpResponse == null || e == null;
 
-        Mockito.doAnswer(new Answer() {
-            @Override
-            public Observable<HttpClientResponse<ByteBuf>> answer(InvocationOnMock invocationOnMock) throws Throwable {
-                RxClient.ServerInfo serverInfo = invocationOnMock.getArgumentAt(0, RxClient.ServerInfo.class);
-                HttpClientRequest<ByteBuf> req = invocationOnMock.getArgumentAt(1, HttpClientRequest.class);
-
-                requests.add(new ImmutablePair<>(req, serverInfo));
-
-                if (responseAfterMillis <= 0) {
-                    return httpClientResponseOrException(httpClientResponse, e);
-                } else {
-                    return Observable.timer(responseAfterMillis, TimeUnit.MILLISECONDS).flatMap(t -> httpClientResponseOrException(httpClientResponse, e));
-                }
+        Mockito.doAnswer(invocationOnMock -> {
+            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            requests.add(httpRequest);
+            if (responseAfterMillis <= 0) {
+                return httpResponseOrException(httpResponse, e);
+            } else {
+                return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
             }
-        }).when(httpClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
+        }).when(httpClient).send(Mockito.any(HttpRequest.class));
     }
 
     public HttpClientMockWrapper(HttpClientBehaviourBuilder builder) {
-        this(0, builder.asHttpClientResponse(), builder.asNetworkFailure());
+        this(0, builder.asHttpResponse(), builder.asNetworkFailure());
     }
 
     public HttpClientMockWrapper(Exception e) {
         this(0, e);
     }
 
-    public CompositeHttpClient<ByteBuf, ByteBuf> getClient() {
+    public HttpClient getClient() {
         return httpClient;
     }
 
-    public List<ImmutablePair<HttpClientRequest<ByteBuf>, RxClient.ServerInfo>> getCapturedInvocation() {
+    public List<HttpRequest> getCapturedInvocation() {
         return requests;
     }
 }

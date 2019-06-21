@@ -24,29 +24,29 @@
 package com.azure.data.cosmos.internal;
 
 import org.apache.commons.lang3.Range;
-import rx.Completable;
-import rx.functions.Action1;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ParallelAsync {
 
-    static Completable forEachAsync(Range<Integer> range, int partition, Action1<Integer> func) {
+    static Mono<Void> forEachAsync(Range<Integer> range, int partition, Consumer<Integer> func) {
 
         int partitionSize = (range.getMaximum() - range.getMinimum()) / partition;
-        List<Completable> task = new ArrayList<>();
+        List<Mono<Void>> task = new ArrayList<>();
         int startRange = range.getMinimum();
         for (int i = 0; i < partition; i++) {
             Range<Integer> integerRange = Range.between(startRange, startRange + partitionSize);
-            task.add(Completable.defer(() -> {
+            task.add(Mono.defer(() -> {
                 for(int j = integerRange.getMinimum(); j < integerRange.getMaximum();j++) {
-                    func.call(j);
+                    func.accept(j);
                 }
-                return Completable.complete();
+                return Mono.empty();
             }));
             startRange = startRange + partitionSize ;
         }
-        return Completable.mergeDelayError(task);
+        return Mono.whenDelayError(task);
     }
 }

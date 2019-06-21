@@ -40,8 +40,8 @@ import com.google.common.collect.Iterables;
 import org.apache.commons.collections4.list.UnmodifiableList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Completable;
-import rx.Observable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -186,8 +186,8 @@ public class LocationCacheTest {
         }
 
         @Override
-        public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-            return Observable.just(LocationCacheTest.this.databaseAccount);
+        public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+            return Flux.just(LocationCacheTest.this.databaseAccount);
         }
 
         @Override
@@ -329,11 +329,11 @@ public class LocationCacheTest {
     private void validateGlobalEndpointLocationCacheRefreshAsync() throws Exception {
 
         mockedClient.reset();
-        List<Completable> list = IntStream.range(0, 10)
+        List<Mono<Void>> list = IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
                 .collect(Collectors.toList());
 
-        Completable.merge(list).await();
+        Flux.merge(list).then().block();
 
         assertThat(mockedClient.getInvocationCounter()).isLessThanOrEqualTo(1);
         mockedClient.reset();
@@ -341,8 +341,8 @@ public class LocationCacheTest {
         IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null))
                 .collect(Collectors.toList());
-        for (Completable completable : list) {
-            completable.await();
+        for (Mono completable : list) {
+            completable.block();
         }
 
         assertThat(mockedClient.getInvocationCounter()).isLessThanOrEqualTo(1);

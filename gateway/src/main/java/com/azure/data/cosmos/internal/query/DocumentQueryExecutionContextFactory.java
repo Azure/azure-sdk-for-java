@@ -35,8 +35,8 @@ import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
-import rx.Observable;
-import rx.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +49,7 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
 
-    private static Single<DocumentCollection> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query, 
+    private static Mono<DocumentCollection> resolveCollection(IDocumentQueryClient client, SqlQuerySpec query,
             ResourceType resourceTypeEnum, String resourceLink) {
 
         RxCollectionCache collectionCache = client.getCollectionCache();
@@ -63,7 +63,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionCache.resolveCollectionAsync(request);
     }
 
-    public static <T extends Resource> Observable<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
+    public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
@@ -74,17 +74,17 @@ public class DocumentQueryExecutionContextFactory {
             UUID correlatedActivityId) {
 
         // return proxy
-        Observable<DocumentCollection> collectionObs = Observable.just(null);
+        Flux<DocumentCollection> collectionObs = Flux.empty();
         
         if (resourceTypeEnum.isCollectionChild()) {
-            collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).toObservable();
+            collectionObs = resolveCollection(client, query, resourceTypeEnum, resourceLink).flux();
         }
 
         // We create a ProxyDocumentQueryExecutionContext that will be initialized with DefaultDocumentQueryExecutionContext
         // which will be used to send the query to GATEWAY and on getting 400(bad request) with 1004(cross parition query not servable), we initialize it with
         // PipelinedDocumentQueryExecutionContext by providing the partition query execution info that's needed(which we get from the exception returned from GATEWAY).
 
-        Observable<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
+        Flux<ProxyDocumentQueryExecutionContext<T>> proxyQueryExecutionContext =
                 collectionObs.flatMap(collection -> {
                     if (feedOptions != null && feedOptions.partitionKey() != null && feedOptions.partitionKey().equals(PartitionKey.None)) {
                         feedOptions.partitionKey(BridgeInternal.getPartitionKey(BridgeInternal.getNonePartitionKey(collection.getPartitionKey())));
@@ -99,12 +99,21 @@ public class DocumentQueryExecutionContextFactory {
                             collection,
                             isContinuationExpected,
                             correlatedActivityId);
-                    });
+                    }).switchIfEmpty(ProxyDocumentQueryExecutionContext.createAsync(
+                            client,
+                            resourceTypeEnum,
+                            resourceType,
+                            query,
+                            feedOptions,
+                            resourceLink,
+                            null,
+                            isContinuationExpected,
+                            correlatedActivityId));
 
         return proxyQueryExecutionContext;
     }
 
-	public static <T extends Resource> Observable<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
+	public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
@@ -122,7 +131,7 @@ public class DocumentQueryExecutionContextFactory {
         BadRequestException validationError = Utils.checkRequestOrReturnException
                 (initialPageSize > 0, "MaxItemCount", "INVALID MaxItemCount %s", initialPageSize);
         if (validationError != null) {
-            return Observable.error(validationError);
+            return Flux.error(validationError);
         }
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();

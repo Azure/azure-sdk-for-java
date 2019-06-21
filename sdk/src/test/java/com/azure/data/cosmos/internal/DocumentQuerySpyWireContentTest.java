@@ -31,18 +31,18 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.SpyClientBuilder;
+import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.rx.Utils;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -120,32 +120,33 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        Observable<FeedResponse<Document>> queryObservable = client
+        Flux<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(collectionLink, query, options);
 
-        List<Document> results = queryObservable.flatMap(p -> Observable.from(p.results()))
-            .toList().toBlocking().single();
+        List<Document> results = queryObservable.flatMap(p -> Flux.fromIterable(p.results()))
+            .collectList().block();
 
         assertThat(results.size()).describedAs("total results").isGreaterThanOrEqualTo(1);
         
-        List<HttpClientRequest<ByteBuf>> requests = client.getCapturedRequests();
+        List<HttpRequest> requests = client.getCapturedRequests();
 
-        for(HttpClientRequest<ByteBuf> req: requests) {
+        for(HttpRequest req: requests) {
             validateRequestHasContinuationTokenLimit(req, options.responseContinuationTokenLimitInKb());
         }
     }
 
-    private void validateRequestHasContinuationTokenLimit(HttpClientRequest<ByteBuf> request, Integer expectedValue) {
+    private void validateRequestHasContinuationTokenLimit(HttpRequest request, Integer expectedValue) {
+        Map<String, String> headers = request.headers().toMap();
         if (expectedValue != null && expectedValue > 0) {
-            assertThat(request.getHeaders()
-                    .contains(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+            assertThat(headers
+                    .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
                     .isTrue();
-            assertThat(request.getHeaders()
+            assertThat(headers
                     .get("x-ms-documentdb-responsecontinuationtokenlimitinkb"))
                     .isEqualTo(Integer.toString(expectedValue));
         } else {
-            assertThat(request.getHeaders()
-                    .contains(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
+            assertThat(headers
+                    .containsKey(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB))
                     .isFalse();
         }
     }
@@ -154,7 +155,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
         Document docDefinition = getDocumentDefinition(cnt);
         return client
-                .createDocument(collectionLink, docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(collectionLink, docDefinition, null, false).blockFirst().getResource();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -187,11 +188,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
-            .toCompletable().await();
+            .then().block();
 
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getSinglePartitionCollectionLink(), "select * from root", options)
-            .toCompletable().await();
+              .then().block();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

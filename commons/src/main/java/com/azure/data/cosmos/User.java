@@ -47,6 +47,16 @@ public class User extends Resource {
     }
 
     /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of User
+     */
+    public User id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Gets the self-link of the permissions associated with the user.
      *
      * @return the permissions link.

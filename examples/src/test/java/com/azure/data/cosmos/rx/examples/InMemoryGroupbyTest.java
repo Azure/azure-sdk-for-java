@@ -38,8 +38,8 @@ import com.azure.data.cosmos.SqlQuerySpec;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.observables.GroupedObservable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.GroupedFlux;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    @BeforeClass(groups = "samples", timeOut = 2 * TIMEOUT)
     public void setUp() throws Exception {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy().connectionMode(ConnectionMode.DIRECT);
@@ -81,7 +81,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         // CREATE collection
         createdCollection = client
                 .createCollection("dbs/" + createdDatabase.id(), collectionDefinition, null)
-                .toBlocking().single().getResource();
+                .single().block().getResource();
 
         int numberOfPayers = 10;
         int numberOfDocumentsPerPayer = 10;
@@ -98,7 +98,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
                         + "'payer_id': %d, "
                         + " 'created_time' : %d "
                         + "}", UUID.randomUUID().toString(), i, currentTime.getSecond()));
-                client.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
+                client.createDocument(getCollectionLink(), doc, null, true).single().block();
 
                 Thread.sleep(100);
             }
@@ -117,7 +117,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
      * If you want to understand the steps in more details see {@link #groupByInMemory_MoreDetail()}
      * @throws Exception
      */
-    @Test(groups = "samples", timeOut = TIMEOUT)
+    @Test(groups = "samples", timeOut = 2 * TIMEOUT)
     public void groupByInMemory() {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
@@ -125,21 +125,20 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<Document> documentsObservable = client
+        Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
                         options)
-                .flatMap(page -> Observable.from(page.results()));
+                .flatMap(page -> Flux.fromIterable(page.results()));
 
         final LocalDateTime now = LocalDateTime.now();
 
         List<List<Document>> resultsGroupedAsLists = documentsObservable
                 .filter(doc -> Math.abs(now.getSecond() - doc.getInt("created_time")) <= 90)
-                .groupBy(doc -> doc.getInt("payer_id")).flatMap(grouped -> grouped.toList())
-                .toList()
-                .toBlocking()
-                .single();
+                .groupBy(doc -> doc.getInt("payer_id")).flatMap(Flux::collectList)
+                .collectList()
+                .block();
 
         for(List<Document> resultsForEachPayer :resultsGroupedAsLists) {
             System.out.println("documents with payer_id : " + resultsForEachPayer.get(0).getInt("payer_id") + " are " + resultsForEachPayer);
@@ -150,7 +149,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
      * This does the same thing as {@link #groupByInMemory_MoreDetail()} but with pedagogical details
      * @throws Exception
      */
-    @Test(groups = "samples", timeOut = TIMEOUT)
+    @Test(groups = "samples", timeOut = 2 * TIMEOUT)
     public void groupByInMemory_MoreDetail() {
 
         int requestPageSize = 3;
@@ -158,25 +157,25 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         options.maxItemCount(requestPageSize);
         options.enableCrossPartitionQuery(true);
 
-        Observable<Document> documentsObservable = client
+        Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
                         options)
-                .flatMap(page -> Observable.from(page.results()));
+                .flatMap(page -> Flux.fromIterable(page.results()));
 
         final LocalDateTime now = LocalDateTime.now();
 
-        Observable<GroupedObservable<Integer, Document>> groupedByPayerIdObservable = documentsObservable
+        Flux<GroupedFlux<Integer, Document>> groupedByPayerIdObservable = documentsObservable
                 .filter(doc -> Math.abs(now.getSecond() - doc.getInt("created_time")) <= 90)
                 .groupBy(doc -> doc.getInt("payer_id"));
 
-        Observable<List<Document>> docsGroupedAsList = groupedByPayerIdObservable.flatMap(grouped -> {
-            Observable<List<Document>> list = grouped.toList();
+        Flux<List<Document>> docsGroupedAsList = groupedByPayerIdObservable.flatMap(grouped -> {
+            Flux<List<Document>> list = grouped.collectList().flux();
             return list;
         });
 
-        List<List<Document>> resultsGroupedAsLists = docsGroupedAsList.toList().toBlocking().single();
+        List<List<Document>> resultsGroupedAsLists = docsGroupedAsList.collectList().single().block();
 
         for(List<Document> resultsForEachPayer : resultsGroupedAsLists) {
             System.out.println("documents with payer_id : " + resultsForEachPayer.get(0).getInt("payer_id") + " are " + resultsForEachPayer);

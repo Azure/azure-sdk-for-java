@@ -23,33 +23,29 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+import com.azure.data.cosmos.internal.http.HttpRequest;
+import com.azure.data.cosmos.internal.http.HttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 public class ErrorUtils {
-    private static final Logger logger = LoggerFactory.getLogger(TransportClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(ErrorUtils.class);
 
-    protected static Single<String> getErrorResponseAsync(HttpClientResponse<ByteBuf> responseMessage) {
-
-        if (responseMessage.getContent() == null) {
-            return Single.just(StringUtils.EMPTY);
+    static Mono<String> getErrorResponseAsync(HttpResponse responseMessage, HttpRequest request) {
+        Mono<String> responseAsString = ResponseUtils.toString(responseMessage.body());
+        if (request.httpMethod() == HttpMethod.DELETE) {
+            return Mono.just(StringUtils.EMPTY);
         }
-
-        return getErrorFromStream(responseMessage.getContent());
+        return responseAsString;
     }
 
-    protected static Single<String> getErrorFromStream(Observable<ByteBuf> stream) {
-        return ResponseUtils.toString(stream).toSingle();
-    }
-
-    protected static void logGoneException(URI physicalAddress, String activityId) {
+    static void logGoneException(URI physicalAddress, String activityId) {
         logger.trace("Listener not found. Store Physical Address {} ActivityId {}",
                 physicalAddress, activityId);
     }
@@ -59,7 +55,7 @@ public class ErrorUtils {
                 physicalAddress, activityId);
     }
 
-    protected static void logException(URI physicalAddress, String activityId) {
+    static void logException(URI physicalAddress, String activityId) {
         logger.trace("Store Request Failed. Store Physical Address {} ActivityId {}",
                 physicalAddress, activityId);
     }

@@ -36,9 +36,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.functions.Func2;
 
 import java.util.ArrayList;
+import java.util.function.BiFunction;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -273,22 +273,22 @@ public class PartitionKeyInternalTest {
      */
     @Test(groups="unit")
     public void contains() {
-        Func2<String, String, Boolean> verifyContains = (parentPartitionKey, childPartitionKey) ->
+        BiFunction<String, String, Boolean> verifyContains = (parentPartitionKey, childPartitionKey) ->
                 PartitionKeyInternal.fromJsonString(parentPartitionKey)
                         .contains(PartitionKeyInternal.fromJsonString(childPartitionKey));
 
-        assertThat(verifyContains.call("[]", "[]")).isTrue();
-        assertThat(verifyContains.call("[]", "[{}]")).isTrue();
-        assertThat(verifyContains.call("[]", "[null]")).isTrue();
-        assertThat(verifyContains.call("[]", "[true]")).isTrue();
-        assertThat(verifyContains.call("[]", "[false]")).isTrue();
-        assertThat(verifyContains.call("[]", "[2]")).isTrue();
-        assertThat(verifyContains.call("[]", "[\"fdfd\"]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[{}]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[null]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[true]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[false]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[2]")).isTrue();
+        assertThat(verifyContains.apply("[]", "[\"fdfd\"]")).isTrue();
 
-        assertThat(verifyContains.call("[2]", "[]")).isFalse();
-        assertThat(verifyContains.call("[2]", "[2]")).isTrue();
-        assertThat(verifyContains.call("[2]", "[2, \"USA\"]")).isTrue();
-        assertThat(verifyContains.call("[1]", "[2, \"USA\"]")).isFalse();
+        assertThat(verifyContains.apply("[2]", "[]")).isFalse();
+        assertThat(verifyContains.apply("[2]", "[2]")).isTrue();
+        assertThat(verifyContains.apply("[2]", "[2, \"USA\"]")).isTrue();
+        assertThat(verifyContains.apply("[1]", "[2, \"USA\"]")).isFalse();
     }
 
     @Test(groups="unit")

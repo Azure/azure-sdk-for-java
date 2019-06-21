@@ -29,20 +29,21 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Permission;
 import com.azure.data.cosmos.PermissionMode;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class ReadFeedPermissionsTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
@@ -64,14 +65,14 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Observable<FeedResponse<Permission>> feedObservable = client.readPermissions(getUserLink(), options);
+        Flux<FeedResponse<Permission>> feedObservable = client.readPermissions(getUserLink(), options);
 
         int expectedPageSize = (createdPermissions.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdPermissions.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdPermissions.stream().map(Resource::resourceId).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Permission>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
@@ -110,7 +111,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         permission.id(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
         permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
-        return client.createPermission(getUserLink(), permission, null).toBlocking().single().getResource();
+        return client.createPermission(getUserLink(), permission, null).single().block().getResource();
     }
 
     private String getUserLink() {

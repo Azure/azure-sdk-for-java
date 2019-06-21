@@ -37,7 +37,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class PermissionQueryTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
@@ -70,7 +70,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        Observable<FeedResponse<Permission>> queryObservable = client
+        Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
         List<Permission> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(sp.id()) ).collect(Collectors.toList());
@@ -94,7 +94,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Observable<FeedResponse<Permission>> queryObservable = client
+        Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
@@ -113,7 +113,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
         options.enableCrossPartitionQuery(true);
-        Observable<FeedResponse<Permission>> queryObservable = client
+        Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
         int expectedPageSize = (createdPermissions.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -136,7 +136,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Observable<FeedResponse<Permission>> queryObservable = client
+        Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
@@ -183,7 +183,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         permission.setPermissionMode(PermissionMode.READ);
         permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
         
-        return client.createPermission(getUserLink(), permission, null).toBlocking().single().getResource();
+        return client.createPermission(getUserLink(), permission, null).single().block().getResource();
     }
 
     private String getUserLink() {

@@ -39,8 +39,8 @@ import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.RxStoreModel;
 import com.azure.data.cosmos.internal.Utils;
-import rx.Observable;
-import rx.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -69,28 +69,28 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.sessionContainer = sessionContainer;
     }
 
-    protected Single<DocumentCollection> getByRidAsync(String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(String collectionRid, Map<String, Object> properties) {
         IDocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
                 , retryPolicyInstance);
     }
 
-    protected Single<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties) {
         IDocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(resourceAddress, retryPolicyInstance, properties),
                 retryPolicyInstance);
     }
 
-    private Single<DocumentCollection> readCollectionAsync(String collectionLink, IDocumentClientRetryPolicy retryPolicyInstance, Map<String, Object> properties) {
+    private Mono<DocumentCollection> readCollectionAsync(String collectionLink, IDocumentClientRetryPolicy retryPolicyInstance, Map<String, Object> properties) {
        
         String path = Utils.joinPath(collectionLink, null);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 OperationType.Read,
                 ResourceType.DocumentCollection,
                 path,
-                new HashMap<String, String>());
+                new HashMap<>());
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
 
@@ -106,7 +106,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
         try {
             authorizationToken = URLEncoder.encode(authorizationToken, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return Single.error(new IllegalStateException("Failed to encode authtoken.", e));
+            return Mono.error(new IllegalStateException("Failed to encode authtoken.", e));
         }
         request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorizationToken);
 
@@ -114,8 +114,8 @@ public class RxClientCollectionCache extends RxCollectionCache {
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        Observable<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
+        Flux<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
         return responseObs.map(response -> BridgeInternal.toResourceResponse(response, DocumentCollection.class)
-                .getResource()).toSingle();
+                .getResource()).single();
     }
 }

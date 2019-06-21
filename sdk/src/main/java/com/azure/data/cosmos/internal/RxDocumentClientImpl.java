@@ -65,6 +65,8 @@ import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
 import com.azure.data.cosmos.internal.caches.RxPartitionKeyRangeCache;
 import com.azure.data.cosmos.internal.directconnectivity.GlobalAddressResolver;
+import com.azure.data.cosmos.internal.http.HttpClient;
+import com.azure.data.cosmos.internal.http.HttpClientConfig;
 import com.azure.data.cosmos.internal.query.DocumentQueryExecutionContextFactory;
 import com.azure.data.cosmos.internal.query.IDocumentQueryClient;
 import com.azure.data.cosmos.internal.query.IDocumentQueryExecutionContext;
@@ -73,16 +75,11 @@ import com.azure.data.cosmos.internal.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -95,6 +92,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static com.azure.data.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.data.cosmos.BridgeInternal.getAltLink;
@@ -141,7 +140,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * supported.
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
-    private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
+    private final HttpClient reactorHttpClient;
     private final GlobalEndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
     private volatile boolean useMultipleWriteLocations;
@@ -215,9 +214,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConsistencyLevel consistencyLevel, Configs configs) {
 
         logger.info(
-                "Initializing DocumentClient with"
-                        + " serviceEndpoint [{}], ConnectionPolicy [{}], ConsistencyLevel [{}]",
-                serviceEndpoint, connectionPolicy, consistencyLevel);
+            "Initializing DocumentClient with"
+                + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
+            serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
         this.configs = configs;
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
@@ -250,7 +249,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentContainer.setSuffix(userAgentSuffix);
         }
 
-        this.rxClient = httpClientBuilder().build();
+        this.reactorHttpClient = httpClient();
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
         this.resetSessionTokenRetryPolicy = retryPolicy;
@@ -272,14 +271,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 resourceToken,
                 this.connectionPolicy,
                 this.authorizationTokenProvider,
-                this.rxClient);
+                this.reactorHttpClient);
 
-        DatabaseAccount databaseAccount = this.gatewayConfigurationReader.initializeReaderAsync().toBlocking().value();
+        DatabaseAccount databaseAccount = this.gatewayConfigurationReader.initializeReaderAsync().block();
         this.useMultipleWriteLocations = this.connectionPolicy.usingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        this.globalEndpointManager.refreshLocationAsync(databaseAccount).await();
+        this.globalEndpointManager.refreshLocationAsync(databaseAccount).block();
     }
 
     public void init() {
@@ -291,7 +290,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.queryCompatibilityMode,
                 this.userAgentContainer,
                 this.globalEndpointManager,
-                this.rxClient);
+                this.reactorHttpClient);
         this.globalEndpointManager.init();
         this.initializeGatewayConfigurationReader();
 
@@ -319,7 +318,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         );
 
         this.addressResolver = new GlobalAddressResolver(
-            this.rxClient,
+            this.reactorHttpClient,
             this.globalEndpointManager,
             this.configs.getProtocol(),
             this,
@@ -343,7 +342,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+            public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
                 logger.info("Getting database account endpoint from {}", endpoint);
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
             }
@@ -360,24 +359,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              QueryCompatibilityMode queryCompatibilityMode,
                                              UserAgentContainer userAgentContainer,
                                              GlobalEndpointManager globalEndpointManager,
-                                             CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
+                                             HttpClient httpClient) {
         return new RxGatewayStoreModel(sessionContainer,
                 consistencyLevel,
                 queryCompatibilityMode,
                 userAgentContainer,
                 globalEndpointManager,
-                rxClient);
+                httpClient);
     }
 
-    private CompositeHttpClientBuilder<ByteBuf, ByteBuf> httpClientBuilder() {
+    private HttpClient httpClient() {
 
-        HttpClientFactory factory = new HttpClientFactory(this.configs)
+        HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
                 .withMaxIdleConnectionTimeoutInMillis(this.connectionPolicy.idleConnectionTimeoutInMillis())
                 .withPoolSize(this.connectionPolicy.maxPoolSize())
                 .withHttpProxy(this.connectionPolicy.proxy())
                 .withRequestTimeoutInMillis(this.connectionPolicy.requestTimeoutInMillis());
 
-        return factory.toHttpClientBuilder();
+        return HttpClient.createFixed(httpClientConfig);
     }
 
     private void createStoreModel(boolean subscribeRntbdStatus) {
@@ -430,12 +429,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
+    public Flux<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Database>> createDatabaseInternal(Database database, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Database>> createDatabaseInternal(Database database, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
             if (database == null) {
@@ -455,17 +454,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.create(request).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options) {
+    public Flux<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Database>> deleteDatabaseInternal(String databaseLink, RequestOptions options,
+    private Flux<ResourceResponse<Database>> deleteDatabaseInternal(String databaseLink, RequestOptions options,
                                                                           IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(databaseLink)) {
@@ -485,17 +484,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.delete(request).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in deleting a database. due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options) {
+    public Flux<ResourceResponse<Database>> readDatabase(String databaseLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Database>> readDatabaseInternal(String databaseLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Database>> readDatabaseInternal(String databaseLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(databaseLink)) {
                 throw new IllegalArgumentException("databaseLink");
@@ -513,12 +512,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.read(request).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in reading a database. due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Database>> readDatabases(FeedOptions options) {
+    public Flux<FeedResponse<Database>> readDatabases(FeedOptions options) {
         return readFeed(options, ResourceType.Database, Database.class, Paths.DATABASES_ROOT);
     }
 
@@ -559,7 +558,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private <T extends Resource> Observable<FeedResponse<T>> createQuery(
+    private <T extends Resource> Flux<FeedResponse<T>> createQuery(
             String parentResourceLink,
             SqlQuerySpec sqlQuery,
             FeedOptions options,
@@ -570,33 +569,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         UUID activityId = Utils.randomUUID();
         IDocumentQueryClient queryClient = DocumentQueryClientImpl(RxDocumentClientImpl.this);
-        Observable<? extends IDocumentQueryExecutionContext<T>> executionContext =
+        Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
-        return executionContext.single().flatMap(ex -> {
-            return ex.executeAsync();
-        });
+        return executionContext.flatMap(IDocumentQueryExecutionContext::executeAsync);
     }
 
 
     @Override
-    public Observable<FeedResponse<Database>> queryDatabases(String query, FeedOptions options) {
+    public Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
 
     @Override
-    public Observable<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+    public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
         return createQuery(Paths.DATABASES_ROOT, querySpec, options, Database.class, ResourceType.Database);
     }
 
     @Override
-    public Observable<ResourceResponse<DocumentCollection>> createCollection(String databaseLink,
+    public Flux<ResourceResponse<DocumentCollection>> createCollection(String databaseLink,
                                                                              DocumentCollection collection, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(databaseLink, collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<DocumentCollection>> createCollectionInternal(String databaseLink,
+    private Flux<ResourceResponse<DocumentCollection>> createCollectionInternal(String databaseLink,
                                                                                       DocumentCollection collection, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(databaseLink)) {
@@ -628,18 +625,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     });
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection,
+    public Flux<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection,
                                                                               RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<DocumentCollection>> replaceCollectionInternal(DocumentCollection collection,
+    private Flux<ResourceResponse<DocumentCollection>> replaceCollectionInternal(DocumentCollection collection,
                                                                                        RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (collection == null) {
@@ -673,18 +670,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a collection. due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink,
+    public Flux<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink,
                                                                              RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<DocumentCollection>> deleteCollectionInternal(String collectionLink,
+    private Flux<ResourceResponse<DocumentCollection>> deleteCollectionInternal(String collectionLink,
                                                                                       RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(collectionLink)) {
@@ -705,26 +702,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a collection, due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
-    private Observable<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.DELETE);
         return getStoreProxy(request).processMessage(request);
     }
 
-    private Observable<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.GET);
         return getStoreProxy(request).processMessage(request);
     }
 
-    Observable<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
+    Flux<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.GET);
         return gatewayProxy.processMessage(request);
     }
 
-    private Observable<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.POST);
         return this.getStoreProxy(request).processMessage(request)
                 .map(response -> {
@@ -735,13 +732,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<DocumentCollection>> readCollection(String collectionLink,
+    public Flux<ResourceResponse<DocumentCollection>> readCollection(String collectionLink,
                                                                            RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<DocumentCollection>> readCollectionInternal(String collectionLink,
+    private Flux<ResourceResponse<DocumentCollection>> readCollectionInternal(String collectionLink,
                                                                                     RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         // we are using an observable factory here
@@ -766,12 +763,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in reading a collection, due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options) {
+    public Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(databaseLink)) {
             throw new IllegalArgumentException("databaseLink");
@@ -782,13 +779,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query,
+    public Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query,
                                                                          FeedOptions options) {
         return createQuery(databaseLink, new SqlQuerySpec(query), options, DocumentCollection.class, ResourceType.DocumentCollection);
     }
 
     @Override
-    public Observable<FeedResponse<DocumentCollection>> queryCollections(String databaseLink,
+    public Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink,
                                                                          SqlQuerySpec querySpec, FeedOptions options) {
         return createQuery(databaseLink, querySpec, options, DocumentCollection.class, ResourceType.DocumentCollection);
     }
@@ -922,10 +919,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return requestHeaders;
     }
 
-    private Single<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,
+    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,
                                                                         RequestOptions options) {
 
-        Single<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return collectionObs
                 .map(collection -> {
                     addPartitionKeyInformation(request, document, options, collection);
@@ -933,8 +930,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 });
     }
 
-    private Single<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document, RequestOptions options,
-                                                                        Single<DocumentCollection> collectionObs) {
+    private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document, RequestOptions options,
+                                                                        Mono<DocumentCollection> collectionObs) {
 
         return collectionObs.map(collection -> {
             addPartitionKeyInformation(request, document, options, collection);
@@ -1000,7 +997,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
-    private Single<RxDocumentServiceRequest> getCreateDocumentRequest(String documentCollectionLink, Object document,
+    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(String documentCollectionLink, Object document,
                                                                       RequestOptions options, boolean disableAutomaticIdGeneration, OperationType operationType) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
@@ -1025,7 +1022,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
                 typedDocument, requestHeaders, options);
 
-        Single<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
         return addPartitionKeyInformation(request, typedDocument, options, collectionObs);
     }
 
@@ -1095,13 +1092,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionContainer.setSessionToken(request, response.getResponseHeaders());
     }
 
-    private Observable<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.POST);
         RxStoreModel storeProxy = this.getStoreProxy(request);
         return storeProxy.processMessage(request);
     }
 
-    private Observable<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
 
         populateHeaders(request, HttpConstants.HttpMethods.POST);
         Map<String, String> headers = request.getHeaders();
@@ -1120,13 +1117,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 );
     }
 
-    private Observable<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
+    private Flux<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.PUT);
         return getStoreProxy(request).processMessage(request);
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
+    public Flux<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
                                                                  RequestOptions options, boolean disableAutomaticIdGeneration) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
@@ -1137,17 +1134,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
+    private Flux<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
                                                                           RequestOptions options, final boolean disableAutomaticIdGeneration, IDocumentClientRetryPolicy requestRetryPolicy) {
 
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
-            Single<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
+            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
                     options, disableAutomaticIdGeneration, OperationType.Create);
 
-            Observable<RxDocumentServiceResponse> responseObservable = requestObs
-                    .toObservable()
+            Flux<RxDocumentServiceResponse> responseObservable = requestObs
+                    .flux()
                     .flatMap(req -> {
                         if (requestRetryPolicy != null) {
                             requestRetryPolicy.onBeforeSendRequest(req);
@@ -1156,22 +1153,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return create(req);
                     });
 
-            Observable<ResourceResponse<Document>> createObservable =
-                    responseObservable
-                            .map(serviceResponse -> {
-                                return toResourceResponse(serviceResponse, Document.class);
-                            });
-
-            return createObservable;
+            return responseObservable
+                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
         } catch (Exception e) {
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
+    public Flux<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document,
                                                                  RequestOptions options, boolean disableAutomaticIdGeneration) {
 
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
@@ -1182,15 +1174,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
+    private Flux<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
                                                                           RequestOptions options, boolean disableAutomaticIdGeneration, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
-            Observable<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
-                    options, disableAutomaticIdGeneration, OperationType.Upsert).toObservable();
+            Flux<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
+                    options, disableAutomaticIdGeneration, OperationType.Upsert).flux();
 
-            Observable<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(req -> {
+            Flux<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(req);
                 }
@@ -1201,12 +1193,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a document due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
+    public Flux<ResourceResponse<Document>> replaceDocument(String documentLink, Object document,
                                                                   RequestOptions options) {
 
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
@@ -1218,7 +1210,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(documentLink, document, options, finalRequestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Object document,
+    private Flux<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Object document,
                                                                            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1235,12 +1227,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
+    public Flux<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             String collectionLink = document.selfLink();
@@ -1250,7 +1242,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, finalRequestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (document == null) {
@@ -1261,11 +1253,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
-    private Observable<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
+    private Flux<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
                                                                            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         if (document == null) {
@@ -1280,10 +1272,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         validateResource(document);
 
-        Single<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
-        Single<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, document, options, collectionObs);
+        Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
+        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, document, options, collectionObs);
 
-        return requestObs.toObservable().flatMap(req -> {
+        return requestObs.flux().flatMap(req -> {
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -1292,12 +1284,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
+    public Flux<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
+    private Flux<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
                                                                           IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1310,11 +1302,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Document, path, requestHeaders, options);
 
-            Single<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
+            Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
 
-            Single<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
 
-            return requestObs.toObservable().flatMap(req -> {
+            return requestObs.flux().flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(req);
                 }
@@ -1323,17 +1315,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
+    public Flux<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
+    private Flux<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
                                                                         IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
@@ -1346,11 +1338,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Document, path, requestHeaders, options);
 
-            Single<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 
-            Single<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
 
-            return requestObs.toObservable().flatMap(req -> {
+            return requestObs.flux().flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
                 }
@@ -1359,12 +1351,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading a document due to [{}]", e.getMessage());
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -1374,7 +1366,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Document>> queryDocuments(String collectionLink, String query,
+    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query,
                                                              FeedOptions options) {
         return queryDocuments(collectionLink, new SqlQuerySpec(query), options);
     }
@@ -1410,8 +1402,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public Single<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
-                return RxDocumentClientImpl.this.query(request).toSingle();
+            public Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
+                return RxDocumentClientImpl.this.query(request).single();
             }
 
             @Override
@@ -1421,7 +1413,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public Single<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
+            public Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
                 // TODO Auto-generated method stub
                 return null;
             }
@@ -1429,13 +1421,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
+    public Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec,
                                                              FeedOptions options) {
         return createQuery(collectionLink, querySpec, options, Document.class, ResourceType.Document);
     }
 
     @Override
-    public Observable<FeedResponse<Document>> queryDocumentChangeFeed(final String collectionLink,
+    public Flux<FeedResponse<Document>> queryDocumentChangeFeed(final String collectionLink,
                                                                       final ChangeFeedOptions changeFeedOptions) {
 
         if (StringUtils.isEmpty(collectionLink)) {
@@ -1449,7 +1441,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(final String collectionLink,
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(final String collectionLink,
                                                                               FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
@@ -1499,13 +1491,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink,
+    public Flux<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink,
                                                                                StoredProcedure storedProcedure, RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> createStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<StoredProcedure>> createStoredProcedureInternal(String collectionLink,
+    private Flux<ResourceResponse<StoredProcedure>> createStoredProcedureInternal(String collectionLink,
                                                                                         StoredProcedure storedProcedure, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -1526,18 +1518,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in creating a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink,
+    public Flux<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink,
                                                                                StoredProcedure storedProcedure, RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<StoredProcedure>> upsertStoredProcedureInternal(String collectionLink,
+    private Flux<ResourceResponse<StoredProcedure>> upsertStoredProcedureInternal(String collectionLink,
                                                                                         StoredProcedure storedProcedure, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -1558,18 +1550,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in upserting a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure,
+    public Flux<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure,
                                                                                 RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceStoredProcedureInternal(storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<StoredProcedure>> replaceStoredProcedureInternal(StoredProcedure storedProcedure,
+    private Flux<ResourceResponse<StoredProcedure>> replaceStoredProcedureInternal(StoredProcedure storedProcedure,
                                                                                          RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
@@ -1593,18 +1585,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink,
+    public Flux<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink,
                                                                                RequestOptions options) {
         IDocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteStoredProcedureInternal(storedProcedureLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<StoredProcedure>> deleteStoredProcedureInternal(String storedProcedureLink,
+    private Flux<ResourceResponse<StoredProcedure>> deleteStoredProcedureInternal(String storedProcedureLink,
                                                                                         RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -1631,18 +1623,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in deleting a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink,
+    public Flux<ResourceResponse<StoredProcedure>> readStoredProcedure(String storedProcedureLink,
                                                                              RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readStoredProcedureInternal(storedProcedureLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<StoredProcedure>> readStoredProcedureInternal(String storedProcedureLink,
+    private Flux<ResourceResponse<StoredProcedure>> readStoredProcedureInternal(String storedProcedureLink,
                                                                                       RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         // we are using an observable factory here
@@ -1670,12 +1662,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in reading a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink,
+    public Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink,
                                                                           FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
@@ -1687,30 +1679,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query,
+    public Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query,
                                                                            FeedOptions options) {
         return queryStoredProcedures(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink,
+    public Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink,
                                                                            SqlQuerySpec querySpec, FeedOptions options) {
         return createQuery(collectionLink, querySpec, options, StoredProcedure.class, ResourceType.StoredProcedure);
     }
 
     @Override
-    public Observable<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
+    public Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       Object[] procedureParams) {
         return this.executeStoredProcedure(storedProcedureLink, null, procedureParams);
     }
 
     @Override
-    public Observable<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
+    public Flux<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       RequestOptions options, Object[] procedureParams) {
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams), this.resetSessionTokenRetryPolicy.getRequestPolicy());
     }
 
-    private Observable<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
+    private Flux<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
                                                                                RequestOptions options, Object[] procedureParams) {
 
         try {
@@ -1725,7 +1717,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     procedureParams != null ? RxDocumentClientImpl.serializeProcedureParams(procedureParams) : "",
                     requestHeaders, options);
 
-            Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
             return reqObs.flatMap(req -> create(request)
                     .map(response -> {
                         this.captureSessionToken(request, response);
@@ -1734,18 +1726,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in executing a StoredProcedure due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger,
+    public Flux<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger,
                                                                RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> createTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> createTriggerInternal(String collectionLink, Trigger trigger,
+    private Flux<ResourceResponse<Trigger>> createTriggerInternal(String collectionLink, Trigger trigger,
                                                                         RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
@@ -1761,18 +1753,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Trigger due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger,
+    public Flux<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger,
                                                                RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> upsertTriggerInternal(String collectionLink, Trigger trigger,
+    private Flux<ResourceResponse<Trigger>> upsertTriggerInternal(String collectionLink, Trigger trigger,
                                                                         RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
@@ -1788,7 +1780,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Trigger due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
@@ -1812,12 +1804,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options) {
+    public Flux<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceTriggerInternal(trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> replaceTriggerInternal(Trigger trigger, RequestOptions options,
+    private Flux<ResourceResponse<Trigger>> replaceTriggerInternal(Trigger trigger, RequestOptions options,
                                                                          IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
@@ -1841,17 +1833,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a Trigger due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options) {
+    public Flux<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> deleteTriggerInternal(String triggerLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Trigger>> deleteTriggerInternal(String triggerLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(triggerLink)) {
                 throw new IllegalArgumentException("triggerLink");
@@ -1871,17 +1863,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Trigger due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options) {
+    public Flux<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> readTriggerInternal(String triggerLink, RequestOptions options,
+    private Flux<ResourceResponse<Trigger>> readTriggerInternal(String triggerLink, RequestOptions options,
                                                                       IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(triggerLink)) {
@@ -1902,12 +1894,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading a Trigger due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -1918,25 +1910,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query,
+    public Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query,
                                                            FeedOptions options) {
         return queryTriggers(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec,
+    public Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec,
                                                            FeedOptions options) {
         return createQuery(collectionLink, querySpec, options, Trigger.class, ResourceType.Trigger);
     }
 
     @Override
-    public Observable<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink,
+    public Flux<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink,
                                                                                        UserDefinedFunction udf, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> createUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<UserDefinedFunction>> createUserDefinedFunctionInternal(String collectionLink,
+    private Flux<ResourceResponse<UserDefinedFunction>> createUserDefinedFunctionInternal(String collectionLink,
                                                                                                 UserDefinedFunction udf, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -1956,18 +1948,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in creating a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink,
+    public Flux<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink,
                                                                                        UserDefinedFunction udf, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunctionInternal(String collectionLink,
+    private Flux<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunctionInternal(String collectionLink,
                                                                                                 UserDefinedFunction udf, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -1987,18 +1979,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in upserting a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf,
+    public Flux<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf,
                                                                                         RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserDefinedFunctionInternal(udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunctionInternal(UserDefinedFunction udf,
+    private Flux<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunctionInternal(UserDefinedFunction udf,
                                                                                                  RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -2026,18 +2018,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in replacing a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink,
+    public Flux<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink,
                                                                                        RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserDefinedFunctionInternal(udfLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunctionInternal(String udfLink,
+    private Flux<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunctionInternal(String udfLink,
                                                                                                 RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -2063,18 +2055,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in deleting a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink,
+    public Flux<ResourceResponse<UserDefinedFunction>> readUserDefinedFunction(String udfLink,
                                                                                      RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readUserDefinedFunctionInternal(udfLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<UserDefinedFunction>> readUserDefinedFunctionInternal(String udfLink,
+    private Flux<ResourceResponse<UserDefinedFunction>> readUserDefinedFunctionInternal(String udfLink,
                                                                                               RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
@@ -2100,12 +2092,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             // this is only in trace level to capture what's going on
             logger.debug("Failure in reading a UserDefinedFunction due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink,
+    public Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink,
                                                                                   FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
@@ -2117,24 +2109,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
+    public Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
                                                                                    String query, FeedOptions options) {
         return queryUserDefinedFunctions(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
+    public Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink,
                                                                                    SqlQuerySpec querySpec, FeedOptions options) {
         return createQuery(collectionLink, querySpec, options, UserDefinedFunction.class, ResourceType.UserDefinedFunction);
     }
 
     @Override
-    public Observable<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options) {
+    public Flux<ResourceResponse<Conflict>> readConflict(String conflictLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readConflictInternal(conflictLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Conflict>> readConflictInternal(String conflictLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Conflict>> readConflictInternal(String conflictLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (StringUtils.isEmpty(conflictLink)) {
@@ -2147,7 +2139,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Conflict, path, requestHeaders, options);
 
-            Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
 
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
@@ -2158,12 +2150,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading a Conflict due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options) {
+    public Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -2174,24 +2166,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query,
+    public Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query,
                                                              FeedOptions options) {
         return queryConflicts(collectionLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec,
+    public Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec,
                                                              FeedOptions options) {
         return createQuery(collectionLink, querySpec, options, Conflict.class, ResourceType.Conflict);
     }
 
     @Override
-    public Observable<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options) {
+    public Flux<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteConflictInternal(conflictLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Conflict>> deleteConflictInternal(String conflictLink, RequestOptions options,
+    private Flux<ResourceResponse<Conflict>> deleteConflictInternal(String conflictLink, RequestOptions options,
                                                                           IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
@@ -2205,7 +2197,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Conflict, path, requestHeaders, options);
 
-            Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
+            Flux<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).flux();
             return reqObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
                     retryPolicyInstance.onBeforeSendRequest(request);
@@ -2216,16 +2208,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Conflict due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options) {
+    public Flux<ResourceResponse<User>> createUser(String databaseLink, User user, RequestOptions options) {
         return ObservableHelper.inlineIfPossibleAsObs(() -> createUserInternal(databaseLink, user, options), this.resetSessionTokenRetryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<User>> createUserInternal(String databaseLink, User user, RequestOptions options) {
+    private Flux<ResourceResponse<User>> createUserInternal(String databaseLink, User user, RequestOptions options) {
         try {
             logger.debug("Creating a User. databaseLink [{}], user id [{}]", databaseLink, user.id());
             RxDocumentServiceRequest request = getUserRequest(databaseLink, user, options, OperationType.Create);
@@ -2233,17 +2225,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in creating a User due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options) {
+    public Flux<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserInternal(databaseLink, user, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> upsertUserInternal(String databaseLink, User user, RequestOptions options,
+    private Flux<ResourceResponse<User>> upsertUserInternal(String databaseLink, User user, RequestOptions options,
                                                                   IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             logger.debug("Upserting a User. databaseLink [{}], user id [{}]", databaseLink, user.id());
@@ -2256,7 +2248,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a User due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
@@ -2280,12 +2272,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<User>> replaceUser(User user, RequestOptions options) {
+    public Flux<ResourceResponse<User>> replaceUser(User user, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserInternal(user, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> replaceUserInternal(User user, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<User>> replaceUserInternal(User user, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (user == null) {
                 throw new IllegalArgumentException("user");
@@ -2305,17 +2297,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a User due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
 
-    public Observable<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options) {
+    public Flux<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance =  this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserInternal(userLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> deleteUserInternal(String userLink, RequestOptions options,
+    private Flux<ResourceResponse<User>> deleteUserInternal(String userLink, RequestOptions options,
                                                                   IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
@@ -2336,16 +2328,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a User due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
     @Override
-    public Observable<ResourceResponse<User>> readUser(String userLink, RequestOptions options) {
+    public Flux<ResourceResponse<User>> readUser(String userLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readUserInternal(userLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> readUserInternal(String userLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<User>> readUserInternal(String userLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(userLink)) {
                 throw new IllegalArgumentException("userLink");
@@ -2363,12 +2355,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading a User due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options) {
+    public Flux<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(databaseLink)) {
             throw new IllegalArgumentException("databaseLink");
@@ -2379,23 +2371,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options) {
+    public Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options) {
         return queryUsers(databaseLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec,
+    public Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec,
                                                      FeedOptions options) {
         return createQuery(databaseLink, querySpec, options, User.class, ResourceType.User);
     }
 
     @Override
-    public Observable<ResourceResponse<Permission>> createPermission(String userLink, Permission permission,
+    public Flux<ResourceResponse<Permission>> createPermission(String userLink, Permission permission,
                                                                      RequestOptions options) {
         return ObservableHelper.inlineIfPossibleAsObs(() -> createPermissionInternal(userLink, permission, options), this.resetSessionTokenRetryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<Permission>> createPermissionInternal(String userLink, Permission permission,
+    private Flux<ResourceResponse<Permission>> createPermissionInternal(String userLink, Permission permission,
                                                                               RequestOptions options) {
 
         try {
@@ -2406,18 +2398,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Permission due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission,
+    public Flux<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission,
                                                                      RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> upsertPermissionInternal(userLink, permission, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Permission>> upsertPermissionInternal(String userLink, Permission permission,
+    private Flux<ResourceResponse<Permission>> upsertPermissionInternal(String userLink, Permission permission,
                                                                               RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
@@ -2432,7 +2424,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Permission due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
@@ -2456,12 +2448,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options) {
+    public Flux<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> replacePermissionInternal(permission, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Permission>> replacePermissionInternal(Permission permission, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Permission>> replacePermissionInternal(Permission permission, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (permission == null) {
                 throw new IllegalArgumentException("permission");
@@ -2482,17 +2474,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a Permission due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options) {
+    public Flux<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> deletePermissionInternal(permissionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Permission>> deletePermissionInternal(String permissionLink, RequestOptions options,
+    private Flux<ResourceResponse<Permission>> deletePermissionInternal(String permissionLink, RequestOptions options,
                                                                               IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
@@ -2513,17 +2505,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Permission due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options) {
+    public Flux<ResourceResponse<Permission>> readPermission(String permissionLink, RequestOptions options) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readPermissionInternal(permissionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Permission>> readPermissionInternal(String permissionLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance ) {
+    private Flux<ResourceResponse<Permission>> readPermissionInternal(String permissionLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance ) {
         try {
             if (StringUtils.isEmpty(permissionLink)) {
                 throw new IllegalArgumentException("permissionLink");
@@ -2541,12 +2533,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading a Permission due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Permission>> readPermissions(String userLink, FeedOptions options) {
+    public Flux<FeedResponse<Permission>> readPermissions(String userLink, FeedOptions options) {
 
         if (StringUtils.isEmpty(userLink)) {
             throw new IllegalArgumentException("userLink");
@@ -2557,23 +2549,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Permission>> queryPermissions(String userLink, String query,
+    public Flux<FeedResponse<Permission>> queryPermissions(String userLink, String query,
                                                                  FeedOptions options) {
         return queryPermissions(userLink, new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<Permission>> queryPermissions(String userLink, SqlQuerySpec querySpec,
+    public Flux<FeedResponse<Permission>> queryPermissions(String userLink, SqlQuerySpec querySpec,
                                                                  FeedOptions options) {
         return createQuery(userLink, querySpec, options, Permission.class, ResourceType.Permission);
     }
 
     @Override
-    public Observable<ResourceResponse<Offer>> replaceOffer(Offer offer) {
+    public Flux<ResourceResponse<Offer>> replaceOffer(Offer offer) {
         return ObservableHelper.inlineIfPossibleAsObs(() -> replaceOfferInternal(offer), this.resetSessionTokenRetryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<Offer>> replaceOfferInternal(Offer offer) {
+    private Flux<ResourceResponse<Offer>> replaceOfferInternal(Offer offer) {
         try {
             if (offer == null) {
                 throw new IllegalArgumentException("offer");
@@ -2588,17 +2580,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in replacing an Offer due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<ResourceResponse<Offer>> readOffer(String offerLink) {
+    public Flux<ResourceResponse<Offer>> readOffer(String offerLink) {
         IDocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy();
         return ObservableHelper.inlineIfPossibleAsObs(() -> readOfferInternal(offerLink, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Offer>> readOfferInternal(String offerLink, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Flux<ResourceResponse<Offer>> readOfferInternal(String offerLink, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(offerLink)) {
                 throw new IllegalArgumentException("offerLink");
@@ -2616,17 +2608,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in reading an Offer due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
     @Override
-    public Observable<FeedResponse<Offer>> readOffers(FeedOptions options) {
+    public Flux<FeedResponse<Offer>> readOffers(FeedOptions options) {
         return readFeed(options, ResourceType.Offer, Offer.class,
                 Utils.joinPath(Paths.OFFERS_PATH_SEGMENT, null));
     }
 
-    private <T extends Resource> Observable<FeedResponse<T>> readFeedCollectionChild(FeedOptions options, ResourceType resourceType,
+    private <T extends Resource> Flux<FeedResponse<T>> readFeedCollectionChild(FeedOptions options, ResourceType resourceType,
                                                                                      Class<T> klass, String resourceLink) {
         if (options == null) {
             options = new FeedOptions();
@@ -2637,7 +2629,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final FeedOptions finalFeedOptions = options;
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(options.partitionKey());
-        Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
@@ -2648,12 +2640,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return request;
         };
 
-        Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = request -> {
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {
             return ObservableHelper.inlineIfPossibleAsObs(() -> {
-                Single<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-                Single<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, requestOptions, collectionObs);
+                Mono<DocumentCollection> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+                Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, requestOptions, collectionObs);
 
-                return requestObs.toObservable().flatMap(req -> this.readFeed(req)
+                return requestObs.flux().flatMap(req -> this.readFeed(req)
                         .map(response -> toFeedResponsePage(response, klass)));
             }, this.resetSessionTokenRetryPolicy.getRequestPolicy());
         };
@@ -2661,14 +2653,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
     }
 
-    private <T extends Resource> Observable<FeedResponse<T>> readFeed(FeedOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
+    private <T extends Resource> Flux<FeedResponse<T>> readFeed(FeedOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
         if (options == null) {
             options = new FeedOptions();
         }
 
         int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
         final FeedOptions finalFeedOptions = options;
-        Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
@@ -2679,7 +2671,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return request;
         };
 
-        Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = request -> {
+        Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc = request -> {
             return ObservableHelper.inlineIfPossibleAsObs(() -> readFeed(request).map(response -> toFeedResponsePage(response, klass)),
                     this.resetSessionTokenRetryPolicy.getRequestPolicy());
         };
@@ -2688,21 +2680,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Observable<FeedResponse<Offer>> queryOffers(String query, FeedOptions options) {
+    public Flux<FeedResponse<Offer>> queryOffers(String query, FeedOptions options) {
         return queryOffers(new SqlQuerySpec(query), options);
     }
 
     @Override
-    public Observable<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options) {
+    public Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options) {
         return createQuery(null, querySpec, options, Offer.class, ResourceType.Offer);
     }
 
     @Override
-    public Observable<DatabaseAccount> getDatabaseAccount() {
+    public Flux<DatabaseAccount> getDatabaseAccount() {
         return ObservableHelper.inlineIfPossibleAsObs(() -> getDatabaseAccountInternal(), this.resetSessionTokenRetryPolicy.getRequestPolicy());
     }
 
-    private Observable<DatabaseAccount> getDatabaseAccountInternal() {
+    private Flux<DatabaseAccount> getDatabaseAccountInternal() {
         try {
             logger.debug("Getting Database Account");
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
@@ -2713,7 +2705,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in getting Database Account due to [{}]", e.getMessage(), e);
-            return Observable.error(e);
+            return Flux.error(e);
         }
     }
 
@@ -2729,10 +2721,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return partitionKeyRangeCache;
     }
 
-    public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
-        return Observable.defer(() -> {
+    public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
+        return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
-                    ResourceType.DatabaseAccount, "", (HashMap<String, String>) null, (Object) null);
+                    ResourceType.DatabaseAccount, "", null, (Object) null);
             this.populateHeaders(request, HttpConstants.HttpMethods.GET);
 
             request.setEndpointOverride(endpoint);
@@ -2821,9 +2813,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         LifeCycleUtils.closeQuietly(this.storeClientFactory);
 
         try {
-            this.rxClient.shutdown();
+            this.reactorHttpClient.shutdown();
         } catch (Exception e) {
-            logger.warn("Failure in shutting down rxClient", e);
+            logger.warn("Failure in shutting down reactorHttpClient", e);
         }
     }
 }

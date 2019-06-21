@@ -41,15 +41,13 @@ import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.VectorSessionToken;
 import com.azure.data.cosmos.rx.FailureValidator;
 import com.google.common.collect.ImmutableList;
+import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import rx.Single;
-import rx.observers.TestSubscriber;
-import rx.subjects.PublishSubject;
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.List;
@@ -79,35 +77,27 @@ public class StoreReaderTest {
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
 
         CyclicBarrier b = new CyclicBarrier(2);
-        PublishSubject<List<URI>> subject = PublishSubject.create();
+        DirectProcessor<List<URI>> subject = DirectProcessor.create();
         CountDownLatch c = new CountDownLatch(1);
 
         List<URI> uris = ImmutableList.of(URI.create("https://localhost:5050"), URI.create("https://localhost:5051"),
                                           URI.create("https://localhost:50502"), URI.create("https://localhost:5053"));
 
-        Mockito.doAnswer(new Answer() {
+        Mockito.doAnswer(invocationOnMock -> subject.single().doOnSuccess(x -> c.countDown()).doAfterTerminate(() -> new Thread() {
             @Override
-            public Single<List<URI>> answer(InvocationOnMock invocationOnMock) throws Throwable {
-
-                return subject.toSingle().doOnSuccess(x -> c.countDown()).doAfterTerminate(() -> {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            try {
-                                b.await();
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    }.start();
-                });
+            public void run() {
+                try {
+                    b.await();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(true), Mockito.eq(true));
+        }.start())).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.eq(true), Mockito.eq(true));
         RxDocumentServiceRequest request = Mockito.mock(RxDocumentServiceRequest.class);
         storeReader.startBackgroundAddressRefresh(request);
 
         subject.onNext(uris);
-        subject.onCompleted();
+        subject.onComplete();
 
         TimeUnit.MILLISECONDS.sleep(100);
         AssertionsForClassTypes.assertThat(c.getCount()).isEqualTo(0);
@@ -180,7 +170,7 @@ public class StoreReaderTest {
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
         dsr.requestContext.timeoutHelper = timeoutHelper;
         dsr.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("1");
-        Single<List<StoreResult>> res = storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong);
+        Mono<List<StoreResult>> res = storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong);
 
         FailureValidator failureValidator = FailureValidator.builder()
                 .instanceOf(klass)
@@ -191,9 +181,9 @@ public class StoreReaderTest {
         TestSubscriber<List<StoreResult>> subscriber = new TestSubscriber<>();
         res.subscribe(subscriber);
         subscriber.awaitTerminalEvent();
-        subscriber.assertNotCompleted();
-        assertThat(subscriber.getOnErrorEvents()).hasSize(1);
-        failureValidator.validate(subscriber.getOnErrorEvents().get(0));
+        subscriber.assertNotComplete();
+        assertThat(subscriber.errorCount()).isEqualTo(1);
+        failureValidator.validate(subscriber.errors().get(0));
     }
 
     /**
@@ -258,7 +248,7 @@ public class StoreReaderTest {
 
         Mockito.doReturn(sessionToken.v).when(sessionContainer).resolvePartitionLocalSessionToken(Mockito.eq(dsr), Mockito.anyString());
 
-        Single<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
+        Mono<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
                 dsr,
                 /* includePrimary */ true,
                 /* replicaCountToRead */ 1,
@@ -335,7 +325,7 @@ public class StoreReaderTest {
 
         Mockito.doReturn(sessionToken.v).when(sessionContainer).resolvePartitionLocalSessionToken(Mockito.eq(dsr), Mockito.anyString());
 
-        Single<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
+        Mono<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
                 dsr,
                 /* includePrimary */ true,
                 /* replicaCountToRead */ 1,
@@ -404,7 +394,7 @@ public class StoreReaderTest {
 
         Mockito.doReturn(sessionToken.v).when(sessionContainer).resolvePartitionLocalSessionToken(Mockito.eq(dsr), Mockito.anyString());
 
-        Single<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
+        Mono<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
                 dsr,
                 /* includePrimary */ true,
                 /* replicaCountToRead */ 1,
@@ -466,7 +456,7 @@ public class StoreReaderTest {
 
         Mockito.doReturn(sessionToken.v).when(sessionContainer).resolvePartitionLocalSessionToken(Mockito.eq(dsr), Mockito.anyString());
 
-        Single<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
+        Mono<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(
                 dsr,
                 /* includePrimary */ true,
                 /* replicaCountToRead */ 1,
@@ -499,15 +489,15 @@ public class StoreReaderTest {
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
-        Mockito.doReturn(Single.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
               Mockito.eq(request) , Mockito.eq(false));
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
-        Mockito.doReturn(Single.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
 
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
 
-        Single<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
         StoreResultValidator validator = StoreResultValidator.create()
                 .withStoreResponse(StoreResponseValidator.create().isSameAs(storeResponse).build())
                 .build();
@@ -530,12 +520,12 @@ public class StoreReaderTest {
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
-        Mockito.doReturn(Single.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
                 Mockito.eq(request) , Mockito.eq(false));
 
-        Mockito.doReturn(Single.error(ExceptionBuilder.create().asGoneException())).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
+        Mockito.doReturn(Mono.error(ExceptionBuilder.create().asGoneException())).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
-        Single<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
 
         FailureValidator validator = FailureValidator.builder().instanceOf(GoneException.class).build();
         validateException(readResult, validator);
@@ -558,15 +548,15 @@ public class StoreReaderTest {
         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
         request.requestContext.requestChargeTracker = new RequestChargeTracker();
 
-        Mockito.doReturn(Single.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
                 Mockito.eq(request) , Mockito.eq(false));
 
         StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
-        Mockito.doReturn(Single.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
 
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
 
-        Single<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
         FailureValidator validator = FailureValidator.builder().instanceOf(GoneException.class).build();
         validateException(readResult, validator);
     }
@@ -643,7 +633,7 @@ public class StoreReaderTest {
                 .withPrimaryReplicaMove(primaryURIPriorToRefresh, primaryURIAfterRefresh).build();
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
-        Single<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
 
         if (failureFromSingle == null) {
             StoreResultValidator validator;
@@ -740,7 +730,7 @@ public class StoreReaderTest {
 
         StoreReader storeReader = new StoreReader(transportClientWrapper.transportClient, addressSelectorWrapper.addressSelector, sessionContainer);
 
-        Single<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(request, includePrimary, replicaCountToRead, true, true, readMode);
+        Mono<List<StoreResult>> readResult = storeReader.readMultipleReplicaAsync(request, includePrimary, replicaCountToRead, true, true, readMode);
 
         long expectedMinLsn =
                 responseList
@@ -772,53 +762,53 @@ public class StoreReaderTest {
                 .verifyTotalInvocations(1);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<List<StoreResult>> single,
+    public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
         TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.flux().subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
-    public static void validateSuccess(Single<StoreResult> single,
+    public static void validateSuccess(Mono<StoreResult> single,
                                        StoreResultValidator validator) {
         validateSuccess(single, validator, 10000);
     }
 
-    public static void validateSuccess(Single<StoreResult> single,
+    public static void validateSuccess(Mono<StoreResult> single,
                                        StoreResultValidator validator, long timeout) {
         TestSubscriber<StoreResult> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
         testSubscriber.assertNoErrors();
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 
-    public static <T> void validateException(Single<T> single,
+    public static <T> void validateException(Mono<T> single,
                                              FailureValidator validator, long timeout) {
         TestSubscriber<T> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.flux().subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotCompleted();
-        testSubscriber.assertTerminalEvent();
-        assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));
+        testSubscriber.assertNotComplete();
+        testSubscriber.assertTerminated();
+        assertThat(testSubscriber.errorCount()).isEqualTo(1);
+        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
-    public static <T> void validateException(Single<T> single,
+    public static <T> void validateException(Mono<T> single,
                                             FailureValidator validator) {
         validateException(single, validator, TIMEOUT);
     }

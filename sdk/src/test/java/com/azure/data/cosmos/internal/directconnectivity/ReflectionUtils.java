@@ -30,8 +30,7 @@ import com.azure.data.cosmos.directconnectivity.ServerStoreModel;
 import com.azure.data.cosmos.directconnectivity.StoreClient;
 import com.azure.data.cosmos.directconnectivity.TransportClient;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
+import com.azure.data.cosmos.internal.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
@@ -75,18 +74,13 @@ public class ReflectionUtils {
         return get(TransportClient.class, storeClient, "transportClient");
     }
 
-    public static void setTransportClient(RxDocumentClientImpl client, TransportClient transportClient) {
-        StoreClient storeClient = getStoreClient(client);
-        set(storeClient, transportClient, "transportClient");
-    }
-
-    public static CompositeHttpClient<ByteBuf, ByteBuf> getDirectHttpsHttpClient(RxDocumentClientImpl client) {
+    public static HttpClient getDirectHttpsHttpClient(RxDocumentClientImpl client) {
         TransportClient transportClient = getTransportClient(client);
         assert transportClient instanceof HttpTransportClient;
-        return get(CompositeHttpClient.class, transportClient, "httpClient");
+        return get(HttpClient.class, transportClient, "httpClient");
     }
 
-    public static void setDirectHttpsHttpClient(RxDocumentClientImpl client, CompositeHttpClient<ByteBuf, ByteBuf> newHttpClient) {
+    public static void setDirectHttpsHttpClient(RxDocumentClientImpl client, HttpClient newHttpClient) {
         TransportClient transportClient = getTransportClient(client);
         assert transportClient instanceof HttpTransportClient;
         set(transportClient, newHttpClient, "httpClient");

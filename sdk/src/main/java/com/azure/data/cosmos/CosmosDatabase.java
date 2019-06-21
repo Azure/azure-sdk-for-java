@@ -24,9 +24,7 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Paths;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
 import org.apache.commons.lang3.StringUtils;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -65,9 +63,10 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Mono} containing the single cosmos database response with the read database or an error.
      */
     public Mono<CosmosDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().readDatabase(getLink(),
+        return getDocClientWrapper().readDatabase(getLink(),
                                                                                           options.toRequestOptions())
-                .map(response -> new CosmosDatabaseResponse(response, getClient())).toSingle()));
+                .map(response -> new CosmosDatabaseResponse(response, getClient()))
+                .single();
     }
 
     /**
@@ -94,11 +93,10 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Mono} containing the single cosmos database response
      */
     public Mono<CosmosDatabaseResponse> delete(CosmosRequestOptions options) {
-        return RxJava2Adapter.singleToMono(
-                RxJavaInterop.toV2Single(getDocClientWrapper()
+        return getDocClientWrapper()
                                                  .deleteDatabase(getLink(), options.toRequestOptions())
                                                  .map(response -> new CosmosDatabaseResponse(response, getClient()))
-                                                 .toSingle()));
+                .single();
     }
 
     /* CosmosContainer operations */
@@ -133,9 +131,10 @@ public class CosmosDatabase extends CosmosResource {
      */
     public Mono<CosmosContainerResponse> createContainer(CosmosContainerSettings containerSettings,
             CosmosContainerRequestOptions options) {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().createCollection(this.getLink(),
+        return getDocClientWrapper().createCollection(this.getLink(),
                 containerSettings.getV2Collection(), options.toRequestOptions()).map(response ->
-                new CosmosContainerResponse(response, this)).toSingle()));
+                new CosmosContainerResponse(response, this))
+                .single();
     }
 
     /**
@@ -213,10 +212,9 @@ public class CosmosDatabase extends CosmosResource {
      * @return a {@link Flux} containing one or several feed response pages of read containers or an error.
      */
     public Flux<FeedResponse<CosmosContainerSettings>> listContainers(FeedOptions options) {
-        //TODO:
-        return RxJava2Adapter.flowableToFlux(RxJavaInterop.toV2Flowable(getDocClientWrapper().readCollections(getLink(), options)
+        return getDocClientWrapper().readCollections(getLink(), options)
                 .map(response-> BridgeInternal.createFeedResponse(CosmosContainerSettings.getFromV2Results(response.results()),
-                        response.responseHeaders()))));
+                        response.responseHeaders()));
     }
 
     /**
@@ -259,11 +257,11 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Flux} containing one or several feed response pages of the obtained containers or an error.
      */
     public Flux<FeedResponse<CosmosContainerSettings>> queryContainers(SqlQuerySpec querySpec, FeedOptions options){
-        return RxJava2Adapter.flowableToFlux(RxJavaInterop.toV2Flowable(getDocClientWrapper().queryCollections(getLink(), querySpec,
+        return getDocClientWrapper().queryCollections(getLink(), querySpec,
                                                                                                 options)
                 .map(response-> BridgeInternal.createFeedResponse(
                         CosmosContainerSettings.getFromV2Results(response.results()),
-                        response.responseHeaders()))));
+                        response.responseHeaders()));
     }
 
     /**
@@ -292,9 +290,9 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Mono} containing the single resource response with the created cosmos user or an error.
      */
     public Mono<CosmosUserResponse> createUser(CosmosUserSettings settings, RequestOptions options){
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().createUser(this.getLink(),
+        return getDocClientWrapper().createUser(this.getLink(),
                 settings.getV2User(), options).map(response ->
-                new CosmosUserResponse(response, this)).toSingle()));
+                new CosmosUserResponse(response, this)).single();
     }
 
     public Mono<CosmosUserResponse> upsertUser(CosmosUserSettings settings) {
@@ -312,9 +310,9 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Mono} containing the single resource response with the upserted user or an error.
      */
     public Mono<CosmosUserResponse> upsertUser(CosmosUserSettings settings, RequestOptions options){
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(getDocClientWrapper().upsertUser(this.getLink(),
+        return getDocClientWrapper().upsertUser(this.getLink(),
                 settings.getV2User(), options).map(response ->
-                new CosmosUserResponse(response, this)).toSingle()));
+                new CosmosUserResponse(response, this)).single();
     }
 
     public Flux<FeedResponse<CosmosUserSettings>> listUsers() {
@@ -332,11 +330,10 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Flux} containing one or several feed response pages of the read cosmos users or an error.
      */
     public Flux<FeedResponse<CosmosUserSettings>> listUsers(FeedOptions options){
-        return RxJava2Adapter.flowableToFlux(
-                RxJavaInterop.toV2Flowable(getDocClientWrapper()
+        return getDocClientWrapper()
                         .readUsers(getLink(), options)
                         .map(response-> BridgeInternal.createFeedResponse(CosmosUserSettings.getFromV2Results(response.results(),this),
-                                response.responseHeaders()))));
+                                response.responseHeaders()));
     }
 
     public Flux<FeedResponse<CosmosUserSettings>> queryUsers(String query, FeedOptions options){
@@ -355,12 +352,11 @@ public class CosmosDatabase extends CosmosResource {
      * @return an {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
     public Flux<FeedResponse<CosmosUserSettings>> queryUsers(SqlQuerySpec querySpec, FeedOptions options){
-        return RxJava2Adapter.flowableToFlux(
-                RxJavaInterop.toV2Flowable(getDocClientWrapper()
+        return getDocClientWrapper()
                         .queryUsers(getLink(), querySpec, options)
                         .map(response-> BridgeInternal.createFeedResponseWithQueryMetrics(
                                 CosmosUserSettings.getFromV2Results(response.results(), this),
-                                response.responseHeaders(), response.queryMetrics()))));
+                                response.responseHeaders(), response.queryMetrics()));
     }
 
     public CosmosUser getUser(String id) {
@@ -375,20 +371,18 @@ public class CosmosDatabase extends CosmosResource {
     public Mono<Integer> readProvisionedThroughput(){
         return this.read()
                 .flatMap(cosmosDatabaseResponse ->
-                        RxJava2Adapter.singleToMono(
-                                RxJavaInterop.toV2Single(getDocClientWrapper().queryOffers("select * from c where c.offerResourceId = '" +
+                        getDocClientWrapper().queryOffers("select * from c where c.offerResourceId = '" +
                                         cosmosDatabaseResponse.resourceSettings().resourceId()
-                                        + "'", new FeedOptions()).toSingle()))
+                                        + "'", new FeedOptions()).single()
                                 .flatMap(offerFeedResponse -> {
                                     if(offerFeedResponse.results().isEmpty()){
                                         return Mono.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                                                 "No offers found for the resource"));
                                     }
-                                    return RxJava2Adapter.singleToMono(
-                                            RxJavaInterop.toV2Single(getDocClientWrapper()
+                                    return getDocClientWrapper()
                                                     .readOffer(offerFeedResponse.results()
                                                             .get(0)
-                                                            .selfLink()).toSingle()));
+                                                            .selfLink()).single();
                                 })
                                 .map(cosmosContainerResponse1 -> cosmosContainerResponse1
                                         .getResource()
@@ -404,11 +398,10 @@ public class CosmosDatabase extends CosmosResource {
     public Mono<Integer> replaceProvisionedThroughputAsync(int requestUnitsPerSecond){
         return this.read()
                 .flatMap(cosmosDatabaseResponse ->
-                        RxJava2Adapter.singleToMono(
-                                RxJavaInterop.toV2Single(this.getDocClientWrapper()
+                        this.getDocClientWrapper()
                                         .queryOffers("select * from c where c.offerResourceId = '" +
                                                 cosmosDatabaseResponse.resourceSettings().resourceId()
-                                                + "'", new FeedOptions()).toSingle()))
+                                                + "'", new FeedOptions()).single()
                                 .flatMap(offerFeedResponse -> {
                                     if(offerFeedResponse.results().isEmpty()){
                                         return Mono.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
@@ -416,9 +409,8 @@ public class CosmosDatabase extends CosmosResource {
                                     }
                                     Offer offer = offerFeedResponse.results().get(0);
                                     offer.setThroughput(requestUnitsPerSecond);
-                                    return RxJava2Adapter.singleToMono(
-                                            RxJavaInterop.toV2Single(this.getDocClientWrapper()
-                                                    .replaceOffer(offer).toSingle()));
+                                    return this.getDocClientWrapper()
+                                                    .replaceOffer(offer).single();
                                 }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput()));
     }
 

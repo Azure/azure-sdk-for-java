@@ -51,6 +51,17 @@ public class CosmosTriggerSettings extends Resource {
     }
 
     /**
+     * Sets the id
+     *
+     * @param id the name of the resource.
+     * @return the current cosmos trigger settings instance
+     */
+    public CosmosTriggerSettings id(String id) {
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Get the body of the trigger.
      *
      * @return the body of the trigger.

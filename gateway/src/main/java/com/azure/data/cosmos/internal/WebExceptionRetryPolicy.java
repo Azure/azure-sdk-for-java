@@ -27,7 +27,7 @@ import com.azure.data.cosmos.directconnectivity.WebExceptionUtility;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -51,13 +51,13 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
 
     @Override
-    public Single<ShouldRetryResult> shouldRetry(Exception exception) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         Duration backoffTime = Duration.ofSeconds(0);
 
         if (!WebExceptionUtility.isWebExceptionRetriable(exception)) {
             // Have caller propagate original exception.
             this.durationTimer.stop();
-            return Single.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         // Don't penalise first retry with delay.
@@ -65,7 +65,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             int remainingSeconds = WebExceptionRetryPolicy.waitTimeInSeconds - Math.toIntExact(this.durationTimer.getTime(TimeUnit.SECONDS));
             if (remainingSeconds <= 0) {
                 this.durationTimer.stop();
-                return Single.just(ShouldRetryResult.noRetry());
+                return Mono.just(ShouldRetryResult.noRetry());
             }
 
             backoffTime = Duration.ofSeconds(Math.min(this.currentBackoffSeconds, remainingSeconds));
@@ -74,6 +74,6 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
         logger.warn("Received retriable web exception, will retry", exception);
 
-        return Single.just(ShouldRetryResult.retryAfter(backoffTime));
+        return Mono.just(ShouldRetryResult.retryAfter(backoffTime));
     }
 }

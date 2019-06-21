@@ -29,7 +29,7 @@ import com.azure.data.cosmos.directconnectivity.WebExceptionUtility;
 import org.apache.commons.collections4.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
@@ -48,7 +48,6 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
     final static int MaxRetryCount = 120;
 
     private final IDocumentClientRetryPolicy throttlingRetry;
-    private final ConnectionPoolExhaustedRetry rxNettyConnectionPoolExhaustedRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private int failoverRetryCount;
@@ -67,7 +66,6 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
                 retryOptions.maxRetryAttemptsOnThrottledRequests(),
                 retryOptions.maxRetryWaitTimeInSeconds());
-        this.rxNettyConnectionPoolExhaustedRetry = new ConnectionPoolExhaustedRetry();
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
@@ -77,16 +75,12 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
     }
 
     @Override
-    public Single<ShouldRetryResult> shouldRetry(Exception e) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         if (this.locationEndpoint == null) {
             // on before request is not invoked because Document Service Request creation failed.
             logger.error("locationEndpoint is null because ClientRetryPolicy::onBeforeRequest(.) is not invoked, " +
                                  "probably request creation failed due to invalid options, serialization setting, etc.");
-            return Single.just(ShouldRetryResult.error(e));
-        }
-
-        if (ConnectionPoolExhaustedRetry.isConnectionPoolExhaustedException(e)) {
-            return rxNettyConnectionPoolExhaustedRetry.shouldRetry(e);
+            return Mono.just(ShouldRetryResult.error(e));
         }
 
         this.retryContext = null;
@@ -122,7 +116,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         if (clientException != null && 
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
-            return Single.just(this.shouldRetryOnSessionNotAvailable());
+            return Mono.just(this.shouldRetryOnSessionNotAvailable());
         }
 
         return this.throttlingRetry.shouldRetry(e);
@@ -159,10 +153,10 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         }
     }
 
-    private Single<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest) {
+    private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest) {
         if (!this.enableEndpointDiscovery || this.failoverRetryCount > MaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
-            return Single.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         this.failoverRetryCount++;
@@ -192,7 +186,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         }
         this.retryContext = new RetryContext(this.failoverRetryCount, false);
         return this.globalEndpointManager.refreshLocationAsync(null)
-                .andThen(Single.just(ShouldRetryResult.retryAfter(retryDelay)));
+                .then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
 
     @Override

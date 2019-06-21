@@ -32,6 +32,7 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import com.google.common.collect.ArrayListMultimap;
@@ -42,7 +43,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -53,7 +54,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
@@ -98,7 +99,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.startFromBeginning(true);
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
-                .toList().toBlocking().single();
+                .collectList().block();
 
         int count = 0;
         for (int i = 0; i < changeFeedResultList.size(); i++) {
@@ -113,14 +114,13 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("the number of changes").isEqualTo(expectedDocuments.size());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 5 * TIMEOUT)
     public void changesFromPartitionKeyRangeId_FromBeginning() throws Exception {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
-                .flatMap(p -> Observable.from(p.results()), 1)
-                .map(pkr -> pkr.id())
-                .toList()
-                .toBlocking()
-                .single();
+                .flatMap(p -> Flux.fromIterable(p.results()), 1)
+                .map(Resource::id)
+                .collectList()
+                .block();
         
         assertThat(partitionKeyRangeIds.size()).isGreaterThan(1);
 
@@ -131,7 +131,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.partitionKeyRangeId(pkRangeId);
         changeFeedOption.startFromBeginning(true);
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
-                .toList().toBlocking().single();
+                .collectList().block();
         
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -159,10 +159,10 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.partitionKey(new PartitionKey(partitionKey));
 
         List<FeedResponse<Document>> changeFeedResultsList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
-                .toList()
-                .toBlocking().single();
+                .collectList()
+                .block();
 
-        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder().totalSize(0).build();
+        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
         validator.validate(changeFeedResultsList);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
                 continuationToken()).as("Response continuation should not be null").isNotNull();
@@ -172,7 +172,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void changeFeed_fromStartDate() throws Exception {
 
         //setStartDateTime is not currently supported in multimaster mode. So skipping the test
-        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().toBlocking().single())){
+        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().single().block())){
             throw new SkipException("StartTime/IfModifiedSince is not currently supported when EnableMultipleWriteLocations is set");
         }
 
@@ -190,11 +190,10 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
         waitAtleastASecond(dateTimeBeforeCreatingDoc);
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).toBlocking().single().getResource();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(),
-                changeFeedOption).toList()
-                .toBlocking().single();
+                changeFeedOption).collectList().block();
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -213,7 +212,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.partitionKey(new PartitionKey(partitionKey));
 
         List<FeedResponse<Document>> changeFeedResultsList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
-                .toList().toBlocking().single();
+                .collectList().block();
 
         assertThat(changeFeedResultsList).as("only one page").hasSize(1);
         assertThat(changeFeedResultsList.get(0).results()).as("no recent changes").isEmpty();
@@ -223,15 +222,15 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(changeFeedContinuation).as("continuation token is not empty").isNotEmpty();
 
         // create some documents
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).toBlocking().single();
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).toBlocking().single();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
 
         // READ change feed from continuation
         changeFeedOption.requestContinuation(changeFeedContinuation);
 
 
         FeedResponse<Document> changeFeedResults2 = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
-                .toBlocking().first();
+                .blockFirst();
 
         assertThat(changeFeedResults2.results()).as("change feed should contain newly inserted docs.").hasSize(2);
         assertThat(changeFeedResults2.continuationToken()).as("Response continuation should not be null").isNotNull();
@@ -241,17 +240,17 @@ public class ChangeFeedTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+                .createDocument(getCollectionLink(), docDefinition, null, false).single().block().getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
     }
 
     public List<Document> bulkInsert(AsyncDocumentClient client, List<Document> docs) {
-        ArrayList<Observable<ResourceResponse<Document>>> result = new ArrayList<Observable<ResourceResponse<Document>>>();
+        ArrayList<Flux<ResourceResponse<Document>>> result = new ArrayList<Flux<ResourceResponse<Document>>>();
         for (int i = 0; i < docs.size(); i++) {
             result.add(client.createDocument("dbs/" + createdDatabase.id() + "/colls/" + createdCollection.id(), docs.get(i), null, false));
         }
 
-        return Observable.merge(result, 100).map(r -> r.getResource()).toList().toBlocking().single();
+        return Flux.merge(Flux.fromIterable(result), 100).map(ResourceResponse::getResource).collectList().block();
     }
 
     @AfterMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

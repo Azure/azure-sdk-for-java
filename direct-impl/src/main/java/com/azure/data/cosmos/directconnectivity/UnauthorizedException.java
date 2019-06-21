@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -46,14 +46,14 @@ public class UnauthorizedException extends CosmosClientException {
     }
 
     public UnauthorizedException(String message) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+        this(message, null, null, null);
     }
 
-    public UnauthorizedException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public UnauthorizedException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
-    public UnauthorizedException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public UnauthorizedException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
@@ -63,12 +63,12 @@ public class UnauthorizedException extends CosmosClientException {
 
     public UnauthorizedException(String message,
                                  Exception innerException,
-                                 HttpResponseHeaders headers,
+                                 HttpHeaders headers,
                                  String requestUri) {
         super(String.format("%s: %s", RMResources.Unauthorized, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                requestUri != null ? requestUri.toString() : null);
+                requestUri);
     }
 }

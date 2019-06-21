@@ -39,11 +39,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class StoredProcedureCrudTest extends TestSuiteBase {
 
-    private CosmosContainer createdCollection;
-
     private CosmosClient client;
+    private CosmosContainer container;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureCrudTest(CosmosClientBuilder clientBuilder) {
@@ -53,77 +54,74 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createStoredProcedure() throws Exception {
 
-        // create a stored procedure
         CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 10;}");
 
-        Mono<CosmosStoredProcedureResponse> createObservable = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
+        Mono<CosmosStoredProcedureResponse> createObservable = container.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
 
-        // validate stored procedure creation
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
-                .withId(storedProcedureDef.id())
-                .withStoredProcedureBody("function() {var x = 10;}")
-                .notNullEtag()
-                .build();
+            .withId(storedProcedureDef.id())
+            .withStoredProcedureBody("function() {var x = 10;}")
+            .notNullEtag()
+            .build();
+
         validateSuccess(createObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readStoredProcedure() throws Exception {
-        // create a stored procedure
+
         CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 10;}");
-        CosmosStoredProcedure storedProcedure = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions())
-                .block().storedProcedure();
+        CosmosStoredProcedure storedProcedure = container.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().storedProcedure();
 
-        // read stored procedure
         waitIfNeededForReplicasToCatchUp(clientBuilder());
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
-                .withId(storedProcedureDef.id())
-                .withStoredProcedureBody("function() {var x = 10;}")
-                .notNullEtag()
-                .build();
+            .withId(storedProcedureDef.id())
+            .withStoredProcedureBody("function() {var x = 10;}")
+            .notNullEtag()
+            .build();
+
         validateSuccess(readObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteStoredProcedure() throws Exception {
-        // create a stored procedure
+
         CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 10;}");
-        CosmosStoredProcedure storedProcedure = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions())
-                .block().storedProcedure();
 
-        // delete
+        CosmosStoredProcedure storedProcedure = this.container.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().storedProcedure();
         Mono<CosmosResponse> deleteObservable = storedProcedure.delete(new CosmosStoredProcedureRequestOptions());
 
-        // validate
-        CosmosResponseValidator<CosmosResponse> validator = new CosmosResponseValidator.Builder<CosmosResponse>()
-                .nullResource()
-                .build();
+        CosmosResponseValidator<CosmosResponse> validator = new CosmosResponseValidator.Builder<>()
+            .nullResource()
+            .build();
+
         validateSuccess(deleteObservable, validator);
 
-        // attempt to read stored procedure which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.clientBuilder());
 
         Mono<CosmosStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple" }, timeOut = 10_000 * SETUP_TIMEOUT)
     public void beforeClass() {
-        client = clientBuilder().build();
-        createdCollection = getSharedMultiPartitionCosmosContainer(client);
+        assertThat(this.client).isNull();
+        this.client = clientBuilder().build();
+        this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeClose(client);
+        assertThat(this.client).isNotNull();
+        this.client.close();
     }
 }

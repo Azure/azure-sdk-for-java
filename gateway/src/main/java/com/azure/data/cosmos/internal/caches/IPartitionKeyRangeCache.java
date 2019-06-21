@@ -27,7 +27,7 @@ import com.azure.data.cosmos.internal.ICollectionRoutingMapCache;
 import com.azure.data.cosmos.internal.IRoutingMapProvider;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.Range;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -37,14 +37,14 @@ import java.util.Map;
  */
 public interface IPartitionKeyRangeCache extends IRoutingMapProvider, ICollectionRoutingMapCache {
 
-    Single<CollectionRoutingMap> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties);
+    Mono<CollectionRoutingMap> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties);
 
-    Single<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionRid, Range<String> range, boolean forceRefresh,
+    Mono<List<PartitionKeyRange>> tryGetOverlappingRangesAsync(String collectionRid, Range<String> range, boolean forceRefresh,
                                                                  Map<String, Object> properties);
 
-    Single<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId, boolean forceRefresh,
+    Mono<PartitionKeyRange> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId, boolean forceRefresh,
                                                                Map<String, Object> properties);
 
-    Single<PartitionKeyRange> tryGetRangeByPartitionKeyRangeId(String collectionRid, String partitionKeyRangeId, Map<String, Object> properties);
+    Mono<PartitionKeyRange> tryGetRangeByPartitionKeyRangeId(String collectionRid, String partitionKeyRangeId, Map<String, Object> properties);
 
 }

@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -72,7 +72,7 @@ public class PartitionKeyMismatchRetryPolicy implements IDocumentClientRetryPoli
     /// <param name="exception">Exception that occured when the operation was tried</param>
     /// <param name="cancellationToken"></param>
     /// <returns>True indicates caller should retry, False otherwise</returns>
-    public Single<ShouldRetryResult> shouldRetry(Exception exception) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         CosmosClientException clientException = Utils.as(exception, CosmosClientException.class) ;
 
         if (clientException != null && 
@@ -91,7 +91,7 @@ public class PartitionKeyMismatchRetryPolicy implements IDocumentClientRetryPoli
 
             this.retriesAttempted.incrementAndGet();
 
-            return Single.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
         } 
 
         return this.nextRetryPolicy.shouldRetry(exception);
@@ -99,7 +99,7 @@ public class PartitionKeyMismatchRetryPolicy implements IDocumentClientRetryPoli
 
 
     /* (non-Javadoc)
-     * @see com.azure.data.cosmos.internal.internal.query.IDocumentClientRetryPolicy#onBeforeSendRequest(rx.Observable)
+     * @see com.azure.data.cosmos.internal.internal.query.IDocumentClientRetryPolicy#onBeforeSendRequest(RxDocumentServiceRequest)
      */
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {

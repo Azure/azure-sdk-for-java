@@ -28,18 +28,21 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.RetryAnalyzer;
+import com.azure.data.cosmos.FeedResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 
@@ -47,7 +50,6 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
     private final static int TIMEOUT = 60000;
     private final static int SETUP_TIMEOUT = 60000;
-    private Database createdDatabase;
     private CosmosContainer createdCollection;
 
     private CosmosClient client;
@@ -57,8 +59,8 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
-    public void queryLargeDocuments() throws InterruptedException {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void queryLargeDocuments() {
 
         int cnt = 5;
 
@@ -69,11 +71,21 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
 
-        validateQuerySuccess(createdCollection.queryItems("SELECT * FROM r", options),
-            new FeedResponseListValidator.Builder().totalSize(cnt).build());
+        Flux<FeedResponse<CosmosItemProperties>> feedResponseFlux = createdCollection.queryItems("SELECT * FROM r",
+            options);
+
+        AtomicInteger totalCount = new AtomicInteger();
+        StepVerifier.create(feedResponseFlux.subscribeOn(Schedulers.single()))
+                    .thenConsumeWhile(feedResponse -> {
+                        int size = feedResponse.results().size();
+                        totalCount.addAndGet(size);
+                        return true;
+                    })
+                    .expectComplete()
+                    .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
-    private void createLargeDocument() throws InterruptedException {
+    private void createLargeDocument() {
         CosmosItemProperties docDefinition = getDocumentDefinition();
 
         //Keep size as ~ 1.999MB to account for size of other props
@@ -82,15 +94,14 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 
-        CosmosResponseValidator<CosmosItemResponse> validator = new CosmosResponseValidator.Builder<CosmosItemResponse>()
-                .withId(docDefinition.id())
-                .build();
-
-        validateSuccess(createObservable, validator);
+        StepVerifier.create(createObservable.subscribeOn(Schedulers.single()))
+                    .expectNextMatches(cosmosItemResponse -> cosmosItemResponse.properties().id().equals(docDefinition.id()))
+                    .expectComplete()
+                    .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
     @BeforeClass(groups = { "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void beforeClass() {
         client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
@@ -109,9 +120,5 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                 + "}"
                 , uuid, uuid));
         return doc;
-    }
-
-    public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 }

@@ -40,6 +40,17 @@ public class CosmosItemProperties extends Resource {
     }
 
     /**
+     * Sets the id
+     *
+     * @param id the name of the resource.
+     * @return the cosmos item properties with id set
+     */
+    public CosmosItemProperties id(String id) {
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Initialize a CosmosItemProperties object from json string.
      *
      * @param jsonString the json string that represents the document object.

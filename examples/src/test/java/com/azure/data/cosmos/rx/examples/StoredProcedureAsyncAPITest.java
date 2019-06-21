@@ -83,7 +83,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
 
         createdCollection = client
                 .createCollection("dbs/" + createdDatabase.id(), getMultiPartitionCollectionDefinition(), null)
-                .toBlocking().single().getResource();
+                .single().block().getResource();
     }
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
@@ -116,7 +116,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                         "}");
 
         storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedure, null)
-                                .toBlocking().single().getResource();
+                                .single().block().getResource();
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setScriptLoggingEnabled(true);
@@ -162,7 +162,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                         "}");
 
         storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedure, null)
-                                .toBlocking().single().getResource();
+                                .single().block().getResource();
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("Seattle"));
@@ -202,7 +202,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
                         "}");
 
         storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedure, null)
-                                .toBlocking().single().getResource();
+                                .single().block().getResource();
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setPartitionKey(new PartitionKey("Seattle"));

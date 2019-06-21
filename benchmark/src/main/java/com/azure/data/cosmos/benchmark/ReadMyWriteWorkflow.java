@@ -34,9 +34,9 @@ import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.NotFoundException;
 import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.RandomUtils;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,8 +72,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     @Override
-    protected void performWorkload(Subscriber<Document> subs, long i) throws Exception {
-        Observable<Document> obs;
+    protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i) throws Exception {
+        Flux<Document> obs;
         boolean readyMyWrite = RandomUtils.nextBoolean();
         if (readyMyWrite) {
             // will do a write and immediately upon success will either
@@ -86,14 +86,14 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                     // write a random document to cosmodb and update the cache.
                     // then try to read the document which just was written
                     obs = writeDocument()
-                            .flatMap(d -> readDocument(d));
+                            .flatMap(this::readDocument);
                     break;
                 case 1:
                     // write a random document to cosmodb and update the cache.
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> singlePartitionQuery(d)
-                                    .switchIfEmpty(Observable.error(new NotFoundException(
+                                    .switchIfEmpty(Flux.error(new NotFoundException(
                                             "couldn't find my write in a single partition query!"))));
                     break;
                 case 2:
@@ -101,7 +101,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> xPartitionQuery(generateQuery(d))
-                                    .switchIfEmpty(Observable.error(new NotFoundException(
+                                    .switchIfEmpty(Flux.error(new NotFoundException(
                                             "couldn't find my write in a cross partition query!"))));
                     break;
                 default:
@@ -127,13 +127,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                 case 2:
                     // randomly choose a document from the cache and do a single partition query
                     obs = singlePartitionQuery(cache.get(cacheKey()))
-                            .switchIfEmpty(Observable.error(new NotFoundException(
+                            .switchIfEmpty(Flux.error(new NotFoundException(
                                     "couldn't find my cached write in a single partition query!")));
                     break;
                 case 3:
                     // randomly choose a document from the cache and do a cross partition query
                     obs = xPartitionQuery(generateRandomQuery())
-                            .switchIfEmpty(Observable.error(new NotFoundException(
+                            .switchIfEmpty(Flux.error(new NotFoundException(
                                     "couldn't find my cached write in a cross partition query!")));
                     break;
                 default:
@@ -144,18 +144,18 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
         concurrencyControlSemaphore.acquire();
 
-        obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 
     private void populateCache() {
-        ArrayList<Observable<Document>> list = new ArrayList<>();
+        ArrayList<Flux<Document>> list = new ArrayList<>();
         for (int i = 0; i < cacheSize; i++) {
-            Observable<Document> observable = writeDocument(i);
+            Flux<Document> observable = writeDocument(i);
             list.add(observable);
         }
 
         logger.info("PRE-populating {} documents ....", cacheSize);
-        Observable.merge(list, configuration.getConcurrency()).toCompletable().await();
+        Flux.merge(Flux.fromIterable(list), configuration.getConcurrency()).then().block();
         logger.info("Finished pre-populating {} documents", cacheSize);
     }
 
@@ -164,7 +164,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      *
      * @return Observable of document
      */
-    private Observable<Document> writeDocument() {
+    private Flux<Document> writeDocument() {
         return writeDocument(null);
     }
 
@@ -173,7 +173,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      *
      * @return Observable of document
      */
-    private Observable<Document> writeDocument(Integer i) {
+    private Flux<Document> writeDocument(Integer i) {
         String idString = Utils.randomUUID().toString();
         String randomVal = Utils.randomUUID().toString();
         Document document = new Document();
@@ -197,7 +197,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param d document to be read
      * @return Observable of document
      */
-    private Observable<Document> readDocument(Document d) {
+    private Flux<Document> readDocument(Document d) {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(d.getString(partitionKey)));
 
@@ -234,13 +234,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param query to find document
      * @return Observable document
      */
-    private Observable<Document> xPartitionQuery(SqlQuerySpec query) {
+    private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
         FeedOptions options = new FeedOptions();
         options.maxDegreeOfParallelism(-1);
         options.enableCrossPartitionQuery(true);
 
         return client.queryDocuments(getCollectionLink(), query, options)
-                .flatMap(p -> Observable.from(p.results()));
+                .flatMap(p -> Flux.fromIterable(p.results()));
     }
 
     /**
@@ -250,7 +250,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param d document to be queried for.
      * @return Observable document
      */
-    private Observable<Document> singlePartitionQuery(Document d) {
+    private Flux<Document> singlePartitionQuery(Document d) {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey(d.get(partitionKey)));
 
@@ -258,7 +258,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                                                                    QUERY_FIELD_NAME,
                                                                    d.getString(QUERY_FIELD_NAME)));
         return client.queryDocuments(getCollectionLink(), sqlQuerySpec, options)
-                .flatMap(p -> Observable.from(p.results()));
+                .flatMap(p -> Flux.fromIterable(p.results()));
     }
 
     /**

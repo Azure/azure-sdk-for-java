@@ -57,7 +57,7 @@ import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.rx.TestConfigurations;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 public class Utils {
     public static AsyncDocumentClient housekeepingClient() {
@@ -96,7 +96,7 @@ public class Utils {
         if (client != null) {
             if (databaseId != null) {
                 try {
-                    client.deleteDatabase("/dbs/" + databaseId, null).toBlocking().single();
+                    client.deleteDatabase("/dbs/" + databaseId, null).then().block();
                 } catch (Exception e) {
                 }
             }
@@ -125,17 +125,17 @@ public class Utils {
         }
 
         @Override
-        public Observable<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
+        public Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
             return client.queryDatabases(query, null);
         }
 
         @Override
-        public Observable<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
+        public Flux<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
             return client.createDatabase(databaseDefinition, null);
         }
 
         @Override
-        public Observable<ResourceResponse<Database>> deleteDatabase(String id) {
+        public Flux<ResourceResponse<Database>> deleteDatabase(String id) {
 
             return client.deleteDatabase("dbs/" + id, null);
         }

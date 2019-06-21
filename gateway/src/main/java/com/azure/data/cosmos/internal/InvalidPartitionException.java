@@ -27,7 +27,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class InvalidPartitionException extends CosmosClientException {
         setSubStatus();
     }
 
-    public InvalidPartitionException(String message, HttpResponseHeaders headers, String requestUri) {
+    public InvalidPartitionException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
 
@@ -69,7 +69,7 @@ public class InvalidPartitionException extends CosmosClientException {
 
     public InvalidPartitionException(String message,
                              Exception innerException,
-                             HttpResponseHeaders headers,
+                             HttpHeaders headers,
                              String requestUri) {
         super(String.format("%s: %s", RMResources.Gone, message),
                 innerException,

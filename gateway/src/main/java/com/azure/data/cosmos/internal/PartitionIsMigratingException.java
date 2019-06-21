@@ -27,7 +27,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class PartitionIsMigratingException extends CosmosClientException {
         setSubStatus();
     }
 
-    public PartitionIsMigratingException(String message, HttpResponseHeaders headers, String requestUri) {
+    public PartitionIsMigratingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
 
@@ -69,7 +69,7 @@ public class PartitionIsMigratingException extends CosmosClientException {
 
     public PartitionIsMigratingException(String message,
                                          Exception innerException,
-                                         HttpResponseHeaders headers,
+                                         HttpHeaders headers,
                                          String requestUri) {
         super(String.format("%s: %s", RMResources.Gone, message),
                 innerException,

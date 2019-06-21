@@ -23,8 +23,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Mono;
 
 public class CosmosPermission extends CosmosResource{
@@ -48,11 +46,11 @@ public class CosmosPermission extends CosmosResource{
      */
     public Mono<CosmosPermissionResponse> read(RequestOptions options) {
 
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(cosmosUser.getDatabase()
+        return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .readPermission(getLink(),options)
                 .map(response -> new CosmosPermissionResponse(response, cosmosUser))
-                .toSingle()));   
+                .single();
     }
 
     /**
@@ -68,11 +66,11 @@ public class CosmosPermission extends CosmosResource{
      */
     public Mono<CosmosPermissionResponse> replace(CosmosPermissionSettings permissionSettings, RequestOptions options) {
         
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(cosmosUser.getDatabase()
+        return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .replacePermission(permissionSettings.getV2Permissions(), options)
                 .map(response -> new CosmosPermissionResponse(response, cosmosUser))
-                .toSingle()));
+                .single();
     }
 
     /**
@@ -89,11 +87,11 @@ public class CosmosPermission extends CosmosResource{
         if(options == null){
             options = new CosmosPermissionsRequestOptions();
         }
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(cosmosUser.getDatabase()
+        return cosmosUser.getDatabase()
                 .getDocClientWrapper()
                 .deletePermission(getLink(), options.toRequestOptions())
                 .map(response -> new CosmosPermissionResponse(response, cosmosUser))
-                .toSingle()));
+                .single();
     }
 
     @Override

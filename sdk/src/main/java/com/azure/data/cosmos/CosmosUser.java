@@ -1,8 +1,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,9 +25,9 @@ public class CosmosUser extends CosmosResource {
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
     public Mono<CosmosUserResponse> read(RequestOptions options) {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(this.database.getDocClientWrapper()
+        return this.database.getDocClientWrapper()
                 .readUser(getLink(), options)
-                .map(response -> new CosmosUserResponse(response, database)).toSingle()));
+                .map(response -> new CosmosUserResponse(response, database)).single();
     }
 
     /**
@@ -40,9 +38,9 @@ public class CosmosUser extends CosmosResource {
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
     public Mono<CosmosUserResponse> replace(CosmosUserSettings userSettings, RequestOptions options) {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(this.database.getDocClientWrapper()
+        return this.database.getDocClientWrapper()
                 .replaceUser(userSettings.getV2User(), options)
-                .map(response -> new CosmosUserResponse(response, database)).toSingle()));
+                .map(response -> new CosmosUserResponse(response, database)).single();
     }
 
     /**
@@ -52,9 +50,9 @@ public class CosmosUser extends CosmosResource {
      * @return a {@link Mono} containing the single resource response with the deleted user or an error.
      */
     public Mono<CosmosUserResponse> delete(RequestOptions options) {
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(this.database.getDocClientWrapper()
+        return this.database.getDocClientWrapper()
                 .deleteUser(getLink(), options)
-                .map(response -> new CosmosUserResponse(response, database)).toSingle()));
+                .map(response -> new CosmosUserResponse(response, database)).single();
     }
 
     /**
@@ -73,10 +71,10 @@ public class CosmosUser extends CosmosResource {
             options = new CosmosPermissionsRequestOptions();
         }
         Permission permission = permissionSettings.getV2Permissions();
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(database.getDocClientWrapper()
+        return database.getDocClientWrapper()
                 .createPermission(getLink(), permission, options.toRequestOptions())
                 .map(response -> new CosmosPermissionResponse(response, this))
-                .toSingle()));
+                .single();
     }
 
     /**
@@ -95,10 +93,10 @@ public class CosmosUser extends CosmosResource {
         if(options == null){
             options = new CosmosPermissionsRequestOptions();
         }
-        return RxJava2Adapter.singleToMono(RxJavaInterop.toV2Single(database.getDocClientWrapper()
+        return database.getDocClientWrapper()
                 .upsertPermission(getLink(), permission, options.toRequestOptions())
                 .map(response -> new CosmosPermissionResponse(response, this))
-                .toSingle()));
+                .single();
     }
 
 
@@ -113,11 +111,10 @@ public class CosmosUser extends CosmosResource {
      * @return an {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
     public Flux<FeedResponse<CosmosPermissionSettings>> listPermissions(FeedOptions options) {
-        return RxJava2Adapter.flowableToFlux(
-                RxJavaInterop.toV2Flowable(getDatabase().getDocClientWrapper()
+        return getDatabase().getDocClientWrapper()
                         .readPermissions(getLink(), options)
                         .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionSettings.getFromV2Results(response.results()),
-                                response.responseHeaders()))));
+                                response.responseHeaders()));
     }
 
     /**
@@ -132,11 +129,19 @@ public class CosmosUser extends CosmosResource {
      * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
     public Flux<FeedResponse<CosmosPermissionSettings>> queryPermissions(String query, FeedOptions options) {
-        return RxJava2Adapter.flowableToFlux(
-                RxJavaInterop.toV2Flowable(getDatabase().getDocClientWrapper()
+        return getDatabase().getDocClientWrapper()
                         .queryPermissions(getLink(), query, options)
                         .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionSettings.getFromV2Results(response.results()),
-                                response.responseHeaders()))));
+                                response.responseHeaders()));
+    }
+
+    /**
+     * Get cosmos permission without making a call to backend
+     * @param id the id
+     * @return the cosmos permission
+     */
+    public CosmosPermission getPermission(String id){
+        return new CosmosPermission(id, this);
     }
     
     @Override

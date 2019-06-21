@@ -33,6 +33,7 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.QueryMetrics;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
 import com.azure.data.cosmos.internal.routing.Range;
@@ -43,7 +44,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,9 +154,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator);
     }
 
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // See: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void queryDocumentsWithPageSize() {
         String query = "SELECT * from root";
@@ -213,18 +210,14 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links: 
-    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void partitionKeyRangeId() {
         int sum = 0;
 
         for (String partitionKeyRangeId :
             CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
-                                                              .flatMap(p -> Observable.from(p.results()))
-                                                              .map(pkr -> pkr.id()).toList().toBlocking().single()) {
+                                                              .flatMap(p -> Flux.fromIterable(p.results()))
+                                                              .map(Resource::id).collectList().single().block()) {
             String query = "SELECT * from root";
             FeedOptions options = new FeedOptions();
             options.partitionKeyRangeIdInternal(partitionKeyRangeId);
@@ -279,22 +272,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * FROM c";
         
         // Get Expected
-        List<CosmosItemProperties> expectedDocs = createdDocuments
-        		.stream()
-        		.collect(Collectors.toList());
+        List<CosmosItemProperties> expectedDocs = new ArrayList<>(createdDocuments);
         assertThat(expectedDocs).isNotEmpty();
         
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 10, 100}, expectedDocs);
     }
-	
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // Links:
-    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
-    // Notes:
-    // When I've watch this method execute in the debugger and seen that the code sometimes pauses for quite a while in
-    // the middle of the second group of 21 documents. I test against a debug instance of the public emulator and so
-    // what I'm seeing could be the result of a public emulator performance issue. Of course, it might also be the
-    // result of a TCP protocol performance problem.
 
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() {

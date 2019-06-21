@@ -23,13 +23,13 @@
 package com.azure.data.cosmos.internal.caches;
 
 import org.testng.annotations.Test;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,49 +41,49 @@ public class AsyncCacheTest {
     @Test(groups = { "unit" }, timeOut = TIMEOUT)
     public void getAsync() {
         AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
-        final Func1<Integer, Single<Integer>> refreshFunc = key -> {
+        final Function<Integer, Mono<Integer>> refreshFunc = key -> {
             numberOfCacheRefreshes.incrementAndGet();
-            return Single.just(key*2);
+            return Mono.just(key*2);
         };
 
         AsyncCache<Integer, Integer> cache = new AsyncCache<>();
 
-        List<Single<Integer>> tasks = new ArrayList<>();
+        List<Mono<Integer>> tasks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks.add(cache.getAsync(key, -1, () -> refreshFunc.call(key)));
+                tasks.add(cache.getAsync(key, -1, () -> refreshFunc.apply(key)));
             }
         }
 
-        Observable<Integer> o = Observable.merge(tasks.stream().map(s -> s.toObservable()).collect(Collectors.toList()));
-        o.toList().toSingle().toBlocking().value();
+        Flux<Integer> o = Flux.merge(tasks.stream().map(Mono::flux).collect(Collectors.toList()));
+        o.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(10);
-        assertThat(cache.getAsync(2, -1, () -> refreshFunc.call(2)).toBlocking().value()).isEqualTo(4);
+        assertThat(cache.getAsync(2, -1, () -> refreshFunc.apply(2)).block()).isEqualTo(4);
 
-        Func1<Integer, Single<Integer>> refreshFunc1 = key -> {
+        Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
             numberOfCacheRefreshes.incrementAndGet();
-            return Single.just(key * 2 + 1);
+            return Mono.just(key * 2 + 1);
         };
 
-        List<Single<Integer>> tasks1 = new ArrayList<>();
+        List<Mono<Integer>> tasks1 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks1.add(cache.getAsync(key, key * 2, () -> refreshFunc1.call(key)));
+                tasks1.add(cache.getAsync(key, key * 2, () -> refreshFunc1.apply(key)));
             }
 
             for (int j = 0; j < 10; j++) {
                 int key = j;
-                tasks1.add(cache.getAsync(key, key * 2 , () -> refreshFunc1.call(key)));
+                tasks1.add(cache.getAsync(key, key * 2 , () -> refreshFunc1.apply(key)));
             }
         }
 
-        Observable<Integer> o1 = Observable.merge(tasks1.stream().map(s -> s.toObservable()).collect(Collectors.toList()));
-        o1.toList().toSingle().toBlocking().value();
+        Flux<Integer> o1 = Flux.merge(tasks1.stream().map(Mono::flux).collect(Collectors.toList()));
+        o1.collectList().single().block();
 
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
-        assertThat(cache.getAsync(2, -1, () -> refreshFunc.call(2)).toBlocking().value()).isEqualTo(5);
+        assertThat(cache.getAsync(2, -1, () -> refreshFunc.apply(2)).block()).isEqualTo(5);
     }
 }

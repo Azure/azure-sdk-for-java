@@ -53,7 +53,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         storedProcedure.id(UUID.randomUUID().toString());
         storedProcedure.setBody("function() {var x = 10;}");
 
-        Observable<ResourceResponse<StoredProcedure>> createObservable = client
+        Flux<ResourceResponse<StoredProcedure>> createObservable = client
                 .createStoredProcedure(getCollectionLink(), storedProcedure, null);
 
         ResourceResponseValidator<StoredProcedure> validator = new ResourceResponseValidator.Builder<StoredProcedure>()
@@ -130,7 +130,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey("dummy"));
         StoredProcedureResponse storedProcedureResponse =  client
-                .executeStoredProcedure(storedProcLink, options, null).toBlocking().single();
+                .executeStoredProcedure(storedProcLink, options, null).single().block();
 
         assertThat(storedProcedureResponse.getStatusCode()).isEqualTo(200);
 
@@ -145,7 +145,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     public void create() {
         final Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client.createDocument(
+        Flux<ResourceResponse<Document>> createObservable = client.createDocument(
             this.getCollectionLink(), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -163,7 +163,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void read() throws Exception {
         Document docDefinition = this.getDocumentDefinition();
-        Document document = client.createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+        Document document = client.createDocument(getCollectionLink(), docDefinition, null, false).single().block().getResource();
 
         // give times to replicas to catch up after a write
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -195,8 +195,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         final Document docDefinition = getDocumentDefinition();
 
         final Document document = client.createDocument(getCollectionLink(), docDefinition, null, false)
-            .toBlocking()
             .single()
+            .block()
             .getResource();
 
         // give times to replicas to catch up after a write
@@ -233,7 +233,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             documentList.add(docDefinition);
         }
 
-        documentList = bulkInsert(client, getCollectionLink(), documentList).map(ResourceResponse::getResource).toList().toBlocking().single();
+        documentList = bulkInsert(client, getCollectionLink(), documentList).map(ResourceResponse::getResource).collectList().single().block();
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
@@ -241,7 +241,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         options.enableCrossPartitionQuery(true);
         options.maxDegreeOfParallelism(-1);
         options.maxItemCount(100);
-        Observable<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
+        Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(documentList.size())

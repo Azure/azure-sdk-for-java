@@ -24,10 +24,10 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 public interface IAddressResolver {
-    Single<AddressInformation[]> resolveAsync(
+    Mono<AddressInformation[]> resolveAsync(
             RxDocumentServiceRequest request,
             boolean forceRefreshPartitionAddresses);
 }

@@ -32,7 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Condition;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -321,10 +321,10 @@ public class AddressSelectorWrapper {
 
                     if (forceRefresh || refreshed.get()) {
                         refreshed.set(true);
-                        return Single.just(primaryURIAfterForceRefresh);
+                        return Mono.just(primaryURIAfterForceRefresh);
                     }
 
-                    return Single.just(primaryURIBeforeForceRefresh);
+                    return Mono.just(primaryURIBeforeForceRefresh);
                 }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
 
                 Mockito.doAnswer((invocation -> {
@@ -396,9 +396,9 @@ public class AddressSelectorWrapper {
                     }
                     if (forceRefresh || refreshed.get()) {
                         refreshed.set(true);
-                        return Single.just(primary.getRight());
+                        return Mono.just(primary.getRight());
                     } else {
-                        return Single.just(primary.getLeft());
+                        return Mono.just(primary.getLeft());
                     }
 
                 }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
@@ -420,14 +420,14 @@ public class AddressSelectorWrapper {
                             b.add(primary.getRight());
                         }
                         b.addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()));
-                        return Single.just(b.build());
+                        return Mono.just(b.build());
                     } else {
                         // old
                         if (includePrimary) {
                             b.add(primary.getLeft());
                         }
                         b.addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()));
-                        return Single.just(b.build());
+                        return Mono.just(b.build());
                     }
 
                 })).when(addressSelector).resolveAllUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean(), Mockito.anyBoolean());
@@ -447,12 +447,12 @@ public class AddressSelectorWrapper {
                         refreshed.set(true);
                         b.add(primary.getRight());
                         b.addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()));
-                        return Single.just(b.build());
+                        return Mono.just(b.build());
                     } else {
                         // old
                         b.add(primary.getLeft());
                         b.addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()));
-                        return Single.just(b.build());
+                        return Mono.just(b.build());
                     }
                 })).when(addressSelector).resolveAddressesAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
 
@@ -485,7 +485,7 @@ public class AddressSelectorWrapper {
             public AddressSelectorWrapper build() {
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
-                    return Single.just(primaryAddress);
+                    return Mono.just(primaryAddress);
                 }).when(addressSelector).resolvePrimaryUriAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
 
                 Mockito.doAnswer((invocation -> {
@@ -495,15 +495,15 @@ public class AddressSelectorWrapper {
                     boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
 
                     if (includePrimary) {
-                        return Single.just(ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build());
+                        return Mono.just(ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build());
                     } else {
-                        return Single.just(secondaryAddresses);
+                        return Mono.just(secondaryAddresses);
                     }
                 })).when(addressSelector).resolveAllUriAsync(Mockito.any(), Mockito.anyBoolean(), Mockito.anyBoolean());
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    return Single.just(ImmutableList.builder()
+                    return Mono.just(ImmutableList.builder()
                                                .addAll(secondaryAddresses.stream()
                                                                .map(uri -> toAddressInformation(uri, false, protocol))
                                                                .collect(Collectors.toList()))

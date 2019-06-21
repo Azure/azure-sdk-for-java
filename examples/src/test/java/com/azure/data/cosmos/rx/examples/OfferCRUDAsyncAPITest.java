@@ -98,7 +98,7 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
 
         // CREATE the collection
         DocumentCollection createdCollection = client.createCollection("dbs/" + createdDatabase.id(),
-                                                                            getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).toBlocking().single()
+                                                                            getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).single().block()
                                                      .getResource();
 
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);

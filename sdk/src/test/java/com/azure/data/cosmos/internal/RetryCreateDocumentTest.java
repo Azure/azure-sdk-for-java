@@ -34,19 +34,18 @@ import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.rx.ResourceResponseValidator;
 import com.google.common.collect.ImmutableMap;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mockito.Matchers.anyObject;
@@ -67,32 +66,29 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
+        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).single().block();
 
         Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
+        Flux<ResourceResponse<Document>> createObservable = client
                 .createDocument(collection.selfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
-        doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
-            @Override
-            public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
-                RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
-                if (req.getOperationType() != OperationType.Create) {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                }
+        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
+            RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+            if (req.getOperationType() != OperationType.Create) {
+                return client.getOrigGatewayStoreModel().processMessage(req);
+            }
 
-                int currentAttempt = count.getAndIncrement();
-                if (currentAttempt == 0) {
-                    Map<String, String> header = ImmutableMap.of(
-                            HttpConstants.HttpHeaders.SUB_STATUS,
-                            Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));          
+            int currentAttempt = count.getAndIncrement();
+            if (currentAttempt == 0) {
+                Map<String, String> header = ImmutableMap.of(
+                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
-                    return Observable.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST, new Error() , header));
-                } else {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                }
+                return Flux.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST, new Error() , header));
+            } else {
+                return client.getOrigGatewayStoreModel().processMessage(req);
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
@@ -106,36 +102,33 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     public void createDocument_noRetryOnNonRetriableFailure() throws Exception {
 
         AtomicInteger count = new AtomicInteger();
-        doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
-            @Override
-            public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
-                RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
+            RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
 
-                if (req.getResourceType() != ResourceType.Document) {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                }
+            if (req.getResourceType() != ResourceType.Document) {
+                return client.getOrigGatewayStoreModel().processMessage(req);
+            }
 
-                int currentAttempt = count.getAndIncrement();
-                if (currentAttempt == 0) {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                } else {
-                    Map<String, String> header = ImmutableMap.of(
-                            HttpConstants.HttpHeaders.SUB_STATUS,
-                            Integer.toString(2));          
+            int currentAttempt = count.getAndIncrement();
+            if (currentAttempt == 0) {
+                return client.getOrigGatewayStoreModel().processMessage(req);
+            } else {
+                Map<String, String> header = ImmutableMap.of(
+                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        Integer.toString(2));
 
-                    return Observable.error(new CosmosClientException(1, new Error() , header));
-                }
+                return Flux.error(new CosmosClientException(1, new Error() , header));
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         // create a document to ensure collection is cached
         client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false)
-                .toBlocking()
-                .single();
+                .single()
+                .block();
 
         Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
+        Flux<ResourceResponse<Document>> createObservable = client
                 .createDocument(collection.selfLink(), docDefinition, null, false);
 
         // validate
@@ -146,37 +139,34 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
+        client.createDocument(collection.selfLink(),  getDocumentDefinition(), null, false).single().block();
         AtomicInteger count = new AtomicInteger();
 
-        doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
-            @Override
-            public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
-                RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
-                if (req.getOperationType() != OperationType.Create) {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                }
-                int currentAttempt = count.getAndIncrement();
-                if (currentAttempt == 0) {
-                    Map<String, String> header = ImmutableMap.of(
-                            HttpConstants.HttpHeaders.SUB_STATUS,
-                            Integer.toString(2));          
+        doAnswer((Answer<Flux<RxDocumentServiceResponse>>) invocation -> {
+            RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+            if (req.getOperationType() != OperationType.Create) {
+                return client.getOrigGatewayStoreModel().processMessage(req);
+            }
+            int currentAttempt = count.getAndIncrement();
+            if (currentAttempt == 0) {
+                Map<String, String> header = ImmutableMap.of(
+                        HttpConstants.HttpHeaders.SUB_STATUS,
+                        Integer.toString(2));
 
-                    return Observable.error(new CosmosClientException(1, new Error() , header));
-                } else {
-                    return client.getOrigGatewayStoreModel().processMessage(req);
-                }
+                return Flux.error(new CosmosClientException(1, new Error() , header));
+            } else {
+                return client.getOrigGatewayStoreModel().processMessage(req);
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
+        Flux<ResourceResponse<Document>> createObservable = client
                 .createDocument(collection.selfLink(), docDefinition, null, false);
         // validate
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
-        validateFailure(createObservable.timeout(100, TimeUnit.MILLISECONDS), validator);
+        validateFailure(createObservable.timeout(Duration.ofMillis(100)), validator);
     }
     
     @BeforeMethod(groups = { "simple" })

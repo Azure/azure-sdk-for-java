@@ -39,9 +39,9 @@ public interface CollectionRoutingMap {
 
     PartitionKeyRange getRangeByPartitionKeyRangeId(String partitionKeyRangeId);
 
-    Collection<PartitionKeyRange> getOverlappingRanges(Range<String> range);
+    List<PartitionKeyRange> getOverlappingRanges(Range<String> range);
 
-    Collection<PartitionKeyRange> getOverlappingRanges(Collection<Range<String>> providedPartitionKeyRanges);
+    List<PartitionKeyRange> getOverlappingRanges(Collection<Range<String>> providedPartitionKeyRanges);
 
     PartitionKeyRange tryGetRangeByPartitionKeyRangeId(String partitionKeyRangeId);
 

@@ -26,6 +26,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.QueryMetrics;
 import com.azure.data.cosmos.QueryMetricsConstants;
@@ -45,17 +46,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx.functions.Func2;
-import rx.functions.Func3;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -106,9 +106,9 @@ class DocumentProducer<T extends Resource> {
     protected final Class<T> resourceType;
     protected final PartitionKeyRange targetRange;
     protected final String collectionLink;
-    protected final Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
-    protected final Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeRequestFuncWithRetries;
-    protected final Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc;
+    protected final TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc;
+    protected final Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFuncWithRetries;
+    protected final Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc;
     protected final int pageSize;
     protected final UUID correlatedActivityId;
     public int top;
@@ -121,11 +121,11 @@ class DocumentProducer<T extends Resource> {
             IDocumentQueryClient client,
             String collectionResourceId,
             FeedOptions feedOptions,
-            Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeRequestFunc,
+            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
             String collectionLink,
-            Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc,
+            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc,
             Class<T> resourceType ,
             UUID correlatedActivityId,
             int initialPageSize, // = -1,
@@ -147,13 +147,17 @@ class DocumentProducer<T extends Resource> {
             this.fetchExecutionRangeAccumulator.beginFetchRange();
             IDocumentClientRetryPolicy retryPolicy = null;
             if (createRetryPolicyFunc != null) {
-                retryPolicy = createRetryPolicyFunc.call();
+                try {
+                    retryPolicy = createRetryPolicyFunc.call();
+                } catch (Exception e) {
+                    return Flux.error(e);
+                }
                 retryPolicy.onBeforeSendRequest(request);
             }
             return ObservableHelper.inlineIfPossibleAsObs(
                     () -> {
                         ++retries;
-                        return executeRequestFunc.call(request);
+                        return executeRequestFunc.apply(request);
                     }, retryPolicy);
         };
 
@@ -170,10 +174,10 @@ class DocumentProducer<T extends Resource> {
         this.top = top;
     }
 
-    public Observable<DocumentProducerFeedResponse> produceAsync() {
-        Func2<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
-                (token, maxItemCount) -> createRequestFunc.call(targetRange, token, maxItemCount);
-        Observable<FeedResponse<T>> obs = Paginator
+    public Flux<DocumentProducerFeedResponse> produceAsync() {
+        BiFunction<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
+                (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
+        Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
                         feedOptions, 
                         sourcePartitionCreateRequestFunc,
@@ -188,44 +192,44 @@ class DocumentProducer<T extends Resource> {
                             this.retries);
                     this.fetchSchedulingMetrics.stop();
                     return rsp;});
-        
-        return splitProof(obs.map(page -> new DocumentProducerFeedResponse(page)));
+
+        return splitProof(obs.map(DocumentProducerFeedResponse::new));
     }
 
-    private Observable<DocumentProducerFeedResponse> splitProof(Observable<DocumentProducerFeedResponse> sourceFeedResponseObservable) {
-        return sourceFeedResponseObservable.onErrorResumeNext( t -> {
+    private Flux<DocumentProducerFeedResponse> splitProof(Flux<DocumentProducerFeedResponse> sourceFeedResponseObservable) {
+        return sourceFeedResponseObservable.onErrorResume( t -> {
             CosmosClientException dce = Utils.as(t, CosmosClientException.class);
             if (dce == null || !isSplit(dce)) {
                 logger.error("Unexpected failure", t);
-                return Observable.error(t);
+                return Flux.error(t);
             }
 
             // we are dealing with Split
             logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", targetRange, dce);
-            Single<List<PartitionKeyRange>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
+            Mono<List<PartitionKeyRange>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
             // so this is resilient to split on splits.
-            Observable<DocumentProducer<T>> replacementProducers = replacementRangesObs.toObservable().flatMap(
+            Flux<DocumentProducer<T>> replacementProducers = replacementRangesObs.flux().flatMap(
                     partitionKeyRanges ->  {
                         if (logger.isDebugEnabled()) {
                             logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
                                     targetRange.toJson(),
-                                    String.join(", ", partitionKeyRanges.stream()
-                                            .map(pkr -> pkr.toJson()).collect(Collectors.toList())),
+                                    partitionKeyRanges.stream()
+                                            .map(JsonSerializable::toJson).collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken);
                         }
-                        return Observable.from(createReplacingDocumentProducersOnSplit(partitionKeyRanges));
+                        return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRanges));
                     });
 
             return produceOnSplit(replacementProducers);
         });
     }
 
-    protected Observable<DocumentProducerFeedResponse> produceOnSplit(Observable<DocumentProducer<T>> replacingDocumentProducers) {
-        return replacingDocumentProducers.flatMap(dp -> dp.produceAsync(), 1);
+    protected Flux<DocumentProducerFeedResponse> produceOnSplit(Flux<DocumentProducer<T>> replacingDocumentProducers) {
+        return replacingDocumentProducers.flatMap(DocumentProducer::produceAsync, 1);
     }
 
     private List<DocumentProducer<T>> createReplacingDocumentProducersOnSplit(List<PartitionKeyRange> partitionKeyRanges) {
@@ -257,7 +261,7 @@ class DocumentProducer<T extends Resource> {
                 top);
     }
 
-    private Single<List<PartitionKeyRange>> getReplacementRanges(Range<String> range) {
+    private Mono<List<PartitionKeyRange>> getReplacementRanges(Range<String> range) {
         return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.properties());
     }
 

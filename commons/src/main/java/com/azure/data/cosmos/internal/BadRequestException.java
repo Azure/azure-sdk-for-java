@@ -26,7 +26,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -54,14 +54,14 @@ public class BadRequestException extends CosmosClientException {
     }
 
     public BadRequestException(String message) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+        this(message, null, null, null);
     }
 
-    public BadRequestException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public BadRequestException(String message, HttpHeaders headers, String requestUrlString) {
+        this(message, null, headers, requestUrlString);
     }
 
-    public BadRequestException(String message, HttpResponseHeaders headers, URI requestUri) {
+    public BadRequestException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
@@ -71,12 +71,12 @@ public class BadRequestException extends CosmosClientException {
 
     public BadRequestException(String message,
                              Exception innerException,
-                             HttpResponseHeaders headers,
-                             String requestUri) {
+                             HttpHeaders headers,
+                             String requestUrlString) {
         super(String.format("%s: %s", RMResources.BadRequest, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.BADREQUEST,
-                requestUri != null ? requestUri.toString() : null);
+                requestUrlString);
     }
 }

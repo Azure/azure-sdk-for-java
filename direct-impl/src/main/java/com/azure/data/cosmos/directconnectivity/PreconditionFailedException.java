@@ -27,7 +27,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.util.Map;
 
@@ -57,8 +57,8 @@ public class PreconditionFailedException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.PRECONDITION_FAILED, resourceAddress);
     }
 
-    public PreconditionFailedException(String message, HttpResponseHeaders headers, String requestUri) {
-        this(message, null, headers, requestUri);
+    public PreconditionFailedException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
     public PreconditionFailedException(Exception innerException) {
@@ -67,12 +67,12 @@ public class PreconditionFailedException extends CosmosClientException {
 
     public PreconditionFailedException(String message,
                                        Exception innerException,
-                                       HttpResponseHeaders headers,
-                                       String requestUri) {
+                                       HttpHeaders headers,
+                                       String requestUriString) {
         super(String.format("%s: %s", RMResources.PreconditionFailed, message),
                 innerException,
                 HttpUtils.asMap(headers),
                 HttpConstants.StatusCodes.PRECONDITION_FAILED,
-                requestUri);
+                requestUriString);
     }
 }

@@ -32,7 +32,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.net.UnknownHostException;
 import java.time.Instant;
@@ -58,7 +58,7 @@ public class NetworkFailureTest extends TestSuiteBase {
 
             Database database = SHARED_DATABASE;
 
-            Observable<ResourceResponse<DocumentCollection>> createObservable = client
+            Flux<ResourceResponse<DocumentCollection>> createObservable = client
                     .createCollection(database.selfLink(), collectionDefinition, null);
 
 
@@ -68,7 +68,7 @@ public class NetworkFailureTest extends TestSuiteBase {
                 RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
 
                 if (request.getResourceType() == ResourceType.DocumentCollection) {
-                    return Observable.error(new UnknownHostException());
+                    return Flux.error(new UnknownHostException());
                 }
 
                 return origGatewayStoreModel.processMessage(request);

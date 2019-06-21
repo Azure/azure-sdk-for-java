@@ -35,14 +35,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class ReadFeedOffersTest extends TestSuiteBase {
 
     protected static final int FEED_TIMEOUT = 60000;
@@ -67,7 +68,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Observable<FeedResponse<Offer>> feedObservable = client.readOffers(options);
+        Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
 
         int expectedPageSize = (allOffers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
@@ -91,11 +92,11 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         }
 
         allOffers = client.readOffers(null)
-                          .map(frp -> frp.results())
-                          .toList()
-                          .map(list -> list.stream().flatMap(x -> x.stream()).collect(Collectors.toList()))
-                          .toBlocking()
-                          .single();
+                          .map(FeedResponse::results)
+                          .collectList()
+                          .map(list -> list.stream().flatMap(Collection::stream).collect(Collectors.toList()))
+                          .single()
+                          .block();
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -114,7 +115,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         partitionKeyDef.paths(paths);
         collection.setPartitionKey(partitionKeyDef);
 
-        return client.createCollection(getDatabaseLink(), collection, null).toBlocking().single().getResource();
+        return client.createCollection(getDatabaseLink(), collection, null).single().block().getResource();
     }
 
     private String getDatabaseLink() {

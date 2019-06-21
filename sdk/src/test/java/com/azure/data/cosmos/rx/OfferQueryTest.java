@@ -37,7 +37,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO: change to use external TestSuiteBase 
+//TODO: change to use external TestSuiteBase
 public class OfferQueryTest extends TestSuiteBase {
 
     public final static int SETUP_TIMEOUT = 40000;
@@ -72,9 +72,9 @@ public class OfferQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Observable<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
 
-        List<Offer> allOffers = client.readOffers(null).flatMap(f -> Observable.from(f.results())).toList().toBlocking().single();
+        List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.results())).collectList().single().block();
         List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
 
         assertThat(expectedOffers).isNotEmpty();
@@ -101,9 +101,11 @@ public class OfferQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
-        Observable<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
+        Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
-        List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Observable.from(f.results())).toList().toBlocking().single()
+        List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.results()))
+                .collectList()
+                .single().block()
                 .stream().filter(o -> collectionResourceIds.contains(o.getOfferResourceId()))
                 .collect(Collectors.toList());
 
@@ -127,7 +129,7 @@ public class OfferQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        Observable<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, options);
+        Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, options);
 
         FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
                 .containsExactly(new ArrayList<>())

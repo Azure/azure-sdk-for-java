@@ -40,8 +40,6 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.changefeed.ChangeFeedContextClient;
-import hu.akarnokd.rxjava.interop.RxJavaInterop;
-import reactor.adapter.rxjava.RxJava2Adapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -91,9 +89,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, FeedOptions feedOptions) {
-        return RxJava2Adapter.flowableToFlux(
-            RxJavaInterop.toV2Flowable(
-                this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, feedOptions)))
+        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, feedOptions)
             .subscribeOn(this.rxScheduler);
     }
 

@@ -34,7 +34,7 @@ import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -68,7 +68,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
     }
 
     @Override
-    public Single<ShouldRetryResult> shouldRetry(Exception exception) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
         CosmosClientException exceptionToThrow = null;
         Duration backoffTime = Duration.ofSeconds(0);
         Duration timeout = Duration.ofSeconds(0);
@@ -83,7 +83,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             logger.debug("Operation will NOT be retried. Current attempt {}, Exception: {} ", this.attemptCount,
                     exception);
             stopStopWatch(this.durationTimer);
-            return Single.just(ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetry());
         } else if (exception instanceof RetryWithException) {
             this.lastRetryWithException = (RetryWithException) exception;
         }
@@ -137,7 +137,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                             exception.toString());
                 }
                 stopStopWatch(this.durationTimer);
-                return Single.just(ShouldRetryResult.error(exceptionToThrow));
+                return Mono.just(ShouldRetryResult.error(exceptionToThrow));
             }
             backoffTime = Duration.ofSeconds(Math.min(Math.min(this.currentBackoffSeconds, remainingSeconds),
                     GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS));
@@ -166,7 +166,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 // for second InvalidPartitionException, stop retrying.
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                         exception.toString());
-                return Single.just(ShouldRetryResult
+                return Mono.just(ShouldRetryResult
                         .error(new CosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
             }
 
@@ -176,7 +176,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             } else {
                 logger.error("Received unexpected invalid collection exception, request should be non-null.",
                         exception);
-                return Single.just(ShouldRetryResult
+                return Mono.just(ShouldRetryResult
                         .error(new CosmosClientException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, exception)));
             }
             forceRefreshAddressCache = false;
@@ -193,7 +193,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             // from refreshing any caches.
             forceRefreshAddressCache = false;
         }
-        return Single.just(ShouldRetryResult.retryAfter(backoffTime,
+        return Mono.just(ShouldRetryResult.retryAfter(backoffTime,
                 Quadruple.with(forceRefreshAddressCache, true, timeout, currentRetryAttemptCount)));
     }
 

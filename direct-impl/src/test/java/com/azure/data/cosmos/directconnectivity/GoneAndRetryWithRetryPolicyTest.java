@@ -35,7 +35,7 @@ import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.testng.annotations.Test;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -54,30 +54,30 @@ public class GoneAndRetryWithRetryPolicyTest {
     public void shouldRetryWithGoneException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Single<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new GoneException());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.toBlocking().value();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
         assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(0);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
-        shouldRetryResult = singleShouldRetry.toBlocking().value();
+        shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
         assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(1);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
-        shouldRetryResult = singleShouldRetry.toBlocking().value();
+        shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
         assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(2);
 
         singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(new GoneException());
-        shouldRetryResult = singleShouldRetry.toBlocking().value();
+        shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
@@ -92,9 +92,9 @@ public class GoneAndRetryWithRetryPolicyTest {
     public void shouldRetryWithPartitionIsMigratingException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Single<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionIsMigratingException());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.toBlocking().value();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.forceCollectionRoutingMapRefresh).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
@@ -107,9 +107,9 @@ public class GoneAndRetryWithRetryPolicyTest {
     public void shouldRetryWithInvalidPartitionException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Single<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new InvalidPartitionException());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.toBlocking().value();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
         assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
@@ -118,8 +118,7 @@ public class GoneAndRetryWithRetryPolicyTest {
 
         goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException());
         // It will retry max till 3 attempts
-        shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).toBlocking()
-                .value();
+        shouldRetryResult = goneAndRetryWithRetryPolicy.shouldRetry(new InvalidPartitionException()).block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         CosmosClientException clientException = (CosmosClientException) shouldRetryResult.exception;
         assertThat(clientException.statusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
@@ -133,9 +132,9 @@ public class GoneAndRetryWithRetryPolicyTest {
     public void shouldRetryWithPartitionKeyRangeIsSplittingException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Single<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionKeyRangeIsSplittingException());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.toBlocking().value();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.forcePartitionKeyRangeRefresh).isTrue();
         assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
@@ -151,9 +150,9 @@ public class GoneAndRetryWithRetryPolicyTest {
     public void shouldRetryWithGenericException() {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Single<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new BadRequestException());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.toBlocking().value();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 

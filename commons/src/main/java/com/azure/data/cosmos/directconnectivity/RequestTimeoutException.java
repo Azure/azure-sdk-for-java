@@ -29,7 +29,7 @@ import com.azure.data.cosmos.Error;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
-import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
 import java.util.Map;
@@ -47,33 +47,33 @@ public class RequestTimeoutException extends CosmosClientException {
     }
 
     public RequestTimeoutException(String message, URI requestUri) {
-        this(message, (Exception) null, (HttpResponseHeaders) null, requestUri);
+        this(message, null, null, requestUri);
     }
 
     public RequestTimeoutException(String message,
                                    Exception innerException,
                                    URI requestUri,
                                    String localIpAddress) {
-        this(message(localIpAddress, message), innerException, (HttpResponseHeaders) null, requestUri);
+        this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
     public RequestTimeoutException(Exception innerException) {
-        this(RMResources.Gone, innerException, (HttpResponseHeaders) null, null);
+        this(RMResources.Gone, innerException, (HttpHeaders) null, null);
     }
 
-    public RequestTimeoutException(String message, HttpResponseHeaders headers, URI requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUri != null ? requestUri.toString() : null);
+    public RequestTimeoutException(String message, HttpHeaders headers, URI requestUrl) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUrl != null ? requestUrl.toString() : null);
     }
 
-    public RequestTimeoutException(String message, HttpResponseHeaders headers, String requestUri) {
-        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUri);
+    public RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
+        super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUriString);
     }
 
     public RequestTimeoutException(String message,
                                    Exception innerException,
-                                   HttpResponseHeaders headers,
-                                   URI requestUri) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUri != null ? requestUri.toString() : null);
+                                   HttpHeaders headers,
+                                   URI requestUrl) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUrl != null ? requestUrl.toString() : null);
     }
 
     private static String message(String localIP, String baseMessage) {

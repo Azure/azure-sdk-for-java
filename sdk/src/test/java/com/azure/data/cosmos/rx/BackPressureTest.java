@@ -82,7 +82,7 @@ public class BackPressureTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void readFeed() throws Exception {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
@@ -93,7 +93,7 @@ public class BackPressureTest extends TestSuiteBase {
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic()).subscribe(subscriber);
+        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000; // 10 seconds
 
         int i = 0;
@@ -109,7 +109,7 @@ public class BackPressureTest extends TestSuiteBase {
             // validate that only one item is returned to subscriber in each iteration
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
-            assertThat(rxClient.httpRequests.size() - subscriber.getEvents().get(0).size())
+            assertThat(rxClient.httpRequests.size() - subscriber.valueCount())
                 .isLessThanOrEqualTo(Queues.SMALL_BUFFER_SIZE);
 
             subscriber.requestMore(1);
@@ -118,10 +118,10 @@ public class BackPressureTest extends TestSuiteBase {
 
         subscriber.assertNoErrors();
         subscriber.assertComplete();
-        assertThat(subscriber.getEvents().get(0)).hasSize(createdDocuments.size());
+        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
     }
 
-    @Test(groups = { "long" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = 3 * TIMEOUT)
     public void query() throws Exception {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
@@ -132,7 +132,7 @@ public class BackPressureTest extends TestSuiteBase {
         rxClient.httpRequests.clear();
 
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.publishOn(Schedulers.elastic()).subscribe(subscriber);
+        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
 
         int i = 0;
@@ -157,12 +157,8 @@ public class BackPressureTest extends TestSuiteBase {
         subscriber.assertNoErrors();
         subscriber.assertComplete();
 
-        assertThat(subscriber.getEvents().get(0)).hasSize(createdDocuments.size());
+        assertThat(subscriber.valueCount()).isEqualTo(createdDocuments.size());
     }
-
-    // TODO: DANOBLE: Investigate DIRECT TCP performance issue
-    // NOTE: This method requires multiple SHUTDOWN_TIMEOUT intervals
-    // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
     @BeforeClass(groups = { "long" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
@@ -181,9 +177,9 @@ public class BackPressureTest extends TestSuiteBase {
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                         createdCollection.read().block().settings().resourceId())
-                        , null).first().map(FeedResponse::results).toBlocking().single().get(0);
+                        , null).take(1).map(FeedResponse::results).single().block().get(0);
         offer.setThroughput(6000);
-        offer = rxClient.replaceOffer(offer).toBlocking().single().getResource();
+        offer = rxClient.replaceOffer(offer).single().block().getResource();
         assertThat(offer.getThroughput()).isEqualTo(6000);
 
         ArrayList<CosmosItemProperties> docDefList = new ArrayList<>();

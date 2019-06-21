@@ -26,7 +26,6 @@ package com.azure.data.cosmos.directconnectivity;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
-import io.reactivex.netty.client.PoolExhaustedException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -74,9 +73,6 @@ public class WebExceptionUtilityTest {
                 },
                 {
                         new SocketTimeoutException(), false
-                },
-                {
-                        new PoolExhaustedException(), true
                 }
         };
     }

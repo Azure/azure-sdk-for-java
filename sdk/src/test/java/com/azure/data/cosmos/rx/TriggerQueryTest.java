@@ -30,6 +30,7 @@ import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosTriggerSettings;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
 import org.testng.annotations.AfterClass;
@@ -48,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TriggerQueryTest extends TestSuiteBase {
 
     private CosmosContainer createdCollection;
-    private List<CosmosTriggerSettings> createdTriggers = new ArrayList<>();
+    private static final List<CosmosTriggerSettings> createdTriggers = new ArrayList<>();
 
     private CosmosClient client;
 
@@ -77,7 +78,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerSettings> validator = new FeedResponseListValidator.Builder<CosmosTriggerSettings>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(Resource::resourceId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerSettings>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -112,7 +113,9 @@ public class TriggerQueryTest extends TestSuiteBase {
         options.enableCrossPartitionQuery(true);
         Flux<FeedResponse<CosmosTriggerSettings>> queryObservable = createdCollection.queryTriggers(query, options);
 
-        List<CosmosTriggerSettings> expectedDocs = createdTriggers;      
+        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", cosmosTriggerSettings.resourceId()));
+
+        List<CosmosTriggerSettings> expectedDocs = createdTriggers;
 
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
@@ -120,7 +123,7 @@ public class TriggerQueryTest extends TestSuiteBase {
                 .Builder<CosmosTriggerSettings>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(d -> d.resourceId())
+                        .map(Resource::resourceId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerSettings>()
@@ -154,6 +157,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         client = clientBuilder().build();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
+        createdTriggers.clear();
 
         for(int i = 0; i < 5; i++) {
             createdTriggers.add(createTrigger(createdCollection));

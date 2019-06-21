@@ -25,11 +25,10 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.RetryOptions;
 import io.netty.handler.timeout.ReadTimeoutException;
+import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
-import rx.Completable;
-import rx.Single;
-import rx.observers.TestSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
@@ -43,7 +42,7 @@ public class ClientRetryPolicyTest {
         RetryOptions retryOptions = new RetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URL("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
-        Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -55,7 +54,7 @@ public class ClientRetryPolicyTest {
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
         for (int i = 0; i < 10; i++) {
-            Single<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+            Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
 
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
@@ -73,7 +72,7 @@ public class ClientRetryPolicyTest {
         RetryOptions retryOptions = new RetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URL("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
-        Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -84,7 +83,7 @@ public class ClientRetryPolicyTest {
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
         for (int i = 0; i < 10; i++) {
-            Single<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+            Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
@@ -101,7 +100,7 @@ public class ClientRetryPolicyTest {
         RetryOptions retryOptions = new RetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
-        Mockito.doReturn(Completable.complete()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
@@ -110,7 +109,7 @@ public class ClientRetryPolicyTest {
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
 
-        Single<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
+        Mono<IRetryPolicy.ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                 .withException(exception)
                 .shouldRetry(false)
@@ -119,22 +118,22 @@ public class ClientRetryPolicyTest {
         Mockito.verifyZeroInteractions(endpointManager);
     }
 
-    public static void validateSuccess(Single<IRetryPolicy.ShouldRetryResult> single,
+    public static void validateSuccess(Mono<IRetryPolicy.ShouldRetryResult> single,
                                        ShouldRetryValidator validator) {
 
         validateSuccess(single, validator, TIMEOUT);
     }
 
-    public static void validateSuccess(Single<IRetryPolicy.ShouldRetryResult> single,
+    public static void validateSuccess(Mono<IRetryPolicy.ShouldRetryResult> single,
                                        ShouldRetryValidator validator,
                                        long timeout) {
         TestSubscriber<IRetryPolicy.ShouldRetryResult> testSubscriber = new TestSubscriber<>();
 
-        single.toObservable().subscribe(testSubscriber);
+        single.flux().subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertCompleted();
+        testSubscriber.assertComplete();
         testSubscriber.assertNoErrors();
         testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.getOnNextEvents().get(0));
+        validator.validate(testSubscriber.values().get(0));
     }
 }

@@ -57,19 +57,13 @@
     <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
     <jcommander.version>1.58</jcommander.version>
     <log4j.version>1.2.17</log4j.version>
-    <metrics.version>3.2.6</metrics.version>
+    <metrics.version>4.0.5</metrics.version>
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.36.Final</netty.version>
     <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>
     <reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>
-    <reactor-bom.version>Bismuth-RELEASE</reactor-bom.version>
-    <rxjava-extras.version>0.8.0.17</rxjava-extras.version>
-    <rxjava-guava.version>1.0.3</rxjava-guava.version>
-    <rxjava-string.version>1.1.1</rxjava-string.version>
-    <rxjava.version>1.3.8</rxjava.version>
+    <reactor-bom.version>Californium-SR7</reactor-bom.version>
     <rxjava2.version>2.2.4</rxjava2.version>
-    <rxjava2interop.verison>0.13.3</rxjava2interop.verison>
-    <rxnetty.version>0.4.20</rxnetty.version>
     <sdk-version>3.0.0-a1-SNAPSHOT</sdk-version>
     <slf4j.version>1.7.6</slf4j.version>
     <test.groups>unit</test.groups>

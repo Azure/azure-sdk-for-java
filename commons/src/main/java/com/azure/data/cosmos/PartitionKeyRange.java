@@ -54,6 +54,16 @@ public class PartitionKeyRange extends Resource {
         super(jsonString);
     }
 
+    /**
+     * Set id of partition key range
+     * @param id the name of the resource.
+     * @return the partition key range
+     */
+    public PartitionKeyRange id(String id) {
+        super.id(id);
+        return this;
+    }
+
     public PartitionKeyRange(String id, String minInclusive, String maxExclusive) {
         super();
         this.id(id);

@@ -37,19 +37,17 @@ import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import rx.Observable;
-import rx.Observable.Transformer;
-import rx.functions.Func0;
-import rx.functions.Func1;
-import rx.functions.Func3;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -74,7 +72,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
     }
 
-    public static <T extends Resource> Observable<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
@@ -107,9 +105,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     targetRanges,
                     initialPageSize,
                     feedOptions.requestContinuation());
-            return Observable.just(context);
+            return Flux.just(context);
         } catch (CosmosClientException dce) {
-            return Observable.error(dce);
+            return Flux.error(dce);
         }
     }
 
@@ -188,7 +186,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     }
 
     private static class EmptyPagesFilterTransformer<T extends Resource>
-            implements Transformer<DocumentProducer<T>.DocumentProducerFeedResponse, FeedResponse<T>> {
+            implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
 
@@ -240,8 +238,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         }
 
         @Override
-        public Observable<FeedResponse<T>> call(
-                Observable<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
+        public Flux<FeedResponse<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
+            // Emit an empty page so the downstream observables know when there are no more
+            // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.results().isEmpty()) {
                     // filter empty pages and accumulate charge
@@ -253,23 +252,20 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 // Add the request charge
                 double charge = tracker.getAndResetCharge();
                 if (charge > 0) {
-                    return plusCharge(documentProducerFeedResponse,
-                            charge);
+                    return new ValueHolder<>(plusCharge(documentProducerFeedResponse,
+                            charge));
                 } else {
-                    return documentProducerFeedResponse;
+                    return new ValueHolder<>(documentProducerFeedResponse);
                 }
-            }).concatWith(Observable.defer(() -> {
-                // Emit an empty page so the downstream observables know when there are no more
-                // results.
-                return Observable.just(null);
-            })).map(documentProducerFeedResponse -> {
+            }).concatWith(Flux.just(new ValueHolder<>(null))).map(heldValue -> {
+                DocumentProducer<T>.DocumentProducerFeedResponse documentProducerFeedResponse = heldValue.v;
                 // CREATE pairs from the stream to allow the observables downstream to "peek"
                 // 1, 2, 3, null -> (null, 1), (1, 2), (2, 3), (3, null)
-                ImmutablePair<DocumentProducer<T>.DocumentProducerFeedResponse, DocumentProducer<T>.DocumentProducerFeedResponse> previousCurrent = new ImmutablePair<DocumentProducer<T>.DocumentProducerFeedResponse, DocumentProducer<T>.DocumentProducerFeedResponse>(
+                    ImmutablePair<DocumentProducer<T>.DocumentProducerFeedResponse, DocumentProducer<T>.DocumentProducerFeedResponse> previousCurrent = new ImmutablePair<>(
                         this.previousPage,
                         documentProducerFeedResponse);
-                this.previousPage = documentProducerFeedResponse;
-                return previousCurrent;
+                    this.previousPage = documentProducerFeedResponse;
+                    return previousCurrent;
             }).skip(1).map(currentNext -> {
                 // remove the (null, 1)
                 // Add the continuation token based on the current and next page.
@@ -308,33 +304,31 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).map(documentProducerFeedResponse -> {
                 // Unwrap the documentProducerFeedResponse and get back the feedResponse
                 return documentProducerFeedResponse.pageResult;
-            }).switchIfEmpty(Observable.defer(() -> {
+            }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
-                return Observable.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
+                return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
                         headerResponse(tracker.getAndResetCharge())));
             }));
         }
     }
 
     @Override
-    public Observable<FeedResponse<T>> drainAsync(
+    public Flux<FeedResponse<T>> drainAsync(
             int maxPageSize) {
-        List<Observable<DocumentProducer<T>.DocumentProducerFeedResponse>> obs = this.documentProducers
+        List<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>> obs = this.documentProducers
                 // Get the stream.
                 .stream()
                 // Start from the left most partition first.
-                .sorted((
-                        dp1,
-                        dp2) -> dp1.targetRange.getMinInclusive().compareTo(dp2.targetRange.getMinInclusive()))
+                .sorted(Comparator.comparing(dp -> dp.targetRange.getMinInclusive()))
                 // For each partition get it's stream of results.
-                .map(dp -> dp.produceAsync())
+                .map(DocumentProducer::produceAsync)
                 // Merge results from all partitions.
                 .collect(Collectors.toList());
-        return Observable.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
+        return Flux.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker()));
     }
 
     @Override
-    public Observable<FeedResponse<T>> executeAsync() {
+    public Flux<FeedResponse<T>> executeAsync() {
         return this.drainAsync(feedOptions.maxItemCount());
     }
 
@@ -346,9 +340,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedOptions feedOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
-            Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc,
-            Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+            TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
+            Callable<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
         return new DocumentProducer<T>(client,
                 collectionRid,
                 feedOptions,

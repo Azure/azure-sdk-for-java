@@ -27,9 +27,9 @@ import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Document>> {
 
@@ -56,11 +56,11 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Docu
     }
 
     @Override
-    protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {
-        Observable<FeedResponse<Document>> obs = client.queryDocuments(getCollectionLink(), SQL_QUERY, options);
+    protected void performWorkload(BaseSubscriber<FeedResponse<Document>> baseSubscriber, long i) throws InterruptedException {
+        Flux<FeedResponse<Document>> obs = client.queryDocuments(getCollectionLink(), SQL_QUERY, options);
 
         concurrencyControlSemaphore.acquire();
 
-        obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }

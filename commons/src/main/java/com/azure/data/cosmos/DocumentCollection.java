@@ -47,6 +47,16 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
+     * Sets the id and returns the document collection
+     * @param id the name of the resource.
+     * @return
+     */
+    public DocumentCollection id(String id){
+        super.id(id);
+        return this;
+    }
+
+    /**
      * Initialize a document collection object from json string.
      *
      * @param jsonString the json string that represents the document collection.

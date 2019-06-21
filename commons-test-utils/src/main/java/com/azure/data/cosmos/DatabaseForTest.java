@@ -27,7 +27,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Observable;
+import reactor.core.publisher.Flux;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -93,7 +93,7 @@ public class DatabaseForTest {
         Database dbDef = new Database();
         dbDef.id(generateId());
 
-        Database db = client.createDatabase(dbDef).toBlocking().single().getResource();
+        Database db = client.createDatabase(dbDef).single().block().getResource();
         DatabaseForTest dbForTest = DatabaseForTest.from(db);
         assertThat(dbForTest).isNotNull();
         return dbForTest;
@@ -104,7 +104,7 @@ public class DatabaseForTest {
         List<Database> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                                  new SqlParameterCollection(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
-                .flatMap(page -> Observable.from(page.results())).toList().toBlocking().single();
+                .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
 
         for (Database db : dbs) {
             assertThat(db.id()).startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX);
@@ -113,14 +113,14 @@ public class DatabaseForTest {
 
             if (db != null && dbForTest.isStale()) {
                 logger.info("Deleting database {}", db.id());
-                client.deleteDatabase(db.id()).toBlocking().single();
+                client.deleteDatabase(db.id()).single().block();
             }
         }
     }
 
     public interface DatabaseManager {
-        Observable<FeedResponse<Database>> queryDatabases(SqlQuerySpec query);
-        Observable<ResourceResponse<Database>> createDatabase(Database databaseDefinition);
-        Observable<ResourceResponse<Database>> deleteDatabase(String id);
+        Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec query);
+        Flux<ResourceResponse<Database>> createDatabase(Database databaseDefinition);
+        Flux<ResourceResponse<Database>> deleteDatabase(String id);
     }
 }

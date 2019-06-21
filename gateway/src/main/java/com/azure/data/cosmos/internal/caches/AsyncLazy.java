@@ -24,32 +24,38 @@ package com.azure.data.cosmos.internal.caches;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.functions.Func0;
+
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.Callable;
 
 class AsyncLazy<TValue> {
 
     private final static Logger logger = LoggerFactory.getLogger(AsyncLazy.class);
 
-    private final Single<TValue> single;
+    private final Mono<TValue> single;
 
     private volatile boolean succeeded;
     private volatile boolean failed;
 
-    public AsyncLazy(Func0<Single<TValue>> func) {
-        this(Single.defer(() -> {
-            logger.debug("using Func0<Single<TValue>> {}", func);
-            return func.call();
+    public AsyncLazy(Callable<Mono<TValue>> func) {
+        this(Mono.defer(() -> {
+            logger.debug("using Function<Mono<TValue>> {}", func);
+            try {
+                return func.call();
+            } catch (Exception e) {
+                return Mono.error(e);
+            }
         }));
     }
 
     public AsyncLazy(TValue value) {
-        this.single = Single.just(value);
+        this.single = Mono.just(value);
         this.succeeded = true;
         this.failed = false;
     }
 
-    private AsyncLazy(Single<TValue> single) {
+    private AsyncLazy(Mono<TValue> single) {
         logger.debug("constructor");
         this.single = single
                 .doOnSuccess(v -> this.succeeded = true)
@@ -57,7 +63,7 @@ class AsyncLazy<TValue> {
                 .cache();
     }
 
-    public Single<TValue> single() {
+    public Mono<TValue> single() {
         return single;
     }
 

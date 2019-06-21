@@ -25,7 +25,7 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Strings;
-import rx.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -41,22 +41,22 @@ public class AddressSelector {
         this.protocol = protocol;
     }
 
-    public Single<List<URI>> resolveAllUriAsync(
+    public Mono<List<URI>> resolveAllUriAsync(
         RxDocumentServiceRequest request,
         boolean includePrimary,
         boolean forceRefresh) {
-        Single<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
+        Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
         return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().filter(a -> includePrimary || !a.isPrimary())
             .map(a -> HttpUtils.toURI(a.getPhysicalUri())).collect(Collectors.toList()));
     }
 
-    public Single<URI> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
-        Single<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
+    public Mono<URI> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
+        Mono<List<AddressInformation>> replicaAddressesObs = this.resolveAddressesAsync(request, forceAddressRefresh);
         return replicaAddressesObs.flatMap(replicaAddresses -> {
             try {
-                return Single.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
+                return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
             } catch (Exception e) {
-                return Single.error(e);
+                return Mono.error(e);
             }
         });
     }
@@ -77,19 +77,17 @@ public class AddressSelector {
         if (primaryAddress == null) {
             // Primary endpoint (of the desired protocol) was not found.
             throw new GoneException(String.format("The requested resource is no longer available at the server. Returned addresses are {%s}",
-                String.join(",", replicaAddresses.stream().map(address -> address.getPhysicalUri()).collect(Collectors.toList()))), null);
+                    replicaAddresses.stream().map(AddressInformation::getPhysicalUri).collect(Collectors.joining(","))), null);
         }
 
         return HttpUtils.toURI(primaryAddress.getPhysicalUri());
     }
 
-    public Single<List<AddressInformation>> resolveAddressesAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
-        Single<List<AddressInformation>> resolvedAddressesObs =
+    public Mono<List<AddressInformation>> resolveAddressesAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
+        Mono<List<AddressInformation>> resolvedAddressesObs =
             (this.addressResolver.resolveAsync(request, forceAddressRefresh))
                 .map(addresses -> Arrays.stream(addresses)
-                    .filter(address -> {
-                        return !Strings.isNullOrEmpty(address.getPhysicalUri()) && Strings.areEqualIgnoreCase(address.getProtocolScheme(), this.protocol.scheme());
-                    })
+                    .filter(address -> !Strings.isNullOrEmpty(address.getPhysicalUri()) && Strings.areEqualIgnoreCase(address.getProtocolScheme(), this.protocol.scheme()))
                     .collect(Collectors.toList()));
 
         return resolvedAddressesObs.map(
@@ -98,7 +96,7 @@ public class AddressSelector {
                 if (r.size() > 0) {
                     return r;
                 } else {
-                    return resolvedAddresses.stream().filter(address -> address.isPublic()).collect(Collectors.toList());
+                    return resolvedAddresses.stream().filter(AddressInformation::isPublic).collect(Collectors.toList());
                 }
             }
         );
