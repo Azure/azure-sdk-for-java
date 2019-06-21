@@ -14,6 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
 
   <name>Microsoft Azure client library for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
