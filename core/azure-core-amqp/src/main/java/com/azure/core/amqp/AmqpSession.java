@@ -13,9 +13,9 @@ import java.time.Duration;
  */
 public interface AmqpSession extends EndpointStateNotifier, Closeable {
     /**
-     * Gets the entity path for this AMQP session.
+     * Gets the name for this AMQP session.
      *
-     * @return The entity path for the AMQP session.
+     * @return The name for the AMQP session.
      */
     String getSessionName();
 
@@ -24,7 +24,7 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      *
      * @return The timeout for starting the AMQP session.
      */
-    Duration getOpenTimeout();
+    Duration getOperationTimeout();
 
     /**
      * Creates a new AMQP link that publishes events to the message broker.
@@ -41,15 +41,15 @@ public interface AmqpSession extends EndpointStateNotifier, Closeable {
      * Creates a new AMQP link that consumes events from the message broker.
      *
      * @param linkName Name of the link.
-     * @param entityPath The entity path this link connects to read events from the message broker.
-     * @param timeout Timeout required for creating and opening AMQP link.
+     * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
+     * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retry The retry policy to use when consuming messages.
      * @return A newly created AMQP link.
      */
     Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, Retry retry);
 
     /**
-     * Removes a {@link AmqpLink} with the given {@code linkName}.
+     * Removes an {@link AmqpLink} with the given {@code linkName}.
      *
      * @param linkName Name of the link to remove.
      * @return {@code true} if the link was removed; {@code false} otherwise.
