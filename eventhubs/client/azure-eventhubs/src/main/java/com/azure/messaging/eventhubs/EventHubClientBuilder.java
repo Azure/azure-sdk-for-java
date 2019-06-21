@@ -143,7 +143,7 @@ public class EventHubClientBuilder {
      * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
      *
      * @param host The fully qualified host name for the Event Hubs namespace. This is likely to be similar to
-     *         {@literal {your-namespace}.servicebus.windows.net}.
+     *         {@literal "{your-namespace}.servicebus.windows.net}".
      * @param eventHubPath The path of the specific Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the Event
      *         Hubs namespace or the requested Event Hub, depending on Azure configuration.
