@@ -85,7 +85,7 @@ public class AnomalyDetectOnTimestampResponse {
     private boolean isPositiveAnomaly;
 
     /**
-     * Confidence score of the anomaly, significiant anomalies will get higher
+     * Confidence score of the anomaly, significant anomalies will get higher
      * score.
      */
     @JsonProperty(value = "confidenceScore", required = true)
@@ -272,7 +272,7 @@ public class AnomalyDetectOnTimestampResponse {
     }
 
     /**
-     * Get confidence score of the anomaly, significiant anomalies will get higher score.
+     * Get confidence score of the anomaly, significant anomalies will get higher score.
      *
      * @return the confidenceScore value
      */
@@ -281,7 +281,7 @@ public class AnomalyDetectOnTimestampResponse {
     }
 
     /**
-     * Set confidence score of the anomaly, significiant anomalies will get higher score.
+     * Set confidence score of the anomaly, significant anomalies will get higher score.
      *
      * @param confidenceScore the confidenceScore value to set
      * @return the AnomalyDetectOnTimestampResponse object itself.
