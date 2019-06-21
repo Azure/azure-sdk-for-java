@@ -19,7 +19,8 @@ public class LinkErrorContext extends SessionErrorContext {
 
     /**
      * Creates a new instance with the AMQP link's {@code namespace} and {@code entityPath} information. Allows for
-     * optional information about the link if it was successfully open such as {@code linkCredit} and {@code trackingId}.
+     * optional information about the link if it was successfully opened such as {@code linkCredit} and
+     * {@code trackingId}.
      *
      * @param namespace The service namespace of the error context.
      * @param entityPath The remote container the AMQP receive link is fetching messages from.
