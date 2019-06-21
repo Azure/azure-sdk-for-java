@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+
 public class ReactorConnectionIntegrationTest extends ApiTestBase {
     private ReactorHandlerProvider handlerProvider;
 
@@ -62,6 +65,7 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
 
         // Act & Assert
         StepVerifier.create(connection.getCBSNode().flatMap(node -> node.authorize(tokenAudience)))
+            .assertNext(expiration -> OffsetDateTime.now(ZoneOffset.UTC).isBefore(expiration))
             .verifyComplete();
     }
 }
