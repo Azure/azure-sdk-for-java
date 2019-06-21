@@ -34,15 +34,15 @@ public class EndpointStateNotifierBaseTest {
     @Test
     public void notifyError() {
         // Arrange
-        final ErrorContext context = new ErrorContext(new IllegalStateException("bad state"), "test-namespace");
-        final ErrorContext context2 = new ErrorContext(new AmqpException(false, "test error"), "test-namespace2");
+        final Throwable error1 = new IllegalStateException("bad state");
+        final Throwable error2 = new AmqpException(false, "test error", new ErrorContext("test-namespace2"));
 
         // Act & Assert
         StepVerifier.create(notifier.getErrors())
-            .then(() -> notifier.notifyError(context))
-            .expectNext(context)
-            .then(() -> notifier.notifyError(context2))
-            .expectNext(context2)
+            .then(() -> notifier.notifyError(error1))
+            .expectNext(error1)
+            .then(() -> notifier.notifyError(error2))
+            .expectNext(error2)
             .then(() -> notifier.close())
             .verifyComplete();
     }

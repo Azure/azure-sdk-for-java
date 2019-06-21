@@ -50,13 +50,13 @@ public class HandlerTest {
     @Test
     public void propagatesErrors() {
         // Arrange
-        final Throwable exception = new AmqpException(false, "Some test message.");
-        final ErrorContext context = new ErrorContext(exception, "test namespace.");
+        final ErrorContext context = new ErrorContext("test namespace.");
+        final Throwable exception = new AmqpException(false, "Some test message.", context);
 
         // Act & Assert
         StepVerifier.create(handler.getErrors())
-            .then(() -> handler.onNext(context))
-            .expectNext(context)
+            .then(() -> handler.onNext(exception))
+            .expectNext(exception)
             .then(handler::close)
             .verifyComplete();
     }

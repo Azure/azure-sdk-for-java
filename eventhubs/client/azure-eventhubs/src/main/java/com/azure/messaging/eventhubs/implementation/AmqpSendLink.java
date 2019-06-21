@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorContext;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
@@ -32,4 +33,9 @@ public interface AmqpSendLink extends AmqpLink {
      * message.
      */
     Mono<Void> send(List<Message> messageBatch);
+
+    /**
+     * Gets the context for this AMQP send link.
+     */
+    ErrorContext getErrorContext();
 }

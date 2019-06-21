@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
+import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.EventDataUtil;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Publisher;
@@ -188,8 +189,10 @@ public class EventHubProducer implements Closeable {
         }
 
         //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
-        return events.collect(new EventDataCollector(options, 1))
-            .flatMap(list -> send(Flux.fromIterable(list)));
+        return sendLinkMono.flatMap(link -> {
+            return events.collect(new EventDataCollector(options, 1, link::getErrorContext))
+                .flatMap(list -> send(Flux.fromIterable(list)));
+        });
     }
 
     private Mono<Void> send(Flux<EventDataBatch> eventBatches) {
@@ -241,14 +244,17 @@ public class EventHubProducer implements Closeable {
         private final String partitionKey;
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
+        private final ErrorContextProvider contextProvider;
+
         private volatile EventDataBatch currentBatch;
 
-        EventDataCollector(SendOptions options, Integer maxNumberOfBatches) {
+        EventDataCollector(SendOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.maximumSizeInBytes();
             this.partitionKey = options.partitionKey();
+            this.contextProvider = contextProvider;
 
-            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey());
+            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey(), contextProvider);
         }
 
         @Override
@@ -265,11 +271,13 @@ public class EventHubProducer implements Closeable {
                 }
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
-                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
-                        "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches));
+                    final String message = String.format(Locale.US,
+                        "EventData does not fit into maximum number of batches. '%s'", maxNumberOfBatches);
+
+                    throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, contextProvider.getErrorContext());
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionKey);
+                currentBatch = new EventDataBatch(maxMessageSize, partitionKey, contextProvider);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

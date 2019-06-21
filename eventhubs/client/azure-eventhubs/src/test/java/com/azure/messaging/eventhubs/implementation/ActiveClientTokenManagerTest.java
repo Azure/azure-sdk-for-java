@@ -7,6 +7,7 @@ import com.azure.core.amqp.CBSNode;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.exception.AzureException;
 import org.junit.After;
 import org.junit.Before;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class ActiveClientTokenManagerTest {
     private static final String AUDIENCE = "an-audience-test";
-    private static final Duration REFRESH_INTERVAL = Duration.ofSeconds(2);
     private static final Duration TIMEOUT = Duration.ofSeconds(4);
 
     @Mock
@@ -48,9 +50,9 @@ public class ActiveClientTokenManagerTest {
     public void getAuthorizationResults() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
+        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(3));
 
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, REFRESH_INTERVAL);
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE);
 
         // Act & Assert
         StepVerifier.create(tokenManager.getAuthorizationResults())
@@ -71,10 +73,12 @@ public class ActiveClientTokenManagerTest {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty(), Mono.empty(), Mono.error(error));
+
+        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2),
+            getNextExpiration(2), Mono.error(error));
 
         // Act & Assert
-        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, REFRESH_INTERVAL)) {
+        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
             StepVerifier.create(tokenManager.getAuthorizationResults())
                 .then(() -> tokenManager.authorize().block(TIMEOUT))
                 .expectNext(AmqpResponseCode.ACCEPTED)
@@ -93,9 +97,9 @@ public class ActiveClientTokenManagerTest {
     public void cannotAuthorizeDisposedInstance() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty());
+        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2));
 
-        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, REFRESH_INTERVAL);
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE);
         tokenManager.authorize().then(Mono.fromRunnable(tokenManager::close)).block();
 
         // Act & Assert
@@ -112,11 +116,14 @@ public class ActiveClientTokenManagerTest {
     public void getAuthorizationResultsRetriableError() {
         // Arrange
         final Mono<CBSNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
-        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out");
-        when(cbsNode.authorize(any())).thenReturn(Mono.empty(), Mono.error(error), Mono.empty(), Mono.empty(), Mono.empty());
+        final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out",
+            new ErrorContext("Test-context-namespace"));
+
+        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2), Mono.error(error),
+            getNextExpiration(1), getNextExpiration(1), getNextExpiration(1));
 
         // Act & Assert
-        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, REFRESH_INTERVAL)) {
+        try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
             StepVerifier.create(tokenManager.getAuthorizationResults())
                 .then(() -> tokenManager.authorize().block(TIMEOUT))
                 .expectError(AmqpException.class)
@@ -128,5 +135,9 @@ public class ActiveClientTokenManagerTest {
                 .then(tokenManager::close)
                 .verifyComplete();
         }
+    }
+
+    private Mono<OffsetDateTime> getNextExpiration(long secondsToWait) {
+        return Mono.fromCallable(() -> OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(secondsToWait));
     }
 }

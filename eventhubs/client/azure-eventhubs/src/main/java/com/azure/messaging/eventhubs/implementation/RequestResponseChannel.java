@@ -60,7 +60,7 @@ class RequestResponseChannel implements Closeable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName);
+        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, host, linkName, path);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
@@ -72,7 +72,7 @@ class RequestResponseChannel implements Closeable {
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName);
+        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, host, linkName, path);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
@@ -171,10 +171,12 @@ class RequestResponseChannel implements Closeable {
         }
 
         final int statusCode = (int) message.getApplicationProperties().getValue().get(STATUS_CODE);
-        final String statusDescription = (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
 
         if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
-            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription));
+            final String statusDescription = (String) message.getApplicationProperties().getValue().get(STATUS_DESCRIPTION);
+
+            sink.error(ExceptionUtil.amqpResponseCodeToException(statusCode, statusDescription,
+                receiveLinkHandler.getErrorContext(receiveLink)));
         } else {
             sink.success(message);
         }

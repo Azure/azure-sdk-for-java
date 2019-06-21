@@ -7,6 +7,7 @@ import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
+import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -28,13 +29,15 @@ import java.util.Objects;
 final class EventDataBatch {
     private final int maxMessageSize;
     private final String partitionKey;
+    private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
     private final byte[] eventBytes;
     private int currentSize;
 
-    EventDataBatch(final int maxMessageSize, final String partitionKey) {
+    EventDataBatch(int maxMessageSize, String partitionKey, ErrorContextProvider contextProvider) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
+        this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
         this.currentSize = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
@@ -54,7 +57,9 @@ final class EventDataBatch {
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
-            throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
+            throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024),
+                contextProvider.getErrorContext());
         }
 
         if (this.currentSize + size > this.maxMessageSize) {

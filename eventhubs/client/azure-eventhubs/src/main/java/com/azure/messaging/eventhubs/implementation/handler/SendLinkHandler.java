@@ -25,8 +25,8 @@ public class SendLinkHandler extends LinkHandler {
     private final FluxSink<Integer> creditSink = creditProcessor.sink();
     private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
 
-    public SendLinkHandler(final String connectionId, final String hostname, final String senderName) {
-        super(connectionId, hostname, new ClientLogger(SendLinkHandler.class));
+    public SendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
+        super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
         this.senderName = senderName;
     }
 

@@ -18,8 +18,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,9 +44,11 @@ public class ReactorReceiverTest {
         when(event.getLink()).thenReturn(receiver);
         when(receiver.getRemoteSource()).thenReturn(new Source());
 
-        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name");
-        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience", Duration.ofSeconds(30));
-        reactorReceiver = new ReactorReceiver("test-entityPath", receiver, receiverHandler, tokenManager);
+        final String entityPath = "test-entity-path";
+        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
+            "test-receiver-name", entityPath);
+        tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode), "test-tokenAudience");
+        reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager);
     }
 
     @After

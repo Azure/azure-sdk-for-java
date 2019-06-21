@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs.implementation.handler;
 
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
+import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -13,12 +14,16 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
 
-class LinkHandler extends Handler {
+import static com.azure.messaging.eventhubs.implementation.AmqpErrorCode.TRACKING_ID_PROPERTY;
 
+abstract class LinkHandler extends Handler {
+
+    private final String entityPath;
     ClientLogger logger;
 
-    LinkHandler(final String connectionId, final String hostname, ClientLogger logger) {
+    LinkHandler(String connectionId, String hostname, String entityPath, ClientLogger logger) {
         super(connectionId, hostname);
+        this.entityPath = entityPath;
         this.logger = logger;
     }
 
@@ -67,6 +72,17 @@ class LinkHandler extends Handler {
         close();
     }
 
+    public ErrorContext getErrorContext(Link link) {
+        final String referenceId;
+        if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
+            referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
+        } else {
+            referenceId = link.getName();
+        }
+
+        return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
+    }
+
     private void processOnClose(Link link, ErrorCondition condition) {
         logger.asInfo().log("processOnClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             getConnectionId(), link.getName(),
@@ -74,8 +90,10 @@ class LinkHandler extends Handler {
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
 
         if (condition != null) {
-            final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(), condition.getDescription());
-            onNext(new ErrorContext(exception, getHostname()));
+            final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
+                condition.getDescription(), getErrorContext(link));
+
+            onNext(exception);
         }
 
         onNext(EndpointState.CLOSED);

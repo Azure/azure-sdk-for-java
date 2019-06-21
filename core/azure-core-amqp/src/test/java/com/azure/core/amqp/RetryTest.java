@@ -1,20 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.core.amqp;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
 
 public class RetryTest {
+    private final ErrorContext errorContext = new ErrorContext("test-namespace");
+
     @Test
     public void defaultRetryPolicy() {
         Retry retry = Retry.getDefaultRetry();
-        Exception exception = new AmqpException(true, "error message");
+        AmqpException exception = new AmqpException(true, "error message", errorContext);
         Duration sixtySec = Duration.ofSeconds(60);
 
         retry.incrementRetryCount();
@@ -26,7 +28,7 @@ public class RetryTest {
         Assert.assertNotNull(secondRetryInterval);
         Assert.assertTrue(secondRetryInterval.getSeconds() > firstRetryInterval.getSeconds()
             || (secondRetryInterval.getSeconds() == firstRetryInterval.getSeconds()
-                && secondRetryInterval.getNano() > firstRetryInterval.getNano()));
+            && secondRetryInterval.getNano() > firstRetryInterval.getNano()));
     }
 
     @Test
@@ -49,7 +51,7 @@ public class RetryTest {
 
     @Test
     public void isRetriable() {
-        Exception exception = new AmqpException(true, "error message");
+        Exception exception = new AmqpException(true, "error message", errorContext);
         Assert.assertTrue(Retry.isRetriableException(exception));
     }
 
@@ -62,7 +64,7 @@ public class RetryTest {
     @Test
     public void noRetryPolicy() {
         Retry noRetry = Retry.getNoRetry();
-        Exception exception = new AmqpException(true, "error message");
+        Exception exception = new AmqpException(true, "error message", errorContext);
         Duration sixtySec = Duration.ofSeconds(60);
         Duration nullDuration = noRetry.getNextRetryInterval(exception, sixtySec);
         int ct = noRetry.incrementRetryCount();
@@ -73,7 +75,7 @@ public class RetryTest {
     @Test
     public void excessMaxRetry() {
         Retry retry = Retry.getDefaultRetry();
-        Exception exception = new AmqpException(true, "error message");
+        Exception exception = new AmqpException(true, "error message", errorContext);
         Duration sixtySec = Duration.ofSeconds(60);
 
         for (int i = 0; i < Retry.DEFAULT_MAX_RETRY_COUNT; i++) {
