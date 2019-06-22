@@ -20,7 +20,7 @@ public class SendEvent {
         // 1. Going to your Event Hubs namespace in Azure Portal
         // 2. Creating an Event Hub instance
         // 3. Creating a "Shared access policy" for your Event Hub instance
-        // 3. Copying the connection string from the policy's properties.
+        // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
