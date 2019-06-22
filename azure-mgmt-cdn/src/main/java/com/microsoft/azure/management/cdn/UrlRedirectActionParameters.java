@@ -43,7 +43,7 @@ public class UrlRedirectActionParameters {
     private String customPath;
 
     /**
-     * Host to redirect. Leave empty to use use the incoming host as the
+     * Host to redirect. Leave empty to use the incoming host as the
      * destination host.
      */
     @JsonProperty(value = "customHostname")
@@ -155,7 +155,7 @@ public class UrlRedirectActionParameters {
     }
 
     /**
-     * Get host to redirect. Leave empty to use use the incoming host as the destination host.
+     * Get host to redirect. Leave empty to use the incoming host as the destination host.
      *
      * @return the customHostname value
      */
@@ -164,7 +164,7 @@ public class UrlRedirectActionParameters {
     }
 
     /**
-     * Set host to redirect. Leave empty to use use the incoming host as the destination host.
+     * Set host to redirect. Leave empty to use the incoming host as the destination host.
      *
      * @param customHostname the customHostname value to set
      * @return the UrlRedirectActionParameters object itself.
