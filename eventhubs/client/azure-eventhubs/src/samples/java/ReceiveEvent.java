@@ -32,7 +32,7 @@ public class ReceiveEvent {
         // 1. Going to your Event Hubs namespace in Azure Portal
         // 2. Creating an Event Hub instance
         // 3. Creating a "Shared access policy" for your Event Hub instance
-        // 3. Copying the connection string from the policy's properties.
+        // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
@@ -49,8 +49,8 @@ public class ReceiveEvent {
         // Create a consumer.
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page.
-        // EventPosition.latest() tells the service that we only want events that are sent to the partition after we
-        // begin listening.
+        // EventPosition.latest() tells the service we only want events that are sent to the partition after we begin
+        // listening.
         EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
             firstPartition, EventPosition.latest());
 
@@ -58,7 +58,8 @@ public class ReceiveEvent {
         // countDownLatch.
         Disposable subscription = consumer.receive().subscribe(event -> {
             String contents = UTF_8.decode(event.body()).toString();
-            System.out.println("Event received. Contents: " + contents);
+            System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
+                event.offset(), contents));
 
             countDownLatch.countDown();
         });
