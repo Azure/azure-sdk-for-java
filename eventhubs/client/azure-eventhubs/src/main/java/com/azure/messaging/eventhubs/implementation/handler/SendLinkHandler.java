@@ -49,7 +49,7 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.asInfo().log("onLinkLocalOpen senderName[{}], linkName[{}], localTarget[{}]",
+            logger.asVerbose().log("onLinkLocalOpen senderName[{}], linkName[{}], localTarget[{}]",
                 senderName, link.getName(), link.getTarget());
         }
     }
