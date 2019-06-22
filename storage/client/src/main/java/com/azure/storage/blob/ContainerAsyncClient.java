@@ -10,11 +10,15 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.models.BlobFlatListSegment;
+import com.azure.storage.blob.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobPrefix;
 import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -508,7 +512,13 @@ public final class ContainerAsyncClient {
 
     private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options,
                                                Context context, ContainersListBlobFlatSegmentResponse response){
-        Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems());
+        Flux<BlobItem> result;
+        BlobFlatListSegment segment = response.value().segment();
+        if (segment != null && segment.blobItems() != null) {
+            result = Flux.fromIterable(segment.blobItems());
+        } else {
+            result = Flux.empty();
+        }
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
@@ -591,9 +601,20 @@ public final class ContainerAsyncClient {
 
     private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
                                                Context context, ContainersListBlobHierarchySegmentResponse response){
-        Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems())
-            .concatWith(Flux.fromIterable(response.value().segment().blobPrefixes())
-                .map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
+        Flux<BlobItem> blobs;
+        Flux<BlobPrefix> prefixes;
+        BlobHierarchyListSegment segment = response.value().segment();
+        if (segment != null && segment.blobItems() != null) {
+            blobs = Flux.fromIterable(segment.blobItems());
+        } else {
+            blobs = Flux.empty();
+        }
+        if (segment != null && segment.blobItems() != null) {
+            prefixes = Flux.fromIterable(segment.blobPrefixes());
+        } else {
+            prefixes = Flux.empty();
+        }
+        Flux<BlobItem> result = blobs.concatWith(prefixes.map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.

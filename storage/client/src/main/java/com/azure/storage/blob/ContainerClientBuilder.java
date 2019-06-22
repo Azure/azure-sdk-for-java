@@ -73,10 +73,14 @@ public final class ContainerClientBuilder {
      */
     private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(containerName);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        if (configuration == null) {
+            configuration = Configuration.NONE;
+        }
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -213,7 +217,7 @@ public final class ContainerClientBuilder {
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
             endpoint(endpoint);
         }
 

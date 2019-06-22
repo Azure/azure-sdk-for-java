@@ -190,7 +190,7 @@ public final class StorageClientBuilder {
         }
 
         if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
-            String endpoint = String.format("%s://%s.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
             endpoint(endpoint);
         }
 
