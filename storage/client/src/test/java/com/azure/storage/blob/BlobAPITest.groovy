@@ -7,20 +7,8 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobHTTPHeaders
-import com.azure.storage.blob.models.BlobItem
-import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.LeaseAccessConditions
-import com.azure.storage.blob.models.LeaseDurationType
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ModifiedAccessConditions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.SyncCopyStatusType
-import com.azure.storage.file.models.DeleteSnapshotsOptionType
+import com.azure.storage.blob.BlobProperties
+import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -66,7 +54,7 @@ class BlobAPITest extends APISpec {
         headers.value("x-ms-lease-status") == LeaseStatusType.UNLOCKED.toString()
         headers.value("Accept-Ranges") == "bytes"
         headers.value("x-ms-blob-committed-block-count") == null
-        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
+        headers.value("x-ms-server-encrypted") != null
         headers.value("x-ms-blob-content-md5") == null
     }
 
@@ -143,7 +131,7 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download range"() {
         setup:
-        BlobRange range = new BlobRange(offset, count)
+        BlobRange range = (count == null) ? new BlobRange(offset) : new BlobRange(offset, count)
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -173,7 +161,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        def response = bu.download(null, null, null, bac, false, null)
+        def response = bu.download(new ByteArrayOutputStream(), null, null, bac, false, null)
 
         then:
         response.statusCode() == 200
@@ -202,7 +190,7 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        def response = bu.download(null, null, null, bac, false, null)
+        def response = bu.download(new ByteArrayOutputStream(), null, null, bac, false, null)
 
         then:
         response.statusCode() == 206
@@ -218,7 +206,7 @@ class BlobAPITest extends APISpec {
 
     def "Download md5"() {
         when:
-        VoidResponse response = bu.download(null, null, new BlobRange(0 ,3), null, true, null)
+        VoidResponse response = bu.download(new ByteArrayOutputStream(), null, new BlobRange(0 ,3), null, true, null)
         byte[] contentMD5 = response.headers().value("content-md5").getBytes()
 
         then:
@@ -1390,7 +1378,7 @@ class BlobAPITest extends APISpec {
         String copyID =
             bu2.startCopyFromURL(bu.getUrl(), null, null,
                 new BlobAccessConditions()
-                    .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null)
+                    .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID)), null).value()
         bu2.abortCopyFromURL(copyID, new LeaseAccessConditions().leaseId(garbageLeaseID), null)
 
         then:
@@ -1425,7 +1413,7 @@ class BlobAPITest extends APISpec {
         BlobClient bu2 = cu2.getBlobClient(generateBlobName())
 
         when:
-        String copyID = bu2.startCopyFromURL(bu.getUrl())
+        String copyID = bu2.startCopyFromURL(bu.getUrl()).value()
         VoidResponse response = bu2.abortCopyFromURL(copyID)
         HttpHeaders headers = response.headers()
 
@@ -1464,7 +1452,7 @@ class BlobAPITest extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
 
-        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateBlobName())
+        ContainerClient cu2 = alternateServiceURL.getContainerClient(generateContainerName())
         cu2.create()
         BlockBlobClient bu2 = cu2.getBlockBlobClient(generateBlobName())
         bu2.upload(defaultInputStream.get(), defaultDataSize)
@@ -1851,8 +1839,9 @@ class BlobAPITest extends APISpec {
     def "Set tier page blob"() {
         setup:
         ContainerClient cu = premiumServiceURL.getContainerClient(generateContainerName())
-        PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
         cu.create()
+
+        PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
         bu.create(512)
 
         when:
