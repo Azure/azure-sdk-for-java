@@ -395,8 +395,8 @@ public class BlobAsyncClient {
                 .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset())))
                 .timeout(Duration.ofSeconds(300))
                 .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)
-                .doOnTerminate(() ->
-                    System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName() + " of total " + Thread.activeCount() + " threads")))
+                /*.doOnTerminate(() ->
+                    System.out.println("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName() + " of total " + Thread.activeCount() + " threads"))*/)
             .then()
             .doOnTerminate(() -> {
                 try {
