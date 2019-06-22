@@ -17,7 +17,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
@@ -57,6 +59,7 @@ public final class BlockBlobClientBuilder {
     private String blobName;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -91,6 +94,8 @@ public final class BlockBlobClientBuilder {
             policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
         } else if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
@@ -150,6 +155,11 @@ public final class BlockBlobClientBuilder {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
+        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+        if (credential != null) {
+            this.sasTokenCredential = credential;
+        }
+
         return this;
     }
 
@@ -190,6 +200,16 @@ public final class BlockBlobClientBuilder {
      */
     public BlockBlobClientBuilder credentials(TokenCredential credentials) {
         this.tokenCredential = credentials;
+        return this;
+    }
+
+    /**
+     * Sets the credentials used to authorize requests sent to the service
+     * @param credentials authorization credentials
+     * @return the updated BlockBlobClientBuilder object
+     */
+    public BlockBlobClientBuilder credentials(SASTokenCredential credentials) {
+        this.sasTokenCredential = credentials;
         return this;
     }
 
