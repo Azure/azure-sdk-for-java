@@ -37,7 +37,7 @@ class NamespaceSharedAccessAuthorizationRuleResourceImpl extends CreatableUpdata
         this.manager = manager;
         // Set resource name
         this.authorizationRuleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "namespaces");
         this.authorizationRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "AuthorizationRules");
