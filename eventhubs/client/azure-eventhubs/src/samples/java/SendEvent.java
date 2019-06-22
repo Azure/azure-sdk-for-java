@@ -7,6 +7,8 @@ import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
 
+import java.io.IOException;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -47,6 +49,15 @@ public class SendEvent {
                     System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
                         amqpException.isTransient(), amqpException.getErrorCondition()));
                 }
+            }, () -> {
+                // Disposing of our producer and client.
+                try {
+                    producer.close();
+                } catch (IOException e) {
+                    System.err.println("Error encountered while closing producer: " + e.toString());
+                }
+
+                client.close();
             });
     }
 }
