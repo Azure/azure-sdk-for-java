@@ -109,7 +109,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CSRPErrorException thrown if the request is rejected by server
@@ -128,7 +128,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -148,7 +148,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DedicatedCloudServiceInner&gt; object
@@ -165,7 +165,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;DedicatedCloudServiceInner&gt; object
@@ -186,7 +186,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DedicatedCloudServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -217,7 +217,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param filter The filter to apply on the list operation
      * @param top The maximum number of record sets to return
@@ -239,7 +239,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param filter The filter to apply on the list operation
      * @param top The maximum number of record sets to return
@@ -262,7 +262,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param filter The filter to apply on the list operation
      * @param top The maximum number of record sets to return
@@ -282,7 +282,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param filter The filter to apply on the list operation
      * @param top The maximum number of record sets to return
@@ -306,7 +306,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
     ServiceResponse<PageImpl<DedicatedCloudServiceInner>> * @param filter The filter to apply on the list operation
     ServiceResponse<PageImpl<DedicatedCloudServiceInner>> * @param top The maximum number of record sets to return
@@ -1127,7 +1127,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1147,7 +1147,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -1169,7 +1169,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1187,7 +1187,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1209,7 +1209,7 @@ public class DedicatedCloudServicesInner implements InnerSupportsGet<DedicatedCl
 
     /**
      * Implements list of dedicatedCloudService objects within subscription method.
-     * Returns list of dedicated cloud service within within subscription.
+     * Returns list of dedicated cloud service within a subscription.
      *
     ServiceResponse<PageImpl<DedicatedCloudServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
