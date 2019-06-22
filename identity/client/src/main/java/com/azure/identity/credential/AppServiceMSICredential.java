@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 /**
  * The Managed Service Identity credential for App Service.
  */
- class AppServiceMSICredential {
+class AppServiceMSICredential {
     private String msiEndpoint;
     private String msiSecret;
     private final IdentityClient identityClient;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
      * Creates an instance of AppServiceMSICredential.
      * @param identityClient the identity client to acquire a token with.
      */
-    public AppServiceMSICredential(IdentityClient identityClient) {
+    AppServiceMSICredential(IdentityClient identityClient) {
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);

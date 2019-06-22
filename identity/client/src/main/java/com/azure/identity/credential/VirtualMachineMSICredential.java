@@ -19,7 +19,7 @@ class VirtualMachineMSICredential {
      * Creates an instance of VirtualMachineMSICredential.
      * @param identityClient the identity client to acquire a token with.
      */
-    public VirtualMachineMSICredential(IdentityClient identityClient) {
+    VirtualMachineMSICredential(IdentityClient identityClient) {
         this.identityClient = identityClient;
     }
 
