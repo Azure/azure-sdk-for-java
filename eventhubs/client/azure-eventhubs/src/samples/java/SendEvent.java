@@ -17,9 +17,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class SendEvent {
     public static void main(String[] args) {
         // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal
-        // 2. Creating an Event Hub instance
-        // 3. Creating a "Shared access policy" for your Event Hub instance
+        // 1. Going to your Event Hubs namespace in Azure Portal.
+        // 2. Creating an Event Hub instance.
+        // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
@@ -36,8 +36,8 @@ public class SendEvent {
         EventData data = new EventData("Hello world!".getBytes(UTF_8));
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Event Hub. It completes with an error if there was an error that occurred
-        // while sending the event.
+        // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
+        // the event.
         producer.send(data).subscribe(
             (ignored) -> System.out.println("Event sent."),
             error -> {

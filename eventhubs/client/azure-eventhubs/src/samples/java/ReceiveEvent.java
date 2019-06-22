@@ -29,9 +29,9 @@ public class ReceiveEvent {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
 
         // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal
-        // 2. Creating an Event Hub instance
-        // 3. Creating a "Shared access policy" for your Event Hub instance
+        // 1. Going to your Event Hubs namespace in Azure Portal.
+        // 2. Creating an Event Hub instance.
+        // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
@@ -41,16 +41,15 @@ public class ReceiveEvent {
             .build();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
-        // .blockFirst() here is used to wait for the first partition id before completing.
-        // Setting the OPERATION_TIMEOUT, sets the maximum time that this operation will block for. If no item is
-        // emitted before the timeout elapses, a TimeoutException is thrown.
+        // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
+        // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
+        // TimeoutException is thrown.
         String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // Create a consumer.
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
-        // instance you are connecting to, and selecting the "Consumer groups" page.
-        // EventPosition.latest() tells the service we only want events that are sent to the partition after we begin
-        // listening.
+        // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
+        // service we only want events that are sent to the partition after we begin listening.
         EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
             firstPartition, EventPosition.latest());
 

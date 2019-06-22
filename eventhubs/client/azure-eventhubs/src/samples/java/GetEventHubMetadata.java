@@ -7,16 +7,16 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import java.util.concurrent.Semaphore;
 
 /**
- * Demonstrates how to fetch metadata about the Event Hub's partitions.
+ * Demonstrates how to fetch metadata from an Event Hub's partitions.
  */
 public class GetEventHubMetadata {
     public static void main(String[] args) throws InterruptedException {
         Semaphore semaphore = new Semaphore(1);
 
         // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal
-        // 2. Creating an Event Hub instance
-        // 3. Creating a "Shared access policy" for your Event Hub instance
+        // 1. Going to your Event Hubs namespace in Azure Portal.
+        // 2. Creating an Event Hub instance.
+        // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
