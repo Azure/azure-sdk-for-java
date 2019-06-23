@@ -120,7 +120,8 @@ public class ActiveClientTokenManagerTest {
             new ErrorContext("Test-context-namespace"));
 
         when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2), Mono.error(error),
-            getNextExpiration(5), getNextExpiration(5), getNextExpiration(5));
+            getNextExpiration(5), getNextExpiration(5),
+            getNextExpiration(45), getNextExpiration(60));
 
         // Act & Assert
         try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
