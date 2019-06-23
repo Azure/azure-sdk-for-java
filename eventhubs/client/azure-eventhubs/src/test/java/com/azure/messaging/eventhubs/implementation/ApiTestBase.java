@@ -153,19 +153,26 @@ public abstract class ApiTestBase extends TestBase {
     /**
      * Disposes of any {@link Closeable} resources.
      *
-     * @param closeable The instance to close.
-     * @param logger Logger to provide any errors that may occur.
+     * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable closeable, ClientLogger logger) {
-        if (closeable == null) {
+    protected void dispose(Closeable... closeables) {
+        if (closeables == null || closeables.length == 0) {
             return;
         }
 
-        try {
-            closeable.close();
-        } catch (IOException error) {
-            logger.asError().log(String.format("[%s]: %s didn't close properly.",
-                testName(), closeable.getClass().getSimpleName()), error);
+        for (int i = 0; i < closeables.length; i++) {
+            final Closeable closeable = closeables[i];
+
+            if (closeable == null) {
+                continue;
+            }
+
+            try {
+                closeable.close();
+            } catch (IOException error) {
+                logger.asError().log(String.format("[%s]: %s didn't close properly.",
+                    testName(), closeable.getClass().getSimpleName()), error);
+            }
         }
     }
 }
