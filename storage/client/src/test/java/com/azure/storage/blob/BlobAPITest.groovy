@@ -190,10 +190,10 @@ class BlobAPITest extends APISpec {
                 .ifNoneMatch(noneMatch))
 
         when:
-        def response = bu.download(new ByteArrayOutputStream(), null, null, bac, false, null)
+        bu.download(new ByteArrayOutputStream(), null, null, bac, false, null).statusCode() == 206
 
         then:
-        response.statusCode() == 206
+        thrown(StorageException)
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
@@ -210,7 +210,7 @@ class BlobAPITest extends APISpec {
         byte[] contentMD5 = response.headers().value("content-md5").getBytes()
 
         then:
-        contentMD5 == MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes())
+        contentMD5 == Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.substring(0, 3).getBytes()))
     }
 
     def "Download error"() {
@@ -623,10 +623,10 @@ class BlobAPITest extends APISpec {
         UUID.randomUUID().toString() | -1        || LeaseStateType.LEASED | LeaseDurationType.INFINITE
     }
 
-    /*def "Acquire lease min"() {
+    def "Acquire lease min"() {
         setup:
-        bu.acquireLease(null, -1).blockingGet().statusCode() == 201
-    }*/
+        bu.acquireLease(null, -1).statusCode() == 201
+    }
 
     @Unroll
     def "Acquire lease AC"() {
@@ -2056,16 +2056,17 @@ class BlobAPITest extends APISpec {
         bu.getAccountInfo().statusCode() == 200
     }
 
-    /*def "Get account info error"() {
+    def "Get account info error"() {
         when:
-        StorageClient serviceURL = StorageClient.builder() new ServiceURL(primaryServiceURL.toURL(),
-            StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()))
+        StorageClient serviceURL = StorageClient.storageClientBuilder()
+            .endpoint(primaryServiceURL.getUrl().toString())
+            .buildClient()
         serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName())
             .getAccountInfo(null)
 
         then:
         thrown(StorageException)
-    }*/
+    }
 
     /*def "Get account info context"() {
         setup:

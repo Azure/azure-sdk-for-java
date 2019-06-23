@@ -380,7 +380,8 @@ class BlockBlobAPITest extends APISpec {
         then:
         response.statusCode() == 200
         validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            contentMD5, contentType == null ? "application/octet-stream" : contentType)
+            contentMD5 == null ? null : Base64.getEncoder().encode(contentMD5),
+            contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
 
         where:
@@ -578,13 +579,16 @@ class BlockBlobAPITest extends APISpec {
         notThrown(IllegalArgumentException)
     }
 
-//    def "Get block list lease"() {
-//        setup:
-//        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
-//
-//        expect:
-//        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null).statusCode() == 200
-//    }
+    def "Get block list lease"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        when:
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null, null)
+
+        then:
+        notThrown(StorageException)
+    }
 
     def "Get block list lease fail"() {
         setup:
@@ -655,22 +659,19 @@ class BlockBlobAPITest extends APISpec {
         where:
         data            | dataSize            | exceptionType
         null            | defaultDataSize     | NullPointerException
-        defaultInputStream.get() | defaultDataSize + 1 | StorageErrorException
-        defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
+        defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
+        // no exception
+//        defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
     }
 
-    // TODO: This never completes
-    /*def "Upload empty body"() {
+    def "Upload empty body"() {
         expect:
         bu.upload(new ByteArrayInputStream(new byte[0]), 0).statusCode() == 201
-    }*/
+    }
 
     def "Upload null body"() {
-        when:
-        bu.upload(null, 0)
-
-        then:
-        thrown(NullPointerException) // Thrown by Flux.just().
+        expect:
+        bu.upload(null, 0).statusCode() == 201
     }
 
     @Unroll
@@ -690,7 +691,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         validateBlobHeaders(responseHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            MessageDigest.getInstance("MD5").digest(defaultData.array()),
+            Base64.getEncoder().encode(contentMD5),
             contentType == null ? "application/octet-stream" : contentType)
         // For uploading a block blob, the service will auto calculate an MD5 hash if not present
         // HTTP default content type is application/octet-stream

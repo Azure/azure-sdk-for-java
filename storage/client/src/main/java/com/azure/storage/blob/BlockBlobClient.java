@@ -11,9 +11,13 @@ import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,13 +133,21 @@ public final class BlockBlobClient extends BlobClient {
      */
     public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
                                 Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
-
-        // buffer strategy for UX study only
-        byte[] bufferedData = new byte[(int)length];
-        data.read(bufferedData);
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
+            .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+                byte[] cache = new byte[(int) count];
+                int read = 0;
+                while (read < count) {
+                    read += data.read(cache, read, (int) count - read);
+                }
+                return cache;
+            }))
+            .map(ByteBuffer::wrap);
 
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .upload(Flux.just(ByteBuffer.wrap(bufferedData)), length, headers, metadata, accessConditions, context);
+            .upload(fbb, length, headers, metadata, accessConditions, context);
 
         try {
             if (timeout == null) {

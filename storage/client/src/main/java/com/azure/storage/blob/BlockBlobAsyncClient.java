@@ -63,7 +63,7 @@ import java.util.UUID;
  * object through {@link Mono#toFuture()}.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
-    private static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 

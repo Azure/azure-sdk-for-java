@@ -52,7 +52,7 @@ class APISpec extends Specification {
     static defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static boolean enableDebugging = false
+    static boolean enableDebugging = true
 
     // Prefixes for blobs and containers
     static String containerPrefix = "jtc" // java test container
@@ -456,7 +456,7 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-    def getStubResponse(int code, Class responseHeadersType) {
+    def getStubResponse(int code, HttpRequest request) {
         return new HttpResponse() {
 
             @Override
@@ -481,19 +481,19 @@ class APISpec extends Specification {
 
             @Override
             Mono<byte[]> bodyAsByteArray() {
-                return null
+                return Mono.just(new byte[0])
             }
 
             @Override
             Mono<String> bodyAsString() {
-                return null
+                return Mono.just("")
             }
 
             @Override
             Mono<String> bodyAsString(Charset charset) {
-                return null
+                return Mono.just("")
             }
-        }
+        }.request(request)
     }
 
     /*
@@ -545,10 +545,10 @@ class APISpec extends Specification {
         return Mock(HttpPipelinePolicy) {
             process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
                 HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-                    if (context.getData(defaultContextKey).isPresent()) {
+                    if (!context.getData(defaultContextKey).isPresent()) {
                         return Mono.error(new RuntimeException("Context key not present."))
                     } else {
-                        return Mono.just(getStubResponse(successCode, responseHeadersType))
+                        return Mono.just(getStubResponse(successCode, context.httpRequest()))
                     }
             }
         }

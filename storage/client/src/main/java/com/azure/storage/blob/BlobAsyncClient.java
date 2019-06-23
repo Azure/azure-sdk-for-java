@@ -345,7 +345,9 @@ public class BlobAsyncClient {
             boolean rangeGetContentMD5, ReliableDownloadOptions options, Context context) {
         return blobAsyncRawClient
             .download(range, accessConditions, rangeGetContentMD5, context)
-            .map(response -> new SimpleResponse<>(response.rawResponse(), ByteBufFlux.fromInbound(response.body(options)).asByteBuffer()));
+            .map(response -> new SimpleResponse<>(
+                response.rawResponse(),
+                response.body(options).map(ByteBuf::nioBuffer).switchIfEmpty(Flux.just(ByteBuffer.allocate(0)))));
     }
 
     /**
