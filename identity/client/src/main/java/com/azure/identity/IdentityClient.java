@@ -153,7 +153,7 @@ public final class IdentityClient {
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      * @param msiEndpoint the endpoint to acquire token from
      * @param msiSecret the secret to acquire token with
-     * @param clientId the client ID of the app service
+     * @param clientId the client ID of the application service
      * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
