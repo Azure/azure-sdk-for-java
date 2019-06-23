@@ -191,7 +191,7 @@ public class EventHubClientBuilder {
     public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
         this.proxyConfiguration = proxyConfiguration;
 
-        if (proxyConfiguration != null) {
+        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
             this.transport = TransportType.AMQP_WEB_SOCKETS;
         }
 
@@ -236,7 +236,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the retry policy for EventHubClient.
+     * Sets the retry policy for {@link EventHubClient}. If none is specified, {@link Retry#getDefaultRetry()} is used.
      *
      * @param retry The retry policy to use.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -247,10 +247,25 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubClient} based on the configuration set in this builder. Use the default not null
-     * values if the Connection parameters are not provided.
+     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code build()} is invoked,
+     * a new instance of {@link EventHubClient} is created.
      *
-     * @return A new {@link EventHubClient} instance.
+     * <p>
+     * The following options are used if ones are not specified in the builder:
+     *
+     * <ul>
+     * <li>If no configuration is specified, the {@link ConfigurationManager#getConfiguration() global configuration}
+     * is used to provide any shared configuration values. The configuration values read are the {@link
+     * BaseConfigurations#HTTP_PROXY}, {@link ProxyConfiguration#PROXY_USERNAME}, and {@link
+     * ProxyConfiguration#PROXY_PASSWORD}.</li>
+     * <li>If no retry is specified, {@link Retry#getDefaultRetry() the default retry} is used.</li>
+     * <li>If no proxy is specified, the builder checks the {@link ConfigurationManager#getConfiguration() global
+     * configuration} for a configured proxy, then it checks to see if a system proxy is configured.</li>
+     * <li>If no timeout is specified, a {@link ClientConstants#OPERATION_TIMEOUT timeout of one minute} is used.</li>
+     * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
+     * </ul>
+     *
+     * @return A new {@link EventHubClient} instance with all the configured options.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      *         #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
      *         specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
@@ -270,16 +285,19 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
-        if (proxyConfiguration != null && transport != TransportType.AMQP_WEB_SOCKETS) {
-            throw new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP.");
-        }
-
         if (timeout == null) {
             timeout = ClientConstants.OPERATION_TIMEOUT;
         }
 
         if (retry == null) {
             retry = Retry.getDefaultRetry();
+        }
+
+        // If the proxy has been configured by the user but they have overridden the TransportType with something that
+        // is not AMQP_WEB_SOCKETS.
+        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()
+            && transport != TransportType.AMQP_WEB_SOCKETS) {
+            throw new IllegalArgumentException("Cannot use a proxy when TransportType is not AMQP.");
         }
 
         if (proxyConfiguration == null) {
@@ -308,18 +326,19 @@ public class EventHubClientBuilder {
         }
 
         String proxyAddress = configuration.get(BaseConfigurations.HTTP_PROXY);
-        Proxy proxy = null;
-        if (proxyAddress != null) {
-            final String[] hostPort = proxyAddress.split(":");
-            if (hostPort.length < 2) {
-                throw new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy");
-            }
 
-            final String host = hostPort[0];
-            final int port = Integer.parseInt(hostPort[1]);
-            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+        if (ImplUtils.isNullOrEmpty(proxyAddress)) {
+            return ProxyConfiguration.SYSTEM_DEFAULTS;
         }
 
+        final String[] hostPort = proxyAddress.split(":");
+        if (hostPort.length < 2) {
+            throw new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy");
+        }
+
+        final String host = hostPort[0];
+        final int port = Integer.parseInt(hostPort[1]);
+        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
         final String username = configuration.get(ProxyConfiguration.PROXY_USERNAME);
         final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
 
