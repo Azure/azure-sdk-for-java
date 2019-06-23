@@ -24,17 +24,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 public class ReactorConnection extends EndpointStateNotifierBase implements EventHubConnection {
-    private static final AtomicReferenceFieldUpdater<ReactorConnection, CBSChannel> CBS_CHANNEL_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(ReactorConnection.class, CBSChannel.class, "cbsChannel");
-    private static final AtomicReferenceFieldUpdater<ReactorConnection, Connection> CONNECTION_FIELD_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(ReactorConnection.class, Connection.class, "connection");
-
-    private volatile CBSChannel cbsChannel;
-    private volatile Connection connection;
-
     private final ConcurrentMap<String, AmqpSession> sessionMap = new ConcurrentHashMap<>();
     private final AtomicBoolean hasConnection = new AtomicBoolean();
 
@@ -51,6 +42,9 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
     private ReactorExceptionHandler reactorExceptionHandler;
+
+    private volatile CBSChannel cbsChannel;
+    private volatile Connection connection;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -70,13 +64,8 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         this.handlerProvider = handlerProvider;
         this.handler = handlerProvider.createConnectionHandler(connectionId, connectionOptions.host(), connectionOptions.transportType());
 
-        this.connectionMono = Mono.fromCallable(() -> {
-            if (CONNECTION_FIELD_UPDATER.compareAndSet(this, null, this.createConnectionAndStart())) {
-                logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
-            }
-
-            return CONNECTION_FIELD_UPDATER.get(this);
-        }).doOnSubscribe(c -> hasConnection.set(true));
+        this.connectionMono = Mono.fromCallable(() -> getOrCreateConnection())
+            .doOnSubscribe(c -> hasConnection.set(true));
 
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
@@ -103,16 +92,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
     public Mono<CBSNode> getCBSNode() {
         final Mono<CBSNode> cbsNodeMono = getConnectionStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE)
             .timeout(connectionOptions.timeout())
-            .then(Mono.fromCallable(() -> {
-                if (CBS_CHANNEL_FIELD_UPDATER.compareAndSet(this, null,
-                    new CBSChannel(this, connectionOptions.tokenCredential(),
-                        connectionOptions.authorizationType(), reactorProvider, handlerProvider,
-                        connectionOptions.timeout()))) {
-                    logger.asInfo().log("Setting CBS channel.");
-                }
-
-                return CBS_CHANNEL_FIELD_UPDATER.get(this);
-            }));
+            .then(Mono.fromCallable(() -> getOrCreateCBSNode()));
 
         return hasConnection.get()
             ? cbsNodeMono
@@ -202,15 +182,31 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
         super.close();
     }
 
-    private Connection createConnectionAndStart() throws IOException {
-        final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
-        final Connection connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
+    private synchronized CBSNode getOrCreateCBSNode() {
+        if (cbsChannel == null) {
+            logger.asInfo().log("Setting CBS channel.");
 
-        reactorExceptionHandler = new ReactorExceptionHandler();
-        executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId, reactorExceptionHandler,
-            connectionOptions.timeout(), connectionOptions.host());
+            cbsChannel = new CBSChannel(this, connectionOptions.tokenCredential(),
+                connectionOptions.authorizationType(), reactorProvider, handlerProvider,
+                connectionOptions.timeout());
+        }
 
-        executor.start();
+        return cbsChannel;
+    }
+
+    private synchronized Connection getOrCreateConnection() throws IOException {
+        if (connection == null) {
+            logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
+
+            final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
+            connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
+
+            reactorExceptionHandler = new ReactorExceptionHandler();
+            executor = new ReactorExecutor(reactor, connectionOptions.scheduler(), connectionId,
+                reactorExceptionHandler, connectionOptions.timeout(), connectionOptions.host());
+
+            executor.start();
+        }
 
         return connection;
     }

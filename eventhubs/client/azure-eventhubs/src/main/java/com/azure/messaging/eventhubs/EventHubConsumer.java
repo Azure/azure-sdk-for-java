@@ -16,6 +16,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MAXIMUM_PREFETCH_COUNT;
+import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT;
+
 /**
  * This is a logical representation of receiving from an Event Hub partition.
  *
@@ -37,7 +40,6 @@ public class EventHubConsumer implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
-    private final Mono<AmqpReceiveLink> receiveLinkMono;
     private final Duration operationTimeout;
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -48,7 +50,6 @@ public class EventHubConsumer implements Closeable {
     private volatile AmqpReceiveLink receiveLink;
 
     EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
-        this.receiveLinkMono = receiveLinkMono;
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
         this.operationTimeout = operationTimeout;
 
@@ -69,17 +70,35 @@ public class EventHubConsumer implements Closeable {
             }
 
             return link.receive().map(EventData::new);
-        }).subscribeWith(emitterProcessor);
+        }).timeout(this.operationTimeout)
+            .subscribeWith(emitterProcessor)
+            .doOnSubscribe(subscription -> {
+                AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
+                if (existingLink == null) {
+                    logger.asInfo().log("AmqpReceiveLink not set yet.");
+                    return;
+                }
 
-        emitterProcessor.doOnSubscribe(subscription -> {
-            if (receiveLink.getCredits() == 0) {
-                logger.asInfo().log("Subscription received and there are no remaining credits on the link. Adding more.");
-                receiveLink.addCredits(creditsToRequest.get());
-            }
-        }).doOnRequest(request -> {
-            logger.asInfo().log("Back pressure requested. Old value: {}. New value: {}", creditsToRequest.get(), request);
-            creditsToRequest.set((int) request);
-        });
+                logger.asInfo().log("Subscription received for consumer.");
+                if (existingLink.getCredits() == 0) {
+                    logger.asInfo().log("Subscription received and there are no remaining credits on the link. Adding more.");
+                    existingLink.addCredits(creditsToRequest.get());
+                }
+            })
+            .doOnRequest(request -> {
+                if (request < MINIMUM_PREFETCH_COUNT) {
+                    logger.asWarning().log("Back pressure request value not valid. It must be between {} and {}.",
+                        MINIMUM_PREFETCH_COUNT, MAXIMUM_PREFETCH_COUNT);
+                    return;
+                }
+
+                long newRequest = request > MAXIMUM_PREFETCH_COUNT
+                    ? MAXIMUM_PREFETCH_COUNT
+                    : request;
+
+                logger.asInfo().log("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                creditsToRequest.set((int) newRequest);
+            });
     }
 
     /**
@@ -94,14 +113,12 @@ public class EventHubConsumer implements Closeable {
             if (receiveLink != null) {
                 receiveLink.close();
             }
-
-            emitterProcessor.dispose();
         }
     }
 
     /**
-     * Begin receiving events until there are no longer any subscribers, or the parent
-     * {@link EventHubClient#close() EventHubClient.close()} is called.
+     * Begin receiving events until there are no longer any subscribers, or the parent {@link EventHubClient#close()
+     * EventHubClient.close()} is called.
      *
      * @return A stream of events for this receiver.
      */
