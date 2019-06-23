@@ -35,6 +35,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
+ *
+ * @see EventHubClientBuilder
+ * @see <a href="https://docs.microsoft.com/en-us/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 public class EventHubClient implements Closeable {
     /**

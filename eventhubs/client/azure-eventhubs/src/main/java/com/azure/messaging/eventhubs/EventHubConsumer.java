@@ -28,9 +28,10 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREF
  * <ul>
  * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
  * value, then Event Hubs service will guarantee only one active receiver exists per partitionId and consumer group
- * combination. This is the recommended approach to create a {@link EventHubConsumer}.</li>
+ * combination.</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating receivers.</li>
+ * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. A maximum of five concurrent consumers are
+ * allowed on the same partition and consumer group</li>
  * </ul>
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
