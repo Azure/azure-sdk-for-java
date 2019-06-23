@@ -12,7 +12,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -32,7 +32,7 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final ReceiveLinkHandler handler;
     private final ActiveClientTokenManager tokenManager;
     private final Disposable.Composite subscriptions;
-    private final DirectProcessor<Message> messagesProcessor = DirectProcessor.create();
+    private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
     private FluxSink<Message> messageSink = messagesProcessor.sink();
 
     private volatile Supplier<Integer> creditSupplier;
@@ -104,7 +104,9 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     public void close() {
         subscriptions.dispose();
         tokenManager.close();
-        messagesProcessor.dispose();
+
+        messageSink.complete();
+
         handler.close();
         super.close();
     }
