@@ -4,11 +4,9 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusOptions;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.NodeAgentSku;
-import com.microsoft.azure.batch.protocol.models.PoolNodeCounts;
-import com.microsoft.azure.batch.protocol.models.AccountListPoolNodeCountsOptions;
+import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.AccountListSupportedImagesOptions;
+import com.microsoft.azure.batch.protocol.models.ImageInformation;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -58,8 +56,8 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public PagedList<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
-        return listNodeAgentSkus(null, null);
+    public PagedList<ImageInformation> listSupportedImages() throws BatchErrorException, IOException {
+        return listSupportedImages(null, null);
     }
 
     /**
@@ -70,8 +68,8 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public PagedList<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
-        return listNodeAgentSkus(detailLevel, null);
+    public PagedList<ImageInformation> listSupportedImages(DetailLevel detailLevel) throws BatchErrorException, IOException {
+        return listSupportedImages(detailLevel, null);
     }
 
     /**
@@ -83,13 +81,13 @@ public class AccountOperations implements IInheritedBehaviors {
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
      * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
-    public PagedList<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        AccountListNodeAgentSkusOptions options = new AccountListNodeAgentSkusOptions();
+    public PagedList<ImageInformation> listSupportedImages(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        AccountListSupportedImagesOptions options = new AccountListSupportedImagesOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        return this.parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
+        return this.parentBatchClient.protocolLayer().accounts().listSupportedImages(options);
     }
 
     /**

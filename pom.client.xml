@@ -350,12 +350,20 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - AMQP</title>
+                <packages>com.azure.core.amqp*</packages>
+                </group>
+              <group>
                 <title>Azure Core - Authentication</title>
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
+              </group>
+              <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
                 <title>Azure Key Vault</title>
@@ -503,6 +511,7 @@
                   So, path for aggregate reports have to be defined relative to parent pom -->
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
+                -snippetpath ${project.basedir}/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
               </additionalOptions>
@@ -682,6 +691,7 @@
   <modules>
     <module>./appconfiguration/client</module>
     <module>./core</module>
+    <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
     <module>./identity/client</module>

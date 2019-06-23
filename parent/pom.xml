@@ -111,6 +111,7 @@
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
+    <azure-core-amqp.version>1.0.0-SNAPSHOT</azure-core-amqp.version>
     <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
     <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
@@ -166,6 +167,7 @@
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.18</checkstyle.version>
+    <mockito-core.version>2.28.2</mockito-core.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
   </properties>
 
@@ -194,6 +196,12 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-core</artifactId>
         <version>${azure-core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core-amqp</artifactId>
+        <version>${azure-core-amqp.version}</version>
       </dependency>
 
       <dependency>
@@ -475,6 +483,13 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
         <version>${jetty-server.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito-core.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

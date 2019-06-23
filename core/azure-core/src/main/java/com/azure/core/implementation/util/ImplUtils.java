@@ -95,6 +95,15 @@ public final class ImplUtils {
     }
 
     /*
+     * Checks if the character sequence is null or empty.
+     * @param charSequence Character sequence being checked for nullness or emptiness.
+     * @return True if the character sequence is null or empty, false otherwise.
+     */
+    public static boolean isNullOrEmpty(CharSequence charSequence) {
+        return charSequence == null || charSequence.length() == 0;
+    }
+
+    /*
      * Turns an array into a string mapping each element to a string and delimits them using a coma.
      * @param array Array being formatted to a string.
      * @param mapper Function that maps each element to a string.
@@ -128,15 +137,6 @@ public final class ImplUtils {
         }
 
         return null;
-    }
-
-    /*
-     * Checks if the character sequence is null or empty.
-     * @param charSequence Character sequence being checked for nullness or emptiness.
-     * @return True if the character sequence is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(CharSequence charSequence) {
-        return charSequence == null || charSequence.length() == 0;
     }
 
     /*
