@@ -10,7 +10,6 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.messaging.eventhubs.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -144,10 +143,6 @@ public abstract class ApiTestBase extends TestBase {
 
     protected CBSAuthorizationType getAuthorizationType() {
         return CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
-    }
-
-    protected EventHubClientBuilder getEventHubClientBuilder() {
-        return new EventHubClientBuilder().connectionString(TEST_CONNECTION_STRING);
     }
 
     /**
