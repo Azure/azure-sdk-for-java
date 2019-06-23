@@ -91,12 +91,11 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         this.retry = retry;
         this.timeout = timeout;
         this.maxMessageSize = maxMessageSize;
-
         this.subscriptions = Disposables.composite(
             handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
             handler.getLinkCredits().subscribe(credit -> {
-                logger.asVerbose().log("Credits added: {}", credit);
+                logger.asVerbose().log("Credits on link: {}", credit);
                 this.scheduleWorkOnDispatcher();
             }),
 
@@ -220,9 +219,17 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        return Mono.create(sink -> {
+        Mono<Void> sendWorkItem = Mono.create(sink -> {
             send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
         });
+
+        if (hasConnected.get()) {
+            return sendWorkItem;
+        } else {
+            return handler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)
+                .timeout(timeout)
+                .then(sendWorkItem);
+        }
     }
 
     private void send(RetriableWorkItem workItem) {
@@ -288,7 +295,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }
 
             if (linkAdvance) {
-                logger.asVerbose().log("entityPath[{}], clinkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
+                logger.asVerbose().log("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
 
                 workItem.setIsWaitingForAck();
                 sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
