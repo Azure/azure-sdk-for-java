@@ -10,10 +10,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubConsumer;
-import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
 import com.azure.messaging.eventhubs.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -22,11 +19,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.rules.TestName;
 import org.mockito.Mockito;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -40,6 +37,7 @@ import static org.mockito.Mockito.when;
  */
 public abstract class ApiTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected final ClientLogger logger;
 
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
@@ -50,6 +48,10 @@ public abstract class ApiTestBase extends TestBase {
     private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
     private ConnectionOptions connectionOptions;
+
+    protected ApiTestBase(ClientLogger logger) {
+        this.logger = logger;
+    }
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
@@ -148,32 +150,22 @@ public abstract class ApiTestBase extends TestBase {
         return new EventHubClientBuilder().connectionString(TEST_CONNECTION_STRING);
     }
 
-    protected void closeProducer(EventHubProducer producer, TestName testName, ClientLogger logger) {
-        if (producer != null) {
-            try {
-                producer.close();
-            } catch (IOException e) {
-                logger.asError().log("[{}]: producer doesn't close properly.", testName.getMethodName(), e);
-            }
+    /**
+     * Disposes of any {@link Closeable} resources.
+     *
+     * @param closeable The instance to close.
+     * @param logger Logger to provide any errors that may occur.
+     */
+    protected void dispose(Closeable closeable, ClientLogger logger) {
+        if (closeable == null) {
+            return;
         }
-    }
 
-    protected void closeConsumer(EventHubConsumer consumer, TestName testName, ClientLogger logger) {
-        if (consumer != null) {
-            try {
-                consumer.close();
-            } catch (IOException e) {
-                logger.asError().log(String.format("[%s]: consumer doesn't close properly.", testName.getMethodName()), e);
-            }
-        }
-    }
-
-    protected void closeClient(EventHubClient client, EventHubProducer producer, EventHubConsumer consumer, TestName testName, ClientLogger logger) {
-        closeConsumer(consumer, testName, logger);
-        closeProducer(producer, testName, logger);
-
-        if (client != null) {
-            client.close();
+        try {
+            closeable.close();
+        } catch (IOException error) {
+            logger.asError().log(String.format("[%s]: %s didn't close properly.",
+                testName(), closeable.getClass().getSimpleName()), error);
         }
     }
 }
