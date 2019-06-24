@@ -21,6 +21,7 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -72,8 +73,8 @@ public class BackCompatTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final String matchingMessageKey = "messageKey";
-        final String matchingMessageValue = "backCompatWithJavaSDKOlderThan0110";
+        final String messageTrackingId = "messageTrackingId";
+        final String messageTrackingValue = UUID.randomUUID().toString();
 
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
         // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
@@ -82,7 +83,7 @@ public class BackCompatTest extends ApiTestBase {
         applicationProperties.put("intProperty", "3");
 
         // We want to ensure that we fetch the event data corresponding to this test and not some other test case.
-        applicationProperties.put(matchingMessageKey, matchingMessageValue);
+        applicationProperties.put(messageTrackingId, messageTrackingValue);
 
         final Message message = Proton.message();
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
@@ -94,8 +95,8 @@ public class BackCompatTest extends ApiTestBase {
         // Act & Assert
         StepVerifier.create(consumer.receive().filter(received -> {
             return received.properties() != null
-                && received.properties().containsKey(matchingMessageKey)
-                && matchingMessageValue.equals(received.properties().get(matchingMessageKey));
+                && received.properties().containsKey(messageTrackingId)
+                && messageTrackingValue.equals(received.properties().get(messageTrackingId));
         }).take(1))
             .then(() -> producer.send(eventData).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event))

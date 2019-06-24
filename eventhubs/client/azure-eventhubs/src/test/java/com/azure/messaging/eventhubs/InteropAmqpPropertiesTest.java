@@ -16,7 +16,6 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -25,20 +24,19 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class InteropAmqpPropertiesTest extends ApiTestBase {
-
     private static final String PARTITION_ID = "0";
-    private static final String APPLICATION_PROPERTY = "firstProp";
-    private static final String MESSAGE_ANNOTATION = "message-annotation-1";
-    private static final String PAYLOAD = "testmsg";
+    private static final String PAYLOAD = "test-message";
 
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
-    private EventData resendEventData;
 
     @Rule
     public TestName testName = new TestName();
@@ -70,95 +68,120 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     /**
      * Test for interoperable with Direct Proton AMQP messaging
      */
-    @Ignore
     @Test
     public void interoperableWithDirectProtonAmqpMessage() {
         skipIfNotRecordMode();
 
         // Arrange
-        final Message originalMessage = Proton.message();
-        final HashMap<String, Object> appProperties = new HashMap<>();
+        final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
+        final String messageTrackingId = "messageTrackingId";
+        final String messageTrackingValue = UUID.randomUUID().toString();
 
-        appProperties.put(APPLICATION_PROPERTY, "value1");
-        final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
-        originalMessage.setApplicationProperties(applicationProperties);
-        originalMessage.setMessageId("id1");
-        originalMessage.setUserId("user1".getBytes());
-        originalMessage.setAddress("eventhub1");
-        originalMessage.setSubject("sub");
-        originalMessage.setReplyTo("replyingTo");
-        originalMessage.setExpiryTime(456L);
-        originalMessage.setGroupSequence(5555L);
-        originalMessage.setContentType("events");
-        originalMessage.setContentEncoding("UTF-8");
-        originalMessage.setCorrelationId("corid1");
-        originalMessage.setCreationTime(345L);
-        originalMessage.setGroupId("gid");
-        originalMessage.setReplyToGroupId("replyToGroupId");
-        originalMessage.setMessageAnnotations(new MessageAnnotations(new HashMap<>()));
-        originalMessage.getMessageAnnotations().getValue().put(Symbol.getSymbol(MESSAGE_ANNOTATION), "messageAnnotationValue");
-        originalMessage.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
-        final EventData msgEvent = new EventData(originalMessage);
+        final HashMap<String, Object> applicationProperties = new HashMap<>();
+        applicationProperties.put(messageTrackingId, messageTrackingValue);
+        applicationProperties.put("first-property", "value-1");
+
+        final Message message = Proton.message();
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        message.setMessageId("id1");
+        message.setUserId("user1".getBytes());
+        message.setAddress("event-hub-address");
+        message.setSubject("sub");
+        message.setReplyTo("replyingTo");
+        message.setExpiryTime(456L);
+        message.setGroupSequence(5555L);
+        message.setContentType("events");
+        message.setContentEncoding("UTF-8");
+        message.setCorrelationId("correlation-id-1");
+        message.setCreationTime(345L);
+        message.setGroupId("group-id");
+        message.setReplyToGroupId("replyToGroupId");
+
+        final Map<Symbol, Object> messageAnnotations = new HashMap<>();
+        messageAnnotations.put(Symbol.getSymbol("message-annotation-1"), "messageAnnotationValue");
+        message.setMessageAnnotations(new MessageAnnotations(messageAnnotations));
+
+        message.setBody(new Data(Binary.create(ByteBuffer.wrap(PAYLOAD.getBytes()))));
+        final EventData msgEvent = new EventData(message);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(1))
+        // We're setting a tracking identifier because we don't want to receive some random operations. We want to
+        // receive the event we sent.
+        StepVerifier.create(consumer.receive().filter(event -> {
+            return event.properties() != null
+                && event.properties().containsKey(messageTrackingId)
+                && messageTrackingValue.equals(event.properties().get(messageTrackingId));
+        }).take(1))
             .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> {
-                validateAmqpPropertiesInEventData(event, originalMessage);
-                resendEventData = event;
+                validateAmqpProperties(message, messageAnnotations, applicationProperties, event);
+                receivedEventData.set(event);
             })
             .verifyComplete();
 
-        StepVerifier.create(consumer.receive().take(1))
-            .then(() -> producer.send(resendEventData).block(TIMEOUT))
-            .assertNext(event -> validateAmqpPropertiesInEventData(event, originalMessage))
+        Assert.assertNotNull(receivedEventData.get());
+
+        StepVerifier.create(consumer.receive().filter(event -> {
+            return event.properties() != null
+                && event.properties().containsKey(messageTrackingId)
+                && messageTrackingValue.equals(event.properties().get(messageTrackingId));
+        }).take(1))
+            .then(() -> producer.send(receivedEventData.get()).block(TIMEOUT))
+            .assertNext(event -> validateAmqpProperties(message, messageAnnotations, applicationProperties, event))
             .verifyComplete();
     }
 
-    private void validateAmqpPropertiesInEventData(EventData eData, Message originalMessage) {
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.MESSAGE_ID.getValue()));
-        Assert.assertEquals(originalMessage.getMessageId(), eData.systemProperties().get(MessageConstant.MESSAGE_ID.getValue()));
+    private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,
+                                        Map<String, Object> applicationProperties, EventData actual) {
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.MESSAGE_ID.getValue()));
+        Assert.assertEquals(message.getMessageId(), actual.systemProperties().get(MessageConstant.MESSAGE_ID.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.USER_ID.getValue()));
-        Assert.assertEquals(new String(originalMessage.getUserId()), new String((byte[]) eData.systemProperties().get(MessageConstant.USER_ID.getValue())));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.USER_ID.getValue()));
+        Assert.assertEquals(new String(message.getUserId()), new String((byte[]) actual.systemProperties().get(MessageConstant.USER_ID.getValue())));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.TO.getValue()));
-        Assert.assertEquals(originalMessage.getAddress(), eData.systemProperties().get(MessageConstant.TO.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.TO.getValue()));
+        Assert.assertEquals(message.getAddress(), actual.systemProperties().get(MessageConstant.TO.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.CONTENT_TYPE.getValue()));
-        Assert.assertEquals(originalMessage.getContentType(), eData.systemProperties().get(MessageConstant.CONTENT_TYPE.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CONTENT_TYPE.getValue()));
+        Assert.assertEquals(message.getContentType(), actual.systemProperties().get(MessageConstant.CONTENT_TYPE.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.CONTENT_ENCODING.getValue()));
-        Assert.assertEquals(originalMessage.getContentEncoding(), eData.systemProperties().get(MessageConstant.CONTENT_ENCODING.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CONTENT_ENCODING.getValue()));
+        Assert.assertEquals(message.getContentEncoding(), actual.systemProperties().get(MessageConstant.CONTENT_ENCODING.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.CORRELATION_ID.getValue()));
-        Assert.assertEquals(originalMessage.getCorrelationId(), eData.systemProperties().get(MessageConstant.CORRELATION_ID.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CORRELATION_ID.getValue()));
+        Assert.assertEquals(message.getCorrelationId(), actual.systemProperties().get(MessageConstant.CORRELATION_ID.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.CREATION_TIME.getValue()));
-        Assert.assertEquals(originalMessage.getCreationTime(), eData.systemProperties().get(MessageConstant.CREATION_TIME.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.CREATION_TIME.getValue()));
+        Assert.assertEquals(message.getCreationTime(), actual.systemProperties().get(MessageConstant.CREATION_TIME.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.SUBJECT.getValue()));
-        Assert.assertEquals(originalMessage.getSubject(), eData.systemProperties().get(MessageConstant.SUBJECT.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.SUBJECT.getValue()));
+        Assert.assertEquals(message.getSubject(), actual.systemProperties().get(MessageConstant.SUBJECT.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.GROUP_ID.getValue()));
-        Assert.assertEquals(originalMessage.getGroupId(), eData.systemProperties().get(MessageConstant.GROUP_ID.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.GROUP_ID.getValue()));
+        Assert.assertEquals(message.getGroupId(), actual.systemProperties().get(MessageConstant.GROUP_ID.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
-        Assert.assertEquals(originalMessage.getReplyToGroupId(), eData.systemProperties().get(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
+        Assert.assertEquals(message.getReplyToGroupId(), actual.systemProperties().get(MessageConstant.REPLY_TO_GROUP_ID.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.REPLY_TO.getValue()));
-        Assert.assertEquals(originalMessage.getReplyTo(), eData.systemProperties().get(MessageConstant.REPLY_TO.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.REPLY_TO.getValue()));
+        Assert.assertEquals(message.getReplyTo(), actual.systemProperties().get(MessageConstant.REPLY_TO.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
-        Assert.assertEquals(originalMessage.getExpiryTime(), eData.systemProperties().get(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
+        Assert.assertEquals(message.getExpiryTime(), actual.systemProperties().get(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
 
-        Assert.assertTrue(eData.systemProperties().containsKey(MESSAGE_ANNOTATION));
-        Assert.assertEquals(originalMessage.getMessageAnnotations().getValue().get(Symbol.getSymbol(MESSAGE_ANNOTATION)), eData.systemProperties().get(MESSAGE_ANNOTATION));
+        Assert.assertEquals(PAYLOAD, UTF_8.decode(actual.body()).toString());
 
-        Assert.assertTrue(eData.properties().containsKey(APPLICATION_PROPERTY));
-        Assert.assertEquals(originalMessage.getApplicationProperties().getValue().get(APPLICATION_PROPERTY), eData.properties().get(APPLICATION_PROPERTY));
+        messageAnnotations.forEach((key, value) -> {
+            Assert.assertTrue(actual.systemProperties().containsKey(key.toString()));
+            Assert.assertEquals(value, actual.systemProperties().get(key.toString()));
+        });
 
-        Assert.assertEquals(1, eData.properties().size());
-        Assert.assertEquals(PAYLOAD, UTF_8.decode(eData.body()).toString());
+        Assert.assertEquals(applicationProperties.size(), actual.properties().size());
+        applicationProperties.forEach((key, value) -> {
+            Assert.assertTrue(actual.properties().containsKey(key));
+            Assert.assertEquals(value, actual.properties().get(key));
+        });
+
     }
 }
