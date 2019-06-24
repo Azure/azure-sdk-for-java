@@ -74,6 +74,22 @@ public final class PollResponse<T> {
      * @throws NullPointerException If {@code status} is {@code null}.
      * @throws IllegalArgumentException if otherStatus is null or empty when status is {@link OperationStatus#OTHER}.
      */
+
+    public PollResponse(OperationStatus status,  T value, Duration retryAfter, Map<Object, Object> properties) {
+        this(status, null, value, retryAfter, properties);
+    }
+
+    /*
+     * Creates a new {@link PollResponse} with status, value and retryAfter.
+     *
+     * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
+     * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
+     * @param properties A map of properties provided by the service that will be made available into the next poll operation.
+     * @throws NullPointerException If {@code status} is {@code null}.
+     * @throws IllegalArgumentException if otherStatus is null or empty when status is {@link OperationStatus#OTHER}.
+     */
     private  PollResponse(OperationStatus status, String otherStatus, T value, Duration retryAfter, Map<Object, Object> properties) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
@@ -83,25 +99,6 @@ public final class PollResponse<T> {
         this.otherStatus = otherStatus;
     }
 
-    /**
-     * Creates a new {@link PollResponse} with status, value and retryAfter.
-     *
-     * <p><strong>Code Sample Creating PollResponse Object</strong></p>
-     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter}
-     *
-     * @param status Mandatory operation status as defined in {@link OperationStatus}.
-     * {@code null} is valid value for all other {@link OperationStatus}.
-     * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
-     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
-     * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
-     * @param properties A map of properties provided by the service that will be made available into the next poll operation.
-     * @throws NullPointerException If {@code status} is {@code null}.
-     * @throws IllegalArgumentException if otherStatus is null or empty when status is {@link OperationStatus#OTHER}.
-     */
-    public PollResponse(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
-        this(status, null, value, retryAfter, properties);
-    }
-    
     /**
      * Creates a new {@link PollResponse} with {@link OperationStatus} , value and retryAfter.
      *
@@ -115,7 +112,7 @@ public final class PollResponse<T> {
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(OperationStatus status, T value, Duration retryAfter) {
-        this(status, value, retryAfter, null);
+        this(status, null, value, retryAfter, null);
     }
 
     /**

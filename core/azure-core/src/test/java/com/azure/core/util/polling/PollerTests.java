@@ -31,20 +31,14 @@ public class PollerTests {
         long sendFinalResponseInMillis
     ) {
         return new Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>>() {
-
             // Will return success after this time.
             LocalDateTime timeToReturnFinalResponse = LocalDateTime.now().plus(Duration.ofMillis(sendFinalResponseInMillis));
-
             @Override
             public Mono<PollResponse<CreateCertificateResponse>> apply(PollResponse<CreateCertificateResponse> prePollResponse) {
                 ++count;
-
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
-
                     int indexForIntermediateResponse = prePollResponse.getValue() == null || prePollResponse.getValue().intermediateResponseIndex >= intermediateOtherPollResponseList.size() ? 0 : prePollResponse.getValue().intermediateResponseIndex;
-
                     PollResponse<CreateCertificateResponse> intermediatePollResponse = intermediateOtherPollResponseList.get(indexForIntermediateResponse);
-
                     debug(" Service poll function called ", " returning intermediate response status, otherstatus, value " + intermediatePollResponse.getStatus().toString() + "," + intermediatePollResponse.getOtherStatus() + "," + intermediatePollResponse.getValue().response);
                     intermediatePollResponse.getValue().intermediateResponseIndex = indexForIntermediateResponse + 1;
                     return Mono.just(intermediatePollResponse);
@@ -378,6 +372,7 @@ public class PollerTests {
         fluxPollResp.subscribe(pr -> {
             debug("0 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
         });
+
             createCertPoller.getObserver().subscribe(x -> {
             debug("1 Got Observer() Response " + x.getStatus().toString() + " " + x.getStatus() + " " + x.getValue().response);
 
@@ -390,7 +385,6 @@ public class PollerTests {
 
         List<OperationStatus> observeOperationStates = new ArrayList<>();
         observeOperationStates.add(OperationStatus.SUCCESSFULLY_COMPLETED);
-
         Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
         fluxPollResp.subscribe(pr -> {
             debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
@@ -404,6 +398,7 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
+
 
     private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeOperationStates, List<String> observeOtherStates) {
         List<OperationStatus> operationStates = observeOperationStates != null ? observeOperationStates : new ArrayList<>();
@@ -420,6 +415,7 @@ public class PollerTests {
         }
         return Mono.just(false);
     }
+
     private void debug(String... messages) {
         if (debug) {
             StringBuffer sb = new StringBuffer(new Date().toString()).append(" ").append(getClass().getName()).append(" ").append(count).append(" ");
@@ -430,10 +426,12 @@ public class PollerTests {
         }
     }
 
+
     public class CreateCertificateResponse {
         String response;
         HttpResponseException error;
         int intermediateResponseIndex;
+
         public CreateCertificateResponse(String respone) {
             this.response = respone;
         }
