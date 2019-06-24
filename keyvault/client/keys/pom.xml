@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>azure-keyvault-parent</artifactId>
-    <groupId>com.azure.security</groupId>
+    <groupId>com.azure</groupId>
     <version>1.0.0-preview.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure.security</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-keys</artifactId>
   <version>1.0.0-preview.1</version>
 
