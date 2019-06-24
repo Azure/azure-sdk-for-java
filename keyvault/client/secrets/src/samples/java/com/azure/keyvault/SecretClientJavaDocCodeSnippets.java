@@ -19,7 +19,8 @@ public final class SecretClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.secretclient.getSecret#secretBase
         for(SecretBase secret : secretClient.listSecrets()){
             Secret secretWithValue  = secretClient.getSecret(secret).value();
-            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(), secretWithValue.value());
+            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(),
+                    secretWithValue.value());
         }
         // END: com.azure.keyvault.secretclient.getSecret#secretBase
     }

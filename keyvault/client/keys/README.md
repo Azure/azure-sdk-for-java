@@ -14,7 +14,7 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-keys</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-preview.1</version>
 </dependency>
 ```
 
