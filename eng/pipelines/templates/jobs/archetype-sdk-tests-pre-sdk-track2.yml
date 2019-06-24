@@ -1,0 +1,41 @@
+# Delete this after all tests.yml files have been migrated to use ServiceDirectory
+parameters:
+  PomFilePath: ''
+  EnvVars: {}
+
+jobs:
+  - job: ${{ parameters.JobName }}
+
+    pool:
+      vmImage: 'vs2017-win2016'
+
+    steps:
+      - task: Maven@3
+        displayName: 'Install Reporting Tools'
+        inputs:
+          mavenPomFile: pom.client.xml
+          options: '--batch-mode -Dmaven.wagon.http.pool=false -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip  -Dmaven.javadoc.skip=true'
+          mavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
+      - task: Maven@3
+        displayName: 'Run Live tests'
+        inputs:
+          mavenPomFile: ${{ parameters.PomFilePath }}
+          options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
+          mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'test'
+        env: ${{ parameters.EnvVars }}
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: 'Live tests for ${{ parameters.PomFilePath }}'
