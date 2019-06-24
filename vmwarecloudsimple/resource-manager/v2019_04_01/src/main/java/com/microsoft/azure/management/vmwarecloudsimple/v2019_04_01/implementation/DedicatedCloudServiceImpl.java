@@ -45,13 +45,13 @@ class DedicatedCloudServiceImpl extends GroupableResourceCoreImpl<DedicatedCloud
 
 
     @Override
-    public String gatewaySubnet() {
-        return this.inner().gatewaySubnet();
+    public OnboardingStatus accountOnboardingState() {
+        return this.inner().accountOnboardingState();
     }
 
     @Override
-    public OnboardingStatus isAccountOnboarded() {
-        return this.inner().isAccountOnboarded();
+    public String gatewaySubnet() {
+        return this.inner().gatewaySubnet();
     }
 
     @Override

@@ -40,18 +40,6 @@ public class PrivateCloudInner {
     private String name;
 
     /**
-     * Availability Zone id, e.g. "az1".
-     */
-    @JsonProperty(value = "properties.availabilityZoneId")
-    private String availabilityZoneId;
-
-    /**
-     * Availability Zone name, e.g. "Availability Zone 1".
-     */
-    @JsonProperty(value = "properties.availabilityZoneName")
-    private String availabilityZoneName;
-
-    /**
      * Number of clusters.
      */
     @JsonProperty(value = "properties.clustersNumber")
@@ -70,6 +58,30 @@ public class PrivateCloudInner {
     private DateTime createdOn;
 
     /**
+     * CloudSimple Availability Zone id, e.g. "az1".
+     */
+    @JsonProperty(value = "properties.dedicatedAvailabilityZoneId")
+    private String dedicatedAvailabilityZoneId;
+
+    /**
+     * CloudSimple Availability Zone name, e.g. "Availability Zone 1".
+     */
+    @JsonProperty(value = "properties.dedicatedAvailabilityZoneName")
+    private String dedicatedAvailabilityZoneName;
+
+    /**
+     * CloudSimple Placement Group id, e.g. "n1".
+     */
+    @JsonProperty(value = "properties.dedicatedPlacementGroupId")
+    private String dedicatedPlacementGroupId;
+
+    /**
+     * CloudSimple Placement Group name.
+     */
+    @JsonProperty(value = "properties.dedicatedPlacementGroupName")
+    private String dedicatedPlacementGroupName;
+
+    /**
      * Array of DNS servers.
      */
     @JsonProperty(value = "properties.dnsServers")
@@ -86,18 +98,6 @@ public class PrivateCloudInner {
      */
     @JsonProperty(value = "properties.nsxType")
     private String nsxType;
-
-    /**
-     * Placement Group id, e.g. "n1".
-     */
-    @JsonProperty(value = "properties.placementGroupId")
-    private String placementGroupId;
-
-    /**
-     * Placement Group name.
-     */
-    @JsonProperty(value = "properties.placementGroupName")
-    private String placementGroupName;
 
     /**
      * Id of a private cloud.
@@ -251,46 +251,6 @@ public class PrivateCloudInner {
     }
 
     /**
-     * Get availability Zone id, e.g. "az1".
-     *
-     * @return the availabilityZoneId value
-     */
-    public String availabilityZoneId() {
-        return this.availabilityZoneId;
-    }
-
-    /**
-     * Set availability Zone id, e.g. "az1".
-     *
-     * @param availabilityZoneId the availabilityZoneId value to set
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withAvailabilityZoneId(String availabilityZoneId) {
-        this.availabilityZoneId = availabilityZoneId;
-        return this;
-    }
-
-    /**
-     * Get availability Zone name, e.g. "Availability Zone 1".
-     *
-     * @return the availabilityZoneName value
-     */
-    public String availabilityZoneName() {
-        return this.availabilityZoneName;
-    }
-
-    /**
-     * Set availability Zone name, e.g. "Availability Zone 1".
-     *
-     * @param availabilityZoneName the availabilityZoneName value to set
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withAvailabilityZoneName(String availabilityZoneName) {
-        this.availabilityZoneName = availabilityZoneName;
-        return this;
-    }
-
-    /**
      * Get number of clusters.
      *
      * @return the clustersNumber value
@@ -351,6 +311,86 @@ public class PrivateCloudInner {
     }
 
     /**
+     * Get cloudSimple Availability Zone id, e.g. "az1".
+     *
+     * @return the dedicatedAvailabilityZoneId value
+     */
+    public String dedicatedAvailabilityZoneId() {
+        return this.dedicatedAvailabilityZoneId;
+    }
+
+    /**
+     * Set cloudSimple Availability Zone id, e.g. "az1".
+     *
+     * @param dedicatedAvailabilityZoneId the dedicatedAvailabilityZoneId value to set
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withDedicatedAvailabilityZoneId(String dedicatedAvailabilityZoneId) {
+        this.dedicatedAvailabilityZoneId = dedicatedAvailabilityZoneId;
+        return this;
+    }
+
+    /**
+     * Get cloudSimple Availability Zone name, e.g. "Availability Zone 1".
+     *
+     * @return the dedicatedAvailabilityZoneName value
+     */
+    public String dedicatedAvailabilityZoneName() {
+        return this.dedicatedAvailabilityZoneName;
+    }
+
+    /**
+     * Set cloudSimple Availability Zone name, e.g. "Availability Zone 1".
+     *
+     * @param dedicatedAvailabilityZoneName the dedicatedAvailabilityZoneName value to set
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withDedicatedAvailabilityZoneName(String dedicatedAvailabilityZoneName) {
+        this.dedicatedAvailabilityZoneName = dedicatedAvailabilityZoneName;
+        return this;
+    }
+
+    /**
+     * Get cloudSimple Placement Group id, e.g. "n1".
+     *
+     * @return the dedicatedPlacementGroupId value
+     */
+    public String dedicatedPlacementGroupId() {
+        return this.dedicatedPlacementGroupId;
+    }
+
+    /**
+     * Set cloudSimple Placement Group id, e.g. "n1".
+     *
+     * @param dedicatedPlacementGroupId the dedicatedPlacementGroupId value to set
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withDedicatedPlacementGroupId(String dedicatedPlacementGroupId) {
+        this.dedicatedPlacementGroupId = dedicatedPlacementGroupId;
+        return this;
+    }
+
+    /**
+     * Get cloudSimple Placement Group name.
+     *
+     * @return the dedicatedPlacementGroupName value
+     */
+    public String dedicatedPlacementGroupName() {
+        return this.dedicatedPlacementGroupName;
+    }
+
+    /**
+     * Set cloudSimple Placement Group name.
+     *
+     * @param dedicatedPlacementGroupName the dedicatedPlacementGroupName value to set
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withDedicatedPlacementGroupName(String dedicatedPlacementGroupName) {
+        this.dedicatedPlacementGroupName = dedicatedPlacementGroupName;
+        return this;
+    }
+
+    /**
      * Get array of DNS servers.
      *
      * @return the dnsServers value
@@ -407,46 +447,6 @@ public class PrivateCloudInner {
      */
     public PrivateCloudInner withNsxType(String nsxType) {
         this.nsxType = nsxType;
-        return this;
-    }
-
-    /**
-     * Get placement Group id, e.g. "n1".
-     *
-     * @return the placementGroupId value
-     */
-    public String placementGroupId() {
-        return this.placementGroupId;
-    }
-
-    /**
-     * Set placement Group id, e.g. "n1".
-     *
-     * @param placementGroupId the placementGroupId value to set
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withPlacementGroupId(String placementGroupId) {
-        this.placementGroupId = placementGroupId;
-        return this;
-    }
-
-    /**
-     * Get placement Group name.
-     *
-     * @return the placementGroupName value
-     */
-    public String placementGroupName() {
-        return this.placementGroupName;
-    }
-
-    /**
-     * Set placement Group name.
-     *
-     * @param placementGroupName the placementGroupName value to set
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withPlacementGroupName(String placementGroupName) {
-        this.placementGroupName = placementGroupName;
         return this;
     }
 

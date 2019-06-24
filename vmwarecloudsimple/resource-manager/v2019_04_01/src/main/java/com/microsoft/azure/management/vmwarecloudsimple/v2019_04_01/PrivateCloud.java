@@ -21,16 +21,6 @@ import java.util.UUID;
  */
 public interface PrivateCloud extends HasInner<PrivateCloudInner>, HasManager<VMwareCloudSimpleManager> {
     /**
-     * @return the availabilityZoneId value.
-     */
-    String availabilityZoneId();
-
-    /**
-     * @return the availabilityZoneName value.
-     */
-    String availabilityZoneName();
-
-    /**
      * @return the clustersNumber value.
      */
     Integer clustersNumber();
@@ -44,6 +34,26 @@ public interface PrivateCloud extends HasInner<PrivateCloudInner>, HasManager<VM
      * @return the createdOn value.
      */
     DateTime createdOn();
+
+    /**
+     * @return the dedicatedAvailabilityZoneId value.
+     */
+    String dedicatedAvailabilityZoneId();
+
+    /**
+     * @return the dedicatedAvailabilityZoneName value.
+     */
+    String dedicatedAvailabilityZoneName();
+
+    /**
+     * @return the dedicatedPlacementGroupId value.
+     */
+    String dedicatedPlacementGroupId();
+
+    /**
+     * @return the dedicatedPlacementGroupName value.
+     */
+    String dedicatedPlacementGroupName();
 
     /**
      * @return the dnsServers value.
@@ -74,16 +84,6 @@ public interface PrivateCloud extends HasInner<PrivateCloudInner>, HasManager<VM
      * @return the nsxType value.
      */
     String nsxType();
-
-    /**
-     * @return the placementGroupId value.
-     */
-    String placementGroupId();
-
-    /**
-     * @return the placementGroupName value.
-     */
-    String placementGroupName();
 
     /**
      * @return the privateCloudId value.

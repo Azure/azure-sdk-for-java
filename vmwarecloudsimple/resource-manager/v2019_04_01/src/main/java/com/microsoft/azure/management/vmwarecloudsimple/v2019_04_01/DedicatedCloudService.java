@@ -25,14 +25,14 @@ import com.microsoft.azure.management.vmwarecloudsimple.v2019_04_01.implementati
  */
 public interface DedicatedCloudService extends HasInner<DedicatedCloudServiceInner>, Resource, GroupableResourceCore<VMwareCloudSimpleManager, DedicatedCloudServiceInner>, HasResourceGroup, Refreshable<DedicatedCloudService>, Updatable<DedicatedCloudService.Update>, HasManager<VMwareCloudSimpleManager> {
     /**
+     * @return the accountOnboardingState value.
+     */
+    OnboardingStatus accountOnboardingState();
+
+    /**
      * @return the gatewaySubnet value.
      */
     String gatewaySubnet();
-
-    /**
-     * @return the isAccountOnboarded value.
-     */
-    OnboardingStatus isAccountOnboarded();
 
     /**
      * @return the nodes value.

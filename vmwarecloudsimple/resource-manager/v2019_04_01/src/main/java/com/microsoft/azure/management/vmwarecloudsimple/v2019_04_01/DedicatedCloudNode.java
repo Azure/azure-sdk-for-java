@@ -26,16 +26,6 @@ import com.microsoft.azure.management.vmwarecloudsimple.v2019_04_01.implementati
  */
 public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, Resource, GroupableResourceCore<VMwareCloudSimpleManager, DedicatedCloudNodeInner>, HasResourceGroup, Refreshable<DedicatedCloudNode>, Updatable<DedicatedCloudNode.Update>, HasManager<VMwareCloudSimpleManager> {
     /**
-     * @return the availabilityZoneId value.
-     */
-    String availabilityZoneId();
-
-    /**
-     * @return the availabilityZoneName value.
-     */
-    String availabilityZoneName();
-
-    /**
      * @return the cloudRackName value.
      */
     String cloudRackName();
@@ -44,6 +34,26 @@ public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, R
      * @return the created value.
      */
     Object created();
+
+    /**
+     * @return the dedicatedAvailabilityZoneId value.
+     */
+    String dedicatedAvailabilityZoneId();
+
+    /**
+     * @return the dedicatedAvailabilityZoneName value.
+     */
+    String dedicatedAvailabilityZoneName();
+
+    /**
+     * @return the dedicatedPlacementGroupId value.
+     */
+    String dedicatedPlacementGroupId();
+
+    /**
+     * @return the dedicatedPlacementGroupName value.
+     */
+    String dedicatedPlacementGroupName();
 
     /**
      * @return the id1 value.
@@ -59,16 +69,6 @@ public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, R
      * @return the nodesCount value.
      */
     int nodesCount();
-
-    /**
-     * @return the placementGroupId value.
-     */
-    String placementGroupId();
-
-    /**
-     * @return the placementGroupName value.
-     */
-    String placementGroupName();
 
     /**
      * @return the privateCloudId value.
@@ -108,7 +108,7 @@ public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, R
     /**
      * The entirety of the DedicatedCloudNode definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAvailabilityZoneId, DefinitionStages.WithId1, DefinitionStages.WithName1, DefinitionStages.WithNodesCount, DefinitionStages.WithPlacementGroupId, DefinitionStages.WithPurchaseId, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDedicatedAvailabilityZoneId, DefinitionStages.WithDedicatedPlacementGroupId, DefinitionStages.WithId1, DefinitionStages.WithName1, DefinitionStages.WithNodesCount, DefinitionStages.WithPurchaseId, DefinitionStages.WithCreate {
     }
 
     /**
@@ -124,19 +124,31 @@ public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, R
         /**
          * The stage of the DedicatedCloudNode definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithAvailabilityZoneId> {
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithDedicatedAvailabilityZoneId> {
         }
 
         /**
-         * The stage of the dedicatedcloudnode definition allowing to specify AvailabilityZoneId.
+         * The stage of the dedicatedcloudnode definition allowing to specify DedicatedAvailabilityZoneId.
          */
-        interface WithAvailabilityZoneId {
+        interface WithDedicatedAvailabilityZoneId {
            /**
-            * Specifies availabilityZoneId.
-            * @param availabilityZoneId Availability Zone id, e.g. "az1"
+            * Specifies dedicatedAvailabilityZoneId.
+            * @param dedicatedAvailabilityZoneId CloudSimple Availability Zone id, e.g. "az1"
             * @return the next definition stage
 */
-            WithId1 withAvailabilityZoneId(String availabilityZoneId);
+            WithDedicatedPlacementGroupId withDedicatedAvailabilityZoneId(String dedicatedAvailabilityZoneId);
+        }
+
+        /**
+         * The stage of the dedicatedcloudnode definition allowing to specify DedicatedPlacementGroupId.
+         */
+        interface WithDedicatedPlacementGroupId {
+           /**
+            * Specifies dedicatedPlacementGroupId.
+            * @param dedicatedPlacementGroupId CloudSimple Placement Group id, e.g. "n1"
+            * @return the next definition stage
+*/
+            WithId1 withDedicatedPlacementGroupId(String dedicatedPlacementGroupId);
         }
 
         /**
@@ -172,19 +184,7 @@ public interface DedicatedCloudNode extends HasInner<DedicatedCloudNodeInner>, R
             * @param nodesCount count of nodes to create
             * @return the next definition stage
 */
-            WithPlacementGroupId withNodesCount(int nodesCount);
-        }
-
-        /**
-         * The stage of the dedicatedcloudnode definition allowing to specify PlacementGroupId.
-         */
-        interface WithPlacementGroupId {
-           /**
-            * Specifies placementGroupId.
-            * @param placementGroupId Placement Group id, e.g. "n1"
-            * @return the next definition stage
-*/
-            WithPurchaseId withPlacementGroupId(String placementGroupId);
+            WithPurchaseId withNodesCount(int nodesCount);
         }
 
         /**

@@ -47,16 +47,6 @@ class DedicatedCloudNodeImpl extends GroupableResourceCoreImpl<DedicatedCloudNod
 
 
     @Override
-    public String availabilityZoneId() {
-        return this.inner().availabilityZoneId();
-    }
-
-    @Override
-    public String availabilityZoneName() {
-        return this.inner().availabilityZoneName();
-    }
-
-    @Override
     public String cloudRackName() {
         return this.inner().cloudRackName();
     }
@@ -64,6 +54,26 @@ class DedicatedCloudNodeImpl extends GroupableResourceCoreImpl<DedicatedCloudNod
     @Override
     public Object created() {
         return this.inner().created();
+    }
+
+    @Override
+    public String dedicatedAvailabilityZoneId() {
+        return this.inner().dedicatedAvailabilityZoneId();
+    }
+
+    @Override
+    public String dedicatedAvailabilityZoneName() {
+        return this.inner().dedicatedAvailabilityZoneName();
+    }
+
+    @Override
+    public String dedicatedPlacementGroupId() {
+        return this.inner().dedicatedPlacementGroupId();
+    }
+
+    @Override
+    public String dedicatedPlacementGroupName() {
+        return this.inner().dedicatedPlacementGroupName();
     }
 
     @Override
@@ -79,16 +89,6 @@ class DedicatedCloudNodeImpl extends GroupableResourceCoreImpl<DedicatedCloudNod
     @Override
     public int nodesCount() {
         return this.inner().nodesCount();
-    }
-
-    @Override
-    public String placementGroupId() {
-        return this.inner().placementGroupId();
-    }
-
-    @Override
-    public String placementGroupName() {
-        return this.inner().placementGroupName();
     }
 
     @Override
@@ -127,8 +127,14 @@ class DedicatedCloudNodeImpl extends GroupableResourceCoreImpl<DedicatedCloudNod
     }
 
     @Override
-    public DedicatedCloudNodeImpl withAvailabilityZoneId(String availabilityZoneId) {
-        this.inner().withAvailabilityZoneId(availabilityZoneId);
+    public DedicatedCloudNodeImpl withDedicatedAvailabilityZoneId(String dedicatedAvailabilityZoneId) {
+        this.inner().withDedicatedAvailabilityZoneId(dedicatedAvailabilityZoneId);
+        return this;
+    }
+
+    @Override
+    public DedicatedCloudNodeImpl withDedicatedPlacementGroupId(String dedicatedPlacementGroupId) {
+        this.inner().withDedicatedPlacementGroupId(dedicatedPlacementGroupId);
         return this;
     }
 
@@ -147,12 +153,6 @@ class DedicatedCloudNodeImpl extends GroupableResourceCoreImpl<DedicatedCloudNod
     @Override
     public DedicatedCloudNodeImpl withNodesCount(int nodesCount) {
         this.inner().withNodesCount(nodesCount);
-        return this;
-    }
-
-    @Override
-    public DedicatedCloudNodeImpl withPlacementGroupId(String placementGroupId) {
-        this.inner().withPlacementGroupId(placementGroupId);
         return this;
     }
 

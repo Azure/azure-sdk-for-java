@@ -19,19 +19,19 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DedicatedCloudServiceInner extends Resource {
     /**
+     * indicates whether account onboarded or not in a given region. Possible
+     * values include: 'notOnBoarded', 'onBoarded', 'onBoardingFailed',
+     * 'onBoarding'.
+     */
+    @JsonProperty(value = "properties.accountOnboardingState", access = JsonProperty.Access.WRITE_ONLY)
+    private OnboardingStatus accountOnboardingState;
+
+    /**
      * gateway Subnet for the account. It will collect the subnet address and
      * always treat it as /28.
      */
     @JsonProperty(value = "properties.gatewaySubnet", required = true)
     private String gatewaySubnet;
-
-    /**
-     * indicates whether account onboarded or not in a given region. Possible
-     * values include: 'notOnBoarded', 'onBoarded', 'onBoardingFailed',
-     * 'onBoarding'.
-     */
-    @JsonProperty(value = "properties.isAccountOnboarded", access = JsonProperty.Access.WRITE_ONLY)
-    private OnboardingStatus isAccountOnboarded;
 
     /**
      * total nodes purchased.
@@ -44,6 +44,15 @@ public class DedicatedCloudServiceInner extends Resource {
      */
     @JsonProperty(value = "properties.serviceURL")
     private String serviceURL;
+
+    /**
+     * Get indicates whether account onboarded or not in a given region. Possible values include: 'notOnBoarded', 'onBoarded', 'onBoardingFailed', 'onBoarding'.
+     *
+     * @return the accountOnboardingState value
+     */
+    public OnboardingStatus accountOnboardingState() {
+        return this.accountOnboardingState;
+    }
 
     /**
      * Get gateway Subnet for the account. It will collect the subnet address and always treat it as /28.
@@ -63,15 +72,6 @@ public class DedicatedCloudServiceInner extends Resource {
     public DedicatedCloudServiceInner withGatewaySubnet(String gatewaySubnet) {
         this.gatewaySubnet = gatewaySubnet;
         return this;
-    }
-
-    /**
-     * Get indicates whether account onboarded or not in a given region. Possible values include: 'notOnBoarded', 'onBoarded', 'onBoardingFailed', 'onBoarding'.
-     *
-     * @return the isAccountOnboarded value
-     */
-    public OnboardingStatus isAccountOnboarded() {
-        return this.isAccountOnboarded;
     }
 
     /**

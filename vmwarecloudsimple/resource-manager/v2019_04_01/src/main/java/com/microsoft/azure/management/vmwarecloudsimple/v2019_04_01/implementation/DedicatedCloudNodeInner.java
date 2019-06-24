@@ -21,18 +21,6 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DedicatedCloudNodeInner extends Resource {
     /**
-     * Availability Zone id, e.g. "az1".
-     */
-    @JsonProperty(value = "properties.availabilityZoneId", required = true)
-    private String availabilityZoneId;
-
-    /**
-     * Availability Zone name, e.g. "Availability Zone 1".
-     */
-    @JsonProperty(value = "properties.availabilityZoneName", access = JsonProperty.Access.WRITE_ONLY)
-    private String availabilityZoneName;
-
-    /**
      * VMWare Cloud Rack Name.
      */
     @JsonProperty(value = "properties.cloudRackName", access = JsonProperty.Access.WRITE_ONLY)
@@ -45,22 +33,34 @@ public class DedicatedCloudNodeInner extends Resource {
     private Object created;
 
     /**
+     * CloudSimple Availability Zone id, e.g. "az1".
+     */
+    @JsonProperty(value = "properties.dedicatedAvailabilityZoneId", required = true)
+    private String dedicatedAvailabilityZoneId;
+
+    /**
+     * CloudSimple Availability Zone name, e.g. "Availability Zone 1".
+     */
+    @JsonProperty(value = "properties.dedicatedAvailabilityZoneName", access = JsonProperty.Access.WRITE_ONLY)
+    private String dedicatedAvailabilityZoneName;
+
+    /**
+     * CloudSimple Placement Group id, e.g. "n1".
+     */
+    @JsonProperty(value = "properties.dedicatedPlacementGroupId", required = true)
+    private String dedicatedPlacementGroupId;
+
+    /**
+     * CloudSimple Placement Name, e.g. "Placement Group 1".
+     */
+    @JsonProperty(value = "properties.dedicatedPlacementGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String dedicatedPlacementGroupName;
+
+    /**
      * count of nodes to create.
      */
     @JsonProperty(value = "properties.nodesCount", required = true)
     private int nodesCount;
-
-    /**
-     * Placement Group id, e.g. "n1".
-     */
-    @JsonProperty(value = "properties.placementGroupId", required = true)
-    private String placementGroupId;
-
-    /**
-     * Placement Name, e.g. "Placement Group 1".
-     */
-    @JsonProperty(value = "properties.placementGroupName", access = JsonProperty.Access.WRITE_ONLY)
-    private String placementGroupName;
 
     /**
      * Private Cloud Id.
@@ -118,35 +118,6 @@ public class DedicatedCloudNodeInner extends Resource {
     private Sku sku;
 
     /**
-     * Get availability Zone id, e.g. "az1".
-     *
-     * @return the availabilityZoneId value
-     */
-    public String availabilityZoneId() {
-        return this.availabilityZoneId;
-    }
-
-    /**
-     * Set availability Zone id, e.g. "az1".
-     *
-     * @param availabilityZoneId the availabilityZoneId value to set
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withAvailabilityZoneId(String availabilityZoneId) {
-        this.availabilityZoneId = availabilityZoneId;
-        return this;
-    }
-
-    /**
-     * Get availability Zone name, e.g. "Availability Zone 1".
-     *
-     * @return the availabilityZoneName value
-     */
-    public String availabilityZoneName() {
-        return this.availabilityZoneName;
-    }
-
-    /**
      * Get vMWare Cloud Rack Name.
      *
      * @return the cloudRackName value
@@ -162,6 +133,64 @@ public class DedicatedCloudNodeInner extends Resource {
      */
     public Object created() {
         return this.created;
+    }
+
+    /**
+     * Get cloudSimple Availability Zone id, e.g. "az1".
+     *
+     * @return the dedicatedAvailabilityZoneId value
+     */
+    public String dedicatedAvailabilityZoneId() {
+        return this.dedicatedAvailabilityZoneId;
+    }
+
+    /**
+     * Set cloudSimple Availability Zone id, e.g. "az1".
+     *
+     * @param dedicatedAvailabilityZoneId the dedicatedAvailabilityZoneId value to set
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withDedicatedAvailabilityZoneId(String dedicatedAvailabilityZoneId) {
+        this.dedicatedAvailabilityZoneId = dedicatedAvailabilityZoneId;
+        return this;
+    }
+
+    /**
+     * Get cloudSimple Availability Zone name, e.g. "Availability Zone 1".
+     *
+     * @return the dedicatedAvailabilityZoneName value
+     */
+    public String dedicatedAvailabilityZoneName() {
+        return this.dedicatedAvailabilityZoneName;
+    }
+
+    /**
+     * Get cloudSimple Placement Group id, e.g. "n1".
+     *
+     * @return the dedicatedPlacementGroupId value
+     */
+    public String dedicatedPlacementGroupId() {
+        return this.dedicatedPlacementGroupId;
+    }
+
+    /**
+     * Set cloudSimple Placement Group id, e.g. "n1".
+     *
+     * @param dedicatedPlacementGroupId the dedicatedPlacementGroupId value to set
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withDedicatedPlacementGroupId(String dedicatedPlacementGroupId) {
+        this.dedicatedPlacementGroupId = dedicatedPlacementGroupId;
+        return this;
+    }
+
+    /**
+     * Get cloudSimple Placement Name, e.g. "Placement Group 1".
+     *
+     * @return the dedicatedPlacementGroupName value
+     */
+    public String dedicatedPlacementGroupName() {
+        return this.dedicatedPlacementGroupName;
     }
 
     /**
@@ -182,35 +211,6 @@ public class DedicatedCloudNodeInner extends Resource {
     public DedicatedCloudNodeInner withNodesCount(int nodesCount) {
         this.nodesCount = nodesCount;
         return this;
-    }
-
-    /**
-     * Get placement Group id, e.g. "n1".
-     *
-     * @return the placementGroupId value
-     */
-    public String placementGroupId() {
-        return this.placementGroupId;
-    }
-
-    /**
-     * Set placement Group id, e.g. "n1".
-     *
-     * @param placementGroupId the placementGroupId value to set
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withPlacementGroupId(String placementGroupId) {
-        this.placementGroupId = placementGroupId;
-        return this;
-    }
-
-    /**
-     * Get placement Name, e.g. "Placement Group 1".
-     *
-     * @return the placementGroupName value
-     */
-    public String placementGroupName() {
-        return this.placementGroupName;
     }
 
     /**

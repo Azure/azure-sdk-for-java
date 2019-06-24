@@ -36,16 +36,6 @@ class PrivateCloudImpl extends WrapperImpl<PrivateCloudInner> implements Private
 
 
     @Override
-    public String availabilityZoneId() {
-        return this.inner().availabilityZoneId();
-    }
-
-    @Override
-    public String availabilityZoneName() {
-        return this.inner().availabilityZoneName();
-    }
-
-    @Override
     public Integer clustersNumber() {
         return this.inner().clustersNumber();
     }
@@ -58,6 +48,26 @@ class PrivateCloudImpl extends WrapperImpl<PrivateCloudInner> implements Private
     @Override
     public DateTime createdOn() {
         return this.inner().createdOn();
+    }
+
+    @Override
+    public String dedicatedAvailabilityZoneId() {
+        return this.inner().dedicatedAvailabilityZoneId();
+    }
+
+    @Override
+    public String dedicatedAvailabilityZoneName() {
+        return this.inner().dedicatedAvailabilityZoneName();
+    }
+
+    @Override
+    public String dedicatedPlacementGroupId() {
+        return this.inner().dedicatedPlacementGroupId();
+    }
+
+    @Override
+    public String dedicatedPlacementGroupName() {
+        return this.inner().dedicatedPlacementGroupName();
     }
 
     @Override
@@ -88,16 +98,6 @@ class PrivateCloudImpl extends WrapperImpl<PrivateCloudInner> implements Private
     @Override
     public String nsxType() {
         return this.inner().nsxType();
-    }
-
-    @Override
-    public String placementGroupId() {
-        return this.inner().placementGroupId();
-    }
-
-    @Override
-    public String placementGroupName() {
-        return this.inner().placementGroupName();
     }
 
     @Override
