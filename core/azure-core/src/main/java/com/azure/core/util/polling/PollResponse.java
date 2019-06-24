@@ -81,6 +81,7 @@ public final class PollResponse<T> {
      * Creates a new {@link PollResponse} with status, value and retryAfter.
      *
      * @param status Mandatory operation status as defined in {@link OperationStatus}.
+     * @param otherStatus string representation of custom status. It must be not null and non empty. The status will be defaulted to {@link OperationStatus#OTHER}
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also valid.
      * @param retryAfter Represents the delay the service has requested until the next polling operation is performed.
      * A {@code null}, zero or negative value will be taken to mean that the {@link Poller} should determine on its own when the next poll operation is to occur.
@@ -159,7 +160,6 @@ public final class PollResponse<T> {
      */
     public PollResponse(String otherStatus, T value) {
         this(otherStatus, value, null);
-
     }
 
     /**
