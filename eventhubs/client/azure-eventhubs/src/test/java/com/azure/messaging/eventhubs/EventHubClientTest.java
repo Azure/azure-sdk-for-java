@@ -43,8 +43,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubClientTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
-    private final ClientLogger logger = new ClientLogger(EventHubClientTest.class);
-
     private EventHubClient client;
     private EventHubConsumer consumer;
     private ExpectedData data;
@@ -53,6 +51,10 @@ public class EventHubClientTest extends ApiTestBase {
     @Rule
     public TestName testName = new TestName();
 
+    public EventHubClientTest() {
+        super(new ClientLogger(EventHubClientTest.class));
+    }
+
     @Override
     protected String testName() {
         return testName.getMethodName();
@@ -60,8 +62,6 @@ public class EventHubClientTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(2);
@@ -71,8 +71,7 @@ public class EventHubClientTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, null, consumer, testName, logger);
+        dispose(consumer, client);
     }
 
     @Ignore("client not closed properly")
@@ -135,9 +134,8 @@ public class EventHubClientTest extends ApiTestBase {
 
     /**
      * Verifies that we can make multiple service calls one after the other. This is a typical user scenario when
-     * consumers want to create a consumer.
-     * 1. Gets information about the Event Hub
-     * 2. Queries for partition information about each partition.
+     * consumers want to create a consumer. 1. Gets information about the Event Hub 2. Queries for partition information
+     * about each partition.
      */
     @Ignore
     @Test
@@ -304,13 +302,14 @@ public class EventHubClientTest extends ApiTestBase {
             final EventHubConsumer consumer = ehClient.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId, EventPosition.latest());
             final Flux<EventData> events = Flux.range(0, numberOfEvents).map(number -> new EventData("testString".getBytes(UTF_8)));
             final EventHubProducer producer = ehClient.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+
             // Act & Assert
             StepVerifier.create(consumer.receive().take(numberOfEvents))
                 .then(() -> producer.send(events).block())
                 .expectNextCount(numberOfEvents)
                 .verifyComplete();
 
-            closeClient(ehClient, producer, consumer, testName, logger);
+            dispose(producer, consumer, ehClient);
         }
     }
 
