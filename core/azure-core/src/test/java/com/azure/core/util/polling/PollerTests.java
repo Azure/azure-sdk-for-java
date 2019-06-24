@@ -357,8 +357,8 @@ public class PollerTests {
 
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_1", new CreateCertificateResponse("Starting : Cert A"), null);
-        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(OperationStatus.OTHER, "OTHER_2", new CreateCertificateResponse("Starting : Cert A"), null);
+        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>("OTHER_1", new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>("OTHER_2", new CreateCertificateResponse("Starting : Cert A"));
 
         ArrayList<PollResponse<CreateCertificateResponse>> inProgressPollResponseList = new ArrayList<>();
         inProgressPollResponseList.add(inProgressPollResponse);

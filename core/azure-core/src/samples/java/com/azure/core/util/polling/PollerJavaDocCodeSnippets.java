@@ -15,8 +15,6 @@ import java.util.function.Function;
  */
 public final class PollerJavaDocCodeSnippets {
 
-    private boolean debug = true;
-
     private Function<PollResponse<String>, Mono<PollResponse<String>>> createPollOperation(
         PollResponse<String> inProResp,
         PollResponse<String> finalPollResponse,
