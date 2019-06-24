@@ -5,12 +5,14 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -18,16 +20,25 @@ import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class EventHubConsumerIntegrationTest extends ApiTestBase {
+    private static final String PARTITION_ID = "0";
+    // The maximum number of receivers on a partition + consumer group is 5.
+    private static final int MAX_NUMBER_OF_CONSUMERS = 5;
+
     private EventHubClient client;
 
     public EventHubConsumerIntegrationTest() {
@@ -113,6 +124,53 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
             subscriptions.dispose();
             dispose(consumers);
             dispose(producers);
+        }
+    }
+
+    /**
+     * Verify that if we set the identifier in the consumer, it shows up in the quota error.
+     */
+    @Ignore("Investigate. The sixth receiver is not causing an exception to be thrown.")
+    @Test
+    public void consumerIdentifierShowsUpInQuotaErrors() {
+        // Arrange
+        final String prefix = UUID.randomUUID().toString();
+        final Consumer<AmqpException> validateException = error -> {
+            Assert.assertEquals(RESOURCE_LIMIT_EXCEEDED, error.getErrorCondition());
+
+            final String errorMsg = error.getMessage();
+            for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
+                Assert.assertTrue(errorMsg.contains(prefix + ":" + i));
+            }
+        };
+
+        final List<EventHubConsumer> consumers = new ArrayList<>();
+        final Disposable.Composite subscriptions = Disposables.composite();
+        EventHubConsumer exceededConsumer = null;
+        try {
+            for (int i = 0; i < MAX_NUMBER_OF_CONSUMERS; i++) {
+                final EventHubConsumerOptions options = new EventHubConsumerOptions().identifier(prefix + ":" + i);
+                final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest(), options);
+                consumers.add(consumer);
+                subscriptions.add(consumer.receive().take(TIMEOUT).subscribe(eventData -> {
+                    // Received an event. We don't need to log it though.
+                }));
+            }
+
+            // Act & Verify
+            exceededConsumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.earliest());
+            StepVerifier.create(exceededConsumer.receive())
+                .expectErrorSatisfies(exception -> {
+                    Assert.assertTrue(exception instanceof AmqpException);
+                    validateException.accept((AmqpException) exception);
+                })
+                .verify();
+        } catch (AmqpException e) {
+            validateException.accept(e);
+        } finally {
+            subscriptions.dispose();
+            dispose(exceededConsumer);
+            dispose(consumers.toArray(new EventHubConsumer[0]));
         }
     }
 
