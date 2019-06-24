@@ -34,6 +34,12 @@ import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEED
 import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubConsumer} in
+ * other scenarios.
+ *
+ * @see SetPrefetchCountTest
+ */
 public class EventHubConsumerIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     // The maximum number of receivers on a partition + consumer group is 5.

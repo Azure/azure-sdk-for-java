@@ -8,20 +8,22 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Verifies we can use various prefetch options with {@link EventHubConsumer}.
+ */
 public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
-    // since we cannot test receiving very large prefetch like 10000 - in a unit test
-    // defaultPrefetchCount * 3 was chosen
-    private static final int EVENT_COUNT = EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT * 3;
-    private static final int MAX_RETRY_TO_DECLARE_RECEIVE_STUCK = 3;
 
     private EventHubClient client;
     private EventHubProducer producer;
@@ -41,6 +43,8 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        skipIfNotRecordMode();
+
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         producer = client.createProducer();
@@ -52,61 +56,67 @@ public class SetPrefetchCountTest extends ApiTestBase {
     }
 
     /**
-     * Test for large prefetch count on EventHubConsumer
+     * Test that we can use a very large prefetch number with {@link EventHubConsumerOptions}
      */
-    @Ignore
     @Test
-    public void setLargePrefetchCount() {
+    public void setLargePrefetchCount() throws InterruptedException {
         // Arrange
-        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest(),
-            new EventHubConsumerOptions().retry(Retry.getDefaultRetry()).prefetchCount(2000));
+        // Since we cannot test receiving very large prefetch like 10000 in a unit test, DefaultPrefetchCount * 3 was
+        // chosen
+        final int eventCount = EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT * 3;
+        final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .retry(Retry.getDefaultRetry())
+            .prefetchCount(2000);
 
-        int eventReceived = 0;
-        int retryCount = 0;
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+            EventPosition.latest(), options);
+
+        final Disposable subscription = consumer.receive()
+            .take(eventCount + 1).subscribe(event -> countDownLatch.countDown());
 
         // Act
-        while (eventReceived < EVENT_COUNT && retryCount < MAX_RETRY_TO_DECLARE_RECEIVE_STUCK) {
-            final Flux<EventData> events = Flux.range(0, EVENT_COUNT).map(number -> new EventData("testString".getBytes(UTF_8)));
-            producer.send(events);
-            // TODO: refactor it to trigger consumer to create connection
-            final Flux<EventData> receivedData = consumer.receive();
-            if (receivedData == null || !receivedData.toIterable().iterator().hasNext()) {
-                retryCount++;
-            } else {
-                eventReceived += receivedData.count().block();
-            }
-        }
+        try {
+            final Flux<EventData> events = Flux.range(0, eventCount).map(number -> new EventData("c".getBytes(UTF_8)));
+            producer.send(events).block();
 
-        // Assert
-        Assert.assertTrue(eventReceived >= EVENT_COUNT);
+            countDownLatch.await(45, TimeUnit.SECONDS);
+
+            // Assert
+            Assert.assertEquals(0, countDownLatch.getCount());
+        } finally {
+            subscription.dispose();
+        }
     }
 
     /**
-     * Test for small prefetch count on EventHubConsumer
+     * Test for small prefetch count on EventHubConsumer continues to get messages.
      */
-    @Ignore
     @Test
-    public void setSmallPrefetchCount() {
+    public void setSmallPrefetchCount() throws InterruptedException {
         // Arrange
-        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest(),
-            new EventHubConsumerOptions().prefetchCount(11));
-        int eventReceived = 0;
-        int retryCount = 0;
+        final int eventCount = 30;
+        final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
+        final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(11);
 
-        // Act
-        while (eventReceived < EVENT_COUNT && retryCount < MAX_RETRY_TO_DECLARE_RECEIVE_STUCK) {
-            final Flux<EventData> events = Flux.range(0, EVENT_COUNT).map(number -> new EventData("testString".getBytes(UTF_8)));
-            producer.send(events);
-            // TODO: refactor it to trigger consumer to create connection
-            final Flux<EventData> receivedData = consumer.receive();
-            if (receivedData == null || !receivedData.toIterable().iterator().hasNext()) {
-                retryCount++;
-            } else {
-                eventReceived += receivedData.count().block();
-            }
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+            EventPosition.latest(), options);
+
+        final Disposable subscription = consumer.receive()
+            .take(eventCount + 1).subscribe(event -> countDownLatch.countDown());
+
+        try {
+            // Act
+            final Flux<EventData> events = Flux.range(0, eventCount)
+                .map(number -> new EventData("testString".getBytes(UTF_8)));
+            producer.send(events).block(TIMEOUT);
+
+            countDownLatch.await(45, TimeUnit.SECONDS);
+
+            // Assert
+            Assert.assertEquals(0, countDownLatch.getCount());
+        } finally {
+            subscription.dispose();
         }
-
-        // Assert
-        Assert.assertTrue(eventReceived >= EVENT_COUNT);
     }
 }
