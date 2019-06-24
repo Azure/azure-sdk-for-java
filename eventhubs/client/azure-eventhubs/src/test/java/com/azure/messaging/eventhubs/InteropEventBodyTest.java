@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -31,12 +30,14 @@ public class InteropEventBodyTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "testmsg";
 
-    private final ClientLogger logger = new ClientLogger(InteropEventBodyTest.class);
-
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
     private EventData receivedEvent;
+
+    public InteropEventBodyTest() {
+        super(new ClientLogger(InteropEventBodyTest.class));
+    }
 
     @Rule
     public TestName testName = new TestName();
@@ -48,23 +49,24 @@ public class InteropEventBodyTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID)
+            .retry(Retry.getNoRetry())
+            .timeout(TIMEOUT);
+
         producer = client.createProducer(producerOptions);
         consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
     }
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(consumer, producer, client);
     }
 
     /**
-     * Test for interoperable with Proton Amqp messaging body as AMQP value.
+     * Test for interoperability with Proton AMQP messaging body as an AMQP value.
      */
     @Ignore
     @Test

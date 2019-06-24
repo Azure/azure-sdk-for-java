@@ -23,14 +23,16 @@ public class SetPrefetchCountTest extends ApiTestBase {
     private static final int EVENT_COUNT = EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT * 3;
     private static final int MAX_RETRY_TO_DECLARE_RECEIVE_STUCK = 3;
 
-    private final ClientLogger logger = new ClientLogger(SetPrefetchCountTest.class);
-
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
 
     @Rule
     public TestName testName = new TestName();
+
+    public SetPrefetchCountTest() {
+        super(new ClientLogger(SetPrefetchCountTest.class));
+    }
 
     @Override
     protected String testName() {
@@ -39,8 +41,6 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         producer = client.createProducer();
@@ -48,8 +48,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(producer, consumer, client);
     }
 
     /**

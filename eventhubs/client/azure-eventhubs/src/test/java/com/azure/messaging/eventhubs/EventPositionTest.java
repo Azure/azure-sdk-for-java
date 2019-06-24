@@ -26,8 +26,6 @@ public class EventPositionTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
 
-    private final ClientLogger logger = new ClientLogger(EventPositionTest.class);
-
     private static EventData sequenceNumberEvent;
     private static EventData enqueuedEventData;
     private static EventData offsetEventData;
@@ -35,6 +33,10 @@ public class EventPositionTest extends ApiTestBase {
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
+
+    public EventPositionTest() {
+        super(new ClientLogger(EventPositionTest.class));
+    }
 
     @Rule
     public TestName testName = new TestName();
@@ -55,8 +57,7 @@ public class EventPositionTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(client, producer, consumer);
     }
 
     /**
@@ -86,7 +87,7 @@ public class EventPositionTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,  EventPosition.latest());
+        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
 
         // Act & Assert
         StepVerifier.create(consumer.receive().take(1))
@@ -149,8 +150,7 @@ public class EventPositionTest extends ApiTestBase {
                 offsetData.offset().equalsIgnoreCase(dateTimeEventData.offset()));
         }
 
-        closeConsumer(enqueuedTimeConsumer, testName, logger);
-        closeConsumer(earliestConsumer, testName, logger);
+        dispose(enqueuedTimeConsumer, earliestConsumer);
     }
 
     /**
@@ -181,8 +181,7 @@ public class EventPositionTest extends ApiTestBase {
         Assert.assertEquals(enqueuedEventData.offset(), offsetEventData.offset());
         Assert.assertEquals(enqueuedEventData.sequenceNumber(), offsetEventData.sequenceNumber());
 
-        closeConsumer(enqueuedTimeConsumer, testName, logger);
-        closeConsumer(offsetConsumer, testName, logger);
+        dispose(enqueuedTimeConsumer, offsetConsumer);
     }
 
     /**
@@ -213,8 +212,7 @@ public class EventPositionTest extends ApiTestBase {
 
         Assert.assertEquals(enqueuedEventData.sequenceNumber() + 1, offsetEventData.sequenceNumber());
 
-        closeConsumer(enqueuedTimeConsumer, testName, logger);
-        closeConsumer(offsetConsumer, testName, logger);
+        dispose(enqueuedTimeConsumer, offsetConsumer);
     }
 
     /**
@@ -245,8 +243,7 @@ public class EventPositionTest extends ApiTestBase {
         Assert.assertEquals(enqueuedEventData.offset(), offsetEventData.offset());
         Assert.assertEquals(enqueuedEventData.sequenceNumber(), offsetEventData.sequenceNumber());
 
-        closeConsumer(enqueuedTimeConsumer, testName, logger);
-        closeConsumer(sequenceNumberConsumer, testName, logger);
+        dispose(enqueuedTimeConsumer, sequenceNumberConsumer);
     }
 
     /**
@@ -277,7 +274,6 @@ public class EventPositionTest extends ApiTestBase {
 
         Assert.assertEquals(enqueuedEventData.sequenceNumber() + 1, sequenceNumberEvent.sequenceNumber());
 
-        closeConsumer(enqueuedTimeConsumer, testName, logger);
-        closeConsumer(sequenceNumberConsumer, testName, logger);
+        dispose(enqueuedTimeConsumer, sequenceNumberConsumer);
     }
 }

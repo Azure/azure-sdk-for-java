@@ -29,7 +29,6 @@ import java.util.HashMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class InteropAmqpPropertiesTest extends ApiTestBase {
-    private final ClientLogger logger = new ClientLogger(InteropAmqpPropertiesTest.class);
 
     private static final String PARTITION_ID = "0";
     private static final String APPLICATION_PROPERTY = "firstProp";
@@ -44,6 +43,10 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
     @Rule
     public TestName testName = new TestName();
 
+    public InteropAmqpPropertiesTest() {
+        super(new ClientLogger(InteropAmqpPropertiesTest.class));
+    }
+
     @Override
     protected String testName() {
         return testName.getMethodName();
@@ -51,8 +54,6 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
 
@@ -63,12 +64,11 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(producer, consumer, client);
     }
 
     /**
-     * Test for interoperable with Direct Proton Amqp messaging
+     * Test for interoperable with Direct Proton AMQP messaging
      */
     @Ignore
     @Test
