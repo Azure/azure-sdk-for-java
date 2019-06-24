@@ -5,7 +5,7 @@ Secret client library allows you to securely store and tightly control the acces
 
 Use the secret client library to create and manage secrets.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -23,7 +23,6 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 
 - Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
--
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a Key Vault, you can use the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-key-vault-name>` with your own, unique names:
 
     ```Bash
