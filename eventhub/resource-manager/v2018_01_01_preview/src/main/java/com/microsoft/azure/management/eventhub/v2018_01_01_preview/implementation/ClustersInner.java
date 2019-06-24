@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -27,8 +28,10 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
 import retrofit2.http.PATCH;
 import retrofit2.http.Path;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -39,7 +42,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Clusters.
  */
-public class ClustersInner implements InnerSupportsGet<ClusterInner> {
+public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private ClustersService service;
     /** The service client containing this operation class. */
@@ -61,6 +64,10 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner> {
      * used by Retrofit to perform actually REST calls.
      */
     interface ClustersService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.EventHub/availableClusterRegions")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -68,6 +75,14 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner> {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters put" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}")
+        Observable<Response<ResponseBody>> put(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters beginPut" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}")
+        Observable<Response<ResponseBody>> beginPut(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters patch" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}")
@@ -77,10 +92,103 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner> {
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}")
         Observable<Response<ResponseBody>> beginPatch(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Body ClusterInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listNamespaces" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/namespaces")
+        Observable<Response<ResponseBody>> listNamespaces(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("clusterName") String clusterName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Clusters listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @return the PagedList<AvailableClusterInner> object if successful.
+     */
+    public PagedList<AvailableClusterInner> list() {
+        PageImpl1<AvailableClusterInner> page = new PageImpl1<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<AvailableClusterInner>(page) {
+            @Override
+            public Page<AvailableClusterInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AvailableClusterInner>> listAsync(final ServiceCallback<List<AvailableClusterInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @return the observable to the List&lt;AvailableClusterInner&gt; object
+     */
+    public Observable<Page<AvailableClusterInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AvailableClusterInner>>, Page<AvailableClusterInner>>() {
+            @Override
+            public Page<AvailableClusterInner> call(ServiceResponse<List<AvailableClusterInner>> response) {
+                PageImpl1<AvailableClusterInner> page = new PageImpl1<>();
+                page.setItems(response.body());
+                return page;
+            }
+        });
+    }
+
+    /**
+     * List the quantity of available pre-provisioned Event Hubs Clusters, indexed by Azure region.
+     *
+     * @return the observable to the List&lt;AvailableClusterInner&gt; object
+     */
+    public Observable<ServiceResponse<List<AvailableClusterInner>>> listWithServiceResponseAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailableClusterInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<AvailableClusterInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<AvailableClusterInner>> result = listDelegate(response);
+                        List<AvailableClusterInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<AvailableClusterInner>> clientResponse = new ServiceResponse<List<AvailableClusterInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<AvailableClusterInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<AvailableClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<AvailableClusterInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -285,6 +393,163 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner> {
     }
 
     /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ClusterInner object if successful.
+     */
+    public ClusterInner put(String resourceGroupName, String clusterName) {
+        return putWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().last().body();
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ClusterInner> putAsync(String resourceGroupName, String clusterName, final ServiceCallback<ClusterInner> serviceCallback) {
+        return ServiceFuture.fromResponse(putWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ClusterInner> putAsync(String resourceGroupName, String clusterName) {
+        return putWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<ClusterInner>, ClusterInner>() {
+            @Override
+            public ClusterInner call(ServiceResponse<ClusterInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ClusterInner>> putWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.put(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ClusterInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ClusterInner object if successful.
+     */
+    public ClusterInner beginPut(String resourceGroupName, String clusterName) {
+        return beginPutWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ClusterInner> beginPutAsync(String resourceGroupName, String clusterName, final ServiceCallback<ClusterInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginPutWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterInner object
+     */
+    public Observable<ClusterInner> beginPutAsync(String resourceGroupName, String clusterName) {
+        return beginPutWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<ClusterInner>, ClusterInner>() {
+            @Override
+            public ClusterInner call(ServiceResponse<ClusterInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an instance of an Event Hubs Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterInner object
+     */
+    public Observable<ServiceResponse<ClusterInner>> beginPutWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginPut(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ClusterInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ClusterInner> clientResponse = beginPutDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ClusterInner> beginPutDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ClusterInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ClusterInner>() { }.getType())
+                .register(201, new TypeToken<ClusterInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
@@ -453,6 +718,247 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner> {
                 .register(200, new TypeToken<ClusterInner>() { }.getType())
                 .register(201, new TypeToken<ClusterInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String clusterName) {
+        deleteWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String clusterName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String clusterName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDelete(String resourceGroupName, String clusterName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String clusterName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Event Hubs Cluster. This operation is idempotent.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the EHNamespaceIdListResultInner object if successful.
+     */
+    public EHNamespaceIdListResultInner listNamespaces(String resourceGroupName, String clusterName) {
+        return listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
+    }
+
+    /**
+     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<EHNamespaceIdListResultInner> listNamespacesAsync(String resourceGroupName, String clusterName, final ServiceCallback<EHNamespaceIdListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
+    }
+
+    /**
+     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EHNamespaceIdListResultInner object
+     */
+    public Observable<EHNamespaceIdListResultInner> listNamespacesAsync(String resourceGroupName, String clusterName) {
+        return listNamespacesWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<EHNamespaceIdListResultInner>, EHNamespaceIdListResultInner>() {
+            @Override
+            public EHNamespaceIdListResultInner call(ServiceResponse<EHNamespaceIdListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param clusterName The name of the Event Hubs Cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the EHNamespaceIdListResultInner object
+     */
+    public Observable<ServiceResponse<EHNamespaceIdListResultInner>> listNamespacesWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (clusterName == null) {
+            throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listNamespaces(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EHNamespaceIdListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<EHNamespaceIdListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<EHNamespaceIdListResultInner> clientResponse = listNamespacesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<EHNamespaceIdListResultInner> listNamespacesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<EHNamespaceIdListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<EHNamespaceIdListResultInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

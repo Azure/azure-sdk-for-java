@@ -13,7 +13,7 @@ import com.microsoft.azure.management.eventhub.v2018_01_01_preview.Cluster;
 import rx.Observable;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.ClusterSku;
 
-class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, ClusterImpl, EventHubManager> implements Cluster, Cluster.Update {
+class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, ClusterImpl, EventHubManager> implements Cluster, Cluster.Definition, Cluster.Update {
     ClusterImpl(String name, ClusterInner inner, EventHubManager manager) {
         super(name, inner, manager);
     }
@@ -21,7 +21,8 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     @Override
     public Observable<Cluster> createResourceAsync() {
         ClustersInner client = this.manager().inner().clusters();
-        return null; // NOP createResourceAsync implementation as create is not supported
+        return client.putAsync(this.resourceGroupName(), this.name())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -56,6 +57,11 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     @Override
     public ClusterSku sku() {
         return this.inner().sku();
+    }
+
+    @Override
+    public String status() {
+        return this.inner().status();
     }
 
     @Override
