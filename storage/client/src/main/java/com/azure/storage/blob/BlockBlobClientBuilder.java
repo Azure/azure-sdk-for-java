@@ -58,6 +58,7 @@ public final class BlockBlobClientBuilder {
     private URL endpoint;
     private String containerName;
     private String blobName;
+    private String snapshot;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
@@ -127,7 +128,7 @@ public final class BlockBlobClientBuilder {
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      */
     public BlockBlobAsyncClient buildAsyncClient() {
-        return new BlockBlobAsyncClient(buildImpl());
+        return new BlockBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
@@ -181,6 +182,16 @@ public final class BlockBlobClientBuilder {
      */
     public BlockBlobClientBuilder blobName(String blobName) {
         this.blobName = blobName;
+        return this;
+    }
+
+    /**
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
+     * @return the updated BlockBlobClientBuilder object
+     */
+    public BlockBlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 

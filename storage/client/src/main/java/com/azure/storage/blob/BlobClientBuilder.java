@@ -4,11 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -16,6 +15,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -58,6 +58,7 @@ public final class BlobClientBuilder {
     private URL endpoint;
     private String containerName;
     private String blobName;
+    private String snapshot;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
@@ -123,7 +124,7 @@ public final class BlobClientBuilder {
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      */
     public BlobAsyncClient buildAsyncClient() {
-        return new BlobAsyncClient(buildImpl());
+        return new BlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
@@ -177,6 +178,16 @@ public final class BlobClientBuilder {
      */
     public BlobClientBuilder blobName(String blobName) {
         this.blobName = blobName;
+        return this;
+    }
+
+    /**
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
+     * @return the updated BlobClientBuilder object
+     */
+    public BlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 

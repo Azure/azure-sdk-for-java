@@ -90,7 +90,7 @@ public final class ContainerAsyncClient {
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
     }
 
     /**
@@ -108,7 +108,7 @@ public final class ContainerAsyncClient {
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class ContainerAsyncClient {
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
     }
 
     /**

@@ -6,9 +6,11 @@ package com.azure.storage.blob;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -66,6 +68,37 @@ public final class StorageClient {
      */
     public ContainerClient getContainerClient(String containerName) {
         return new ContainerClient(storageAsyncClient.getContainerAsyncClient(containerName));
+    }
+
+    /**
+     * Creates a new container within a storage account. If a container with the same name already exists, the operation
+     * fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * @param containerName Name of the container to create
+     * @return A response containing a {@link ContainerClient} used to interact with the container created.
+     */
+    public Response<ContainerClient> createContainer(String containerName) {
+        return createContainer(containerName, null, null);
+    }
+
+    /**
+     * Creates a new container within a storage account. If a container with the same name already exists, the operation
+     * fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * @param containerName Name of the container to create
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessType
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
+     *         in the Azure Docs for more information. Pass null for no public access.
+     * @return A response containing a {@link ContainerClient} used to interact with the container created.
+     */
+    public Response<ContainerClient> createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
+        ContainerClient client = getContainerClient(containerName);
+
+        return new SimpleResponse<>(client.create(metadata, accessType, null, Context.NONE), client);
     }
 
     /**
