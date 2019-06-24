@@ -56,6 +56,8 @@ public abstract class ApiTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
+        logger.asInfo().log("[{}]: Performing test set-up.", testName());
+
         final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
         final String connectionString = getTestMode() == TestMode.RECORD
             ? CONNECTION_STRING
@@ -83,7 +85,7 @@ public abstract class ApiTestBase extends TestBase {
         }
 
         connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
-            tokenCredential, getAuthorizationType(), Duration.ofSeconds(45), TransportType.AMQP,
+            tokenCredential, getAuthorizationType(), TIMEOUT, TransportType.AMQP,
             Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         beforeTest();
@@ -93,6 +95,8 @@ public abstract class ApiTestBase extends TestBase {
     @Override
     @After
     public void teardownTest() {
+        logger.asInfo().log("[{}]: Performing test clean-up.", testName());
+
         afterTest();
 
         // Tear down any inline mocks to avoid memory leaks.
