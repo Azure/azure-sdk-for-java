@@ -27,7 +27,7 @@ public class Sample {
     public void sample() throws IOException {
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredential(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -79,7 +79,7 @@ public class Sample {
     public void asyncSample() throws IOException {
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredential(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
@@ -159,7 +159,7 @@ public class Sample {
 
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredential(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -189,7 +189,7 @@ public class Sample {
 
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredential(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 

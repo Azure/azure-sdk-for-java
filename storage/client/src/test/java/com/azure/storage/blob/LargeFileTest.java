@@ -16,7 +16,7 @@ public class LargeFileTest {
     //@BeforeClass
     public static void setup() {
         storageClient = StorageClient.storageClientBuilder()
-            .credentials(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
+            .credential(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient();
