@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.keyvault.SecretAsyncClient;
-import com.azure.keyvault.models.Secret;
+import com.azure.keyvault.secrets.SecretAsyncClient;
+import com.azure.keyvault.secrets.models.Secret;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

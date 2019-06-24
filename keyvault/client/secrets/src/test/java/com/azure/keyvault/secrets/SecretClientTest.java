@@ -1,24 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault;
+package com.azure.keyvault.secrets;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretBase;
+import com.azure.keyvault.secrets.models.DeletedSecret;
+import com.azure.keyvault.secrets.models.Secret;
+import com.azure.keyvault.secrets.models.SecretBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
-
 import java.util.HashMap;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class SecretClientTest extends SecretClientTestBase {
 

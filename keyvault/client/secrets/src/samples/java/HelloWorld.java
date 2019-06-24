@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.keyvault.SecretClient;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretBase;
+import com.azure.keyvault.secrets.SecretClient;
+import com.azure.keyvault.secrets.models.Secret;
+import com.azure.keyvault.secrets.models.SecretBase;
 import java.time.OffsetDateTime;
 
 /**

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault;
+package com.azure.keyvault.secrets;
 
 import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
@@ -12,10 +12,10 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
-import com.azure.keyvault.implementation.SecretBasePage;
-import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretBase;
+import com.azure.keyvault.secrets.implementation.SecretBasePage;
+import com.azure.keyvault.secrets.models.DeletedSecret;
+import com.azure.keyvault.secrets.models.Secret;
+import com.azure.keyvault.secrets.models.SecretBase;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -452,7 +452,7 @@ public final class SecretAsyncClient extends ServiceClient {
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
-     * @param nextPageLink The {@link com.azure.keyvault.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
+     * @param nextPageLink The {@link com.azure.keyvault.secrets.implementation.DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
      * @return A stream of {@link SecretBase secret} from the next page of results.
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink, Context context) {

@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault;
+package com.azure.keyvault.secrets;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.keyvault.models.DeletedSecret;
-import com.azure.keyvault.models.Secret;
-import com.azure.keyvault.models.SecretBase;
+import com.azure.keyvault.secrets.models.DeletedSecret;
+import com.azure.keyvault.secrets.models.Secret;
+import com.azure.keyvault.secrets.models.SecretBase;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;

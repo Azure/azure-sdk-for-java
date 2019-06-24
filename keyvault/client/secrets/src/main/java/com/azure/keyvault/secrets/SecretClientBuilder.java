@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault;
+package com.azure.keyvault.secrets;
 
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;

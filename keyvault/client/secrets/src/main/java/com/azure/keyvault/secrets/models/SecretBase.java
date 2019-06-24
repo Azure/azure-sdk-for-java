@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.models;
+package com.azure.keyvault.secrets.models;
 
-import com.azure.keyvault.SecretAsyncClient;
-import com.azure.keyvault.SecretClient;
+import com.azure.keyvault.secrets.SecretAsyncClient;
+import com.azure.keyvault.secrets.SecretClient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;

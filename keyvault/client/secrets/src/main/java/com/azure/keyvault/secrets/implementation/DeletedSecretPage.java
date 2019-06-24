@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.keyvault.implementation;
+package com.azure.keyvault.secrets.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.keyvault.models.DeletedSecret;
+import com.azure.keyvault.secrets.models.DeletedSecret;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
