@@ -47,7 +47,8 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
         for (KeyBase key : keyClient.listKeyVersions("keyName")) {
             Key keyWithMaterial  = keyClient.getKey(key).value();
-            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
+            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(),
+                    keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions
     }

@@ -35,6 +35,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <azure-keyvault.version>1.0.0-preview.1</azure-keyvault.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -64,12 +68,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
