@@ -15,6 +15,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to send a message to an Azure Event Hub.
  */
 public class SendEvent {
+    /**
+     * Main method to invoke this demo on how to send a message to an Azure Event Hub.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.

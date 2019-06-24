@@ -10,6 +10,12 @@ import java.util.concurrent.Semaphore;
  * Demonstrates how to fetch metadata from an Event Hub's partitions.
  */
 public class GetEventHubMetadata {
+    /**
+     * Demonstrates how to get metadata from an Event Hub's partitions.
+     *
+     * @param args Unused arguments to the sample.
+     * @throws InterruptedException if the semaphore could not be acquired.
+     */
     public static void main(String[] args) throws InterruptedException {
         Semaphore semaphore = new Semaphore(1);
 
@@ -30,17 +36,18 @@ public class GetEventHubMetadata {
 
         // Querying the partition identifiers for the Event Hub. Then calling client.getPartitionProperties with the
         // identifier to get information about each partition.
-        client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId)).subscribe(properties -> {
-            System.out.println(String.format(
-                "Event Hub: %s, Partition Id: %s, Last Enqueued Sequence Number: %s, Last Enqueued Offset: %s",
-                properties.eventHubPath(), properties.id(), properties.lastEnqueuedSequenceNumber(),
-                properties.lastEnqueuedOffset()));
-        }, error -> {
-            System.err.println("Error occurred while fetching partition properties: " + error.toString());
-        }, () -> {
-            // Releasing the semaphore now that we've finished querying for partition properties.
-            semaphore.release();
-        });
+        client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId))
+            .subscribe(properties -> {
+                System.out.println(String.format(
+                    "Event Hub: %s, Partition Id: %s, Last Enqueued Sequence Number: %s, Last Enqueued Offset: %s",
+                    properties.eventHubPath(), properties.id(), properties.lastEnqueuedSequenceNumber(),
+                    properties.lastEnqueuedOffset()));
+            }, error -> {
+                    System.err.println("Error occurred while fetching partition properties: " + error.toString());
+                }, () -> {
+                    // Releasing the semaphore now that we've finished querying for partition properties.
+                    semaphore.release();
+                });
 
         System.out.println("Waiting for partition properties to complete...");
         semaphore.acquire();
