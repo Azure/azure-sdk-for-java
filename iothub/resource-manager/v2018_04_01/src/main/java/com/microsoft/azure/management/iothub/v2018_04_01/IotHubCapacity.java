@@ -40,7 +40,7 @@ public class IotHubCapacity {
     private IotHubScaleType scaleType;
 
     /**
-     * Get the minimum value.
+     * Get the minimum number of units.
      *
      * @return the minimum value
      */
@@ -49,7 +49,7 @@ public class IotHubCapacity {
     }
 
     /**
-     * Get the maximum value.
+     * Get the maximum number of units.
      *
      * @return the maximum value
      */
@@ -58,7 +58,7 @@ public class IotHubCapacity {
     }
 
     /**
-     * Get the defaultProperty value.
+     * Get the default number of units.
      *
      * @return the defaultProperty value
      */
@@ -67,7 +67,7 @@ public class IotHubCapacity {
     }
 
     /**
-     * Get the scaleType value.
+     * Get the type of the scaling enabled. Possible values include: 'Automatic', 'Manual', 'None'.
      *
      * @return the scaleType value
      */

@@ -46,12 +46,20 @@
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "consumption/resource-manager": {
+    "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "containerservice/resource-manager": {
     "source": "specification/containerservice/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerregistry/resource-manager": {
     "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "costmanagement/resource-manager": {
+    "source": "specification/cost-management/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
   "cosmosdb/resource-manager": {

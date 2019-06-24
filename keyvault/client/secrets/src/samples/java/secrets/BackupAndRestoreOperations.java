@@ -32,7 +32,7 @@ public class BackupAndRestoreOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = SecretClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new AzureCredential())
+            .credential(new DefaultAzureCredential())
             .build();
 
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret

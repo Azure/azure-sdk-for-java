@@ -3,7 +3,7 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains classes used for representing keys, deleted keys and their attributes in the Azure
+ * This package contains classes used for representing secrets, deleted secrets and their attributes in the Azure
  * Key Vault.
  */
 package com.azure.security.keyvault.secrets.models;

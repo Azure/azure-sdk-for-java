@@ -44,7 +44,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     private String resourceGroup;
 
     /**
-     * Get the connectionString value.
+     * Get the connection string of the service bus topic endpoint.
      *
      * @return the connectionString value
      */
@@ -53,7 +53,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Set the connectionString value.
+     * Set the connection string of the service bus topic endpoint.
      *
      * @param connectionString the connectionString value to set
      * @return the RoutingServiceBusTopicEndpointProperties object itself.
@@ -64,7 +64,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Get the name value.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
      *
      * @return the name value
      */
@@ -73,7 +73,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
      *
      * @param name the name value to set
      * @return the RoutingServiceBusTopicEndpointProperties object itself.
@@ -84,7 +84,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription identifier of the service bus topic endpoint.
      *
      * @return the subscriptionId value
      */
@@ -93,7 +93,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set the subscription identifier of the service bus topic endpoint.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the RoutingServiceBusTopicEndpointProperties object itself.
@@ -104,7 +104,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get the name of the resource group of the service bus topic endpoint.
      *
      * @return the resourceGroup value
      */
@@ -113,7 +113,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set the name of the resource group of the service bus topic endpoint.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the RoutingServiceBusTopicEndpointProperties object itself.

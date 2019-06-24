@@ -85,6 +85,11 @@
       <artifactId>tracing-opentelemetry</artifactId>
       <version>${version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>${version}</version>
+    </dependency>
     <!-- Not required for jacoco test coverage report -->
 <!--    <dependency>-->
 <!--      <groupId>com.azure</groupId>-->

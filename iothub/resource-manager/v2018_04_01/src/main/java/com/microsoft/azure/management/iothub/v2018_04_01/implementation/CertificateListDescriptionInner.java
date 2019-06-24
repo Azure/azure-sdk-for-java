@@ -22,7 +22,7 @@ public class CertificateListDescriptionInner {
     private List<CertificateDescriptionInner> value;
 
     /**
-     * Get the value value.
+     * Get the array of Certificate objects.
      *
      * @return the value value
      */
@@ -31,7 +31,7 @@ public class CertificateListDescriptionInner {
     }
 
     /**
-     * Set the value value.
+     * Set the array of Certificate objects.
      *
      * @param value the value value to set
      * @return the CertificateListDescriptionInner object itself.
