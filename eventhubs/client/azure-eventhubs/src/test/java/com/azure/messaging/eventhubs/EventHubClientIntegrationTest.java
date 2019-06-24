@@ -30,7 +30,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Tests scenarios on {@link EventHubClient}.
  */
-public class EventHubClientTest extends ApiTestBase {
+public class EventHubClientIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
     private EventHubClient client;
@@ -39,8 +39,8 @@ public class EventHubClientTest extends ApiTestBase {
     @Rule
     public TestName testName = new TestName();
 
-    public EventHubClientTest() {
-        super(new ClientLogger(EventHubClientTest.class));
+    public EventHubClientIntegrationTest() {
+        super(new ClientLogger(EventHubClientIntegrationTest.class));
     }
 
     @Override
