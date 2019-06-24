@@ -4,7 +4,7 @@ Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key 
  Multiple keys, and multiple versions of the same key, can be kept in the Key Vault. Cryptographic keys in Key Vault are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the keys and its versions.
 
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
+[Source code][source_code] | [Package (Maven)](coming soon) | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -303,7 +303,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src
-[package]: not-valid-link
 [api_documentation]: not-valid-link
 [azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
