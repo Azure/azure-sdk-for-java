@@ -115,9 +115,9 @@ class RequestResponseChannel implements Closeable {
             Mono.create(sink -> {
                 try {
                     logger.asVerbose().log("Scheduling on dispatcher. Message Id {}", messageId);
+                    unconfirmedSends.putIfAbsent(messageId, sink);
 
                     dispatcher.invoke(() -> {
-                        unconfirmedSends.putIfAbsent(messageId, sink);
                         send(message);
                     });
                 } catch (IOException e) {
@@ -166,7 +166,8 @@ class RequestResponseChannel implements Closeable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            logger.asWarning().log("Received a delivery that was not a known pending message: {}", id);
+            int size = unconfirmedSends.size();
+            logger.asWarning().log("Received delivery without pending messageId[{}]. Size[{}]", id, size);
             return;
         }
 
