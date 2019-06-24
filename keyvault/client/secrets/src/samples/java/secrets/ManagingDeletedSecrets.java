@@ -10,11 +10,11 @@ import com.azure.security.keyvault.secrets.models.Secret;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to list, recover and purge deleted keys in a soft-delete enabled key vault.
+ * Sample demonstrates how to list, recover and purge deleted secrets in a soft-delete enabled key vault.
  */
 public class ManagingDeletedSecrets {
     /**
-     * Authenticates with the key vault and shows how to list, recover and purge deleted keys in a soft-delete enabled key vault.
+     * Authenticates with the key vault and shows how to list, recover and purge deleted secrets in a soft-delete enabled key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -22,8 +22,8 @@ public class ManagingDeletedSecrets {
      */
     public static void main(String[] args) throws IllegalArgumentException, InterruptedException {
 
-        // NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
-        // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
+        // NOTE: To manage deleted secrets, your key vault needs to have soft-delete enabled. Soft-delete allows deleted secrets
+        // to be retained for a given retention period (90 days). During this period deleted secrets can be recovered and if
         // a secret needs to be permanently deleted then it needs to be purged.
 
         // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
@@ -34,7 +34,7 @@ public class ManagingDeletedSecrets {
             .credential(new AzureCredential())
             .build();
 
-        // Let's create keys holding storage and bank accounts credentials valid for 1 year. if the secret
+        // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .expires(OffsetDateTime.now().plusYears(1)));
@@ -56,19 +56,19 @@ public class ManagingDeletedSecrets {
         Thread.sleep(30000);
 
         // The bank acoount and storage accounts got closed.
-        // Let's delete bank and  storage accounts keys.
+        // Let's delete bank and  storage accounts secrets.
         client.deleteSecret("BankAccountPassword");
         client.deleteSecret("StorageAccountPassword");
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);
 
-        // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
+        // You can list all the deleted and non-purged secrets, assuming key vault is soft-delete enabled.
         for (DeletedSecret deletedSecret : client.listDeletedSecrets()) {
             System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
         }
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
+        // If the key vault is soft-delete enabled, then for permanent deletion deleted secrets need to be purged.
         client.purgeDeletedSecret("StorageAccountPassword");
         client.purgeDeletedSecret("BankAccountPassword");
 

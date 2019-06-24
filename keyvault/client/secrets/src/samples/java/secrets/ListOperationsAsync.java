@@ -11,11 +11,11 @@ import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to asynchronously list keys and versions of a given secret in the key vault.
+ * Sample demonstrates how to asynchronously list secrets and versions of a given secret in the key vault.
  */
 public class ListOperationsAsync {
     /**
-     * Authenticates with the key vault and shows how to asynchronously list keys and list versions of a specific secret in the key vault.
+     * Authenticates with the key vault and shows how to asynchronously list secrets and list versions of a specific secret in the key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -30,7 +30,7 @@ public class ListOperationsAsync {
                 .credential(new AzureCredential())
                 .build();
 
-        // Let's create keys holding storage and bank accounts credentials valid for 1 year. if the secret
+        // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
                 .expires(OffsetDateTime.now().plusYears(1)))
@@ -46,8 +46,8 @@ public class ListOperationsAsync {
 
         Thread.sleep(2000);
 
-        // You need to check if any of the keys are sharing same values. Let's list the keys and print their values.
-        // List operations don't return the keys with value information. So, for each returned secret we call getSecret to get the secret with its value information.
+        // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
+        // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         secretAsyncClient.listSecrets()
           .subscribe(secretBase ->
             secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->

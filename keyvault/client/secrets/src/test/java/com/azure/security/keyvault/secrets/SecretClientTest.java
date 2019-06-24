@@ -56,14 +56,14 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that we cannot add a configuration setting when the key is an empty string.
+     * Tests that we cannot create a secret when the secret is an empty string.
      */
     public void setSecretEmptyName() {
         assertRestException(() -> client.setSecret("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
     }
 
     /**
-     * Tests that we can create keys when value is not null or an empty string.
+     * Tests that we can create secrets when value is not null or an empty string.
      */
     public void setSecretEmptyValue() {
         setSecretEmptyValueRunner((secret) -> {
@@ -249,7 +249,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that keys can be listed in the key vault.
+     * Tests that secrets can be listed in the key vault.
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
@@ -271,7 +271,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that deleted keys can be listed in the key vault.
+     * Tests that deleted secrets can be listed in the key vault.
      */
     @Override
     public void listDeletedSecrets() {

@@ -11,11 +11,11 @@ import com.azure.security.keyvault.secrets.models.SecretBase;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to list keys and versions of a given secret in the key vault.
+ * Sample demonstrates how to list secrets and versions of a given secret in the key vault.
  */
 public class ListOperations {
     /**
-     * Authenticates with the key vault and shows how to list keys and list versions of a specific secret in the key vault.
+     * Authenticates with the key vault and shows how to list secrets and list versions of a specific secret in the key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -30,7 +30,7 @@ public class ListOperations {
                 .credential(new AzureCredential())
                 .build();
 
-        // Let's create keys holding storage and bank accounts credentials valid for 1 year. if the secret
+        // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
                 .expires(OffsetDateTime.now().plusYears(1)));
@@ -38,8 +38,8 @@ public class ListOperations {
         client.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
                 .expires(OffsetDateTime.now().plusYears(1)));
 
-        // You need to check if any of the keys are sharing same values. Let's list the keys and print their values.
-        // List operations don't return the keys with value information. So, for each returned secret we call getSecret to get the secret with its value information.
+        // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
+        // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         for (SecretBase secret : client.listSecrets()) {
             Secret secretWithValue  = client.getSecret(secret).value();
             System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());

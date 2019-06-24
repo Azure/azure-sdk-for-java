@@ -15,9 +15,9 @@ import com.azure.security.keyvault.secrets.models.SecretBase;
 import java.util.List;
 
 /**
- * The SecretClient provides synchronous methods to manage {@link Secret keys} in the Azure Key Vault. The client
- * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret keys}. The client
- * also supports listing {@link DeletedSecret deleted keys} for a soft-delete enabled Azure Key Vault.
+ * The SecretClient provides synchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
+ * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
+ * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
  * <pre>
@@ -52,7 +52,7 @@ public final class SecretClient {
 
     /**
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, a new version of the secret
-     * is created in the key vault. This operation requires the {@code keys/set} permission.
+     * is created in the key vault. This operation requires the {@code secrets/set} permission.
      *
      * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType} and
      * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled} field is
@@ -81,7 +81,7 @@ public final class SecretClient {
 
     /**
      * The set operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
-     * This operation requires the {@code keys/set} permission.
+     * This operation requires the {@code secrets/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the response.</p>
@@ -102,7 +102,7 @@ public final class SecretClient {
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code keys/get} permission.
+     * This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Prints out the details of the returned secret.</p>
@@ -124,7 +124,7 @@ public final class SecretClient {
 
     /**
      * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable to any
-     * secret stored in Azure Key Vault. This operation requires the {@code keys/get} permission.
+     * secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
@@ -142,7 +142,7 @@ public final class SecretClient {
 
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code keys/get} permission.
+     * This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
@@ -163,7 +163,7 @@ public final class SecretClient {
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
      * operation changes specified attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
-     * The value of a secret itself cannot be changed. This operation requires the {@code keys/set} permission.
+     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
      *
      * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version() version} cannot be null.</p>
      *
@@ -189,7 +189,7 @@ public final class SecretClient {
     /**
      * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the deleted state
      * and requires to be purged for permanent deletion else the secret is permanently deleted. The delete operation applies to any secret stored in Azure Key Vault but
-     * it cannot be applied to an individual version of a secret. This operation requires the {@code keys/delete} permission.
+     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the response.</p>
@@ -208,8 +208,8 @@ public final class SecretClient {
     }
 
     /**
-     * The get deleted secret operation returns the keys that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the {@code keys/list} permission.
+     * The get deleted secret operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted secret from the key vault enabled for soft-delete. Prints out the details of the deleted secret
@@ -231,7 +231,7 @@ public final class SecretClient {
 
     /**
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
-     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the {@code keys/purge} permission.
+     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the {@code secrets/purge} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Prints out the status code from the server response.</p>
@@ -252,7 +252,7 @@ public final class SecretClient {
 
     /**
      * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete enabled vault.
-     * This operation requires the {@code keys/recover} permission.
+     * This operation requires the {@code secrets/recover} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the recovered secret
@@ -274,7 +274,7 @@ public final class SecretClient {
 
     /**
      * Requests a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded.
-     * This operation requires the {@code keys/backup} permission.
+     * This operation requires the {@code secrets/backup} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the secret from the key vault and prints out the length of the secret's backup byte array returned in the response</p>
@@ -294,7 +294,7 @@ public final class SecretClient {
 
     /**
      * Restores a backed up secret, and all its versions, to a vault.
-     * This operation requires the {@code keys/restore} permission.
+     * This operation requires the {@code secrets/restore} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup byte array. Prints out the details of the restored secret returned
@@ -314,11 +314,11 @@ public final class SecretClient {
     }
 
     /**
-     * List the keys in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
+     * List the secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
      * in the list is represented by {@link SecretBase} as only the base secret identifier and its attributes are
-     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code keys/list} permission.
+     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code secrets/list} permission.
      *
-     * <p>It is possible to get full keys with values from this information. Loop over the {@link SecretBase secret} and
+     * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * <pre>
      * for (SecretBase secret : secretClient.listSecrets()) {
@@ -327,25 +327,25 @@ public final class SecretClient {
      * }
      * </pre>
      *
-     * @return A {@link List} containing {@link SecretBase} of all the keys in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
+     * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
     public Iterable<SecretBase> listSecrets() {
         return client.listSecrets().toIterable();
     }
 
     /**
-     * Lists {@link DeletedSecret deleted keys} of the key vault. The get deleted keys operation returns the keys that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code keys/list} permission.
+     * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
+     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted keys in the key vault and for each deleted secret prints out its recovery id.</p>
+     * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
      * <pre>
      * for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets()) {
      *   System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
      * }
      * </pre>
      *
-     * @return A {@link List} containing all of the {@link DeletedSecret deleted keys} in the vault.
+     * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Iterable<DeletedSecret> listDeletedSecrets() {
         return client.listDeletedSecrets().toIterable();
@@ -354,10 +354,10 @@ public final class SecretClient {
     /**
      * List all versions of the specified secret. The individual secret response in the list is represented by {@link SecretBase}
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operation requires the {@code keys/list} permission.
+     * not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretBase secret} and
-     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} keys with values included of the specified versions.</p>
+     * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
      * for (SecretBase secret : secretClient.listSecretVersions("secretName")) {
      *   Secret secretWithValue  = secretClient.getSecret(secret).value();

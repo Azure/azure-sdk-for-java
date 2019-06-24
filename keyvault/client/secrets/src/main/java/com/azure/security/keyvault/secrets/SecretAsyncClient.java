@@ -30,9 +30,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
 
 /**
- * The SecretAsyncClient provides asynchronous methods to manage {@link Secret keys} in the Azure Key Vault. The client
- * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret keys}. The client
- * also supports listing {@link DeletedSecret deleted keys} for a soft-delete enabled Azure Key Vault.
+ * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
+ * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
+ * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
  * <pre>
@@ -78,7 +78,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
-     * a new version of that secret. This operation requires the {@code keys/set} permission.
+     * a new version of that secret. This operation requires the {@code secrets/set} permission.
      *
      * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType} and
      * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled} field is
@@ -118,7 +118,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates a new version of that secret.
-     * This operation requires the {@code keys/set} permission.
+     * This operation requires the {@code secrets/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Subscribes to the call asynchronously and prints out the newly
@@ -144,7 +144,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * Get the specified secret with specified version from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code keys/get} permission.
+     * This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
@@ -175,7 +175,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get operation is applicable to any
-     * secret stored in Azure Key Vault. This operation requires the {@code keys/get} permission.
+     * secret stored in Azure Key Vault. This operation requires the {@code secrets/get} permission.
      *
      * <p>The list operations {@link SecretAsyncClient#listSecrets()} and {@link SecretAsyncClient#listSecretVersions(String)} return
      * the {@link Flux} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
@@ -204,7 +204,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
-     * This operation requires the {@code keys/get} permission.
+     * This operation requires the {@code secrets/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
@@ -227,7 +227,7 @@ public final class SecretAsyncClient extends ServiceClient {
     /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
      * operation changes specified attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
-     * The value of a secret itself cannot be changed. This operation requires the {@code keys/set} permission.
+     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
@@ -265,7 +265,7 @@ public final class SecretAsyncClient extends ServiceClient {
     /**
      * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the deleted state
      * and requires to be purged for permanent deletion else the secret is permanently deleted. The delete operation applies to any secret stored in Azure Key Vault but
-     * it cannot be applied to an individual version of a secret. This operation requires the {@code keys/delete} permission.
+     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
@@ -288,8 +288,8 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * The get deleted secret operation returns the keys that have been deleted for a vault enabled for soft-delete.
-     * This operation requires the {@code keys/list} permission.
+     * The get deleted secret operation returns the secrets that have been deleted for a vault enabled for soft-delete.
+     * This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
@@ -314,7 +314,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
-     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the {@code keys/purge} permission.
+     * This operation can only be enabled on a soft-delete enabled vault. This operation requires the {@code secrets/purge} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
@@ -339,7 +339,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete enabled vault.
-     * This operation requires the {@code keys/recover} permission.
+     * This operation requires the {@code secrets/recover} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
@@ -364,7 +364,7 @@ public final class SecretAsyncClient extends ServiceClient {
 
     /**
      * Requests a backup of the specified secret be downloaded to the client. All versions of the secret will be downloaded.
-     * This operation requires the {@code keys/backup} permission.
+     * This operation requires the {@code secrets/backup} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out the
@@ -389,7 +389,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Restores a backed up secret, and all its versions, to a vault. This operation requires the {@code keys/restore} permission.
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the {@code secrets/restore} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously and prints out the
@@ -413,60 +413,60 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * List keys in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
+     * List secrets in the key vault. The list Secrets operation is applicable to the entire vault. The individual secret response
      * in the flux is represented by {@link SecretBase} as only the base secret identifier and its attributes are
-     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code keys/list} permission.
+     * provided in the response. The secret values and individual secret versions are not listed in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretBase base secret} to
      * {@link Flux} containing {@link Secret secret} using {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux&lt;Secret&gt; keys = secretAsyncClient.listSecrets()
+     * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecrets()
      *   .flatMap(secretAsyncClient::getSecret)
      *   .map(Response::value);
      * </pre>
      *
-     * @return A {@link Flux} containing {@link SecretBase secret} of all the keys in the vault.
+     * @return A {@link Flux} containing {@link SecretBase secret} of all the secrets in the vault.
      */
     public Flux<SecretBase> listSecrets() {
         return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing keys"))
-                .doOnSuccess(response -> logger.asInfo().log("Listed keys"))
-                .doOnError(error -> logger.asWarning().log("Failed to list keys", error))
+                .doOnRequest(ignored -> logger.asInfo().log("Listing secrets"))
+                .doOnSuccess(response -> logger.asInfo().log("Listed secrets"))
+                .doOnError(error -> logger.asWarning().log("Failed to list secrets", error))
                 .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));
     }
 
     /**
-     * Lists {@link DeletedSecret deleted keys} of the key vault. The get deleted keys operation returns the keys that
-     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code keys/list} permission.
+     * Lists {@link DeletedSecret deleted secrets} of the key vault. The get deleted secrets operation returns the secrets that
+     * have been deleted for a vault enabled for soft-delete. This operation requires the {@code secrets/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted keys in the key vault. Subscribes to the call asynchronously and prints out the
+     * <p>Lists the deleted secrets in the key vault. Subscribes to the call asynchronously and prints out the
      * recovery id of each deleted secret when a response is received.</p>
      * <pre>
      * secretAsyncClient.listDeletedSecrets().subscribe(deletedSecret -&gt;
      *   System.out.printf("Deleted secret's recovery Id %s \n", deletedSecret.recoveryId()));
      * </pre>
      *
-     * @return A {@link Flux} containing all of the {@link DeletedSecret deleted keys} in the vault.
+     * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Flux<DeletedSecret> listDeletedSecrets() {
         return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing deleted keys"))
-                .doOnSuccess(response -> logger.asInfo().log("Listed deleted keys"))
-                .doOnError(error -> logger.asWarning().log("Failed to list deleted keys", error))
+                .doOnRequest(ignored -> logger.asInfo().log("Listing deleted secrets"))
+                .doOnSuccess(response -> logger.asInfo().log("Listed deleted secrets"))
+                .doOnError(error -> logger.asWarning().log("Failed to list deleted secrets", error))
                 .flatMapMany(r -> extractAndFetchDeletedSecrets(r, Context.NONE));
     }
 
     /**
      * List all versions of the specified secret. The individual secret response in the flux is represented by {@link SecretBase}
      * as only the base secret identifier and its attributes are provided in the response. The secret values are
-     * not provided in the response. This operation requires the {@code keys/list} permission.
+     * not provided in the response. This operation requires the {@code secrets/list} permission.
      *
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link Flux}
      * containing {@link SecretBase base secret} to {@link Flux} containing {@link Secret secret} using
      * {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
-     * Flux&lt;Secret&gt; keys = secretAsyncClient.listSecretVersions("secretName")
+     * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecretVersions("secretName")
      *   .flatMap(secretAsyncClient::getSecret)
      *   .map(Response::value);
      * </pre>
@@ -485,7 +485,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listSecrets()}.
      *
      * @param nextPageLink The {@link SecretBasePage#nextLink()} from a previous, successful call to one of the list operations.
@@ -504,7 +504,7 @@ public final class SecretAsyncClient extends ServiceClient {
     }
 
     /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listDeletedSecrets()}.
      *
      * @param nextPageLink The {@link DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.

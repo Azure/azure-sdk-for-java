@@ -59,7 +59,7 @@ public class HelloWorld {
         // To ensure secret is deleted on server side.
         Thread.sleep(30000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
+        // If the key vault is soft-delete enabled, then for permanent deletion  deleted secrets need to be purged.
         secretClient.purgeDeletedSecret("BankAccountPassword");
     }
 }

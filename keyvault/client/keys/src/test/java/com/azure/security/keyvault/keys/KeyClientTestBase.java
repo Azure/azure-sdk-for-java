@@ -231,9 +231,9 @@ public abstract class KeyClientTestBase extends TestBase {
         String keyName;
         for (int i = 0; i < 30; i++) {
             keyName = "listKey" + i;
-            KeyCreateOptions secret =  new KeyCreateOptions(keyName, RSA_KEY_TYPE)
+            KeyCreateOptions key =  new KeyCreateOptions(keyName, RSA_KEY_TYPE)
                     .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
-            keys.put(keyName, secret);
+            keys.put(keyName, key);
         }
         testRunner.accept(keys);
     }

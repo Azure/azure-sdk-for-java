@@ -14,11 +14,11 @@ import java.nio.file.Files;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to backup and restore keys in the key vault.
+ * Sample demonstrates how to backup and restore secrets in the key vault.
  */
 public class BackupAndRestoreOperations {
     /**
-     * Authenticates with the key vault and shows how to backup and restore keys in the key vault.
+     * Authenticates with the key vault and shows how to backup and restore secrets in the key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -35,12 +35,12 @@ public class BackupAndRestoreOperations {
             .credential(new AzureCredential())
             .build();
 
-        // Let's create keys holding storage account credentials valid for 1 year. if the secret
+        // Let's create secrets holding storage account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         client.setSecret(new Secret("StorageAccountPassword", "f4G34fMh8v-fdsgjsk2323=-asdsdfsdf")
             .expires(OffsetDateTime.now().plusYears(1)));
 
-        // Backups are good to have, if in case keys get accidentally deleted by you.
+        // Backups are good to have, if in case secrets get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
         byte[] secretBackup = client.backupSecret("StorageAccountPassword").value();

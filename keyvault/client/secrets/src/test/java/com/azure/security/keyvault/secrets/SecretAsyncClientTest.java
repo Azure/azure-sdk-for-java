@@ -70,7 +70,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that we can create keys when value is not null or an empty string.
+     * Tests that we can create secrets when value is not null or an empty string.
      */
     public void setSecretEmptyValue() {
         setSecretEmptyValueRunner((secret) -> {
@@ -353,7 +353,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that deleted keys can be listed in the key vault.
+     * Tests that deleted secrets can be listed in the key vault.
      */
     @Override
     public void listDeletedSecrets() {
@@ -440,7 +440,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     /**
-     * Tests that keys can be listed in the key vault.
+     * Tests that secrets can be listed in the key vault.
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {

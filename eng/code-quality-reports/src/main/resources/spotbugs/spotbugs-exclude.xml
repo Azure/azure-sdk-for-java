@@ -431,11 +431,11 @@
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
-      <Class name="com.azure.keyvault.models.DeletedSecret"/>
-      <Class name="com.azure.keyvault.models.SecretBase"/>
-      <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.keyvault.keys.models.Key"/>
-      <Class name="com.azure.keyvault.keys.models.KeyBase"/>
+      <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.Key"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
@@ -450,7 +450,7 @@
 
   <!-- Field initialized by jackson property annotation -->
   <Match>
-    <Class name="com.azure.keyvault.keys.models.webkey.JsonWebKey"/>
+    <Class name="com.azure.security.keyvault.keys.models.webkey.JsonWebKey"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
@@ -458,11 +458,11 @@
   <Match>
     <Or>
       <And>
-        <Class name="com.azure.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
         <Method name="deserialize" />
       </And>
       <And>
-        <Class name="com.azure.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
         <Method name="clone" />
       </And>
     </Or>

@@ -71,7 +71,7 @@ public class HelloWorldAsync {
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
+        // If the key vault is soft-delete enabled, then for permanent deletion deleted secrets need to be purged.
         secretAsyncClient.purgeDeletedSecret("BankAccountPassword").subscribe(purgeResponse ->
                 System.out.printf("Bank account secret purge status response %d \n", purgeResponse.statusCode()));
 
