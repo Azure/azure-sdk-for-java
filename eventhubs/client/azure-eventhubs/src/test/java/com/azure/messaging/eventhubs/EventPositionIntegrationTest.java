@@ -22,7 +22,7 @@ import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventPositionTest extends ApiTestBase {
+public class EventPositionIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final int NUMBER_OF_EVENTS = 10;
 
@@ -34,8 +34,8 @@ public class EventPositionTest extends ApiTestBase {
     private EventHubProducer producer;
     private EventHubConsumer consumer;
 
-    public EventPositionTest() {
-        super(new ClientLogger(EventPositionTest.class));
+    public EventPositionIntegrationTest() {
+        super(new ClientLogger(EventPositionIntegrationTest.class));
     }
 
     @Rule
