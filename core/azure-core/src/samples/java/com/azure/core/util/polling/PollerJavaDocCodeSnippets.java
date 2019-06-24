@@ -114,7 +114,7 @@ public final class PollerJavaDocCodeSnippets {
 
         // Listen to poll  responses
         myPoller.getObserver().subscribe(pr -> {
-            //process poll response
+            //process poll response 
             System.out.println("Got Response status,value " + pr.getStatus().toString() + " " + pr.getValue());
         });
         // Do something else
