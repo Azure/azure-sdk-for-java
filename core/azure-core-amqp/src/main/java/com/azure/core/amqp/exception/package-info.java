@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package contains classes related to AMQP exceptions.
+ * Package containing classes related to AMQP exceptions.
  */
 package com.azure.core.amqp.exception;

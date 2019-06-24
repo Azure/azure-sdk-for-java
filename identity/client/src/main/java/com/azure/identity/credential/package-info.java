@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for key vault JSON web key.
+ * Package containing various types of credentials
  */
-package com.azure.keyvault.keys.models.webkey;
+package com.azure.identity.credential;
