@@ -49,7 +49,14 @@ public final class PollResponse<T> {
 
         /** Represents that this long-running operation is cancelled by user, however this is still
          * considered as complete long-running operation.*/
-        USER_CANCELLED
+        USER_CANCELLED,
+
+        /**
+         * When long-running operation status could not be represented by any status in {@link OperationStatus}, this status represents
+         * a custom status Azure service could be in. This custom status is not considered as complete long-running operation.
+         * It must have valid value for {@code otherStatus} as {@link String}.
+         */
+        OTHER
     }
 
     /**
