@@ -65,34 +65,30 @@ class ActiveClientTokenManager implements Closeable {
     /**
      * Invokes an authorization call on the CBS node.
      */
-    Mono<Void> authorize() {
+    Mono<Long> authorize() {
         if (hasDisposed.get()) {
             return Mono.error(new AzureException("Cannot authorize with CBS node when this token manager has been disposed of."));
         }
 
         return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience))
             .map(expiresOn -> {
+                final Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
+
+                // We want to refresh the token when 90% of the time before expiry has elapsed.
+                final long refreshSeconds = (long) Math.floor(between.getSeconds() * 0.9);
+                // This converts it to milliseconds
+                final long refreshIntervalMS = refreshSeconds * 1000;
+
+                lastRefreshInterval.set(refreshIntervalMS);
+
+                // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
                     logger.asInfo().log("Scheduling refresh token.");
-                    Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
-
-                    // We want to refresh the token when 90% of the time before expiry has elapsed.
-                    long refreshSeconds = (long) Math.floor(between.getSeconds() * 0.9);
-                    long refreshIntervalMS = refreshSeconds * 1000;
-
-                    lastRefreshInterval.set(refreshIntervalMS);
-
-                    // This converts it to milliseconds
-                    try {
-                        this.timer.schedule(new RefreshAuthorizationToken(), refreshIntervalMS);
-                    } catch (IllegalStateException e) {
-                        logger.asWarning().log("Unable to reschedule timer task.", e);
-                        hasScheduled.set(false);
-                    }
+                    scheduleRefreshTokenTask(refreshIntervalMS);
                 }
 
-                return expiresOn;
-            }).then();
+                return refreshIntervalMS;
+            });
     }
 
     @Override
@@ -106,17 +102,35 @@ class ActiveClientTokenManager implements Closeable {
         }
     }
 
+    private void scheduleRefreshTokenTask(Long refreshIntervalInMS) {
+        try {
+            timer.schedule(new RefreshAuthorizationToken(), refreshIntervalInMS);
+        } catch (IllegalStateException e) {
+            logger.asWarning().log("Unable to reschedule timer task.", e);
+            hasScheduled.set(false);
+        }
+    }
+
     private class RefreshAuthorizationToken extends TimerTask {
         @Override
         public void run() {
             logger.asInfo().log("Refreshing authorization token.");
             authorize().subscribe(
-                (Void response) -> {
-                    logger.asInfo().log("Response acquired.");
+                (Long refreshIntervalInMS) -> {
+
+                    if (hasDisposed.get()) {
+                        logger.asInfo().log("Token manager has been disposed of. Not rescheduling.");
+                        return;
+                    }
+
+                    logger.asInfo().log("Authorization successful. Refreshing token in {} ms.", refreshIntervalInMS);
+                    sink.next(AmqpResponseCode.ACCEPTED);
+
+                    scheduleRefreshTokenTask(refreshIntervalInMS);
                 }, error -> {
                     if ((error instanceof AmqpException) && ((AmqpException) error).isTransient()) {
                         logger.asError().log("Error is transient. Rescheduling authorization task.", error);
-                        timer.schedule(new RefreshAuthorizationToken(), lastRefreshInterval.get());
+                        scheduleRefreshTokenTask(lastRefreshInterval.get());
                     } else {
                         logger.asError().log("Error occurred while refreshing token that is not retriable. Not scheduling"
                             + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
@@ -124,21 +138,6 @@ class ActiveClientTokenManager implements Closeable {
                     }
 
                     sink.error(error);
-                }, () -> {
-                    if (hasDisposed.get()) {
-                        logger.asInfo().log("Token manager has been disposed of. Not rescheduling.");
-                        return;
-                    }
-
-                    logger.asInfo().log("Success. Rescheduling refresh authorization task.");
-                    sink.next(AmqpResponseCode.ACCEPTED);
-
-                    try {
-                        timer.schedule(new RefreshAuthorizationToken(), lastRefreshInterval.get());
-                    } catch (IllegalStateException e) {
-                        logger.asWarning().log("Unable to reschedule timer task.", e);
-                        hasScheduled.set(false);
-                    }
                 });
         }
     }
