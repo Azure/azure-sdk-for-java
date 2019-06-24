@@ -33,7 +33,7 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft Devices.
      *
      * @return the provider value
      */
@@ -42,7 +42,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource Type: IotHubs.
      *
      * @return the resource value
      */
@@ -51,7 +51,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get name of the operation.
      *
      * @return the operation value
      */
