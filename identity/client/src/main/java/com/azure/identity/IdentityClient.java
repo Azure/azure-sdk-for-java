@@ -149,19 +149,33 @@ public final class IdentityClient {
         return context;
     }
 
-    /**
+   /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
      * @param msiEndpoint the endpoint to acquire token from
      * @param msiSecret the secret to acquire token with
+     * @param clientId the client ID of the application service
      * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String[] scopes) {
+    public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
         HttpURLConnection connection = null;
+        StringBuilder payload = new StringBuilder();
+
         try {
-            String urlString = String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, resource);
-            URL url = new URL(urlString);
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
+            if (clientId != null) {
+                payload.append("&client_id=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+        } catch (IOException exception) {
+            return Mono.error(exception);
+        }
+        try {
+            URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
             connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
@@ -186,39 +200,22 @@ public final class IdentityClient {
     /**
      * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
      * @param clientId the client ID of the virtual machine
-     * @param objectId the object ID of the virtual machine
-     * @param identityId the identity ID of the virtual machine
      * @param scopes the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String objectId, String identityId, String[] scopes) {
+    public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
 
         try {
-            payload.append("api-version");
-            payload.append("=");
+            payload.append("api-version=");
             payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
-            payload.append("&");
-            payload.append("resource");
-            payload.append("=");
+            payload.append("&resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
-            if (objectId != null) {
-                payload.append("&");
-                payload.append("object_id");
-                payload.append("=");
-                payload.append(URLEncoder.encode(objectId, "UTF-8"));
-            } else if (clientId != null) {
-                payload.append("&");
-                payload.append("client_id");
-                payload.append("=");
+            if (clientId != null) {
+                payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
-            } else if (identityId != null) {
-                payload.append("&");
-                payload.append("msi_res_id");
-                payload.append("=");
-                payload.append(URLEncoder.encode(identityId, "UTF-8"));
             }
         } catch (IOException exception) {
             return Mono.error(exception);

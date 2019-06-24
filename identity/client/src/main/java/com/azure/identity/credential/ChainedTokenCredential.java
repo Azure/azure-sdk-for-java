@@ -15,23 +15,23 @@ import java.util.Deque;
 /**
  * A token credential provider that can provide a credential from a list of providers.
  */
-public class ChainedCredential implements TokenCredential {
+public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    public ChainedCredential() {
+    public ChainedTokenCredential() {
         credentials = new ArrayDeque<>();
     }
 
     /**
      * Adds a credential to try to authenticate at the front of the chain.
      * @param credential the credential to be added to the front of chain
-     * @return the ChainedCredential itself
+     * @return the ChainedTokenCredential itself
      */
-    public ChainedCredential addFirst(TokenCredential credential) {
+    public ChainedTokenCredential addFirst(TokenCredential credential) {
         credentials.addFirst(credential);
         return this;
     }
@@ -39,9 +39,9 @@ public class ChainedCredential implements TokenCredential {
     /**
      * Adds a credential to try to authenticate at the last of the chain.
      * @param credential the credential to be added to the end of chain
-     * @return the ChainedCredential itself
+     * @return the ChainedTokenCredential itself
      */
-    public ChainedCredential addLast(TokenCredential credential) {
+    public ChainedTokenCredential addLast(TokenCredential credential) {
         credentials.addLast(credential);
         return this;
     }
