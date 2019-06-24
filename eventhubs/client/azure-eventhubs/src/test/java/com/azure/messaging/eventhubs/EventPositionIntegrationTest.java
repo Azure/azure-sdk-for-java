@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -191,6 +192,34 @@ public class EventPositionIntegrationTest extends ApiTestBase {
             dispose(consumer);
         }
     }
+
+    /**
+     * Test for receiving messages with a previously received message.
+     */
+    @Ignore("Investigate. We cannot use the enqueuedTime from an existing event. If we set Instant we created, like Instant.now() it works.")
+    @Test
+    public void receiveMessageFromEnqueuedTimeReceivedMessage() {
+        // Arrange
+        final EventData[] events = EVENTS_PUSHED.get();
+        final EventData secondEvent = events[1];
+        final EventPosition position = EventPosition.fromEnqueuedTime(secondEvent.enqueuedTime());
+        final EventData expectedEvent = events[2];
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, position);
+
+        // Act & Assert
+        try {
+            StepVerifier.create(consumer.receive()
+                .take(1))
+                .assertNext(event -> {
+                    Assert.assertEquals(expectedEvent.enqueuedTime(), event.enqueuedTime());
+                    Assert.assertEquals(expectedEvent.sequenceNumber(), event.sequenceNumber());
+                    Assert.assertEquals(expectedEvent.offset(), event.offset());
+                }).verifyComplete();
+        } finally {
+            dispose(consumer);
+        }
+    }
+
 
     /**
      * Tests that we can get an event using the inclusive offset.
