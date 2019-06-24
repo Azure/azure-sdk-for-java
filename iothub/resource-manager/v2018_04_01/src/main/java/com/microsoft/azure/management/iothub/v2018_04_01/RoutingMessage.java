@@ -34,7 +34,7 @@ public class RoutingMessage {
     private Map<String, String> systemProperties;
 
     /**
-     * Get the body value.
+     * Get body of routing message.
      *
      * @return the body value
      */
@@ -43,7 +43,7 @@ public class RoutingMessage {
     }
 
     /**
-     * Set the body value.
+     * Set body of routing message.
      *
      * @param body the body value to set
      * @return the RoutingMessage object itself.
@@ -54,7 +54,7 @@ public class RoutingMessage {
     }
 
     /**
-     * Get the appProperties value.
+     * Get app properties.
      *
      * @return the appProperties value
      */
@@ -63,7 +63,7 @@ public class RoutingMessage {
     }
 
     /**
-     * Set the appProperties value.
+     * Set app properties.
      *
      * @param appProperties the appProperties value to set
      * @return the RoutingMessage object itself.
@@ -74,7 +74,7 @@ public class RoutingMessage {
     }
 
     /**
-     * Get the systemProperties value.
+     * Get system properties.
      *
      * @return the systemProperties value
      */
@@ -83,7 +83,7 @@ public class RoutingMessage {
     }
 
     /**
-     * Set the systemProperties value.
+     * Set system properties.
      *
      * @param systemProperties the systemProperties value to set
      * @return the RoutingMessage object itself.

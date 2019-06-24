@@ -21,7 +21,7 @@ public class MatchedRoute {
     private RouteProperties properties;
 
     /**
-     * Get the properties value.
+     * Get properties of routes that matched.
      *
      * @return the properties value
      */
@@ -30,7 +30,7 @@ public class MatchedRoute {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of routes that matched.
      *
      * @param properties the properties value to set
      * @return the MatchedRoute object itself.
