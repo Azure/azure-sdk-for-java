@@ -30,8 +30,6 @@ import static org.mockito.Mockito.when;
 public class EventDataBatchTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private final ClientLogger logger = new ClientLogger(EventDataBatchTest.class);
-
     private EventHubClient client;
     private EventHubProducer producer;
     private ReactorHandlerProvider handlerProvider;
@@ -40,6 +38,10 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Rule
     public TestName testName = new TestName();
+
+    public EventDataBatchTest() {
+        super(new ClientLogger(EventDataBatchTest.class));
+    }
 
     @Before
     public void setup() {
@@ -58,8 +60,6 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
@@ -68,8 +68,7 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, null, testName, logger);
+        dispose(producer, client);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -80,7 +79,7 @@ public class EventDataBatchTest extends ApiTestBase {
 
     @Test
     public void payloadExceededException() {
-        when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED.getErrorCondition()));
+        when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
 
         final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, errorContextProvider);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
