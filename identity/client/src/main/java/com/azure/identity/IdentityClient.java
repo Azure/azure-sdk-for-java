@@ -160,15 +160,27 @@ public final class IdentityClient {
     public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
         HttpURLConnection connection = null;
+        StringBuilder payload = new StringBuilder();
+
         try {
-            StringBuilder urlStringBuilder = new StringBuilder(String.format("%s?resource=%s&api-version=2017-09-01", msiEndpoint, resource));
+            payload.append("resource");
+            payload.append("=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            payload.append("&");
+            payload.append("api-version");
+            payload.append("=");
+            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
             if (clientId != null) {
-                urlStringBuilder.append("&");
-                urlStringBuilder.append("client_id");
-                urlStringBuilder.append("=");
-                urlStringBuilder.append(clientId);
+                payload.append("&");
+                payload.append("client_id");
+                payload.append("=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
-            URL url = new URL(urlStringBuilder.toString());
+        } catch (IOException exception) {
+            return Mono.error(exception);
+        }
+        try {
+            URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
             connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("GET");
