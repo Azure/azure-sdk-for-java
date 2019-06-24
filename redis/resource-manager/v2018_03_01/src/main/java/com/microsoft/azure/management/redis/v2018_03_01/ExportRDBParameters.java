@@ -33,7 +33,7 @@ public class ExportRDBParameters {
     private String container;
 
     /**
-     * Get the format value.
+     * Get file format.
      *
      * @return the format value
      */
@@ -42,7 +42,7 @@ public class ExportRDBParameters {
     }
 
     /**
-     * Set the format value.
+     * Set file format.
      *
      * @param format the format value to set
      * @return the ExportRDBParameters object itself.
@@ -53,7 +53,7 @@ public class ExportRDBParameters {
     }
 
     /**
-     * Get the prefix value.
+     * Get prefix to use for exported files.
      *
      * @return the prefix value
      */
@@ -62,7 +62,7 @@ public class ExportRDBParameters {
     }
 
     /**
-     * Set the prefix value.
+     * Set prefix to use for exported files.
      *
      * @param prefix the prefix value to set
      * @return the ExportRDBParameters object itself.
@@ -73,7 +73,7 @@ public class ExportRDBParameters {
     }
 
     /**
-     * Get the container value.
+     * Get container name to export to.
      *
      * @return the container value
      */
@@ -82,7 +82,7 @@ public class ExportRDBParameters {
     }
 
     /**
-     * Set the container value.
+     * Set container name to export to.
      *
      * @param container the container value to set
      * @return the ExportRDBParameters object itself.
