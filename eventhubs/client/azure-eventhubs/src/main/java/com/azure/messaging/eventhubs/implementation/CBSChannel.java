@@ -57,7 +57,8 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         this.cbsChannelMono = connection.createSession(SESSION_NAME)
             .cast(ReactorSession.class)
             .map(session -> new RequestResponseChannel(connection.getIdentifier(), connection.getHost(), LINK_NAME,
-                CBS_ADDRESS, session.session(), handlerProvider));
+                CBS_ADDRESS, session.session(), handlerProvider))
+            .cache();
     }
 
     @Override
