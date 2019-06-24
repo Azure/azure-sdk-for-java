@@ -143,7 +143,7 @@ public final class PollResponse<T> {
     public PollResponse(String otherStatus, T value, Duration retryAfter) {
         this(OperationStatus.OTHER, otherStatus, value, retryAfter, null);
         if (Objects.isNull(otherStatus) || otherStatus.trim().length() == 0) {
-            throw new IllegalArgumentException("otherStatus can not be empty or null for OperationState.OTHER");
+            throw new IllegalArgumentException("The otherStatus can not be empty or null.");
         }
     }
 
