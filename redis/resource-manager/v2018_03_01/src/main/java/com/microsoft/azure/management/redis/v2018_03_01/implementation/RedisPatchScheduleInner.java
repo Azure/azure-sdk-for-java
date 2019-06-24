@@ -26,7 +26,7 @@ public class RedisPatchScheduleInner extends ProxyResource {
     private List<ScheduleEntry> scheduleEntries;
 
     /**
-     * Get the scheduleEntries value.
+     * Get list of patch schedules for a Redis cache.
      *
      * @return the scheduleEntries value
      */
@@ -35,7 +35,7 @@ public class RedisPatchScheduleInner extends ProxyResource {
     }
 
     /**
-     * Set the scheduleEntries value.
+     * Set list of patch schedules for a Redis cache.
      *
      * @param scheduleEntries the scheduleEntries value to set
      * @return the RedisPatchScheduleInner object itself.
