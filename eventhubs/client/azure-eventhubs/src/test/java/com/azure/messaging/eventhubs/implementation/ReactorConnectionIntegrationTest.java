@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,6 +24,10 @@ public class ReactorConnectionIntegrationTest extends ApiTestBase {
     @Rule
     public TestName testName = new TestName();
     private ReactorConnection connection;
+
+    public ReactorConnectionIntegrationTest() {
+        super(new ClientLogger(ReactorConnectionIntegrationTest.class));
+    }
 
     @Override
     protected String testName() {

@@ -32,7 +32,7 @@ final class EventDataBatch {
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
     private final byte[] eventBytes;
-    private int currentSize = 0;
+    private int currentSize;
 
     EventDataBatch(int maxMessageSize, String partitionKey, ErrorContextProvider contextProvider) {
         this.maxMessageSize = maxMessageSize;

@@ -30,8 +30,8 @@ public class EventHubClientBuilderTest {
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
 
     @Test(expected = IllegalArgumentException.class)
-    public void missingConnStrBuilder() {
-        EventHubClientBuilder builder = new EventHubClientBuilder();
+    public void missingConnectionString() {
+        final EventHubClientBuilder builder = new EventHubClientBuilder();
         builder.build();
     }
 
