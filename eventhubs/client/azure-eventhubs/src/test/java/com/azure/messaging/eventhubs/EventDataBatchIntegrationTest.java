@@ -14,10 +14,10 @@ import org.junit.rules.TestName;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
@@ -136,14 +136,14 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
 
         Flux<EventHubConsumer> consumers;
-        List<Disposable> subscriptions = null;
+        Disposable.Composite subscriptions = Disposables.composite();
         try {
 
             // Creating consumers on all the partitions and subscribing to the receive event.
             consumers = client.getPartitionIds()
                 .map(id -> client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
 
-            subscriptions = consumers.map(consumer -> {
+            final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {
                     if (event.partitionKey() == null || !PARTITION_KEY.equals(event.partitionKey())) {
                         return;
@@ -160,17 +160,14 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
                     Assert.fail("An error should not have occurred:" + error.toString());
                 }, () -> {
                     logger.asInfo().log("Disposing of consumer now that the receive is complete.");
-                    try {
-                        consumer.close();
-                    } catch (IOException e) {
-                        logger.asError().log("Error closing consumer.", e);
-                    }
+                    dispose(consumer);
                 });
             }).collectList().block(TIMEOUT);
 
-            if (subscriptions == null || subscriptions.isEmpty()) {
-                Assert.fail("There should be subscriptions.");
-            }
+            Assert.assertNotNull(consumerSubscriptions);
+            Assert.assertFalse(consumerSubscriptions.isEmpty());
+
+            subscriptions.addAll(consumerSubscriptions);
 
             // Act
             producer.send(batch.getEvents(), sendOptions).block(TIMEOUT);
@@ -180,12 +177,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
         } finally {
             logger.asInfo().log("Disposing of subscriptions.");
-
-            if (subscriptions != null) {
-                for (Disposable subscription : subscriptions) {
-                    subscription.dispose();
-                }
-            }
+            subscriptions.dispose();
         }
 
         Assert.assertEquals(0, countDownLatch.getCount());
