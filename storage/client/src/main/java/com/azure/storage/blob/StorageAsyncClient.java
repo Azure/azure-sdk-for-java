@@ -3,15 +3,13 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
 import com.azure.storage.blob.models.StorageServiceProperties;
@@ -22,7 +20,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 
 /**
@@ -79,7 +76,7 @@ public final class StorageAsyncClient {
      */
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getUrl(), containerName).toString())
+            .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
             .pipeline(storageAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -87,7 +84,7 @@ public final class StorageAsyncClient {
      * Gets the URL of the storage account represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
+    public URL getAccountUrl() {
         try {
             return new URL(storageAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {
@@ -215,7 +212,7 @@ public final class StorageAsyncClient {
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -231,7 +228,7 @@ public final class StorageAsyncClient {
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.

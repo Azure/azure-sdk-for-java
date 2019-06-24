@@ -119,9 +119,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
     public BlockBlobsUploadResponse upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
                                          Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<BlockBlobsUploadResponse> response = blockBlobAsyncRawClient.upload(data, length, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -188,9 +186,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
     public BlockBlobsStageBlockResponse stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
                                                          LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Mono<BlockBlobsStageBlockResponse> response = blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -259,9 +255,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
         Mono<BlockBlobsStageBlockFromURLResponse> response = blockBlobAsyncRawClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -308,9 +302,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
     public BlockBlobsGetBlockListResponse getBlockList(BlockListType listType,
             LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
         Mono<BlockBlobsGetBlockListResponse> response = blockBlobAsyncRawClient.listBlocks(listType, leaseAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -372,8 +364,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
     public BlockBlobsCommitBlockListResponse commitBlockList(List<String> base64BlockIDs,
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<BlockBlobsCommitBlockListResponse> response = blockBlobAsyncRawClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

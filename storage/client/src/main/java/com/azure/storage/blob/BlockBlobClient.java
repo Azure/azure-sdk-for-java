@@ -153,11 +153,7 @@ public final class BlockBlobClient extends BlobClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));;
 
         try {
-            if (timeout == null) {
-                return upload.block();
-            } else {
-                return upload.block(timeout);
-            }
+            return Utility.blockWithOptionalTimeout(upload, timeout);
         }
         catch (UncheckedIOException e) {
             throw e.getCause();
@@ -236,11 +232,7 @@ public final class BlockBlobClient extends BlobClient {
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
             Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions, context);
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -299,11 +291,7 @@ public final class BlockBlobClient extends BlobClient {
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -405,10 +393,6 @@ public final class BlockBlobClient extends BlobClient {
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

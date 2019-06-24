@@ -136,9 +136,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
                                          Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -196,9 +194,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -270,9 +266,7 @@ public final class PageBlobClient extends BlobClient {
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -319,9 +313,7 @@ public final class PageBlobClient extends BlobClient {
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -454,9 +446,7 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resize(size, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -503,9 +493,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -559,8 +547,6 @@ public final class PageBlobClient extends BlobClient {
     public Response<CopyStatusType> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
         Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

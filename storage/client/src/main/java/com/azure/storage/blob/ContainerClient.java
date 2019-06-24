@@ -4,9 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
@@ -17,7 +15,6 @@ import com.azure.storage.blob.models.SignedIdentifier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -139,8 +136,8 @@ public final class ContainerClient {
      * Gets the URL of the container represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
-        return containerAsyncClient.getUrl();
+    public URL getContainerUrl() {
+        return containerAsyncClient.getContainerUrl();
     }
 
     /**
@@ -169,11 +166,7 @@ public final class ContainerClient {
     public Response<Boolean> exists(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = containerAsyncClient.exists(context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -207,11 +200,7 @@ public final class ContainerClient {
     public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -242,11 +231,7 @@ public final class ContainerClient {
     public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -283,9 +268,7 @@ public final class ContainerClient {
             Duration timeout, Context context) {
         Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -320,11 +303,7 @@ public final class ContainerClient {
             ContainerAccessConditions accessConditions, Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -363,9 +342,7 @@ public final class ContainerClient {
             Duration timeout, Context context) {
         Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -416,11 +393,7 @@ public final class ContainerClient {
                                 Duration timeout, Context context) {
         Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -587,9 +560,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -625,9 +596,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .renewLease(leaseID, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -657,11 +626,7 @@ public final class ContainerClient {
         Mono<VoidResponse> response = containerAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -669,9 +634,9 @@ public final class ContainerClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
      * @return
-     *      The remaining time in the broken lease in seconds.
+     *      The remaining time in the broken lease.
      */
-    public Response<Integer> breakLease() {
+    public Response<Duration> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -693,16 +658,14 @@ public final class ContainerClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
      * @return
-     *      The remaining time in the broken lease in seconds.
+     *      The remaining time in the broken lease.
      */
-    public Response<Integer> breakLease(Integer breakPeriodInSeconds,
+    public Response<Duration> breakLease(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
-        Mono<Response<Integer>> response = containerAsyncClient
+        Mono<Response<Duration>> response = containerAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -741,9 +704,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -776,8 +737,6 @@ public final class ContainerClient {
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo(context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

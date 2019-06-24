@@ -9,6 +9,8 @@ import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
+import reactor.util.annotation.NonNull;
+import reactor.util.annotation.Nullable;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -22,6 +24,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -358,5 +361,9 @@ final class Utility {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+     static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

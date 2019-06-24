@@ -97,9 +97,7 @@ final class StorageRawClient {
     public ServicesListContainersSegmentResponse listContainersSegment(String marker,
                                                                        ListContainersOptions options, Duration timeout, Context context) {
         Mono<ServicesListContainersSegmentResponse> response = storageAsyncRawClient.listContainersSegment(marker, options, context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -135,9 +133,7 @@ final class StorageRawClient {
      */
     public ServicesGetPropertiesResponse getProperties(Duration timeout, Context context) {
         Mono<ServicesGetPropertiesResponse> response = storageAsyncRawClient.getProperties(context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -182,9 +178,7 @@ final class StorageRawClient {
      */
     public ServicesSetPropertiesResponse setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
         Mono<ServicesSetPropertiesResponse> response = storageAsyncRawClient.setProperties(properties, context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -222,9 +216,7 @@ final class StorageRawClient {
     public ServicesGetUserDelegationKeyResponse getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
             Duration timeout, Context context) {
         Mono<ServicesGetUserDelegationKeyResponse> response = storageAsyncRawClient.getUserDelegationKey(start, expiry, context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -264,9 +256,7 @@ final class StorageRawClient {
      */
     public ServicesGetStatisticsResponse getStatistics(Duration timeout, Context context) {
         Mono<ServicesGetStatisticsResponse> response = storageAsyncRawClient.getStatistics(context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -302,8 +292,6 @@ final class StorageRawClient {
      */
     public ServicesGetAccountInfoResponse getAccountInfo(Duration timeout, Context context) {
         Mono<ServicesGetAccountInfoResponse> response = storageAsyncRawClient.getAccountInfo(context);
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

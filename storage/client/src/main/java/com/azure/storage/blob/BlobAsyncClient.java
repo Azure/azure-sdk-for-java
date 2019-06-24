@@ -5,13 +5,11 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
@@ -19,14 +17,10 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.netty.ByteBufFlux;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -34,7 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -99,7 +92,7 @@ public class BlobAsyncClient {
      *      A {@link BlockBlobAsyncClient} to this resource.
      */
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder().url(getUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -110,7 +103,7 @@ public class BlobAsyncClient {
      *      A {@link AppendBlobAsyncClient} to this resource.
      */
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -121,7 +114,7 @@ public class BlobAsyncClient {
      *      A {@link PageBlobAsyncClient} to this resource.
      */
     public PageBlobAsyncClient asPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder().url(getUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        return new PageBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -130,11 +123,11 @@ public class BlobAsyncClient {
      * containers.
      *
      * @return
-     *     A {@link ContainerAsyncClient} object pointing to the specified container
+     *     A {@link ContainerAsyncClient} object pointing to the container containing the blob
      */
     public ContainerAsyncClient getContainerAsyncClient() {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getUrl()).toString())
+            .url(Utility.stripLastPathSegment(getBlobUrl()).toString())
             .pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -142,7 +135,7 @@ public class BlobAsyncClient {
      * Gets the URL of the blob represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
+    public URL getBlobUrl() {
         try {
             return new URL(blobAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {

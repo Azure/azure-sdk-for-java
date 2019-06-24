@@ -16,6 +16,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -39,7 +40,7 @@ import java.util.Objects;
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
+ *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>
@@ -47,10 +48,10 @@ import java.util.Objects;
  * {@link PageBlobClient} or {@code .buildAsyncClient()} to create a {@link PageBlobAsyncClient}.
  */
 public final class PageBlobClientBuilder {
-    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
-    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
-    private static final String ENDPOINT_PROTOCOL = "DefaultEndpointsProtocol".toLowerCase();
-    private static final String ENDPOINT_SUFFIX = "EndpointSuffix".toLowerCase();
+    private static final String ACCOUNT_NAME = "accountname";
+    private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
+    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
     private final List<HttpPipelinePolicy> policies;
 
@@ -80,7 +81,7 @@ public final class PageBlobClientBuilder {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         if (configuration == null) {
-            configuration = Configuration.NONE;
+            configuration = ConfigurationManager.getConfiguration();
         }
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
@@ -180,40 +181,40 @@ public final class PageBlobClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(SharedKeyCredential credentials) {
-        this.sharedKeyCredential = credentials;
+    public PageBlobClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(TokenCredential credentials) {
-        this.tokenCredential = credentials;
+    public PageBlobClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(SASTokenCredential credentials) {
-        this.sasTokenCredential = credentials;
+    public PageBlobClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
         return this;
     }
 
     /**
-     * Clears the credentials used to authorize requests sent to the service
+     * Clears the credential used to authorize requests sent to the service
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder anonymousCredentials() {
+    public PageBlobClientBuilder anonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -248,7 +249,7 @@ public final class PageBlobClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
-        return credentials(new SharedKeyCredential(accountName, accountKey));
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**

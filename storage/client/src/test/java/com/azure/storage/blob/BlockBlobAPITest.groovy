@@ -5,7 +5,6 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -114,7 +113,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block context"() {
         setup:
-        bu = BlockBlobClient.blockBlobClientBuilder().endpoint(bu.getUrl().toString()).addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
+        bu = BlockBlobClient.blockBlobClientBuilder().endpoint(bu.getBlobUrl().toString()).addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
 
         when:
         // No service call is made. Just satisfy the parameters.
@@ -131,7 +130,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         when:
-        HttpHeaders headers = bu2.stageBlockFromURL(blockID, bu.getUrl(), null).headers()
+        HttpHeaders headers = bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).headers()
         Iterator<BlockItem> listResponse = bu2.listBlocks(BlockListType.ALL).iterator()
         BlockItem block = listResponse.next()
         bu2.commitBlockList(Arrays.asList(blockID))
@@ -159,7 +158,7 @@ class BlockBlobAPITest extends APISpec {
         def blockID = getBlockID()
 
         expect:
-        bu2.stageBlockFromURL(blockID, bu.getUrl(), null).statusCode() == 201
+        bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).statusCode() == 201
     }
 
     @Unroll
@@ -182,7 +181,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.getUrl(), new BlobRange(2, 3))
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), new BlobRange(2, 3))
         Iterator<BlockItem> uncommittedBlock = destURL.listBlocks(BlockListType.UNCOMMITTED).iterator()
 
         then:
@@ -197,7 +196,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.getUrl(), null,
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null,
             MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
 
         then:
@@ -210,7 +209,7 @@ class BlockBlobAPITest extends APISpec {
         def destURL = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        destURL.stageBlockFromURL(getBlockID(), bu.getUrl(), null, "garbage".getBytes(),
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, "garbage".getBytes(),
             null, null, null, null)
 
         then:
@@ -223,7 +222,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, receivedLeaseID))
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.getUrl(), null, null, lease, null, null, null)
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
 
         then:
         notThrown(StorageException)
@@ -235,7 +234,7 @@ class BlockBlobAPITest extends APISpec {
         def lease = new LeaseAccessConditions().leaseId("garbage")
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.getUrl(), null, null, lease, null, null, null)
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
 
         then:
         thrown(StorageException)
@@ -247,7 +246,7 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.stageBlockFromURL(getBlockID(), bu.getUrl(), null, null, null, null, null, null)
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, null, null, null, null)
 
         then:
         thrown(StorageException)
@@ -284,7 +283,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         expect:
-        bu.stageBlockFromURL(blockID, sourceURL.getUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
@@ -312,7 +311,7 @@ class BlockBlobAPITest extends APISpec {
             .sourceIfNoneMatch(sourceIfNoneMatch)
 
         when:
-        bu.stageBlockFromURL(blockID, sourceURL.getUrl(), null, null, null, smac, null, null).statusCode() == 201
+        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
 
         then:
         thrown(StorageException)

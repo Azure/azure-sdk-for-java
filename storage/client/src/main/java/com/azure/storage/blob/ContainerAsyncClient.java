@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
@@ -14,11 +13,9 @@ import com.azure.storage.blob.models.BlobFlatListSegment;
 import com.azure.storage.blob.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobPrefix;
-import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
@@ -27,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -91,7 +89,7 @@ public final class ContainerAsyncClient {
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -109,7 +107,7 @@ public final class ContainerAsyncClient {
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -127,7 +125,7 @@ public final class ContainerAsyncClient {
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -145,7 +143,7 @@ public final class ContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getUrl(), blobName).toString())
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
             .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -157,7 +155,7 @@ public final class ContainerAsyncClient {
      */
     public StorageAsyncClient getStorageAsyncClient() {
         return new StorageAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getUrl()).toString())
+            .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
             .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
@@ -165,7 +163,7 @@ public final class ContainerAsyncClient {
      * Gets the URL of the container represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
+    public URL getContainerUrl() {
         try {
             return new URL(containerAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {
@@ -821,9 +819,9 @@ public final class ContainerAsyncClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease in seconds.
+     *      A reactive response containing the remaining time in the broken lease.
      */
-    public Mono<Response<Integer>> breakLease() {
+    public Mono<Response<Duration>> breakLease() {
         return this.breakLease(null, null, null);
     }
 
@@ -849,13 +847,13 @@ public final class ContainerAsyncClient {
      *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease in seconds.
+     *      A reactive response containing the remaining time in the broken lease.
      */
-    public Mono<Response<Integer>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<Duration>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
+                                               Context context) {
         return containerAsyncRawClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseTime()));
+            .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.deserializedHeaders().leaseTime())));
     }
 
     /**

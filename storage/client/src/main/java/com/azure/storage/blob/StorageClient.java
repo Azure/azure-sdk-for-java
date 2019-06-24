@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
@@ -71,8 +72,8 @@ public final class StorageClient {
      * Gets the URL of the storage account represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
-        return storageAsyncClient.getUrl();
+    public URL getAccountUrl() {
+        return storageAsyncClient.getAccountUrl();
     }
 
     /**
@@ -139,9 +140,7 @@ public final class StorageClient {
 
         Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties(context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -183,16 +182,12 @@ public final class StorageClient {
     public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
         Mono<VoidResponse> response = storageAsyncClient.setProperties(properties, context);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -208,7 +203,7 @@ public final class StorageClient {
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -230,9 +225,7 @@ public final class StorageClient {
             Duration timeout, Context context) {
         Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry, context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -269,9 +262,7 @@ public final class StorageClient {
     public Response<StorageServiceStats> getStatistics(Duration timeout, Context context) {
         Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics(context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -304,8 +295,6 @@ public final class StorageClient {
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
         Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo(context);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

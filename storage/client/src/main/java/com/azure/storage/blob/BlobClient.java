@@ -99,7 +99,7 @@ public class BlobClient {
      * containers.
      *
      * @return
-     *     A {@link ContainerClient} object pointing to the specified container
+     *     A {@link ContainerClient} object pointing to the container containing the blob
      */
     public ContainerClient getContainerClient() {
         return new ContainerClient(blobAsyncClient.getContainerAsyncClient());
@@ -109,8 +109,8 @@ public class BlobClient {
      * Gets the URL of the blob represented by this client.
      * @return the URL.
      */
-    public URL getUrl() {
-        return blobAsyncClient.getUrl();
+    public URL getBlobUrl() {
+        return blobAsyncClient.getBlobUrl();
     }
 
     /**
@@ -133,11 +133,7 @@ public class BlobClient {
     public Response<Boolean> exists(Duration timeout) {
         Mono<Response<Boolean>> response = blobAsyncClient.exists(null);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -181,9 +177,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -213,11 +207,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .abortCopyFromURL(copyId, leaseAccessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -259,9 +249,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .copyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -305,10 +293,11 @@ public class BlobClient {
             .last()
             .map(VoidResponse::new);
 
-        download = timeout == null
-            ? download
-            : download.timeout(timeout); //TODO this isn't doing what we want
-        return download.block();
+        try {
+            return Utility.blockWithOptionalTimeout(download, timeout);
+        } catch (UncheckedIOException e) {
+            throw e.getCause();
+        }
     }
 
     /**
@@ -379,11 +368,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .delete(deleteBlobSnapshotOptions, accessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -411,9 +396,7 @@ public class BlobClient {
         Mono<Response<BlobProperties>> response = blobAsyncClient
             .getProperties(accessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -447,11 +430,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .setHTTPHeaders(headers, accessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -482,11 +461,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .setMetadata(metadata, accessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -516,9 +491,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .createSnapshot(metadata, accessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -550,11 +523,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .setTier(tier, leaseAccessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -574,11 +543,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .undelete(null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -622,9 +587,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -660,9 +623,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .renewLease(leaseID, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -692,11 +653,7 @@ public class BlobClient {
         Mono<VoidResponse> response = blobAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions, null /*context*/);
 
-        if (timeout == null) {
-            return response.block();
-        } else {
-            return response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -735,9 +692,7 @@ public class BlobClient {
         Mono<Response<Integer>> response = blobAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -776,9 +731,7 @@ public class BlobClient {
         Mono<Response<String>> response = blobAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions, null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -802,8 +755,6 @@ public class BlobClient {
         Mono<Response<StorageAccountInfo>> response = blobAsyncClient
             .getAccountInfo(null /*context*/);
 
-        return timeout == null
-            ? response.block()
-            : response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }
