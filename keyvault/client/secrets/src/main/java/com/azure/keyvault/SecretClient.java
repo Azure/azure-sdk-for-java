@@ -330,7 +330,7 @@ public final class SecretClient {
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
     public Iterable<SecretBase> listSecrets() {
-        return client.listSecrets().collectList().block();
+        return client.listSecrets().toIterable();
     }
 
     /**
@@ -348,7 +348,7 @@ public final class SecretClient {
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
     public Iterable<DeletedSecret> listDeletedSecrets() {
-        return client.listDeletedSecrets().collectList().block();
+        return client.listDeletedSecrets().toIterable();
     }
 
     /**
@@ -371,6 +371,6 @@ public final class SecretClient {
      * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
     public Iterable<SecretBase> listSecretVersions(String name) {
-        return client.listSecretVersions(name).collectList().block();
+        return client.listSecretVersions(name).toIterable();
     }
 }

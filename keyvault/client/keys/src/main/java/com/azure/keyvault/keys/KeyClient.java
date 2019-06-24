@@ -489,7 +489,7 @@ public final class KeyClient {
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
     public Iterable<KeyBase> listKeys() {
-        return client.listKeys().collectList().block();
+        return client.listKeys().toIterable();
     }
 
     /**
@@ -508,7 +508,7 @@ public final class KeyClient {
      * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
     public Iterable<DeletedKey> listDeletedKeys() {
-        return client.listDeletedKeys().collectList().block();
+        return client.listDeletedKeys().toIterable();
     }
 
     /**
@@ -526,6 +526,6 @@ public final class KeyClient {
      * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
     public Iterable<KeyBase> listKeyVersions(String name) {
-        return client.listKeyVersions(name).collectList().block();
+        return client.listKeyVersions(name).toIterable();
     }
 }

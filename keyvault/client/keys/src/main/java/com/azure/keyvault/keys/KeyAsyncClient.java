@@ -691,7 +691,7 @@ public final class KeyAsyncClient extends ServiceClient {
      */
     public Flux<KeyBase> listKeyVersions(String name) {
         return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing key versions - {}" ,name))
+                .doOnRequest(ignored -> logger.asInfo().log("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.asInfo().log("Listed key versions - {}", name))
                 .doOnError(error -> logger.asWarning().log(String.format("Failed to list key versions - {}", name), error))
                 .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
