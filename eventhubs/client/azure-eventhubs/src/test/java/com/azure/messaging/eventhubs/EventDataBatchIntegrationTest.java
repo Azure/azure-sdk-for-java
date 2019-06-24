@@ -187,6 +187,8 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
                 }
             }
         }
+
+        Assert.assertEquals(0, countDownLatch.getCount());
     }
 
     /**
