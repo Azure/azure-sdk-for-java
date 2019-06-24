@@ -167,10 +167,10 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
                 }).take(numberOfEvents).subscribe(event -> {
                     logger.asInfo().log("Event[{}] matched.", event.sequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
-                    long count = countDownLatch.getCount();
-                    logger.asInfo().log("Finished consuming events. Counting down: {}", count);
-                    countDownLatch.countDown();
-                });
+                        long count = countDownLatch.getCount();
+                        logger.asInfo().log("Finished consuming events. Counting down: {}", count);
+                        countDownLatch.countDown();
+                    });
 
                 subscriptions.add(subscription);
             }

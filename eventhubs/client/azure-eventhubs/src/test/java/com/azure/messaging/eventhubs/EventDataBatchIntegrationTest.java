@@ -157,11 +157,11 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
                             event.sequenceNumber(), messageValue, event.properties().get(messageId)));
                     }
                 }, error -> {
-                    Assert.fail("An error should not have occurred:" + error.toString());
-                }, () -> {
-                    logger.asInfo().log("Disposing of consumer now that the receive is complete.");
-                    dispose(consumer);
-                });
+                        Assert.fail("An error should not have occurred:" + error.toString());
+                    }, () -> {
+                        logger.asInfo().log("Disposing of consumer now that the receive is complete.");
+                        dispose(consumer);
+                    });
             }).collectList().block(TIMEOUT);
 
             Assert.assertNotNull(consumerSubscriptions);

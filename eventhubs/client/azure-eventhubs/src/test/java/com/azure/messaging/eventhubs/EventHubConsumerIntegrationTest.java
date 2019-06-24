@@ -104,11 +104,11 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
                     logger.asInfo().log("Event[{}] received. partition: {}", event.sequenceNumber(), partitionId);
                 }, error -> {
-                    Assert.fail("An error should not have occurred:" + error.toString());
-                }, () -> {
-                    logger.asInfo().log("Disposing of consumer now that the receive is complete.");
-                    countDownLatch.countDown();
-                });
+                        Assert.fail("An error should not have occurred:" + error.toString());
+                    }, () -> {
+                        logger.asInfo().log("Disposing of consumer now that the receive is complete.");
+                        countDownLatch.countDown();
+                    });
 
                 subscriptions.add(subscription);
 
