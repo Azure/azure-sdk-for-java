@@ -112,7 +112,7 @@ public final class PollerJavaDocCodeSnippets {
         //Create poller instance
         Poller<String> myPoller = new Poller<>(pollInterval, pollOperation);
 
-        // Listen to poll responses
+        // Listen to poll  responses
         myPoller.getObserver().subscribe(pr -> {
             //process poll response
             System.out.println("Got Response status,value " + pr.getStatus().toString() + " " + pr.getValue());
