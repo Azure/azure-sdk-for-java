@@ -27,12 +27,14 @@ public class EventHubConsumerTest extends ApiTestBase {
     private static final String PROPERTY2 = MessageConstant.MESSAGE_ID.getValue(); // TODO: need to verify it
     private static final String PROPERTY_VALUE2 = "something2";
 
-    private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
-
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
     private EventData resendEventData;
+
+    public EventHubConsumerTest() {
+        super(new ClientLogger(EventHubConsumerTest.class));
+    }
 
     @Rule
     public TestName testName = new TestName();
@@ -44,7 +46,6 @@ public class EventHubConsumerTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID).retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
@@ -54,8 +55,7 @@ public class EventHubConsumerTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(consumer, producer, client);
     }
 
     /**
@@ -102,6 +102,5 @@ public class EventHubConsumerTest extends ApiTestBase {
 
         Assert.assertTrue(eventData.sequenceNumber() > 0);
         Assert.assertNull(eventData.partitionKey());
-//        Assert.assertNull(eventData.publisher()); //TODO: double check if publisher is needed in track 2
     }
 }
