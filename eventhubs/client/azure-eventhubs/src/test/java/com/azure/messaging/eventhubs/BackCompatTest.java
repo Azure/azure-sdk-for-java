@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
@@ -25,6 +24,9 @@ import java.util.Map;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Integration test that verifies backwards compatibility with a previous version of the SDK.
+ */
 public class BackCompatTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
@@ -51,10 +53,10 @@ public class BackCompatTest extends ApiTestBase {
 
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
-        producer = client.createProducer(new EventHubProducerOptions()
-            .partitionId(PARTITION_ID)
-            .retry(Retry.getNoRetry())
-            .timeout(TIMEOUT));
+
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions()
+            .partitionId(PARTITION_ID);
+        producer = client.createProducer(producerOptions);
     }
 
     @Override
