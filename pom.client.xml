@@ -512,6 +512,7 @@
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
                 -snippetpath ${project.basedir}/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/eventhubs/client/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
               </additionalOptions>
