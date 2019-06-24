@@ -26,6 +26,15 @@ public class EventDataBatchTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void nullEventData() {
+        final EventDataBatch batch = new EventDataBatch(1024, PARTITION_KEY, null);
+        batch.tryAdd(null);
+    }
+
+    /**
+     * Verify that if we try to add a payload that is too big for the EventDataBatch, it throws.
+     */
     @Test
     public void payloadExceededException() {
         when(errorContextProvider.getErrorContext()).thenReturn(new ErrorContext("test-namespace"));
@@ -39,5 +48,17 @@ public class EventDataBatchTest {
             Assert.assertFalse(e.isTransient());
             Assert.assertEquals(ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, e.getErrorCondition());
         }
+    }
+
+    /**
+     * Verify that we can add a message that is within the batch's size limits.
+     */
+    @Test
+    public void withinPayloadSize() {
+        final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, null);
+        final EventData within = new EventData(new byte[1024]);
+
+        Assert.assertTrue(batch.tryAdd(within));
+        Assert.assertEquals(1, batch.getSize());
     }
 }
