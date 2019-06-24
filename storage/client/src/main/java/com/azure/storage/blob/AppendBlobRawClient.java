@@ -3,17 +3,17 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AppendBlobsAppendBlockFromUrlResponse;
+import com.azure.storage.blob.models.AppendBlobsAppendBlockResponse;
+import com.azure.storage.blob.models.AppendBlobsCreateResponse;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 
@@ -40,7 +40,6 @@ final class AppendBlobRawClient extends BlobRawClient {
     /**
      * Creates a {@code AppendBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
-     *         {@link StorageURL#createPipeline(ICredentials, PipelineOptions)} for more information.
      */
     AppendBlobRawClient(AzureBlobStorageImpl azureBlobStorage) {
         super(azureBlobStorage);
@@ -59,7 +58,7 @@ final class AppendBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public AppendBlobsCreateResponse create() {
-        return this.create(null, null, null, null, null);
+        return this.create(null, null, null, null);
     }
 
     /**
@@ -72,12 +71,6 @@ final class AppendBlobRawClient extends BlobRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -86,9 +79,9 @@ final class AppendBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public AppendBlobsCreateResponse create(BlobHTTPHeaders headers, Metadata metadata,
-                                                  BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobsCreateResponse> response = appendBlobAsyncRawClient.create(headers, metadata, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                                  BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<AppendBlobsCreateResponse> response = appendBlobAsyncRawClient.create(headers, metadata, accessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -112,7 +105,7 @@ final class AppendBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public AppendBlobsAppendBlockResponse appendBlock(Flux<ByteBuf> data, long length) {
-        return this.appendBlock(data, length, null, null, null);
+        return this.appendBlock(data, length, null, null);
     }
 
     /**
@@ -130,12 +123,6 @@ final class AppendBlobRawClient extends BlobRawClient {
      *         emitted by the {@code Flux}.
      * @param appendBlobAccessConditions
      *         {@link AppendBlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -144,9 +131,9 @@ final class AppendBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public AppendBlobsAppendBlockResponse appendBlock(Flux<ByteBuf> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobsAppendBlockResponse> response = appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
+        Mono<AppendBlobsAppendBlockResponse> response = appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -170,7 +157,7 @@ final class AppendBlobRawClient extends BlobRawClient {
      */
     public AppendBlobsAppendBlockFromUrlResponse appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null, null);
+                 null, null);
     }
 
     /**
@@ -192,12 +179,6 @@ final class AppendBlobRawClient extends BlobRawClient {
      *          {@link AppendBlobAccessConditions}
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -207,8 +188,8 @@ final class AppendBlobRawClient extends BlobRawClient {
      */
     public AppendBlobsAppendBlockFromUrlResponse appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
-        Mono<AppendBlobsAppendBlockFromUrlResponse> response = appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
+        Mono<AppendBlobsAppendBlockFromUrlResponse> response = appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 }

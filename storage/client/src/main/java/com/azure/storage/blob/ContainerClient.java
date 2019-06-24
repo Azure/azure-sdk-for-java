@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
@@ -146,7 +145,7 @@ public final class ContainerClient {
      * @return true if the container exists, false if it doesn't
      */
     public Response<Boolean> exists() {
-        return this.exists(null, null);
+        return this.exists(null);
     }
 
     /**
@@ -154,19 +153,13 @@ public final class ContainerClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      * @return
      *         true if the container exists, false if it doesn't
      */
-    public Response<Boolean> exists(Duration timeout, Context context) {
-        Mono<Response<Boolean>> response = containerAsyncClient.exists(context);
+    public Response<Boolean> exists(Duration timeout) {
+        Mono<Response<Boolean>> response = containerAsyncClient.exists();
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -175,7 +168,7 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      */
     public VoidResponse create() {
-        return this.create(null, null, null, null);
+        return this.create(null, null, null);
     }
 
     /**
@@ -190,17 +183,11 @@ public final class ContainerClient {
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      */
-    public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType, context);
+    public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout) {
+        Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -209,7 +196,7 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      */
     public VoidResponse delete() {
-        return this.delete(null, null, null);
+        return this.delete(null, null);
     }
 
     /**
@@ -221,17 +208,11 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      */
-    public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions, context);
+    public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout) {
+        Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -242,7 +223,7 @@ public final class ContainerClient {
      *      The container properties.
      */
     public Response<ContainerProperties> getProperties() {
-        return this.getProperties(null, null, null);
+        return this.getProperties(null, null);
     }
 
     /**
@@ -254,21 +235,15 @@ public final class ContainerClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      The container properties.
      */
     public Response<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
-            Duration timeout, Context context) {
-        Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions, context);
+            Duration timeout) {
+        Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -279,7 +254,7 @@ public final class ContainerClient {
      *         {@link Metadata}
      */
     public VoidResponse setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null, null);
+        return this.setMetadata(metadata, null, null);
     }
 
     /**
@@ -292,18 +267,12 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      */
     public VoidResponse setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions, context);
+            ContainerAccessConditions accessConditions, Duration timeout) {
+        Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -315,7 +284,7 @@ public final class ContainerClient {
      *      The container access policy.
      */
     public Response<PublicAccessType> getAccessPolicy() {
-        return this.getAccessPolicy(null, null, null);
+        return this.getAccessPolicy(null, null);
     }
 
     /**
@@ -328,21 +297,15 @@ public final class ContainerClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      The container access policy.
      */
     public Response<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-            Duration timeout, Context context) {
-        Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions, context);
+            Duration timeout) {
+        Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -361,7 +324,7 @@ public final class ContainerClient {
      */
     public VoidResponse setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        return this.setAccessPolicy(accessType, identifiers, null, null,null);
+        return this.setAccessPolicy(accessType, identifiers, null, null);
     }
 
     /**
@@ -381,19 +344,13 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      */
     public VoidResponse setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
-                                Duration timeout, Context context) {
-        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions, context);
+                                Duration timeout) {
+        Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -412,7 +369,7 @@ public final class ContainerClient {
      *      The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions(), null, null);
+        return this.listBlobsFlat(new ListBlobsOptions(), null);
     }
 
     /**
@@ -431,18 +388,12 @@ public final class ContainerClient {
      *         {@link ListBlobsOptions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      The listed blobs, flattened.
      */
-    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout, Context context) {
-        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options, context);
+    public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
+        Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
 
         return timeout == null ?
             response.toIterable():
@@ -511,8 +462,8 @@ public final class ContainerClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
 //    public Iterable<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options, Duration timeout, Context context) {
-//        Flux<BlobHierarchyListSegment> response = containerAsyncClient.listBlobsHierarchySegment(marker, delimiter, options, context);
+//            ListBlobsOptions options, Duration timeout) {
+//        Flux<BlobHierarchyListSegment> response = containerAsyncClient.listBlobsHierarchySegment(marker, delimiter, options);
 //
 //        return timeout == null ?
 //            response.toIterable():
@@ -558,9 +509,9 @@ public final class ContainerClient {
     public Response<String> acquireLease(String proposedID, int duration,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<String>> response = containerAsyncClient
-            .acquireLease(proposedID, duration, modifiedAccessConditions, null /*context*/);
+            .acquireLease(proposedID, duration, modifiedAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -594,9 +545,9 @@ public final class ContainerClient {
     public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
         Duration timeout) {
         Mono<Response<String>> response = containerAsyncClient
-            .renewLease(leaseID, modifiedAccessConditions, null /*context*/);
+            .renewLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -624,9 +575,9 @@ public final class ContainerClient {
     public VoidResponse releaseLease(String leaseID,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient
-            .releaseLease(leaseID, modifiedAccessConditions, null /*context*/);
+            .releaseLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -663,9 +614,9 @@ public final class ContainerClient {
     public Response<Duration> breakLease(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<Duration>> response = containerAsyncClient
-            .breakLease(breakPeriodInSeconds, modifiedAccessConditions, null /*context*/);
+            .breakLease(breakPeriodInSeconds, modifiedAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -702,20 +653,9 @@ public final class ContainerClient {
     public Response<String> changeLease(String leaseId, String proposedID,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<String>> response = containerAsyncClient
-            .changeLease(leaseId, proposedID, modifiedAccessConditions, null /*context*/);
+            .changeLease(leaseId, proposedID, modifiedAccessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @return
-     *      The account info.
-     */
-    public Response<StorageAccountInfo> getAccountInfo() {
-        return this.getAccountInfo(null, null);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -724,19 +664,13 @@ public final class ContainerClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      The account info.
      */
-    public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
-        Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo(context);
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
+        Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo();
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 }

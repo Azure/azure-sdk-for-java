@@ -10,13 +10,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.function.Function;
 
 /**
  * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,
- * BlobAccessConditions, boolean, com.azure.core.util.Context)} to automatically retry failed reads from the body as
+ * BlobAccessConditions, boolean, ReliableDownloadOptions)} to automatically retry failed reads from the body as
  * appropriate. If the download is interrupted, the {@code DownloadAsyncResponse} will make a request to resume the download
  * from where it left off, allowing the user to consume the data as one continuous stream, for any interruptions are
  * hidden. The retry behavior is defined by the options passed to the {@link #body(ReliableDownloadOptions)}. The
@@ -107,9 +106,9 @@ public final class DownloadAsyncResponse {
                     Update how much data we have received in case we need to retry and propagate to the user the data we
                     have received.
                      */
-                    this.info.withOffset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
+                    this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
                     if (this.info.count() != null) {
-                        this.info.withCount(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
+                        this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
                     }
                 })
                 .onErrorResume(t2 -> {

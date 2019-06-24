@@ -90,7 +90,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesrestresponseasync(StorageServiceProperties storageServiceProperties, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
@@ -108,7 +108,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesrestresponseasync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
@@ -121,7 +121,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
+    public Mono<ServicesGetPropertiesResponse> getPropertiesrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
@@ -138,7 +138,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<ServicesGetPropertiesResponse> getPropertiesrestresponseasync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
@@ -151,7 +151,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Context context) {
+    public Mono<ServicesGetStatisticsResponse> getStatisticsrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "service";
@@ -168,7 +168,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<ServicesGetStatisticsResponse> getStatisticsrestresponseasync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
         return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
@@ -181,7 +181,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentWithRestResponseAsync(Context context) {
+    public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentrestresponseasync(Context context) {
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
@@ -205,7 +205,7 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListQueuesIncludeType> include, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesListQueuesSegmentResponse> listQueuesSegmentrestresponseasync(String prefix, String marker, Integer maxresults, List<ListQueuesIncludeType> include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
         String includeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
         return service.listQueuesSegment(this.client.url(), prefix, marker, maxresults, includeConverted, timeout, this.client.version(), requestId, comp, context);

@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -79,7 +78,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the created appended blob.
      */
     public Mono<Response<AppendBlobItem>> create() {
-        return this.create(null, null, null, null);
+        return this.create(null, null, null);
     }
 
     /**
@@ -91,20 +90,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
     public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata,
-                                                 BlobAccessConditions accessConditions, Context context) {
+                                                 BlobAccessConditions accessConditions) {
             return appendBlobAsyncRawClient
-                .create(headers, metadata, accessConditions, context)
+                .create(headers, metadata, accessConditions)
                 .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
@@ -125,7 +118,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
-        return this.appendBlock(data, length, null, null);
+        return this.appendBlock(data, length, null);
     }
 
     /**
@@ -142,20 +135,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *         emitted by the {@code Flux}.
      * @param appendBlobAccessConditions
      *         {@link AppendBlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Context context) {
+                                                           AppendBlobAccessConditions appendBlobAccessConditions) {
         return appendBlobAsyncRawClient
-            .appendBlock(data, length, appendBlobAccessConditions, context)
+            .appendBlock(data, length, appendBlobAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
@@ -175,7 +162,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null);
+                 null);
     }
 
     /**
@@ -195,21 +182,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *          {@link AppendBlobAccessConditions}
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
     public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+            SourceModifiedAccessConditions sourceAccessConditions) {
         return appendBlobAsyncRawClient
-            .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
+            .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 }

@@ -140,7 +140,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(long fileContentLength, Context context) {
+    public Mono<FilesCreateResponse> createrestresponseasync(long fileContentLength, Context context) {
         final Integer timeout = null;
         final String fileTypeConstant = "file";
         final Map<String, String> metadata = null;
@@ -164,7 +164,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesCreateResponse> createWithRestResponseAsync(long fileContentLength, Integer timeout, Map<String, String> metadata, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesCreateResponse> createrestresponseasync(long fileContentLength, Integer timeout, Map<String, String> metadata, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String fileTypeConstant = "file";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -201,7 +201,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(Context context) {
+    public Mono<FilesDownloadResponse> downloadrestresponseasync(Context context) {
         final Integer timeout = null;
         final String range = null;
         final Boolean rangeGetContentMD5 = null;
@@ -218,7 +218,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
+    public Mono<FilesDownloadResponse> downloadrestresponseasync(Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
         return service.download(this.client.url(), timeout, this.client.version(), range, rangeGetContentMD5, context);
     }
 
@@ -229,7 +229,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
+    public Mono<FilesGetPropertiesResponse> getPropertiesrestresponseasync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), context);
@@ -244,7 +244,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
+    public Mono<FilesGetPropertiesResponse> getPropertiesrestresponseasync(String sharesnapshot, Integer timeout, Context context) {
         return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), context);
     }
 
@@ -255,7 +255,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(Context context) {
+    public Mono<FilesDeleteResponse> deleterestresponseasync(Context context) {
         final Integer timeout = null;
         return service.delete(this.client.url(), timeout, this.client.version(), context);
     }
@@ -268,7 +268,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(Integer timeout, Context context) {
+    public Mono<FilesDeleteResponse> deleterestresponseasync(Integer timeout, Context context) {
         return service.delete(this.client.url(), timeout, this.client.version(), context);
     }
 
@@ -279,7 +279,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersrestresponseasync(Context context) {
         final Integer timeout = null;
         final Long fileContentLength = null;
         final String comp = "properties";
@@ -302,7 +302,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersWithRestResponseAsync(Integer timeout, Long fileContentLength, FileHTTPHeaders fileHTTPHeaders, Context context) {
+    public Mono<FilesSetHTTPHeadersResponse> setHTTPHeadersrestresponseasync(Integer timeout, Long fileContentLength, FileHTTPHeaders fileHTTPHeaders, Context context) {
         final String comp = "properties";
         String fileContentType = null;
         if (fileHTTPHeaders != null) {
@@ -339,7 +339,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
+    public Mono<FilesSetMetadataResponse> setMetadatarestresponseasync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String comp = "metadata";
@@ -355,7 +355,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<FilesSetMetadataResponse> setMetadatarestresponseasync(Integer timeout, Map<String, String> metadata, Context context) {
         final String comp = "metadata";
         return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), comp, context);
     }
@@ -370,7 +370,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangerestresponseasync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Context context) {
         final Flux<ByteBuf> optionalbody = null;
         final Integer timeout = null;
         final String comp = "range";
@@ -391,7 +391,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
+    public Mono<FilesUploadRangeResponse> uploadRangerestresponseasync(String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
         final String comp = "range";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service.uploadRange(this.client.url(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
@@ -404,7 +404,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListrestresponseasync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String range = null;
@@ -422,7 +422,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String sharesnapshot, Integer timeout, String range, Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListrestresponseasync(String sharesnapshot, Integer timeout, String range, Context context) {
         final String comp = "rangelist";
         return service.getRangeList(this.client.url(), sharesnapshot, timeout, this.client.version(), range, comp, context);
     }
@@ -435,7 +435,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String copySource, Context context) {
+    public Mono<FilesStartCopyResponse> startCopyrestresponseasync(String copySource, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         return service.startCopy(this.client.url(), timeout, this.client.version(), metadata, copySource, context);
@@ -451,7 +451,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String copySource, Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<FilesStartCopyResponse> startCopyrestresponseasync(String copySource, Integer timeout, Map<String, String> metadata, Context context) {
         return service.startCopy(this.client.url(), timeout, this.client.version(), metadata, copySource, context);
     }
 
@@ -463,7 +463,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String copyId, Context context) {
+    public Mono<FilesAbortCopyResponse> abortCopyrestresponseasync(String copyId, Context context) {
         final Integer timeout = null;
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
@@ -479,7 +479,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String copyId, Integer timeout, Context context) {
+    public Mono<FilesAbortCopyResponse> abortCopyrestresponseasync(String copyId, Integer timeout, Context context) {
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
         return service.abortCopy(this.client.url(), copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
@@ -492,7 +492,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(Context context) {
+    public Mono<FilesListHandlesResponse> listHandlesrestresponseasync(Context context) {
         final String marker = null;
         final Integer maxresults = null;
         final Integer timeout = null;
@@ -512,7 +512,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
+    public Mono<FilesListHandlesResponse> listHandlesrestresponseasync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
         final String comp = "listhandles";
         return service.listHandles(this.client.url(), marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
     }
@@ -525,7 +525,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Context context) {
+    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesrestresponseasync(String handleId, Context context) {
         final Integer timeout = null;
         final String marker = null;
         final String sharesnapshot = null;
@@ -544,7 +544,7 @@ public final class FilesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
+    public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesrestresponseasync(String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
         final String comp = "forceclosehandles";
         return service.forceCloseHandles(this.client.url(), timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
     }

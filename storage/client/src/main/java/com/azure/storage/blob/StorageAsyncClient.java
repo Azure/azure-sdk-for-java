@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -109,7 +108,7 @@ public final class StorageAsyncClient {
     public Mono<Response<ContainerAsyncClient>> createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
         ContainerAsyncClient containerAsyncClient = getContainerAsyncClient(containerName);
 
-        return containerAsyncClient.create(metadata, accessType, Context.NONE)
+        return containerAsyncClient.create(metadata, accessType)
             .map(response -> new SimpleResponse<>(response, containerAsyncClient));
     }
 
@@ -129,44 +128,26 @@ public final class StorageAsyncClient {
      * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response emitting the list of containers.
-     */
-    public Flux<ContainerItem> listContainers() {
-        return this.listContainers(new ListContainersOptions(), null);
-    }
-
-    /**
-     * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information, see
-     * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
-     *
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the list of containers.
      */
-    public Flux<ContainerItem> listContainers(ListContainersOptions options, Context context) {
+    public Flux<ContainerItem> listContainers(ListContainersOptions options) {
         return storageAsyncRawClient
-            .listContainersSegment(null, options, context)
-            .flatMapMany(response -> listContainersHelper(response.value().marker(), options, context, response));
+            .listContainersSegment(null, options)
+            .flatMapMany(response -> listContainersHelper(response.value().marker(), options, response));
     }
 
-    private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options, Context context,
+    private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options,
             ServicesListContainersSegmentResponse response){
         Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(storageAsyncRawClient.listContainersSegment(marker, options,
-                context)
+            result = result.concatWith(storageAsyncRawClient.listContainersSegment(marker, options)
                 .flatMapMany((r) ->
-                    listContainersHelper(response.value().nextMarker(), options, context, r)));
+                    listContainersHelper(response.value().nextMarker(), options, r)));
         }
 
         return result;
@@ -180,26 +161,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account properties.
      */
     public Mono<Response<StorageServiceProperties>> getProperties() {
-        return this.getProperties(null);
-    }
-
-    /**
-     * Gets the properties of a storage account’s Blob service. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the storage account properties.
-     */
-    public Mono<Response<StorageServiceProperties>> getProperties(Context context) {
         return storageAsyncRawClient
-            .getProperties(context)
+            .getProperties()
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
@@ -216,30 +179,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account properties.
      */
     public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null);
-    }
-
-    /**
-     * Sets properties for a storage account's Blob service endpoint. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
-     * Note that setting the default service version has no effect when using this client because this client explicitly
-     * sets the version header on each request, overriding the default.
-     *
-     * @param properties
-     *         Configures the service.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the storage account properties.
-     */
-    public Mono<VoidResponse> setProperties(StorageServiceProperties properties, Context context) {
         return storageAsyncRawClient
-            .setProperties(properties, context)
+            .setProperties(properties)
             .map(VoidResponse::new);
     }
 
@@ -256,31 +197,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the user delegation key.
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null);
-    }
-
-    /**
-     * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
-     *
-     * @param start
-     *         Start time for the key's validity. Null indicates immediate start.
-     * @param expiry
-     *         Expiration of the key's validity.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the user delegation key.
-     */
-    public Mono<Response<UserDelegationKey>> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-            Context context) {
         return storageAsyncRawClient
-            .getUserDelegationKey(start, expiry, context)
+            .getUserDelegationKey(start, expiry)
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
@@ -294,28 +212,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatistics() {
-        return this.getStatistics(null);
-    }
-
-    /**
-     * Retrieves statistics related to replication for the Blob service. It is only available on the secondary
-     * location endpoint when read-access geo-redundant replication is enabled for the storage account. For more
-     * information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the storage account statistics.
-     */
-    public Mono<Response<StorageServiceStats>> getStatistics(Context context) {
         return storageAsyncRawClient
-            .getStatistics(context)
+            .getStatistics()
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
@@ -327,26 +225,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
-        return this.getAccountInfo(null);
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the storage account info.
-     */
-    public Mono<Response<StorageAccountInfo>> getAccountInfo(Context context) {
         return storageAsyncRawClient
-            .getAccountInfo(context)
+            .getAccountInfo()
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

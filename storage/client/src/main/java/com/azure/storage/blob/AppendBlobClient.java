@@ -4,11 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.AppendBlobAppendBlockFromUrlHeaders;
-import com.azure.storage.blob.models.AppendBlobAppendBlockHeaders;
-import com.azure.storage.blob.models.AppendBlobCreateHeaders;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -75,7 +70,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the created appended blob.
      */
     public Response<AppendBlobItem> create() {
-        return this.create(null, null, null, null, null);
+        return this.create(null, null, null, null);
     }
 
     /**
@@ -89,20 +84,14 @@ public final class AppendBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the created appended blob.
      */
     public Response<AppendBlobItem> create(BlobHTTPHeaders headers, Metadata metadata,
-                                          BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.create(headers, metadata, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                          BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.create(headers, metadata, accessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -122,7 +111,7 @@ public final class AppendBlobClient extends BlobClient {
      *      The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length) {
-        return this.appendBlock(data, length, null, null, null);
+        return this.appendBlock(data, length, null, null);
     }
 
     /**
@@ -141,20 +130,14 @@ public final class AppendBlobClient extends BlobClient {
      *         {@link AppendBlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlock(Flux<ByteBuf> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                                           AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(data, length, appendBlobAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -173,7 +156,7 @@ public final class AppendBlobClient extends BlobClient {
      */
     public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
         return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-                 null, null, null);
+                 null, null);
     }
 
     /**
@@ -195,20 +178,14 @@ public final class AppendBlobClient extends BlobClient {
      *          {@link SourceModifiedAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return
      *      The information of the append blob operation.
      */
     public Response<AppendBlobItem> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 }

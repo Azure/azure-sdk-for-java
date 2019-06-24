@@ -3,10 +3,16 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
+import com.azure.storage.blob.models.BlockBlobsGetBlockListResponse;
+import com.azure.storage.blob.models.BlockBlobsStageBlockFromURLResponse;
+import com.azure.storage.blob.models.BlockBlobsStageBlockResponse;
+import com.azure.storage.blob.models.BlockBlobsUploadResponse;
+import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -59,7 +65,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
      *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
@@ -75,7 +80,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsUploadResponse upload(Flux<ByteBuf> data, long length) {
-        return this.upload(data, length, null, null, null, null, null);
+        return this.upload(data, length, null, null, null, null);
     }
 
     /**
@@ -89,7 +94,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param data
      *         The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
@@ -103,12 +107,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -117,9 +115,9 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsUploadResponse upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
-                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobsUploadResponse> response = blockBlobAsyncRawClient.upload(data, length, headers, metadata, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<BlockBlobsUploadResponse> response = blockBlobAsyncRawClient.upload(data, length, headers, metadata, accessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -147,7 +145,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsStageBlockResponse stageBlock(String base64BlockID, Flux<ByteBuf> data,                                                         long length) {
-        return this.stageBlock(base64BlockID, data, length, null, null, null);
+        return this.stageBlock(base64BlockID, data, length, null, null);
     }
 
     /**
@@ -170,12 +168,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -184,9 +176,9 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsStageBlockResponse stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-                                                         LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobsStageBlockResponse> response = blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, leaseAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+                                                         LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+        Mono<BlockBlobsStageBlockResponse> response = blockBlobAsyncRawClient.stageBlock(base64BlockID, data, length, leaseAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -213,7 +205,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
     public BlockBlobsStageBlockFromURLResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null, null, null);
+                null, null, null);
     }
 
     /**
@@ -238,12 +230,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      *         lease on the blob.
      * @param sourceModifiedAccessConditions
      *         {@link SourceModifiedAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -253,9 +239,9 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      */
     public BlockBlobsStageBlockFromURLResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobsStageBlockFromURLResponse> response = blockBlobAsyncRawClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout) {
+        Mono<BlockBlobsStageBlockFromURLResponse> response = blockBlobAsyncRawClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -273,7 +259,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsGetBlockListResponse getBlockList(BlockListType listType) {
-        return this.getBlockList(listType, null, null, null);
+        return this.getBlockList(listType, null, null);
     }
 
     /**
@@ -286,12 +272,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -300,9 +280,9 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsGetBlockListResponse getBlockList(BlockListType listType,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobsGetBlockListResponse> response = blockBlobAsyncRawClient.listBlocks(listType, leaseAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+        Mono<BlockBlobsGetBlockListResponse> response = blockBlobAsyncRawClient.listBlocks(listType, leaseAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -314,7 +294,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param base64BlockIDs
      *         A list of base64 encode {@code String}s that specifies the block IDs to be committed.
@@ -326,7 +305,7 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsCommitBlockListResponse commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null, null);
+        return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
     /**
@@ -338,7 +317,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      * <p>
-     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param base64BlockIDs
      *         A list of base64 encode {@code String}s that specifies the block IDs to be committed.
@@ -348,12 +326,6 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -362,8 +334,8 @@ final class BlockBlobRawClient extends BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public BlockBlobsCommitBlockListResponse commitBlockList(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<BlockBlobsCommitBlockListResponse> response = blockBlobAsyncRawClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<BlockBlobsCommitBlockListResponse> response = blockBlobAsyncRawClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 }

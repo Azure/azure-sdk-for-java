@@ -43,7 +43,7 @@ public class FileClient {
         throw new UnsupportedOperationException();
     }
 
-    public Mono<Response<FileDownloadInfo>> downloadWithProperties(long offset, long length, boolean rangeGetContentMD5) {
+    public Mono<Response<FileDownloadInfo>> downloadproperties(long offset, long length, boolean rangeGetContentMD5) {
         throw new UnsupportedOperationException();
     }
 

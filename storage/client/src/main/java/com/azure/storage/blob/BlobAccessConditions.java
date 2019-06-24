@@ -40,7 +40,7 @@ public final class BlobAccessConditions {
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
      */
-    public BlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public BlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -57,7 +57,7 @@ public final class BlobAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      */
-    public BlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public BlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }

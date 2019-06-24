@@ -85,7 +85,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesDequeueResponse> dequeueWithRestResponseAsync(Context context) {
+    public Mono<MessagesDequeueResponse> dequeuerestresponseasync(Context context) {
         final Integer numberOfMessages = null;
         final Integer visibilitytimeout = null;
         final Integer timeout = null;
@@ -104,7 +104,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesDequeueResponse> dequeueWithRestResponseAsync(Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
+    public Mono<MessagesDequeueResponse> dequeuerestresponseasync(Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
         return service.dequeue(this.client.url(), numberOfMessages, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
 
@@ -115,7 +115,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesClearResponse> clearWithRestResponseAsync(Context context) {
+    public Mono<MessagesClearResponse> clearrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         return service.clear(this.client.url(), timeout, this.client.version(), requestId, context);
@@ -130,7 +130,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesClearResponse> clearWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<MessagesClearResponse> clearrestresponseasync(Integer timeout, String requestId, Context context) {
         return service.clear(this.client.url(), timeout, this.client.version(), requestId, context);
     }
 
@@ -142,7 +142,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(QueueMessage queueMessage, Context context) {
+    public Mono<MessagesEnqueueResponse> enqueuerestresponseasync(QueueMessage queueMessage, Context context) {
         final Integer visibilitytimeout = null;
         final Integer messageTimeToLive = null;
         final Integer timeout = null;
@@ -162,7 +162,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
+    public Mono<MessagesEnqueueResponse> enqueuerestresponseasync(QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
         return service.enqueue(this.client.url(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.version(), requestId, context);
     }
 
@@ -173,7 +173,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesPeekResponse> peekWithRestResponseAsync(Context context) {
+    public Mono<MessagesPeekResponse> peekrestresponseasync(Context context) {
         final Integer numberOfMessages = null;
         final Integer timeout = null;
         final String requestId = null;
@@ -191,7 +191,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessagesPeekResponse> peekWithRestResponseAsync(Integer numberOfMessages, Integer timeout, String requestId, Context context) {
+    public Mono<MessagesPeekResponse> peekrestresponseasync(Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
         return service.peek(this.client.url(), numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);
     }

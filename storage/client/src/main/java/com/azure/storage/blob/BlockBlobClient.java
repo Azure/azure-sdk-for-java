@@ -5,28 +5,23 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 
@@ -100,7 +95,7 @@ public final class BlockBlobClient extends BlobClient {
      *      The information of the uploaded block blob.
      */
     public Response<BlockBlobItem> upload(InputStream data, long length) throws IOException {
-        return this.upload(data, length, null, null, null, null, null);
+        return this.upload(data, length, null, null, null, null);
     }
 
     /**
@@ -124,18 +119,12 @@ public final class BlockBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the uploaded block blob.
      */
     public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
-                                Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
+                                Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -149,11 +138,11 @@ public final class BlockBlobClient extends BlobClient {
             }));
 
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient.blockBlobAsyncRawClient
-            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context)
+            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));;
 
         try {
-            return Utility.blockWithOptionalTimeout(upload, timeout);
+            return Utility.blockoptionaltimeout(upload, timeout);
         }
         catch (UncheckedIOException e) {
             throw e.getCause();
@@ -166,7 +155,7 @@ public final class BlockBlobClient extends BlobClient {
 
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions, null);
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions);
 
         try {
             if (timeout == null) {
@@ -195,7 +184,7 @@ public final class BlockBlobClient extends BlobClient {
      *         provided in the {@link InputStream}.
      */
     public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
-        return this.stageBlock(base64BlockID, data, length, null, null, null);
+        return this.stageBlock(base64BlockID, data, length, null, null);
     }
 
     /**
@@ -216,23 +205,17 @@ public final class BlockBlobClient extends BlobClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      */
     public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) throws IOException {
+            LeaseAccessConditions leaseAccessConditions, Duration timeout) throws IOException {
 
         // buffer strategy for UX study only
         byte[] bufferedData = new byte[(int)length];
         data.read(bufferedData);
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
-            Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -253,7 +236,7 @@ public final class BlockBlobClient extends BlobClient {
     public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null, null, null);
+                null, null, null);
     }
 
     /**
@@ -280,18 +263,12 @@ public final class BlockBlobClient extends BlobClient {
      *         {@link SourceModifiedAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      */
     public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+            SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout) {
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 
     /**
@@ -306,7 +283,7 @@ public final class BlockBlobClient extends BlobClient {
      *      The list of blocks.
      */
     public Iterable<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null, null, null);
+        return this.listBlocks(listType, null, null);
     }
 
     /**
@@ -322,19 +299,13 @@ public final class BlockBlobClient extends BlobClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The list of blocks.
      */
     public Iterable<BlockItem> listBlocks(BlockListType listType,
-                                          LeaseAccessConditions leaseAccessConditions, Duration timeout, Context context) {
-        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions, context);
+                                          LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+        Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
         return timeout == null?
             response.toIterable():
@@ -357,7 +328,7 @@ public final class BlockBlobClient extends BlobClient {
      *      The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null, null);
+        return this.commitBlockList(base64BlockIDs, null, null, null, null);
     }
 
     /**
@@ -379,20 +350,14 @@ public final class BlockBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockList(List<String> base64BlockIDs,
-            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context);
+            BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions);
 
-        return Utility.blockWithOptionalTimeout(response, timeout);
+        return Utility.blockoptionaltimeout(response, timeout);
     }
 }

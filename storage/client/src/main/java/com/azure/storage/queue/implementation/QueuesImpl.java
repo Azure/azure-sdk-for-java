@@ -100,7 +100,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesCreateResponse> createWithRestResponseAsync(Context context) {
+    public Mono<QueuesCreateResponse> createrestresponseasync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String requestId = null;
@@ -117,7 +117,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+    public Mono<QueuesCreateResponse> createrestresponseasync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         return service.create(this.client.url(), timeout, metadata, this.client.version(), requestId, context);
     }
 
@@ -128,7 +128,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(Context context) {
+    public Mono<QueuesDeleteResponse> deleterestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         return service.delete(this.client.url(), timeout, this.client.version(), requestId, context);
@@ -143,7 +143,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<QueuesDeleteResponse> deleterestresponseasync(Integer timeout, String requestId, Context context) {
         return service.delete(this.client.url(), timeout, this.client.version(), requestId, context);
     }
 
@@ -154,7 +154,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
+    public Mono<QueuesGetPropertiesResponse> getPropertiesrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "metadata";
@@ -170,7 +170,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<QueuesGetPropertiesResponse> getPropertiesrestresponseasync(Integer timeout, String requestId, Context context) {
         final String comp = "metadata";
         return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, comp, context);
     }
@@ -182,7 +182,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
+    public Mono<QueuesSetMetadataResponse> setMetadatarestresponseasync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String requestId = null;
@@ -200,7 +200,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
+    public Mono<QueuesSetMetadataResponse> setMetadatarestresponseasync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         final String comp = "metadata";
         return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), requestId, comp, context);
     }
@@ -212,7 +212,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Context context) {
+    public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "acl";
@@ -228,7 +228,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, String requestId, Context context) {
+    public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyrestresponseasync(Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), requestId, comp, context);
     }
@@ -240,7 +240,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(Context context) {
+    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyrestresponseasync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "acl";
@@ -258,7 +258,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
+    public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyrestresponseasync(List<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
         return service.setAccessPolicy(this.client.url(), queueAclConverted, timeout, this.client.version(), requestId, comp, context);
