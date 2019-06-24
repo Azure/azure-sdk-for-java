@@ -66,12 +66,12 @@
       <version>${version}</version>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.security</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
       <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.security</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
       <version>${azure-keyvault.version}</version>
     </dependency>

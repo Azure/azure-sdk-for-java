@@ -12,7 +12,7 @@ Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.security</groupId>
     <artifactId>azure-keyvault-keys</artifactId>
     <version>1.0.0-preview.1</version>
 </dependency>
@@ -76,7 +76,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 
 ```Java
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient client = KeyClient.builder()
         .endpoint(<your-vault-url>)
@@ -113,8 +113,8 @@ Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
 ```Java
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.keyvault.keys.models.Key;
-import com.azure.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.KeyClient;
 
 KeyClient keyClient = KeyClient.builder()
         .endpoint(<your-vault-url>)
@@ -187,8 +187,8 @@ Create a Key to be stored in the Azure Key Vault.
 - `setKey` creates a new key in the key vault. if the key with name already exists then a new version of the key is created.
 ```Java
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.keyvault.keys.models.Key;
-import com.azure.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.KeyAsyncClient;
 
 KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
         .endpoint(<your-vault-url>)
@@ -315,12 +315,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[keys_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java
-[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/HelloWorld.java
-[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/HelloWorldAsync.java
-[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/ListOperations.java
-[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/ListOperationsAsync.java
-[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/ManagingDeletedKeys.java
-[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/ManagingDeletedKeysAsync.java
+[keys_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys
+[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/HelloWorld.java
+[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/HelloWorldAsync.java
+[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/ListOperations.java
+[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/ListOperationsAsync.java
+[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/ManagingDeletedKeys.java
+[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java/keys/ManagingDeletedKeysAsync.java

@@ -10,7 +10,7 @@
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.security</groupId>
   <artifactId>azure-keyvault-parent</artifactId>
   <version>1.0.0-preview.1</version>
   <packaging>pom</packaging>
