@@ -9,12 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PageBlobClearPagesHeaders;
 import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PageBlobResizeHeaders;
-import com.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesFromURLHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesHeaders;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -41,8 +36,7 @@ import java.time.Duration;
  * for more information.
  */
 public final class PageBlobClient extends BlobClient {
-
-    private PageBlobAsyncClient pageBlobAsyncClient;
+    private final PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Indicates the number of bytes in a page.

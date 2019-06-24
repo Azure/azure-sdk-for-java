@@ -6,11 +6,9 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockItem;
@@ -21,7 +19,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,7 +62,7 @@ import java.util.UUID;
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
     static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
-    private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
+    private final BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -86,9 +83,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * Package-private constructor for use by {@link BlockBlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
-        blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder.build());
+    BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
+        super(azureBlobStorageBuilder, snapshot);
+        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
@@ -97,7 +94,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A new {@link BlockBlobClientBuilder} instance.
      */
-    public static BlockBlobClientBuilder builder() {
+    public static BlockBlobClientBuilder blockBlobClientBuilder() {
         return new BlockBlobClientBuilder();
     }
 

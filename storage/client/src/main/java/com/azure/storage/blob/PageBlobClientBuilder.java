@@ -39,7 +39,7 @@ import java.util.Objects;
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
+ *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>
@@ -57,6 +57,7 @@ public final class PageBlobClientBuilder {
     private URL endpoint;
     private String containerName;
     private String blobName;
+    private String snapshot;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
@@ -122,7 +123,7 @@ public final class PageBlobClientBuilder {
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
      */
     public PageBlobAsyncClient buildAsyncClient() {
-        return new PageBlobAsyncClient(buildImpl());
+        return new PageBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
@@ -180,40 +181,50 @@ public final class PageBlobClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(SharedKeyCredential credentials) {
-        this.sharedKeyCredential = credentials;
+    public PageBlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(TokenCredential credentials) {
-        this.tokenCredential = credentials;
+    public PageBlobClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder credentials(SASTokenCredential credentials) {
-        this.sasTokenCredential = credentials;
+    public PageBlobClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
     /**
-     * Clears the credentials used to authorize requests sent to the service
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated PageBlobClientBuilder object
      */
-    public PageBlobClientBuilder anonymousCredentials() {
+    public PageBlobClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Clears the credential used to authorize requests sent to the service
+     * @return the updated PageBlobClientBuilder object
+     */
+    public PageBlobClientBuilder anonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -248,7 +259,7 @@ public final class PageBlobClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
-        return credentials(new SharedKeyCredential(accountName, accountKey));
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**
