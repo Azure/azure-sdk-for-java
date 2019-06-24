@@ -79,6 +79,9 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
         interface WithRedis {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName The name of the resource group
+            * @param name The name of the Redis cache
+            * @return the next definition stage
             */
             WithLinkedRedisCacheId withExistingRedis(String resourceGroupName, String name);
         }
@@ -89,6 +92,8 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
         interface WithLinkedRedisCacheId {
            /**
             * Specifies linkedRedisCacheId.
+            * @param linkedRedisCacheId Fully qualified resourceId of the linked redis cache
+            * @return the next definition stage
             */
             WithLinkedRedisCacheLocation withLinkedRedisCacheId(String linkedRedisCacheId);
         }
@@ -99,6 +104,8 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
         interface WithLinkedRedisCacheLocation {
            /**
             * Specifies linkedRedisCacheLocation.
+            * @param linkedRedisCacheLocation Location of the linked redis cache
+            * @return the next definition stage
             */
             WithServerRole withLinkedRedisCacheLocation(String linkedRedisCacheLocation);
         }
@@ -109,6 +116,8 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
         interface WithServerRole {
            /**
             * Specifies serverRole.
+            * @param serverRole Role of the linked server. Possible values include: 'Primary', 'Secondary'
+            * @return the next definition stage
             */
             WithCreate withServerRole(ReplicationRole serverRole);
         }
