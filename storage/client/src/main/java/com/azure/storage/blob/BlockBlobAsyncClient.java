@@ -182,9 +182,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
             .flatMap(chunk -> {
                 String blockId = blockIds.get(chunk.offset());
-                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context)
-                        /*.doOnNext(bid ->
-                            System.out.println("Staged block " + bid + " on thread " + Thread.currentThread().getName()))*/;
+                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context);
             })
             .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions, context)))
             .then()
@@ -273,7 +271,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
             LeaseAccessConditions leaseAccessConditions, Context context) {
-//        System.out.println("Staging block " + base64BlockID + " on thread " + Thread.currentThread().getName());
         return blockBlobAsyncRawClient
             .stageBlock(base64BlockID, data, length, leaseAccessConditions, context)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));

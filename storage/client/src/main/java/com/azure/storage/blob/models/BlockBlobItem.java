@@ -1,5 +1,7 @@
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 import java.time.OffsetDateTime;
 
 public class BlockBlobItem {
@@ -54,7 +56,7 @@ public class BlockBlobItem {
     }
 
     public byte[] contentMD5() {
-        return contentMD5;
+        return ImplUtils.clone(contentMD5);
     }
 
     public String blobAppendOffset() {

@@ -1,5 +1,7 @@
 package com.azure.storage.blob.models;
 
+import com.azure.core.implementation.util.ImplUtils;
+
 import java.time.OffsetDateTime;
 
 public class PageBlobItem {
@@ -65,7 +67,7 @@ public class PageBlobItem {
     }
 
     public byte[] contentMD5() {
-        return contentMD5;
+        return ImplUtils.clone(contentMD5);
     }
 
     public Long blobSequenceNumber() {

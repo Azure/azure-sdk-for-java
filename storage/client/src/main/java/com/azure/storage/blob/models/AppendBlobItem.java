@@ -1,6 +1,6 @@
 package com.azure.storage.blob.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 
@@ -54,7 +54,7 @@ public class AppendBlobItem {
     }
 
     public byte[] contentMD5() {
-        return contentMD5;
+        return ImplUtils.clone(contentMD5);
     }
 
     public String blobAppendOffset() {

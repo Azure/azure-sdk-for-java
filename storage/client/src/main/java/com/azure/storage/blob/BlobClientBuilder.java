@@ -25,6 +25,7 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,19 +138,12 @@ public final class BlobClientBuilder {
         URL url;
         try {
             url = new URL(endpoint);
-            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
-            String path = url.getPath();
-            if (path != null && !path.isEmpty() && !path.equals("/")) {
-                path = path.replaceAll("^/", "").replaceAll("/$", "");
-                String[] segments = path.split("/", 2);
-                if (segments.length != 2) {
-                    throw new IllegalArgumentException("Endpoint should contain 0 or at least 2 path segments");
-                } else {
-                    this.containerName = segments[0];
-                    this.blobName = segments[1];
-                }
-            }
-        } catch (MalformedURLException ex) {
+            BlobURLParts parts = URLParser.parse(url);
+            this.endpoint = new URL(parts.scheme() + "://" + parts.host());
+            this.containerName = parts.containerName();
+            this.blobName = parts.blobName();
+            this.snapshot = parts.snapshot();
+        } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 

@@ -257,7 +257,6 @@ class BlobAsyncRawClient {
     public Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
                                              boolean rangeGetContentMD5, Context context) {
         range = range == null ? new BlobRange(0) : range;
-//        System.out.println("Downloading " + range.toString() + " on thread " + Thread.currentThread().getName());
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
