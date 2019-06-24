@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.implementation;
+package com.azure.identity.credential;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.util.configuration.BaseConfigurations;
@@ -13,16 +13,17 @@ import reactor.core.publisher.Mono;
 /**
  * The Managed Service Identity credential for App Service.
  */
-public final class AppServiceMSICredential {
+class AppServiceMSICredential {
     private String msiEndpoint;
     private String msiSecret;
     private final IdentityClient identityClient;
+    private String clientId;
 
     /**
      * Creates an instance of AppServiceMSICredential.
      * @param identityClient the identity client to acquire a token with.
      */
-    public AppServiceMSICredential(IdentityClient identityClient) {
+    AppServiceMSICredential(IdentityClient identityClient) {
         Configuration configuration = ConfigurationManager.getConfiguration();
         if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             msiEndpoint = configuration.get(BaseConfigurations.MSI_ENDPOINT);
@@ -67,11 +68,29 @@ public final class AppServiceMSICredential {
     }
 
     /**
+     * @return the client id of user assigned or system assigned identity.
+     */
+    public String clientId() {
+        return this.clientId;
+    }
+
+    /**
+     * Specifies the client id of user assigned or system assigned identity.
+     *
+     * @param clientId the client id
+     * @return VirtualMachineMSICredential
+     */
+    public AppServiceMSICredential clientId(String clientId) {
+        this.clientId = clientId;
+        return this;
+    }
+
+    /**
      * Gets the token for a list of scopes.
      * @param scopes the scopes to get token for
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToManagedIdentityEnpoint(msiEndpoint, msiSecret, scopes);
+        return identityClient.authenticateToManagedIdentityEnpoint(msiEndpoint, msiSecret, clientId(), scopes);
     }
 }
