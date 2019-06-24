@@ -85,8 +85,8 @@ public abstract class ApiTestBase extends TestBase {
         }
 
         connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
-            tokenCredential, getAuthorizationType(), TIMEOUT, TransportType.AMQP,
-            Retry.getDefaultRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
+            tokenCredential, getAuthorizationType(), TIMEOUT, TransportType.AMQP, Retry.getNoRetry(),
+            ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         beforeTest();
     }
