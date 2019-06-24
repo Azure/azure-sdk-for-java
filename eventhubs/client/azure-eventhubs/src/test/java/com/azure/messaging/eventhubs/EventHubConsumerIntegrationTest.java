@@ -39,6 +39,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * other scenarios.
  *
  * @see SetPrefetchCountTest
+ * @see EventPositionIntegrationTest
  */
 public class EventHubConsumerIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
