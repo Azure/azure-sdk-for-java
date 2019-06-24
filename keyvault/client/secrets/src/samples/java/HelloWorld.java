@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.SecretClient;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
@@ -25,7 +26,7 @@ public class HelloWorld {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient secretClient = SecretClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            //.credential(AzureCredential.DEFAULT)
+            .credential(new AzureCredential())
             .build();
 
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret

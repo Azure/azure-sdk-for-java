@@ -7,7 +7,7 @@ import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 public class RsaKeyCreateOptions extends KeyCreateOptions {
@@ -58,8 +58,8 @@ public class RsaKeyCreateOptions extends KeyCreateOptions {
      * @return the RsaKeyCreateOptions object itself.
      */
     @Override
-    public RsaKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
-        this.keyOperations = keyOperations;
+    public RsaKeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+        this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
 

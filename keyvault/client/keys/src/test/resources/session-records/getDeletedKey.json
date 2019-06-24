@@ -1,15 +1,15 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6/create?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testKey6/create?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:49 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:11 GMT",
       "server" : "Microsoft-IIS/10.0",
-      "content-length" : "684",
+      "content-length" : "671",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
@@ -19,24 +19,24 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "3f2567b9-140c-4999-8411-7012f5c4a6de",
+      "x-ms-request-id" : "e7b2706c-bae7-4330-ba59-1a526216dcde",
       "x-ms-keyvault-service-version" : "1.1.0.866",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6/792360beff4c42d79175f35f8735701e\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"ujx5ItOW8DdNCjqHFPZckl-7DY2fXQCm8Op9hLMs1xrxp44v8VKvB8D3hcm-_q88LK-UUObPpcjZo7VziDlGoafPHjhrRyurP36rLS5sE2clnDVHi5JgC8cKOhzuSIky1qbgdZojpozzalfpjpNDCKZtwa6iMad3Qs18Po4VwpShycpVDqxPzJj2JjFSxKQT2exEHlACk6xlSdu_Wr3CtUxZROz5lGVd8mR9UEWXD0It59DucRjRc2gKa42KcOXvPW_bNd6BftAXnZS9gbYkcrNQvc2DGszQUtpLmsKYqjUHXOrNkf8JnclfLy1lfNsrXkkaGXwDuc5DaCQCBIzodQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560707029,\"updated\":1560707029,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+      "Body" : "{\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testKey6/b540b944b2a54201a74ebb82e8ce1b65\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"u2fghglLW45sFTFskfQuXxsqXm2eH3_w0vTQaGoxInUi1wafxiRDHSWVDoLd1vBkb5c5VNUAml5QgtpPhcC6GLSy42v1pLA5C7CAtHA8HCvharQnUPvC6D-g68edILJYLyzpVMoX6a_u8LlErrgWyH1weG8NRpvLc_qrVkel_EPFw4-Y35HvdnzEUAmDNf8jKlZuDet3haZyjbzoIiQzi3nAJr0SpNelkPEdEEKbgUNB-WPy_ScR9gIRak4LGVi_dkwHwG4DayFVrE7_rKbRDzsm0yukYX0fWIz_1hxH5jHAzsoj3MX4hDROT6wvj7lNtDN6q5J-gIYE8zZ8O8e-5Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1561333151,\"updated\":1561333151,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/keys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:49 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:19 GMT",
       "server" : "Microsoft-IIS/10.0",
-      "content-length" : "826",
+      "content-length" : "800",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
@@ -46,22 +46,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5b09c0ae-e3bc-4d3f-8485-74817b3d21c1",
+      "x-ms-request-id" : "1dc989ff-f166-4749-a4ae-1e11895a8f19",
       "x-ms-keyvault-service-version" : "1.1.0.866",
-      "Body" : "{\"recoveryId\":\"https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1560707030,\"scheduledPurgeDate\":1568483030,\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6/792360beff4c42d79175f35f8735701e\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"ujx5ItOW8DdNCjqHFPZckl-7DY2fXQCm8Op9hLMs1xrxp44v8VKvB8D3hcm-_q88LK-UUObPpcjZo7VziDlGoafPHjhrRyurP36rLS5sE2clnDVHi5JgC8cKOhzuSIky1qbgdZojpozzalfpjpNDCKZtwa6iMad3Qs18Po4VwpShycpVDqxPzJj2JjFSxKQT2exEHlACk6xlSdu_Wr3CtUxZROz5lGVd8mR9UEWXD0It59DucRjRc2gKa42KcOXvPW_bNd6BftAXnZS9gbYkcrNQvc2DGszQUtpLmsKYqjUHXOrNkf8JnclfLy1lfNsrXkkaGXwDuc5DaCQCBIzodQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560707029,\"updated\":1560707029,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1561333159,\"scheduledPurgeDate\":1569109159,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testKey6/b540b944b2a54201a74ebb82e8ce1b65\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"u2fghglLW45sFTFskfQuXxsqXm2eH3_w0vTQaGoxInUi1wafxiRDHSWVDoLd1vBkb5c5VNUAml5QgtpPhcC6GLSy42v1pLA5C7CAtHA8HCvharQnUPvC6D-g68edILJYLyzpVMoX6a_u8LlErrgWyH1weG8NRpvLc_qrVkel_EPFw4-Y35HvdnzEUAmDNf8jKlZuDet3haZyjbzoIiQzi3nAJr0SpNelkPEdEEKbgUNB-WPy_ScR9gIRak4LGVi_dkwHwG4DayFVrE7_rKbRDzsm0yukYX0fWIz_1hxH5jHAzsoj3MX4hDROT6wvj7lNtDN6q5J-gIYE8zZ8O8e-5Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1561333151,\"updated\":1561333151,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:50 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:19 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -73,22 +73,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "02fb8da9-9838-49dc-bc7a-ca8c47a6c813",
+      "x-ms-request-id" : "7c7feff8-8bb3-48a1-8cdf-c84a0a782dca",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:52 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:21 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -100,22 +100,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ed0b8c62-82c8-48e2-a457-7f59f665f7e2",
+      "x-ms-request-id" : "1f848c89-54ea-45e4-bd80-91a7e431b480",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:54 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:23 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -127,22 +127,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "7d9e8160-fb20-4faa-bdd0-64b7745a6520",
+      "x-ms-request-id" : "226bc46b-10d3-49cc-827d-caecbaba861e",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:57 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:25 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -154,22 +154,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ad375d66-c24e-477c-8c4d-3fe73149c754",
+      "x-ms-request-id" : "e7ce5980-71e7-40d0-8186-0e464944f17c",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:43:59 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:27 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -181,22 +181,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "72ab0acf-db72-45cb-bf0d-5f356743d7ab",
+      "x-ms-request-id" : "c190cff9-b992-409f-bf2f-b189bf3b3fae",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:44:01 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:29 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -208,24 +208,78 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "ea594d55-f395-4139-99d5-a032eda07d4c",
+      "x-ms-request-id" : "7adebd47-7771-4b14-aecf-ba5092ca0608",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:44:04 GMT",
+      "date" : "Sun, 23 Jun 2019 23:39:32 GMT",
+      "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
-      "content-length" : "826",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8fcdaef9-4f65-46e1-92f8-a390668995da",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 23 Jun 2019 23:39:34 GMT",
+      "content-length" : "76",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "418db83b-6aca-42b0-a931-ed33e9856306",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 23 Jun 2019 23:39:36 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "800",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
@@ -235,24 +289,24 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "cc71bdfd-8e19-408c-885e-4df9fc914732",
+      "x-ms-request-id" : "a749a205-40bc-40fa-95b6-55c05e3f6079",
       "x-ms-keyvault-service-version" : "1.1.0.866",
-      "Body" : "{\"recoveryId\":\"https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1560707030,\"scheduledPurgeDate\":1568483030,\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6/792360beff4c42d79175f35f8735701e\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"ujx5ItOW8DdNCjqHFPZckl-7DY2fXQCm8Op9hLMs1xrxp44v8VKvB8D3hcm-_q88LK-UUObPpcjZo7VziDlGoafPHjhrRyurP36rLS5sE2clnDVHi5JgC8cKOhzuSIky1qbgdZojpozzalfpjpNDCKZtwa6iMad3Qs18Po4VwpShycpVDqxPzJj2JjFSxKQT2exEHlACk6xlSdu_Wr3CtUxZROz5lGVd8mR9UEWXD0It59DucRjRc2gKa42KcOXvPW_bNd6BftAXnZS9gbYkcrNQvc2DGszQUtpLmsKYqjUHXOrNkf8JnclfLy1lfNsrXkkaGXwDuc5DaCQCBIzodQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560707029,\"updated\":1560707029,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1561333159,\"scheduledPurgeDate\":1569109159,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testKey6/b540b944b2a54201a74ebb82e8ce1b65\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"u2fghglLW45sFTFskfQuXxsqXm2eH3_w0vTQaGoxInUi1wafxiRDHSWVDoLd1vBkb5c5VNUAml5QgtpPhcC6GLSy42v1pLA5C7CAtHA8HCvharQnUPvC6D-g68edILJYLyzpVMoX6a_u8LlErrgWyH1weG8NRpvLc_qrVkel_EPFw4-Y35HvdnzEUAmDNf8jKlZuDet3haZyjbzoIiQzi3nAJr0SpNelkPEdEEKbgUNB-WPy_ScR9gIRak4LGVi_dkwHwG4DayFVrE7_rKbRDzsm0yukYX0fWIz_1hxH5jHAzsoj3MX4hDROT6wvj7lNtDN6q5J-gIYE8zZ8O8e-5Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1561333151,\"updated\":1561333151,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:44:04 GMT",
+      "date" : "Sun, 23 Jun 2019 23:40:06 GMT",
       "server" : "Microsoft-IIS/10.0",
-      "content-length" : "826",
+      "content-length" : "800",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
       "retry-after" : "0",
@@ -262,22 +316,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "f7cf8601-b88b-47af-9d1e-dbcb40619989",
+      "x-ms-request-id" : "c4939f44-8dcb-49cc-86ce-5cede1170055",
       "x-ms-keyvault-service-version" : "1.1.0.866",
-      "Body" : "{\"recoveryId\":\"https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1560707030,\"scheduledPurgeDate\":1568483030,\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/testKey6/792360beff4c42d79175f35f8735701e\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"ujx5ItOW8DdNCjqHFPZckl-7DY2fXQCm8Op9hLMs1xrxp44v8VKvB8D3hcm-_q88LK-UUObPpcjZo7VziDlGoafPHjhrRyurP36rLS5sE2clnDVHi5JgC8cKOhzuSIky1qbgdZojpozzalfpjpNDCKZtwa6iMad3Qs18Po4VwpShycpVDqxPzJj2JjFSxKQT2exEHlACk6xlSdu_Wr3CtUxZROz5lGVd8mR9UEWXD0It59DucRjRc2gKa42KcOXvPW_bNd6BftAXnZS9gbYkcrNQvc2DGszQUtpLmsKYqjUHXOrNkf8JnclfLy1lfNsrXkkaGXwDuc5DaCQCBIzodQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1560707029,\"updated\":1560707029,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedkeys/testKey6\",\"deletedDate\":1561333159,\"scheduledPurgeDate\":1569109159,\"key\":{\"kid\":\"https://cameravault.vault.azure.net/keys/testKey6/b540b944b2a54201a74ebb82e8ce1b65\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"u2fghglLW45sFTFskfQuXxsqXm2eH3_w0vTQaGoxInUi1wafxiRDHSWVDoLd1vBkb5c5VNUAml5QgtpPhcC6GLSy42v1pLA5C7CAtHA8HCvharQnUPvC6D-g68edILJYLyzpVMoX6a_u8LlErrgWyH1weG8NRpvLc_qrVkel_EPFw4-Y35HvdnzEUAmDNf8jKlZuDet3haZyjbzoIiQzi3nAJr0SpNelkPEdEEKbgUNB-WPy_ScR9gIRak4LGVi_dkwHwG4DayFVrE7_rKbRDzsm0yukYX0fWIz_1hxH5jHAzsoj3MX4hDROT6wvj7lNtDN6q5J-gIYE8zZ8O8e-5Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1561333151,\"updated\":1561333151,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:44:04 GMT",
+      "date" : "Sun, 23 Jun 2019 23:40:06 GMT",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -287,21 +341,21 @@
       "strict-transport-security" : "max-age=31536000;includeSubDomains",
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8fa532a1-3d2e-4271-80f8-88f2678b7da7",
+      "x-ms-request-id" : "317a9a69-85b1-489a-8cda-7b85f7c0da46",
       "x-ms-keyvault-service-version" : "1.1.0.866"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
+    "Uri" : "https://cameravault.vault.azure.net/deletedkeys/testKey6?api-version=7.0",
     "Headers" : {
       "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Sun, 16 Jun 2019 17:44:05 GMT",
+      "date" : "Sun, 23 Jun 2019 23:40:06 GMT",
       "content-length" : "76",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -313,10 +367,10 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.167;act_addr_fam=InterNetwork;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "8935982e-de32-442a-8816-e279abc79898",
+      "x-ms-request-id" : "d70a7d7f-e61a-4148-9bba-d2979cd915ec",
       "x-ms-keyvault-service-version" : "1.1.0.866",
       "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey6\"}}"
     }

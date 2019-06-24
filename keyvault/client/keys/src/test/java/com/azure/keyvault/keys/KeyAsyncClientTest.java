@@ -51,14 +51,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         }
     }
 
-    @Override
-    protected void afterTest() {
-
-       // for (KeyBase key : client.listKeys()) {
-            //   client.deleteKey(key.name());
-      //  }
-    }
-
     /**
      * Tests that a key can be created in the key vault.
      */
@@ -218,6 +210,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     public void getDeletedKey() {
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
+
             StepVerifier.create(client.createKey(keyToDeleteAndGet))
                     .assertNext(keyResponse -> {
                         assertKeyEquals(keyToDeleteAndGet, keyResponse.value());
@@ -227,8 +220,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     .assertNext(deletedKeyResponse -> {
                         DeletedKey deletedKey = deletedKeyResponse.value();
                         assertNotNull(deletedKey);
-                        pollOnKeyDeletion(keyToDeleteAndGet.name());
                     }).verifyComplete();
+            pollOnKeyDeletion(keyToDeleteAndGet.name());
             sleep(30000);
 
             StepVerifier.create(client.getDeletedKey(keyToDeleteAndGet.name()))
@@ -243,8 +236,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.purgeDeletedKey(keyToDeleteAndGet.name()))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                        pollOnKeyPurge(keyToDeleteAndGet.name());
                     }).verifyComplete();
+            pollOnKeyPurge(keyToDeleteAndGet.name());
             sleep(15000);
         });
     }
@@ -343,6 +336,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     }).verifyComplete();
             pollOnKeyPurge(keyToBackupAndRestore.name());
 
+            sleepInRecordMode(60000);
+
             StepVerifier.create(client.restoreKey(backup))
                     .assertNext(response -> {
                         Key restoredKey = response.value();
@@ -368,32 +363,36 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Override
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
+
             HashMap<String, KeyCreateOptions> keysToDelete = keys;
             List<DeletedKey> deletedKeys = new ArrayList<>();
             for (KeyCreateOptions key : keysToDelete.values()) {
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse.value()));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.createKey(key))
+                        .assertNext(secretResponse -> {
+                            assertKeyEquals(key, secretResponse.value());
+                        }).verifyComplete();
             }
+            sleepInRecordMode(10000);
 
             for (KeyCreateOptions key : keysToDelete.values()) {
                 StepVerifier.create(client.deleteKey(key.name()))
                         .assertNext(deletedKeyResponse -> {
                             DeletedKey deletedKey = deletedKeyResponse.value();
                             assertNotNull(deletedKey);
-                            pollOnKeyDeletion(key.name());
                         }).verifyComplete();
+                pollOnKeyDeletion(key.name());
             }
 
-            sleep(30000);
+            sleepInRecordMode(60000);
             client.listDeletedKeys().subscribe(deletedKeys::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             for (DeletedKey deletedKey : deletedKeys) {
                 StepVerifier.create(client.purgeDeletedKey(deletedKey.name()))
                         .assertNext(voidResponse -> {
                             assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                            pollOnKeyPurge(deletedKey.name());
                         }).verifyComplete();
+                pollOnKeyPurge(deletedKey.name());
             }
             return deletedKeys;
         });

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.SecretClient;
 import com.azure.keyvault.models.Secret;
+import com.azure.keyvault.models.SecretBase;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -22,7 +25,7 @@ public class ListOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = SecretClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                //.credential(AzureCredential.DEFAULT)
+                .credential(new AzureCredential())
                 .build();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
@@ -35,15 +38,19 @@ public class ListOperations {
 
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
-        client.listSecrets().stream().map(client::getSecret).forEach(secretResponse ->
-          System.out.printf("Received secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+        for (SecretBase secret : client.listSecrets()) {
+            Secret secretWithValue  = client.getSecret(secret).value();
+            System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
+        }
 
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
         // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
         client.setSecret("BankAccountPassword", "sskdjfsdasdjsd");
 
         // You need to check all the different values your bank account password secret had previously. Lets print all the versions of this secret.
-        client.listSecretVersions("BankAccountPassword").stream().map(client::getSecret).forEach(secretResponse ->
-          System.out.printf("Received secret's version with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+        for (SecretBase secret : client.listSecretVersions("BankAccountPassword")) {
+            Secret secretWithValue  = client.getSecret(secret).value();
+            System.out.printf("Received secret's version with name %s and value %s", secretWithValue.name(), secretWithValue.value());
+        }
     }
 }

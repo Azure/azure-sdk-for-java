@@ -8,18 +8,15 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -28,10 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -61,61 +54,18 @@ public abstract class SecretClientTestBase extends TestBase {
             ? "http://localhost:8080"
             : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
-        final String tenantId = interceptorManager.isPlaybackMode()
-                ? "some-tenant"
-                : System.getenv("MICROSOFT_AD_TENANT_ID");
+        TokenCredential credential;
 
-        final String clientId = interceptorManager.isPlaybackMode()
-                ? "some-client-id"
-                : System.getenv("ARM_CLIENT_ID");
-
-        final String clientKey = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("ARM_CLIENT_KEY");
-
-        Objects.requireNonNull(endpoint, "AZURE_KEYVAULT_ENDPOINT expected to be set.");
-        Objects.requireNonNull(clientId, "ARM_CLIENT_ID expected to be set.");
-        Objects.requireNonNull(clientKey, "ARM_CLIENT_KEY expected to be set.");
-        Objects.requireNonNull(tenantId, "MICROSOFT_AD_TENANT_ID expected to be set.");
-
-        TokenCredential credential = resource -> {
-            if (interceptorManager.isPlaybackMode()) {
-                return Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
-            }
-
-            try {
-                return Mono.just(getAccessToken(tenantId, clientId, clientKey));
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-        };
+        if (interceptorManager.isPlaybackMode()) {
+            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+        } else {
+            credential = new AzureCredential();
+        }
 
         T client;
-        String authority = "https://login.microsoftonline.com/{tenantId}";
-        String auth = authority.replace("{tenantId}", tenantId);
         client = clientBuilder.apply(credential);
 
         return Objects.requireNonNull(client);
-    }
-
-    private AccessToken getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
-        String authority = "https://login.microsoftonline.com/{tenantId}";
-        String auth = authority.replace("{tenantId}", tenantId);
-
-        ExecutorService service = Executors.newFixedThreadPool(1);
-        AuthenticationContext context = new AuthenticationContext(auth, true, service);
-        // Acquire Token
-        Future<AuthenticationResult> result = context.acquireToken(
-                "https://vault.azure.net",
-                new ClientCredential(clientId, clientKey),
-                null
-        );
-
-        final AuthenticationResult authenticationResult = result.get();
-        final String token = authenticationResult.getAccessToken();
-        final OffsetDateTime expiresOn = authenticationResult.getExpiresOnDate().toInstant().atOffset(ZoneOffset.UTC);
-
-        return new AccessToken(token, expiresOn);
     }
 
     @Test
@@ -230,7 +180,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void getDeletedSecret();
 
     void getDeletedSecretRunner(Consumer<Secret> testRunner) {
-        final Secret secretToDeleteAndGet = new Secret("testSecretGetDelete", "testSecretGetDeleteVal")
+        final Secret secretToDeleteAndGet = new Secret("testSecretGetDeleted", "testSecretGetDeleteVal")
                 .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         testRunner.accept(secretToDeleteAndGet);
     }
@@ -277,7 +227,7 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listSecrets();
 
-    void listSecretsRunner(Function<List<Secret>, List<SecretBase>> testRunner) {
+    void listSecretsRunner(Function<List<Secret>, Iterable<SecretBase>> testRunner) {
         HashMap<String, Secret> secrets = new HashMap<>();
         List<Secret> secretsList = new ArrayList<>();
         String secretName;
@@ -304,7 +254,7 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listDeletedSecrets();
 
-    void listDeletedSecretsRunner(Function<HashMap<String, Secret>, List<DeletedSecret>> testRunner) {
+    void listDeletedSecretsRunner(Function<HashMap<String, Secret>, Iterable<DeletedSecret>> testRunner) {
         HashMap<String, Secret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
@@ -329,7 +279,7 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listSecretVersions();
 
-    void listSecretVersionsRunner(Function<List<Secret>, List<SecretBase>> testRunner) {
+    void listSecretVersionsRunner(Function<List<Secret>, Iterable<SecretBase>> testRunner) {
         List<Secret> secrets = new ArrayList<>();
         String secretName;
         String secretVal;
@@ -339,7 +289,12 @@ public abstract class SecretClientTestBase extends TestBase {
             secrets.add(new Secret(secretName, secretVal)
                     .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
-        assertEquals(4, testRunner.apply(secrets).size());
+
+        int versions = 0;
+        for (SecretBase secret : testRunner.apply(secrets)) {
+            versions++;
+        }
+        assertEquals(4, versions);
     }
 
     /**

@@ -8,20 +8,17 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.keys.models.DeletedKey;
 import com.azure.keyvault.keys.models.Key;
 import com.azure.keyvault.keys.models.KeyBase;
 import com.azure.keyvault.keys.models.KeyCreateOptions;
 import com.azure.keyvault.keys.models.webkey.KeyType;
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -30,10 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -47,7 +40,6 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String KEY_NAME = "javaKeyTemp";
     private static final KeyType RSA_KEY_TYPE = KeyType.RSA;
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
-
 
     @Rule
     public TestName testName = new TestName();
@@ -65,61 +57,18 @@ public abstract class KeyClientTestBase extends TestBase {
                 ? "http://localhost:8080"
                 : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
-        final String tenantId = interceptorManager.isPlaybackMode()
-                ? "some-tenant-id"
-                : System.getenv("MICROSOFT_AD_TENANT_ID");
+        TokenCredential credential;
 
-        final String clientId = interceptorManager.isPlaybackMode()
-                ? "some-client-id"
-                : System.getenv("ARM_CLIENT_ID");
-
-        final String clientKey = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("ARM_CLIENT_KEY");
-
-        Objects.requireNonNull(endpoint, "AZURE_KEYVAULT_ENDPOINT expected to be set.");
-        Objects.requireNonNull(clientId, "ARM_CLIENT_ID expected to be set.");
-        Objects.requireNonNull(clientKey, "ARM_CLIENT_KEY expected to be set.");
-        Objects.requireNonNull(tenantId, "MICROSOFT_AD_TENANT_ID expected to be set.");
-
-        TokenCredential credential = resource -> {
-            if (interceptorManager.isPlaybackMode()) {
-                return Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
-            }
-
-            try {
-                return Mono.just(getAccessToken(tenantId, clientId, clientKey));
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
-        };
+        if (interceptorManager.isPlaybackMode()) {
+            credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
+        } else {
+            credential = new AzureCredential();
+        }
 
         T client;
-        String authority = "https://login.microsoftonline.com/{tenantId}";
-        String auth = authority.replace("{tenantId}", tenantId);
         client = clientBuilder.apply(credential);
 
         return Objects.requireNonNull(client);
-    }
-
-    private AccessToken getAccessToken(String tenantId, String clientId, String clientKey) throws MalformedURLException, ExecutionException, InterruptedException {
-        String authority = "https://login.microsoftonline.com/{tenantId}";
-        String auth = authority.replace("{tenantId}", tenantId);
-
-        ExecutorService service = Executors.newFixedThreadPool(1);
-        AuthenticationContext context = new AuthenticationContext(auth, true, service);
-        // Acquire Token
-        Future<AuthenticationResult> result = context.acquireToken(
-                "https://vault.azure.net",
-                new ClientCredential(clientId, clientKey),
-                null
-        );
-
-        final AuthenticationResult authenticationResult = result.get();
-        final String token = authenticationResult.getAccessToken();
-        final OffsetDateTime expiresOn = authenticationResult.getExpiresOnDate().toInstant().atOffset(ZoneOffset.UTC);
-
-        return new AccessToken(token, expiresOn);
     }
 
     @Test
@@ -276,26 +225,10 @@ public abstract class KeyClientTestBase extends TestBase {
     @Test
     public abstract void restoreKeyFromMalformedBackup();
 
-//    @Test
-//    public abstract void listKeys();
-//
-//    void listKeysRunner(Consumer<HashMap<String, KeyCreateOptions>> testRunner) {
-//        HashMap<String, KeyCreateOptions> keys = new HashMap<>();
-//        String keyName;
-//        String keyVal;
-//        for(int i = 0; i < 10; i++) {
-//            keyName = "listKey" + i;
-//            keys.put(keyName, new KeyCreateOptions(keyName, RSA_KEY_TYPE)
-//                    .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-//
-//        }
-//        testRunner.accept(keys);
-//    }
-
     @Test
     public abstract void listKeys();
 
-    void listKeysRunner(Function<List<KeyCreateOptions>, List<KeyBase>> testRunner) {
+    void listKeysRunner(Function<List<KeyCreateOptions>, Iterable<KeyBase>> testRunner) {
         HashMap<String, KeyCreateOptions> keys = new HashMap<>();
         List<KeyCreateOptions> keysList = new ArrayList<>();
         String keyName;
@@ -320,7 +253,7 @@ public abstract class KeyClientTestBase extends TestBase {
     @Test
     public abstract void listDeletedKeys();
 
-    void listDeletedKeysRunner(Function<HashMap<String, KeyCreateOptions>, List<DeletedKey>> testRunner) {
+    void listDeletedKeysRunner(Function<HashMap<String, KeyCreateOptions>, Iterable<DeletedKey>> testRunner) {
         HashMap<String, KeyCreateOptions> secrets = new HashMap<>();
         String keyName;
         for (int i = 0; i < 3; i++) {
@@ -342,7 +275,7 @@ public abstract class KeyClientTestBase extends TestBase {
     @Test
     public abstract void listKeyVersions();
 
-    void listKeyVersionsRunner(Function<List<KeyCreateOptions>, List<KeyBase>> testRunner) {
+    void listKeyVersionsRunner(Function<List<KeyCreateOptions>, Iterable<KeyBase>> testRunner) {
         List<KeyCreateOptions> keys = new ArrayList<>();
         String keyName;
         for (int i = 1; i < 5; i++) {
@@ -350,7 +283,12 @@ public abstract class KeyClientTestBase extends TestBase {
             keys.add(new KeyCreateOptions(keyName, RSA_KEY_TYPE)
                     .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
-        assertEquals(4, testRunner.apply(keys).size());
+
+        int versions = 0;
+        for (KeyBase key : testRunner.apply(keys)) {
+            versions++;
+        }
+        assertEquals(4, versions);
     }
 
     /**

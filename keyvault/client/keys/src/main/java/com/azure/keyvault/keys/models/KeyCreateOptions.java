@@ -6,6 +6,7 @@ package com.azure.keyvault.keys.models;
 import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -75,8 +76,8 @@ public class KeyCreateOptions {
      * @param keyOperations The key operations value to set
      * @return the KeyCreateOptions object itself.
      */
-    public KeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
-        this.keyOperations = keyOperations;
+    public KeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+        this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
 

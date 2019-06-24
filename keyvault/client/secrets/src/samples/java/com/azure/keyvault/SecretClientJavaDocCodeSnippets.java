@@ -3,6 +3,7 @@
 
 package com.azure.keyvault;
 
+import com.azure.keyvault.models.Secret;
 import com.azure.keyvault.models.SecretBase;
 
 /**
@@ -16,12 +17,10 @@ public final class SecretClientJavaDocCodeSnippets {
     public void getSecret() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.keyvault.secretclient.getSecret#secretBase
-        secretClient.listSecrets()
-            .stream()
-            .map(secretClient::getSecret)
-            .forEach(secretResponse ->
-                System.out.printf("Secret is returned with name %s and value %s %n",
-                    secretResponse.value().name(), secretResponse.value().value()));
+        for(SecretBase secret : secretClient.listSecrets()){
+            Secret secretWithValue  = secretClient.getSecret(secret).value();
+            System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(), secretWithValue.value());
+        }
         // END: com.azure.keyvault.secretclient.getSecret#secretBase
     }
 

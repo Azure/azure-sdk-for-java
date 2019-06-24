@@ -477,16 +477,18 @@ public final class KeyClient {
      * part of a stored key. The List operation is applicable to all key types and the individual key response in the list is represented by {@link KeyBase} as only the base key identifier,
      * attributes and tags are provided in the response. The key material and individual key versions are not listed in the response. This operation requires the {@code keys/list} permission.
      *
-     * <p>It is possible to get full keys with values from this information. Loop over the {@link KeyBase key} and
-     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with value included of its latest version.</p>
+     * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyBase key} and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
      * <pre>
-     * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Received key with name %s and id %s", keyResponse.value().name(), keyResponse.value().id()));
+     * for (KeyBase key : keyClient.listKeys()) {
+     *   Key keyWithMaterial = keyClient.getKey(key).value();
+     *   System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
+     * }
      * </pre>
      *
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
-    public List<KeyBase> listKeys() {
+    public Iterable<KeyBase> listKeys() {
         return client.listKeys().collectList().block();
     }
 
@@ -498,13 +500,14 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
      * <pre>
-     * keyClient.listDeletedKeys().stream().forEach(deletedKey -&gt;
-     *   System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId()));
+     * for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
+     *   System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
+     * }
      * </pre>
      *
      * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public List<DeletedKey> listDeletedKeys() {
+    public Iterable<DeletedKey> listDeletedKeys() {
         return client.listDeletedKeys().collectList().block();
     }
 
@@ -513,8 +516,8 @@ public final class KeyClient {
      * as only the base key identifier, attributes and tags are provided in the response. The key material values are
      * not provided in the response. This operation requires the {@code keys/list} permission.
      *
-     * <p>It is possible to get full keys with values for each version from this information. Loop over the {@link KeyBase key} and
-     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with values included of the specified versions.</p>
+     * <p>It is possible to get full keys with key material for each version from this information. Loop over the {@link KeyBase key} and
+     * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key keys} with key material included of the specified versions.</p>
      * {@codesnippet com.azure.keyvault.keys.keyclient.listKeyVersions}
      *
      * @param name The name of the key.
@@ -522,7 +525,7 @@ public final class KeyClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link List} containing {@link KeyBase key} of all the versions of the specified key in the vault. List is empty if key with {@code name} does not exist in key vault.
      */
-    public List<KeyBase> listKeyVersions(String name) {
+    public Iterable<KeyBase> listKeyVersions(String name) {
         return client.listKeyVersions(name).collectList().block();
     }
 }

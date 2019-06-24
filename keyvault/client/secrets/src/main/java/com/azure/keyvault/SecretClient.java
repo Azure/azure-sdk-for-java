@@ -321,13 +321,15 @@ public final class SecretClient {
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
      * <pre>
-     * secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
-     *   System.out.printf("Received secret with name %s and value %s", secretResponse.value().name(), secretResponse.value().value()));
+     * for (SecretBase secret : secretClient.listSecrets()) {
+     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
+     *   System.out.printf("Received secret with name %s and value %s", secretWithValue.name(), secretWithValue.value());
+     * }
      * </pre>
      *
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
-    public List<SecretBase> listSecrets() {
+    public Iterable<SecretBase> listSecrets() {
         return client.listSecrets().collectList().block();
     }
 
@@ -338,14 +340,14 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
      * <pre>
-     * secretClient.listDeletedSecrets().stream().forEach(deletedSecret -&gt;
-     *   System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId()));
+     * for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets()) {
+     *   System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
+     * }
      * </pre>
-     *
      *
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
-    public List<DeletedSecret> listDeletedSecrets() {
+    public Iterable<DeletedSecret> listDeletedSecrets() {
         return client.listDeletedSecrets().collectList().block();
     }
 
@@ -357,8 +359,10 @@ public final class SecretClient {
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
      * <pre>
-     * secretClient.listSecretVersions("secretName").stream().map(secretClient::getSecret).forEach(secretResponse -&gt;
-     *   System.out.printf("Received secret's version with name %s and value %s", secretResponse.value().name(), secretResponse.value().value()));
+     * for (SecretBase secret : secretClient.listSecretVersions("secretName")) {
+     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
+     *   System.out.printf("Received secret's version with name %s and value %s", secretWithValue.name(), secretWithValue.value());
+     * }
      * </pre>
      *
      * @param name The name of the secret.
@@ -366,7 +370,7 @@ public final class SecretClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link List} containing {@link SecretBase} of all the versions of the specified secret in the vault. List is empty if secret with {@code name} does not exist in key vault
      */
-    public List<SecretBase> listSecretVersions(String name) {
+    public Iterable<SecretBase> listSecretVersions(String name) {
         return client.listSecretVersions(name).collectList().block();
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.keyvault.keys;
 
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -32,7 +33,7 @@ public class ManagingDeletedKeysAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                //.credential(AzureCredential.DEFAULT)
+                .credential(new AzureCredential())
                 .build();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key

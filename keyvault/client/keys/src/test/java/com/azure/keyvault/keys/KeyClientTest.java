@@ -278,7 +278,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 client.deleteKey(key.name());
                 pollOnKeyDeletion(key.name());
             }
-            List<DeletedKey> deletedKeys =  client.listDeletedKeys();
+            Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
 
             for (DeletedKey deletedKey : deletedKeys) {
                 client.purgeDeletedKey(deletedKey.name());
@@ -301,7 +301,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 assertKeyEquals(key, client.createKey(key));
             }
 
-            List<KeyBase> keyVersionsOutput =  client.listKeyVersions(keyName);
+            Iterable<KeyBase> keyVersionsOutput =  client.listKeyVersions(keyName);
 
             client.deleteKey(keyName);
             pollOnKeyDeletion(keyName);

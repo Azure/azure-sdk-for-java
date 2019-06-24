@@ -8,7 +8,7 @@ import com.azure.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 
 public class EcKeyCreateOptions extends KeyCreateOptions {
@@ -59,8 +59,8 @@ public class EcKeyCreateOptions extends KeyCreateOptions {
      * @return the EcKeyCreateOptions object itself.
      */
     @Override
-    public EcKeyCreateOptions keyOperations(List<KeyOperation> keyOperations) {
-        this.keyOperations = keyOperations;
+    public EcKeyCreateOptions keyOperations(KeyOperation... keyOperations) {
+        this.keyOperations = Arrays.asList(keyOperations);
         return this;
     }
 

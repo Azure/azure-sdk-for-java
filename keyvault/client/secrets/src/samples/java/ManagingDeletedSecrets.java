@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.SecretClient;
+import com.azure.keyvault.models.DeletedSecret;
 import com.azure.keyvault.models.Secret;
 import java.time.OffsetDateTime;
 
@@ -27,7 +29,7 @@ public class ManagingDeletedSecrets {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretClient client = SecretClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            //.credential(AzureCredential.DEFAULT)
+            .credential(new AzureCredential())
             .build();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret
@@ -60,8 +62,9 @@ public class ManagingDeletedSecrets {
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged secrets, assuming key vault is soft-delete enabled.
-        client.listDeletedSecrets().stream().forEach(deletedSecret ->
-                System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId()));
+        for (DeletedSecret deletedSecret : client.listDeletedSecrets()) {
+            System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
+        }
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted secrets need to be purged.
         client.purgeDeletedSecret("StorageAccountPassword");

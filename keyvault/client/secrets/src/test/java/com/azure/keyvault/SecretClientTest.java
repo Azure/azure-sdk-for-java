@@ -274,7 +274,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 client.deleteSecret(secret.name());
                 pollOnSecretDeletion(secret.name());
             }
-            List<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
+            Iterable<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
 
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 client.purgeDeletedSecret(deletedSecret.name());
@@ -297,7 +297,7 @@ public class SecretClientTest extends SecretClientTestBase {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
 
-            List<SecretBase> secretVersionsOutput =  client.listSecretVersions(secretName);
+            Iterable<SecretBase> secretVersionsOutput =  client.listSecretVersions(secretName);
 
             client.deleteSecret(secretName);
             pollOnSecretDeletion(secretName);

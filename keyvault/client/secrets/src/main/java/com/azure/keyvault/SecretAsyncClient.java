@@ -420,8 +420,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * {@link Flux} containing {@link Secret secret} using {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
      * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecrets()
-     *   .flatMap(secretBase -&gt;
-     *     client.getSecret(secretBase).map(secretResponse -&gt; secretResponse.value()));
+     *   .flatMap(secretAsyncClient::getSecret)
+     *   .map(Response::value);
      * </pre>
      *
      * @return A {@link Flux} containing {@link SecretBase secret} of all the secrets in the vault.
@@ -466,8 +466,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
      * <pre>
      * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecretVersions("secretName")
-     *   .flatMap(secretBase -&gt;
-     *     client.getSecret(secretBase).map(secretResponse -&gt; secretResponse.value()));
+     *   .flatMap(secretAsyncClient::getSecret)
+     *   .map(Response::value);
      * </pre>
      *
      * @param name The name of the secret.
@@ -477,7 +477,7 @@ public final class SecretAsyncClient extends ServiceClient {
      */
     public Flux<SecretBase> listSecretVersions(String name) {
         return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing secret versions - {}" ,name))
+                .doOnRequest(ignored -> logger.asInfo().log("Listing secret versions - {}", name))
                 .doOnSuccess(response -> logger.asInfo().log("Listed secret versions - {}", name))
                 .doOnError(error -> logger.asWarning().log(String.format("Failed to list secret versions - {}", name), error))
                 .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));

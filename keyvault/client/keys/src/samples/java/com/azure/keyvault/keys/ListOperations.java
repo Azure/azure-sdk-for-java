@@ -3,7 +3,10 @@
 
 package com.azure.keyvault.keys;
 
+import com.azure.identity.credential.AzureCredential;
 import com.azure.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.keyvault.keys.models.Key;
+import com.azure.keyvault.keys.models.KeyBase;
 import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.time.OffsetDateTime;
@@ -25,7 +28,7 @@ public class ListOperations {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = KeyClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                //.credential(AzureCredential.DEFAULT)
+                .credential(new AzureCredential())
                 .build();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
@@ -39,8 +42,10 @@ public class ListOperations {
 
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
-        keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse ->
-          System.out.printf("Received key with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+        for (KeyBase key : keyClient.listKeys()) {
+            Key keyWithMaterial = keyClient.getKey(key).value();
+            System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
+        }
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
@@ -49,7 +54,9 @@ public class ListOperations {
                 .keySize(4096));
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
-        keyClient.listKeyVersions("myRsaKey").stream().map(keyClient::getKey).forEach(keyResponse ->
-          System.out.printf("Received key's version with name %s, type %s and version %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty(), keyResponse.value().version()));
+        for (KeyBase key : keyClient.listKeyVersions("myRsaKey")) {
+            Key keyWithMaterial  = keyClient.getKey(key).value();
+            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
+        }
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.keyvault.keys;
 
+import com.azure.identity.credential.AzureCredential;
+import com.azure.keyvault.keys.models.DeletedKey;
 import com.azure.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -30,7 +32,7 @@ public class ManagingDeletedKeys {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyClient keyClient = KeyClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                //.credential(AzureCredential.DEFAULT)
+                .credential(new AzureCredential())
                 .build();
 
         // Let's create Ec and Rsa keys valid for 1 year. if the key
@@ -63,8 +65,9 @@ public class ManagingDeletedKeys {
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged keys, assuming key vault is soft-delete enabled.
-        keyClient.listDeletedKeys().stream().forEach(deletedKey ->
-                System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId()));
+        for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
+            System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
+        }
 
         // If the keyvault is soft-delete enabled, then for permanent deletion deleted keys need to be purged.
         keyClient.purgeDeletedKey("CloudEcKey");

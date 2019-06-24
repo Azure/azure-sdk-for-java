@@ -214,8 +214,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .assertNext(deletedSecretResponse -> {
                         DeletedSecret deletedSecret = deletedSecretResponse.value();
                         assertNotNull(deletedSecret);
-                        pollOnSecretDeletion(secretToDeleteAndGet.name());
                     }).verifyComplete();
+            pollOnSecretDeletion(secretToDeleteAndGet.name());
             sleep(20000);
 
             StepVerifier.create(client.getDeletedSecret(secretToDeleteAndGet.name()))
@@ -230,8 +230,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             StepVerifier.create(client.purgeDeletedSecret(secretToDeleteAndGet.name()))
                     .assertNext(voidResponse -> {
                         assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                        pollOnSecretPurge(secretToDeleteAndGet.name());
                     }).verifyComplete();
+            pollOnSecretPurge(secretToDeleteAndGet.name());
             sleep(10000);
         });
     }
@@ -330,6 +330,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     }).verifyComplete();
             pollOnSecretPurge(secretToBackupAndRestore.name());
 
+            sleep(60000);
+
             StepVerifier.create(client.restoreSecret(backup))
                     .assertNext(response -> {
                         Secret restoredSecret = response.value();
@@ -357,30 +359,34 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         listDeletedSecretsRunner((secrets) -> {
             HashMap<String, Secret> secretsToDelete = secrets;
             List<DeletedSecret> deletedSecrets = new ArrayList<>();
+
             for (Secret secret : secretsToDelete.values()) {
-                client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse.value()));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.setSecret(secret))
+                        .assertNext(secretResponse -> {
+                            assertSecretEquals(secret, secretResponse.value());
+                        }).verifyComplete();
             }
+            sleepInRecordMode(10000);
 
             for (Secret secret : secretsToDelete.values()) {
                 StepVerifier.create(client.deleteSecret(secret.name()))
                         .assertNext(deletedSecretResponse -> {
                             DeletedSecret deletedSecret = deletedSecretResponse.value();
                             assertNotNull(deletedSecret);
-                            pollOnSecretDeletion(secret.name());
                         }).verifyComplete();
+                pollOnSecretDeletion(secret.name());
             }
 
-            sleep(30000);
+            sleepInRecordMode(35000);
             client.listDeletedSecrets().subscribe(deletedSecrets::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 StepVerifier.create(client.purgeDeletedSecret(deletedSecret.name()))
                         .assertNext(voidResponse -> {
                             assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
-                            pollOnSecretPurge(deletedSecret.name());
                         }).verifyComplete();
+                pollOnSecretPurge(deletedSecret.name());
             }
             return deletedSecrets;
         });

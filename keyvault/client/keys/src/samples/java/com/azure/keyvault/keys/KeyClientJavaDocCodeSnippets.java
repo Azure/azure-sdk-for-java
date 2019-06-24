@@ -5,6 +5,7 @@ package com.azure.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
 import com.azure.keyvault.keys.models.Key;
+import com.azure.keyvault.keys.models.KeyBase;
 import com.azure.keyvault.keys.models.webkey.KeyType;
 
 /**
@@ -44,12 +45,10 @@ public final class KeyClientJavaDocCodeSnippets {
     public void listKeyVersions() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
-        keyClient.listKeyVersions("keyName")
-            .stream()
-            .map(keyClient::getKey)
-            .forEach(keyResponse ->
-                System.out.printf("Received key's version with name %s and id %s",
-                    keyResponse.value().name(), keyResponse.value().id()));
+        for (KeyBase key : keyClient.listKeyVersions("keyName")) {
+            Key keyWithMaterial  = keyClient.getKey(key).value();
+            System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
+        }
         // END: com.azure.keyvault.keys.keyclient.listKeyVersions
     }
 
