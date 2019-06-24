@@ -67,7 +67,7 @@ public class CertificatePropertiesWithNonce {
     private String certificate;
 
     /**
-     * Get the subject value.
+     * Get the certificate's subject name.
      *
      * @return the subject value
      */
@@ -76,7 +76,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the expiry value.
+     * Get the certificate's expiration date and time.
      *
      * @return the expiry value
      */
@@ -88,7 +88,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get the certificate's thumbprint.
      *
      * @return the thumbprint value
      */
@@ -97,7 +97,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the isVerified value.
+     * Get determines whether certificate has been verified.
      *
      * @return the isVerified value
      */
@@ -106,7 +106,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the created value.
+     * Get the certificate's create date and time.
      *
      * @return the created value
      */
@@ -118,7 +118,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the updated value.
+     * Get the certificate's last update date and time.
      *
      * @return the updated value
      */
@@ -130,7 +130,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the verificationCode value.
+     * Get the certificate's verification code that will be used for proof of possession.
      *
      * @return the verificationCode value
      */
@@ -139,7 +139,7 @@ public class CertificatePropertiesWithNonce {
     }
 
     /**
-     * Get the certificate value.
+     * Get the certificate content.
      *
      * @return the certificate value
      */
