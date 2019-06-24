@@ -63,10 +63,12 @@ public class SapTableSource extends CopySource {
 
     /**
      * The partition mechanism that will be used for SAP table read in
-     * parallel.
+     * parallel. Possible values include: 'None', 'PartitionOnInt',
+     * 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth',
+     * 'PartitionOnCalendarDate'.
      */
     @JsonProperty(value = "partitionOption")
-    private Object partitionOption;
+    private SapTablePartitionOption partitionOption;
 
     /**
      * The settings that will be leveraged for SAP table source partitioning.
@@ -195,21 +197,21 @@ public class SapTableSource extends CopySource {
     }
 
     /**
-     * Get the partition mechanism that will be used for SAP table read in parallel.
+     * Get the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate'.
      *
      * @return the partitionOption value
      */
-    public Object partitionOption() {
+    public SapTablePartitionOption partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for SAP table read in parallel.
+     * Set the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate'.
      *
      * @param partitionOption the partitionOption value to set
      * @return the SapTableSource object itself.
      */
-    public SapTableSource withPartitionOption(Object partitionOption) {
+    public SapTableSource withPartitionOption(SapTablePartitionOption partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

@@ -34,9 +34,11 @@ public class OracleSource extends CopySource {
 
     /**
      * The partition mechanism that will be used for oracle read in parallel.
+     * Possible values include: 'None', 'PhysicalPartitionsOfTable',
+     * 'DynamicRange'.
      */
     @JsonProperty(value = "partitionOption")
-    private Object partitionOption;
+    private OraclePartitionOption partitionOption;
 
     /**
      * The settings that will be leveraged for oracle source partitioning.
@@ -85,21 +87,21 @@ public class OracleSource extends CopySource {
     }
 
     /**
-     * Get the partition mechanism that will be used for oracle read in parallel.
+     * Get the partition mechanism that will be used for oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
      *
      * @return the partitionOption value
      */
-    public Object partitionOption() {
+    public OraclePartitionOption partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for oracle read in parallel.
+     * Set the partition mechanism that will be used for oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
      *
      * @param partitionOption the partitionOption value to set
      * @return the OracleSource object itself.
      */
-    public OracleSource withPartitionOption(Object partitionOption) {
+    public OracleSource withPartitionOption(OraclePartitionOption partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

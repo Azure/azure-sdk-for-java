@@ -22,7 +22,7 @@ public class DynamicsSink extends CopySink {
      * The write behavior for the operation.
      */
     @JsonProperty(value = "writeBehavior", required = true)
-    private Object writeBehavior;
+    private String writeBehavior;
 
     /**
      * The flag indicating whether ignore null values from input dataset
@@ -36,7 +36,7 @@ public class DynamicsSink extends CopySink {
      * Creates an instance of DynamicsSink class.
      */
     public DynamicsSink() {
-        writeBehavior = Upsert;
+        writeBehavior = "Upsert";
     }
 
     /**
@@ -44,7 +44,7 @@ public class DynamicsSink extends CopySink {
      *
      * @return the writeBehavior value
      */
-    public Object writeBehavior() {
+    public String writeBehavior() {
         return this.writeBehavior;
     }
 
@@ -54,7 +54,7 @@ public class DynamicsSink extends CopySink {
      * @param writeBehavior the writeBehavior value to set
      * @return the DynamicsSink object itself.
      */
-    public DynamicsSink withWriteBehavior(Object writeBehavior) {
+    public DynamicsSink withWriteBehavior(String writeBehavior) {
         this.writeBehavior = writeBehavior;
         return this;
     }
