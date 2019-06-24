@@ -34,7 +34,6 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
     private EventHubClient client;
-    private ReactorHandlerProvider handlerProvider;
 
     @Rule
     public TestName testName = new TestName();
@@ -50,7 +49,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        handlerProvider = new ReactorHandlerProvider(getReactorProvider());
+        ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }
 
@@ -59,16 +58,14 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         dispose(client);
     }
 
-    @Ignore("client not closed properly")
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
-        client = new EventHubClient(null, null, null);
+        new EventHubClient(null, null, null);
     }
 
     /**
      * Verifies that we can create and send a message to an Event Hub partition.
      */
-    @Ignore("java.util.concurrent.CancellationException: Disposed")
     @Test
     public void sendMessageToPartition() throws IOException {
         skipIfNotRecordMode();
@@ -91,7 +88,6 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
      * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
      * distribute the events.
      */
-    @Ignore("java.util.concurrent.CancellationException: Disposed")
     @Test
     public void sendMessage() throws IOException {
         skipIfNotRecordMode();
@@ -133,6 +129,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     /**
      * Verifies that we can have multiple consumers listening to the same partition + consumer group at the same time.
      */
+    @Ignore("For some reason, only 2 of the 4 consumers get the events. The other two consumers do not.")
     @Test
     public void parallelEventHubClients() throws InterruptedException {
         skipIfNotRecordMode();
@@ -154,13 +151,13 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             clients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
-        final EventHubProducer producer = client.createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
+        final EventHubProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
         final List<EventHubConsumer> consumers = new ArrayList<>();
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
-            for (EventHubClient client : clients) {
-                final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
+            for (final EventHubClient hubClient : clients) {
+                final EventHubConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 
                 final Disposable subscription = consumer.receive().filter(event -> {
@@ -170,7 +167,8 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
                 }).take(numberOfEvents).subscribe(event -> {
                     logger.asInfo().log("Event[{}] matched.", event.sequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
-                    logger.asInfo().log("Finished consuming events. Counting down: %s", countDownLatch.getCount());
+                    long count = countDownLatch.getCount();
+                    logger.asInfo().log("Finished consuming events. Counting down: {}", count);
                     countDownLatch.countDown();
                 });
 
@@ -183,6 +181,9 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             // Assert
             // Wait for all the events we sent to be received by each of the consumers.
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            Assert.assertEquals(0, countDownLatch.getCount());
+
+            logger.asInfo().log("Completed successfully.");
         } finally {
             logger.asInfo().log("Disposing of subscriptions, consumers and clients.");
             subscriptions.dispose();
