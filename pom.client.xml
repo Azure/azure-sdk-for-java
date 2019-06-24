@@ -270,7 +270,7 @@
             <phase>package</phase>
             <configuration>
               <target>
-                <copy file="${pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
               </target>
             </configuration>
             <goals>
@@ -338,7 +338,8 @@
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*
+              com.azure.core.test*:
+              com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
               <group>
@@ -368,6 +369,10 @@
               <group>
                 <title>Azure Key Vault</title>
                 <packages>com.azure.keyvault*</packages>
+              </group>
+              <group>
+                <title>Azure Identity</title>
+                <packages>com.azure.identity*</packages>
               </group>
             </groups>
             <links>

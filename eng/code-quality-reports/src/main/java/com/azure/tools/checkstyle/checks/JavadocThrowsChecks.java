@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
@@ -89,6 +92,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 if (currentScopeNeedsChecking) {
                     addExceptionMapping(token);
                 }
+                break;
+            default:
+                // Checkstyle complains if there's no default block in switch
                 break;
         }
     }
@@ -259,6 +265,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
         } else if (methodCallToken != null) {
             // Throwing a method call.
+            // Checkstyle complains about empty blocks.
+            // TODO: Should we ignore this checkstyle error?
+            return;
         } else {
             // Throwing an un-casted variable.
             String throwIdent = throwExprToken.findFirstToken(TokenTypes.IDENT).getText();
