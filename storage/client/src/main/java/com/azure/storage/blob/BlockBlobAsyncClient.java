@@ -65,7 +65,7 @@ import java.util.UUID;
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
     static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
-    private BlockBlobAsyncRawClient blockBlobAsyncRawClient;
+    BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.

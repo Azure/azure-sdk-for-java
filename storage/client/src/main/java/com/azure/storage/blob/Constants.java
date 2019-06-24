@@ -55,6 +55,12 @@ final class Constants {
     static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
 
     /**
+     * The size of a page, in bytes, in a page blob.
+     */
+    public static final int PAGE_SIZE = 512;
+
+
+    /**
      * Private Default Ctor
      */
     private Constants() {

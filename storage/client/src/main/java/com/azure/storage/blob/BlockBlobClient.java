@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -13,10 +14,12 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.ByteBufFlux;
 
 import java.io.IOException;
@@ -133,7 +136,7 @@ public final class BlockBlobClient extends BlobClient {
      */
     public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
                                 Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) throws IOException {
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
+        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE > length ? length - pos : BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
@@ -142,12 +145,12 @@ public final class BlockBlobClient extends BlobClient {
                 while (read < count) {
                     read += data.read(cache, read, (int) count - read);
                 }
-                return cache;
-            }))
-            .map(ByteBuffer::wrap);
+                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+            }));
 
-        Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient
-            .upload(fbb, length, headers, metadata, accessConditions, context);
+        Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient.blockBlobAsyncRawClient
+            .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions, context)
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));;
 
         try {
             if (timeout == null) {

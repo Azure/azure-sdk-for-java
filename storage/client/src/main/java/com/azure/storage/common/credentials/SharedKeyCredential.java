@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +43,8 @@ public final class SharedKeyCredential {
      * @param accountKey The account access key used to authenticate the request.
      */
     public SharedKeyCredential(String accountName, String accountKey) {
+        Objects.requireNonNull(accountName);
+        Objects.requireNonNull(accountKey);
         this.accountName = accountName;
         this.accountKey = Base64.getDecoder().decode(accountKey);
     }
