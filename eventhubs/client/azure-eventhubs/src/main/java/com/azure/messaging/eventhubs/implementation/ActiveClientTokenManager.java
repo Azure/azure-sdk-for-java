@@ -83,7 +83,12 @@ class ActiveClientTokenManager implements Closeable {
                     lastRefreshInterval.set(refreshIntervalMS);
 
                     // This converts it to milliseconds
-                    this.timer.schedule(new RefreshAuthorizationToken(), refreshIntervalMS);
+                    try {
+                        this.timer.schedule(new RefreshAuthorizationToken(), refreshIntervalMS);
+                    } catch (IllegalStateException e) {
+                        logger.asWarning().log("Unable to reschedule timer task.", e);
+                        hasScheduled.set(false);
+                    }
                 }
 
                 return expiresOn;
@@ -93,11 +98,11 @@ class ActiveClientTokenManager implements Closeable {
     @Override
     public void close() {
         if (!hasDisposed.getAndSet(true)) {
-            this.timer.cancel();
-
             if (this.sink != null) {
                 this.sink.complete();
             }
+
+            this.timer.cancel();
         }
     }
 
@@ -120,11 +125,19 @@ class ActiveClientTokenManager implements Closeable {
 
                     sink.error(error);
                 }, () -> {
+                    if (hasDisposed.get()) {
+                        logger.asInfo().log("Token manager has been disposed of. Not rescheduling.");
+                        return;
+                    }
+
                     logger.asInfo().log("Success. Rescheduling refresh authorization task.");
                     sink.next(AmqpResponseCode.ACCEPTED);
 
-                    if (hasScheduled.getAndSet(true)) {
+                    try {
                         timer.schedule(new RefreshAuthorizationToken(), lastRefreshInterval.get());
+                    } catch (IllegalStateException e) {
+                        logger.asWarning().log("Unable to reschedule timer task.", e);
+                        hasScheduled.set(false);
                     }
                 });
         }
