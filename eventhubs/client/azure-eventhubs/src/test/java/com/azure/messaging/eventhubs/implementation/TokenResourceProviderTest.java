@@ -29,6 +29,9 @@ public class TokenResourceProviderTest {
         return CBSAuthorizationType.values();
     }
 
+    /**
+     * Verifies that the correct resource string is returned when we pass in different authorization types.
+     */
     @Theory
     public void getResourceString(CBSAuthorizationType authorizationType) {
         // Arrange
