@@ -11,7 +11,6 @@ import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.exception.AzureException;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -113,7 +112,6 @@ public class ActiveClientTokenManagerTest {
      * Verify that the ActiveClientTokenManager reschedules the authorization task.
      */
     @SuppressWarnings("unchecked")
-    @Ignore("expectation \"expectComplete\" failed (expected: onComplete(); actual: onNext(ACCEPTED))")
     @Test
     public void getAuthorizationResultsRetriableError() {
         // Arrange
@@ -123,7 +121,11 @@ public class ActiveClientTokenManagerTest {
 
         when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2), Mono.error(error),
             getNextExpiration(5), getNextExpiration(5),
-            getNextExpiration(45), getNextExpiration(60));
+
+            // The token manager is closed after this expiration is received, so we should not receive another ACCEPTED
+            // status code, and expect a completed signal from the Flux instead.
+            getNextExpiration(45),
+            getNextExpiration(60));
 
         // Act & Assert
         try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {
