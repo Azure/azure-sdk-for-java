@@ -272,7 +272,7 @@
             <phase>package</phase>
             <configuration>
               <target>
-                <copy file="${pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
               </target>
             </configuration>
             <goals>
@@ -342,7 +342,8 @@
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*
+              com.azure.core.test*:
+              com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
               <group>
@@ -352,16 +353,16 @@
                 </packages>
               </group>
               <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
-              </group>
-              <group>
                 <title>Azure Core - AMQP</title>
                 <packages>com.azure.core.amqp*</packages>
-                </group>
+              </group>
               <group>
                 <title>Azure Core - Authentication</title>
                 <packages>com.azure.core.auth*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Management</title>
+                <packages>com.azure.core.management*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
@@ -370,6 +371,10 @@
               <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Identity</title>
+                <packages>com.azure.identity*</packages>
               </group>
               <group>
                 <title>Azure Key Vault</title>
