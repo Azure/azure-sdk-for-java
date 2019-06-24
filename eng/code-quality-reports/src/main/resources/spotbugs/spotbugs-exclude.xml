@@ -431,7 +431,7 @@
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>
-      <Class name="com.azure.keyvault.models.DeletedSecret"/>
+      <Class name="com.azure.keyvault.secrets.models.DeletedSecret"/>
       <Class name="com.azure.keyvault.secrets.models.SecretBase"/>
       <Class name="com.azure.keyvault.keys.models.DeletedKey"/>
       <Class name="com.azure.keyvault.keys.models.Key"/>
