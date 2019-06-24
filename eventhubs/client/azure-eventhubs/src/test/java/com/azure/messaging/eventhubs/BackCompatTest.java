@@ -32,12 +32,14 @@ public class BackCompatTest extends ApiTestBase {
     private static final String INT_APPLICATION_PROPERTY = "intProp";
     private static final String PAYLOAD = "testmsg";
 
-    private final ClientLogger logger = new ClientLogger(BackCompatTest.class);
-
     private EventHubClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
     private ReactorHandlerProvider handlerProvider;
+
+    public BackCompatTest() {
+        super(new ClientLogger(BackCompatTest.class));
+    }
 
     @Rule
     public TestName testName = new TestName();
@@ -49,8 +51,6 @@ public class BackCompatTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
-        logger.asInfo().log("[{}]: Performing test set-up.", testName.getMethodName());
-
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
@@ -59,8 +59,7 @@ public class BackCompatTest extends ApiTestBase {
 
     @Override
     protected void afterTest() {
-        logger.asInfo().log("[{}]: Performing test clean-up.", testName.getMethodName());
-        closeClient(client, producer, consumer, testName, logger);
+        dispose(consumer, producer, client);
     }
 
     /**
