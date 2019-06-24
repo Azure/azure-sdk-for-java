@@ -40,7 +40,7 @@ import java.time.Duration;
  */
 public class BlobClient {
 
-    private BlobAsyncClient blobAsyncClient;
+    private final BlobAsyncClient blobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.

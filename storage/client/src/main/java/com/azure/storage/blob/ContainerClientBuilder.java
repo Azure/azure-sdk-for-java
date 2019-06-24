@@ -39,7 +39,7 @@ import java.util.Objects;
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}}.
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
+ *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>
@@ -174,40 +174,40 @@ public final class ContainerClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(SharedKeyCredential credentials) {
-        this.sharedKeyCredential = credentials;
+    public ContainerClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(TokenCredential credentials) {
-        this.tokenCredential = credentials;
+    public ContainerClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(SASTokenCredential credentials) {
-        this.sasTokenCredential = credentials;
+    public ContainerClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
         return this;
     }
 
     /**
-     * Clears the credentials used to authorize requests sent to the service
+     * Clears the credential used to authorize requests sent to the service
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder anonymousCredentials() {
+    public ContainerClientBuilder anonymousCredential() {
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -242,7 +242,7 @@ public final class ContainerClientBuilder {
         }
 
         // Use accountName and accountKey to get the SAS token using the credential class.
-        return credentials(new SharedKeyCredential(accountName, accountKey));
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**

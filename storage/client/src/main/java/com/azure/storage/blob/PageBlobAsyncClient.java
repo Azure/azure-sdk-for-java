@@ -11,12 +11,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PageBlobClearPagesHeaders;
 import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PageBlobResizeHeaders;
-import com.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesFromURLHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesHeaders;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -51,7 +46,7 @@ import java.net.URL;
  */
 public final class PageBlobAsyncClient extends BlobAsyncClient {
 
-    private PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    private final PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -67,8 +62,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        super(azureBlobStorageBuilder);
+    PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
+        super(azureBlobStorageBuilder, snapshot);
         this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build());
     }
 

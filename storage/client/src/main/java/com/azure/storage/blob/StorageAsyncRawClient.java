@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
@@ -17,8 +16,6 @@ import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
@@ -32,7 +29,7 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
  */
 final class StorageAsyncRawClient {
 
-    AzureBlobStorageImpl azureBlobStorage;
+    final AzureBlobStorageImpl azureBlobStorage;
 
     /**
      * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
