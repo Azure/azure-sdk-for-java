@@ -9,22 +9,33 @@
 package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation;
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.ErrorResponseException;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Tags;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -33,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in SapMonitors.
  */
-public class SapMonitorsInner implements InnerSupportsGet<SapMonitorInner> {
+public class SapMonitorsInner implements InnerSupportsGet<SapMonitorInner>, InnerSupportsDelete<Void> {
     /** The Retrofit service to perform REST calls. */
     private SapMonitorsService service;
     /** The service client containing this operation class. */
@@ -55,6 +66,10 @@ public class SapMonitorsInner implements InnerSupportsGet<SapMonitorInner> {
      * used by Retrofit to perform actually REST calls.
      */
     interface SapMonitorsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.HanaOnAzure/sapMonitors")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("sapMonitorName") String sapMonitorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -67,6 +82,134 @@ public class SapMonitorsInner implements InnerSupportsGet<SapMonitorInner> {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}")
         Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("sapMonitorName") String sapMonitorName, @Query("api-version") String apiVersion, @Body SapMonitorInner sapMonitorParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("sapMonitorName") String sapMonitorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("sapMonitorName") String sapMonitorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}")
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("sapMonitorName") String sapMonitorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags tagsParameter, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitors listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SapMonitorInner&gt; object if successful.
+     */
+    public PagedList<SapMonitorInner> list() {
+        ServiceResponse<Page<SapMonitorInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<SapMonitorInner>(response.body()) {
+            @Override
+            public Page<SapMonitorInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SapMonitorInner>> listAsync(final ListOperationCallback<SapMonitorInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SapMonitorInner&gt; object
+     */
+    public Observable<Page<SapMonitorInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<SapMonitorInner>>, Page<SapMonitorInner>>() {
+                @Override
+                public Page<SapMonitorInner> call(ServiceResponse<Page<SapMonitorInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SapMonitorInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SapMonitorInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<SapMonitorInner>>, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(ServiceResponse<Page<SapMonitorInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SapMonitorInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SapMonitorInner>>> listSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<SapMonitorInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SapMonitorInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<SapMonitorInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<SapMonitorInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<SapMonitorInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
     }
 
     /**
@@ -335,6 +478,468 @@ public class SapMonitorsInner implements InnerSupportsGet<SapMonitorInner> {
         return this.client.restClient().responseBuilderFactory().<SapMonitorInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SapMonitorInner>() { }.getType())
                 .register(201, new TypeToken<SapMonitorInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String sapMonitorName) {
+        deleteWithServiceResponseAsync(resourceGroupName, sapMonitorName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String sapMonitorName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, sapMonitorName), serviceCallback);
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String sapMonitorName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, sapMonitorName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String sapMonitorName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (sapMonitorName == null) {
+            throw new IllegalArgumentException("Parameter sapMonitorName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, sapMonitorName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDelete(String resourceGroupName, String sapMonitorName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, sapMonitorName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String sapMonitorName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, sapMonitorName), serviceCallback);
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String sapMonitorName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, sapMonitorName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a SAP monitor.
+     * Deletes a SAP monitor with the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String sapMonitorName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (sapMonitorName == null) {
+            throw new IllegalArgumentException("Parameter sapMonitorName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, sapMonitorName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SapMonitorInner object if successful.
+     */
+    public SapMonitorInner update(String resourceGroupName, String sapMonitorName) {
+        return updateWithServiceResponseAsync(resourceGroupName, sapMonitorName).toBlocking().single().body();
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SapMonitorInner> updateAsync(String resourceGroupName, String sapMonitorName, final ServiceCallback<SapMonitorInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, sapMonitorName), serviceCallback);
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SapMonitorInner object
+     */
+    public Observable<SapMonitorInner> updateAsync(String resourceGroupName, String sapMonitorName) {
+        return updateWithServiceResponseAsync(resourceGroupName, sapMonitorName).map(new Func1<ServiceResponse<SapMonitorInner>, SapMonitorInner>() {
+            @Override
+            public SapMonitorInner call(ServiceResponse<SapMonitorInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SapMonitorInner object
+     */
+    public Observable<ServiceResponse<SapMonitorInner>> updateWithServiceResponseAsync(String resourceGroupName, String sapMonitorName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (sapMonitorName == null) {
+            throw new IllegalArgumentException("Parameter sapMonitorName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Map<String, String> tags = null;
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(null);
+        return service.update(this.client.subscriptionId(), resourceGroupName, sapMonitorName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SapMonitorInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SapMonitorInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SapMonitorInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SapMonitorInner object if successful.
+     */
+    public SapMonitorInner update(String resourceGroupName, String sapMonitorName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, sapMonitorName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param tags Tags field of the HANA instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SapMonitorInner> updateAsync(String resourceGroupName, String sapMonitorName, Map<String, String> tags, final ServiceCallback<SapMonitorInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, sapMonitorName, tags), serviceCallback);
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SapMonitorInner object
+     */
+    public Observable<SapMonitorInner> updateAsync(String resourceGroupName, String sapMonitorName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, sapMonitorName, tags).map(new Func1<ServiceResponse<SapMonitorInner>, SapMonitorInner>() {
+            @Override
+            public SapMonitorInner call(ServiceResponse<SapMonitorInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Patches the Tags field of a SAP monitor.
+     * Patches the Tags field of a SAP monitor for the specified subscription, resource group, and monitor name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param sapMonitorName Name of the SAP monitor resource.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SapMonitorInner object
+     */
+    public Observable<ServiceResponse<SapMonitorInner>> updateWithServiceResponseAsync(String resourceGroupName, String sapMonitorName, Map<String, String> tags) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (sapMonitorName == null) {
+            throw new IllegalArgumentException("Parameter sapMonitorName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(tags);
+        return service.update(this.client.subscriptionId(), resourceGroupName, sapMonitorName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SapMonitorInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SapMonitorInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SapMonitorInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SapMonitorInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SapMonitorInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SapMonitorInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SapMonitorInner&gt; object if successful.
+     */
+    public PagedList<SapMonitorInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<SapMonitorInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SapMonitorInner>(response.body()) {
+            @Override
+            public Page<SapMonitorInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SapMonitorInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SapMonitorInner>> serviceFuture, final ListOperationCallback<SapMonitorInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SapMonitorInner&gt; object
+     */
+    public Observable<Page<SapMonitorInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SapMonitorInner>>, Page<SapMonitorInner>>() {
+                @Override
+                public Page<SapMonitorInner> call(ServiceResponse<Page<SapMonitorInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SapMonitorInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SapMonitorInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SapMonitorInner>>, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(ServiceResponse<Page<SapMonitorInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of SAP monitors in the specified subscription.
+     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP monitor.
+     *
+    ServiceResponse<PageImpl1<SapMonitorInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SapMonitorInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SapMonitorInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SapMonitorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SapMonitorInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<SapMonitorInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SapMonitorInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<SapMonitorInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<SapMonitorInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<SapMonitorInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

@@ -9,13 +9,16 @@
 package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
+import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation.SapMonitorsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing SapMonitors.
  */
-public interface SapMonitors extends SupportsCreating<SapMonitor.DefinitionStages.Blank>, SupportsGettingByResourceGroup<SapMonitor>, HasInner<SapMonitorsInner> {
+public interface SapMonitors extends SupportsCreating<SapMonitor.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<SapMonitor>, SupportsListing<SapMonitor>, HasInner<SapMonitorsInner> {
 }

@@ -14,7 +14,14 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitor
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.SapMonitor;
 import rx.Observable;
 import rx.Completable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import com.microsoft.azure.arm.resources.ResourceUtilsCore;
+import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.Page;
 
 class SapMonitorsImpl extends GroupableResourcesCoreImpl<SapMonitor, SapMonitorImpl, SapMonitorInner, SapMonitorsInner, HanaOnAzureManager>  implements SapMonitors {
     protected SapMonitorsImpl(HanaOnAzureManager manager) {
@@ -30,7 +37,63 @@ class SapMonitorsImpl extends GroupableResourcesCoreImpl<SapMonitor, SapMonitorI
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         SapMonitorsInner client = this.inner();
-        return Completable.error(new Throwable("Delete by RG not supported for this resource")); // NOP Delete by RG not supported
+        return client.deleteAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(Collection<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Observable.empty();
+        }
+        Collection<Observable<String>> observables = new ArrayList<>();
+        for (String id : ids) {
+            final String resourceGroupName = ResourceUtilsCore.groupFromResourceId(id);
+            final String name = ResourceUtilsCore.nameFromResourceId(id);
+            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o);
+        }
+        return Observable.mergeDelayError(observables);
+    }
+
+    @Override
+    public Observable<String> deleteByIdsAsync(String...ids) {
+        return this.deleteByIdsAsync(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public void deleteByIds(Collection<String> ids) {
+        if (ids != null && !ids.isEmpty()) {
+            this.deleteByIdsAsync(ids).toBlocking().last();
+        }
+    }
+
+    @Override
+    public void deleteByIds(String...ids) {
+        this.deleteByIds(new ArrayList<String>(Arrays.asList(ids)));
+    }
+
+    @Override
+    public PagedList<SapMonitor> list() {
+        SapMonitorsInner client = this.inner();
+        return this.wrapList(client.list());
+    }
+
+    @Override
+    public Observable<SapMonitor> listAsync() {
+        SapMonitorsInner client = this.inner();
+        return client.listAsync()
+        .flatMapIterable(new Func1<Page<SapMonitorInner>, Iterable<SapMonitorInner>>() {
+            @Override
+            public Iterable<SapMonitorInner> call(Page<SapMonitorInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SapMonitorInner, SapMonitor>() {
+            @Override
+            public SapMonitor call(SapMonitorInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override
