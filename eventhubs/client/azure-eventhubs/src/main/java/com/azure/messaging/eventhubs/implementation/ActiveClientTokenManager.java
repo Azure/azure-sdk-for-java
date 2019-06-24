@@ -64,6 +64,8 @@ class ActiveClientTokenManager implements Closeable {
 
     /**
      * Invokes an authorization call on the CBS node.
+     *
+     * @return A Mono that completes with the milliseconds corresponding to when this token should be refreshed.
      */
     Mono<Long> authorize() {
         if (hasDisposed.get()) {
@@ -83,7 +85,7 @@ class ActiveClientTokenManager implements Closeable {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.asInfo().log("Scheduling refresh token.");
+                    logger.asInfo().log("Scheduling refresh token task.");
                     scheduleRefreshTokenTask(refreshIntervalMS);
                 }
 
@@ -106,7 +108,7 @@ class ActiveClientTokenManager implements Closeable {
         try {
             timer.schedule(new RefreshAuthorizationToken(), refreshIntervalInMS);
         } catch (IllegalStateException e) {
-            logger.asWarning().log("Unable to reschedule timer task.", e);
+            logger.asWarning().log("Unable to schedule RefreshAuthorizationToken task.", e);
             hasScheduled.set(false);
         }
     }
