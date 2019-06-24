@@ -11,7 +11,7 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
-        <version>0.0.3-beta</version>
+        <version>1.1.0</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-costmanagement</artifactId>
