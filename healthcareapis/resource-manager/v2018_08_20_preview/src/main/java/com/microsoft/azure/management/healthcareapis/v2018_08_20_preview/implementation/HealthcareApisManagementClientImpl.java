@@ -29,14 +29,14 @@ public class HealthcareApisManagementClientImpl extends AzureServiceClient {
     }
 
     /** The subscription identifier. */
-    private UUID subscriptionId;
+    private String subscriptionId;
 
     /**
      * Gets The subscription identifier.
      *
      * @return the subscriptionId value.
      */
-    public UUID subscriptionId() {
+    public String subscriptionId() {
         return this.subscriptionId;
     }
 
@@ -46,7 +46,7 @@ public class HealthcareApisManagementClientImpl extends AzureServiceClient {
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
      */
-    public HealthcareApisManagementClientImpl withSubscriptionId(UUID subscriptionId) {
+    public HealthcareApisManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -172,19 +172,6 @@ public class HealthcareApisManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The MoveResourcesStatusInner object to access its operations.
-     */
-    private MoveResourcesStatusInner moveResourcesStatus;
-
-    /**
-     * Gets the MoveResourcesStatusInner object to access its operations.
-     * @return the MoveResourcesStatusInner object.
-     */
-    public MoveResourcesStatusInner moveResourcesStatus() {
-        return this.moveResourcesStatus;
-    }
-
-    /**
      * Initializes an instance of HealthcareApisManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -222,7 +209,6 @@ public class HealthcareApisManagementClientImpl extends AzureServiceClient {
         this.services = new ServicesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.operationResults = new OperationResultsInner(restClient().retrofit(), this);
-        this.moveResourcesStatus = new MoveResourcesStatusInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
