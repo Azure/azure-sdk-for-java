@@ -129,7 +129,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     /**
      * Verifies that we can have multiple consumers listening to the same partition + consumer group at the same time.
      */
-    @Ignore("For some reason, only 2 of the 4 consumers get the events. The other two consumers do not.")
+    @Ignore("Investigate. Only 2 of the 4 consumers get the events. The other two consumers do not.")
     @Test
     public void parallelEventHubClients() throws InterruptedException {
         skipIfNotRecordMode();
