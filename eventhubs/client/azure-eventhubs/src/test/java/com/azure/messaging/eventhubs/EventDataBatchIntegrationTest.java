@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -64,7 +65,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
      * Test for sending full batch without partition key
      */
     @Test
-    public void sendSmallEventsFullBatchWithoutPartitionKey() {
+    public void sendSmallEventsFullBatch() {
         skipIfNotRecordMode();
 
         // Arrange
@@ -108,19 +109,25 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
     }
 
     /**
-     * Verifies that when we send 10 messages with the same partition key, that the received EventData also contains the
-     * {@link EventData#partitionKey()} property set.
+     * Verifies that when we send 10 messages with the same partition key and some application properties, the received
+     * EventData also contains the {@link EventData#partitionKey()} property set.
      */
     @Test
     public void sendBatchPartitionKeyValidate() throws InterruptedException {
         skipIfNotRecordMode();
 
         // Arrange
+        final String messageId = "message-tracking-id";
+        final String messageValue = UUID.randomUUID().toString();
+
         final SendOptions sendOptions = new SendOptions().partitionKey(PARTITION_KEY);
         final EventDataBatch batch = new EventDataBatch(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, PARTITION_KEY, contextProvider);
         int count = 0;
         while (count < 10) {
-            if (!batch.tryAdd(createData())) {
+            final EventData data = createData();
+            data.properties().put(messageId, messageValue);
+
+            if (!batch.tryAdd(data)) {
                 break;
             }
             count++;
@@ -138,9 +145,16 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
             subscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {
-                    if (event.partitionKey() != null && PARTITION_KEY.equals(event.partitionKey())) {
-                        logger.asInfo().log("Event {} matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
+                    if (event.partitionKey() == null || !PARTITION_KEY.equals(event.partitionKey())) {
+                        return;
+                    }
+
+                    if (event.properties().containsKey(messageId) && messageValue.equals(event.properties().get(messageId))) {
+                        logger.asInfo().log("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
+                    } else {
+                        logger.asWarning().log(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
+                            event.sequenceNumber(), messageValue, event.properties().get(messageId)));
                     }
                 }, error -> {
                     Assert.fail("An error should not have occurred:" + error.toString());
@@ -175,10 +189,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         }
     }
 
-    private static EventData createData() {
-        return new EventData("a".getBytes(StandardCharsets.UTF_8));
-    }
-
     /**
      * Verify we can send a batch by specifying the {@code maxMessageSize} and partition key.
      */
@@ -210,5 +220,9 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         Assert.assertEquals(count, batch.getSize());
         StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
             .verifyComplete();
+    }
+
+    private static EventData createData() {
+        return new EventData("a".getBytes(StandardCharsets.UTF_8));
     }
 }
