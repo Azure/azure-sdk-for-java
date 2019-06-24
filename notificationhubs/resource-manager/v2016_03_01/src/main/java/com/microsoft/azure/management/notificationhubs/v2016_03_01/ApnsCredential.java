@@ -35,7 +35,7 @@ public class ApnsCredential {
     private String endpoint;
 
     /**
-     * The Apns certificate Thumbprint.
+     * The APNS certificate Thumbprint.
      */
     @JsonProperty(value = "properties.thumbprint")
     private String thumbprint;
@@ -101,7 +101,7 @@ public class ApnsCredential {
     }
 
     /**
-     * Get the Apns certificate Thumbprint.
+     * Get the APNS certificate Thumbprint.
      *
      * @return the thumbprint value
      */
@@ -110,7 +110,7 @@ public class ApnsCredential {
     }
 
     /**
-     * Set the Apns certificate Thumbprint.
+     * Set the APNS certificate Thumbprint.
      *
      * @param thumbprint the thumbprint value to set
      * @return the ApnsCredential object itself.

@@ -14,7 +14,7 @@ import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of a CheckAvailibility resource.
+ * Description of a CheckAvailability resource.
  */
 @SkipParentValidation
 public class CheckAvailabilityResultInner extends Resource {
