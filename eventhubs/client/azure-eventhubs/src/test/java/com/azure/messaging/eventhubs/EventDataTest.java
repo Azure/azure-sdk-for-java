@@ -16,8 +16,11 @@ import org.junit.Test;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
@@ -88,6 +91,35 @@ public class EventDataTest {
     }
 
     /**
+     * Verify that the Comparable interface is implemented correctly for EventData by sorting events by their squence
+     * numbers.
+     */
+    @Test
+    public void comparableEventDataSequenceNumbers() {
+        // Arrange
+        final EventData[] events = new EventData[]{
+            constructMessage(19),
+            constructMessage(22),
+            constructMessage(25),
+            constructMessage(88),
+        };
+
+        final List<EventData> unordered = new ArrayList<>();
+        unordered.add(events[1]);
+        unordered.add(events[0]);
+        unordered.add(events[3]);
+        unordered.add(events[2]);
+
+        // Act
+        Collections.sort(unordered);
+
+        // Assert
+        for (int i = 0; i < events.length; i++) {
+            Assert.assertSame(events[i], unordered.get(i));
+        }
+    }
+
+    /**
      * Verify that we can deserialize a proton-j message with all the correct contents.
      */
     @Test
@@ -141,6 +173,18 @@ public class EventDataTest {
 
     private static Symbol getSymbol(MessageConstant messageConstant) {
         return Symbol.getSymbol(messageConstant.getValue());
+    }
 
+    /**
+     * Creates an event with the sequence number set.
+     */
+    private static EventData constructMessage(long sequenceNumber) {
+        final HashMap<Symbol, Object> properties = new HashMap<>();
+        properties.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), sequenceNumber);
+
+        final Message message = Proton.message();
+        message.setMessageAnnotations(new MessageAnnotations(properties));
+
+        return new EventData(message);
     }
 }

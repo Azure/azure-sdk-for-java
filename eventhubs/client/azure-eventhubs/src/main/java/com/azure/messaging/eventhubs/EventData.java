@@ -132,7 +132,9 @@ public class EventData implements Comparable<EventData> {
             this.body = bodyData.getValue().asByteBuffer();
         } else {
             logger.asWarning().log(String.format(Locale.US,
-                "Message body type is not of type Data, but type: %s. Not setting body contents.", bodySection.getType()));
+                "Message body type is not of type Data, but type: %s. Not setting body contents.",
+                bodySection != null ? bodySection.getType() : "null"));
+
             this.body = null;
         }
 
