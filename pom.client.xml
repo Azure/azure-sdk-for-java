@@ -347,16 +347,16 @@
                 <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
               </group>
               <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
-              </group>
-              <group>
                 <title>Azure Core - AMQP</title>
                 <packages>com.azure.core.amqp*</packages>
-                </group>
+              </group>
               <group>
                 <title>Azure Core - Authentication</title>
                 <packages>com.azure.core.auth*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Management</title>
+                <packages>com.azure.core.management*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
@@ -367,12 +367,12 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
-                <title>Azure Key Vault</title>
-                <packages>com.azure.keyvault*</packages>
-              </group>
-              <group>
                 <title>Azure Identity</title>
                 <packages>com.azure.identity*</packages>
+              </group>
+              <group>
+                <title>Azure Key Vault</title>
+                <packages>com.azure.keyvault*</packages>
               </group>
             </groups>
             <links>
