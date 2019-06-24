@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error">AMQP
  * 1.0: Transport Errors</a>
- * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">Azure Messaging Exceptions</a>
+ * @see <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging Exceptions</a>
  */
 public enum ErrorCondition {
     /**
