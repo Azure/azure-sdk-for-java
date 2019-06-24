@@ -163,17 +163,12 @@ public final class IdentityClient {
         StringBuilder payload = new StringBuilder();
 
         try {
-            payload.append("resource");
-            payload.append("=");
+            payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
-            payload.append("&");
-            payload.append("api-version");
-            payload.append("=");
+            payload.append("&api-version=");
             payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
             if (clientId != null) {
-                payload.append("&");
-                payload.append("client_id");
-                payload.append("=");
+                payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
         } catch (IOException exception) {
@@ -214,17 +209,12 @@ public final class IdentityClient {
         final int imdsUpgradeTimeInMs = 70 * 1000;
 
         try {
-            payload.append("api-version");
-            payload.append("=");
+            payload.append("api-version=");
             payload.append(URLEncoder.encode("2018-02-01", "UTF-8"));
-            payload.append("&");
-            payload.append("resource");
-            payload.append("=");
+            payload.append("&resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             if (clientId != null) {
-                payload.append("&");
-                payload.append("client_id");
-                payload.append("=");
+                payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
         } catch (IOException exception) {
