@@ -5,7 +5,7 @@ Secret client library allows you to securely store and tightly control the acces
 
 Use the secret client library to create and manage secrets.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 ### Adding the package to your project
