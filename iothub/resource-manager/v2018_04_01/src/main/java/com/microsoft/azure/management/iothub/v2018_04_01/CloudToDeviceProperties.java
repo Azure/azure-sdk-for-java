@@ -38,7 +38,7 @@ public class CloudToDeviceProperties {
     private FeedbackProperties feedback;
 
     /**
-     * Get the maxDeliveryCount value.
+     * Get the max delivery count for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @return the maxDeliveryCount value
      */
@@ -47,7 +47,7 @@ public class CloudToDeviceProperties {
     }
 
     /**
-     * Set the maxDeliveryCount value.
+     * Set the max delivery count for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set
      * @return the CloudToDeviceProperties object itself.
@@ -58,7 +58,7 @@ public class CloudToDeviceProperties {
     }
 
     /**
-     * Get the defaultTtlAsIso8601 value.
+     * Get the default time to live for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @return the defaultTtlAsIso8601 value
      */
@@ -67,7 +67,7 @@ public class CloudToDeviceProperties {
     }
 
     /**
-     * Set the defaultTtlAsIso8601 value.
+     * Set the default time to live for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @param defaultTtlAsIso8601 the defaultTtlAsIso8601 value to set
      * @return the CloudToDeviceProperties object itself.
