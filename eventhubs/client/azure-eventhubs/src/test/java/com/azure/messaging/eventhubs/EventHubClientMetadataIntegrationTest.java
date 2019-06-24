@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
@@ -25,18 +24,16 @@ import reactor.test.StepVerifier;
 import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
 public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
+    private final String[] expectedPartitionIds = new String[]{"0", "1"};
     private EventHubClient client;
-    private EventHubClientMetadataIntegrationTest.ExpectedData data;
     private ReactorHandlerProvider handlerProvider;
+    private String eventHubPath;
 
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
@@ -52,9 +49,16 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        skipIfNotRecordMode();
+
+        eventHubPath = getConnectionOptions().eventHubPath();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
-        data = new EventHubClientMetadataIntegrationTest.ExpectedData(getTestMode(), getConnectionStringProperties());
+    }
+
+    @Override
+    protected void afterTest() {
+        dispose(client);
     }
 
     /**
@@ -62,14 +66,12 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
      */
     @Test
     public void getEventHubProperties() {
-        skipIfNotRecordMode();
-
         // Act & Assert
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assert.assertNotNull(properties);
-                Assert.assertEquals(data.getProperties().path(), properties.path());
-                Assert.assertEquals(data.getProperties().partitionIds().length, properties.partitionIds().length);
+                Assert.assertEquals(eventHubPath, properties.path());
+                Assert.assertEquals(expectedPartitionIds.length, properties.partitionIds().length);
             }).verifyComplete();
     }
 
@@ -80,7 +82,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     public void getPartitionIds() {
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())
-            .expectNextCount(data.getProperties().partitionIds().length)
+            .expectNextCount(expectedPartitionIds.length)
             .verifyComplete();
     }
 
@@ -90,12 +92,10 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     @Test
     public void getPartitionProperties() {
         // Act & Assert
-        for (String partitionId : data.getProperties().partitionIds()) {
+        for (String partitionId : expectedPartitionIds) {
             StepVerifier.create(client.getPartitionProperties(partitionId))
                 .assertNext(properties -> {
-                    final PartitionProperties expected = data.getPartitionProperties(properties.id());
-                    Assert.assertNotNull(expected);
-                    Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
+                    Assert.assertEquals(eventHubPath, properties.eventHubPath());
                     Assert.assertEquals(partitionId, properties.id());
                 })
                 .verifyComplete();
@@ -115,16 +115,8 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         // Assert
         StepVerifier.create(partitionProperties)
-            .assertNext(properties -> {
-                final PartitionProperties expected = data.getPartitionProperties(properties.id());
-                Assert.assertNotNull(expected);
-                Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
-            })
-            .assertNext(properties -> {
-                final PartitionProperties expected = data.getPartitionProperties(properties.id());
-                Assert.assertNotNull(expected);
-                Assert.assertEquals(expected.eventHubPath(), properties.eventHubPath());
-            })
+            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
+            .assertNext(properties -> Assert.assertEquals(eventHubPath, properties.eventHubPath()))
             .verifyComplete();
     }
 
@@ -133,8 +125,6 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
-        skipIfNotRecordMode();
-
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final ConnectionStringProperties invalidCredentials = getCredentials(original.endpoint(), original.eventHubPath(),
@@ -164,8 +154,6 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
      */
     @Test
     public void getPartitionPropertiesNonExistentHub() {
-        skipIfNotRecordMode();
-
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
@@ -184,50 +172,6 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
                 Assert.assertFalse(ImplUtils.isNullOrEmpty(exception.getMessage()));
             })
             .verify();
-    }
-
-    /**
-     * Holds expected data based on the test-mode.
-     */
-    private static class ExpectedData {
-        private final EventHubProperties properties;
-        private final Map<String, PartitionProperties> partitionPropertiesMap;
-
-        ExpectedData(TestMode testMode, ConnectionStringProperties connectionStringProperties) {
-            final String eventHubPath;
-            final String[] partitionIds;
-            switch (testMode) {
-                case PLAYBACK:
-                    eventHubPath = "test-event-hub";
-                    partitionIds = new String[]{"test-1", "test-2"};
-                    break;
-                case RECORD:
-                    eventHubPath = connectionStringProperties.eventHubPath();
-                    partitionIds = new String[]{"0", "1"};
-                    break;
-                default:
-                    throw new IllegalArgumentException("Test mode not recognized.");
-            }
-
-            this.properties = new EventHubProperties(eventHubPath, Instant.EPOCH, partitionIds);
-            this.partitionPropertiesMap = new HashMap<>();
-
-            for (int i = 0; i < partitionIds.length; i++) {
-                final String key = String.valueOf(i);
-
-                this.partitionPropertiesMap.put(key, new PartitionProperties(
-                    eventHubPath, key, -1, -1,
-                    "lastEnqueued", Instant.now(), true));
-            }
-        }
-
-        EventHubProperties getProperties() {
-            return properties;
-        }
-
-        PartitionProperties getPartitionProperties(String id) {
-            return partitionPropertiesMap.get(id);
-        }
     }
 
     private static ConnectionStringProperties getCredentials(URI endpoint, String eventHubPath, String sasKeyName, String sasKeyValue) {
