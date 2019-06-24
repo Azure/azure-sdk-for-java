@@ -10,12 +10,10 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 
 import com.microsoft.azure.management.appservice.v2018_02_01.DetectorDefinition;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import rx.Observable;
 
 class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implements DetectorDefinition {
     private final AppServiceManager manager;
-
-    DetectorDefinitionImpl(DetectorDefinitionInner inner,  AppServiceManager manager) {
+    DetectorDefinitionImpl(DetectorDefinitionInner inner, AppServiceManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -24,8 +22,6 @@ class DetectorDefinitionImpl extends WrapperImpl<DetectorDefinitionInner> implem
     public AppServiceManager manager() {
         return this.manager;
     }
-
-
 
     @Override
     public String description() {

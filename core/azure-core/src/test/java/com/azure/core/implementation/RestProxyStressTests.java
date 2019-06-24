@@ -12,7 +12,7 @@ import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.PathParam;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -27,15 +27,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.ContentType;
-import com.azure.core.implementation.util.FlowableUtils;
 import com.azure.core.implementation.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ResourceLeakDetector;
-import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
-import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -71,7 +66,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -98,8 +92,7 @@ public class RestProxyStressTests {
             tempFolderPath = "temp";
         }
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         List<HttpPipelinePolicy> polices = new ArrayList<HttpPipelinePolicy>();
         polices.add(new AddDatePolicy());
@@ -115,7 +108,9 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-                new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
+            HttpPipeline.builder()
+                .policies(polices.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         RestProxyStressTests.tempFolderPath = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -223,10 +218,11 @@ public class RestProxyStressTests {
     }
 
     private static void create100MFiles(boolean recreate) throws IOException {
-        final Flowable<java.nio.ByteBuffer> contentGenerator = Flowable.generate(Random::new, (random, emitter) -> {
-            java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(CHUNK_SIZE);
-            random.nextBytes(buf.array());
-            emitter.onNext(buf);
+        final Flux<ByteBuf> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
+            byte[] ba = new byte[CHUNK_SIZE];
+            random.nextBytes(ba);
+            emitter.next(Unpooled.wrappedBuffer(ba));
+            return random;
         });
 
         if (recreate) {
@@ -238,9 +234,8 @@ public class RestProxyStressTests {
         } else {
             LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + tempFolderPath.toAbsolutePath());
             Files.createDirectory(tempFolderPath);
-            Flowable.range(0, NUM_FILES).flatMapCompletable(new Function<Integer, Completable>() {
-                @Override
-                public Completable apply(Integer integer) throws Exception {
+            Flux.range(0, NUM_FILES).flatMap(integer -> {
+                try {
                     final int i = integer;
                     final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
 
@@ -249,21 +244,23 @@ public class RestProxyStressTests {
                     final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
                     final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
-                    Flowable<java.nio.ByteBuffer> fileContent = contentGenerator
-                            .take(CHUNKS_PER_FILE)
-                            .doOnNext(buf -> messageDigest.update(buf.array()));
+                    Flux<ByteBuf> fileContent = contentGenerator
+                        .take(CHUNKS_PER_FILE)
+                        .doOnNext(buf -> messageDigest.update(buf.array()));
 
-                    return FlowableUtils.writeFile(fileContent, file).andThen(Completable.defer(new Callable<CompletableSource>() {
-                        @Override
-                        public CompletableSource call() throws Exception {
+                    return FluxUtil.bytebufStreamToFile(fileContent, file).then(Mono.fromRunnable(() -> {
+                        try {
                             file.close();
                             Files.write(tempFolderPath.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
-                            LoggerFactory.getLogger(getClass()).info("Finished writing file " + i);
-                            return Completable.complete();
+                            LoggerFactory.getLogger(RestProxyStressTests.class).info("Finished writing file " + i);
+                        } catch (Exception e) {
+                            throw Exceptions.propagate(e);
                         }
                     }));
+                } catch (Exception e) {
+                    return Flux.error(e);
                 }
-            }).blockingAwait();
+            }).blockLast();
         }
     }
 
@@ -496,8 +493,7 @@ public class RestProxyStressTests {
     public void testHighParallelism() {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        HttpHeaders headers = new HttpHeaders().put("x-ms-version", "2017-04-17");
         // Order in which policies applied will be the order in which they added to builder
         //
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -510,7 +506,9 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-                new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
+            HttpPipeline.builder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build());
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.
@@ -519,8 +517,8 @@ public class RestProxyStressTests {
                 .flatMap(integer ->
                         innerService.createContainer(integer.toString(), sas)
                                 .onErrorResume(throwable -> {
-                                    if (throwable instanceof HttpRequestException) {
-                                        HttpRequestException restException = (HttpRequestException) throwable;
+                                    if (throwable instanceof HttpResponseException) {
+                                        HttpResponseException restException = (HttpResponseException) throwable;
                                         if ((restException.response().statusCode() == 409 || restException.response().statusCode() == 404)) {
                                             return Mono.empty();
                                         }

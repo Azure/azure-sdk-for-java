@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RequestRetryOptions {
 
-    final private int maxTries;
-    final private int tryTimeout;
-    final private long retryDelayInMs;
-    final private long maxRetryDelayInMs;
+    private final int maxTries;
+    private final int tryTimeout;
+    private final long retryDelayInMs;
+    private final long maxRetryDelayInMs;
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
      */
@@ -82,8 +82,8 @@ public final class RequestRetryOptions {
             this.tryTimeout = 60;
         }
 
-        if ((retryDelayInMs == null && maxRetryDelayInMs != null) ||
-                (retryDelayInMs != null && maxRetryDelayInMs == null)) {
+        if ((retryDelayInMs == null && maxRetryDelayInMs != null)
+                || (retryDelayInMs != null && maxRetryDelayInMs == null)) {
             throw new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null");
         }
 
@@ -147,6 +147,8 @@ public final class RequestRetryOptions {
             case FIXED:
                 delay = this.retryDelayInMs;
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid retry policy type.");
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);

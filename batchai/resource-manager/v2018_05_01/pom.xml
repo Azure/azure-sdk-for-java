@@ -15,7 +15,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-batchai</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0-beta-2</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for BatchAI Management</name>
     <description>This package contains Microsoft BatchAI Management SDK.</description>

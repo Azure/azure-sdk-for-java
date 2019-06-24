@@ -52,6 +52,11 @@ class SiteAuthSettingsImpl extends WrapperImpl<SiteAuthSettingsInner> implements
     }
 
     @Override
+    public String clientSecretCertificateThumbprint() {
+        return this.inner().clientSecretCertificateThumbprint();
+    }
+
+    @Override
     public BuiltInAuthenticationProvider defaultProvider() {
         return this.inner().defaultProvider();
     }

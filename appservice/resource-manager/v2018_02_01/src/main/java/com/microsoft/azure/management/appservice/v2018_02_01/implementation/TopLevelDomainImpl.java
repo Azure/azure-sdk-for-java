@@ -20,6 +20,7 @@ class TopLevelDomainImpl extends IndexableRefreshableWrapperImpl<TopLevelDomain,
     TopLevelDomainImpl(TopLevelDomainInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "topLevelDomains");
     }
 

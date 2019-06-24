@@ -16,8 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class IpSecurityRestriction {
     /**
      * IP address the security restriction is valid for.
+     * It can be in form of pure ipv4 address (required SubnetMask property) or
+     * CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+     * SubnetMask property must not be specified.
      */
-    @JsonProperty(value = "ipAddress", required = true)
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
@@ -27,7 +30,59 @@ public class IpSecurityRestriction {
     private String subnetMask;
 
     /**
+     * Virtual network resource id.
+     */
+    @JsonProperty(value = "vnetSubnetResourceId")
+    private String vnetSubnetResourceId;
+
+    /**
+     * (internal) Vnet traffic tag.
+     */
+    @JsonProperty(value = "vnetTrafficTag")
+    private Integer vnetTrafficTag;
+
+    /**
+     * (internal) Subnet traffic tag.
+     */
+    @JsonProperty(value = "subnetTrafficTag")
+    private Integer subnetTrafficTag;
+
+    /**
+     * Allow or Deny access for this IP range.
+     */
+    @JsonProperty(value = "action")
+    private String action;
+
+    /**
+     * Defines what this IP filter will be used for. This is to support IP
+     * filtering on proxies. Possible values include: 'Default', 'XffProxy'.
+     */
+    @JsonProperty(value = "tag")
+    private IpFilterTag tag;
+
+    /**
+     * Priority of IP restriction rule.
+     */
+    @JsonProperty(value = "priority")
+    private Integer priority;
+
+    /**
+     * IP restriction rule name.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /**
+     * IP restriction rule description.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /**
      * Get iP address the security restriction is valid for.
+     It can be in form of pure ipv4 address (required SubnetMask property) or
+     CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+     SubnetMask property must not be specified.
      *
      * @return the ipAddress value
      */
@@ -37,6 +92,9 @@ public class IpSecurityRestriction {
 
     /**
      * Set iP address the security restriction is valid for.
+     It can be in form of pure ipv4 address (required SubnetMask property) or
+     CIDR notation such as ipv4/mask (leading bit match). For CIDR,
+     SubnetMask property must not be specified.
      *
      * @param ipAddress the ipAddress value to set
      * @return the IpSecurityRestriction object itself.
@@ -63,6 +121,166 @@ public class IpSecurityRestriction {
      */
     public IpSecurityRestriction withSubnetMask(String subnetMask) {
         this.subnetMask = subnetMask;
+        return this;
+    }
+
+    /**
+     * Get virtual network resource id.
+     *
+     * @return the vnetSubnetResourceId value
+     */
+    public String vnetSubnetResourceId() {
+        return this.vnetSubnetResourceId;
+    }
+
+    /**
+     * Set virtual network resource id.
+     *
+     * @param vnetSubnetResourceId the vnetSubnetResourceId value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withVnetSubnetResourceId(String vnetSubnetResourceId) {
+        this.vnetSubnetResourceId = vnetSubnetResourceId;
+        return this;
+    }
+
+    /**
+     * Get (internal) Vnet traffic tag.
+     *
+     * @return the vnetTrafficTag value
+     */
+    public Integer vnetTrafficTag() {
+        return this.vnetTrafficTag;
+    }
+
+    /**
+     * Set (internal) Vnet traffic tag.
+     *
+     * @param vnetTrafficTag the vnetTrafficTag value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withVnetTrafficTag(Integer vnetTrafficTag) {
+        this.vnetTrafficTag = vnetTrafficTag;
+        return this;
+    }
+
+    /**
+     * Get (internal) Subnet traffic tag.
+     *
+     * @return the subnetTrafficTag value
+     */
+    public Integer subnetTrafficTag() {
+        return this.subnetTrafficTag;
+    }
+
+    /**
+     * Set (internal) Subnet traffic tag.
+     *
+     * @param subnetTrafficTag the subnetTrafficTag value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withSubnetTrafficTag(Integer subnetTrafficTag) {
+        this.subnetTrafficTag = subnetTrafficTag;
+        return this;
+    }
+
+    /**
+     * Get allow or Deny access for this IP range.
+     *
+     * @return the action value
+     */
+    public String action() {
+        return this.action;
+    }
+
+    /**
+     * Set allow or Deny access for this IP range.
+     *
+     * @param action the action value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withAction(String action) {
+        this.action = action;
+        return this;
+    }
+
+    /**
+     * Get defines what this IP filter will be used for. This is to support IP filtering on proxies. Possible values include: 'Default', 'XffProxy'.
+     *
+     * @return the tag value
+     */
+    public IpFilterTag tag() {
+        return this.tag;
+    }
+
+    /**
+     * Set defines what this IP filter will be used for. This is to support IP filtering on proxies. Possible values include: 'Default', 'XffProxy'.
+     *
+     * @param tag the tag value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withTag(IpFilterTag tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    /**
+     * Get priority of IP restriction rule.
+     *
+     * @return the priority value
+     */
+    public Integer priority() {
+        return this.priority;
+    }
+
+    /**
+     * Set priority of IP restriction rule.
+     *
+     * @param priority the priority value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withPriority(Integer priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    /**
+     * Get iP restriction rule name.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set iP restriction rule name.
+     *
+     * @param name the name value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get iP restriction rule description.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set iP restriction rule description.
+     *
+     * @param description the description value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withDescription(String description) {
+        this.description = description;
         return this;
     }
 

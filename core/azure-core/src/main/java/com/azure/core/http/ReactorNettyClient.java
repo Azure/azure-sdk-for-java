@@ -59,13 +59,12 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(request.url());
         Objects.requireNonNull(request.url().getProtocol());
         //
-        Mono<HttpResponse> response = httpClient
-                .request(HttpMethod.valueOf(request.httpMethod().toString()))
-                .uri(request.url().toString())
-                .send(bodySendDelegate(request))
-                .responseConnection(responseDelegate(request))
-                .single();
-        return response;
+        return httpClient
+            .request(HttpMethod.valueOf(request.httpMethod().toString()))
+            .uri(request.url().toString())
+            .send(bodySendDelegate(request))
+            .responseConnection(responseDelegate(request))
+            .single();
     }
 
     /**
@@ -75,9 +74,11 @@ class ReactorNettyClient implements HttpClient {
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
-        BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> sendDelegate = (reactorNettyRequest, reactorNettyOutbound) -> {
+        return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader header : restRequest.headers()) {
-                reactorNettyRequest.header(header.name(), header.value());
+                if (header.value() != null) {
+                    reactorNettyRequest.header(header.name(), header.value());
+                }
             }
             if (restRequest.body() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.body().map(Unpooled::wrappedBuffer);
@@ -86,7 +87,6 @@ class ReactorNettyClient implements HttpClient {
                 return reactorNettyOutbound;
             }
         };
-        return sendDelegate;
     }
 
     /**
@@ -140,7 +140,7 @@ class ReactorNettyClient implements HttpClient {
         @Override
         public HttpHeaders headers() {
             HttpHeaders headers = new HttpHeaders();
-            reactorNettyResponse.responseHeaders().forEach(e -> headers.set(e.getKey(), e.getValue()));
+            reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
             return headers;
         }
 

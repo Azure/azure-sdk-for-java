@@ -3,7 +3,20 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.PageBlobClearPagesResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobCopyIncrementalResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobCreateResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesDiffResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobGetPageRangesResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobResizeResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobUpdateSequenceNumberResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesFromURLResponse;
+import com.microsoft.azure.storage.blob.models.PageBlobUploadPagesResponse;
+import com.microsoft.azure.storage.blob.models.PageRange;
+import com.microsoft.azure.storage.blob.models.SequenceNumberActionType;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -52,8 +65,8 @@ public final class PageBlobURL extends BlobURL {
 
     private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.start() < 0 || pageRange.end() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to " +
-                    "0 if specified.");
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                    + "0 if specified.");
         }
         if (pageRange.start() % PageBlobURL.PAGE_BYTES != 0) {
             throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
@@ -226,8 +239,8 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobUploadPagesResponse> uploadPages(PageRange pageRange, Flowable<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
-                pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
+                : pageBlobAccessConditions;
 
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -316,7 +329,7 @@ public final class PageBlobURL extends BlobURL {
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Context context) {
 
-        if(range == null) {
+        if (range == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("range cannot be null.");
@@ -386,8 +399,8 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobClearPagesResponse> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Context context) {
-        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() :
-                pageBlobAccessConditions;
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions()
+                : pageBlobAccessConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.

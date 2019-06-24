@@ -3,6 +3,9 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -17,9 +20,16 @@ import reactor.core.publisher.Mono;
 public class UserAgentPolicy implements HttpPipelinePolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
 
-    // From the design guidelines, the user agent header format is:
+    // From the design guidelines, the default user agent header format is:
     // azsdk-java-<client_lib>/<sdk_version> <platform_info>
     private static final String USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s %s";
+
+    // When the AZURE_TELEMETRY_DISABLED configuration is true remove the <platform_info> portion of the user agent.
+    private static final String DISABLED_TELEMETRY_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s";
+
+    // From the design guidelines, the platform info format is:
+    // <language runtime>; <os name> <os version>
+    private static final String PLATFORM_INFO_FORMAT = "%s; %s %s";
 
     private final String userAgent;
 
@@ -47,12 +57,20 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
+     * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be included
+     * in the user agent.
+     *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
+     * @param configuration Configuration store that will be checked for the AZURE_TELEMETRY_DISABLED.
      */
-    public UserAgentPolicy(String sdkName, String sdkVersion) {
-        String platformInfo = System.getProperty("java.version") + "; " + getOSInformation();
-        this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, platformInfo);
+    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration) {
+        boolean telemetryDisabled = configuration.get(BaseConfigurations.AZURE_TELEMETRY_DISABLED, false);
+        if (telemetryDisabled) {
+            this.userAgent = String.format(DISABLED_TELEMETRY_USER_AGENT_FORMAT, sdkName, sdkVersion);
+        } else {
+            this.userAgent = String.format(USER_AGENT_FORMAT, sdkName, sdkVersion, getPlatformInfo());
+        }
     }
 
     @Override
@@ -63,11 +81,15 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         } else {
             header = userAgent + " " + header;
         }
-        context.httpRequest().headers().set("User-Agent", header);
+        context.httpRequest().headers().put("User-Agent", header);
         return next.process();
     }
 
-    private static String getOSInformation() {
-        return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
+    private static String getPlatformInfo() {
+        String javaVersion = ConfigurationManager.getConfiguration().get("java.version");
+        String osName = ConfigurationManager.getConfiguration().get("os.name");
+        String osVersion = ConfigurationManager.getConfiguration().get("os.version");
+
+        return String.format(PLATFORM_INFO_FORMAT, javaVersion, osName, osVersion);
     }
 }

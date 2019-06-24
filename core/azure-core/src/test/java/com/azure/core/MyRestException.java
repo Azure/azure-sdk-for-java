@@ -4,10 +4,10 @@
 package com.azure.core;
 
 import com.azure.core.entities.HttpBinJSON;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-public class MyRestException extends HttpRequestException {
+public class MyRestException extends HttpResponseException {
     /**
      * Creates a service request exception.
      *

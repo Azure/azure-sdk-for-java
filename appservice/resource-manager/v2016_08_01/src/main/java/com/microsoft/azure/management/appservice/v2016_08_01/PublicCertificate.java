@@ -79,6 +79,9 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -89,6 +92,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithBlob {
             /**
              * Specifies blob.
+             * @param blob Public Certificate byte array
+             * @return the next definition stage
              */
             WithCreate withBlob(byte[] blob);
         }
@@ -99,6 +104,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -109,6 +116,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithPublicCertificateLocation {
             /**
              * Specifies publicCertificateLocation.
+             * @param publicCertificateLocation Public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'
+             * @return the next definition stage
              */
             WithCreate withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation);
         }
@@ -137,6 +146,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithBlob {
             /**
              * Specifies blob.
+             * @param blob Public Certificate byte array
+             * @return the next update stage
              */
             Update withBlob(byte[] blob);
         }
@@ -147,6 +158,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -157,6 +170,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithPublicCertificateLocation {
             /**
              * Specifies publicCertificateLocation.
+             * @param publicCertificateLocation Public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'
+             * @return the next update stage
              */
             Update withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation);
         }
