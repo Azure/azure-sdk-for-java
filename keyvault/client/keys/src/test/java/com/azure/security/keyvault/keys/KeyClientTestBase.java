@@ -9,9 +9,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.identity.credential.AzureCredential;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.Key;
-import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import org.junit.Rule;
@@ -22,11 +20,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -55,8 +49,7 @@ public abstract class KeyClientTestBase extends TestBase {
     <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
         final String endpoint = interceptorManager.isPlaybackMode()
                 ? "http://localhost:8080"
-                : "https://cameravault.vault.azure.net";
-               // : System.getenv("AZURE_KEYVAULT_ENDPOINT");
+                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
 
         TokenCredential credential;
 
@@ -229,54 +222,22 @@ public abstract class KeyClientTestBase extends TestBase {
     @Test
     public abstract void listKeys();
 
-    void listKeysRunner(Function<List<KeyCreateOptions>, Iterable<KeyBase>> testRunner) {
+    void listKeysRunner(Consumer<HashMap<String, KeyCreateOptions>> testRunner) {
         HashMap<String, KeyCreateOptions> keys = new HashMap<>();
-        List<KeyCreateOptions> keysList = new ArrayList<>();
         String keyName;
         for (int i = 0; i < 30; i++) {
             keyName = "listKey" + i;
             KeyCreateOptions secret =  new KeyCreateOptions(keyName, RSA_KEY_TYPE)
                     .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             keys.put(keyName, secret);
-            keysList.add(secret);
         }
-        for (KeyBase actualSecret : testRunner.apply(keysList)) {
-            if (keys.containsKey(actualSecret.name())) {
-                KeyCreateOptions expectedSecret = keys.get(actualSecret.name());
-                assertEquals(expectedSecret.expires(), actualSecret.expires());
-                assertEquals(expectedSecret.notBefore(), actualSecret.notBefore());
-                keys.remove(actualSecret.name());
-            }
-        }
-        assertEquals(0, keys.size());
-    }
-
-    @Test
-    public abstract void listDeletedKeys();
-
-    void listDeletedKeysRunner(Function<HashMap<String, KeyCreateOptions>, Iterable<DeletedKey>> testRunner) {
-        HashMap<String, KeyCreateOptions> secrets = new HashMap<>();
-        String keyName;
-        for (int i = 0; i < 3; i++) {
-            keyName = "listDeletedKeysTest" + i;
-            secrets.put(keyName, new KeyCreateOptions(keyName, RSA_KEY_TYPE)
-                    .expires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
-
-        }
-        for (DeletedKey actualSecret : testRunner.apply(secrets)) {
-            if (secrets.containsKey(actualSecret.name())) {
-                assertNotNull(actualSecret.deletedDate());
-                assertNotNull(actualSecret.recoveryId());
-                secrets.remove(actualSecret.name());
-            }
-        }
-        assertEquals(0, secrets.size());
+        testRunner.accept(keys);
     }
 
     @Test
     public abstract void listKeyVersions();
 
-    void listKeyVersionsRunner(Function<List<KeyCreateOptions>, Iterable<KeyBase>> testRunner) {
+    void listKeyVersionsRunner(Consumer<List<KeyCreateOptions>> testRunner) {
         List<KeyCreateOptions> keys = new ArrayList<>();
         String keyName;
         for (int i = 1; i < 5; i++) {
@@ -285,11 +246,22 @@ public abstract class KeyClientTestBase extends TestBase {
                     .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
 
-        int versions = 0;
-        for (KeyBase key : testRunner.apply(keys)) {
-            versions++;
+        testRunner.accept(keys);
+    }
+
+    @Test
+    public abstract void listDeletedKeys();
+
+    void listDeletedKeysRunner(Consumer<HashMap<String, KeyCreateOptions>> testRunner) {
+        HashMap<String, KeyCreateOptions> keys = new HashMap<>();
+        String keyName;
+        for (int i = 0; i < 3; i++) {
+            keyName = "listDeletedKeysTest" + i;
+            keys.put(keyName, new KeyCreateOptions(keyName, RSA_KEY_TYPE)
+                    .expires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
+
         }
-        assertEquals(4, versions);
+        testRunner.accept(keys);
     }
 
     /**
@@ -332,8 +304,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public String getEndpoint() {
         final String endpoint = interceptorManager.isPlaybackMode()
                 ? "http://localhost:8080"
-               // : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-                : "https://cameravault.vault.azure.net";
+                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

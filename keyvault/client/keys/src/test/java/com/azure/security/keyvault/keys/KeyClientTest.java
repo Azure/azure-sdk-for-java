@@ -15,6 +15,7 @@ import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -153,23 +154,6 @@ public class KeyClientTest extends KeyClientTestBase {
         assertRestException(() -> client.deleteKey("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
 
-    /**
-     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
-     */
-    public void getDeletedKey() {
-        getDeletedKeyRunner((keyToDeleteAndGet) -> {
-            assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
-            assertNotNull(client.deleteKey(keyToDeleteAndGet.name()).value());
-            pollOnKeyDeletion(keyToDeleteAndGet.name());
-            DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name()).value();
-            assertNotNull(deletedKey.deletedDate());
-            assertNotNull(deletedKey.recoveryId());
-            assertNotNull(deletedKey.scheduledPurgeDate());
-            assertEquals(keyToDeleteAndGet.name(), deletedKey.name());
-            client.purgeDeletedKey(keyToDeleteAndGet.name());
-            pollOnKeyPurge(keyToDeleteAndGet.name());
-        });
-    }
 
     /**
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
@@ -253,22 +237,51 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     public void listKeys() {
         listKeysRunner((keys) -> {
-            List<KeyCreateOptions> keysToList = keys;
-            for (KeyCreateOptions key :  keysToList) {
+            HashMap<String, KeyCreateOptions> keysToList = keys;
+            for (KeyCreateOptions key :  keysToList.values()) {
                 assertKeyEquals(key, client.createKey(key));
                 sleep(5000);
             }
-            return client.listKeys();
+
+            for (KeyBase actualKey : client.listKeys()) {
+                if (keys.containsKey(actualKey.name())) {
+                    KeyCreateOptions expectedKey = keys.get(actualKey.name());
+                    assertEquals(expectedKey.expires(), actualKey.expires());
+                    assertEquals(expectedKey.notBefore(), actualKey.notBefore());
+                    keys.remove(actualKey.name());
+                }
+            }
+            assertEquals(0, keys.size());
         });
     }
 
+    /**
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
+     */
+    public void getDeletedKey() {
+        getDeletedKeyRunner((keyToDeleteAndGet) -> {
+            assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
+            assertNotNull(client.deleteKey(keyToDeleteAndGet.name()).value());
+            pollOnKeyDeletion(keyToDeleteAndGet.name());
+            sleepInRecordMode(30000);
+            DeletedKey deletedKey = client.getDeletedKey(keyToDeleteAndGet.name()).value();
+            assertNotNull(deletedKey.deletedDate());
+            assertNotNull(deletedKey.recoveryId());
+            assertNotNull(deletedKey.scheduledPurgeDate());
+            assertEquals(keyToDeleteAndGet.name(), deletedKey.name());
+            client.purgeDeletedKey(keyToDeleteAndGet.name());
+            pollOnKeyPurge(keyToDeleteAndGet.name());
+            sleepInRecordMode(10000);
+        });
+    }
+//
+//
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
     @Override
     public void listDeletedKeys() {
         listDeletedKeysRunner((keys) -> {
-
             HashMap<String, KeyCreateOptions> keysToDelete = keys;
             for (KeyCreateOptions key : keysToDelete.values()) {
                 assertKeyEquals(key, client.createKey(key));
@@ -278,13 +291,23 @@ public class KeyClientTest extends KeyClientTestBase {
                 client.deleteKey(key.name());
                 pollOnKeyDeletion(key.name());
             }
+            sleepInRecordMode(60000);
             Iterable<DeletedKey> deletedKeys =  client.listDeletedKeys();
+            for (DeletedKey actualKey : deletedKeys) {
+                if (keysToDelete.containsKey(actualKey.name())) {
+                    assertNotNull(actualKey.deletedDate());
+                    assertNotNull(actualKey.recoveryId());
+                    keysToDelete.remove(actualKey.name());
+                }
+            }
+
+            assertEquals(0, keysToDelete.size());
 
             for (DeletedKey deletedKey : deletedKeys) {
                 client.purgeDeletedKey(deletedKey.name());
                 pollOnKeyPurge(deletedKey.name());
             }
-            return deletedKeys;
+            sleepInRecordMode(10000);
         });
     }
 
@@ -302,14 +325,15 @@ public class KeyClientTest extends KeyClientTestBase {
             }
 
             Iterable<KeyBase> keyVersionsOutput =  client.listKeyVersions(keyName);
+            List<KeyBase> keyVersionsList = new ArrayList<>();
+            keyVersionsOutput.forEach(keyVersionsList::add);
+            assertEquals(keyVersions.size(), keyVersionsList.size());
 
             client.deleteKey(keyName);
             pollOnKeyDeletion(keyName);
 
             client.purgeDeletedKey(keyName);
             pollOnKeyPurge(keyName);
-
-            return keyVersionsOutput;
         });
 
     }

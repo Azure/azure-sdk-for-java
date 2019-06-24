@@ -9,9 +9,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.identity.credential.AzureCredential;
-import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
-import com.azure.security.keyvault.secrets.models.SecretBase;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -227,9 +225,8 @@ public abstract class SecretClientTestBase extends TestBase {
     @Test
     public abstract void listSecrets();
 
-    void listSecretsRunner(Function<List<Secret>, Iterable<SecretBase>> testRunner) {
+    void listSecretsRunner(Consumer<HashMap<String, Secret>> testRunner) {
         HashMap<String, Secret> secrets = new HashMap<>();
-        List<Secret> secretsList = new ArrayList<>();
         String secretName;
         String secretVal;
         for (int i = 0; i < 30; i++) {
@@ -238,23 +235,14 @@ public abstract class SecretClientTestBase extends TestBase {
             Secret secret =  new Secret(secretName, secretVal)
                     .expires(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
             secrets.put(secretName, secret);
-            secretsList.add(secret);
         }
-        for (SecretBase actualSecret : testRunner.apply(secretsList)) {
-            if (secrets.containsKey(actualSecret.name())) {
-                Secret expectedSecret = secrets.get(actualSecret.name());
-                assertEquals(expectedSecret.expires(), actualSecret.expires());
-                assertEquals(expectedSecret.notBefore(), actualSecret.notBefore());
-                secrets.remove(actualSecret.name());
-            }
-        }
-        assertEquals(0, secrets.size());
+        testRunner.accept(secrets);
     }
 
     @Test
     public abstract void listDeletedSecrets();
 
-    void listDeletedSecretsRunner(Function<HashMap<String, Secret>, Iterable<DeletedSecret>> testRunner) {
+    void listDeletedSecretsRunner(Consumer<HashMap<String, Secret>> testRunner) {
         HashMap<String, Secret> secrets = new HashMap<>();
         String secretName;
         String secretVal;
@@ -265,21 +253,14 @@ public abstract class SecretClientTestBase extends TestBase {
                     .expires(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
 
         }
-        for (DeletedSecret actualSecret : testRunner.apply(secrets)) {
-            if (secrets.containsKey(actualSecret.name())) {
-                assertNotNull(actualSecret.deletedDate());
-                assertNotNull(actualSecret.recoveryId());
-                secrets.remove(actualSecret.name());
-            }
-        }
-        assertEquals(0, secrets.size());
+        testRunner.accept(secrets);
     }
 
 
     @Test
     public abstract void listSecretVersions();
 
-    void listSecretVersionsRunner(Function<List<Secret>, Iterable<SecretBase>> testRunner) {
+    void listSecretVersionsRunner(Consumer<List<Secret>> testRunner) {
         List<Secret> secrets = new ArrayList<>();
         String secretName;
         String secretVal;
@@ -289,12 +270,7 @@ public abstract class SecretClientTestBase extends TestBase {
             secrets.add(new Secret(secretName, secretVal)
                     .expires(OffsetDateTime.of(2090, 5, i, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
-
-        int versions = 0;
-        for (SecretBase secret : testRunner.apply(secrets)) {
-            versions++;
-        }
-        assertEquals(4, versions);
+        testRunner.accept(secrets);
     }
 
     /**

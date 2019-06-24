@@ -13,6 +13,7 @@ import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -158,6 +159,7 @@ public class SecretClientTest extends SecretClientTestBase {
             assertSecretEquals(secretToDeleteAndGet, client.setSecret(secretToDeleteAndGet));
             assertNotNull(client.deleteSecret(secretToDeleteAndGet.name()).value());
             pollOnSecretDeletion(secretToDeleteAndGet.name());
+            sleepInRecordMode(30000);
             DeletedSecret deletedSecret = client.getDeletedSecret(secretToDeleteAndGet.name()).value();
             assertNotNull(deletedSecret.deletedDate());
             assertNotNull(deletedSecret.recoveryId());
@@ -165,6 +167,7 @@ public class SecretClientTest extends SecretClientTestBase {
             assertEquals(secretToDeleteAndGet.name(), deletedSecret.name());
             client.purgeDeletedSecret(secretToDeleteAndGet.name());
             pollOnSecretPurge(secretToDeleteAndGet.name());
+            sleepInRecordMode(10000);
         });
     }
 
@@ -250,11 +253,20 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
-            List<Secret> secretsToList = secrets;
-            for (Secret secret :  secretsToList) {
+            HashMap<String, Secret> secretsToList = secrets;
+            for (Secret secret :  secretsToList.values()) {
                 assertSecretEquals(secret, client.setSecret(secret));
             }
-            return client.listSecrets();
+
+            for (SecretBase actualSecret : client.listSecrets()) {
+                if (secretsToList.containsKey(actualSecret.name())) {
+                    Secret expectedSecret = secrets.get(actualSecret.name());
+                    assertEquals(expectedSecret.expires(), actualSecret.expires());
+                    assertEquals(expectedSecret.notBefore(), actualSecret.notBefore());
+                    secrets.remove(actualSecret.name());
+                }
+            }
+            assertEquals(0, secrets.size());
         });
     }
 
@@ -274,13 +286,24 @@ public class SecretClientTest extends SecretClientTestBase {
                 client.deleteSecret(secret.name());
                 pollOnSecretDeletion(secret.name());
             }
+
+            sleepInRecordMode(60000);
             Iterable<DeletedSecret> deletedSecrets =  client.listDeletedSecrets();
+            for (DeletedSecret actualSecret : deletedSecrets) {
+                if (secretsToDelete.containsKey(actualSecret.name())) {
+                    assertNotNull(actualSecret.deletedDate());
+                    assertNotNull(actualSecret.recoveryId());
+                    secretsToDelete.remove(actualSecret.name());
+                }
+            }
+
+            assertEquals(0, secretsToDelete.size());
 
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 client.purgeDeletedSecret(deletedSecret.name());
                 pollOnSecretPurge(deletedSecret.name());
             }
-            return deletedSecrets;
+            sleepInRecordMode(10000);
         });
     }
 
@@ -298,14 +321,15 @@ public class SecretClientTest extends SecretClientTestBase {
             }
 
             Iterable<SecretBase> secretVersionsOutput =  client.listSecretVersions(secretName);
+            List<SecretBase> secretVersionsList = new ArrayList<>();
+            secretVersionsOutput.forEach(secretVersionsList::add);
+            assertEquals(secretVersions.size(), secretVersionsList.size());
 
             client.deleteSecret(secretName);
             pollOnSecretDeletion(secretName);
 
             client.purgeDeletedSecret(secretName);
             pollOnSecretPurge(secretName);
-
-            return secretVersionsOutput;
         });
 
     }

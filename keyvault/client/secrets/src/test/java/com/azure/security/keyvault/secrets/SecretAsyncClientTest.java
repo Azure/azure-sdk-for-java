@@ -217,7 +217,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertNotNull(deletedSecret);
                     }).verifyComplete();
             pollOnSecretDeletion(secretToDeleteAndGet.name());
-            sleep(20000);
+            sleep(30000);
 
             StepVerifier.create(client.getDeletedSecret(secretToDeleteAndGet.name()))
                     .assertNext(deletedSecretResponse -> {
@@ -382,6 +382,16 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             client.listDeletedSecrets().subscribe(deletedSecrets::add);
             sleepInRecordMode(30000);
 
+            for (DeletedSecret actualSecret : deletedSecrets) {
+                if (secretsToDelete.containsKey(actualSecret.name())) {
+                    assertNotNull(actualSecret.deletedDate());
+                    assertNotNull(actualSecret.recoveryId());
+                    secretsToDelete.remove(actualSecret.name());
+                }
+            }
+
+            assertEquals(0, secretsToDelete.size());
+
             for (DeletedSecret deletedSecret : deletedSecrets) {
                 StepVerifier.create(client.purgeDeletedSecret(deletedSecret.name()))
                         .assertNext(voidResponse -> {
@@ -389,7 +399,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         }).verifyComplete();
                 pollOnSecretPurge(deletedSecret.name());
             }
-            return deletedSecrets;
         });
     }
 
@@ -411,6 +420,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             client.listSecretVersions(secretName).subscribe(output::add);
             sleep(30000);
 
+            assertEquals(secretVersions.size(), output.size());
+
             StepVerifier.create(client.deleteSecret(secretName))
                     .assertNext(deletedSecretResponse -> {
                         DeletedSecret deletedSecret = deletedSecretResponse.value();
@@ -424,7 +435,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
                     }).verifyComplete();
             pollOnSecretPurge(secretName);
-            return output;
         });
 
     }
@@ -434,16 +444,25 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     public void listSecrets() {
         listSecretsRunner((secrets) -> {
-            List<Secret> secretsToList = secrets;
+            HashMap<String, Secret> secretsToList = secrets;
             List<SecretBase> output = new ArrayList<>();
-            for (Secret secret : secretsToList) {
+            for (Secret secret : secretsToList.values()) {
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse.value()));
                 sleepInRecordMode(1000);
             }
             sleep(30000);
             client.listSecrets().subscribe(output::add);
             sleep(30000);
-            return output;
+
+            for (SecretBase actualSecret : output) {
+                if (secretsToList.containsKey(actualSecret.name())) {
+                    Secret expectedSecret = secrets.get(actualSecret.name());
+                    assertEquals(expectedSecret.expires(), actualSecret.expires());
+                    assertEquals(expectedSecret.notBefore(), actualSecret.notBefore());
+                    secrets.remove(actualSecret.name());
+                }
+            }
+            assertEquals(0, secrets.size());
         });
     }
 
