@@ -11,15 +11,14 @@ package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implement
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstance;
 import rx.Observable;
-import java.util.Map;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HardwareProfile;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
-import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.NetworkProfile;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaProvisioningStatesEnum;
 
-class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance, HanaInstance.Update {
-    private Map<String, String> utags;
+class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance, HanaInstance.Definition, HanaInstance.Update {
     HanaInstanceImpl(String name, HanaInstanceInner inner, HanaOnAzureManager manager) {
         super(name, inner, manager);
     }
@@ -27,13 +26,14 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     @Override
     public Observable<HanaInstance> createResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return null; // NOP createResourceAsync implementation as create is not supported
+        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<HanaInstance> updateResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.utags)
+        return client.createAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -75,8 +75,18 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     }
 
     @Override
+    public String partnerNodeId() {
+        return this.inner().partnerNodeId();
+    }
+
+    @Override
     public HanaInstancePowerStateEnum powerState() {
         return this.inner().powerState();
+    }
+
+    @Override
+    public HanaProvisioningStatesEnum provisioningState() {
+        return this.inner().provisioningState();
     }
 
     @Override
@@ -90,8 +100,32 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     }
 
     @Override
-    public HanaInstanceImpl withTags(Map<String, String> tags) {
-        this.utags = tags;
+    public HanaInstanceImpl withHardwareProfile(HardwareProfile hardwareProfile) {
+        this.inner().withHardwareProfile(hardwareProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withNetworkProfile(NetworkProfile networkProfile) {
+        this.inner().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withOsProfile(OSProfile osProfile) {
+        this.inner().withOsProfile(osProfile);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withPartnerNodeId(String partnerNodeId) {
+        this.inner().withPartnerNodeId(partnerNodeId);
+        return this;
+    }
+
+    @Override
+    public HanaInstanceImpl withStorageProfile(StorageProfile storageProfile) {
+        this.inner().withStorageProfile(storageProfile);
         return this;
     }
 
