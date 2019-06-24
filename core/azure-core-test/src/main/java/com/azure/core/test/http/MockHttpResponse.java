@@ -68,7 +68,7 @@ public class MockHttpResponse extends HttpResponse {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = ImplUtils.clone(bodyBytes);
-        this.withRequest(request);
+        this.request(request);
     }
 
     /**
