@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
+
+import com.azure.storage.blob.ContainerClient;
 
 /**
  * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link ContainerClient}

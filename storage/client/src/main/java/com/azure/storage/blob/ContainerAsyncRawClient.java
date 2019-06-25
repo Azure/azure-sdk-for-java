@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
 import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
@@ -20,6 +21,8 @@ import com.azure.storage.blob.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.models.ContainersSetAccessPolicyResponse;
 import com.azure.storage.blob.models.ContainersSetMetadataResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;

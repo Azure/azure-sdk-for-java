@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;

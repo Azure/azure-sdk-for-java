@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobRange;
 import reactor.netty.ByteBufFlux;
 
 import java.io.ByteArrayInputStream;

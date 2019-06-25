@@ -2,6 +2,7 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobType;
+import com.azure.storage.blob.models.Metadata;
 
 public class BlobProperties {
 

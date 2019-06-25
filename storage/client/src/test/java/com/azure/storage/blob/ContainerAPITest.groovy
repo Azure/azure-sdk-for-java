@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PublicAccessType
 import org.junit.Assume
 import spock.lang.Unroll

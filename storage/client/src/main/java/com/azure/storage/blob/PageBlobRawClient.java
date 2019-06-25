@@ -4,8 +4,12 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
 import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
 import com.azure.storage.blob.models.PageBlobsCreateResponse;

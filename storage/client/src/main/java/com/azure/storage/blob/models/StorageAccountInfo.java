@@ -1,25 +1,23 @@
-package com.azure.storage.blob;
-
-import com.azure.storage.blob.models.*;
+package com.azure.storage.blob.models;
 
 public class StorageAccountInfo {
 
-    private SkuName skuName;
+    private final SkuName skuName;
 
-    private AccountKind accountKind;
+    private final AccountKind accountKind;
 
 
-    StorageAccountInfo(BlobGetAccountInfoHeaders generatedResponseHeaders) {
+    public StorageAccountInfo(BlobGetAccountInfoHeaders generatedResponseHeaders) {
         this.skuName = generatedResponseHeaders.skuName();
         this.accountKind = generatedResponseHeaders.accountKind();
     }
 
-    StorageAccountInfo(ContainerGetAccountInfoHeaders generatedResponseHeaders) {
+    public StorageAccountInfo(ContainerGetAccountInfoHeaders generatedResponseHeaders) {
         this.skuName = generatedResponseHeaders.skuName();
         this.accountKind = generatedResponseHeaders.accountKind();
     }
 
-    StorageAccountInfo(ServiceGetAccountInfoHeaders generatedResponseHeaders) {
+    public StorageAccountInfo(ServiceGetAccountInfoHeaders generatedResponseHeaders) {
         this.skuName = generatedResponseHeaders.skuName();
         this.accountKind = generatedResponseHeaders.accountKind();
     }
