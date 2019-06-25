@@ -22,6 +22,7 @@ import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceVul
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ServerVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.InstancePools;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.Usages;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -35,6 +36,7 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
     private InstancePools instancePools;
     private Usages usages;
+    private ManagedInstances managedInstances;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -140,6 +142,16 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.usages = new UsagesImpl(this);
         }
         return this.usages;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstances.
+     */
+    public ManagedInstances managedInstances() {
+        if (this.managedInstances == null) {
+            this.managedInstances = new ManagedInstancesImpl(this);
+        }
+        return this.managedInstances;
     }
 
     /**
