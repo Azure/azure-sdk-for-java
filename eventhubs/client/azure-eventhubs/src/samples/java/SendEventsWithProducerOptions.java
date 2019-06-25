@@ -60,8 +60,8 @@ public class SendEventsWithProducerOptions {
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
         producer.send(dataList).subscribe(
-            (ignored) -> System.out.println("A list of Event sent.")
-            , error -> {
+            (ignored) -> System.out.println("A list of Event sent."),
+            error -> {
                 System.err.println("There was an error sending the event: " + error.toString());
 
                 if (error instanceof AmqpException) {

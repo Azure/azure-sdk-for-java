@@ -36,11 +36,11 @@ public class GetEventHubMetadata {
                 properties.eventHubPath(), properties.id(), properties.lastEnqueuedSequenceNumber(),
                 properties.lastEnqueuedOffset()));
         }, error -> {
-            System.err.println("Error occurred while fetching partition properties: " + error.toString());
-        }, () -> {
-            // Releasing the semaphore now that we've finished querying for partition properties.
-            semaphore.release();
-        });
+                System.err.println("Error occurred while fetching partition properties: " + error.toString());
+            }, () -> {
+                // Releasing the semaphore now that we've finished querying for partition properties.
+                semaphore.release();
+            });
 
         System.out.println("Waiting for partition properties to complete...");
         semaphore.acquire();

@@ -30,29 +30,29 @@ public class HelloWorld {
 
         // Querying the partition identifiers for the Event Hub. Then calling client.getPartitionProperties with the
         // identifier to get information about each partition.
-        client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId)).subscribe(properties -> {
-            System.out.println("The Event Hub has the following properties:");
-            System.out.println(String.format(
-                "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
-                    + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s",
-                properties.eventHubPath(), properties.id(), properties.isEmpty(),
-                properties.beginningSequenceNumber(),
-                properties.lastEnqueuedTime(),
-                properties.lastEnqueuedSequenceNumber(),
-                properties.lastEnqueuedOffset()));
-        }, error -> {
-            System.err.println("Error occurred while fetching partition properties: " + error.toString());
-        }, () -> {
-            // Releasing the semaphore now that we've finished querying for partition properties.
-            semaphore.release();
+        client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId)).subscribe(
+            properties -> {
+                System.out.println("The Event Hub has the following properties:");
+                System.out.println(String.format(
+                    "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
+                        + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s",
+                    properties.eventHubPath(), properties.id(), properties.isEmpty(),
+                    properties.beginningSequenceNumber(),
+                    properties.lastEnqueuedTime(),
+                    properties.lastEnqueuedSequenceNumber(),
+                    properties.lastEnqueuedOffset()));
+            }, error -> {
+                    System.err.println("Error occurred while fetching partition properties: " + error.toString());
+            }, () -> {
+                // Releasing the semaphore now that we've finished querying for partition properties.
+                semaphore.release();
 
-            // Close the client resource
-            client.close();
-        });
+                // Close the client resource
+                client.close();
+            });
 
         System.out.println("Waiting for partition properties to complete...");
         semaphore.acquire();
         System.out.println("Finished.");
-
     }
 }
