@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.azure.storage.blob.ContainerClient;
 
 import java.util.ArrayList;
 
@@ -111,7 +111,7 @@ public final class BlobListDetails {
     This is used internally to convert the details structure into a list to pass to the protocol layer. The customer
     should never have need for this.
      */
-    ArrayList<ListBlobsIncludeItem> toList() {
+    public ArrayList<ListBlobsIncludeItem> toList() {
         ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();
         if (this.copy) {
             details.add(ListBlobsIncludeItem.COPY);

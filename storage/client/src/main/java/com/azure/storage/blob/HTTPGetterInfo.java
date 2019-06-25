@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.BlobAccessConditions;
+
 import java.time.Duration;
 
 /**

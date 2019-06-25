@@ -5,7 +5,9 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
@@ -25,7 +27,9 @@ import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
 import com.azure.storage.blob.models.BlobsUndeleteResponse;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

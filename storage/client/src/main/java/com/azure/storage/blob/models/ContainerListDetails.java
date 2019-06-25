@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.models.ListContainersIncludeType;
+import com.azure.storage.blob.StorageClient;
 
 /**
  * This type allows users to specify additional information the service should return with each container when listing
@@ -39,7 +39,7 @@ public final class ContainerListDetails {
      It is intended to mirror the BlobListDetails.toList() method, but is slightly different since there is only one
      possible value here currently. The customer should never have need for this.
      */
-    ListContainersIncludeType toIncludeType() {
+    public ListContainersIncludeType toIncludeType() {
         if (this.metadata) {
             return ListContainersIncludeType.METADATA;
         }

@@ -1,10 +1,8 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.google.common.io.ByteStreams;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Random;
@@ -44,7 +42,7 @@ public class BlobInputStreamTest {
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildAsyncClient();
 
-        BlobInputStream blobInputStream = new BlobInputStream(blobAsyncClient, null, null);
+        BlobInputStream blobInputStream = new BlobInputStream(blobAsyncClient, null);
         Assert.assertEquals(256 * Constants.MB, blobInputStream.skip(256 * Constants.MB));
     }
 }

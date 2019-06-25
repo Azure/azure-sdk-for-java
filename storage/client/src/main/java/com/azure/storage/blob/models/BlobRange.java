@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
 import java.util.Locale;
 
@@ -11,6 +11,8 @@ import java.util.Locale;
  * of a new object. Passing null as a BlobRange value will default to the entire range of the blob.
  */
 public final class BlobRange {
+    private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
+    private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
 
     private long offset;
     private Long count;
@@ -68,12 +70,10 @@ public final class BlobRange {
     public String toString() {
         if (this.count != null) {
             long rangeEnd = this.offset + this.count - 1;
-            return String.format(
-                    Locale.ROOT, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);
+            return String.format(Locale.ROOT, RANGE_HEADER_FORMAT, this.offset, rangeEnd);
         }
 
-        return String.format(
-                Locale.ROOT, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
+        return String.format(Locale.ROOT, BEGIN_RANGE_HEADER_FORMAT, this.offset);
     }
 
     /*
@@ -81,7 +81,7 @@ public final class BlobRange {
     By returning null as the header value, we elect not to set the header, which has the same effect, namely downloading
     the whole blob, but it will not fail in the empty case.
      */
-    String toHeaderValue() {
+    public String toHeaderValue() {
         // The default values of a BlobRange
         if (this.offset == 0 && this.count == null) {
             return null;

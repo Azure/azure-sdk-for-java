@@ -77,11 +77,6 @@ final class Constants {
         static final String AUTHORIZATION = "Authorization";
 
         /**
-         * The format string for specifying ranges with only begin offset.
-         */
-        static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
-
-        /**
          * The header that indicates the client request ID.
          */
         static final String CLIENT_REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "client-request-id";
@@ -145,11 +140,6 @@ final class Constants {
          * The Range header.
          */
         static final String RANGE = "Range";
-
-        /**
-         * The format string for specifying ranges.
-         */
-        static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
 
         /**
          * The copy source header.

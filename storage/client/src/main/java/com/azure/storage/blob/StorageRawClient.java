@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.ListContainersOptions;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
 import com.azure.storage.blob.models.ServicesGetStatisticsResponse;

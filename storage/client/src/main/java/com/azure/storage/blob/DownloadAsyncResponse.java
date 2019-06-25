@@ -4,7 +4,10 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
