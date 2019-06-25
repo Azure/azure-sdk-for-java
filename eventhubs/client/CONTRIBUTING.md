@@ -21,7 +21,7 @@ for the Azure SDKs so that your submission is consistent with the project standa
 fewer changes requested. In particular, it is recommended to review:
 
 - [Azure SDK README][github-general], to learn more about the overall project and processes used.
-- [Azure SDK Design Guidelines][design-guidelines], tounderstand the general guidelines for the SDKs across all
+- [Azure SDK Design Guidelines][design-guidelines], to understand the general guidelines for the SDKs across all
   languages and platforms
 - [Azure SDK Design Guidelines for Java][java-spec], to understand the guidelines specific to the Azure SDKs for Java.
 
