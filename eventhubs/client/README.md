@@ -93,9 +93,10 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 
 ## Examples
 
-- [Receive Event][sample_receive_event]
-- [Sent Event][sample_send_event]
-- [Retrieve Event Hub Metadata][get_event_hubs_metadata]
+
+- [Hello World][sample_hello_world]
+- [Publish an event to an Event Hub][sample_send_event]
+- [Consume events from an Event Hub partition][sample_receive_event]
 
 
 ## Troubleshooting
@@ -144,13 +145,15 @@ For detailed information about these and other exceptions that may occur, please
 ## Next steps
 Beyond those discussed, the Azure Event Hubs client library offers support for 
 many additional scenarios to help take advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios, the following set of sample is available:
-- Hello world
-- Create and Event Hub client with custom options
-- Inspect Event Hub and partition properties
-- Publish events to a specific Event Hub partition
-- Publish events with custom metadata
-- Consume events with as the owner of a partition/consumer group
-- Save the last read event and resume from that point
+- [Hello world][sample_hello_world]
+- [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
+- [Publish an event to an Event Hub][sample_send_event]
+- [Publish events to a specific Event Hub partition with producer option][sample_send_producer_option]
+- [Publish events to a specific Event Hub partition with send option][sample_send_send_option]
+- [Publish events with custom metadata][sample_send_custom_event_data]
+- [Consume events from an Event Hub partition][sample_receive_event]
+- [Consume event batch][sample_receive_batch]
+- [Save the last read event and resume from that point][sample_sequence_number]
 
 ## Contributing
 
@@ -177,4 +180,10 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [sample_receive_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEvent.java
 [sample_send_event]:https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEvent.java
-[get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
+[sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
+[sample_hello_world]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/HelloWorld.java
+[sample_send_custom_event_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendCustomEventDataList.java
+[sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsFromKnownSequenceNumberPosition.java
+[sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java
+[sample_send_send_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventDataListWIthSendOption.java
+[sample_receive_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsByBatch.java
