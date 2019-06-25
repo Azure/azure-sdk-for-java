@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for AssetStorageEncryptionFormat.
  */
-public enum AssetStorageEncryptionFormat {
-    /** The Asset does not use client-side storage encryption (this is the only allowed value for new Assets). */
-    NONE("None"),
+public final class AssetStorageEncryptionFormat extends ExpandableStringEnum<AssetStorageEncryptionFormat> {
+    /** Static value None for AssetStorageEncryptionFormat. */
+    public static final AssetStorageEncryptionFormat NONE = fromString("None");
 
-    /** The Asset is encrypted with Media Services client-side encryption. */
-    MEDIA_STORAGE_CLIENT_ENCRYPTION("MediaStorageClientEncryption");
+    /** Static value MediaStorageClientEncryption for AssetStorageEncryptionFormat. */
+    public static final AssetStorageEncryptionFormat MEDIA_STORAGE_CLIENT_ENCRYPTION = fromString("MediaStorageClientEncryption");
 
-    /** The actual serialized value for a AssetStorageEncryptionFormat instance. */
-    private String value;
-
-    AssetStorageEncryptionFormat(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AssetStorageEncryptionFormat from its string representation.
+     * @param name a name to look for
+     * @return the corresponding AssetStorageEncryptionFormat
+     */
+    @JsonCreator
+    public static AssetStorageEncryptionFormat fromString(String name) {
+        return fromString(name, AssetStorageEncryptionFormat.class);
     }
 
     /**
-     * Parses a serialized value to a AssetStorageEncryptionFormat instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed AssetStorageEncryptionFormat object, or null if unable to parse.
+     * @return known AssetStorageEncryptionFormat values
      */
-    @JsonCreator
-    public static AssetStorageEncryptionFormat fromString(String value) {
-        AssetStorageEncryptionFormat[] items = AssetStorageEncryptionFormat.values();
-        for (AssetStorageEncryptionFormat item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AssetStorageEncryptionFormat> values() {
+        return values(AssetStorageEncryptionFormat.class);
     }
 }

@@ -12,14 +12,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountListKe
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class DatabaseAccountListKeysResultImpl extends WrapperImpl<DatabaseAccountListKeysResultInner> implements DatabaseAccountListKeysResult {
-    private final DocumentDBManager manager;
-    DatabaseAccountListKeysResultImpl(DatabaseAccountListKeysResultInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    DatabaseAccountListKeysResultImpl(DatabaseAccountListKeysResultInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

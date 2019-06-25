@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.util.Locale;
 
 public final class EventPositionImpl implements EventPosition {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventPositionImpl.class);
+    private static final long serialVersionUID = 7304813338251422629L;
 
     private final String offset;
     private final Long sequenceNumber;
@@ -102,7 +104,7 @@ public final class EventPositionImpl implements EventPosition {
 
     @Override
     public String toString() {
-        return String.format("offset[%s], sequenceNumber[%s], enqueuedTime[%s], inclusiveFlag[%s]",
+        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], inclusiveFlag[%s]",
                 this.offset, this.sequenceNumber,
                 (this.dateTime != null) ? this.dateTime.toEpochMilli() : "null",
                 this.inclusiveFlag);

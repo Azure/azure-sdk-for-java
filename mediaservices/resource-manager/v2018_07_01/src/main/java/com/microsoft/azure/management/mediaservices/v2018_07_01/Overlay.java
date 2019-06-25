@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base type for all overlays - image, audio or video.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("Overlay")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioOverlay", value = AudioOverlay.class),
@@ -31,7 +31,7 @@ public class Overlay {
      * a video file. See https://aka.ms/mesformats for the complete list of
      * supported audio and video file formats.
      */
-    @JsonProperty(value = "inputLabel")
+    @JsonProperty(value = "inputLabel", required = true)
     private String inputLabel;
 
     /**

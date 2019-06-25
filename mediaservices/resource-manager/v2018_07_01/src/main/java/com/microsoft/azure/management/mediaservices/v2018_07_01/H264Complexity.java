@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for H264Complexity.
  */
-public enum H264Complexity {
-    /** Tells the encoder to use settings that are optimized for faster encoding. Quality is sacrificed to decrease encoding time. */
-    SPEED("Speed"),
+public final class H264Complexity extends ExpandableStringEnum<H264Complexity> {
+    /** Static value Speed for H264Complexity. */
+    public static final H264Complexity SPEED = fromString("Speed");
 
-    /** Tells the encoder to use settings that achieve a balance between speed and quality. */
-    BALANCED("Balanced"),
+    /** Static value Balanced for H264Complexity. */
+    public static final H264Complexity BALANCED = fromString("Balanced");
 
-    /** Tells the encoder to use settings that are optimized to produce higher quality output at the expense of slower overall encode time. */
-    QUALITY("Quality");
+    /** Static value Quality for H264Complexity. */
+    public static final H264Complexity QUALITY = fromString("Quality");
 
-    /** The actual serialized value for a H264Complexity instance. */
-    private String value;
-
-    H264Complexity(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a H264Complexity from its string representation.
+     * @param name a name to look for
+     * @return the corresponding H264Complexity
+     */
+    @JsonCreator
+    public static H264Complexity fromString(String name) {
+        return fromString(name, H264Complexity.class);
     }
 
     /**
-     * Parses a serialized value to a H264Complexity instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed H264Complexity object, or null if unable to parse.
+     * @return known H264Complexity values
      */
-    @JsonCreator
-    public static H264Complexity fromString(String value) {
-        H264Complexity[] items = H264Complexity.values();
-        for (H264Complexity item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<H264Complexity> values() {
+        return values(H264Complexity.class);
     }
 }

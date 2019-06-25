@@ -16,36 +16,36 @@ import org.junit.Test;
 
 public class EventDataOrderTest {
 
-  private EventData constructMessage(long seqNumber) {
-    HashMap<Symbol, Object> properties = new HashMap<>();
-    properties.put(AmqpConstants.SEQUENCE_NUMBER, seqNumber);
+    private EventData constructMessage(long seqNumber) {
+        HashMap<Symbol, Object> properties = new HashMap<>();
+        properties.put(AmqpConstants.SEQUENCE_NUMBER, seqNumber);
 
-    Message message = Message.Factory.create();
+        Message message = Message.Factory.create();
 
-    message.setMessageAnnotations(new MessageAnnotations(properties));
+        message.setMessageAnnotations(new MessageAnnotations(properties));
 
-    return new EventDataImpl(message);
-  }
+        return new EventDataImpl(message);
+    }
 
-  @Test
-  public void eventDataEmptyByteArray() {
-    ArrayList<EventData> messages = new ArrayList<>();
+    @Test
+    public void eventDataEmptyByteArray() {
+        ArrayList<EventData> messages = new ArrayList<>();
 
-    EventData first = constructMessage(19);
-    EventData second = constructMessage(22);
-    EventData third = constructMessage(25);
-    EventData last = constructMessage(88);
+        EventData first = constructMessage(19);
+        EventData second = constructMessage(22);
+        EventData third = constructMessage(25);
+        EventData last = constructMessage(88);
 
-    messages.add(second);
-    messages.add(first);
-    messages.add(last);
-    messages.add(third);
+        messages.add(second);
+        messages.add(first);
+        messages.add(last);
+        messages.add(third);
 
-    Collections.sort(messages);
+        Collections.sort(messages);
 
-    Assert.assertEquals(messages.get(0), first);
-    Assert.assertEquals(messages.get(1), second);
-    Assert.assertEquals(messages.get(2), third);
-    Assert.assertEquals(messages.get(3), last);
-  }
+        Assert.assertEquals(messages.get(0), first);
+        Assert.assertEquals(messages.get(1), second);
+        Assert.assertEquals(messages.get(2), third);
+        Assert.assertEquals(messages.get(3), last);
+    }
 }

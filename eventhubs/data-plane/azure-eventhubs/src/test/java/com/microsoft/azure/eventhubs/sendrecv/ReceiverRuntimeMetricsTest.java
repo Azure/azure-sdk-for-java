@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -18,16 +24,14 @@ import java.util.LinkedList;
 
 public class ReceiverRuntimeMetricsTest extends ApiTestBase {
 
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
-    static final Instant beforeTestStart = Instant.now();
-    static final int sentEvents = 25;
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
+    private static final int SENT_EVENTS = 25;
 
-    static EventHubClient ehClient;
-
-    static PartitionReceiver receiverWithOptions = null;
-    static PartitionReceiver receiverWithoutOptions = null;
-    static PartitionReceiver receiverWithOptionsDisabled = null;
+    private static EventHubClient ehClient;
+    private static PartitionReceiver receiverWithOptions = null;
+    private static PartitionReceiver receiverWithoutOptions = null;
+    private static PartitionReceiver receiverWithOptionsDisabled = null;
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
@@ -41,43 +45,49 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
         ReceiverOptions optionsWithMetricsDisabled = new ReceiverOptions();
         optionsWithMetricsDisabled.setReceiverRuntimeMetricEnabled(false);
 
-        receiverWithOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()), options);
-        receiverWithoutOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-        receiverWithOptionsDisabled = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
+        receiverWithOptions = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()), options);
+        receiverWithoutOptions = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        receiverWithOptionsDisabled = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
 
-        TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
+        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
 
-        if (receiverWithOptions != null)
+        if (receiverWithOptions != null) {
             receiverWithOptions.closeSync();
+        }
 
-        if (receiverWithoutOptions != null)
+        if (receiverWithoutOptions != null) {
             receiverWithoutOptions.closeSync();
+        }
 
-        if (receiverWithOptionsDisabled != null)
+        if (receiverWithOptionsDisabled != null) {
             receiverWithOptionsDisabled.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test()
     public void testRuntimeMetricsReturnedWhenEnabled() throws EventHubException {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
-        while (receivedEventsWithOptions.size() < sentEvents)
+        while (receivedEventsWithOptions.size() < SENT_EVENTS) {
             for (EventData eData : receiverWithOptions.receiveSync(1)) {
                 receivedEventsWithOptions.add(eData);
                 Assert.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
-                        receiverWithOptions.getEventPosition().getSequenceNumber());
+                    receiverWithOptions.getEventPosition().getSequenceNumber());
             }
+        }
 
         HashSet<String> offsets = new HashSet<>();
-        for (EventData eData : receivedEventsWithOptions)
+        for (EventData eData : receivedEventsWithOptions) {
             offsets.add(eData.getSystemProperties().getOffset());
+        }
 
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
         Assert.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));

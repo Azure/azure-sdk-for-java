@@ -6,13 +6,20 @@
 <suppressions>
   <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
   https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
-  <suppress checks="RedundantModifier" files="batch/data-plane/.*/batch/protocol/.*\.java"/>
-  <suppress checks="RedundantModifier" files="keyvault/data-plane/.*/(IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
+  <suppress checks="RedundantModifier" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
+  <suppress checks="RedundantModifier"
+            files="keyvault[/\\]data-plane[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
 
-  <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
-  <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
-  <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
+  <!-- AutoRest generates with unused imports. Remove this suppression when:
+  https://github.com/Azure/autorest.java/issues/330 is fixed. -->
+  <suppress checks="UnusedImports" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
+
+  <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>
+
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]implementation[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="Header" files=".*package-info.java"/>
 
   <!-- Files licensed with alternate license in the header -->
@@ -26,6 +33,7 @@
 
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
+  <suppress checks="MethodName" files="ISessionHandler.java"/>
   <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
   <suppress checks="MethodName" files="SignatureEncoding.java"/>
   <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
@@ -35,19 +43,46 @@
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
   <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
   <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="ConnectionStringBuilder.java"/>
+  <suppress checks="ConstantName" files="JobSchedulingErrorCodes.java"/>
   <suppress checks="ConstantName" files="MessagingFactory.java"/>
   <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
+  <suppress checks="ConstantName" files="PoolResizeErrorCodes.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
 
   <!-- Public API already released with incorrect static variable naming -->
   <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
+  <suppress checks="StaticVariableName" files="ManagementClientConstants.java"/>
+  <suppress checks="StaticVariableName" files="TransactionContext.java"/>
 
   <!-- Public API already released with visibility modifier -->
   <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
   <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
+  <suppress checks="VisibilityModifier" files="ManagementClientConstants.java"/>
+  <suppress checks="VisibilityModifier" files="TransactionContext.java"/>
 
   <!-- Public API already released without final modifier -->
   <suppress checks="FinalClass" files="BatchClient.java"/>
+  <suppress checks="FinalClass" files="CoreMessageReceiver.java"/>
+  <suppress checks="FinalClass" files="CoreMessageSender.java"/>
+  <suppress checks="FinalClass" files="DetailLevel.java"/>
+  <suppress checks="FinalClass" files="MessagingFactory.java"/>
+  <suppress checks="FinalClass" files="MessageBody.java"/>
+  <suppress checks="FinalClass" files="RequestResponseLink.java"/>
+  <suppress checks="FinalClass" files="Util.java"/>
+
+  <!-- All auto generated files need to exclude from checkstyle -->
+  <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
+  <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>
+
+  <!-- The constant name is public static. -->
+  <suppress checks="ConstantNames" files=".*[/\\]storage[/\\].*LoggingOptions.java"/>
+
+  <!-- Add NoImplInPublicAPI suppression for any test files (ie. ones that live under src/test/java). -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
+  <!-- Add JavadocThrowsChecks suppression for any test or implementation files (ie. ones that live under src/test/java or implementation). -->
+  <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
 </suppressions>

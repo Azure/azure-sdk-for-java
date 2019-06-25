@@ -48,7 +48,7 @@ public class RoutingEndpoints {
     private List<RoutingStorageContainerProperties> storageContainers;
 
     /**
-     * Get the serviceBusQueues value.
+     * Get the list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
      *
      * @return the serviceBusQueues value
      */
@@ -57,7 +57,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Set the serviceBusQueues value.
+     * Set the list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
      *
      * @param serviceBusQueues the serviceBusQueues value to set
      * @return the RoutingEndpoints object itself.
@@ -68,7 +68,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Get the serviceBusTopics value.
+     * Get the list of Service Bus topic endpoints that the IoT hub routes the messages to, based on the routing rules.
      *
      * @return the serviceBusTopics value
      */
@@ -77,7 +77,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Set the serviceBusTopics value.
+     * Set the list of Service Bus topic endpoints that the IoT hub routes the messages to, based on the routing rules.
      *
      * @param serviceBusTopics the serviceBusTopics value to set
      * @return the RoutingEndpoints object itself.
@@ -88,7 +88,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Get the eventHubs value.
+     * Get the list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include the built-in Event Hubs endpoint.
      *
      * @return the eventHubs value
      */
@@ -97,7 +97,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Set the eventHubs value.
+     * Set the list of Event Hubs endpoints that IoT hub routes messages to, based on the routing rules. This list does not include the built-in Event Hubs endpoint.
      *
      * @param eventHubs the eventHubs value to set
      * @return the RoutingEndpoints object itself.
@@ -108,7 +108,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Get the storageContainers value.
+     * Get the list of storage container endpoints that IoT hub routes messages to, based on the routing rules.
      *
      * @return the storageContainers value
      */
@@ -117,7 +117,7 @@ public class RoutingEndpoints {
     }
 
     /**
-     * Set the storageContainers value.
+     * Set the list of storage container endpoints that IoT hub routes messages to, based on the routing rules.
      *
      * @param storageContainers the storageContainers value to set
      * @return the RoutingEndpoints object itself.

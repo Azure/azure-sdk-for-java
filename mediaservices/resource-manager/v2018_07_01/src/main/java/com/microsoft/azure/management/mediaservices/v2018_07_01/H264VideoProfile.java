@@ -8,58 +8,46 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for H264VideoProfile.
  */
-public enum H264VideoProfile {
-    /** Tells the encoder to automatically determine the appropriate H.264 profile. */
-    AUTO("Auto"),
+public final class H264VideoProfile extends ExpandableStringEnum<H264VideoProfile> {
+    /** Static value Auto for H264VideoProfile. */
+    public static final H264VideoProfile AUTO = fromString("Auto");
 
-    /** Baseline profile. */
-    BASELINE("Baseline"),
+    /** Static value Baseline for H264VideoProfile. */
+    public static final H264VideoProfile BASELINE = fromString("Baseline");
 
-    /** Main profile. */
-    MAIN("Main"),
+    /** Static value Main for H264VideoProfile. */
+    public static final H264VideoProfile MAIN = fromString("Main");
 
-    /** High profile. */
-    HIGH("High"),
+    /** Static value High for H264VideoProfile. */
+    public static final H264VideoProfile HIGH = fromString("High");
 
-    /** High 4:2:2 profile. */
-    HIGH422("High422"),
+    /** Static value High422 for H264VideoProfile. */
+    public static final H264VideoProfile HIGH422 = fromString("High422");
 
-    /** High 4:4:4 predictive profile. */
-    HIGH444("High444");
+    /** Static value High444 for H264VideoProfile. */
+    public static final H264VideoProfile HIGH444 = fromString("High444");
 
-    /** The actual serialized value for a H264VideoProfile instance. */
-    private String value;
-
-    H264VideoProfile(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a H264VideoProfile from its string representation.
+     * @param name a name to look for
+     * @return the corresponding H264VideoProfile
+     */
+    @JsonCreator
+    public static H264VideoProfile fromString(String name) {
+        return fromString(name, H264VideoProfile.class);
     }
 
     /**
-     * Parses a serialized value to a H264VideoProfile instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed H264VideoProfile object, or null if unable to parse.
+     * @return known H264VideoProfile values
      */
-    @JsonCreator
-    public static H264VideoProfile fromString(String value) {
-        H264VideoProfile[] items = H264VideoProfile.values();
-        for (H264VideoProfile item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<H264VideoProfile> values() {
+        return values(H264VideoProfile.class);
     }
 }

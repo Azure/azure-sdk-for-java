@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for AssetContainerPermission.
  */
-public enum AssetContainerPermission {
-    /** The SAS URL will allow read access to the container. */
-    READ("Read"),
+public final class AssetContainerPermission extends ExpandableStringEnum<AssetContainerPermission> {
+    /** Static value Read for AssetContainerPermission. */
+    public static final AssetContainerPermission READ = fromString("Read");
 
-    /** The SAS URL will allow read and write access to the container. */
-    READ_WRITE("ReadWrite"),
+    /** Static value ReadWrite for AssetContainerPermission. */
+    public static final AssetContainerPermission READ_WRITE = fromString("ReadWrite");
 
-    /** The SAS URL will allow read, write and delete access to the container. */
-    READ_WRITE_DELETE("ReadWriteDelete");
+    /** Static value ReadWriteDelete for AssetContainerPermission. */
+    public static final AssetContainerPermission READ_WRITE_DELETE = fromString("ReadWriteDelete");
 
-    /** The actual serialized value for a AssetContainerPermission instance. */
-    private String value;
-
-    AssetContainerPermission(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AssetContainerPermission from its string representation.
+     * @param name a name to look for
+     * @return the corresponding AssetContainerPermission
+     */
+    @JsonCreator
+    public static AssetContainerPermission fromString(String name) {
+        return fromString(name, AssetContainerPermission.class);
     }
 
     /**
-     * Parses a serialized value to a AssetContainerPermission instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed AssetContainerPermission object, or null if unable to parse.
+     * @return known AssetContainerPermission values
      */
-    @JsonCreator
-    public static AssetContainerPermission fromString(String value) {
-        AssetContainerPermission[] items = AssetContainerPermission.values();
-        for (AssetContainerPermission item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AssetContainerPermission> values() {
+        return values(AssetContainerPermission.class);
     }
 }

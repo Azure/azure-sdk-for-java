@@ -8,9 +8,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.client.xml</relativePath>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
   <version>1.2.1</version>
@@ -88,8 +88,8 @@
           <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
-      
-      <!-- Now that all checkstyle issues have been resolved, override the 
+
+      <!-- Now that all checkstyle issues have been resolved, override the
              default behavior to make checkstyle fail on error and violation. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -75,6 +75,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithResourceGroupName {
            /**
             * Specifies resourceGroupName.
+            * @param resourceGroupName The name of the resource group to lock
+            * @return the next definition stage
             */
             WithLevel withResourceGroupName(String resourceGroupName);
         }
@@ -85,6 +87,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithLevel {
            /**
             * Specifies level.
+            * @param level The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means authorized users can only read from a resource, but they can't modify or delete it. Possible values include: 'NotSpecified', 'CanNotDelete', 'ReadOnly'
+            * @return the next definition stage
             */
             WithCreate withLevel(LockLevel level);
         }
@@ -95,6 +99,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithNotes {
             /**
              * Specifies notes.
+             * @param notes Notes about the lock. Maximum of 512 characters
+             * @return the next definition stage
              */
             WithCreate withNotes(String notes);
         }
@@ -105,6 +111,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithOwners {
             /**
              * Specifies owners.
+             * @param owners The owners of the lock
+             * @return the next definition stage
              */
             WithCreate withOwners(List<ManagementLockOwner> owners);
         }
@@ -133,6 +141,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithNotes {
             /**
              * Specifies notes.
+             * @param notes Notes about the lock. Maximum of 512 characters
+             * @return the next update stage
              */
             Update withNotes(String notes);
         }
@@ -143,6 +153,8 @@ public interface ManagementLockObject extends HasInner<ManagementLockObjectInner
         interface WithOwners {
             /**
              * Specifies owners.
+             * @param owners The owners of the lock
+             * @return the next update stage
              */
             Update withOwners(List<ManagementLockOwner> owners);
         }

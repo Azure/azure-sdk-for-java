@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.QuotaExceededException;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -12,20 +18,18 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class ReceiverIdentifierTest extends ApiTestBase {
 
-    static final String cgName = TestContext.getConsumerGroupName();
-    static final String partitionId = "0";
-    static final Instant beforeTestStart = Instant.now();
-    static final int sentEvents = 25;
-    static final List<PartitionReceiver> receivers = new LinkedList<>();
+    private static final String CONSUMER_GROUP_NAME = TestContext.getConsumerGroupName();
+    private static final String PARTITION_ID = "0";
+    private static final int SENT_EVENTS = 25;
+    private static final List<PartitionReceiver> RECEIVERS = new LinkedList<>();
 
-    static EventHubClient ehClient;
+    private static EventHubClient ehClient;
 
     @BeforeClass
     public static void initializeEventHub() throws Exception {
@@ -33,31 +37,33 @@ public class ReceiverIdentifierTest extends ApiTestBase {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
-        TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
+        TestBase.pushEventsToPartition(ehClient, PARTITION_ID, SENT_EVENTS).get();
     }
 
     @AfterClass()
     public static void cleanup() throws EventHubException {
 
-        for (PartitionReceiver receiver : receivers)
+        for (PartitionReceiver receiver : RECEIVERS) {
             receiver.closeSync();
+        }
 
-        if (ehClient != null)
+        if (ehClient != null) {
             ehClient.closeSync();
+        }
     }
 
     @Test()
-    public void testReceiverIdentierShowsUpInQuotaErrors() throws EventHubException {
+    public void testReceiverIdentifierShowsUpInQuotaErrors() throws EventHubException {
 
         final String receiverIdentifierPrefix = UUID.randomUUID().toString();
         for (int receiverCount = 0; receiverCount < 5; receiverCount++) {
             final ReceiverOptions options = new ReceiverOptions();
             options.setIdentifier(receiverIdentifierPrefix + receiverCount);
-            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream(), options);
+            ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), options);
         }
 
         try {
-            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
+            ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
             Assert.assertTrue(false);
         } catch (QuotaExceededException quotaError) {
             final String errorMsg = quotaError.getMessage();

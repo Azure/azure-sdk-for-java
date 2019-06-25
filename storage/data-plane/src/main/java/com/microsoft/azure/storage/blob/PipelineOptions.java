@@ -1,17 +1,6 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpClient;
@@ -37,11 +26,11 @@ public final class PipelineOptions {
 
     private HttpPipelineLogger logger;
 
-    private RequestRetryOptions requestRetryOptions = RequestRetryOptions.DEFAULT;
+    private RequestRetryOptions requestRetryOptions = new RequestRetryOptions();
 
-    private LoggingOptions loggingOptions = LoggingOptions.DEFAULT;
+    private LoggingOptions loggingOptions = new LoggingOptions();
 
-    private TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
+    private TelemetryOptions telemetryOptions = new TelemetryOptions();
 
     /**
      * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
@@ -52,23 +41,25 @@ public final class PipelineOptions {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PipelineOptions() {
-        this.logger = new HttpPipelineLogger() {
-            @Override
-            public HttpPipelineLogLevel minimumLogLevel() {
-                return HttpPipelineLogLevel.OFF;
-            }
+        this.logger = new HttpPipelineLoggerImpl();
+    }
 
-            @Override
-            public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
-                if (logLevel == HttpPipelineLogLevel.INFO) {
-                    Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.WARNING) {
-                    Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.ERROR) {
-                    Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
-                }
+    private static final class HttpPipelineLoggerImpl implements HttpPipelineLogger {
+        @Override
+        public HttpPipelineLogLevel minimumLogLevel() {
+            return HttpPipelineLogLevel.OFF;
+        }
+
+        @Override
+        public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
+            if (logLevel == HttpPipelineLogLevel.INFO) {
+                Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
+            } else if (logLevel == HttpPipelineLogLevel.WARNING) {
+                Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
+            } else if (logLevel == HttpPipelineLogLevel.ERROR) {
+                Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
             }
-        };
+        }
     }
 
     /**

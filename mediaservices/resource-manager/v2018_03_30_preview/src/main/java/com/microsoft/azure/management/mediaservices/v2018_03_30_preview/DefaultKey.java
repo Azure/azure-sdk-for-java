@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DefaultKey {
     /**
-     * Label can be used to specify Content Key when creating Stremaing
+     * Label can be used to specify Content Key when creating Streaming
      * Locator.
      */
     @JsonProperty(value = "label")
@@ -29,7 +29,7 @@ public class DefaultKey {
     private String policyName;
 
     /**
-     * Get label can be used to specify Content Key when creating Stremaing Locator.
+     * Get label can be used to specify Content Key when creating Streaming Locator.
      *
      * @return the label value
      */
@@ -38,7 +38,7 @@ public class DefaultKey {
     }
 
     /**
-     * Set label can be used to specify Content Key when creating Stremaing Locator.
+     * Set label can be used to specify Content Key when creating Streaming Locator.
      *
      * @param label the label value to set
      * @return the DefaultKey object itself.

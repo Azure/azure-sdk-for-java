@@ -28,7 +28,7 @@ public class ImportRDBParameters {
     private List<String> files;
 
     /**
-     * Get the format value.
+     * Get file format.
      *
      * @return the format value
      */
@@ -37,7 +37,7 @@ public class ImportRDBParameters {
     }
 
     /**
-     * Set the format value.
+     * Set file format.
      *
      * @param format the format value to set
      * @return the ImportRDBParameters object itself.
@@ -48,7 +48,7 @@ public class ImportRDBParameters {
     }
 
     /**
-     * Get the files value.
+     * Get files to import.
      *
      * @return the files value
      */
@@ -57,7 +57,7 @@ public class ImportRDBParameters {
     }
 
     /**
-     * Set the files value.
+     * Set files to import.
      *
      * @param files the files value to set
      * @return the ImportRDBParameters object itself.

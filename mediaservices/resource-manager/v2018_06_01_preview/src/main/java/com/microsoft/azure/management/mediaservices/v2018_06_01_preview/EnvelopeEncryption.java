@@ -35,7 +35,7 @@ public class EnvelopeEncryption {
     private StreamingPolicyContentKeys contentKeys;
 
     /**
-     * KeyAcquistionUrlTemplate is used to point to user specified service to
+     * KeyAcquisitionUrlTemplate is used to point to user specified service to
      * delivery content keys.
      */
     @JsonProperty(value = "customKeyAcquisitionUrlTemplate")
@@ -102,7 +102,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Get keyAcquistionUrlTemplate is used to point to user specified service to delivery content keys.
+     * Get keyAcquisitionUrlTemplate is used to point to user specified service to delivery content keys.
      *
      * @return the customKeyAcquisitionUrlTemplate value
      */
@@ -111,7 +111,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set keyAcquistionUrlTemplate is used to point to user specified service to delivery content keys.
+     * Set keyAcquisitionUrlTemplate is used to point to user specified service to delivery content keys.
      *
      * @param customKeyAcquisitionUrlTemplate the customKeyAcquisitionUrlTemplate value to set
      * @return the EnvelopeEncryption object itself.

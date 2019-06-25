@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContentKeyPolicyRestrictionTokenType.
  */
-public enum ContentKeyPolicyRestrictionTokenType {
-    /** Represents a ContentKeyPolicyRestrictionTokenType that is unavailable in current API version. */
-    UNKNOWN("Unknown"),
+public final class ContentKeyPolicyRestrictionTokenType extends ExpandableStringEnum<ContentKeyPolicyRestrictionTokenType> {
+    /** Static value Unknown for ContentKeyPolicyRestrictionTokenType. */
+    public static final ContentKeyPolicyRestrictionTokenType UNKNOWN = fromString("Unknown");
 
-    /** Simple Web Token. */
-    SWT("Swt"),
+    /** Static value Swt for ContentKeyPolicyRestrictionTokenType. */
+    public static final ContentKeyPolicyRestrictionTokenType SWT = fromString("Swt");
 
-    /** JSON Web Token. */
-    JWT("Jwt");
+    /** Static value Jwt for ContentKeyPolicyRestrictionTokenType. */
+    public static final ContentKeyPolicyRestrictionTokenType JWT = fromString("Jwt");
 
-    /** The actual serialized value for a ContentKeyPolicyRestrictionTokenType instance. */
-    private String value;
-
-    ContentKeyPolicyRestrictionTokenType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContentKeyPolicyRestrictionTokenType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContentKeyPolicyRestrictionTokenType
+     */
+    @JsonCreator
+    public static ContentKeyPolicyRestrictionTokenType fromString(String name) {
+        return fromString(name, ContentKeyPolicyRestrictionTokenType.class);
     }
 
     /**
-     * Parses a serialized value to a ContentKeyPolicyRestrictionTokenType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContentKeyPolicyRestrictionTokenType object, or null if unable to parse.
+     * @return known ContentKeyPolicyRestrictionTokenType values
      */
-    @JsonCreator
-    public static ContentKeyPolicyRestrictionTokenType fromString(String value) {
-        ContentKeyPolicyRestrictionTokenType[] items = ContentKeyPolicyRestrictionTokenType.values();
-        for (ContentKeyPolicyRestrictionTokenType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContentKeyPolicyRestrictionTokenType> values() {
+        return values(ContentKeyPolicyRestrictionTokenType.class);
     }
 }

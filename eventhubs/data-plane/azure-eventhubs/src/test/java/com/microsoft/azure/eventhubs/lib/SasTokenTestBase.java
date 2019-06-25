@@ -4,12 +4,12 @@
 package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.impl.SharedAccessSignatureTokenProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import java.time.Duration;
+import java.util.Locale;
 
 public class SasTokenTestBase extends ApiTestBase {
 
@@ -25,7 +25,7 @@ public class SasTokenTestBase extends ApiTestBase {
                 .setSharedAccessSignature(
                         SharedAccessSignatureTokenProvider.generateSharedAccessSignature(originalConnectionString.getSasKeyName(),
                                 originalConnectionString.getSasKey(),
-                                String.format("amqp://%s/%s", originalConnectionString.getEndpoint().getHost(), originalConnectionString.getEventHubName()),
+                                String.format(Locale.US, "amqp://%s/%s", originalConnectionString.getEndpoint().getHost(), originalConnectionString.getEventHubName()),
                                 Duration.ofDays(1))
                 )
                 .toString();
@@ -34,9 +34,9 @@ public class SasTokenTestBase extends ApiTestBase {
     }
 
     @AfterClass
-    public static void undoReplace() throws EventHubException {
-
-        if (originalConnectionString != null)
+    public static void undoReplace() {
+        if (originalConnectionString != null) {
             TestContext.setConnectionString(originalConnectionString.toString());
+        }
     }
 }

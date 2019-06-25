@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for FilterTrackPropertyCompareOperation.
  */
-public enum FilterTrackPropertyCompareOperation {
-    /** The equal operation. */
-    EQUAL("Equal"),
+public final class FilterTrackPropertyCompareOperation extends ExpandableStringEnum<FilterTrackPropertyCompareOperation> {
+    /** Static value Equal for FilterTrackPropertyCompareOperation. */
+    public static final FilterTrackPropertyCompareOperation EQUAL = fromString("Equal");
 
-    /** The not equal operation. */
-    NOT_EQUAL("NotEqual");
+    /** Static value NotEqual for FilterTrackPropertyCompareOperation. */
+    public static final FilterTrackPropertyCompareOperation NOT_EQUAL = fromString("NotEqual");
 
-    /** The actual serialized value for a FilterTrackPropertyCompareOperation instance. */
-    private String value;
-
-    FilterTrackPropertyCompareOperation(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a FilterTrackPropertyCompareOperation from its string representation.
+     * @param name a name to look for
+     * @return the corresponding FilterTrackPropertyCompareOperation
+     */
+    @JsonCreator
+    public static FilterTrackPropertyCompareOperation fromString(String name) {
+        return fromString(name, FilterTrackPropertyCompareOperation.class);
     }
 
     /**
-     * Parses a serialized value to a FilterTrackPropertyCompareOperation instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed FilterTrackPropertyCompareOperation object, or null if unable to parse.
+     * @return known FilterTrackPropertyCompareOperation values
      */
-    @JsonCreator
-    public static FilterTrackPropertyCompareOperation fromString(String value) {
-        FilterTrackPropertyCompareOperation[] items = FilterTrackPropertyCompareOperation.values();
-        for (FilterTrackPropertyCompareOperation item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<FilterTrackPropertyCompareOperation> values() {
+        return values(FilterTrackPropertyCompareOperation.class);
     }
 }

@@ -49,7 +49,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     private AccessRights rights;
 
     /**
-     * Get the keyName value.
+     * Get the name of the shared access policy.
      *
      * @return the keyName value
      */
@@ -58,7 +58,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Set the keyName value.
+     * Set the name of the shared access policy.
      *
      * @param keyName the keyName value to set
      * @return the SharedAccessSignatureAuthorizationRuleInner object itself.
@@ -69,7 +69,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Get the primaryKey value.
+     * Get the primary key.
      *
      * @return the primaryKey value
      */
@@ -78,7 +78,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Set the primaryKey value.
+     * Set the primary key.
      *
      * @param primaryKey the primaryKey value to set
      * @return the SharedAccessSignatureAuthorizationRuleInner object itself.
@@ -89,7 +89,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Get the secondaryKey value.
+     * Get the secondary key.
      *
      * @return the secondaryKey value
      */
@@ -98,7 +98,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Set the secondaryKey value.
+     * Set the secondary key.
      *
      * @param secondaryKey the secondaryKey value to set
      * @return the SharedAccessSignatureAuthorizationRuleInner object itself.
@@ -109,7 +109,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Get the rights value.
+     * Get the permissions assigned to the shared access policy. Possible values include: 'RegistryRead', 'RegistryWrite', 'ServiceConnect', 'DeviceConnect', 'RegistryRead, RegistryWrite', 'RegistryRead, ServiceConnect', 'RegistryRead, DeviceConnect', 'RegistryWrite, ServiceConnect', 'RegistryWrite, DeviceConnect', 'ServiceConnect, DeviceConnect', 'RegistryRead, RegistryWrite, ServiceConnect', 'RegistryRead, RegistryWrite, DeviceConnect', 'RegistryRead, ServiceConnect, DeviceConnect', 'RegistryWrite, ServiceConnect, DeviceConnect', 'RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect'.
      *
      * @return the rights value
      */
@@ -118,7 +118,7 @@ public class SharedAccessSignatureAuthorizationRuleInner {
     }
 
     /**
-     * Set the rights value.
+     * Set the permissions assigned to the shared access policy. Possible values include: 'RegistryRead', 'RegistryWrite', 'ServiceConnect', 'DeviceConnect', 'RegistryRead, RegistryWrite', 'RegistryRead, ServiceConnect', 'RegistryRead, DeviceConnect', 'RegistryWrite, ServiceConnect', 'RegistryWrite, DeviceConnect', 'ServiceConnect, DeviceConnect', 'RegistryRead, RegistryWrite, ServiceConnect', 'RegistryRead, RegistryWrite, DeviceConnect', 'RegistryRead, ServiceConnect, DeviceConnect', 'RegistryWrite, ServiceConnect, DeviceConnect', 'RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect'.
      *
      * @param rights the rights value to set
      * @return the SharedAccessSignatureAuthorizationRuleInner object itself.

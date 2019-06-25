@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for JobRetry.
  */
-public enum JobRetry {
-    /** Issue needs to be investigated and then the job resubmitted with corrections or retried once the underlying issue has been corrected. */
-    DO_NOT_RETRY("DoNotRetry"),
+public final class JobRetry extends ExpandableStringEnum<JobRetry> {
+    /** Static value DoNotRetry for JobRetry. */
+    public static final JobRetry DO_NOT_RETRY = fromString("DoNotRetry");
 
-    /** Issue may be resolved after waiting for a period of time and resubmitting the same Job. */
-    MAY_RETRY("MayRetry");
+    /** Static value MayRetry for JobRetry. */
+    public static final JobRetry MAY_RETRY = fromString("MayRetry");
 
-    /** The actual serialized value for a JobRetry instance. */
-    private String value;
-
-    JobRetry(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a JobRetry from its string representation.
+     * @param name a name to look for
+     * @return the corresponding JobRetry
+     */
+    @JsonCreator
+    public static JobRetry fromString(String name) {
+        return fromString(name, JobRetry.class);
     }
 
     /**
-     * Parses a serialized value to a JobRetry instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed JobRetry object, or null if unable to parse.
+     * @return known JobRetry values
      */
-    @JsonCreator
-    public static JobRetry fromString(String value) {
-        JobRetry[] items = JobRetry.values();
-        for (JobRetry item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<JobRetry> values() {
+        return values(JobRetry.class);
     }
 }

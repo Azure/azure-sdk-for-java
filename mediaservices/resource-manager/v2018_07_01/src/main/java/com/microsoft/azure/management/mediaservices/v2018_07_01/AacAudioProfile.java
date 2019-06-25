@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for AacAudioProfile.
  */
-public enum AacAudioProfile {
-    /** Specifies that the output audio is to be encoded into AAC Low Complexity profile (AAC-LC). */
-    AAC_LC("AacLc"),
+public final class AacAudioProfile extends ExpandableStringEnum<AacAudioProfile> {
+    /** Static value AacLc for AacAudioProfile. */
+    public static final AacAudioProfile AAC_LC = fromString("AacLc");
 
-    /** Specifies that the output audio is to be encoded into HE-AAC v1 profile. */
-    HE_AAC_V1("HeAacV1"),
+    /** Static value HeAacV1 for AacAudioProfile. */
+    public static final AacAudioProfile HE_AAC_V1 = fromString("HeAacV1");
 
-    /** Specifies that the output audio is to be encoded into HE-AAC v2 profile. */
-    HE_AAC_V2("HeAacV2");
+    /** Static value HeAacV2 for AacAudioProfile. */
+    public static final AacAudioProfile HE_AAC_V2 = fromString("HeAacV2");
 
-    /** The actual serialized value for a AacAudioProfile instance. */
-    private String value;
-
-    AacAudioProfile(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AacAudioProfile from its string representation.
+     * @param name a name to look for
+     * @return the corresponding AacAudioProfile
+     */
+    @JsonCreator
+    public static AacAudioProfile fromString(String name) {
+        return fromString(name, AacAudioProfile.class);
     }
 
     /**
-     * Parses a serialized value to a AacAudioProfile instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed AacAudioProfile object, or null if unable to parse.
+     * @return known AacAudioProfile values
      */
-    @JsonCreator
-    public static AacAudioProfile fromString(String value) {
-        AacAudioProfile[] items = AacAudioProfile.values();
-        for (AacAudioProfile item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AacAudioProfile> values() {
+        return values(AacAudioProfile.class);
     }
 }

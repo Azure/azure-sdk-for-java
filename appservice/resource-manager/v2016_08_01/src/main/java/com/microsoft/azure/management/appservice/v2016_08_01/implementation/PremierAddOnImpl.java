@@ -32,7 +32,7 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
         this.manager = manager;
         // Set resource name
         this.premierAddOnName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.premierAddOnName = IdParsingUtils.getValueFromIdByName(inner.id(), "premieraddons");

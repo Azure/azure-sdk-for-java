@@ -51,7 +51,7 @@ public class ProxyNegotiationHandler {
         // flag used by PROXY_CONNECTED state to decide which socketchannel to write bytes to
         final Boolean isClientWriter;
 
-        public ReadWriteState(final Boolean isClientWriter) {
+        ReadWriteState(final Boolean isClientWriter) {
             this.isClientWriter = isClientWriter;
         }
 
@@ -111,7 +111,7 @@ public class ProxyNegotiationHandler {
                             readBuffer.get(connectRequest, 0, bytesToRead);
                             readBuffer.compact();
 
-                            final String hostNamePortParts[] = extractHostNamePort(connectRequest);
+                            final String[] hostNamePortParts = extractHostNamePort(connectRequest);
                             proxyConnectionState = ProxyConnectionState.PROXY_INITIATED;
                             final InetSocketAddress serviceAddress = new InetSocketAddress(
                                 hostNamePortParts[0], Integer.parseInt(hostNamePortParts[1]));

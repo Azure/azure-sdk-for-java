@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/javaKeyTemp/create?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/1.0.0-SNAPSHOT 1.8.0_191; Mac OS X 10.12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Sun, 16 Jun 2019 17:39:21 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "703",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "eastus2",
+      "x-ms-keyvault-network-info" : "addr=67.174.197.157;act_addr_fam=InterNetwork;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "78694cab-314e-4208-8b0d-ce8479a9c54e",
+      "x-ms-keyvault-service-version" : "1.1.0.866",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/javaKeyTemp/32e684c6c54c4a50bc931d5a64da5bf5\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"6z0UDRte-rth1GyAk5ov6A1k6VGY-D-Trkf4ubflHaK66tLhbROS5RYefs1tYvSTN--22eLG2lA39LC1y-7vKcD9nQ4pIihVmM4ynvcdrZHcAos5eNdLhopy2QKqNiSpz85cGbCyT0J_4rEiMsxGkJVEY7Gp3Enrd1435-fePBydJGt8w2w_t6O0TynjHUDbHJHKgplhBAXlgxlWsxYHSfpnC_ZutZD-W7RLwDLOWjItn-3zOS2Vj8-nHn4K1qqcFVxWwRf9ag3uoA4cE0sdlHqoUV0tTllTvVuNbrYMEqv_MXJFTAXwWdAkGvjaFoaGwFDG-bRN5UvtyT2pRpsi2w\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1560706761,\"updated\":1560706761,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
+    }
+  } ],
+  "variables" : [ ]
+}

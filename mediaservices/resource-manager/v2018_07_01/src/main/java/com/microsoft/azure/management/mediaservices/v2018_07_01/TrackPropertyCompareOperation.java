@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for TrackPropertyCompareOperation.
  */
-public enum TrackPropertyCompareOperation {
-    /** Unknown track property compare operation. */
-    UNKNOWN("Unknown"),
+public final class TrackPropertyCompareOperation extends ExpandableStringEnum<TrackPropertyCompareOperation> {
+    /** Static value Unknown for TrackPropertyCompareOperation. */
+    public static final TrackPropertyCompareOperation UNKNOWN = fromString("Unknown");
 
-    /** Equal operation. */
-    EQUAL("Equal");
+    /** Static value Equal for TrackPropertyCompareOperation. */
+    public static final TrackPropertyCompareOperation EQUAL = fromString("Equal");
 
-    /** The actual serialized value for a TrackPropertyCompareOperation instance. */
-    private String value;
-
-    TrackPropertyCompareOperation(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a TrackPropertyCompareOperation from its string representation.
+     * @param name a name to look for
+     * @return the corresponding TrackPropertyCompareOperation
+     */
+    @JsonCreator
+    public static TrackPropertyCompareOperation fromString(String name) {
+        return fromString(name, TrackPropertyCompareOperation.class);
     }
 
     /**
-     * Parses a serialized value to a TrackPropertyCompareOperation instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed TrackPropertyCompareOperation object, or null if unable to parse.
+     * @return known TrackPropertyCompareOperation values
      */
-    @JsonCreator
-    public static TrackPropertyCompareOperation fromString(String value) {
-        TrackPropertyCompareOperation[] items = TrackPropertyCompareOperation.values();
-        for (TrackPropertyCompareOperation item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<TrackPropertyCompareOperation> values() {
+        return values(TrackPropertyCompareOperation.class);
     }
 }
