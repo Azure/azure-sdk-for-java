@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
-import com.azure.core.util.Context;
 import reactor.netty.ByteBufFlux;
 
 import java.io.ByteArrayInputStream;
@@ -89,8 +88,8 @@ public final class BlobInputStream extends InputStream {
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    protected BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition) throws StorageException {
-        this(0, null, blobClient, accessCondition);
+    BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition) throws StorageException {
+        this(blobClient, 0, null, accessCondition);
     }
 
     /**
@@ -98,19 +97,19 @@ public final class BlobInputStream extends InputStream {
      * Note that if {@code blobRangeOffset} is not {@code 0} or {@code blobRangeLength} is not {@code null}, there will
      * be no content MD5 verification.
      *
+     * @param blobClient
+     *            A {@link BlobClient} object which represents the blob that this stream is associated with.
      * @param blobRangeOffset
      *            The offset of blob data to begin stream.
      * @param blobRangeLength
      *            How much data the stream should return after blobRangeOffset.
-     * @param blobClient
-     *            A {@link BlobClient} object which represents the blob that this stream is associated with.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    protected BlobInputStream(long blobRangeOffset, Long blobRangeLength, final BlobAsyncClient blobClient,
+    BlobInputStream(final BlobAsyncClient blobClient, long blobRangeOffset, Long blobRangeLength,
                               final BlobAccessConditions accessCondition)
         throws StorageException {
 

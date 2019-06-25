@@ -78,6 +78,35 @@ public final class BlockBlobClient extends BlobClient {
     }
 
     /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream() {
+        return getBlobOutputStream(null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param accessConditions
+     *            A {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(BlobAccessConditions accessConditions) {
+        return new BlobOutputStream(blockBlobAsyncClient, accessConditions);
+    }
+
+    /**
      * Creates a new block blob, or updates the content of an existing block blob.
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with PutBlob; the content of the existing blob is overwritten with the new content. To

@@ -64,6 +64,35 @@ public final class AppendBlobClient extends BlobClient {
     }
 
     /**
+     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream() {
+        return getBlobOutputStream(null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param accessConditions
+     *            A {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(AppendBlobAccessConditions accessConditions) {
+        return new BlobOutputStream(appendBlobAsyncClient, accessConditions);
+    }
+
+    /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
      * @return

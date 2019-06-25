@@ -62,6 +62,42 @@ public final class PageBlobClient extends BlobClient {
         return new PageBlobClientBuilder();
     }
 
+    /**
+     * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(long length) {
+        return getBlobOutputStream(length, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
+     * @param accessConditions
+     *            A {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
+        return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
+    }
+
     // TODO: Figure out if this method needs to change to public to access method in wrappers
     private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.start() < 0 || pageRange.end() <= 0) {

@@ -114,6 +114,37 @@ public class BlobClient {
     }
 
     /**
+     * Opens a blob input stream to download the blob.
+     * <p>
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public final BlobInputStream openInputStream() {
+        return openInputStream(new BlobRange(0), null);
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     * <p>
+     *
+     * @param range
+     *         {@link BlobRange}
+     * @param accessConditions
+     *            An {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
+        return new BlobInputStream(blobAsyncClient, range.offset(), range.count(), accessConditions);
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * @return true if the container exists, false if it doesn't
