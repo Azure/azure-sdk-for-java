@@ -160,12 +160,6 @@ public class ManagedInstanceUpdate {
     private String instancePoolId;
 
     /**
-     * Specifies maintenance window settings for a managed instance.
-     */
-    @JsonProperty(value = "properties.maintenanceWindowSettings")
-    private MaintenanceWindowSettings maintenanceWindowSettings;
-
-    /**
      * Resource tags.
      */
     @JsonProperty(value = "tags")
@@ -529,26 +523,6 @@ public class ManagedInstanceUpdate {
      */
     public ManagedInstanceUpdate withInstancePoolId(String instancePoolId) {
         this.instancePoolId = instancePoolId;
-        return this;
-    }
-
-    /**
-     * Get specifies maintenance window settings for a managed instance.
-     *
-     * @return the maintenanceWindowSettings value
-     */
-    public MaintenanceWindowSettings maintenanceWindowSettings() {
-        return this.maintenanceWindowSettings;
-    }
-
-    /**
-     * Set specifies maintenance window settings for a managed instance.
-     *
-     * @param maintenanceWindowSettings the maintenanceWindowSettings value to set
-     * @return the ManagedInstanceUpdate object itself.
-     */
-    public ManagedInstanceUpdate withMaintenanceWindowSettings(MaintenanceWindowSettings maintenanceWindowSettings) {
-        this.maintenanceWindowSettings = maintenanceWindowSettings;
         return this;
     }
 

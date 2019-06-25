@@ -14,7 +14,6 @@ import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedServerCreat
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceLicenseType;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceProxyOverride;
-import com.microsoft.azure.management.sql.v2018_06_01_preview.MaintenanceWindowSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -171,12 +170,6 @@ public class ManagedInstanceInner extends Resource {
      */
     @JsonProperty(value = "properties.instancePoolId")
     private String instancePoolId;
-
-    /**
-     * Specifies maintenance window settings for a managed instance.
-     */
-    @JsonProperty(value = "properties.maintenanceWindowSettings")
-    private MaintenanceWindowSettings maintenanceWindowSettings;
 
     /**
      * Get the Azure Active Directory identity of the managed instance.
@@ -556,26 +549,6 @@ public class ManagedInstanceInner extends Resource {
      */
     public ManagedInstanceInner withInstancePoolId(String instancePoolId) {
         this.instancePoolId = instancePoolId;
-        return this;
-    }
-
-    /**
-     * Get specifies maintenance window settings for a managed instance.
-     *
-     * @return the maintenanceWindowSettings value
-     */
-    public MaintenanceWindowSettings maintenanceWindowSettings() {
-        return this.maintenanceWindowSettings;
-    }
-
-    /**
-     * Set specifies maintenance window settings for a managed instance.
-     *
-     * @param maintenanceWindowSettings the maintenanceWindowSettings value to set
-     * @return the ManagedInstanceInner object itself.
-     */
-    public ManagedInstanceInner withMaintenanceWindowSettings(MaintenanceWindowSettings maintenanceWindowSettings) {
-        this.maintenanceWindowSettings = maintenanceWindowSettings;
         return this;
     }
 
