@@ -40,8 +40,7 @@ public class BlobInputStreamTest {
         BlobAsyncClient blobAsyncClient = BlobAsyncClient.blobClientBuilder()
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
             .containerName(containerName)
-            .blobName(blobName)
-            .credential(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
+            .blobName(blobName)            .credential(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildAsyncClient();
 

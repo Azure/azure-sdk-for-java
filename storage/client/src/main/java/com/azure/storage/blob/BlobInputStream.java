@@ -8,7 +8,6 @@ import reactor.netty.ByteBufFlux;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.MessageDigest;
 
 /**
  * Provides an input stream to read a given blob resource.
@@ -18,11 +17,6 @@ public final class BlobInputStream extends InputStream {
      * Holds the reference to the blob this stream is associated with.
      */
     private final BlobAsyncClient blobClient;
-
-    /**
-     * Holds the reference to the MD5 digest for the blob.
-     */
-    private MessageDigest md5Digest;
 
     /**
      * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
@@ -43,11 +37,6 @@ public final class BlobInputStream extends InputStream {
      * Holds the stream read size for both block and page blobs.
      */
     private final int readSize;
-
-    /**
-     * A flag indicating if the Blob MD5 should be validated.
-     */
-    private boolean validateBlobMd5;
 
     /**
      * Holds the reference to the current buffered data.
@@ -143,42 +132,10 @@ public final class BlobInputStream extends InputStream {
             throw new IndexOutOfBoundsException();
         }
 
-        // Validates the first option, and sets future requests to use if match
-        // request option.
-
-        // If there is an existing conditional validate it, as we intend to
-        // replace if for future requests.
-//        String previousLeaseId = null;
-//        if (accessCondition != null) {
-//            previousLeaseId = accessCondition.leaseAccessConditions().leaseId();
-//
-//            if (!accessCondition.verifyConditional(this.blobClient.getProperties().block().headers().get("ETag"),
-//                this.blobClient.getProperties().block().headers().get("Last-Modified"))) {
-//                throw new StorageException(StorageErrorCode.CONDITION_NOT_MET.toString(),
-//                    SR.INVALID_CONDITIONAL_HEADERS, HttpURLConnection.HTTP_PRECON_FAILED, null, null);
-//            }
-//        }
-
-//        this.accessCondition = new AccessCondition();
-//        this.accessCondition.setLeaseID(previousLeaseId);
-//        if (!options.getSkipEtagLocking()) {
-//            this.accessCondition.setIfMatch(this.blobClient.getProperties().getEtag());
-//        }
-
         BlobProperties properties = blobClient.getProperties().block().value();
         this.streamLength = blobRangeLength == null
             ? properties.blobSize() - this.blobRangeOffset
             : Math.min(properties.blobSize() - this.blobRangeOffset, blobRangeLength);
-
-//        if (this.validateBlobMd5) {
-//            try {
-//                this.md5Digest = MessageDigest.getInstance("MD5");
-//            }
-//            catch (final NoSuchAlgorithmException e) {
-//                // This wont happen, throw fatal.
-//                throw Utility.generateNewUnexpectedStorageException(e);
-//            }
-//        }
 
         this.reposition(blobRangeOffset);
     }
@@ -437,26 +394,6 @@ public final class BlobInputStream extends InputStream {
 
         if (numberOfBytesRead > 0) {
             this.currentAbsoluteReadPosition += numberOfBytesRead;
-
-            if (this.validateBlobMd5) {
-                this.md5Digest.update(b, off, numberOfBytesRead);
-
-                if (this.currentAbsoluteReadPosition == this.streamLength + this.blobRangeOffset) {
-                    // Reached end of stream, validate md5.
-//                    final String calculatedMd5 = Base64.getEncoder().encode(this.md5Digest.digest());
-//                    if (!calculatedMd5.equals(this.retrievedContentMD5Value)) {
-//                        this.lastError = Utility
-//                            .initIOException(new StorageException(
-//                                StorageErrorCodeStrings.INVALID_MD5,
-//                                String.format(
-//                                    "Blob data corrupted (integrity check failed), Expected value is %s, retrieved %s",
-//                                    this.retrievedContentMD5Value, calculatedMd5),
-//                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null));
-//                        this.streamFaulted = true;
-//                        throw this.lastError;
-//                    }
-                }
-            }
         }
 
         // update markers
@@ -491,9 +428,6 @@ public final class BlobInputStream extends InputStream {
         if (this.markedPosition + this.markExpiry < this.currentAbsoluteReadPosition) {
             throw new IOException(SR.MARK_EXPIRED);
         }
-
-        this.validateBlobMd5 = false;
-        this.md5Digest = null;
         this.reposition(this.markedPosition);
     }
 
@@ -518,8 +452,6 @@ public final class BlobInputStream extends InputStream {
             throw new IndexOutOfBoundsException();
         }
 
-        this.validateBlobMd5 = false;
-        this.md5Digest = null;
         this.reposition(this.currentAbsoluteReadPosition + n);
         return n;
     }
