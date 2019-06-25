@@ -377,7 +377,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-resources</artifactId>
-        <version>${azure-mgmt-resources-test.version}</version>
+        <version>${azure-mgmt-resources.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
