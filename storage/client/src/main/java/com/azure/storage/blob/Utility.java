@@ -362,6 +362,10 @@ final class Utility {
     }
 
      static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
-         return Utility.blockWithOptionalTimeout(response, timeout);
+         if (timeout == null) {
+             return response.block();
+         } else {
+             return response.block(timeout);
+         }
     }
 }
