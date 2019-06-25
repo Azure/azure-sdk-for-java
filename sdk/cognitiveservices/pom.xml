@@ -296,23 +296,23 @@
     </pluginManagement>
   </build>
   <modules>
-    <module>./language/bingspellcheck</module>
-    <module>./language/luis/authoring</module>
-    <module>./language/luis/runtime</module>
-    <module>./language/textanalytics</module>
-    <module>./search/bingautosuggest</module>
-    <module>./search/bingcustomimagesearch</module>
-    <module>./search/bingcustomsearch</module>
-    <module>./search/bingentitysearch</module>
-    <module>./search/bingimagesearch</module>
-    <module>./search/bingnewssearch</module>
-    <module>./search/bingvideosearch</module>
-    <module>./search/bingvisualsearch</module>
-    <module>./search/bingwebsearch</module>
-    <module>./vision/computervision</module>
-    <module>./vision/contentmoderator</module>
-    <module>./vision/customvision/prediction</module>
-    <module>./vision/customvision/training</module>
-    <module>./vision/faceapi</module>
+    <module>microsoft-azure-cognitiveservices-spellcheck</module>
+    <module>microsoft-azure-cognitiveservices-luis-authoring</module>
+    <module>microsoft-azure-cognitiveservices-luis-runtime</module>
+    <module>microsoft-azure-cognitiveservices-textanalytics</module>
+    <module>microsoft-azure-cognitiveservices-autosuggest</module>
+    <module>microsoft-azure-cognitiveservices-customimagesearch</module>
+    <module>microsoft-azure-cognitiveservices-customsearch</module>
+    <module>microsoft-azure-cognitiveservices-entitysearch</module>
+    <module>microsoft-azure-cognitiveservices-imagesearch</module>
+    <module>microsoft-azure-cognitiveservices-newssearch</module>
+    <module>microsoft-azure-cognitiveservices-videosearch</module>
+    <module>microsoft-azure-cognitiveservices-visualsearch</module>
+    <module>microsoft-azure-cognitiveservices-websearch</module>
+    <module>microsoft-azure-cognitiveservices-computervision</module>
+    <module>microsoft-azure-cognitiveservices-contentmoderator</module>
+    <module>microsoft-azure-cognitiveservices-customvision-prediction</module>
+    <module>microsoft-azure-cognitiveservices-customvision-training</module>
+    <module>microsoft-azure-cognitiveservices-faceapi</module>
   </modules>
 </project>

@@ -9,7 +9,7 @@
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <artifactId>azure-cognitiveservices-parent</artifactId>
     <version>1.0.2</version>
-    <relativePath>../../pom.xml</relativePath>
+    <relativePath>../pom.xml</relativePath>
   </parent>
     <artifactId>azure-cognitiveservices-newssearch</artifactId>
   <version>1.0.2</version>
