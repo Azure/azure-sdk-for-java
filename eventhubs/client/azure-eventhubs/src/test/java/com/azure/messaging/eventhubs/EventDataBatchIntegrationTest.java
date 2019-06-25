@@ -25,6 +25,9 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
+
 public class EventDataBatchIntegrationTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
@@ -117,7 +120,6 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final String messageId = "message-tracking-id";
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().partitionKey(PARTITION_KEY);
@@ -125,7 +127,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
-            data.properties().put(messageId, messageValue);
+            data.properties().put(MESSAGE_TRACKING_ID, messageValue);
 
             if (!batch.tryAdd(data)) {
                 break;
@@ -149,12 +151,12 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
                         return;
                     }
 
-                    if (event.properties().containsKey(messageId) && messageValue.equals(event.properties().get(messageId))) {
+                    if (isMatchingEvent(event, messageValue)) {
                         logger.asInfo().log("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
                     } else {
                         logger.asWarning().log(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
-                            event.sequenceNumber(), messageValue, event.properties().get(messageId)));
+                            event.sequenceNumber(), messageValue, event.properties().get(MESSAGE_TRACKING_ID)));
                     }
                 }, error -> {
                         Assert.fail("An error should not have occurred:" + error.toString());

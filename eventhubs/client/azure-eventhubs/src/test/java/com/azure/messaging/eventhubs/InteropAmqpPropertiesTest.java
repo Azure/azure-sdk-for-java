@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class InteropAmqpPropertiesTest extends ApiTestBase {
@@ -74,11 +76,10 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
         // Arrange
         final AtomicReference<EventData> receivedEventData = new AtomicReference<>();
-        final String messageTrackingId = "messageTrackingId";
         final String messageTrackingValue = UUID.randomUUID().toString();
 
         final HashMap<String, Object> applicationProperties = new HashMap<>();
-        applicationProperties.put(messageTrackingId, messageTrackingValue);
+        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
         applicationProperties.put("first-property", "value-1");
 
         final Message message = Proton.message();
@@ -108,11 +109,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
-        StepVerifier.create(consumer.receive().filter(event -> {
-            return event.properties() != null
-                && event.properties().containsKey(messageTrackingId)
-                && messageTrackingValue.equals(event.properties().get(messageTrackingId));
-        }).take(1))
+        StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
             .then(() -> producer.send(msgEvent).block(TIMEOUT))
             .assertNext(event -> {
                 validateAmqpProperties(message, messageAnnotations, applicationProperties, event);
@@ -122,11 +119,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
 
         Assert.assertNotNull(receivedEventData.get());
 
-        StepVerifier.create(consumer.receive().filter(event -> {
-            return event.properties() != null
-                && event.properties().containsKey(messageTrackingId)
-                && messageTrackingValue.equals(event.properties().get(messageTrackingId));
-        }).take(1))
+        StepVerifier.create(consumer.receive().filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1))
             .then(() -> producer.send(receivedEventData.get()).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(message, messageAnnotations, applicationProperties, event))
             .verifyComplete();
