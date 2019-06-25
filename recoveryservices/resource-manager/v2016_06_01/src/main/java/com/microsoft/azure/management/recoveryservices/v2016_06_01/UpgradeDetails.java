@@ -53,7 +53,7 @@ public class UpgradeDetails {
     private String message;
 
     /**
-     * The way the vault upgradation was triggered. Possible values include:
+     * The way the vault upgrade was triggered. Possible values include:
      * 'UserTriggered', 'ForcedUpgrade'.
      */
     @JsonProperty(value = "triggerType", access = JsonProperty.Access.WRITE_ONLY)
@@ -126,7 +126,7 @@ public class UpgradeDetails {
     }
 
     /**
-     * Get the way the vault upgradation was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'.
+     * Get the way the vault upgrade was triggered. Possible values include: 'UserTriggered', 'ForcedUpgrade'.
      *
      * @return the triggerType value
      */

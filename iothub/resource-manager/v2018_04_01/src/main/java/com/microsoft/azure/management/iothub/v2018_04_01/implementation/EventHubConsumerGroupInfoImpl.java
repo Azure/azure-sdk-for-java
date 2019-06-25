@@ -33,7 +33,7 @@ class EventHubConsumerGroupInfoImpl extends CreatableUpdatableImpl<EventHubConsu
         this.manager = manager;
         // Set resource name
         this.name = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "IotHubs");
         this.eventHubEndpointName = IdParsingUtils.getValueFromIdByName(inner.id(), "eventHubEndpoints");

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -50,6 +51,7 @@ public class EventData implements Comparable<EventData> {
      */
     public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
+    private final ClientLogger logger = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
@@ -129,6 +131,10 @@ public class EventData implements Comparable<EventData> {
             Data bodyData = (Data) bodySection;
             this.body = bodyData.getValue().asByteBuffer();
         } else {
+            logger.asWarning().log(String.format(Locale.US,
+                "Message body type is not of type Data, but type: %s. Not setting body contents.",
+                bodySection != null ? bodySection.getType() : "null"));
+
             this.body = null;
         }
 
@@ -178,7 +184,7 @@ public class EventData implements Comparable<EventData> {
      * @return ByteBuffer representing the data.
      */
     public ByteBuffer body() {
-        return body;
+        return body.duplicate();
     }
 
     /**
@@ -191,8 +197,8 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
-     * select a partition to send the message to.
+     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
+     * a partition to send the message to.
      *
      * @return A partition key for this Event Data.
      */
@@ -214,8 +220,8 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
-     *         event.
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
+     *         retrieved event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -308,8 +314,8 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         *         event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
+         *         retrieved event.
          */
         private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());

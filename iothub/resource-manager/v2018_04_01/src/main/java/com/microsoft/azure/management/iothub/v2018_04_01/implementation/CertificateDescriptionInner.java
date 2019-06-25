@@ -49,7 +49,7 @@ public class CertificateDescriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the etag value.
+     * Get the entity tag.
      *
      * @return the etag value
      */

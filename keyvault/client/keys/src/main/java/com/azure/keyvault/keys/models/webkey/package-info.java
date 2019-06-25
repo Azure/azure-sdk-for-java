@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains the classes for key vault JSON web key. 
+ * Package containing classes for key vault JSON web key.
  */
 package com.azure.keyvault.keys.models.webkey;
