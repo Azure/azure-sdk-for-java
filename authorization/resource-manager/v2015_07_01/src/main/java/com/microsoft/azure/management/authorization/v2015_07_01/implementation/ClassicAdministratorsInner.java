@@ -69,14 +69,13 @@ public class ClassicAdministratorsInner {
     /**
      * Gets service administrator, account administrator, and co-administrators for the subscription.
      *
-     * @param apiVersion The API version to use for this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ClassicAdministratorInner&gt; object if successful.
      */
-    public PagedList<ClassicAdministratorInner> list(final String apiVersion) {
-        ServiceResponse<Page<ClassicAdministratorInner>> response = listSinglePageAsync(apiVersion).toBlocking().single();
+    public PagedList<ClassicAdministratorInner> list() {
+        ServiceResponse<Page<ClassicAdministratorInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ClassicAdministratorInner>(response.body()) {
             @Override
             public Page<ClassicAdministratorInner> nextPage(String nextPageLink) {
@@ -88,14 +87,13 @@ public class ClassicAdministratorsInner {
     /**
      * Gets service administrator, account administrator, and co-administrators for the subscription.
      *
-     * @param apiVersion The API version to use for this operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ClassicAdministratorInner>> listAsync(final String apiVersion, final ListOperationCallback<ClassicAdministratorInner> serviceCallback) {
+    public ServiceFuture<List<ClassicAdministratorInner>> listAsync(final ListOperationCallback<ClassicAdministratorInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(apiVersion),
+            listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ClassicAdministratorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> call(String nextPageLink) {
@@ -108,12 +106,11 @@ public class ClassicAdministratorsInner {
     /**
      * Gets service administrator, account administrator, and co-administrators for the subscription.
      *
-     * @param apiVersion The API version to use for this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ClassicAdministratorInner&gt; object
      */
-    public Observable<Page<ClassicAdministratorInner>> listAsync(final String apiVersion) {
-        return listWithServiceResponseAsync(apiVersion)
+    public Observable<Page<ClassicAdministratorInner>> listAsync() {
+        return listWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<ClassicAdministratorInner>>, Page<ClassicAdministratorInner>>() {
                 @Override
                 public Page<ClassicAdministratorInner> call(ServiceResponse<Page<ClassicAdministratorInner>> response) {
@@ -125,12 +122,11 @@ public class ClassicAdministratorsInner {
     /**
      * Gets service administrator, account administrator, and co-administrators for the subscription.
      *
-     * @param apiVersion The API version to use for this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ClassicAdministratorInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> listWithServiceResponseAsync(final String apiVersion) {
-        return listSinglePageAsync(apiVersion)
+    public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<ClassicAdministratorInner>>, Observable<ServiceResponse<Page<ClassicAdministratorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> call(ServiceResponse<Page<ClassicAdministratorInner>> page) {
@@ -146,18 +142,17 @@ public class ClassicAdministratorsInner {
     /**
      * Gets service administrator, account administrator, and co-administrators for the subscription.
      *
-    ServiceResponse<PageImpl<ClassicAdministratorInner>> * @param apiVersion The API version to use for this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ClassicAdministratorInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> listSinglePageAsync(final String apiVersion) {
+    public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ClassicAdministratorInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ClassicAdministratorInner>>> call(Response<ResponseBody> response) {

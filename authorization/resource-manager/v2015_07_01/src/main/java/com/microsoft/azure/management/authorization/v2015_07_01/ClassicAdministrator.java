@@ -9,9 +9,9 @@
 package com.microsoft.azure.management.authorization.v2015_07_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.authorization.v2015_07_01.implementation.ClassicAdministratorInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.authorization.v2015_07_01.implementation.AuthorizationManager;
-import com.microsoft.azure.management.authorization.v2015_07_01.implementation.ClassicAdministratorInner;
 
 /**
  * Type representing ClassicAdministrator.

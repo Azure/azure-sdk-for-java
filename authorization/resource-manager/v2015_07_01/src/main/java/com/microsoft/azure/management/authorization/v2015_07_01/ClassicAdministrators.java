@@ -8,21 +8,12 @@
 
 package com.microsoft.azure.management.authorization.v2015_07_01;
 
-import rx.Observable;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.authorization.v2015_07_01.implementation.ClassicAdministratorsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing ClassicAdministrators.
  */
-public interface ClassicAdministrators extends HasInner<ClassicAdministratorsInner> {
-    /**
-     * Gets service administrator, account administrator, and co-administrators for the subscription.
-     *
-     * @param apiVersion The API version to use for this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<ClassicAdministrator> listAsync(final String apiVersion);
-
+public interface ClassicAdministrators extends SupportsListing<ClassicAdministrator>, HasInner<ClassicAdministratorsInner> {
 }
