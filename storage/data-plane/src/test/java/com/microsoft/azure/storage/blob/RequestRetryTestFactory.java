@@ -1,22 +1,14 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.StorageErrorException;
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
+import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -173,9 +165,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                  delay.
                  */
                 if (!((this.factory.retryTestScenario == RequestRetryTestFactory.RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS
-                        && this.factory.tryNumber > 4) ||
-                        (this.factory.retryTestScenario ==
-                                RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
+                        && this.factory.tryNumber > 4)
+                        || (this.factory.retryTestScenario
+                                == RequestRetryTestFactory.RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING
                                 && this.factory.tryNumber > 2))) {
                     expectedHost = RETRY_TEST_SECONDARY_HOST;
                 }
@@ -347,8 +339,9 @@ public class RequestRetryTestFactory implements RequestPolicyFactory {
                         default:
                             throw new IllegalArgumentException("Retries continued on non retryable error.");
                     }
+                default:
+                    throw new IllegalArgumentException("Invalid retry test scenario.");
             }
-            return Single.error(new IllegalArgumentException("Invalid scenario"));
         }
 
         /*

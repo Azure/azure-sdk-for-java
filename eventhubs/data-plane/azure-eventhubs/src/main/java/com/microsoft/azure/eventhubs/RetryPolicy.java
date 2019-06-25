@@ -56,7 +56,7 @@ public abstract class RetryPolicy {
     public void resetRetryCount(String clientId) {
         Integer currentRetryCount = this.retryCounts.get(clientId);
         if (currentRetryCount != null && currentRetryCount.intValue() != 0) {
-            this.retryCounts.put(clientId, 0);
+            this.retryCounts.replace(clientId, 0);
         }
     }
 

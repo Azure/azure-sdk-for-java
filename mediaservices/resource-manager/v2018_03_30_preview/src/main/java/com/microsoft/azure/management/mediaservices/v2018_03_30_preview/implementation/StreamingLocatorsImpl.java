@@ -90,10 +90,14 @@ class StreamingLocatorsImpl extends WrapperImpl<StreamingLocatorsInner> implemen
     public Observable<StreamingLocator> getAsync(String resourceGroupName, String accountName, String streamingLocatorName) {
         StreamingLocatorsInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, streamingLocatorName)
-        .map(new Func1<StreamingLocatorInner, StreamingLocator>() {
+        .flatMap(new Func1<StreamingLocatorInner, Observable<StreamingLocator>>() {
             @Override
-            public StreamingLocator call(StreamingLocatorInner inner) {
-                return wrapModel(inner);
+            public Observable<StreamingLocator> call(StreamingLocatorInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((StreamingLocator)wrapModel(inner));
+                }
             }
        });
     }

@@ -18,14 +18,14 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.PartitionMetric;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.PartitionUsage;
 
 class CollectionPartitionsImpl extends WrapperImpl<CollectionPartitionsInner> implements CollectionPartitions {
-    private final DocumentDBManager manager;
+    private final CosmosDBManager manager;
 
-    CollectionPartitionsImpl(DocumentDBManager manager) {
+    CollectionPartitionsImpl(CosmosDBManager manager) {
         super(manager.inner().collectionPartitions());
         this.manager = manager;
     }
 
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

@@ -32,7 +32,7 @@ class VnetGatewayImpl extends CreatableUpdatableImpl<VnetGateway, VnetGatewayInn
         this.manager = manager;
         // Set resource name
         this.gatewayName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");

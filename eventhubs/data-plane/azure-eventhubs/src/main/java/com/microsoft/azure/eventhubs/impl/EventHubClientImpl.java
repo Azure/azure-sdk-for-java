@@ -50,19 +50,19 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     private CompletableFuture<Void> createSender;
 
     private EventHubClientImpl(final ConnectionStringBuilder connectionString, final ScheduledExecutorService executor) {
-        super("EventHubClientImpl".concat(StringUtil.getRandomString()), null, executor);
+        super(StringUtil.getRandomString("EC"), null, executor);
 
         this.eventHubName = connectionString.getEventHubName();
         this.senderCreateSync = new Object();
     }
 
     public static CompletableFuture<EventHubClient> create(
-        final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
-            throws EventHubException, IOException {
+            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
+            throws IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
 
-        return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy, executor)
+        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor)
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
@@ -232,7 +232,8 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (!this.isSenderCreateStarted) {
             synchronized (this.senderCreateSync) {
                 if (!this.isSenderCreateStarted) {
-                    this.createSender = MessageSender.create(this.underlyingFactory, this.getClientId().concat("-InternalSender"), this.eventHubName)
+                    String senderName = StringUtil.getRandomString("EC").concat(StringUtil.SEPARATOR + this.underlyingFactory.getClientId()).concat("-InternalSender");
+                    this.createSender = MessageSender.create(this.underlyingFactory, senderName, this.eventHubName)
                             .thenAcceptAsync(new Consumer<MessageSender>() {
                                 public void accept(MessageSender a) {
                                     EventHubClientImpl.this.sender = a;
@@ -314,7 +315,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     private <T> CompletableFuture<T> addManagementToken(Map<String, Object> request) {
         CompletableFuture<T> retval = null;
         try {
-            String audience = String.format("amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
+            String audience = String.format(Locale.US, "amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
             String token = this.underlyingFactory.getTokenProvider().getToken(audience, ClientConstants.TOKEN_REFRESH_INTERVAL);
             request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, token);
         } catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {

@@ -36,7 +36,7 @@ public class IotHubSkuInfo {
     private Long capacity;
 
     /**
-     * Get the name value.
+     * Get the name of the SKU. Possible values include: 'F1', 'S1', 'S2', 'S3', 'B1', 'B2', 'B3'.
      *
      * @return the name value
      */
@@ -45,7 +45,7 @@ public class IotHubSkuInfo {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the SKU. Possible values include: 'F1', 'S1', 'S2', 'S3', 'B1', 'B2', 'B3'.
      *
      * @param name the name value to set
      * @return the IotHubSkuInfo object itself.
@@ -56,7 +56,7 @@ public class IotHubSkuInfo {
     }
 
     /**
-     * Get the tier value.
+     * Get the billing tier for the IoT hub. Possible values include: 'Free', 'Standard', 'Basic'.
      *
      * @return the tier value
      */
@@ -65,7 +65,7 @@ public class IotHubSkuInfo {
     }
 
     /**
-     * Get the capacity value.
+     * Get the number of provisioned IoT Hub units. See: https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
      *
      * @return the capacity value
      */
@@ -74,7 +74,7 @@ public class IotHubSkuInfo {
     }
 
     /**
-     * Set the capacity value.
+     * Set the number of provisioned IoT Hub units. See: https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
      *
      * @param capacity the capacity value to set
      * @return the IotHubSkuInfo object itself.

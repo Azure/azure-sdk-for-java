@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage.blob;
 
@@ -27,7 +15,7 @@ import java.util.concurrent.locks.Lock;
  */
 public final class ProgressReporter {
 
-    private static abstract class ProgressReporterImpl implements IProgressReceiver{
+    private abstract static class ProgressReporterImpl implements IProgressReceiver {
         long blockProgress;
 
         final IProgressReceiver progressReceiver;
@@ -121,7 +109,7 @@ public final class ProgressReporter {
             transferLock.lock();
             this.progressReceiver.reportProgress(this.totalProgress.addAndGet(bytesTransferred));
             transferLock.unlock();
-    }
+        }
 
         /*
         This is used in the case of retries to rewind the amount of progress reported so as not to over-report at the
@@ -161,8 +149,7 @@ public final class ProgressReporter {
             IProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
-        }
-        else {
+        } else {
             ProgressReporterImpl tracker = new SequentialProgressReporter(progressReceiver);
             return tracker.addProgressReporting(data);
         }
@@ -172,8 +159,7 @@ public final class ProgressReporter {
             IProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {
             return data;
-        }
-        else {
+        } else {
             ParallelProgressReporter tracker = new ParallelProgressReporter(progressReceiver, lock, totalProgress);
             return tracker.addProgressReporting(data);
         }

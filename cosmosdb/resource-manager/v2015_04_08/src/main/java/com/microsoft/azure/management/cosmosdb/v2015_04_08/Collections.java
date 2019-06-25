@@ -18,7 +18,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.CollectionDatabasisDa
  */
 public interface Collections {
     /**
-     * Retrieves metric defintions for the given collection.
+     * Retrieves metric definitions for the given collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.

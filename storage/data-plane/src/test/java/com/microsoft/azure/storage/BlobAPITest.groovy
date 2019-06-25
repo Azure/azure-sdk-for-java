@@ -1,17 +1,5 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.storage
 
@@ -50,8 +38,8 @@ class BlobAPITest extends APISpec {
         headers.metadata().isEmpty()
         headers.contentLength() != null
         headers.contentType() != null
-        headers.contentRange() != null
-        headers.contentMD5() == null
+        headers.contentRange() == null
+        headers.contentMD5() != null
         headers.contentEncoding() == null
         headers.cacheControl() == null
         headers.contentDisposition() == null
@@ -70,7 +58,20 @@ class BlobAPITest extends APISpec {
         headers.acceptRanges() == "bytes"
         headers.blobCommittedBlockCount() == null
         headers.serverEncrypted
-        headers.blobContentMD5() != null
+        headers.blobContentMD5() == null
+    }
+
+    def "Download empty file"() {
+        setup:
+        bu = cu.createAppendBlobURL("emptyAppendBlob")
+        bu.create().blockingGet()
+
+        when:
+        def result = FlowableUtil.collectBytesInBuffer(bu.download(new BlobRange().withOffset(0), null, false, null).blockingGet().body(null)).blockingGet()
+
+        then:
+        notThrown(StorageException)
+        result.remaining() == 0
     }
 
     /*
@@ -151,7 +152,7 @@ class BlobAPITest extends APISpec {
                 .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
 
         expect:
-        bu.download(null, bac, false, null).blockingGet().statusCode() == 206
+        bu.download(null, bac, false, null).blockingGet().statusCode() == 200
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -216,12 +217,7 @@ class BlobAPITest extends APISpec {
         bu.download(null, null, false, defaultContext).blockingGet()
 
         then:
-        /*
-        DownloadResponse requires that there be an etag present, but our mock response doesn't give back an etag. The
-        easiest way to validate this is to ensure the cause of the exception is in fact the absence of the etag.
-         */
-        def e = thrown(IllegalArgumentException)
-        e.getMessage().contains("eTag")
+        notThrown(RuntimeException)
     }
 
     def "Get properties default"() {

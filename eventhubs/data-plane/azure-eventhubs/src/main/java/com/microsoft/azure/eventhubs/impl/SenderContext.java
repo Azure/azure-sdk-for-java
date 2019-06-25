@@ -8,6 +8,7 @@ import com.microsoft.azure.eventhubs.ErrorContext;
 import java.util.Locale;
 
 public class SenderContext extends ErrorContext {
+    private static final long serialVersionUID = -2727710041737782741L;
     final String sendPath;
     final String referenceId;
     final Integer currentLinkCredit;

@@ -25,7 +25,7 @@ public interface PartitionReceiver {
 
     int MINIMUM_PREFETCH_COUNT = 1;
     int DEFAULT_PREFETCH_COUNT = 500;
-    int MAXIMUM_PREFETCH_COUNT = 2000;
+    int MAXIMUM_PREFETCH_COUNT = 8000;
 
     long NULL_EPOCH = 0;
 

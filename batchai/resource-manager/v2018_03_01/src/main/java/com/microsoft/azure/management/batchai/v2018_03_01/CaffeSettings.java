@@ -50,7 +50,7 @@ public class CaffeSettings {
     private Integer processCount;
 
     /**
-     * Get the configFilePath value.
+     * Get this property cannot be specified if pythonScriptFilePath is specified.
      *
      * @return the configFilePath value
      */
@@ -59,7 +59,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the configFilePath value.
+     * Set this property cannot be specified if pythonScriptFilePath is specified.
      *
      * @param configFilePath the configFilePath value to set
      * @return the CaffeSettings object itself.
@@ -70,7 +70,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the pythonScriptFilePath value.
+     * Get this property cannot be specified if configFilePath is specified.
      *
      * @return the pythonScriptFilePath value
      */
@@ -79,7 +79,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the pythonScriptFilePath value.
+     * Set this property cannot be specified if configFilePath is specified.
      *
      * @param pythonScriptFilePath the pythonScriptFilePath value to set
      * @return the CaffeSettings object itself.
@@ -90,7 +90,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the pythonInterpreterPath value.
+     * Get this property can be specified only if the pythonScriptFilePath is specified.
      *
      * @return the pythonInterpreterPath value
      */
@@ -99,7 +99,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the pythonInterpreterPath value.
+     * Set this property can be specified only if the pythonScriptFilePath is specified.
      *
      * @param pythonInterpreterPath the pythonInterpreterPath value to set
      * @return the CaffeSettings object itself.
@@ -130,7 +130,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Get the processCount value.
+     * Get the default value for this property is equal to nodeCount property.
      *
      * @return the processCount value
      */
@@ -139,7 +139,7 @@ public class CaffeSettings {
     }
 
     /**
-     * Set the processCount value.
+     * Set the default value for this property is equal to nodeCount property.
      *
      * @param processCount the processCount value to set
      * @return the CaffeSettings object itself.

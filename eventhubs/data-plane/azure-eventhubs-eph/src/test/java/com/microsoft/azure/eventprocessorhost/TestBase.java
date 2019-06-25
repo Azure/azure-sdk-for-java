@@ -27,77 +27,78 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class TestBase {
-    final static int SKIP_COUNT_CHECK = -3; // expectedEvents could be anything, don't check it at all
-    final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
-    final static int ANY_NONZERO_COUNT = -1; // if expectedEvents is -1, just check for > 0
-    
+    static final int SKIP_COUNT_CHECK = -3; // expectedEvents could be anything, don't check it at all
+    static final int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
+    static final int ANY_NONZERO_COUNT = -1; // if expectedEvents is -1, just check for > 0
+
     static boolean logInfo = false;
     static boolean logConsole = false;
     static final Logger TRACE_LOGGER = LoggerFactory.getLogger("servicebus.test-eph.trace");
-    
+
     @Rule
-    public final TestName name = new TestName();    
+    public final TestName name = new TestName();
 
     @BeforeClass
     public static void allTestStart() {
-    	String env = System.getenv("VERBOSELOG");
-    	if (env != null) {
-    		TestBase.logInfo = true;
-    		if (env.compareTo("CONSOLE") == 0) {
-    			TestBase.logConsole = true;
-    		}
-    	}
+        String env = System.getenv("VERBOSELOG");
+        if (env != null) {
+            TestBase.logInfo = true;
+            if (env.compareTo("CONSOLE") == 0) {
+                TestBase.logConsole = true;
+            }
+        }
     }
-    
+
     @AfterClass
     public static void allTestFinish() {
     }
-    
+
     static void logError(String message) {
-    	if (TestBase.logConsole) {
-    		System.err.println("TEST ERROR: " + message);
-    	} else {
-    		TestBase.TRACE_LOGGER.error(message);
-    	}
+        if (TestBase.logConsole) {
+            System.err.println("TEST ERROR: " + message);
+        } else {
+            TestBase.TRACE_LOGGER.error(message);
+        }
     }
-    
+
     static void logInfo(String message) {
-    	if (TestBase.logInfo) {
-	    	if (TestBase.logConsole) {
-	    		System.err.println("TEST INFO: " + message);
-	    	} else {
-	    		TestBase.TRACE_LOGGER.info(message);
-	    	}
-    	}
+        if (TestBase.logInfo) {
+            if (TestBase.logConsole) {
+                System.err.println("TEST INFO: " + message);
+            } else {
+                TestBase.TRACE_LOGGER.info(message);
+            }
+        }
     }
-    
+
     void skipIfAutomated() {
-    	Assume.assumeTrue(System.getenv("VERBOSELOG") != null);
+        Assume.assumeTrue(System.getenv("VERBOSELOG") != null);
     }
-    
+
     @Before
     public void logCaseStart() {
-    	String usemsg = "CASE START: " + this.name.getMethodName();
-    	if (TestBase.logConsole) {
-    		System.err.println(usemsg);
-    	} else {
-    		TestBase.TRACE_LOGGER.info(usemsg);
-    	}
+        String usemsg = "CASE START: " + this.name.getMethodName();
+        if (TestBase.logConsole) {
+            System.err.println(usemsg);
+        } else {
+            TestBase.TRACE_LOGGER.info(usemsg);
+        }
     }
 
     @After
     public void logCaseEnd() {
-    	String usemsg = "CASE END: " + this.name.getMethodName();
-    	if (TestBase.logConsole) {
-    		System.err.println(usemsg);
-    	} else {
-    		TestBase.TRACE_LOGGER.info(usemsg);
-    	}
+        String usemsg = "CASE END: " + this.name.getMethodName();
+        if (TestBase.logConsole) {
+            System.err.println(usemsg);
+        } else {
+            TestBase.TRACE_LOGGER.info(usemsg);
+        }
     }
 
     PerTestSettings testSetup(PerTestSettings settings) throws Exception {
-        String effectiveHostName = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.HOST_OVERRIDE) ?
-                settings.inoutEPHConstructorArgs.getHostName() : settings.getDefaultHostName() + "-1";
+        String effectiveHostName = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.HOST_OVERRIDE)
+            ? settings.inoutEPHConstructorArgs.getHostName()
+            : settings.getDefaultHostName() + "-1";
 
         settings.outUtils = new RealEventHubUtilities();
         boolean skipIfNoEventHubConnectionString = !settings.inEventHubDoesNotExist || settings.inSkipIfNoEventHubConnectionString;
@@ -108,21 +109,23 @@ public class TestBase {
         }
         ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString(skipIfNoEventHubConnectionString);
 
-        String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE) ?
-                settings.inoutEPHConstructorArgs.getEHPath() : environmentCSB.getEventHubName();
+        String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE)
+                ? settings.inoutEPHConstructorArgs.getEHPath()
+                : environmentCSB.getEventHubName();
 
-        String effectiveConsumerGroup = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CONSUMER_GROUP_OVERRIDE) ?
-                settings.inoutEPHConstructorArgs.getConsumerGroupName() : EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+        String effectiveConsumerGroup = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CONSUMER_GROUP_OVERRIDE)
+                ? settings.inoutEPHConstructorArgs.getConsumerGroupName()
+                : EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 
         String effectiveConnectionString = environmentCSB.toString();
-        if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_REPLACE_IN_CONNECTION) ||
-                settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)) {
+        if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_REPLACE_IN_CONNECTION)
+            || settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)) {
             ConnectionStringBuilder replacedCSB = new ConnectionStringBuilder()
                     .setEndpoint(environmentCSB.getEndpoint())
                     .setEventHubName(
-                            settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH) ?
-                                    "" :
-                                    settings.inoutEPHConstructorArgs.getEHPath()
+                            settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH)
+                                ? ""
+                                : settings.inoutEPHConstructorArgs.getEHPath()
                     )
                     .setSasKeyName(environmentCSB.getSasKeyName())
                     .setSasKey(environmentCSB.getSasKey());
@@ -133,8 +136,9 @@ public class TestBase {
             effectiveConnectionString = settings.inoutEPHConstructorArgs.getEHConnection();
         }
 
-        ScheduledExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE) ?
-                settings.inoutEPHConstructorArgs.getExecutor() : null;
+        ScheduledExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE)
+                ? settings.inoutEPHConstructorArgs.getExecutor()
+                : null;
 
         if (settings.inTelltaleOnTimeout) {
             settings.outTelltale = "";
@@ -147,16 +151,19 @@ public class TestBase {
         settings.inOptions.setExceptionNotification(settings.outGeneralErrorHandler);
 
         if (settings.inoutEPHConstructorArgs.useExplicitManagers()) {
-            ICheckpointManager effectiveCheckpointMananger = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CHECKPOINT_MANAGER_OVERRIDE) ?
-                    settings.inoutEPHConstructorArgs.getCheckpointMananger() : new BogusCheckpointMananger();
-            ILeaseManager effectiveLeaseManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.LEASE_MANAGER_OVERRIDE) ?
-                    settings.inoutEPHConstructorArgs.getLeaseManager() : new BogusLeaseManager();
+            ICheckpointManager effectiveCheckpointMananger = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CHECKPOINT_MANAGER_OVERRIDE)
+                    ? settings.inoutEPHConstructorArgs.getCheckpointMananger()
+                    : new BogusCheckpointMananger();
+            ILeaseManager effectiveLeaseManager = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.LEASE_MANAGER_OVERRIDE)
+                    ? settings.inoutEPHConstructorArgs.getLeaseManager()
+                    : new BogusLeaseManager();
 
             settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
                     effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor, null);
         } else {
-            String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE) ?
-                    settings.inoutEPHConstructorArgs.getStorageConnection() : TestUtilities.getStorageConnectionString();
+            String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE)
+                    ? settings.inoutEPHConstructorArgs.getStorageConnection()
+                    : TestUtilities.getStorageConnectionString();
 
             String effectiveStorageContainerName = settings.getDefaultHostName().toLowerCase() + "-" + EventProcessorHost.safeCreateUUID();
             if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONTAINER_OVERRIDE)) {
@@ -168,15 +175,16 @@ public class TestBase {
                 settings.inoutEPHConstructorArgs.setDefaultStorageContainerName(effectiveStorageContainerName);
             }
 
-            String effectiveBlobPrefix = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_BLOB_PREFIX_OVERRIDE) ?
-                    settings.inoutEPHConstructorArgs.getStorageBlobPrefix() : null;
+            String effectiveBlobPrefix = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_BLOB_PREFIX_OVERRIDE)
+                    ? settings.inoutEPHConstructorArgs.getStorageBlobPrefix()
+                    : null;
 
             settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
                     effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix, effectiveExecutor);
         }
 
         if (!settings.inEventHubDoesNotExist) {
-        	settings.outHost.registerEventProcessorFactory(settings.outProcessorFactory, settings.inOptions).get();
+            settings.outHost.registerEventProcessorFactory(settings.outProcessorFactory, settings.inOptions).get();
         }
 
         return settings;
@@ -195,7 +203,7 @@ public class TestBase {
     void waitForTelltale(PerTestSettings settings, String partitionId) throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             if (settings.outProcessorFactory.getTelltaleFound(partitionId)) {
-            	TestBase.logInfo("Telltale " + partitionId + " found\n");
+                TestBase.logInfo("Telltale " + partitionId + " found\n");
                 break;
             }
             Thread.sleep(5000);
@@ -209,7 +217,7 @@ public class TestBase {
         }
 
         if (expectedEvents != NO_CHECKS) {
-        	TestBase.logInfo("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
+            TestBase.logInfo("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
             if (expectedEvents == ANY_NONZERO_COUNT) {
                 assertTrue("no events received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
             } else if (expectedEvents != SKIP_COUNT_CHECK) {

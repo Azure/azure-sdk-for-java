@@ -8,58 +8,46 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for Rotation.
  */
-public enum Rotation {
-    /** Automatically detect and rotate as needed. */
-    AUTO("Auto"),
+public final class Rotation extends ExpandableStringEnum<Rotation> {
+    /** Static value Auto for Rotation. */
+    public static final Rotation AUTO = fromString("Auto");
 
-    /** Do not rotate the video.  If the output format supports it, any metadata about rotation is kept intact. */
-    NONE("None"),
+    /** Static value None for Rotation. */
+    public static final Rotation NONE = fromString("None");
 
-    /** Do not rotate the video but remove any metadata about the rotation. */
-    ROTATE0("Rotate0"),
+    /** Static value Rotate0 for Rotation. */
+    public static final Rotation ROTATE0 = fromString("Rotate0");
 
-    /** Rotate 90 degrees clockwise. */
-    ROTATE90("Rotate90"),
+    /** Static value Rotate90 for Rotation. */
+    public static final Rotation ROTATE90 = fromString("Rotate90");
 
-    /** Rotate 180 degrees clockwise. */
-    ROTATE180("Rotate180"),
+    /** Static value Rotate180 for Rotation. */
+    public static final Rotation ROTATE180 = fromString("Rotate180");
 
-    /** Rotate 270 degrees clockwise. */
-    ROTATE270("Rotate270");
+    /** Static value Rotate270 for Rotation. */
+    public static final Rotation ROTATE270 = fromString("Rotate270");
 
-    /** The actual serialized value for a Rotation instance. */
-    private String value;
-
-    Rotation(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a Rotation from its string representation.
+     * @param name a name to look for
+     * @return the corresponding Rotation
+     */
+    @JsonCreator
+    public static Rotation fromString(String name) {
+        return fromString(name, Rotation.class);
     }
 
     /**
-     * Parses a serialized value to a Rotation instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed Rotation object, or null if unable to parse.
+     * @return known Rotation values
      */
-    @JsonCreator
-    public static Rotation fromString(String value) {
-        Rotation[] items = Rotation.values();
-        for (Rotation item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<Rotation> values() {
+        return values(Rotation.class);
     }
 }

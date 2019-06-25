@@ -29,7 +29,7 @@ public class RedisRebootParameters {
     private Integer shardId;
 
     /**
-     * Get the rebootType value.
+     * Get which Redis node(s) to reboot. Depending on this value data loss is possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      *
      * @return the rebootType value
      */
@@ -38,7 +38,7 @@ public class RedisRebootParameters {
     }
 
     /**
-     * Set the rebootType value.
+     * Set which Redis node(s) to reboot. Depending on this value data loss is possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'.
      *
      * @param rebootType the rebootType value to set
      * @return the RedisRebootParameters object itself.
@@ -49,7 +49,7 @@ public class RedisRebootParameters {
     }
 
     /**
-     * Get the shardId value.
+     * Get if clustering is enabled, the ID of the shard to be rebooted.
      *
      * @return the shardId value
      */
@@ -58,7 +58,7 @@ public class RedisRebootParameters {
     }
 
     /**
-     * Set the shardId value.
+     * Set if clustering is enabled, the ID of the shard to be rebooted.
      *
      * @param shardId the shardId value to set
      * @return the RedisRebootParameters object itself.

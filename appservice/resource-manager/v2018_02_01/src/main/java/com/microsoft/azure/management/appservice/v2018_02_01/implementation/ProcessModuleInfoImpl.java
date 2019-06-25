@@ -23,6 +23,7 @@ class ProcessModuleInfoImpl extends IndexableRefreshableWrapperImpl<ProcessModul
     ProcessModuleInfoImpl(ProcessModuleInfoInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.processId = IdParsingUtils.getValueFromIdByName(inner.id(), "processes");

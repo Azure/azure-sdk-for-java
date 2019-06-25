@@ -19,7 +19,10 @@ public enum LiveEventEncodingType {
     NONE("None"),
 
     /** Enum value Basic. */
-    BASIC("Basic");
+    BASIC("Basic"),
+
+    /** Enum value Standard. */
+    STANDARD("Standard");
 
     /** The actual serialized value for a LiveEventEncodingType instance. */
     private String value;

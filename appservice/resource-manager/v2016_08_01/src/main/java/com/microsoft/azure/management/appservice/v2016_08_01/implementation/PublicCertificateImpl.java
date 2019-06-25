@@ -32,7 +32,7 @@ class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, Pu
         this.manager = manager;
         // Set resource name
         this.publicCertificateName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.publicCertificateName = IdParsingUtils.getValueFromIdByName(inner.id(), "publicCertificates");

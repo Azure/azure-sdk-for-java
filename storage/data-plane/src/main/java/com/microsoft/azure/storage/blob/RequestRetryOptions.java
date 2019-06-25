@@ -1,17 +1,6 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import java.util.concurrent.TimeUnit;
@@ -23,21 +12,24 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RequestRetryOptions {
 
-    /**
-     * An object representing default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
-     * maxRetryDelayInMs=120000, secondaryHost=null.
-     */
-    public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null,
-            null, null, null, null);
-    final private int maxTries;
-    final private int tryTimeout;
-    final private long retryDelayInMs;
-    final private long maxRetryDelayInMs;
+    private final int maxTries;
+    private final int tryTimeout;
+    private final long retryDelayInMs;
+    private final long maxRetryDelayInMs;
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
      */
-    private RetryPolicyType retryPolicyType = RetryPolicyType.EXPONENTIAL;
+    private RetryPolicyType retryPolicyType;
     private String secondaryHost;
+
+    /**
+     * Constructor with default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
+     * maxRetryDelayInMs=120000, secondaryHost=null.
+     */
+    public RequestRetryOptions() {
+        this(RetryPolicyType.EXPONENTIAL, null,
+                null, null, null, null);
+    }
 
     /**
      * Configures how the {@link com.microsoft.rest.v2.http.HttpPipeline} should retry requests.
@@ -90,8 +82,8 @@ public final class RequestRetryOptions {
             this.tryTimeout = 60;
         }
 
-        if ((retryDelayInMs == null && maxRetryDelayInMs != null) ||
-                (retryDelayInMs != null && maxRetryDelayInMs == null)) {
+        if ((retryDelayInMs == null && maxRetryDelayInMs != null)
+                || (retryDelayInMs != null && maxRetryDelayInMs == null)) {
             throw new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null");
         }
 
@@ -155,6 +147,8 @@ public final class RequestRetryOptions {
             case FIXED:
                 delay = this.retryDelayInMs;
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid retry policy type.");
         }
 
         return Math.min(delay, this.maxRetryDelayInMs);

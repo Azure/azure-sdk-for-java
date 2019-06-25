@@ -82,10 +82,14 @@ class LiveEventsImpl extends WrapperImpl<LiveEventsInner> implements LiveEvents 
     public Observable<LiveEvent> getAsync(String resourceGroupName, String accountName, String liveEventName) {
         LiveEventsInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, liveEventName)
-        .map(new Func1<LiveEventInner, LiveEvent>() {
+        .flatMap(new Func1<LiveEventInner, Observable<LiveEvent>>() {
             @Override
-            public LiveEvent call(LiveEventInner inner) {
-                return wrapModel(inner);
+            public Observable<LiveEvent> call(LiveEventInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((LiveEvent)wrapModel(inner));
+                }
             }
        });
     }

@@ -1,20 +1,15 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.UnexpectedLengthException;
+import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -47,7 +42,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
      *         {@link RequestRetryOptions}
      */
     public RequestRetryFactory(RequestRetryOptions requestRetryOptions) {
-        this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;
+        this.requestRetryOptions = requestRetryOptions == null ? new RequestRetryOptions() : requestRetryOptions;
     }
 
     @Override
@@ -55,7 +50,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
         return new RequestRetryPolicy(next, this.requestRetryOptions);
     }
 
-    private final class RequestRetryPolicy implements RequestPolicy {
+    private static final class RequestRetryPolicy implements RequestPolicy {
 
         private final RequestPolicy nextPolicy;
 
@@ -68,8 +63,8 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
 
         @Override
         public Single<HttpResponse> sendAsync(HttpRequest httpRequest) {
-            boolean considerSecondary = (httpRequest.httpMethod().equals(HttpMethod.GET) ||
-                    httpRequest.httpMethod().equals(HttpMethod.HEAD))
+            boolean considerSecondary = (httpRequest.httpMethod().equals(HttpMethod.GET)
+                    || httpRequest.httpMethod().equals(HttpMethod.HEAD))
                     && (this.requestRetryOptions.secondaryHost() != null);
 
             return this.attemptAsync(httpRequest, 1, considerSecondary, 1);
@@ -108,7 +103,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
             logf("\n=====> Try=%d\n", attempt);
 
             // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
-            final boolean tryingPrimary = !considerSecondary || (attempt % 2 == 1);
+            final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
             // Select the correct host and delay.
             long delayMs;
@@ -131,8 +126,8 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
              duplicates the ByteBuffer object, not the underlying data.
              */
             HttpHeaders bufferedHeaders = new HttpHeaders(httpRequest.headers());
-            Flowable<ByteBuffer> bufferedBody = httpRequest.body() == null ?
-                    null : httpRequest.body().map(ByteBuffer::duplicate);
+            Flowable<ByteBuffer> bufferedBody = httpRequest.body() == null
+                    ? null : httpRequest.body().map(ByteBuffer::duplicate);
             final HttpRequest requestCopy = new HttpRequest(httpRequest.callerMethod(), httpRequest.httpMethod(),
                     httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
             if (!tryingPrimary) {
@@ -182,8 +177,8 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                             we do not consider the secondary at all (considerSecondary==false)). This will
                             ensure primaryTry is correct when passed to calculate the delay.
                              */
-                            int newPrimaryTry = !tryingPrimary || !considerSecondary ?
-                                    primaryTry + 1 : primaryTry;
+                            int newPrimaryTry = !tryingPrimary || !considerSecondary
+                                    ? primaryTry + 1 : primaryTry;
                             return attemptAsync(httpRequest, newPrimaryTry, newConsiderSecondary,
                                     attempt + 1);
                         }
@@ -197,11 +192,11 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                         the root cause.
                          */
                         if (throwable instanceof UnexpectedLengthException && attempt > 1) {
-                            return Single.error(new IllegalStateException("The request failed because the " +
-                                    "size of the contents of the provided Flowable did not match the provided " +
-                                    "data size upon attempting to retry. This is likely caused by the Flowable " +
-                                    "not being replayable. To support retries, all Flowables must produce the " +
-                                    "same data for each subscriber. Please ensure this behavior.", throwable));
+                            return Single.error(new IllegalStateException("The request failed because the "
+                                    + "size of the contents of the provided Flowable did not match the provided "
+                                    + "data size upon attempting to retry. This is likely caused by the Flowable "
+                                    + "not being replayable. To support retries, all Flowables must produce the "
+                                    + "same data for each subscriber. Please ensure this behavior.", throwable));
                         }
 
                         /*
@@ -229,8 +224,8 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
                             we do not consider the secondary at all (considerSecondary==false)). This will
                             ensure primaryTry is correct when passed to calculate the delay.
                              */
-                            int newPrimaryTry = !tryingPrimary || !considerSecondary ?
-                                    primaryTry + 1 : primaryTry;
+                            int newPrimaryTry = !tryingPrimary || !considerSecondary
+                                    ? primaryTry + 1 : primaryTry;
                             return attemptAsync(httpRequest, newPrimaryTry, considerSecondary,
                                     attempt + 1);
                         }

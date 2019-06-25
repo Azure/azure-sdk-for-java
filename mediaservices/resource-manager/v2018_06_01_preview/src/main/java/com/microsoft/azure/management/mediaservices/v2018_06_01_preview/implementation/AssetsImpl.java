@@ -91,10 +91,14 @@ class AssetsImpl extends WrapperImpl<AssetsInner> implements Assets {
     public Observable<Asset> getAsync(String resourceGroupName, String accountName, String assetName) {
         AssetsInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, assetName)
-        .map(new Func1<AssetInner, Asset>() {
+        .flatMap(new Func1<AssetInner, Observable<Asset>>() {
             @Override
-            public Asset call(AssetInner inner) {
-                return wrapModel(inner);
+            public Observable<Asset> call(AssetInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Asset)wrapModel(inner));
+                }
             }
        });
     }

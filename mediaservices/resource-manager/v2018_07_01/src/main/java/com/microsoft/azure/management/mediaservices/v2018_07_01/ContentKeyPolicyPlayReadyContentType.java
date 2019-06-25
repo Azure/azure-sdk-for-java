@@ -8,52 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContentKeyPolicyPlayReadyContentType.
  */
-public enum ContentKeyPolicyPlayReadyContentType {
-    /** Represents a ContentKeyPolicyPlayReadyContentType that is unavailable in current API version. */
-    UNKNOWN("Unknown"),
+public final class ContentKeyPolicyPlayReadyContentType extends ExpandableStringEnum<ContentKeyPolicyPlayReadyContentType> {
+    /** Static value Unknown for ContentKeyPolicyPlayReadyContentType. */
+    public static final ContentKeyPolicyPlayReadyContentType UNKNOWN = fromString("Unknown");
 
-    /** Unspecified content type. */
-    UNSPECIFIED("Unspecified"),
+    /** Static value Unspecified for ContentKeyPolicyPlayReadyContentType. */
+    public static final ContentKeyPolicyPlayReadyContentType UNSPECIFIED = fromString("Unspecified");
 
-    /** Ultraviolet download content type. */
-    ULTRA_VIOLET_DOWNLOAD("UltraVioletDownload"),
+    /** Static value UltraVioletDownload for ContentKeyPolicyPlayReadyContentType. */
+    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_DOWNLOAD = fromString("UltraVioletDownload");
 
-    /** Ultraviolet streaming content type. */
-    ULTRA_VIOLET_STREAMING("UltraVioletStreaming");
+    /** Static value UltraVioletStreaming for ContentKeyPolicyPlayReadyContentType. */
+    public static final ContentKeyPolicyPlayReadyContentType ULTRA_VIOLET_STREAMING = fromString("UltraVioletStreaming");
 
-    /** The actual serialized value for a ContentKeyPolicyPlayReadyContentType instance. */
-    private String value;
-
-    ContentKeyPolicyPlayReadyContentType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContentKeyPolicyPlayReadyContentType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContentKeyPolicyPlayReadyContentType
+     */
+    @JsonCreator
+    public static ContentKeyPolicyPlayReadyContentType fromString(String name) {
+        return fromString(name, ContentKeyPolicyPlayReadyContentType.class);
     }
 
     /**
-     * Parses a serialized value to a ContentKeyPolicyPlayReadyContentType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContentKeyPolicyPlayReadyContentType object, or null if unable to parse.
+     * @return known ContentKeyPolicyPlayReadyContentType values
      */
-    @JsonCreator
-    public static ContentKeyPolicyPlayReadyContentType fromString(String value) {
-        ContentKeyPolicyPlayReadyContentType[] items = ContentKeyPolicyPlayReadyContentType.values();
-        for (ContentKeyPolicyPlayReadyContentType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContentKeyPolicyPlayReadyContentType> values() {
+        return values(ContentKeyPolicyPlayReadyContentType.class);
     }
 }

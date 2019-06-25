@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NodeSetup {
     /**
      * Specifies a setup task which can be used to customize the compute nodes
-     * of the cluster. The NodeSetup task runs everytime a VM is rebooted. For
+     * of the cluster. The NodeSetup task runs every time a VM is rebooted. For
      * that reason the task code needs to be idempotent. Generally it is used
      * to either download static data that is required for all jobs that run on
      * the cluster VMs or to download/install software.

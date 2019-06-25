@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.OperationDisplay;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final DocumentDBManager manager;
-    OperationImpl(OperationInner inner, DocumentDBManager manager) {
+    private final CosmosDBManager manager;
+    OperationImpl(OperationInner inner, CosmosDBManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public DocumentDBManager manager() {
+    public CosmosDBManager manager() {
         return this.manager;
     }
 

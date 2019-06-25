@@ -3,22 +3,26 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import org.junit.Assume;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Assume;
-
 final class RealEventHubUtilities {
     static final int QUERY_ENTITY_FOR_PARTITIONS = -1;
-    static final String syntacticallyCorrectDummyEventHubPath = "doesnotexist";
-    static final String syntacticallyCorrectDummyConnectionString =
-            "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath=" +
-            RealEventHubUtilities.syntacticallyCorrectDummyEventHubPath;
-    
+    static final String SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH = "doesnotexist";
+    static final String SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING =
+            "Endpoint=sb://doesnotexist.servicebus.windows.net/;SharedAccessKeyName=doesnotexist;SharedAccessKey=dGhpcyBpcyBub3QgYSB2YWxpZCBrZXkgLi4uLi4uLi4=;EntityPath="
+                + RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_EVENT_HUB_PATH;
+
     private ConnectionStringBuilder hubConnectionString = null;
     private String hubName = null;
     private String consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
@@ -78,19 +82,19 @@ final class RealEventHubUtilities {
 
     private void ehCacheCheck(boolean skipIfFakeEH) {
         if (this.hubName == null) {
-        	if (skipIfFakeEH) {
-        		TestUtilities.skipIfAppveyor();
-        	}
-        	String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
-            if (rawConnectionString == null) {
-            	if (skipIfFakeEH) {
-                   	TestBase.logInfo("SKIPPING - REQUIRES REAL EVENT HUB");
-                    Assume.assumeTrue(rawConnectionString != null);
-            	}
-            	TestBase.logInfo("Using dummy event hub connection string");
-            	rawConnectionString = RealEventHubUtilities.syntacticallyCorrectDummyConnectionString;
+            if (skipIfFakeEH) {
+                TestUtilities.skipIfAppveyor();
             }
-        	
+            String rawConnectionString = System.getenv("EVENT_HUB_CONNECTION_STRING");
+            if (rawConnectionString == null) {
+                if (skipIfFakeEH) {
+                    TestBase.logInfo("SKIPPING - REQUIRES REAL EVENT HUB");
+                    Assume.assumeTrue(rawConnectionString != null);
+                }
+                TestBase.logInfo("Using dummy event hub connection string");
+                rawConnectionString = RealEventHubUtilities.SYNTACTICALLY_CORRECT_DUMMY_CONNECTION_STRING;
+            }
+
             this.hubConnectionString = new ConnectionStringBuilder(rawConnectionString);
             this.hubName = this.hubConnectionString.getEventHubName();
         }
@@ -131,7 +135,7 @@ final class RealEventHubUtilities {
             EventHubClient idClient = EventHubClient.createSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
             try {
                 EventHubRuntimeInformation info = idClient.getRuntimeInformation().get();
-                String ids[] = info.getPartitionIds();
+                String[] ids = info.getPartitionIds();
                 for (String id : ids) {
                     this.cachedPartitionIds.add(id);
                 }

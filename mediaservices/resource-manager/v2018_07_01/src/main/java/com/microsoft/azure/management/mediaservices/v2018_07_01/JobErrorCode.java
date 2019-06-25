@@ -8,67 +8,55 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for JobErrorCode.
  */
-public enum JobErrorCode {
-    /** Fatal service error, please contact support. */
-    SERVICE_ERROR("ServiceError"),
+public final class JobErrorCode extends ExpandableStringEnum<JobErrorCode> {
+    /** Static value ServiceError for JobErrorCode. */
+    public static final JobErrorCode SERVICE_ERROR = fromString("ServiceError");
 
-    /** Transient error, please retry, if retry is unsuccessful, please contact support. */
-    SERVICE_TRANSIENT_ERROR("ServiceTransientError"),
+    /** Static value ServiceTransientError for JobErrorCode. */
+    public static final JobErrorCode SERVICE_TRANSIENT_ERROR = fromString("ServiceTransientError");
 
-    /** While trying to download the input files, the files were not accessible, please check the availability of the source. */
-    DOWNLOAD_NOT_ACCESSIBLE("DownloadNotAccessible"),
+    /** Static value DownloadNotAccessible for JobErrorCode. */
+    public static final JobErrorCode DOWNLOAD_NOT_ACCESSIBLE = fromString("DownloadNotAccessible");
 
-    /** While trying to download the input files, there was an issue during transfer (storage service, network errors), see details and check your source. */
-    DOWNLOAD_TRANSIENT_ERROR("DownloadTransientError"),
+    /** Static value DownloadTransientError for JobErrorCode. */
+    public static final JobErrorCode DOWNLOAD_TRANSIENT_ERROR = fromString("DownloadTransientError");
 
-    /** While trying to upload the output files, the destination was not reachable, please check the availability of the destination. */
-    UPLOAD_NOT_ACCESSIBLE("UploadNotAccessible"),
+    /** Static value UploadNotAccessible for JobErrorCode. */
+    public static final JobErrorCode UPLOAD_NOT_ACCESSIBLE = fromString("UploadNotAccessible");
 
-    /** While trying to upload the output files, there was an issue during transfer (storage service, network errors), see details and check your destination. */
-    UPLOAD_TRANSIENT_ERROR("UploadTransientError"),
+    /** Static value UploadTransientError for JobErrorCode. */
+    public static final JobErrorCode UPLOAD_TRANSIENT_ERROR = fromString("UploadTransientError");
 
-    /** There was a problem with the combination of input files and the configuration settings applied, fix the configuration settings and retry with the same input, or change input to match the configuration. */
-    CONFIGURATION_UNSUPPORTED("ConfigurationUnsupported"),
+    /** Static value ConfigurationUnsupported for JobErrorCode. */
+    public static final JobErrorCode CONFIGURATION_UNSUPPORTED = fromString("ConfigurationUnsupported");
 
-    /** There was a problem with the input content (for example: zero byte files, or corrupt/non-decodable files), check the input files. */
-    CONTENT_MALFORMED("ContentMalformed"),
+    /** Static value ContentMalformed for JobErrorCode. */
+    public static final JobErrorCode CONTENT_MALFORMED = fromString("ContentMalformed");
 
-    /** There was a problem with the format of the input (not valid media file, or an unsupported file/codec), check the validity of the input files. */
-    CONTENT_UNSUPPORTED("ContentUnsupported");
+    /** Static value ContentUnsupported for JobErrorCode. */
+    public static final JobErrorCode CONTENT_UNSUPPORTED = fromString("ContentUnsupported");
 
-    /** The actual serialized value for a JobErrorCode instance. */
-    private String value;
-
-    JobErrorCode(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a JobErrorCode from its string representation.
+     * @param name a name to look for
+     * @return the corresponding JobErrorCode
+     */
+    @JsonCreator
+    public static JobErrorCode fromString(String name) {
+        return fromString(name, JobErrorCode.class);
     }
 
     /**
-     * Parses a serialized value to a JobErrorCode instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed JobErrorCode object, or null if unable to parse.
+     * @return known JobErrorCode values
      */
-    @JsonCreator
-    public static JobErrorCode fromString(String value) {
-        JobErrorCode[] items = JobErrorCode.values();
-        for (JobErrorCode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<JobErrorCode> values() {
+        return values(JobErrorCode.class);
     }
 }

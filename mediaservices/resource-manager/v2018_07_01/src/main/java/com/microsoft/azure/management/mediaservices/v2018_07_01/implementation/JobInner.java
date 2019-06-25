@@ -73,7 +73,7 @@ public class JobInner extends ProxyResource {
     private Priority priority;
 
     /**
-     * Customer provided correlation data that will be returned in Job and
+     * Customer provided key, value pairs that will be returned in Job and
      * JobOutput state events.
      */
     @JsonProperty(value = "properties.correlationData")
@@ -187,7 +187,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get customer provided correlation data that will be returned in Job and JobOutput state events.
+     * Get customer provided key, value pairs that will be returned in Job and JobOutput state events.
      *
      * @return the correlationData value
      */
@@ -196,7 +196,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set customer provided correlation data that will be returned in Job and JobOutput state events.
+     * Set customer provided key, value pairs that will be returned in Job and JobOutput state events.
      *
      * @param correlationData the correlationData value to set
      * @return the JobInner object itself.

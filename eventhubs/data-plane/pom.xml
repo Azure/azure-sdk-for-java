@@ -4,22 +4,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.data.xml</relativePath>
+  </parent>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-clients</artifactId>
   <packaging>pom</packaging>
-  <version>2.0.0</version>
+  <version>2.3.1</version>
 
   <name>Microsoft Azure Event Hubs SDK Parent</name>
   <description>Java libraries for talking to Windows Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
-
-  <parent>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0</version>
-    <relativePath>../../pom.client.xml</relativePath>
-  </parent>
 
   <distributionManagement>
     <site>
@@ -45,12 +45,33 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Now that all checkstyle issues have been resolved, override the
+       default behavior to make checkstyle fail on error and violation. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <modules>
     <module>azure-eventhubs</module>

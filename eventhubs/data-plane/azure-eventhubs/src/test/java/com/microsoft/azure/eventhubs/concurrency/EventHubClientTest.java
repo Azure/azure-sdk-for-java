@@ -21,14 +21,14 @@ public class EventHubClientTest extends ApiTestBase {
 
     @Test()
     public void testParallelEventHubClients() throws Exception {
-
         final String consumerGroupName = TestContext.getConsumerGroupName();
         final String partitionId = "0";
         final int noOfClients = 4;
         final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         @SuppressWarnings("unchecked")
-        CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[noOfClients];
+        final CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[noOfClients];
+
         try {
             ConnectionStringBuilder connectionString = TestContext.getConnectionString();
             for (int i = 0; i < noOfClients; i++) {
@@ -52,12 +52,16 @@ public class EventHubClientTest extends ApiTestBase {
                 }
             }
         } finally {
-            if (createFutures != null) {
-                for (CompletableFuture<EventHubClient> createFuture : createFutures) {
-                    if (!createFuture.isCancelled() || !createFuture.isCompletedExceptionally()) {
-                        EventHubClient ehClient = createFuture.join();
-                        ehClient.closeSync();
-                    }
+            for (CompletableFuture<EventHubClient> createFuture : createFutures) {
+                // There's a possibility that an exception was thrown while creating EventHubClients, so we can't assume
+                // that they were all initialised yet.
+                if (createFuture == null) {
+                    continue;
+                }
+
+                if (!createFuture.isCancelled() || !createFuture.isCompletedExceptionally()) {
+                    EventHubClient ehClient = createFuture.join();
+                    ehClient.closeSync();
                 }
             }
 

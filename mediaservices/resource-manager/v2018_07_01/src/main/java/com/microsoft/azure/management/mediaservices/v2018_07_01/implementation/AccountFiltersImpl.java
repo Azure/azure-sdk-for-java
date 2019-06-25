@@ -64,10 +64,14 @@ class AccountFiltersImpl extends WrapperImpl<AccountFiltersInner> implements Acc
     public Observable<AccountFilter> getAsync(String resourceGroupName, String accountName, String filterName) {
         AccountFiltersInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, filterName)
-        .map(new Func1<AccountFilterInner, AccountFilter>() {
+        .flatMap(new Func1<AccountFilterInner, Observable<AccountFilter>>() {
             @Override
-            public AccountFilter call(AccountFilterInner inner) {
-                return wrapModel(inner);
+            public Observable<AccountFilter> call(AccountFilterInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((AccountFilter)wrapModel(inner));
+                }
             }
        });
     }

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 
 class DummyPump extends PumpManager {
-    public DummyPump(HostContext hostContext, Closable parent) {
+    DummyPump(HostContext hostContext, Closable parent) {
         super(hostContext, parent);
     }
 
@@ -26,7 +26,7 @@ class DummyPump extends PumpManager {
 
     @Override
     protected void removingPumpTestHook(String partitionId) {
-    	TestBase.logInfo("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
+        TestBase.logInfo("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
     }
 
 

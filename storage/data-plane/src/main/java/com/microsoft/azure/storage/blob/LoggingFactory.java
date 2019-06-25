@@ -1,17 +1,6 @@
-/*
- * Copyright Microsoft Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -44,14 +33,14 @@ import java.util.logging.Logger;
  */
 public final class LoggingFactory implements RequestPolicyFactory {
 
-    private static final Logger forceLogger = Logger.getLogger("Azure Storage Java SDK");
-    private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger("Azure Storage Java SDK");
-    private static final Map<HttpPipelineLogLevel, Level> javaLogLevelMap = new HashMap<>();
+    private static final Logger FORCE_LOGGER = Logger.getLogger(LoggingFactory.class.getName());
+    private static final org.slf4j.Logger SLF4J_LOGGER = LoggerFactory.getLogger(LoggingFactory.class.getName());
+    private static final Map<HttpPipelineLogLevel, Level> JAVA_LOG_LEVEL_MAP = new HashMap<>();
     private static boolean defaultLoggerLoaded;
 
     static {
         try {
-            forceLogger.setLevel(Level.WARNING);
+            FORCE_LOGGER.setLevel(Level.WARNING);
 
             // Create the logs directory if it doesn't exist.
             File logDir = new File(System.getProperty("java.io.tmpdir"), "AzureStorageJavaSDKLogs");
@@ -75,11 +64,11 @@ public final class LoggingFactory implements RequestPolicyFactory {
              */
             FileHandler handler = new FileHandler("%t/AzureStorageJavaSDKLogs/%u%g", 10 * Constants.MB, 5, false);
             handler.setLevel(Level.WARNING);
-            forceLogger.addHandler(handler);
+            FORCE_LOGGER.addHandler(handler);
 
-            javaLogLevelMap.put(HttpPipelineLogLevel.ERROR, Level.SEVERE);
-            javaLogLevelMap.put(HttpPipelineLogLevel.WARNING, Level.WARNING);
-            javaLogLevelMap.put(HttpPipelineLogLevel.INFO, Level.INFO);
+            JAVA_LOG_LEVEL_MAP.put(HttpPipelineLogLevel.ERROR, Level.SEVERE);
+            JAVA_LOG_LEVEL_MAP.put(HttpPipelineLogLevel.WARNING, Level.WARNING);
+            JAVA_LOG_LEVEL_MAP.put(HttpPipelineLogLevel.INFO, Level.INFO);
             defaultLoggerLoaded = true;
 
         /*
@@ -102,7 +91,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
      *         The configurations for this factory. Null will indicate use of the default options.
      */
     public LoggingFactory(LoggingOptions loggingOptions) {
-        this.loggingOptions = loggingOptions == null ? LoggingOptions.DEFAULT : loggingOptions;
+        this.loggingOptions = loggingOptions == null ? new LoggingOptions() : loggingOptions;
     }
 
     @Override
@@ -110,7 +99,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
         return new LoggingPolicy(this, next, options);
     }
 
-    private final class LoggingPolicy implements RequestPolicy {
+    private static final class LoggingPolicy implements RequestPolicy {
 
         private final LoggingFactory factory;
 
@@ -159,8 +148,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
             }
 
             if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
-                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(),
-                        this.tryCount);
+                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n",
+                        sanitizeURL(request.url()), this.tryCount);
                 this.log(HttpPipelineLogLevel.INFO, logMessage);
             }
 
@@ -186,8 +175,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         }
 
                         // If the response took too long, we'll upgrade to warning.
-                        if (requestCompletionTime >=
-                                factory.loggingOptions.minDurationToLogSlowRequestsInMs()) {
+                        if (requestCompletionTime
+                                >= factory.loggingOptions.minDurationToLogSlowRequestsInMs()) {
                             // Log a warning if the try duration exceeded the specified threshold.
                             if (this.shouldLog(HttpPipelineLogLevel.WARNING)) {
                                 currentLevel = HttpPipelineLogLevel.WARNING;
@@ -197,13 +186,13 @@ public final class LoggingFactory implements RequestPolicyFactory {
                             }
                         }
 
-                        if (((response.statusCode() >= 400 && response.statusCode() <= 499) &&
-                                (response.statusCode() != HttpURLConnection.HTTP_NOT_FOUND &&
-                                        response.statusCode() != HttpURLConnection.HTTP_CONFLICT &&
-                                        response.statusCode() != HttpURLConnection.HTTP_PRECON_FAILED &&
-                                        response.statusCode() != 416)) ||
+                        if (((response.statusCode() >= 400 && response.statusCode() <= 499)
+                                 && (response.statusCode() != HttpURLConnection.HTTP_NOT_FOUND
+                                         && response.statusCode() != HttpURLConnection.HTTP_CONFLICT
+                                         && response.statusCode() != HttpURLConnection.HTTP_PRECON_FAILED
+                                         && response.statusCode() != 416))
                                         /* 416 is missing from the Enum but it is Range Not Satisfiable */
-                                (response.statusCode() >= 500 && response.statusCode() <= 509)) {
+                                || (response.statusCode() >= 500 && response.statusCode() <= 509)) {
                             String errorString = String.format(Locale.ROOT,
                                     "REQUEST ERROR%nHTTP request failed with status code:'%d'%n",
                                     response.statusCode());
@@ -296,7 +285,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         urlParts.sasQueryParameters().contentDisposition(),
                         urlParts.sasQueryParameters().contentEncoding(),
                         urlParts.sasQueryParameters().contentLanguage(),
-                        urlParts.sasQueryParameters().contentType()
+                        urlParts.sasQueryParameters().contentType(),
+                        urlParts.sasQueryParameters().userDelegationKey()
                 ));
                 resultURL = urlParts.toURL();
 
@@ -324,18 +314,18 @@ public final class LoggingFactory implements RequestPolicyFactory {
             }
 
             /*
-            The Java logger and slf4j logger should do the correct thing given any log level. forceLogger is
+            The Java logger and slf4j logger should do the correct thing given any log level. FORCE_LOGGER is
             configured to only log warnings and errors.
              */
             if (!this.factory.loggingOptions.disableDefaultLogging() && LoggingFactory.defaultLoggerLoaded) {
-                forceLogger.log(javaLogLevelMap.get(level), message);
+                FORCE_LOGGER.log(JAVA_LOG_LEVEL_MAP.get(level), message);
             }
             if (level.equals(HttpPipelineLogLevel.ERROR)) {
-                slf4jLogger.error(message);
+                SLF4J_LOGGER.error(message);
             } else if (level.equals(HttpPipelineLogLevel.WARNING)) {
-                slf4jLogger.warn(message);
+                SLF4J_LOGGER.warn(message);
             } else if (level.equals(HttpPipelineLogLevel.INFO)) {
-                slf4jLogger.info(message);
+                SLF4J_LOGGER.info(message);
             }
         }
 
@@ -344,8 +334,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
          */
         private boolean shouldLog(HttpPipelineLogLevel level) {
             // Default log Warnings and Errors as long as default logging is enabled.
-            if ((level.equals(HttpPipelineLogLevel.WARNING) || level.equals(HttpPipelineLogLevel.ERROR)) &&
-                    !this.factory.loggingOptions.disableDefaultLogging() && LoggingFactory.defaultLoggerLoaded) {
+            if ((level.equals(HttpPipelineLogLevel.WARNING) || level.equals(HttpPipelineLogLevel.ERROR))
+                    && !this.factory.loggingOptions.disableDefaultLogging() && LoggingFactory.defaultLoggerLoaded) {
                 return true;
             }
 
@@ -355,9 +345,9 @@ public final class LoggingFactory implements RequestPolicyFactory {
             }
 
             // The SLF4J logger is configured at the given level.
-            if ((level.equals(HttpPipelineLogLevel.INFO) && slf4jLogger.isInfoEnabled()) ||
-                    (level.equals(HttpPipelineLogLevel.WARNING) && slf4jLogger.isWarnEnabled()) ||
-                    (level.equals(HttpPipelineLogLevel.ERROR) && slf4jLogger.isErrorEnabled())) {
+            if ((level.equals(HttpPipelineLogLevel.INFO) && SLF4J_LOGGER.isInfoEnabled())
+                    || (level.equals(HttpPipelineLogLevel.WARNING) && SLF4J_LOGGER.isWarnEnabled())
+                    || (level.equals(HttpPipelineLogLevel.ERROR) && SLF4J_LOGGER.isErrorEnabled())) {
                 return true;
             }
 

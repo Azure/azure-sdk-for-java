@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for InsightsType.
  */
-public enum InsightsType {
-    /** Generate audio only insights. Ignore video even if present. Fails if no audio is present. */
-    AUDIO_INSIGHTS_ONLY("AudioInsightsOnly"),
+public final class InsightsType extends ExpandableStringEnum<InsightsType> {
+    /** Static value AudioInsightsOnly for InsightsType. */
+    public static final InsightsType AUDIO_INSIGHTS_ONLY = fromString("AudioInsightsOnly");
 
-    /** Generate video only insights. Ignore audio if present. Fails if no video is present. */
-    VIDEO_INSIGHTS_ONLY("VideoInsightsOnly"),
+    /** Static value VideoInsightsOnly for InsightsType. */
+    public static final InsightsType VIDEO_INSIGHTS_ONLY = fromString("VideoInsightsOnly");
 
-    /** Generate both audio and video insights. Fails if either audio or video Insights fail. */
-    ALL_INSIGHTS("AllInsights");
+    /** Static value AllInsights for InsightsType. */
+    public static final InsightsType ALL_INSIGHTS = fromString("AllInsights");
 
-    /** The actual serialized value for a InsightsType instance. */
-    private String value;
-
-    InsightsType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a InsightsType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding InsightsType
+     */
+    @JsonCreator
+    public static InsightsType fromString(String name) {
+        return fromString(name, InsightsType.class);
     }
 
     /**
-     * Parses a serialized value to a InsightsType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed InsightsType object, or null if unable to parse.
+     * @return known InsightsType values
      */
-    @JsonCreator
-    public static InsightsType fromString(String value) {
-        InsightsType[] items = InsightsType.values();
-        for (InsightsType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<InsightsType> values() {
+        return values(InsightsType.class);
     }
 }

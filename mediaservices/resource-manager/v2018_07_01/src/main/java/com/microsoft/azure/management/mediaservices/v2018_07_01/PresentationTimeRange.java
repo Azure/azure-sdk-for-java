@@ -18,45 +18,45 @@ public class PresentationTimeRange {
     /**
      * The absolute start time boundary.
      */
-    @JsonProperty(value = "startTimestamp", required = true)
-    private long startTimestamp;
+    @JsonProperty(value = "startTimestamp")
+    private Long startTimestamp;
 
     /**
      * The absolute end time boundary.
      */
-    @JsonProperty(value = "endTimestamp", required = true)
-    private long endTimestamp;
+    @JsonProperty(value = "endTimestamp")
+    private Long endTimestamp;
 
     /**
      * The relative to end sliding window.
      */
-    @JsonProperty(value = "presentationWindowDuration", required = true)
-    private long presentationWindowDuration;
+    @JsonProperty(value = "presentationWindowDuration")
+    private Long presentationWindowDuration;
 
     /**
      * The relative to end right edge.
      */
-    @JsonProperty(value = "liveBackoffDuration", required = true)
-    private long liveBackoffDuration;
+    @JsonProperty(value = "liveBackoffDuration")
+    private Long liveBackoffDuration;
 
     /**
      * The time scale of time stamps.
      */
-    @JsonProperty(value = "timescale", required = true)
-    private long timescale;
+    @JsonProperty(value = "timescale")
+    private Long timescale;
 
     /**
      * The indicator of forcing exsiting of end time stamp.
      */
-    @JsonProperty(value = "forceEndTimestamp", required = true)
-    private boolean forceEndTimestamp;
+    @JsonProperty(value = "forceEndTimestamp")
+    private Boolean forceEndTimestamp;
 
     /**
      * Get the absolute start time boundary.
      *
      * @return the startTimestamp value
      */
-    public long startTimestamp() {
+    public Long startTimestamp() {
         return this.startTimestamp;
     }
 
@@ -66,7 +66,7 @@ public class PresentationTimeRange {
      * @param startTimestamp the startTimestamp value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withStartTimestamp(long startTimestamp) {
+    public PresentationTimeRange withStartTimestamp(Long startTimestamp) {
         this.startTimestamp = startTimestamp;
         return this;
     }
@@ -76,7 +76,7 @@ public class PresentationTimeRange {
      *
      * @return the endTimestamp value
      */
-    public long endTimestamp() {
+    public Long endTimestamp() {
         return this.endTimestamp;
     }
 
@@ -86,7 +86,7 @@ public class PresentationTimeRange {
      * @param endTimestamp the endTimestamp value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withEndTimestamp(long endTimestamp) {
+    public PresentationTimeRange withEndTimestamp(Long endTimestamp) {
         this.endTimestamp = endTimestamp;
         return this;
     }
@@ -96,7 +96,7 @@ public class PresentationTimeRange {
      *
      * @return the presentationWindowDuration value
      */
-    public long presentationWindowDuration() {
+    public Long presentationWindowDuration() {
         return this.presentationWindowDuration;
     }
 
@@ -106,7 +106,7 @@ public class PresentationTimeRange {
      * @param presentationWindowDuration the presentationWindowDuration value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withPresentationWindowDuration(long presentationWindowDuration) {
+    public PresentationTimeRange withPresentationWindowDuration(Long presentationWindowDuration) {
         this.presentationWindowDuration = presentationWindowDuration;
         return this;
     }
@@ -116,7 +116,7 @@ public class PresentationTimeRange {
      *
      * @return the liveBackoffDuration value
      */
-    public long liveBackoffDuration() {
+    public Long liveBackoffDuration() {
         return this.liveBackoffDuration;
     }
 
@@ -126,7 +126,7 @@ public class PresentationTimeRange {
      * @param liveBackoffDuration the liveBackoffDuration value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withLiveBackoffDuration(long liveBackoffDuration) {
+    public PresentationTimeRange withLiveBackoffDuration(Long liveBackoffDuration) {
         this.liveBackoffDuration = liveBackoffDuration;
         return this;
     }
@@ -136,7 +136,7 @@ public class PresentationTimeRange {
      *
      * @return the timescale value
      */
-    public long timescale() {
+    public Long timescale() {
         return this.timescale;
     }
 
@@ -146,7 +146,7 @@ public class PresentationTimeRange {
      * @param timescale the timescale value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withTimescale(long timescale) {
+    public PresentationTimeRange withTimescale(Long timescale) {
         this.timescale = timescale;
         return this;
     }
@@ -156,7 +156,7 @@ public class PresentationTimeRange {
      *
      * @return the forceEndTimestamp value
      */
-    public boolean forceEndTimestamp() {
+    public Boolean forceEndTimestamp() {
         return this.forceEndTimestamp;
     }
 
@@ -166,7 +166,7 @@ public class PresentationTimeRange {
      * @param forceEndTimestamp the forceEndTimestamp value to set
      * @return the PresentationTimeRange object itself.
      */
-    public PresentationTimeRange withForceEndTimestamp(boolean forceEndTimestamp) {
+    public PresentationTimeRange withForceEndTimestamp(Boolean forceEndTimestamp) {
         this.forceEndTimestamp = forceEndTimestamp;
         return this;
     }

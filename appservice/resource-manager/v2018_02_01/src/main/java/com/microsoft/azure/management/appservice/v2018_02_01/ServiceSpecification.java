@@ -22,6 +22,12 @@ public class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /**
+     * The logSpecifications property.
+     */
+    @JsonProperty(value = "logSpecifications")
+    private List<LogSpecification> logSpecifications;
+
+    /**
      * Get the metricSpecifications value.
      *
      * @return the metricSpecifications value
@@ -38,6 +44,26 @@ public class ServiceSpecification {
      */
     public ServiceSpecification withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
+        return this;
+    }
+
+    /**
+     * Get the logSpecifications value.
+     *
+     * @return the logSpecifications value
+     */
+    public List<LogSpecification> logSpecifications() {
+        return this.logSpecifications;
+    }
+
+    /**
+     * Set the logSpecifications value.
+     *
+     * @param logSpecifications the logSpecifications value to set
+     * @return the ServiceSpecification object itself.
+     */
+    public ServiceSpecification withLogSpecifications(List<LogSpecification> logSpecifications) {
+        this.logSpecifications = logSpecifications;
         return this;
     }
 
