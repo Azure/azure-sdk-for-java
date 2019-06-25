@@ -22,6 +22,12 @@ public final class ManagedServiceIdentityType extends ExpandableStringEnum<Manag
     /** Static value UserAssigned for ManagedServiceIdentityType. */
     public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
+    /** Static value SystemAssigned, UserAssigned for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
+
+    /** Static value None for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType NONE = fromString("None");
+
     /**
      * Creates or finds a ManagedServiceIdentityType from its string representation.
      * @param name a name to look for

@@ -41,23 +41,25 @@ public final class PipelineOptions {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PipelineOptions() {
-        this.logger = new HttpPipelineLogger() {
-            @Override
-            public HttpPipelineLogLevel minimumLogLevel() {
-                return HttpPipelineLogLevel.OFF;
-            }
+        this.logger = new HttpPipelineLoggerImpl();
+    }
 
-            @Override
-            public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
-                if (logLevel == HttpPipelineLogLevel.INFO) {
-                    Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.WARNING) {
-                    Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
-                } else if (logLevel == HttpPipelineLogLevel.ERROR) {
-                    Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
-                }
+    private static final class HttpPipelineLoggerImpl implements HttpPipelineLogger {
+        @Override
+        public HttpPipelineLogLevel minimumLogLevel() {
+            return HttpPipelineLogLevel.OFF;
+        }
+
+        @Override
+        public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
+            if (logLevel == HttpPipelineLogLevel.INFO) {
+                Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
+            } else if (logLevel == HttpPipelineLogLevel.WARNING) {
+                Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
+            } else if (logLevel == HttpPipelineLogLevel.ERROR) {
+                Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
             }
-        };
+        }
     }
 
     /**

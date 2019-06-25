@@ -143,4 +143,13 @@ public interface ManagementLocks extends SupportsCreating<ManagementLockObject.D
      */
     Observable<ManagementLockObject> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName);
 
+    /**
+     * Gets all the management locks for a scope.
+     *
+     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ManagementLockObject> listByScopeAsync(final String scope);
+
 }

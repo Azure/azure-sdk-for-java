@@ -5,6 +5,7 @@ package com.azure.core.auth.credentials;
 
 import com.azure.core.AzureEnvironment;
 import com.azure.core.annotations.Beta;
+import com.azure.core.credentials.AccessToken;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -86,6 +87,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
      * @param accessTokens the accessTokens.json file created by Azure CLI
      * @return an instance of AzureCliCredentials
      * @throws IOException if the Azure CLI token files are not accessible
+     * @throws FileNotFoundException if {@code azureProfile} or {@code accessTokens} is null
      */
     public static AzureCliCredentials create(File azureProfile, File accessTokens) throws IOException {
         if (azureProfile == null || accessTokens == null) {
@@ -123,7 +125,7 @@ public final class AzureCliCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public Mono<String> getToken(String resource) {
+    public Mono<AccessToken> getToken(String resource) {
         return subscriptions.get(defaultSubscriptionId()).credentialInstance().getToken(resource)
                 .onErrorResume(t -> {
                     synchronized (lock) {

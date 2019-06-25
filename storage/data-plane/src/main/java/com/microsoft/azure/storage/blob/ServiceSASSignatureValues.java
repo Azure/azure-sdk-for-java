@@ -5,13 +5,8 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.UserDelegationKey;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 
 /**
  * ServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
@@ -427,8 +422,8 @@ public final class ServiceSASSignatureValues {
             final SharedKeyCredentials sharedKeyCredentials) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
-                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
                 getCanonicalName(sharedKeyCredentials.getAccountName()),
                 this.identifier == null ? "" : this.identifier,
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
@@ -448,13 +443,13 @@ public final class ServiceSASSignatureValues {
             final UserDelegationKey key, final String accountName) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
-                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
+                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
                 getCanonicalName(accountName),
                 key.signedOid() == null ? "" : key.signedOid(),
                 key.signedTid() == null ? "" : key.signedTid(),
-                key.signedStart() == null ? "" : Utility.ISO8601UTCDateFormatter.format(key.signedStart()),
-                key.signedExpiry() == null ? "" : Utility.ISO8601UTCDateFormatter.format(key.signedExpiry()),
+                key.signedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedStart()),
+                key.signedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedExpiry()),
                 key.signedService() == null ? "" : key.signedService(),
                 key.signedVersion() == null ? "" : key.signedVersion(),
                 this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),

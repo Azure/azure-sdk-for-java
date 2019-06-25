@@ -20,9 +20,9 @@ import java.util.Map;
  */
 public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<AppServiceManager> {
     /**
-     * @return the adminSiteName value.
+     * @return the freeOfferExpirationTime value.
      */
-    String adminSiteName();
+    DateTime freeOfferExpirationTime();
 
     /**
      * @return the geoRegion value.
@@ -33,6 +33,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
+
+    /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
 
     /**
      * @return the id value.
@@ -58,6 +63,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the location value.
      */
     String location();
+
+    /**
+     * @return the maximumElasticWorkerCount value.
+     */
+    Integer maximumElasticWorkerCount();
 
     /**
      * @return the maximumNumberOfWorkers value.

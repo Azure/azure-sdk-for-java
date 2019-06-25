@@ -6,16 +6,16 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
+    <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../../pom.client.xml</relativePath>
+    <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-clients</artifactId>
   <packaging>pom</packaging>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
 
   <name>Microsoft Azure Event Hubs SDK Parent</name>
   <description>Java libraries for talking to Windows Azure Event Hubs</description>

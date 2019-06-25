@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
-import com.azure.core.test.utils.SdkContext;
+import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.test.utils.TestResourceNamer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public abstract class TestBase {
     private final Logger logger = LoggerFactory.getLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
-    protected SdkContext sdkContext;
+    protected TestResourceNamer testResourceNamer;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -33,11 +34,11 @@ public abstract class TestBase {
      */
     @BeforeClass
     public static void setupClass() {
-        testMode = getTestMode();
+        testMode = initializeTestMode();
     }
 
     /**
-     * Sets-up the {@link TestBase#sdkContext} and {@link TestBase#interceptorManager} before each test case is run.
+     * Sets-up the {@link TestBase#testResourceNamer} and {@link TestBase#interceptorManager} before each test case is run.
      * Then calls its implementing class to perform any other set-up commands.
      */
     @Before
@@ -55,8 +56,7 @@ public abstract class TestBase {
             }
             Assert.fail();
         }
-
-        sdkContext = new SdkContext(testMode, interceptorManager.getRecordedData());
+        testResourceNamer = new TestResourceNamer(testName, testMode, interceptorManager.getRecordedData());
 
         beforeTest();
     }
@@ -68,6 +68,15 @@ public abstract class TestBase {
     public void teardownTest() {
         afterTest();
         interceptorManager.close();
+    }
+
+    /**
+     * Gets the TestMode that has been initialized.
+     *
+     * @return The TestMode that has been initialized.
+     */
+    public TestMode getTestMode() {
+        return testMode;
     }
 
     /**
@@ -94,9 +103,9 @@ public abstract class TestBase {
     protected void afterTest() {
     }
 
-    private static TestMode getTestMode() {
+    private static TestMode initializeTestMode() {
         final Logger logger = LoggerFactory.getLogger(TestBase.class);
-        final String azureTestMode = System.getenv(AZURE_TEST_MODE);
+        final String azureTestMode = ConfigurationManager.getConfiguration().get(AZURE_TEST_MODE);
 
         if (azureTestMode != null) {
             try {
@@ -105,6 +114,7 @@ public abstract class TestBase {
                 if (logger.isErrorEnabled()) {
                     logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
                 }
+
                 return TestMode.PLAYBACK;
             }
         }
@@ -112,7 +122,6 @@ public abstract class TestBase {
         if (logger.isInfoEnabled()) {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         }
-
         return TestMode.PLAYBACK;
     }
 }

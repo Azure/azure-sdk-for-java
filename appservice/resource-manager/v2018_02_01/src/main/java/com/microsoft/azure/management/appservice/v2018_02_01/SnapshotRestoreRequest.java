@@ -53,6 +53,12 @@ public class SnapshotRestoreRequest extends ProxyOnlyResource {
     private Boolean ignoreConflictingHostNames;
 
     /**
+     * If true, the snapshot is retrieved from DRSecondary endpoint.
+     */
+    @JsonProperty(value = "properties.useDRSecondary")
+    private Boolean useDRSecondary;
+
+    /**
      * Get point in time in which the app restore should be done, formatted as a DateTime string.
      *
      * @return the snapshotTime value
@@ -153,6 +159,26 @@ public class SnapshotRestoreRequest extends ProxyOnlyResource {
      */
     public SnapshotRestoreRequest withIgnoreConflictingHostNames(Boolean ignoreConflictingHostNames) {
         this.ignoreConflictingHostNames = ignoreConflictingHostNames;
+        return this;
+    }
+
+    /**
+     * Get if true, the snapshot is retrieved from DRSecondary endpoint.
+     *
+     * @return the useDRSecondary value
+     */
+    public Boolean useDRSecondary() {
+        return this.useDRSecondary;
+    }
+
+    /**
+     * Set if true, the snapshot is retrieved from DRSecondary endpoint.
+     *
+     * @param useDRSecondary the useDRSecondary value to set
+     * @return the SnapshotRestoreRequest object itself.
+     */
+    public SnapshotRestoreRequest withUseDRSecondary(Boolean useDRSecondary) {
+        this.useDRSecondary = useDRSecondary;
         return this;
     }
 

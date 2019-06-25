@@ -71,6 +71,30 @@ public class RecommendationsInner {
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable")
         Observable<Response<ResponseBody>> disableRecommendationForSubscription(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listHistoryForHostingEnvironment" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
+        Observable<Response<ResponseBody>> listHistoryForHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("subscriptionId") String subscriptionId, @Query("expiredOnly") Boolean expiredOnly, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listRecommendedRulesForHostingEnvironment" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations")
+        Observable<Response<ResponseBody>> listRecommendedRulesForHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations disableAllForHostingEnvironment" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
+        Observable<Response<ResponseBody>> disableAllForHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("subscriptionId") String subscriptionId, @Query("environmentName") String environmentName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations resetAllFiltersForHostingEnvironment" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset")
+        Observable<Response<ResponseBody>> resetAllFiltersForHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("subscriptionId") String subscriptionId, @Query("environmentName") String environmentName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations getRuleDetailsByHostingEnvironment" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
+        Observable<Response<ResponseBody>> getRuleDetailsByHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("updateSeen") Boolean updateSeen, @Query("recommendationId") String recommendationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations disableRecommendationForHostingEnvironment" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable")
+        Observable<Response<ResponseBody>> disableRecommendationForHostingEnvironment(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("hostingEnvironmentName") String hostingEnvironmentName, @Path("subscriptionId") String subscriptionId, @Query("environmentName") String environmentName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listHistoryForWebApp" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
         Observable<Response<ResponseBody>> listHistoryForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("expiredOnly") Boolean expiredOnly, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -98,6 +122,14 @@ public class RecommendationsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listHistoryForHostingEnvironmentNext" })
+        @GET
+        Observable<Response<ResponseBody>> listHistoryForHostingEnvironmentNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listRecommendedRulesForHostingEnvironmentNext" })
+        @GET
+        Observable<Response<ResponseBody>> listRecommendedRulesForHostingEnvironmentNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.Recommendations listHistoryForWebAppNext" })
         @GET
@@ -221,7 +253,7 @@ public class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -242,7 +274,7 @@ public class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -264,7 +296,7 @@ public class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -283,7 +315,7 @@ public class RecommendationsInner {
      * List all recommendations for a subscription.
      *
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -306,7 +338,7 @@ public class RecommendationsInner {
      * List all recommendations for a subscription.
      *
     ServiceResponse<PageImpl<RecommendationInner>> * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -500,6 +532,1020 @@ public class RecommendationsInner {
      * Get past recommendations for an app, optionally specified by the time range.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listHistoryForHostingEnvironment(final String resourceGroupName, final String hostingEnvironmentName) {
+        ServiceResponse<Page<RecommendationInner>> response = listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listHistoryForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listHistoryForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        return listHistoryForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        return listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listHistoryForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean expiredOnly = null;
+        final String filter = null;
+        return service.listHistoryForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), expiredOnly, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listHistoryForHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listHistoryForHostingEnvironment(final String resourceGroupName, final String hostingEnvironmentName, final Boolean expiredOnly, final String filter) {
+        ServiceResponse<Page<RecommendationInner>> response = listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listHistoryForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean expiredOnly, final String filter, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listHistoryForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean expiredOnly, final String filter) {
+        return listHistoryForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean expiredOnly, final String filter) {
+        return listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listHistoryForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+    ServiceResponse<PageImpl<RecommendationInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param hostingEnvironmentName Name of the hosting environment.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean expiredOnly, final String filter) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listHistoryForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), expiredOnly, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listHistoryForHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RecommendationInner>> listHistoryForHostingEnvironmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecommendationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendationInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listRecommendedRulesForHostingEnvironment(final String resourceGroupName, final String hostingEnvironmentName) {
+        ServiceResponse<Page<RecommendationInner>> response = listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listRecommendedRulesForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        return listRecommendedRulesForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        return listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listRecommendedRulesForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean featured = null;
+        final String filter = null;
+        return service.listRecommendedRulesForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listRecommendedRulesForHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listRecommendedRulesForHostingEnvironment(final String resourceGroupName, final String hostingEnvironmentName, final Boolean featured, final String filter) {
+        ServiceResponse<Page<RecommendationInner>> response = listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, featured, filter).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean featured, final String filter, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, featured, filter),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listRecommendedRulesForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean featured, final String filter) {
+        return listRecommendedRulesForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, featured, filter)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentWithServiceResponseAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean featured, final String filter) {
+        return listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName, featured, filter)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listRecommendedRulesForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+    ServiceResponse<PageImpl<RecommendationInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param hostingEnvironmentName Name of the app.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(final String resourceGroupName, final String hostingEnvironmentName, final Boolean featured, final String filter) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listRecommendedRulesForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), featured, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listRecommendedRulesForHostingEnvironmentDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RecommendationInner>> listRecommendedRulesForHostingEnvironmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecommendationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendationInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disableAllForHostingEnvironment(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        disableAllForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName).toBlocking().single().body();
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableAllForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableAllForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName), serviceCallback);
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> disableAllForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        return disableAllForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> disableAllForHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (environmentName == null) {
+            throw new IllegalArgumentException("Parameter environmentName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.disableAllForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), environmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = disableAllForHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> disableAllForHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void resetAllFiltersForHostingEnvironment(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        resetAllFiltersForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName).toBlocking().single().body();
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> resetAllFiltersForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(resetAllFiltersForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName), serviceCallback);
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> resetAllFiltersForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        return resetAllFiltersForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, environmentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> resetAllFiltersForHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (environmentName == null) {
+            throw new IllegalArgumentException("Parameter environmentName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.resetAllFiltersForHostingEnvironment(resourceGroupName, hostingEnvironmentName, this.client.subscriptionId(), environmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = resetAllFiltersForHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> resetAllFiltersForHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RecommendationRuleInner object if successful.
+     */
+    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(String resourceGroupName, String hostingEnvironmentName, String name) {
+        return getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String name, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name), serviceCallback);
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RecommendationRuleInner object
+     */
+    public Observable<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String name) {
+        return getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
+            @Override
+            public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RecommendationRuleInner object
+     */
+    public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String hostingEnvironmentName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Boolean updateSeen = null;
+        final String recommendationId = null;
+        return service.getRuleDetailsByHostingEnvironment(resourceGroupName, hostingEnvironmentName, name, this.client.subscriptionId(), updateSeen, recommendationId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RecommendationRuleInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RecommendationRuleInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RecommendationRuleInner> clientResponse = getRuleDetailsByHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RecommendationRuleInner object if successful.
+     */
+    public RecommendationRuleInner getRuleDetailsByHostingEnvironment(String resourceGroupName, String hostingEnvironmentName, String name, Boolean updateSeen, String recommendationId) {
+        return getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId).toBlocking().single().body();
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String name, Boolean updateSeen, String recommendationId, final ServiceCallback<RecommendationRuleInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId), serviceCallback);
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RecommendationRuleInner object
+     */
+    public Observable<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String name, Boolean updateSeen, String recommendationId) {
+        return getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(resourceGroupName, hostingEnvironmentName, name, updateSeen, recommendationId).map(new Func1<ServiceResponse<RecommendationRuleInner>, RecommendationRuleInner>() {
+            @Override
+            public RecommendationRuleInner call(ServiceResponse<RecommendationRuleInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RecommendationRuleInner object
+     */
+    public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String hostingEnvironmentName, String name, Boolean updateSeen, String recommendationId) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getRuleDetailsByHostingEnvironment(resourceGroupName, hostingEnvironmentName, name, this.client.subscriptionId(), updateSeen, recommendationId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RecommendationRuleInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RecommendationRuleInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RecommendationRuleInner> clientResponse = getRuleDetailsByHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RecommendationRuleInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RecommendationRuleInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Disables the specific rule for a web site permanently.
+     * Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Rule name
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Site name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void disableRecommendationForHostingEnvironment(String resourceGroupName, String name, String hostingEnvironmentName, String environmentName) {
+        disableRecommendationForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentName, environmentName).toBlocking().single().body();
+    }
+
+    /**
+     * Disables the specific rule for a web site permanently.
+     * Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Rule name
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Site name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> disableRecommendationForHostingEnvironmentAsync(String resourceGroupName, String name, String hostingEnvironmentName, String environmentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableRecommendationForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentName, environmentName), serviceCallback);
+    }
+
+    /**
+     * Disables the specific rule for a web site permanently.
+     * Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Rule name
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Site name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> disableRecommendationForHostingEnvironmentAsync(String resourceGroupName, String name, String hostingEnvironmentName, String environmentName) {
+        return disableRecommendationForHostingEnvironmentWithServiceResponseAsync(resourceGroupName, name, hostingEnvironmentName, environmentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Disables the specific rule for a web site permanently.
+     * Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Rule name
+     * @param hostingEnvironmentName the String value
+     * @param environmentName Site name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> disableRecommendationForHostingEnvironmentWithServiceResponseAsync(String resourceGroupName, String name, String hostingEnvironmentName, String environmentName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (hostingEnvironmentName == null) {
+            throw new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (environmentName == null) {
+            throw new IllegalArgumentException("Parameter environmentName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.disableRecommendationForHostingEnvironment(resourceGroupName, name, hostingEnvironmentName, this.client.subscriptionId(), environmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = disableRecommendationForHostingEnvironmentDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> disableRecommendationForHostingEnvironmentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
@@ -625,7 +1671,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -648,7 +1694,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -672,7 +1718,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -693,7 +1739,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -718,7 +1764,7 @@ public class RecommendationsInner {
     ServiceResponse<PageImpl<RecommendationInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<RecommendationInner>> * @param siteName Name of the app.
     ServiceResponse<PageImpl<RecommendationInner>> * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
+    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -886,7 +1932,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -909,7 +1955,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -933,7 +1979,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -954,7 +2000,7 @@ public class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;RecommendationInner&gt; object
      */
@@ -979,7 +2025,7 @@ public class RecommendationsInner {
     ServiceResponse<PageImpl<RecommendationInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<RecommendationInner>> * @param siteName Name of the app.
     ServiceResponse<PageImpl<RecommendationInner>> * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+    ServiceResponse<PageImpl<RecommendationInner>> * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq 'Notification'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1295,7 +2341,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1313,7 +2359,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1330,7 +2376,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
@@ -1351,7 +2397,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
@@ -1598,6 +2644,238 @@ public class RecommendationsInner {
     }
 
     private ServiceResponse<PageImpl<RecommendationInner>> listNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecommendationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendationInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listHistoryForHostingEnvironmentNext(final String nextPageLink) {
+        ServiceResponse<Page<RecommendationInner>> response = listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listHistoryForHostingEnvironmentNextAsync(final String nextPageLink, final ServiceFuture<List<RecommendationInner>> serviceFuture, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listHistoryForHostingEnvironmentNextAsync(final String nextPageLink) {
+        return listHistoryForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
+        return listHistoryForHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listHistoryForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+    ServiceResponse<PageImpl<RecommendationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listHistoryForHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listHistoryForHostingEnvironmentNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listHistoryForHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RecommendationInner>> listHistoryForHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RecommendationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendationInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RecommendationInner&gt; object if successful.
+     */
+    public PagedList<RecommendationInner> listRecommendedRulesForHostingEnvironmentNext(final String nextPageLink) {
+        ServiceResponse<Page<RecommendationInner>> response = listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<RecommendationInner>(response.body()) {
+            @Override
+            public Page<RecommendationInner> nextPage(String nextPageLink) {
+                return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextAsync(final String nextPageLink, final ServiceFuture<List<RecommendationInner>> serviceFuture, final ListOperationCallback<RecommendationInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(String nextPageLink) {
+                    return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<Page<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextAsync(final String nextPageLink) {
+        return listRecommendedRulesForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RecommendationInner>>, Page<RecommendationInner>>() {
+                @Override
+                public Page<RecommendationInner> call(ServiceResponse<Page<RecommendationInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RecommendationInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentNextWithServiceResponseAsync(final String nextPageLink) {
+        return listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<RecommendationInner>>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(ServiceResponse<Page<RecommendationInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listRecommendedRulesForHostingEnvironmentNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
+     *
+    ServiceResponse<PageImpl<RecommendationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RecommendationInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RecommendationInner>>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listRecommendedRulesForHostingEnvironmentNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RecommendationInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RecommendationInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RecommendationInner>> result = listRecommendedRulesForHostingEnvironmentNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RecommendationInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<RecommendationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RecommendationInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)

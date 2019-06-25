@@ -21,7 +21,7 @@ Azure Event Hubs is a hyper-scale data ingestion service, fully-managed by Micro
 
 Refer to the [online documentation](https://azure.microsoft.com/services/event-hubs/) to learn more about Event Hubs in general and [General Overview document](Overview.md) for an overview of Event Hubs Client for Java.
 
-## Using the library 
+## Using the library
 
 ### Samples
 
@@ -33,8 +33,8 @@ Two java packages are released to Maven Central Repository from this GitHub repo
 
 #### Microsoft Azure EventHubs Java Client
 
-This library exposes the send and receive APIs. This library will in turn pull further required dependencies, specifically 
-the required versions of Apache Qpid Proton-J, and the cryptography library BCPKIX by the Legion of Bouncy Castle.   
+This library exposes the send and receive APIs. This library will in turn pull further required dependencies, specifically
+the required versions of Apache Qpid Proton-J, and the cryptography library BCPKIX by the Legion of Bouncy Castle.
 
 |Package|Package Version|
 |--------|------------------|
@@ -42,9 +42,9 @@ the required versions of Apache Qpid Proton-J, and the cryptography library BCPK
 
 ```XML
     <dependency>
-        <groupId>com.microsoft.azure</groupId> 
-        <artifactId>azure-eventhubs</artifactId> 
-        <version>2.3.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-eventhubs</artifactId>
+        <version>2.3.1</version>
     </dependency>
 ```
 
@@ -59,26 +59,26 @@ It pulls the required versions of Event Hubs, Azure Storage and GSon libraries.
 
 ```XML
     <dependency>
-        <groupId>com.microsoft.azure</groupId> 
-        <artifactId>azure-eventhubs-eph</artifactId> 
-        <version>2.5.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-eventhubs-eph</artifactId>
+        <version>2.5.1</version>
     </dependency>
 ```
 
 ## How to provide feedback
 
 First, if you experience any issues with the runtime behavior of the Azure Event Hubs service, please consider filing a support request
-right away. Your options for [getting support are enumerated here](https://azure.microsoft.com/support/options/). In the Azure portal, 
-you can file a support request from the "Help and support" menu in the upper right hand corner of the page.   
+right away. Your options for [getting support are enumerated here](https://azure.microsoft.com/support/options/). In the Azure portal,
+you can file a support request from the "Help and support" menu in the upper right hand corner of the page.
 
-If you find issues in this library or have suggestions for improvement of code or documentation, you can [file an issue in the project's 
-GitHub repository](https://github.com/Azure/azure-event-hubs/issues) or send across a pull request - see our [Contribution Guidelines](./.github/CONTRIBUTING.md). 
+If you find issues in this library or have suggestions for improvement of code or documentation, you can [file an issue in the project's
+GitHub repository](https://github.com/Azure/azure-event-hubs/issues) or send across a pull request - see our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
 Issues related to runtime behavior of the service, such as sporadic exceptions or apparent service-side performance or reliability issues can not be handled here.
 
-Generally, if you want to discuss Azure Event Hubs or this client library with the community and the maintainers, you can turn to 
-[stackoverflow.com under the #azure-eventhub tag](http://stackoverflow.com/questions/tagged/azure-eventhub) or the 
-[MSDN Service Bus Forum](https://social.msdn.microsoft.com/Forums/en-US/home?forum=servbus). 
+Generally, if you want to discuss Azure Event Hubs or this client library with the community and the maintainers, you can turn to
+[stackoverflow.com under the #azure-eventhub tag](http://stackoverflow.com/questions/tagged/azure-eventhub) or the
+[MSDN Service Bus Forum](https://social.msdn.microsoft.com/Forums/en-US/home?forum=servbus).
 
 ## Build & contribute to the library
 
@@ -86,7 +86,7 @@ You will generally not have to build this client library yourself - this library
 If you have any specific requirement for which you want to contribute or need to generate a SNAPSHOT version, this section is for you.
 **Your contributions are welcome and encouraged!**
 
-We adopted maven build model and strive to keep the project model intuitive enough to developers. 
+We adopted maven build model and strive to keep the project model intuitive enough to developers.
 If you need any help with any specific IDE or cannot get the build going in any environment - please open an issue.
 Here are few general topics, which we thought developers would need help with:
 

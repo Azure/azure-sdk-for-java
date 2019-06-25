@@ -70,6 +70,10 @@ public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGrou
         interface WithEventHubEndpoint {
            /**
             * Specifies resourceGroupName, resourceName, eventHubEndpointName.
+            * @param resourceGroupName The name of the resource group that contains the IoT hub
+            * @param resourceName The name of the IoT hub
+            * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub
+            * @return the next definition stage
             */
             WithCreate withExistingEventHubEndpoint(String resourceGroupName, String resourceName, String eventHubEndpointName);
         }

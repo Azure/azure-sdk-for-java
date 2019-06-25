@@ -9,7 +9,7 @@ import com.azure.core.annotations.ExpectedResponses;
 import com.azure.core.annotations.PATCH;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.entities.HttpBinJSON;
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
         assertEquals("testMethod1", testMethod1.getName());
 
-        new SwaggerMethodParser(testMethod1, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        new SwaggerMethodParser(testMethod1, "https://raw.host.com");
     }
 
     interface TestInterface2 {
@@ -45,11 +45,11 @@ public class SwaggerMethodParserTests {
         final Method testMethod2 = TestInterface2.class.getDeclaredMethods()[0];
         assertEquals("testMethod2", testMethod2.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(-1).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));
@@ -68,7 +68,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];
         assertEquals("testMethod3", testMethod3.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -82,7 +82,7 @@ public class SwaggerMethodParserTests {
     interface TestInterface4 {
         @PATCH("my/rest/api/path")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = HttpRequestException.class)
+        @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         void testMethod4();
     }
@@ -92,11 +92,11 @@ public class SwaggerMethodParserTests {
         final Method testMethod4 = TestInterface4.class.getDeclaredMethods()[0];
         assertEquals("testMethod4", testMethod4.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface4.testMethod4", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(400).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(400).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(400).exceptionBodyType());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
@@ -117,13 +117,13 @@ public class SwaggerMethodParserTests {
         final Method testMethod5 = TestInterface5.class.getDeclaredMethods()[0];
         assertEquals("testMethod5", testMethod5.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface5.testMethod5", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(400).exceptionBodyType());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(-1).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));
@@ -134,7 +134,7 @@ public class SwaggerMethodParserTests {
         @PATCH("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400, 401}, value = MyRestException.class)
-        @UnexpectedResponseExceptionType(code = {404, 409}, value = HttpRequestException.class)
+        @UnexpectedResponseExceptionType(code = {404, 409}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyOtherRestException.class)
         void testMethod6();
     }
@@ -144,7 +144,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod6 = TestInterface6.class.getDeclaredMethods()[0];
         assertEquals("testMethod6", testMethod6.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface6.testMethod6", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -152,9 +152,9 @@ public class SwaggerMethodParserTests {
         assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(400).exceptionBodyType());
         assertEquals(MyRestException.class, methodParser.getUnexpectedException(401).exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(401).exceptionBodyType());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(404).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(404).exceptionBodyType());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(409).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(409).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(409).exceptionBodyType());
         assertEquals(MyOtherRestException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
@@ -166,7 +166,7 @@ public class SwaggerMethodParserTests {
     interface TestInterface7 {
         @PATCH("my/rest/api/path")
         @UnexpectedResponseExceptionType(MyRestException.class)
-        @UnexpectedResponseExceptionType(HttpRequestException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         void testMethod7();
     }
 
@@ -175,9 +175,9 @@ public class SwaggerMethodParserTests {
         final Method testMethod7 = TestInterface7.class.getDeclaredMethods()[0];
         assertEquals("testMethod7", testMethod7.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.fullyQualifiedMethodName());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(-1).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));
@@ -187,7 +187,7 @@ public class SwaggerMethodParserTests {
     interface TestInterface8 {
         @PATCH("my/rest/api/path")
         @UnexpectedResponseExceptionType(code = {404}, value = MyRestException.class)
-        @UnexpectedResponseExceptionType(code = {404}, value = HttpRequestException.class)
+        @UnexpectedResponseExceptionType(code = {404}, value = HttpResponseException.class)
         void testMethod8();
     }
 
@@ -196,11 +196,11 @@ public class SwaggerMethodParserTests {
         final Method testMethod8 = TestInterface8.class.getDeclaredMethods()[0];
         assertEquals("testMethod8", testMethod8.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, RestProxy.createDefaultSerializer(), "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, "https://raw.host.com");
         assertEquals("com.azure.core.implementation.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.fullyQualifiedMethodName());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(404).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(404).exceptionBodyType());
-        assertEquals(HttpRequestException.class, methodParser.getUnexpectedException(-1).exceptionType());
+        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).exceptionType());
         assertEquals(Object.class, methodParser.getUnexpectedException(-1).exceptionBodyType());
         assertEquals(false, methodParser.headers(null).iterator().hasNext());
         assertEquals("https", methodParser.scheme(null));

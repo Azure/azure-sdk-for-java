@@ -102,6 +102,8 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getSendLink());
                         eventDispatcher.deregisterForConnectionError(requestResponseChannel.getReceiveLink());
 
+                        isOpened = false;
+
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "requestResponseChannel.onClose error clientId[%s], session[%s], link[%s], endpoint[%s], error %s",
                                     clientId, sessionName, linkName, endpointAddress, error));

@@ -109,7 +109,7 @@ public class HDInsightTestResourceManager {
 
         // Here we assume that the resource group name is available.
         // Considering that deletion is a dangerous operation, we just report error back to the tester
-        assertThat(resourceManager.resourceGroups().contain(resourceGroupName)).isFalse();
+        assertThat(resourceManager.resourceGroups().checkExistence(resourceGroupName)).isFalse();
 
         return resourceManager.resourceGroups().define(resourceGroupName)
             .withRegion(region)

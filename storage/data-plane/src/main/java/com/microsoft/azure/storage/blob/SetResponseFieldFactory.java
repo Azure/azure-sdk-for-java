@@ -24,7 +24,7 @@ final class SetResponseFieldFactory implements RequestPolicyFactory {
         return new SetResponseFieldPolicy(next);
     }
 
-    private final class SetResponseFieldPolicy implements RequestPolicy {
+    private static final class SetResponseFieldPolicy implements RequestPolicy {
         private final RequestPolicy nextPolicy;
 
         private SetResponseFieldPolicy(RequestPolicy nextPolicy) {

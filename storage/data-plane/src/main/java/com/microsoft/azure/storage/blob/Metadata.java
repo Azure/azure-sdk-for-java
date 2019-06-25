@@ -13,6 +13,9 @@ import java.util.Map;
  */
 public final class Metadata extends HashMap<String, String> {
 
+    // The Metadata is an offshoot of extending HashMap, which implements Serializable.
+    private static final long serialVersionUID = -6557244540575247796L;
+
     public Metadata() {
         super();
     }

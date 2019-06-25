@@ -406,7 +406,7 @@ public final class ConnectionStringBuilder {
                     this.transportType = TransportType.fromString(values[valueIndex]);
                 } catch (IllegalArgumentException exception) {
                     throw new IllegalConnectionStringFormatException(
-                            String.format("Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
+                            String.format(Locale.US, "Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
                             exception);
                 }
             } else {

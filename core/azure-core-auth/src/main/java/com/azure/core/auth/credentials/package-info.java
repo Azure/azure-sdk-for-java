@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * The package provides credential classes for Azure authentication purposes.
+ * Package containing credential classes for Azure authentication purposes.
  */
 package com.azure.core.auth.credentials;

@@ -3,7 +3,29 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.azure.storage.blob.models.AccessTier;
+import com.microsoft.azure.storage.blob.models.BlobAbortCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobAcquireLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobBreakLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobChangeLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobCreateSnapshotResponse;
+import com.microsoft.azure.storage.blob.models.BlobDeleteResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetAccountInfoResponse;
+import com.microsoft.azure.storage.blob.models.BlobGetPropertiesResponse;
+import com.microsoft.azure.storage.blob.models.BlobHTTPHeaders;
+import com.microsoft.azure.storage.blob.models.BlobReleaseLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobRenewLeaseResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetHTTPHeadersResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetMetadataResponse;
+import com.microsoft.azure.storage.blob.models.BlobSetTierResponse;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.microsoft.azure.storage.blob.models.BlobStartCopyFromURLResponse;
+import com.microsoft.azure.storage.blob.models.BlobUndeleteResponse;
+import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.microsoft.azure.storage.blob.models.LeaseAccessConditions;
+import com.microsoft.azure.storage.blob.models.ModifiedAccessConditions;
+import com.microsoft.azure.storage.blob.models.SourceModifiedAccessConditions;
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
@@ -163,8 +185,8 @@ public class BlobURL extends StorageURL {
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
-                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+                ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -278,8 +300,8 @@ public class BlobURL extends StorageURL {
             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
             Context context) {
         metadata = metadata == null ? new Metadata() : metadata;
-        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null ?
-                new ModifiedAccessConditions() : sourceModifiedAccessConditions;
+        sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
+                ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
         context = context == null ? Context.NONE : context;
 
@@ -357,12 +379,12 @@ public class BlobURL extends StorageURL {
                     info.withETag(response.headers().eTag());
                     return new DownloadResponse(response, info,
                             // In the event of a stream failure, make a new request to pick up where we left off.
-                            newInfo ->
-                                    this.download(new BlobRange().withOffset(newInfo.offset())
-                                                    .withCount(newInfo.count()),
-                                            new BlobAccessConditions().withModifiedAccessConditions(
-                                                    new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
-                                            context == null ? Context.NONE : context));
+                        newInfo ->
+                            this.download(new BlobRange().withOffset(newInfo.offset())
+                                            .withCount(newInfo.count()),
+                                    new BlobAccessConditions().withModifiedAccessConditions(
+                                            new ModifiedAccessConditions().withIfMatch(info.eTag())), false,
+                                    context == null ? Context.NONE : context));
                 });
     }
 

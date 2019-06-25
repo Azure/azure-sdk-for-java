@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Site
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
 import java.util.List;
+import java.util.UUID;
 import org.joda.time.DateTime;
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
      * @return the clientCertEnabled value.
      */
     Boolean clientCertEnabled();
+
+    /**
+     * @return the clientCertExclusionPaths value.
+     */
+    String clientCertExclusionPaths();
 
     /**
      * @return the cloningInfo value.
@@ -66,6 +72,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     List<String> enabledHostNames();
 
     /**
+     * @return the geoDistributions value.
+     */
+    List<GeoDistribution> geoDistributions();
+
+    /**
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
@@ -91,6 +102,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     Boolean httpsOnly();
 
     /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -99,6 +115,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
+
+    /**
+     * @return the inProgressOperationId value.
+     */
+    UUID inProgressOperationId();
 
     /**
      * @return the isDefaultContainer value.
@@ -146,6 +167,11 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     String possibleOutboundIpAddresses();
 
     /**
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
+
+    /**
      * @return the repositorySiteName value.
      */
     String repositorySiteName();
@@ -179,11 +205,6 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
      * @return the slotSwapStatus value.
      */
     SlotSwapStatus slotSwapStatus();
-
-    /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
 
     /**
      * @return the state value.
