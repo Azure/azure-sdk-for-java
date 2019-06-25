@@ -10,6 +10,7 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,8 +37,7 @@ public class PagedFluxTest {
 
     @Test
     public void testEmptyFirstPage() {
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(Mono.empty(),
-            pageLink -> getNextPage(pageLink, pagedResponses));
+        PagedFlux<Integer> pagedFlux = new PagedFlux<>(page -> getNextPage(page, new ArrayList<>()));
         StepVerifier.create(pagedFlux.log()).verifyComplete();
     }
 
@@ -61,7 +61,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPageWithContinuationToken() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        StepVerifier.create(pagedFlux.byPage("3").log())
+        StepVerifier.create(pagedFlux.byPage(pagedResponses.get(2)).log())
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
     }
@@ -76,9 +76,7 @@ public class PagedFluxTest {
             .boxed()
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i))
             .collect(Collectors.toList());
-        Mono<PagedResponse<Integer>> firstPage = Mono.just(pagedResponses.get(0));
-        return new PagedFlux<>(firstPage,
-            pageLink -> getNextPage(pageLink, pagedResponses));
+        return new PagedFlux<>(currentPage -> getNextPage(currentPage, pagedResponses));
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
@@ -90,11 +88,17 @@ public class PagedFluxTest {
             deserializedHeaders);
     }
 
-    private Mono<PagedResponse<Integer>> getNextPage(String pageLink,
+    private Mono<PagedResponse<Integer>> getNextPage(PagedResponse<Integer> currentPage,
         List<PagedResponse<Integer>> pagedResponses) {
-        if (pageLink == null || pageLink.isEmpty()) {
+        String pageLink = "0";
+        if (currentPage != null) {
+            pageLink = currentPage.nextLink();
+        }
+
+        if (pageLink == null || pageLink.isEmpty() || Integer.valueOf(pageLink) >= pagedResponses.size()) {
             return Mono.empty();
         }
+
         return Mono.just(pagedResponses.get(Integer.valueOf(pageLink)));
     }
 

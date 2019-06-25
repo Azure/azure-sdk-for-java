@@ -626,29 +626,32 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * contains all of the current settings in the service.
      */
     PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result;
         final Context contextWithSpanName = setSpanName("listSettings", context);
-
-        if (options != null) {
-            String fields = ImplUtils.arrayToString(options.fields(), SettingFields::toStringMapper);
-            String keys = ImplUtils.arrayToString(options.keys(), key -> key);
-            String labels = ImplUtils.arrayToString(options.labels(), label -> label);
-
-            result = service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime(), contextWithSpanName)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Listing ConfigurationSettings - {}", options))
-                .doOnSuccess(response -> logger.asInfo().log("Listed ConfigurationSettings - {}", options))
-                .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting - {}", options, error));
-        } else {
-            result = service.listKeyValues(serviceEndpoint, null, null, null, null, contextWithSpanName)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Listing all ConfigurationSettings"))
-                .doOnSuccess(response -> logger.asInfo().log("Listed all ConfigurationSettings"))
-                .doOnError(error -> logger.asWarning().log("Failed to list all ConfigurationSetting", error));
-        }
-        return new PagedFlux<>(result, nextPageLink -> getNextPage(nextPageLink, contextWithSpanName));
+        return new PagedFlux<>(currentPage -> listPageSettings(options, contextWithSpanName, currentPage));
     }
 
-    private Mono<PagedResponse<ConfigurationSetting>> getNextPage(String nextPageLink,
-        Context context) {
+    /**
+     * Fetches one page of configuration settings. If the current page is {@code null}, settings for first page is
+     * retrieved with provided {@code options} and {@code context}. If current page is not {@code null}, the settings for
+     * next page from the current page is retrieved.
+     *
+     * @param options Optional. Options to filter configuration setting results from the service
+     * @param context Additional context that is passed through the Http pipeline during the service call
+     * @param currentPage Current {@link PagedResponse}
+     * @return
+     */
+    private Mono<PagedResponse<ConfigurationSetting>> listPageSettings(SettingSelector options,
+        Context context, PagedResponse<ConfigurationSetting> currentPage) {
+        if (currentPage == null) {
+            return listFirstPageSettings(options, context);
+        } else {
+            return listNextPageSettings(context, currentPage);
+        }
+    }
+
+    private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context,
+        PagedResponse<ConfigurationSetting> currentPage) {
+        String nextPageLink = currentPage.nextLink();
         if (nextPageLink == null || nextPageLink.isEmpty()) {
             return Mono.empty();
         }
@@ -656,7 +659,28 @@ public final class ConfigurationAsyncClient extends ServiceClient {
         return service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                    error));
+    }
+
+    private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector options,Context context) {
+
+        if (options == null) {
+            return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
+                .doOnRequest(ignoredValue -> logger.asInfo().log("Listing all ConfigurationSettings"))
+                .doOnSuccess(response -> logger.asInfo().log("Listed all ConfigurationSettings"))
+                .doOnError(error -> logger.asWarning().log("Failed to list all ConfigurationSetting", error));
+        }
+
+        String fields = ImplUtils.arrayToString(options.fields(), SettingFields::toStringMapper);
+        String keys = ImplUtils.arrayToString(options.keys(), key -> key);
+        String labels = ImplUtils.arrayToString(options.labels(), label -> label);
+
+        return service.listKeyValues(serviceEndpoint, keys, labels, fields, options.acceptDateTime(), context)
+            .doOnRequest(ignoredValue -> logger.asInfo().log("Listing ConfigurationSettings - {}", options))
+            .doOnSuccess(response -> logger.asInfo().log("Listed ConfigurationSettings - {}", options))
+            .doOnError(error -> logger.asWarning().log("Failed to list ConfigurationSetting - {}", options, error));
+
     }
 
     /**
