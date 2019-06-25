@@ -109,4 +109,10 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
         return this;
     }
 
+    @Override
+    public SapMonitorImpl withHanaSubnet(String hanaSubnet) {
+        this.inner().withHanaSubnet(hanaSubnet);
+        return this;
+    }
+
 }

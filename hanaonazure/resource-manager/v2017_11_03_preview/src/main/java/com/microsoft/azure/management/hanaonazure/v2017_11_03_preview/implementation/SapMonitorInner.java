@@ -23,7 +23,7 @@ public class SapMonitorInner extends Resource {
     /**
      * Specifies the SAP monitor unique ID.
      */
-    @JsonProperty(value = "properties.hanaSubnet", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.hanaSubnet")
     private String hanaSubnet;
 
     /**
@@ -71,6 +71,17 @@ public class SapMonitorInner extends Resource {
      */
     public String hanaSubnet() {
         return this.hanaSubnet;
+    }
+
+    /**
+     * Set specifies the SAP monitor unique ID.
+     *
+     * @param hanaSubnet the hanaSubnet value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withHanaSubnet(String hanaSubnet) {
+        this.hanaSubnet = hanaSubnet;
+        return this;
     }
 
     /**

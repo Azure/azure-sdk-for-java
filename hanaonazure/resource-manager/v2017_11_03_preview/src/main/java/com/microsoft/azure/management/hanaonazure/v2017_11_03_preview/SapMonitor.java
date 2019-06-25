@@ -142,17 +142,29 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
         }
 
         /**
+         * The stage of the sapmonitor definition allowing to specify HanaSubnet.
+         */
+        interface WithHanaSubnet {
+            /**
+             * Specifies hanaSubnet.
+             * @param hanaSubnet Specifies the SAP monitor unique ID
+             * @return the next definition stage
+             */
+            WithCreate withHanaSubnet(String hanaSubnet);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname {
+        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname, DefinitionStages.WithHanaSubnet {
         }
     }
     /**
      * The template for a SapMonitor update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname {
+    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname, UpdateStages.WithHanaSubnet {
     }
 
     /**
@@ -217,6 +229,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
              * @return the next update stage
              */
             Update withHanaHostname(String hanaHostname);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify HanaSubnet.
+         */
+        interface WithHanaSubnet {
+            /**
+             * Specifies hanaSubnet.
+             * @param hanaSubnet Specifies the SAP monitor unique ID
+             * @return the next update stage
+             */
+            Update withHanaSubnet(String hanaSubnet);
         }
 
     }
