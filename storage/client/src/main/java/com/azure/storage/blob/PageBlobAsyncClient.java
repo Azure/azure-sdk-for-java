@@ -3,10 +3,8 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -88,7 +86,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the created page blob.
      */
     public Mono<Response<PageBlobItem>> create(long size) {
-        return this.create(size, null, null, null, null, null);
+        return this.create(size, null, null, null, null);
     }
 
     /**
@@ -108,20 +106,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the created page blob.
      */
     public Mono<Response<PageBlobItem>> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-                                               Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+                                               Metadata metadata, BlobAccessConditions accessConditions) {
         return pageBlobAsyncRawClient
-            .create(size, sequenceNumber, headers, metadata, accessConditions, context)
+            .create(size, sequenceNumber, headers, metadata, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -145,7 +137,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
-        return this.uploadPages(pageRange, body, null, null);
+        return this.uploadPages(pageRange, body, null);
     }
 
     /**
@@ -165,20 +157,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
-            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
+            PageBlobAccessConditions pageBlobAccessConditions) {
         return pageBlobAsyncRawClient
-            .uploadPages(pageRange, body, pageBlobAccessConditions, context)
+            .uploadPages(pageRange, body, pageBlobAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -206,7 +192,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null, null);
+                null);
     }
 
     /**
@@ -234,22 +220,16 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *          {@link PageBlobAccessConditions}
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Context context) {
+            SourceModifiedAccessConditions sourceAccessConditions) {
 
         return pageBlobAsyncRawClient
-            .uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context)
+            .uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -267,7 +247,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the cleared pages.
      */
     public Mono<Response<PageBlobItem>> clearPages(PageRange pageRange) {
-        return this.clearPages(pageRange, null, null);
+        return this.clearPages(pageRange, null);
     }
 
     /**
@@ -279,12 +259,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
@@ -292,9 +266,9 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the cleared pages.
      */
     public Mono<Response<PageBlobItem>> clearPages(PageRange pageRange,
-            PageBlobAccessConditions pageBlobAccessConditions, Context context) {
+            PageBlobAccessConditions pageBlobAccessConditions) {
         return pageBlobAsyncRawClient
-            .clearPages(pageRange, pageBlobAccessConditions, context)
+            .clearPages(pageRange, pageBlobAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -309,7 +283,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the cleared pages.
      */
     public Flux<PageRange> getPageRanges(BlobRange blobRange) {
-        return this.getPageRanges(blobRange, null, null);
+        return this.getPageRanges(blobRange, null);
     }
 
     /**
@@ -320,20 +294,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         {@link BlobRange}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting all the page ranges.
      */
     public Flux<PageRange> getPageRanges(BlobRange blobRange,
-                                                            BlobAccessConditions accessConditions, Context context) {
+                                                            BlobAccessConditions accessConditions) {
         return pageBlobAsyncRawClient
-            .getPageRanges(blobRange, accessConditions, context)
+            .getPageRanges(blobRange, accessConditions)
             .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
     }
 
@@ -352,7 +320,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response emitting all the different page ranges.
      */
     public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
+        return this.getPageRangesDiff(blobRange, prevSnapshot, null);
     }
 
     /**
@@ -367,20 +335,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting all the different page ranges.
      */
     public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions, Context context) {
+            BlobAccessConditions accessConditions) {
         return pageBlobAsyncRawClient
-            .getPageRangesDiff(blobRange, prevSnapshot, accessConditions, context)
+            .getPageRangesDiff(blobRange, prevSnapshot, accessConditions)
             .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
     }
 
@@ -396,7 +358,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response emitting the resized page blob.
      */
     public Mono<Response<PageBlobItem>> resize(long size) {
-        return this.resize(size, null, null);
+        return this.resize(size, null);
     }
 
     /**
@@ -408,19 +370,13 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         blob, then all pages above the specified value are cleared.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the resized page blob.
      */
-    public Mono<Response<PageBlobItem>> resize(long size, BlobAccessConditions accessConditions, Context context) {
+    public Mono<Response<PageBlobItem>> resize(long size, BlobAccessConditions accessConditions) {
         return pageBlobAsyncRawClient
-            .resize(size, accessConditions, context)
+            .resize(size, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -439,7 +395,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return this.updateSequenceNumber(action, sequenceNumber, null, null);
+        return this.updateSequenceNumber(action, sequenceNumber, null);
     }
 
     /**
@@ -453,20 +409,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         requests and manage concurrency issues.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the updated page blob.
      */
     public Mono<Response<PageBlobItem>> updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions, Context context) {
+            Long sequenceNumber, BlobAccessConditions accessConditions) {
         return pageBlobAsyncRawClient
-            .updateSequenceNumber(action, sequenceNumber, accessConditions, context)
+            .updateSequenceNumber(action, sequenceNumber, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -487,7 +437,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response emitting the copy status.
      */
     public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot) {
-        return this.copyIncremental(source, snapshot, null, null);
+        return this.copyIncremental(source, snapshot, null);
     }
 
     /**
@@ -506,20 +456,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the copy status.
      */
     public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions, Context context) {
+            ModifiedAccessConditions modifiedAccessConditions) {
         return pageBlobAsyncRawClient
-            .copyIncremental(source, snapshot, modifiedAccessConditions, context)
+            .copyIncremental(source, snapshot, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyStatus()));
     }
 }

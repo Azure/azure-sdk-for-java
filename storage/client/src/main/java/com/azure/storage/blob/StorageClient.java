@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.models.ContainerItem;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageServiceProperties;
@@ -98,7 +97,7 @@ public final class StorageClient {
     public Response<ContainerClient> createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
         ContainerClient client = getContainerClient(containerName);
 
-        return new SimpleResponse<>(client.create(metadata, accessType, null, Context.NONE), client);
+        return new SimpleResponse<>(client.create(metadata, accessType, null), client);
     }
 
     /**
@@ -135,7 +134,7 @@ public final class StorageClient {
      *      The list of containers.
      */
     public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        Flux<ContainerItem> response = storageAsyncClient.listContainers(options, null);
+        Flux<ContainerItem> response = storageAsyncClient.listContainers(options);
 
         return timeout == null ?
             response.toIterable():
@@ -150,7 +149,7 @@ public final class StorageClient {
      *      The storage account properties.
      */
     public Response<StorageServiceProperties> getProperties() {
-        return this.getProperties(null, null);
+        return this.getProperties(null);
     }
 
     /**
@@ -159,19 +158,13 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account properties.
      */
-    public Response<StorageServiceProperties> getProperties(Duration timeout, Context context) {
+    public Response<StorageServiceProperties> getProperties(Duration timeout) {
 
-        Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties(context);
+        Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -189,7 +182,7 @@ public final class StorageClient {
      *      The storage account properties.
      */
     public VoidResponse setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null, null);
+        return this.setProperties(properties, null);
     }
 
     /**
@@ -202,18 +195,12 @@ public final class StorageClient {
      *         Configures the service.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account properties.
      */
-    public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<VoidResponse> response = storageAsyncClient.setProperties(properties, context);
+    public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout) {
+        Mono<VoidResponse> response = storageAsyncClient.setProperties(properties);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -231,7 +218,7 @@ public final class StorageClient {
      *      The user delegation key.
      */
     public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null, null);
+        return this.getUserDelegationKey(start, expiry, null);
     }
 
     /**
@@ -244,19 +231,13 @@ public final class StorageClient {
      *         Expiration of the key's validity.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The user delegation key.
      */
     public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-            Duration timeout, Context context) {
-        Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry, context);
+            Duration timeout) {
+        Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry);
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -271,7 +252,7 @@ public final class StorageClient {
      *      The storage account statistics.
      */
     public Response<StorageServiceStats> getStatistics() {
-        return this.getStatistics(null, null);
+        return this.getStatistics(null);
     }
 
     /**
@@ -282,18 +263,12 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account statistics.
      */
-    public Response<StorageServiceStats> getStatistics(Duration timeout, Context context) {
-        Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics(context);
+    public Response<StorageServiceStats> getStatistics(Duration timeout) {
+        Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -306,7 +281,7 @@ public final class StorageClient {
      *      The storage account info.
      */
     public Response<StorageAccountInfo> getAccountInfo() {
-        return this.getAccountInfo(null, null);
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -315,18 +290,12 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account info.
      */
-    public Response<StorageAccountInfo> getAccountInfo(Duration timeout, Context context) {
-        Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo(context);
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
+        Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo();
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

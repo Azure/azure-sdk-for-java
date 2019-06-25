@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 
 /**
  * This type encapsulates all the possible configuration for the default pipeline. It may be passed to the
- * createPipeline method on {@link StorageURL}. All the options fields have default values if nothing is passed, and
+ * createPipeline method on {@link StorageClient}. All the options fields have default values if nothing is passed, and
  * no logger will be used if it is not set. An HttpClient must be set, however.
  */
 public final class PipelineOptions {
@@ -36,7 +36,7 @@ public final class PipelineOptions {
     /**
      * Specifies which HttpClient to use to send the requests.
      */
-    public PipelineOptions withClient(HttpClient client) {
+    public PipelineOptions client(HttpClient client) {
         this.client = client;
         return this;
     }
@@ -51,7 +51,7 @@ public final class PipelineOptions {
     /**
      * Configures the retry policy's behavior.
      */
-    public PipelineOptions withRequestRetryOptions(RequestRetryOptions requestRetryOptions) {
+    public PipelineOptions requestRetryOptions(RequestRetryOptions requestRetryOptions) {
         this.requestRetryOptions = requestRetryOptions;
         return this;
     }
@@ -66,7 +66,7 @@ public final class PipelineOptions {
     /**
      * Configures the built-in request logging policy.
      */
-    public PipelineOptions withLoggingOptions(LoggingOptions loggingOptions) {
+    public PipelineOptions loggingOptions(LoggingOptions loggingOptions) {
         this.loggingOptions = loggingOptions;
         return this;
     }
@@ -81,7 +81,7 @@ public final class PipelineOptions {
     /**
      * Configures the built-in telemetry policy behavior.
      */
-    public PipelineOptions withTelemetryOptions(TelemetryOptions telemetryOptions) {
+    public PipelineOptions telemetryOptions(TelemetryOptions telemetryOptions) {
         this.telemetryOptions = telemetryOptions;
         return this;
     }

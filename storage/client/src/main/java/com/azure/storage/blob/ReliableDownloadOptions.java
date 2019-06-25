@@ -28,7 +28,7 @@ public final class ReliableDownloadOptions {
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
      * response body.
      */
-    public ReliableDownloadOptions withMaxRetryRequests(int maxRetryRequests) {
+    public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
         Utility.assertInBounds("options.maxRetryRequests", maxRetryRequests, 0, Integer.MAX_VALUE);
         this.maxRetryRequests = maxRetryRequests;
         return this;

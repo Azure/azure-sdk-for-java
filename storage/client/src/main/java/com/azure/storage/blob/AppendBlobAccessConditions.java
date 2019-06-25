@@ -44,7 +44,7 @@ public final class AppendBlobAccessConditions {
      * Access conditions used for appending data only if the operation meets the provided conditions related to the
      * size of the append blob.
      */
-    public AppendBlobAccessConditions withAppendPositionAccessConditions(
+    public AppendBlobAccessConditions appendPositionAccessConditions(
             AppendPositionAccessConditions appendPositionAccessConditions) {
         this.appendPositionAccessConditions = appendPositionAccessConditions;
         return this;
@@ -64,7 +64,7 @@ public final class AppendBlobAccessConditions {
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
      */
-    public AppendBlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public AppendBlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -81,7 +81,7 @@ public final class AppendBlobAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      */
-    public AppendBlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public AppendBlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }

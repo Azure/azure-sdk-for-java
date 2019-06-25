@@ -3,13 +3,11 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
-import reactor.util.annotation.NonNull;
 import reactor.util.annotation.Nullable;
 
 import javax.crypto.Mac;

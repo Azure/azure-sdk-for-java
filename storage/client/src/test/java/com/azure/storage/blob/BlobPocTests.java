@@ -28,7 +28,7 @@
 //public class BlobPocTests {
 //
 //    @Test
-//    public void testCreateBlobWithAutoRestClient() {
+//    public void testCreateBlobautorestclient() {
 //        AzureBlobStorageImpl client = new AzureBlobStorageBuilder().pipeline(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
 //            new HttpPipelinePolicy() {
 //                @Override
@@ -40,7 +40,7 @@
 //                    }
 //                    url += sasToken;
 //                    try {
-//                        context.withHttpRequest(context.httpRequest().withUrl(new URL(url)));
+//                        context.httprequest(context.httpRequest().url(new URL(url)));
 //                    } catch (MalformedURLException e) {
 //                        return Mono.error(e);
 //                    }
@@ -54,11 +54,11 @@
 //        random.nextBytes(randomBytes);
 //        ByteBuf bb = Unpooled.wrappedBuffer(randomBytes);
 //        String base64 = Base64.encodeBase64String("0001".getBytes(StandardCharsets.UTF_8));
-//        client.blockBlobs().stageBlockWithRestResponseAsync(null, null, base64, 4096, Flux.just(bb), null).block();
-//        client.blockBlobs().commitBlockListWithRestResponseAsync(null, null, new BlockLookupList().latest(Arrays.asList(base64)), null).block();
+//        client.blockBlobs().stageBlockrestresponseasync(null, null, base64, 4096, Flux.just(bb), null).block();
+//        client.blockBlobs().commitBlockListrestresponseasync(null, null, new BlockLookupList().latest(Arrays.asList(base64)), null).block();
 //
-//        client.blobs().setMetadataWithRestResponseAsync(null, null, null, Collections.singletonMap("foo", "bar"), null, null, null, null, null, null, null).block();
-//        BlobsGetPropertiesResponse res = client.blobs().getPropertiesWithRestResponseAsync(null, null, null).block();
+//        client.blobs().setMetadatarestresponseasync(null, null, null, Collections.singletonMap("foo", "bar"), null, null, null, null, null, null, null).block();
+//        BlobsGetPropertiesResponse res = client.blobs().getPropertiesrestresponseasync(null, null, null).block();
 //        System.out.println(res.deserializedHeaders().metadata().size());
 //    }
 //

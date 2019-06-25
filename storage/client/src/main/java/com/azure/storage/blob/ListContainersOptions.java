@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 /**
- * Defines options available to configure the behavior of a call to listContainersSegment on a {@link ServiceURL}
+ * Defines options available to configure the behavior of a call to listContainersSegment on a {@link StorageClient}
  * object. See the constructor for details on each of the options. Null may be passed in place of an object of this
  * type if no options are desirable.
  */
@@ -30,7 +30,7 @@ public final class ListContainersOptions {
     /**
      * {@link ContainerListDetails}
      */
-    public ListContainersOptions withDetails(ContainerListDetails details) {
+    public ListContainersOptions details(ContainerListDetails details) {
         this.details = details;
         return this;
     }
@@ -45,7 +45,7 @@ public final class ListContainersOptions {
     /**
      * Filters the results to return only blobs whose names begin with the specified prefix.     *
      */
-    public ListContainersOptions withPrefix(String prefix) {
+    public ListContainersOptions prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -62,7 +62,7 @@ public final class ListContainersOptions {
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      */
-    public ListContainersOptions withMaxResults(Integer maxResults) {
+    public ListContainersOptions maxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw new IllegalArgumentException("MaxResults must be greater than 0.");
         }
