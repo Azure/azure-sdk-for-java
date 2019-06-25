@@ -11,13 +11,17 @@ package com.microsoft.azure.management.recoveryservices.v2016_06_01.implementati
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.VaultCertificateResponse;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.RawCertificateData;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.ResourceCertificateDetails;
+import rx.functions.Func1;
 
 class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertificateResponse, VaultCertificateResponseInner, VaultCertificateResponseImpl> implements VaultCertificateResponse, VaultCertificateResponse.Definition, VaultCertificateResponse.Update {
     private final RecoveryServicesManager manager;
     private String resourceGroupName;
     private String vaultName;
     private String certificateName;
+    private RawCertificateData cproperties;
+    private RawCertificateData uproperties;
 
     VaultCertificateResponseImpl(String name, RecoveryServicesManager manager) {
         super(name, new VaultCertificateResponseInner());
@@ -25,6 +29,8 @@ class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertifica
         // Set resource name
         this.certificateName = name;
         //
+        this.cproperties = new RawCertificateData();
+        this.uproperties = new RawCertificateData();
     }
 
     VaultCertificateResponseImpl(VaultCertificateResponseInner inner, RecoveryServicesManager manager) {
@@ -32,11 +38,13 @@ class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertifica
         this.manager = manager;
         // Set resource name
         this.certificateName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.vaultName = IdParsingUtils.getValueFromIdByName(inner.id(), "vaults");
         this.certificateName = IdParsingUtils.getValueFromIdByName(inner.id(), "certificates");
         //
+        this.cproperties = new RawCertificateData();
+        this.uproperties = new RawCertificateData();
     }
 
     @Override
@@ -47,14 +55,28 @@ class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertifica
     @Override
     public Observable<VaultCertificateResponse> createResourceAsync() {
         VaultCertificatesInner client = this.manager().inner().vaultCertificates();
-        return client.createAsync(this.resourceGroupName, this.vaultName, this.certificateName)
+        return client.createAsync(this.resourceGroupName, this.vaultName, this.certificateName, this.cproperties)
+            .map(new Func1<VaultCertificateResponseInner, VaultCertificateResponseInner>() {
+               @Override
+               public VaultCertificateResponseInner call(VaultCertificateResponseInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<VaultCertificateResponse> updateResourceAsync() {
         VaultCertificatesInner client = this.manager().inner().vaultCertificates();
-        return client.createAsync(this.resourceGroupName, this.vaultName, this.certificateName)
+        return client.createAsync(this.resourceGroupName, this.vaultName, this.certificateName, this.uproperties)
+            .map(new Func1<VaultCertificateResponseInner, VaultCertificateResponseInner>() {
+               @Override
+               public VaultCertificateResponseInner call(VaultCertificateResponseInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -69,6 +91,10 @@ class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertifica
         return this.inner().id() == null;
     }
 
+    private void resetCreateUpdateParameters() {
+        this.cproperties = new RawCertificateData();
+        this.uproperties = new RawCertificateData();
+    }
 
     @Override
     public String id() {
@@ -94,6 +120,16 @@ class VaultCertificateResponseImpl extends CreatableUpdatableImpl<VaultCertifica
     public VaultCertificateResponseImpl withExistingVault(String resourceGroupName, String vaultName) {
         this.resourceGroupName = resourceGroupName;
         this.vaultName = vaultName;
+        return this;
+    }
+
+    @Override
+    public VaultCertificateResponseImpl withProperties(RawCertificateData properties) {
+        if (isInCreateMode()) {
+            this.cproperties = properties;
+        } else {
+            this.uproperties = properties;
+        }
         return this;
     }
 
