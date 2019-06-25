@@ -1,10 +1,8 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.google.common.io.ByteStreams;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.Random;

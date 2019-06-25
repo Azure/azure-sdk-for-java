@@ -4,10 +4,14 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobsAppendBlockFromUrlResponse;
 import com.azure.storage.blob.models.AppendBlobsAppendBlockResponse;
 import com.azure.storage.blob.models.AppendBlobsCreateResponse;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;

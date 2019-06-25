@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
-
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
+package com.azure.storage.blob.models;
 
 /**
- * This class contains values which will restrict the successful operation of a variety of requests to the conditions
- * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
- * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
- * information on those particular access conditions.
+ * This class contains values that restrict the successful completion of PageBlob operations to certain conditions.
+ * It may be set to null if no access conditions are desired.
+ * <p>
+ * Please refer to the request header section
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
  */
-public final class ContainerAccessConditions {
+public final class PageBlobAccessConditions {
+
+    private SequenceNumberAccessConditions sequenceNumberAccessConditions;
 
     private ModifiedAccessConditions modifiedAccessConditions;
 
@@ -21,9 +21,26 @@ public final class ContainerAccessConditions {
     /**
      * Creates an instance which has fields set to non-null, empty values.
      */
-    public ContainerAccessConditions() {
+    public PageBlobAccessConditions() {
+        this.sequenceNumberAccessConditions = new SequenceNumberAccessConditions();
         this.modifiedAccessConditions = new ModifiedAccessConditions();
         this.leaseAccessConditions = new LeaseAccessConditions();
+    }
+
+    /**
+     * Access conditions that will fail the request if the sequence number does not meet the provided condition.
+     */
+    public SequenceNumberAccessConditions sequenceNumberAccessConditions() {
+        return sequenceNumberAccessConditions;
+    }
+
+    /**
+     * Access conditions that will fail the request if the sequence number does not meet the provided condition.
+     */
+    public PageBlobAccessConditions sequenceNumberAccessConditions(
+            SequenceNumberAccessConditions sequenceNumberAccessConditions) {
+        this.sequenceNumberAccessConditions = sequenceNumberAccessConditions;
+        return this;
     }
 
     /**
@@ -40,7 +57,7 @@ public final class ContainerAccessConditions {
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
      */
-    public ContainerAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public PageBlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -57,8 +74,8 @@ public final class ContainerAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      */
-    public ContainerAccessConditions leaseAccessConditions(LeaseAccessConditions leaseID) {
-        this.leaseAccessConditions = leaseID;
+    public PageBlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }
 }

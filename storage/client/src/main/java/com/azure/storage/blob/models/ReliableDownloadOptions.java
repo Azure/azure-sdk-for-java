@@ -1,13 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
+
+import com.azure.storage.blob.DownloadAsyncResponse;
+
+import java.util.Locale;
 
 /**
  * {@code ReliableDownloadOptions} contains properties which help the {@code Flux} returned from
  * {@link DownloadAsyncResponse#body(ReliableDownloadOptions)} determine when to retry.
  */
 public final class ReliableDownloadOptions {
+    private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -29,7 +34,11 @@ public final class ReliableDownloadOptions {
      * response body.
      */
     public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
-        Utility.assertInBounds("options.maxRetryRequests", maxRetryRequests, 0, Integer.MAX_VALUE);
+        if (maxRetryRequests < 0 || maxRetryRequests > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
+                "options.maxRetryRequests", 0, Integer.MAX_VALUE));
+        }
+
         this.maxRetryRequests = maxRetryRequests;
         return this;
     }

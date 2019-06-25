@@ -6,11 +6,16 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.StorageAccountInfo;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -310,7 +315,7 @@ public class BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public VoidResponse download(OutputStream stream, ReliableDownloadOptions options, BlobRange range,
-            BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
+                                 BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
         Mono<VoidResponse> download = blobAsyncClient
             .download(range, accessConditions, rangeGetContentMD5, options)
             .flatMapMany(res -> res.value()
