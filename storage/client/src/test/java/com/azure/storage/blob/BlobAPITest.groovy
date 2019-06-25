@@ -1079,7 +1079,7 @@ class BlobAPITest extends APISpec {
         String snapshot = bu.createSnapshot(null, null, null)
 
         then:
-        bu.snapshot(snapshot).getProperties(null, null).blockingGet().statusCode() == 200
+        bu.snapshot(snapshot).getProperties(null, null).statusCode() == 200
         validateBasicHeaders(headers)
     }*/
 
@@ -1104,7 +1104,7 @@ class BlobAPITest extends APISpec {
         expect:
         response.statusCode() == 201
         bu.snapshot(response.headers().snapshot())
-            .getProperties(null, null).blockingGet().headers().metadata() == metadata
+            .getProperties(null, null).headers().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2

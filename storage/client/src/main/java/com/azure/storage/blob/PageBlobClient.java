@@ -16,9 +16,16 @@ import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.Duration;
 
@@ -178,13 +185,12 @@ public final class PageBlobClient extends BlobClient {
      *         be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
      *         0-511, 512-1023, etc.
      * @param body
-     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     *         The data to upload.
      *
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body) {
         return this.uploadPages(pageRange, body, null, null);
     }
 
@@ -201,8 +207,7 @@ public final class PageBlobClient extends BlobClient {
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
      * @param body
-     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     *         The data to upload.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      * @param timeout
@@ -211,9 +216,22 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public Response<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+    public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(body));
+        int b;
+        try {
+            while ((b = reader.read()) != -1) {
+                outputStream.write(b);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        Flux<ByteBuf> fluxBody = Flux.just(Unpooled.wrappedBuffer(outputStream.toByteArray()));
+
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange, fluxBody, pageBlobAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
