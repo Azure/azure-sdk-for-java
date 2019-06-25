@@ -3,7 +3,7 @@
 
 package keys;
 
-import com.azure.identity.credential.AzureCredential;
+import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
@@ -28,7 +28,7 @@ public class HelloWorldAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new AzureCredential())
+            .credential(new DefaultAzureCredential())
             .build();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key

@@ -23,7 +23,7 @@ import java.util.List;
  * <pre>
  * SecretClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .build()
  * </pre>
  *

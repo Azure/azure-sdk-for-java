@@ -20,7 +20,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
  * <pre>
  * KeyClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .build();
  * </pre>
  *
@@ -29,7 +29,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
  * <pre>
  * KeyClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
  *   .addPolicy(customPolicyOne)
  *   .addPolicy(customPolicyTwo)

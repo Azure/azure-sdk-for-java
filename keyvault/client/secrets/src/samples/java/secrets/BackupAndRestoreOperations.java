@@ -3,7 +3,7 @@
 
 package secrets;
 
-import com.azure.identity.credential.AzureCredential;
+import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 import java.io.File;

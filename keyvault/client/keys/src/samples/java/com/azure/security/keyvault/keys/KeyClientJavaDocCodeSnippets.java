@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
+import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -22,7 +23,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // BEGIN: com.azure.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = KeyClient.builder()
             .endpoint("https://myvault.azure.net/")
-            .credential(keyVaultCredential)
+            .credential(new DefaultAzureCredential())
             .build();
         // END: com.azure.keyvault.keys.keyclient.instantiation
         return keyClient;

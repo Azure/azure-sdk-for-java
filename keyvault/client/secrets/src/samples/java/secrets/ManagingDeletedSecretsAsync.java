@@ -3,7 +3,7 @@
 
 package secrets;
 
-import com.azure.identity.credential.AzureCredential;
+import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 import java.security.InvalidKeyException;
@@ -32,7 +32,7 @@ public class ManagingDeletedSecretsAsync {
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-                .credential(new AzureCredential())
+                .credential(new DefaultAzureCredential())
                 .build();
 
         // Let's create secrets holding storage and bank accounts credentials valid for 1 year. if the secret

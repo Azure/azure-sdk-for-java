@@ -47,7 +47,7 @@ import reactor.core.publisher.Mono;
  * <pre>
  * KeyAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .build()
  * </pre>
  *

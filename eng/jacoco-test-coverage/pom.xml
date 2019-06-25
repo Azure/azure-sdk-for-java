@@ -36,7 +36,7 @@
   </scm>
 
   <properties>
-    <azure-keyvault.version>1.0.0-preview.1</azure-keyvault.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
   </properties>
 
   <dependencies>

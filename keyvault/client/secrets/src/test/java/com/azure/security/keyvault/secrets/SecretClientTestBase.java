@@ -8,7 +8,7 @@ import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.identity.credential.AzureCredential;
+import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.models.Secret;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public abstract class SecretClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             credential = resource -> Mono.just(new AccessToken("Some fake token", OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofMinutes(30))));
         } else {
-            credential = new AzureCredential();
+            credential = new DefaultAzureCredential();
         }
 
         T client;

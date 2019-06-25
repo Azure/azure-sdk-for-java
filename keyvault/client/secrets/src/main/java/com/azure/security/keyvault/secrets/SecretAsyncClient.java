@@ -38,7 +38,7 @@ import com.azure.core.exception.HttpRequestException;
  * <pre>
  * SecretAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .build()
  * </pre>
  *

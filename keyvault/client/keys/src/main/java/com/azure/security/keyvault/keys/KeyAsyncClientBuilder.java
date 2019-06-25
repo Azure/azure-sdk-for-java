@@ -31,7 +31,7 @@ import java.util.Objects;
  * <pre>
  * KeyAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultAsyncCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .build();
  * </pre>
  *
@@ -40,7 +40,7 @@ import java.util.Objects;
  * <pre>
  * KeyAsyncClient secretAsyncClient = KeyAsyncClient.builder()
  *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(keyVaultAsyncCredential)
+ *   .credential(new DefaultAzureCredential())
  *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
  *   .addPolicy(customPolicyOne)
  *   .addPolicy(customPolicyTwo)
