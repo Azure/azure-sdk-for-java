@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 /**
- * Sample class to test the implementation.
+ * Sample for Change Feed Processor.
  *
  */
 public class SampleChangeFeedProcessor {
@@ -69,15 +69,12 @@ public class SampleChangeFeedProcessor {
             System.out.println("-->CREATE container for lease: " + COLLECTION_NAME + "-leases");
             CosmosContainer leaseContainer = createNewLeaseCollection(client, DATABASE_NAME, COLLECTION_NAME + "-leases");
 
-            Mono<ChangeFeedProcessor> changeFeedProcessor1 = getChangeFeedProcessor("SampleHost_1", feedContainer, leaseContainer);
+            changeFeedProcessorInstance = getChangeFeedProcessor("SampleHost_1", feedContainer, leaseContainer);
 
-            changeFeedProcessor1.subscribe(changeFeedProcessor -> {
-                    changeFeedProcessorInstance = changeFeedProcessor;
-                    changeFeedProcessor.start().subscribe(aVoid -> {
-                        createNewDocuments(feedContainer, 10, Duration.ofSeconds(3));
-                        isWorkCompleted = true;
-                    });
-                });
+            changeFeedProcessorInstance.start().subscribe(aVoid -> {
+                createNewDocuments(feedContainer, 10, Duration.ofSeconds(3));
+                isWorkCompleted = true;
+            });
 
             long remainingWork = WAIT_FOR_WORK;
             while (!isWorkCompleted && remainingWork > 0) {
@@ -87,7 +84,7 @@ public class SampleChangeFeedProcessor {
 
             if (isWorkCompleted) {
                 if (changeFeedProcessorInstance != null) {
-                    changeFeedProcessorInstance.stop().wait(10000);
+                    changeFeedProcessorInstance.stop().subscribe().wait(10000);
                 }
             } else {
                 throw new RuntimeException("The change feed processor initialization and automatic create document feeding process did not complete in the expected time");
@@ -96,7 +93,7 @@ public class SampleChangeFeedProcessor {
             System.out.println("-->DELETE sample's database: " + DATABASE_NAME);
             deleteDatabase(cosmosDatabase);
 
-            Thread.sleep(15000);
+            Thread.sleep(500);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,12 +103,20 @@ public class SampleChangeFeedProcessor {
         System.exit(0);
     }
 
-    public static Mono<ChangeFeedProcessor> getChangeFeedProcessor(String hostName, CosmosContainer feedContainer, CosmosContainer leaseContainer) {
+    public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosContainer feedContainer, CosmosContainer leaseContainer) {
         return ChangeFeedProcessor.Builder()
-            .withHostName(hostName)
-            .withFeedContainerClient(feedContainer)
-            .withLeaseContainerClient(leaseContainer)
-            .withChangeFeedObserver(SampleObserverImpl.class)
+            .hostName(hostName)
+            .feedContainerClient(feedContainer)
+            .leaseContainerClient(leaseContainer)
+            .handleChanges(docs -> {
+                System.out.println("--->handleChanges() START");
+
+                for (CosmosItemProperties document : docs) {
+                    System.out.println("---->DOCUMENT RECEIVED: " + document.toJson(SerializationFormattingPolicy.INDENTED));
+                }
+                System.out.println("--->handleChanges() END");
+
+            })
             .build();
     }
 

@@ -22,11 +22,10 @@
  */
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.changefeed.CheckpointFrequency;
+import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.concurrent.ExecutorService;
 
 public class ChangeFeedProcessorOptions {
     private static final int DefaultQueryPartitionsMaxBatchSize = 100;
@@ -39,7 +38,6 @@ public class ChangeFeedProcessorOptions {
     private Duration leaseAcquireInterval;
     private Duration leaseExpirationInterval;
     private Duration feedPollDelay;
-    private CheckpointFrequency checkpointFrequency;
 
     private String leasePrefix;
     private int maxItemCount;
@@ -52,7 +50,6 @@ public class ChangeFeedProcessorOptions {
     private boolean discardExistingLeases;
     private int queryPartitionsMaxBatchSize;
     private int degreeOfParallelism;
-    private ExecutorService executorService;
 
     public ChangeFeedProcessorOptions() {
         this.maxItemCount = 100;
@@ -62,10 +59,8 @@ public class ChangeFeedProcessorOptions {
         this.leaseExpirationInterval = DefaultExpirationInterval;
         this.feedPollDelay = DefaultFeedPollDelay;
         this.queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-        this.checkpointFrequency = new CheckpointFrequency();
         this.maxPartitionCount = 0; // unlimited
         this.degreeOfParallelism = 25; // default
-        this.executorService = null;
     }
 
     /**
@@ -152,26 +147,6 @@ public class ChangeFeedProcessorOptions {
      */
     public ChangeFeedProcessorOptions feedPollDelay(Duration feedPollDelay) {
         this.feedPollDelay = feedPollDelay;
-        return this;
-    }
-
-    /**
-     * Gets the frequency how often to checkpoint leases.
-     *
-     * @return the frequency how often to checkpoint leases.
-     */
-    public CheckpointFrequency checkpointFrequency() {
-        return this.checkpointFrequency;
-    }
-
-    /**
-     * Sets the frequency how often to checkpoint leases.
-     *
-     * @param checkpointFrequency the frequency how often to checkpoint leases.
-     * @return the current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions checkpointFrequency(CheckpointFrequency checkpointFrequency) {
-        this.checkpointFrequency = checkpointFrequency;
         return this;
     }
 
@@ -450,25 +425,4 @@ public class ChangeFeedProcessorOptions {
         this.queryPartitionsMaxBatchSize = queryPartitionsMaxBatchSize;
         return this;
     }
-
-    /**
-     * Gets the current {@link ExecutorService} which will be used to control the thread pool.
-     *
-     * @return current ExecutorService instance.
-     */
-    public ExecutorService executorService() {
-        return this.executorService;
-    }
-
-    /**
-     * Sets the {@link ExecutorService} to be used to control the thread pool.
-     *
-     * @param executorService The instance of {@link ExecutorService} to use.
-     * @return current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions executorService(ExecutorService executorService) {
-        this.executorService = executorService;
-        return this;
-    }
-
 }

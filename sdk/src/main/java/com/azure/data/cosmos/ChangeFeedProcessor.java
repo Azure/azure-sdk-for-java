@@ -22,8 +22,13 @@
  */
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.changefeed.internal.ChangeFeedProcessorBuilderImpl;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverFactory;
+import com.azure.data.cosmos.internal.changefeed.implementation.ChangeFeedProcessorBuilderImpl;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Simple host for distributing change feed events across observers and thus allowing these observers scale.
@@ -42,10 +47,12 @@ import reactor.core.publisher.Mono;
  * <p>
  * {@code
  * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
- *     .withHostName(hostName)
- *     .withFeedContainerClient(feedContainer)
- *     .withLeaseContainerClient(leaseContainer)
- *     .withChangeFeedObserver(SampleObserverImpl.class)
+ *     .hostName(hostName)
+ *     .feedContainerClient(feedContainer)
+ *     .leaseContainerClient(leaseContainer)
+ *     .handleChanges(docs -> {
+ *         // Implementation for handling and processing CosmosItemProperties list goes here
+ *      })
  *     .build();
  * }
  */
@@ -72,10 +79,12 @@ public interface ChangeFeedProcessor {
      * {@code
      *
      *  ChangeFeedProcessor.Builder()
-     *       .withHostName("SampleHost")
-     *       .withFeedContainerClient(feedContainer)
-     *       .withLeaseContainerClient(leaseContainer)
-     *       .withChangeFeedObserver(SampleObserverImpl.class)
+     *       .hostName("SampleHost")
+     *       .feedContainerClient(feedContainer)
+     *       .leaseContainerClient(leaseContainer)
+     *       .handleChanges(docs -> {
+     *           // Implementation for handling and processing CosmosItemProperties list goes here
+     *        })
      *       .build();
      * }
      *
@@ -92,7 +101,7 @@ public interface ChangeFeedProcessor {
          * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
          * @return current Builder.
          */
-        BuilderDefinition withHostName(String hostName);
+        BuilderDefinition hostName(String hostName);
 
         /**
          * Sets and existing {@link CosmosContainer} to be used to read from the monitored collection.
@@ -100,7 +109,7 @@ public interface ChangeFeedProcessor {
          * @param feedContainerClient the instance of {@link CosmosContainer} to be used.
          * @return current Builder.
          */
-        BuilderDefinition withFeedContainerClient(CosmosContainer feedContainerClient);
+        BuilderDefinition feedContainerClient(CosmosContainer feedContainerClient);
 
         /**
          * Sets the {@link ChangeFeedProcessorOptions} to be used.
@@ -108,23 +117,15 @@ public interface ChangeFeedProcessor {
          * @param changeFeedProcessorOptions the change feed processor options to use.
          * @return current Builder.
          */
-        BuilderDefinition withProcessorOptions(ChangeFeedProcessorOptions changeFeedProcessorOptions);
+        BuilderDefinition options(ChangeFeedProcessorOptions changeFeedProcessorOptions);
 
         /**
-         * Sets the {@link ChangeFeedObserverFactory} to be used to generate {@link ChangeFeedObserver}
+         * Sets a consumer function which will be called to process changes.
          *
-         * @param observerFactory The instance of {@link ChangeFeedObserverFactory} to use.
+         * @param consumer the consumer of {@link ChangeFeedObserver} to call for handling the feeds.
          * @return current Builder.
          */
-        BuilderDefinition withChangeFeedObserverFactory(ChangeFeedObserverFactory observerFactory);
-
-        /**
-         * Sets an existing {@link ChangeFeedObserver} type to be used by a {@link ChangeFeedObserverFactory} to process changes.
-         *
-         * @param type the type of {@link ChangeFeedObserver} to be used.
-         * @return current Builder.
-         */
-        BuilderDefinition withChangeFeedObserver(Class<? extends ChangeFeedObserver> type);
+        BuilderDefinition handleChanges(Consumer<List<CosmosItemProperties>> consumer);
 
         /**
          * Sets an existing {@link CosmosContainer} to be used to read from the leases collection.
@@ -132,13 +133,13 @@ public interface ChangeFeedProcessor {
          * @param leaseCosmosClient the instance of {@link CosmosContainer} to use.
          * @return current Builder.
          */
-        BuilderDefinition withLeaseContainerClient(CosmosContainer leaseCosmosClient);
+        BuilderDefinition leaseContainerClient(CosmosContainer leaseCosmosClient);
 
         /**
          * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration asynchronously.
          *
          * @return an instance of {@link ChangeFeedProcessor}.
          */
-        Mono<ChangeFeedProcessor> build();
+        ChangeFeedProcessor build();
     }
 }
