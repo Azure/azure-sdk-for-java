@@ -35,6 +35,12 @@ public class Role {
     private Integer targetInstanceCount;
 
     /**
+     * The autoscale configurations.
+     */
+    @JsonProperty(value = "autoscale")
+    private Autoscale autoscaleConfiguration;
+
+    /**
      * The hardware profile.
      */
     @JsonProperty(value = "hardwareProfile")
@@ -121,6 +127,26 @@ public class Role {
      */
     public Role withTargetInstanceCount(Integer targetInstanceCount) {
         this.targetInstanceCount = targetInstanceCount;
+        return this;
+    }
+
+    /**
+     * Get the autoscale configurations.
+     *
+     * @return the autoscaleConfiguration value
+     */
+    public Autoscale autoscaleConfiguration() {
+        return this.autoscaleConfiguration;
+    }
+
+    /**
+     * Set the autoscale configurations.
+     *
+     * @param autoscaleConfiguration the autoscaleConfiguration value to set
+     * @return the Role object itself.
+     */
+    public Role withAutoscaleConfiguration(Autoscale autoscaleConfiguration) {
+        this.autoscaleConfiguration = autoscaleConfiguration;
         return this;
     }
 
