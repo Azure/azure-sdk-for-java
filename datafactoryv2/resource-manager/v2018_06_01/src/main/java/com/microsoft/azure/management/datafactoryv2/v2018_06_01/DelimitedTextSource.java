@@ -22,20 +22,20 @@ public class DelimitedTextSource extends CopySource {
      * DelimitedText store settings.
      */
     @JsonProperty(value = "storeSettings")
-    private ConnectorReadSetting storeSettings;
+    private StoreReadSettings storeSettings;
 
     /**
      * DelimitedText format settings.
      */
     @JsonProperty(value = "formatSettings")
-    private DelimitedTextReadSetting formatSettings;
+    private DelimitedTextReadSettings formatSettings;
 
     /**
      * Get delimitedText store settings.
      *
      * @return the storeSettings value
      */
-    public ConnectorReadSetting storeSettings() {
+    public StoreReadSettings storeSettings() {
         return this.storeSettings;
     }
 
@@ -45,7 +45,7 @@ public class DelimitedTextSource extends CopySource {
      * @param storeSettings the storeSettings value to set
      * @return the DelimitedTextSource object itself.
      */
-    public DelimitedTextSource withStoreSettings(ConnectorReadSetting storeSettings) {
+    public DelimitedTextSource withStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
     }
@@ -55,7 +55,7 @@ public class DelimitedTextSource extends CopySource {
      *
      * @return the formatSettings value
      */
-    public DelimitedTextReadSetting formatSettings() {
+    public DelimitedTextReadSettings formatSettings() {
         return this.formatSettings;
     }
 
@@ -65,7 +65,7 @@ public class DelimitedTextSource extends CopySource {
      * @param formatSettings the formatSettings value to set
      * @return the DelimitedTextSource object itself.
      */
-    public DelimitedTextSource withFormatSettings(DelimitedTextReadSetting formatSettings) {
+    public DelimitedTextSource withFormatSettings(DelimitedTextReadSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
     }
