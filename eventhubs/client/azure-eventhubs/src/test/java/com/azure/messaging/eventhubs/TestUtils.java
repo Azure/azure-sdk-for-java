@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.implementation.util.ImplUtils;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -55,6 +56,13 @@ class TestUtils {
      * Creates a mock message with the contents provided.
      */
     static Message getMessage(byte[] contents) {
+        return getMessage(contents, null);
+    }
+
+    /**
+     * Creates a mock message with the contents provided.
+     */
+    static Message getMessage(byte[] contents, String messageTrackingValue) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), OFFSET);
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
@@ -64,16 +72,24 @@ class TestUtils {
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
-        message.setApplicationProperties(new ApplicationProperties(APPLICATION_PROPERTIES));
+
+        Map<String, Object> applicationProperties = new HashMap<>();
+        APPLICATION_PROPERTIES.forEach(applicationProperties::put);
+
+        if (!ImplUtils.isNullOrEmpty(messageTrackingValue)) {
+            applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        }
+
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
         message.setBody(new Data(new Binary(contents)));
 
         return message;
     }
 
-    static Flux<EventData> getEvents(int numberOfEvents, String identifier) {
+    static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
         return Flux.range(0, numberOfEvents).map(number -> {
             final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
-            eventData.addProperty(MESSAGE_TRACKING_ID, identifier);
+            eventData.addProperty(MESSAGE_TRACKING_ID, messageTrackingValue);
             eventData.addProperty(MESSAGE_POSITION_ID, number);
             return eventData;
         });
