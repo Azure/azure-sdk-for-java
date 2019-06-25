@@ -118,7 +118,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsCreateResponse create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
                                           Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<PageBlobsCreateResponse> response = pageBlobAsyncRawClient.create(size, sequenceNumber, headers, metadata, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -174,7 +174,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsUploadPagesResponse uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
         Mono<PageBlobsUploadPagesResponse> response = pageBlobAsyncRawClient.uploadPages(pageRange, body, pageBlobAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -244,7 +244,7 @@ final class PageBlobRawClient extends BlobRawClient {
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
 
         Mono<PageBlobsUploadPagesFromURLResponse> response = pageBlobAsyncRawClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -288,7 +288,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsClearPagesResponse clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
         Mono<PageBlobsClearPagesResponse> response = pageBlobAsyncRawClient.clearPages(pageRange, pageBlobAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -326,7 +326,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsGetPageRangesResponse getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Duration timeout) {
         Mono<PageBlobsGetPageRangesResponse> response = pageBlobAsyncRawClient.getPageRanges(blobRange, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -372,7 +372,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsGetPageRangesDiffResponse getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Duration timeout) {
         Mono<PageBlobsGetPageRangesDiffResponse> response =pageBlobAsyncRawClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -411,7 +411,7 @@ final class PageBlobRawClient extends BlobRawClient {
      */
     public PageBlobsResizeResponse resize(long size, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<PageBlobsResizeResponse> response = pageBlobAsyncRawClient.resize(size, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -456,7 +456,7 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsUpdateSequenceNumberResponse updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<PageBlobsUpdateSequenceNumberResponse> response = pageBlobAsyncRawClient.updateSequenceNumber(action, sequenceNumber, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -500,6 +500,6 @@ final class PageBlobRawClient extends BlobRawClient {
     public PageBlobsCopyIncrementalResponse copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<PageBlobsCopyIncrementalResponse> response = pageBlobAsyncRawClient.copyIncremental(source, snapshot, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

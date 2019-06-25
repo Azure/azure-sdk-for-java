@@ -361,7 +361,7 @@ final class Utility {
         }
     }
 
-     static <T> T blockoptionaltimeout(Mono<T> response, @Nullable Duration timeout) {
-         return Utility.blockoptionaltimeout(response, timeout);
+     static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -75,7 +75,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsUpdateResponse> updaterestresponseasync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         return service.update(this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
@@ -93,7 +93,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsUpdateResponse> updaterestresponseasync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
         return service.update(this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
 
@@ -105,7 +105,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsDeleteResponse> deleterestresponseasync(String popReceipt, Context context) {
+    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         return service.delete(this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
@@ -121,7 +121,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsDeleteResponse> deleterestresponseasync(String popReceipt, Integer timeout, String requestId, Context context) {
+    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Integer timeout, String requestId, Context context) {
         return service.delete(this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
     }
 }

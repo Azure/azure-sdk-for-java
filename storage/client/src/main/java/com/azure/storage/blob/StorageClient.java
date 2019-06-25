@@ -166,7 +166,7 @@ public final class StorageClient {
 
         Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -202,7 +202,7 @@ public final class StorageClient {
     public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout) {
         Mono<VoidResponse> response = storageAsyncClient.setProperties(properties);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -239,7 +239,7 @@ public final class StorageClient {
             Duration timeout) {
         Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -270,7 +270,7 @@ public final class StorageClient {
     public Response<StorageServiceStats> getStatistics(Duration timeout) {
         Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -297,6 +297,6 @@ public final class StorageClient {
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
         Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

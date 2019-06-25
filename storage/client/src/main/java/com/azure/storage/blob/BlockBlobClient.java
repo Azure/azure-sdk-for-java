@@ -142,7 +142,7 @@ public final class BlockBlobClient extends BlobClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));;
 
         try {
-            return Utility.blockoptionaltimeout(upload, timeout);
+            return Utility.blockWithOptionalTimeout(upload, timeout);
         }
         catch (UncheckedIOException e) {
             throw e.getCause();
@@ -215,7 +215,7 @@ public final class BlockBlobClient extends BlobClient {
 
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
             Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -268,7 +268,7 @@ public final class BlockBlobClient extends BlobClient {
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -358,6 +358,6 @@ public final class BlockBlobClient extends BlobClient {
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.commitBlockList(base64BlockIDs, headers, metadata, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

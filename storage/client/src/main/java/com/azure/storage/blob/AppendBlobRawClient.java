@@ -81,7 +81,7 @@ final class AppendBlobRawClient extends BlobRawClient {
     public AppendBlobsCreateResponse create(BlobHTTPHeaders headers, Metadata metadata,
                                                   BlobAccessConditions accessConditions, Duration timeout) {
         Mono<AppendBlobsCreateResponse> response = appendBlobAsyncRawClient.create(headers, metadata, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -133,7 +133,7 @@ final class AppendBlobRawClient extends BlobRawClient {
     public AppendBlobsAppendBlockResponse appendBlock(Flux<ByteBuf> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
         Mono<AppendBlobsAppendBlockResponse> response = appendBlobAsyncRawClient.appendBlock(data, length, appendBlobAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -190,6 +190,6 @@ final class AppendBlobRawClient extends BlobRawClient {
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
         Mono<AppendBlobsAppendBlockFromUrlResponse> response = appendBlobAsyncRawClient.appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

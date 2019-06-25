@@ -119,7 +119,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateResponse> createrestresponseasync(Context context) {
+    public Mono<SharesCreateResponse> createWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final Integer quota = null;
@@ -137,7 +137,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateResponse> createrestresponseasync(Integer timeout, Map<String, String> metadata, Integer quota, Context context) {
+    public Mono<SharesCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Integer quota, Context context) {
         final String restype = "share";
         return service.create(this.client.url(), timeout, metadata, quota, this.client.version(), restype, context);
     }
@@ -149,7 +149,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetPropertiesResponse> getPropertiesrestresponseasync(Context context) {
+    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String restype = "share";
@@ -165,7 +165,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetPropertiesResponse> getPropertiesrestresponseasync(String sharesnapshot, Integer timeout, Context context) {
+    public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
         final String restype = "share";
         return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
     }
@@ -177,7 +177,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesDeleteResponse> deleterestresponseasync(Context context) {
+    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final DeleteSnapshotsOptionType deleteSnapshots = null;
@@ -195,7 +195,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesDeleteResponse> deleterestresponseasync(String sharesnapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, Context context) {
+    public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(String sharesnapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, Context context) {
         final String restype = "share";
         return service.delete(this.client.url(), sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
     }
@@ -207,7 +207,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateSnapshotResponse> createSnapshotrestresponseasync(Context context) {
+    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "share";
@@ -224,7 +224,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesCreateSnapshotResponse> createSnapshotrestresponseasync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "snapshot";
         return service.createSnapshot(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
@@ -237,7 +237,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetQuotaResponse> setQuotarestresponseasync(Context context) {
+    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Integer quota = null;
         final String restype = "share";
@@ -254,7 +254,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetQuotaResponse> setQuotarestresponseasync(Integer timeout, Integer quota, Context context) {
+    public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(Integer timeout, Integer quota, Context context) {
         final String restype = "share";
         final String comp = "properties";
         return service.setQuota(this.client.url(), timeout, this.client.version(), quota, restype, comp, context);
@@ -267,7 +267,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetMetadataResponse> setMetadatarestresponseasync(Context context) {
+    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "share";
@@ -284,7 +284,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetMetadataResponse> setMetadatarestresponseasync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "metadata";
         return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
@@ -297,7 +297,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyrestresponseasync(Context context) {
+    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "acl";
@@ -312,7 +312,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyrestresponseasync(Integer timeout, Context context) {
+    public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
         return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), restype, comp, context);
@@ -325,7 +325,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyrestresponseasync(Context context) {
+    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "acl";
@@ -342,7 +342,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyrestresponseasync(List<SignedIdentifier> shareAcl, Integer timeout, Context context) {
+    public Mono<SharesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> shareAcl, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(shareAcl);
@@ -356,7 +356,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetStatisticsResponse> getStatisticsrestresponseasync(Context context) {
+    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "stats";
@@ -371,7 +371,7 @@ public final class SharesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SharesGetStatisticsResponse> getStatisticsrestresponseasync(Integer timeout, Context context) {
+    public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "stats";
         return service.getStatistics(this.client.url(), timeout, this.client.version(), restype, comp, context);

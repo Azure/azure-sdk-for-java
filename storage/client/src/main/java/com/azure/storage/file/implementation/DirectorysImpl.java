@@ -103,7 +103,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysCreateResponse> createrestresponseasync(Context context) {
+    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "directory";
@@ -119,7 +119,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysCreateResponse> createrestresponseasync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<DirectorysCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         return service.create(this.client.url(), timeout, metadata, this.client.version(), restype, context);
     }
@@ -131,7 +131,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysGetPropertiesResponse> getPropertiesrestresponseasync(Context context) {
+    public Mono<DirectorysGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String restype = "directory";
@@ -147,7 +147,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysGetPropertiesResponse> getPropertiesrestresponseasync(String sharesnapshot, Integer timeout, Context context) {
+    public Mono<DirectorysGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
         final String restype = "directory";
         return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
     }
@@ -159,7 +159,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysDeleteResponse> deleterestresponseasync(Context context) {
+    public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "directory";
         return service.delete(this.client.url(), timeout, this.client.version(), restype, context);
@@ -173,7 +173,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysDeleteResponse> deleterestresponseasync(Integer timeout, Context context) {
+    public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(Integer timeout, Context context) {
         final String restype = "directory";
         return service.delete(this.client.url(), timeout, this.client.version(), restype, context);
     }
@@ -185,7 +185,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysSetMetadataResponse> setMetadatarestresponseasync(Context context) {
+    public Mono<DirectorysSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "directory";
@@ -202,7 +202,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysSetMetadataResponse> setMetadatarestresponseasync(Integer timeout, Map<String, String> metadata, Context context) {
+    public Mono<DirectorysSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         final String comp = "metadata";
         return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
@@ -215,7 +215,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentrestresponseasync(Context context) {
+    public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithRestResponseAsync(Context context) {
         final String prefix = null;
         final String sharesnapshot = null;
         final String marker = null;
@@ -238,7 +238,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentrestresponseasync(String prefix, String sharesnapshot, String marker, Integer maxresults, Integer timeout, Context context) {
+    public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithRestResponseAsync(String prefix, String sharesnapshot, String marker, Integer maxresults, Integer timeout, Context context) {
         final String restype = "directory";
         final String comp = "list";
         return service.listFilesAndDirectoriesSegment(this.client.url(), prefix, sharesnapshot, marker, maxresults, timeout, this.client.version(), restype, comp, context);
@@ -251,7 +251,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysListHandlesResponse> listHandlesrestresponseasync(Context context) {
+    public Mono<DirectorysListHandlesResponse> listHandlesWithRestResponseAsync(Context context) {
         final String marker = null;
         final Integer maxresults = null;
         final Integer timeout = null;
@@ -273,7 +273,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysListHandlesResponse> listHandlesrestresponseasync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
+    public Mono<DirectorysListHandlesResponse> listHandlesWithRestResponseAsync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "listhandles";
         return service.listHandles(this.client.url(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.version(), comp, context);
     }
@@ -286,7 +286,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesrestresponseasync(String handleId, Context context) {
+    public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Context context) {
         final Integer timeout = null;
         final String marker = null;
         final String sharesnapshot = null;
@@ -307,7 +307,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesrestresponseasync(String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive, Context context) {
+    public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "forceclosehandles";
         return service.forceCloseHandles(this.client.url(), timeout, marker, sharesnapshot, handleId, recursive, this.client.version(), comp, context);
     }

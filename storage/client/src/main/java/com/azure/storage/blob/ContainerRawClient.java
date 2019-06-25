@@ -88,7 +88,7 @@ final class ContainerRawClient {
      */
     public ContainersCreateResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout) {
         Mono<ContainersCreateResponse> response = containerAsyncRawClient.create(metadata, accessType);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -122,7 +122,7 @@ final class ContainerRawClient {
      */
     public ContainersDeleteResponse delete(ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<ContainersDeleteResponse> response = containerAsyncRawClient.delete(accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -156,7 +156,7 @@ final class ContainerRawClient {
     public ContainersGetPropertiesResponse getProperties(LeaseAccessConditions leaseAccessConditions,
             Duration timeout) {
         Mono<ContainersGetPropertiesResponse> response = containerAsyncRawClient.getProperties(leaseAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -194,7 +194,7 @@ final class ContainerRawClient {
     public ContainersSetMetadataResponse setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<ContainersSetMetadataResponse> response = containerAsyncRawClient.setMetadata(metadata, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -230,7 +230,7 @@ final class ContainerRawClient {
     public ContainersGetAccessPolicyResponse getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
             Duration timeout) {
         Mono<ContainersGetAccessPolicyResponse> response = containerAsyncRawClient.getAccessPolicy(leaseAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -283,7 +283,7 @@ final class ContainerRawClient {
     public ContainersSetAccessPolicyResponse setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<ContainersSetAccessPolicyResponse> response = containerAsyncRawClient.setAccessPolicy(accessType, identifiers, accessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -336,7 +336,7 @@ final class ContainerRawClient {
     public ContainersAcquireLeaseResponse acquireLease(String proposedID, int duration,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<ContainersAcquireLeaseResponse> response = containerAsyncRawClient.acquireLease(proposedID, duration, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -376,7 +376,7 @@ final class ContainerRawClient {
     public ContainersRenewLeaseResponse renewLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<ContainersRenewLeaseResponse> response = containerAsyncRawClient.renewLease(leaseID, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -416,7 +416,7 @@ final class ContainerRawClient {
     public ContainersReleaseLeaseResponse releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<ContainersReleaseLeaseResponse> response = containerAsyncRawClient.releaseLease(leaseID, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -457,7 +457,7 @@ final class ContainerRawClient {
     public ContainersBreakLeaseResponse breakLease(Integer breakPeriodInSeconds,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<ContainersBreakLeaseResponse> response = containerAsyncRawClient.breakLease(breakPeriodInSeconds, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -501,7 +501,7 @@ final class ContainerRawClient {
     public ContainersChangeLeaseResponse changeLease(String leaseID, String proposedID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<ContainersChangeLeaseResponse> response = containerAsyncRawClient.changeLease(leaseID, proposedID, modifiedAccessConditions);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -553,7 +553,7 @@ final class ContainerRawClient {
     public ContainersListBlobFlatSegmentResponse listBlobsFlatSegment(String marker, ListBlobsOptions options,
             Duration timeout) {
         Mono<ContainersListBlobFlatSegmentResponse> response = containerAsyncRawClient.listBlobsFlatSegment(marker, options);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -614,7 +614,7 @@ final class ContainerRawClient {
     public ContainersListBlobHierarchySegmentResponse listBlobsHierarchySegment(String marker, String delimiter,
             ListBlobsOptions options, Duration timeout) {
         Mono<ContainersListBlobHierarchySegmentResponse> response = containerAsyncRawClient.listBlobsHierarchySegment(marker, delimiter, options);
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -643,6 +643,6 @@ final class ContainerRawClient {
      */
     public ContainersGetAccountInfoResponse getAccountInfo(Duration timeout) {
         Mono<ContainersGetAccountInfoResponse> response = containerAsyncRawClient.getAccountInfo();
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -97,7 +97,7 @@ class BlobRawClient {
         Mono<BlobsStartCopyFromURLResponse> response = blobAsyncRawClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -140,7 +140,7 @@ class BlobRawClient {
         Mono<BlobsAbortCopyFromURLResponse> response = blobAsyncRawClient
             .abortCopyFromURL(copyId, leaseAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -187,7 +187,7 @@ class BlobRawClient {
         Mono<BlobsCopyFromURLResponse> response = blobAsyncRawClient
             .syncCopyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -231,7 +231,7 @@ class BlobRawClient {
         Mono<DownloadAsyncResponse> response = blobAsyncRawClient
             .download(range, accessConditions, rangeGetContentMD5);
 
-        DownloadResponse download = new DownloadResponse(Utility.blockoptionaltimeout(response, timeout));
+        DownloadResponse download = new DownloadResponse(Utility.blockWithOptionalTimeout(response, timeout));
 
         download.body(stream, options);
     }
@@ -270,7 +270,7 @@ class BlobRawClient {
         Mono<BlobsDeleteResponse> response = blobAsyncRawClient
             .delete(deleteBlobSnapshotOptions, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -302,7 +302,7 @@ class BlobRawClient {
         Mono<BlobsGetPropertiesResponse> response = blobAsyncRawClient
             .getProperties(accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -340,7 +340,7 @@ class BlobRawClient {
         Mono<BlobsSetHTTPHeadersResponse> response = blobAsyncRawClient
             .setHTTPHeaders(headers, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -377,7 +377,7 @@ class BlobRawClient {
         Mono<BlobsSetMetadataResponse> response = blobAsyncRawClient
             .setMetadata(metadata, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -411,7 +411,7 @@ class BlobRawClient {
         Mono<BlobsCreateSnapshotResponse> response = blobAsyncRawClient
             .createSnapshot(metadata, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -456,7 +456,7 @@ class BlobRawClient {
         Mono<BlobsSetTierResponse> response = blobAsyncRawClient
             .setTier(tier, leaseAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -487,7 +487,7 @@ class BlobRawClient {
         Mono<BlobsUndeleteResponse> response = blobAsyncRawClient
             .undelete();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -534,7 +534,7 @@ class BlobRawClient {
         Mono<BlobsAcquireLeaseResponse> response = blobAsyncRawClient
             .acquireLease(proposedID, duration, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -573,7 +573,7 @@ class BlobRawClient {
         Mono<BlobsRenewLeaseResponse> response = blobAsyncRawClient
             .renewLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -612,7 +612,7 @@ class BlobRawClient {
         Mono<BlobsReleaseLeaseResponse> response = blobAsyncRawClient
             .releaseLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -657,7 +657,7 @@ class BlobRawClient {
         Mono<BlobsBreakLeaseResponse> response = blobAsyncRawClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -700,7 +700,7 @@ class BlobRawClient {
         Mono<BlobsChangeLeaseResponse> response = blobAsyncRawClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -729,6 +729,6 @@ class BlobRawClient {
         Mono<BlobsGetAccountInfoResponse> response = blobAsyncRawClient
             .getAccountInfo();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

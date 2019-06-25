@@ -159,7 +159,7 @@ public final class ContainerClient {
     public Response<Boolean> exists(Duration timeout) {
         Mono<Response<Boolean>> response = containerAsyncClient.exists();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -187,7 +187,7 @@ public final class ContainerClient {
     public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class ContainerClient {
     public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -243,7 +243,7 @@ public final class ContainerClient {
             Duration timeout) {
         Mono<Response<ContainerProperties>> response = containerAsyncClient.getProperties(leaseAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -272,7 +272,7 @@ public final class ContainerClient {
             ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.setMetadata(metadata, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -305,7 +305,7 @@ public final class ContainerClient {
             Duration timeout) {
         Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -350,7 +350,7 @@ public final class ContainerClient {
                                 Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.setAccessPolicy(accessType, identifiers, accessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -511,7 +511,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -547,7 +547,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .renewLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -577,7 +577,7 @@ public final class ContainerClient {
         Mono<VoidResponse> response = containerAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -616,7 +616,7 @@ public final class ContainerClient {
         Mono<Response<Duration>> response = containerAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -655,7 +655,7 @@ public final class ContainerClient {
         Mono<Response<String>> response = containerAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions);
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -671,6 +671,6 @@ public final class ContainerClient {
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
         Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo();
 
-        return Utility.blockoptionaltimeout(response, timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }
