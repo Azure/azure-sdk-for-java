@@ -83,7 +83,7 @@ class APISpec extends Specification {
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
     /*
-    Credentials for various kinds of accounts.
+    credential for various kinds of accounts.
      */
     @Shared
     static SharedKeyCredential primaryCreds
@@ -176,7 +176,7 @@ class APISpec extends Specification {
 
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
-                "these credentials will fail.")
+                "these credential will fail.")
             return null
         }
         return new SharedKeyCredential(accountName, accountKey)
@@ -202,14 +202,14 @@ class APISpec extends Specification {
             .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
-            .credentials(creds)
+            .credential(creds)
             .buildClient()
     }
 
     static void cleanupContainers() throws MalformedURLException {
         StorageClient serviceURL = StorageClient.storageClientBuilder()
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
-            .credentials(primaryCreds)
+            .credential(primaryCreds)
             .buildClient()
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainers()) {
@@ -253,7 +253,7 @@ class APISpec extends Specification {
 
     def setupSpec() {
         /*
-        We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
+        We'll let primary creds throw and crash if there are no credential specified because everything else will fail.
          */
         primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
 
@@ -557,7 +557,7 @@ class APISpec extends Specification {
     def getOAuthServiceURL() {
         return StorageClient.storageClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
-            .credentials(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()
     }
 
