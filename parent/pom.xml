@@ -112,7 +112,6 @@
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
     <azure-core-amqp.version>1.0.0-SNAPSHOT</azure-core-amqp.version>
-    <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
     <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
@@ -202,12 +201,6 @@
         <groupId>com.azure</groupId>
         <artifactId>azure-core-amqp</artifactId>
         <version>${azure-core-amqp.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-auth</artifactId>
-        <version>${azure-core-auth.version}</version>
       </dependency>
 
       <dependency>
