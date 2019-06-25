@@ -3,13 +3,10 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobHTTPHeaders;
-import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +16,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -752,5 +750,38 @@ public class BlobClient {
         return timeout == null
             ? response.block()
             : response.block(timeout);
+    }
+
+    /**
+     * Generates a SAS token with the specified expiryTime and permissions
+     */
+    public String generateSAS(OffsetDateTime expiryTime, String permissions) {
+        return blobAsyncClient.generateSAS(expiryTime, permissions);
+    }
+
+    /**
+     * Generates a SAS token with the specified identifier
+     */
+    public String generateSAS (String identifier) {
+        return blobAsyncClient.generateSAS(identifier);
+    }
+
+    /**
+     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, and identifier
+     */
+    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+                              String permissions, IPRange ipRange, String identifier) {
+        return blobAsyncClient.generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier);
+    }
+
+    /**
+     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
+     * cacheControl, contentDisposition, contentEncoding, contentLanguage and contentType
+     */
+    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+                              String permissions, IPRange ipRange, String identifier, String cacheControl, String contentDisposition,
+                              String contentEncoding, String contentLanguage, String contentType) {
+        return blobAsyncClient.generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
     }
 }

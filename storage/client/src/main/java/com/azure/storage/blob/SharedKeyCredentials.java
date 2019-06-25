@@ -15,12 +15,7 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -29,7 +24,7 @@ import java.util.stream.StreamSupport;
  * Azure portal. This factory will create policies which take care of all the details of creating strings to sign,
  * signing them, and setting the Authentication header. While this is a common way of authenticating with the service,
  * recommended practice is using {@link TokenCredentials}. Pass this as the credentials in the construction of a new
- * {@link HttpPipeline} via the {@link StorageURL} type.
+ * {@link HttpPipeline} via the {@link StorageClient} type.
  */
 public final class SharedKeyCredentials implements ICredentials {
 
@@ -56,6 +51,15 @@ public final class SharedKeyCredentials implements ICredentials {
      */
     public String getAccountName() {
         return accountName;
+    }
+
+    /**
+     * Gets the account key associated with the request.
+     *
+     * @return The account key.
+     */
+    public byte[] getAccountKey() {
+        return Arrays.copyOf(accountKey, accountKey.length);
     }
 
     /**

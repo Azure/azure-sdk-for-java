@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -21,8 +23,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -814,5 +818,165 @@ public class BlobAsyncClient {
             .getAccountInfo(context)
             .map(ResponseBase::deserializedHeaders)
             .map(StorageAccountInfo::new);
+    }
+
+
+    /**
+     * Generates a SAS token with the specified expiryTime and permissions
+     */
+    public String generateSAS(OffsetDateTime expiryTime, String permissions) {
+        return generateSAS(null /* version */, null /* sasProtocol */, null /* startTime */,
+            expiryTime, permissions, null /* ipRange */, null /* identifier */,
+            null /* cacheControl */, null /* contentDisposition */,
+            null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
+    }
+
+    /**
+     * Generates a SAS token with the specified identifier
+     */
+    public String generateSAS (String identifier) {
+        return generateSAS(null /* version */, null /* sasProtocol */, null /* startTime */,
+            null /* expiryTime */, null /* permissions */, null /* ipRange */, identifier,
+            null /* cacheControl */, null /* contentDisposition */,
+            null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
+    }
+
+    /**
+     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, and identifier
+     */
+    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+                              String permissions, IPRange ipRange, String identifier) {
+        return generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
+            null /* cacheControl */, null /* contentDisposition */,
+            null /* contentEncoding */, null /* contentLanguage */, null /* contentType */);
+    }
+
+    /**
+     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
+     * cacheControl, contentDisposition, contentEncoding, contentLanguage and contentType
+     */
+    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
+                              String permissions, IPRange ipRange, String identifier, String cacheControl, String contentDisposition,
+                              String contentEncoding, String contentLanguage, String contentType) {
+
+        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues();
+
+        if(version!=null) {
+            serviceSASSignatureValues.version(version);
+        }
+
+        serviceSASSignatureValues.protocol(sasProtocol);
+        serviceSASSignatureValues.startTime(startTime);
+        serviceSASSignatureValues.expiryTime(expiryTime);
+        serviceSASSignatureValues.permissions(permissions);
+        serviceSASSignatureValues.ipRange(ipRange);
+        serviceSASSignatureValues.identifier(identifier);
+        serviceSASSignatureValues.cacheControl(cacheControl);
+        serviceSASSignatureValues.contentDisposition(contentDisposition);
+        serviceSASSignatureValues.contentEncoding(contentEncoding);
+        serviceSASSignatureValues.contentLanguage(contentLanguage);
+        serviceSASSignatureValues.contentType(contentType);
+
+        SharedKeyCredentials sharedKeyCredentials = getSharedKeyCredentials();
+
+        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, sharedKeyCredentials);
+
+        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredentials);
+
+        return sasQueryParameters.encode();
+    }
+
+    /**
+     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     */
+    protected ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues,
+                                                                           SharedKeyCredentials sharedKeyCredentials) {
+
+        String urlString = this.blobAsyncRawClient.azureBlobStorage.url();
+
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // Set snapshotId
+        serviceSASSignatureValues.snapshotId(getSnapshotId());
+
+        // Set resource
+        if(isSnapshot()) {
+            serviceSASSignatureValues.resource("bs");
+        } else {
+            serviceSASSignatureValues.resource("b");
+        }
+
+        // Validate permissions
+        String permissions = serviceSASSignatureValues.permissions();
+        serviceSASSignatureValues.permissions(BlobSASPermission.parse(permissions).toString());
+
+        // Set canonicalName
+        String accountName = sharedKeyCredentials.getAccountName();
+
+        StringBuilder canonicalName = new StringBuilder("/blob");
+        canonicalName.append('/').append(accountName).append('/').append(url.getPath());
+        serviceSASSignatureValues.canonicalName(canonicalName.toString());
+
+        return serviceSASSignatureValues;
+    }
+
+    /**
+     * Gets the sharedKeyCredentials for a blob resource
+     */
+
+    protected SharedKeyCredentials getSharedKeyCredentials() {
+        HttpPipeline httpPipeline = this.blobAsyncRawClient.azureBlobStorage.httpPipeline();
+        int numPolicies = httpPipeline.getPolicyCount();
+        for(int i = 0; i < numPolicies; i++){
+            HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
+            if(httpPipelinePolicy instanceof SharedKeyCredentials){
+                SharedKeyCredentials sharedKeyCredentials = (SharedKeyCredentials) httpPipelinePolicy;
+                return sharedKeyCredentials;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the snapshotId for a blob resource
+     */
+    protected String getSnapshotId() {
+        String urlString = this.blobAsyncRawClient.azureBlobStorage.url();
+
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        if(url!=null) {
+            String query = url.getQuery();
+            if(query!=null) {
+                String[] parameters = query.split("&");
+                for(String param: parameters) {
+                    String key = param.split("=")[0];
+                    String value = param.split("=")[1];
+                    if(key.equalsIgnoreCase("snapshot")){
+                        return value;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Determines if a blob is a snapshot
+     */
+    protected boolean isSnapshot() {
+        String snapshotId = getSnapshotId();
+        return snapshotId!=null;
     }
 }
