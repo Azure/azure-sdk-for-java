@@ -220,6 +220,10 @@
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "storageimportexport/resource-manager": {
+    "source": "specification/storageimportexport/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "streamanalytics/resource-manager": {
     "source": "specification/streamanalytics/resource-manager/readme.md",
     "args": "--multiapi --fluent",
