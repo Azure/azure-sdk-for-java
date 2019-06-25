@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.benchmark;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.PartitionKey;
@@ -57,12 +58,12 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
             String idString = uuid + i;
             Document newDoc = new Document();
             newDoc.id(idString);
-            newDoc.set(partitionKey, idString);
-            newDoc.set("dataField1", dataFieldValue);
-            newDoc.set("dataField2", dataFieldValue);
-            newDoc.set("dataField3", dataFieldValue);
-            newDoc.set("dataField4", dataFieldValue);
-            newDoc.set("dataField5", dataFieldValue);
+            BridgeInternal.setProperty(newDoc, partitionKey, idString);
+            BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
+            BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);
+            BridgeInternal.setProperty(newDoc, "dataField3", dataFieldValue);
+            BridgeInternal.setProperty(newDoc, "dataField4", dataFieldValue);
+            BridgeInternal.setProperty(newDoc, "dataField5", dataFieldValue);
             obs = client.createDocument(getCollectionLink(), newDoc, null, false).map(ResourceResponse::getResource);
 
         } else if (i % 100 == 0) {

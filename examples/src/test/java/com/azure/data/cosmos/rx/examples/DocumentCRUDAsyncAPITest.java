@@ -23,6 +23,7 @@
 package com.azure.data.cosmos.rx.examples;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
@@ -217,7 +218,7 @@ public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
     public void createDocumentWithProgrammableDocumentDefinition() throws Exception {
         Document documentDefinition = new Document();
         documentDefinition.id("test-document");
-        documentDefinition.set("counter", 1);
+        BridgeInternal.setProperty(documentDefinition, "counter", 1);
 
         // CREATE a document
         Document createdDocument = client

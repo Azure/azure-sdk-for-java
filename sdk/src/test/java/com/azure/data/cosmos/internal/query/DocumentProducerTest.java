@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Document;
@@ -485,12 +486,12 @@ public class DocumentProducerTest {
 
                 Document d = getDocumentDefinition();
                 if (isOrderby) {
-                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3));
-                    d.set(DocumentPartitionKeyRangeIdFieldName, partitionKeyRangeId);
+                    BridgeInternal.setProperty(d, OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3));
+                    BridgeInternal.setProperty(d, DocumentPartitionKeyRangeIdFieldName, partitionKeyRangeId);
                     PartitionKeyRange pkr = mockPartitionKeyRange(partitionKeyRangeId);
 
-                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
-                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
+                    BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
+                    BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
                     QueryItem qi = new QueryItem("{ \"item\": " + Integer.toString(d.getInt(OrderByIntFieldName)) +
                                                          " }");

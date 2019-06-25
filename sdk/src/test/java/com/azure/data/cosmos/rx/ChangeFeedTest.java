@@ -300,8 +300,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document();
         doc.id(uuid);
-        doc.set("mypk", partitionKey);
-        doc.set("prop", uuid);
+        BridgeInternal.setProperty(doc, "mypk", partitionKey);
+        BridgeInternal.setProperty(doc, "prop", uuid);
         return doc;
     }
 

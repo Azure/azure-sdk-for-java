@@ -23,6 +23,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
@@ -154,7 +155,7 @@ public class SessionTest extends TestSuiteBase {
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.id(UUID.randomUUID().toString());
-        document.set("pk", "pk");
+        BridgeInternal.setProperty(document, "pk", "pk");
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
                 .blockFirst()
                 .getResource();

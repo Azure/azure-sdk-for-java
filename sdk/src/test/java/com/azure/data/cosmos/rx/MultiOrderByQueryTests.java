@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.CompositePathSortOrder;
 import com.azure.data.cosmos.CosmosClient;
@@ -157,23 +158,23 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                 // Permute all the fields so that there are duplicates with tie breaks
                 CosmosItemProperties numberClone = new CosmosItemProperties(multiOrderByDocumentString);
-                numberClone.set(NUMBER_FIELD, random.nextInt(5));
+                BridgeInternal.setProperty(numberClone, NUMBER_FIELD, random.nextInt(5));
                 numberClone.id(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
                 CosmosItemProperties stringClone = new CosmosItemProperties(multiOrderByDocumentString);
-                stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
+                BridgeInternal.setProperty(stringClone, STRING_FIELD, Integer.toString(random.nextInt(5)));
                 stringClone.id(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
                 CosmosItemProperties boolClone = new CosmosItemProperties(multiOrderByDocumentString);
-                boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0);
+                BridgeInternal.setProperty(boolClone, BOOL_FIELD, random.nextInt(2) % 2 == 0);
                 boolClone.id(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
                 CosmosItemProperties partitionClone = new CosmosItemProperties(multiOrderByDocumentString);
-                partitionClone.set(PARTITION_KEY, random.nextInt(5));
+                BridgeInternal.setProperty(partitionClone, PARTITION_KEY, random.nextInt(5));
                 partitionClone.id(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
@@ -188,18 +189,18 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         CosmosItemProperties document = new CosmosItemProperties();
         document.id(UUID.randomUUID().toString());
-        document.set(NUMBER_FIELD, random.nextInt(5));
-        document.set(NUMBER_FIELD_2, random.nextInt(5));
-        document.set(BOOL_FIELD, (random.nextInt() % 2) == 0);
-        document.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
-        document.set(STRING_FIELD_2, Integer.toString(random.nextInt(5)));
-        document.set(NULL_FIELD, null);
-        document.set(OBJECT_FIELD, "");
-        document.set(ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
-        document.set(SHORT_STRING_FIELD, "a" + random.nextInt(100));
-        document.set(MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
-        document.set(LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
-        document.set(PARTITION_KEY, random.nextInt(5));
+        BridgeInternal.setProperty(document, NUMBER_FIELD, random.nextInt(5));
+        BridgeInternal.setProperty(document, NUMBER_FIELD_2, random.nextInt(5));
+        BridgeInternal.setProperty(document, BOOL_FIELD, (random.nextInt() % 2) == 0);
+        BridgeInternal.setProperty(document, STRING_FIELD, Integer.toString(random.nextInt(5)));
+        BridgeInternal.setProperty(document, STRING_FIELD_2, Integer.toString(random.nextInt(5)));
+        BridgeInternal.setProperty(document, NULL_FIELD, null);
+        BridgeInternal.setProperty(document, OBJECT_FIELD, "");
+        BridgeInternal.setProperty(document, ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
+        BridgeInternal.setProperty(document, SHORT_STRING_FIELD, "a" + random.nextInt(100));
+        BridgeInternal.setProperty(document, MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
+        BridgeInternal.setProperty(document, LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
+        BridgeInternal.setProperty(document, PARTITION_KEY, random.nextInt(5));
         return document;
     }
 
@@ -278,7 +279,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         // CREATE document with numberField not set.
         // This query would then be invalid.
         CosmosItemProperties documentWithEmptyField = generateMultiOrderByDocument();
-        documentWithEmptyField.remove(NUMBER_FIELD);
+        BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
         Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions);

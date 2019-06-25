@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal.routing;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -89,7 +90,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMin(T min) {
         this.minValue = min;
-        super.set(Range.MIN_PROPERTY, min);
+        BridgeInternal.setProperty(this, Range.MIN_PROPERTY, min);
     }
 
     @SuppressWarnings("unchecked")
@@ -103,7 +104,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     public void setMax(T max) {
         this.maxValue = max;
-        super.set(Range.MAX_PROPERTY, max);
+        BridgeInternal.setProperty(this, Range.MAX_PROPERTY, max);
     }
 
     @JsonProperty("isMinInclusive")
@@ -112,7 +113,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
-        super.set(Range.IS_MIN_INCLUSIVE_PROPERTY, isMinInclusive);
+        BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, isMinInclusive);
     }
 
     @JsonProperty("isMaxInclusive")
@@ -121,7 +122,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public void setMaxInclusive(boolean isMaxInclusive) {
-        super.set(Range.IS_MAX_INCLUSIVE_PROPERTY, isMaxInclusive);
+        BridgeInternal.setProperty(this, Range.IS_MAX_INCLUSIVE_PROPERTY, isMaxInclusive);
     }
 
     public boolean isSingleValue() {

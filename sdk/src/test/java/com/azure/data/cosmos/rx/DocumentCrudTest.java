@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
@@ -39,6 +40,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import sun.corba.Bridge;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -87,7 +89,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         //Keep size as ~ 1.5MB to account for size of other props
         int size = (int) (ONE_MB * 1.5);
-        docDefinition.set("largeString", StringUtils.repeat("x", size));
+        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
         Mono<CosmosItemResponse> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -105,7 +107,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString());
+        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
 
         Mono<CosmosItemResponse> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -123,7 +125,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString());
+        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
 
         CosmosItem createdDocument = TestSuiteBase.createDocument(container, docDefinition);
 
@@ -286,7 +288,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         CosmosItem document = container.createItem(docDefinition, new CosmosItemRequestOptions()).block().item();
 
         String newPropValue = UUID.randomUUID().toString();
-        docDefinition.set("newProp", newPropValue);
+        BridgeInternal.setProperty(docDefinition, "newProp", newPropValue);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.partitionKey(new PartitionKey(docDefinition.get("mypk")));
@@ -322,7 +324,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         properties = container.createItem(properties, new CosmosItemRequestOptions()).block().properties();
 
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue);
+        BridgeInternal.setProperty(properties, "newProp", newPropValue);
 
         // Replace document
 

@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -135,18 +136,18 @@ public final class OrderByContinuationToken extends JsonSerializable {
     }
 
     private void setCompositeContinuationToken(CompositeContinuationToken compositeContinuationToken) {
-        super.set(CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson());
+        BridgeInternal.setProperty(this, CompositeContinuationTokenPropertyName, compositeContinuationToken.toJson());
     }
 
     private void setOrderByItems(QueryItem[] orderByItems) {
-        super.set(OrderByItemsPropetryName, orderByItems);
+        BridgeInternal.setProperty(this, OrderByItemsPropetryName, orderByItems);
     }
 
     private void setRid(String rid) {
-        super.set(RidPropertyName, rid);
+        BridgeInternal.setProperty(this, RidPropertyName, rid);
     }
 
     private void setInclusive(boolean inclusive) {
-        super.set(InclusivePropertyName, inclusive);
+        BridgeInternal.setProperty(this, InclusivePropertyName, inclusive);
     }
 }

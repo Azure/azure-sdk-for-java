@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.routing.Range;
@@ -44,7 +45,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         this.queryInfo = queryInfo;
         this.queryRanges = queryRanges;
 
-        super.set(
+        BridgeInternal.setProperty(this, 
                 PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
                 Constants.PartitionedQueryExecutionInfo.VERSION_1);
     }

@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import org.slf4j.Logger;
@@ -82,10 +83,10 @@ public final class TakeContinuationToken extends JsonSerializable {
     }
 
     private void setTakeCount(int takeCount) {
-        super.set(LimitPropertyName, takeCount);
+        BridgeInternal.setProperty(this, LimitPropertyName, takeCount);
     }
 
     private void setSourceToken(String sourceToken) {
-        super.set(SourceTokenPropetryName, sourceToken);
+        BridgeInternal.setProperty(this, SourceTokenPropetryName, sourceToken);
     }
 }

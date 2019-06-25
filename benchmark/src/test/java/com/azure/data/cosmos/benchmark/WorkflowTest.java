@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.DataType;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
@@ -328,11 +329,11 @@ public class WorkflowTest {
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
-        stringIndex.set("precision", -1);
+        BridgeInternal.setProperty(stringIndex, "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        numberIndex.set("precision", -1);
+        BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
         includedPath.indexes(indexes);
         includedPaths.add(includedPath);

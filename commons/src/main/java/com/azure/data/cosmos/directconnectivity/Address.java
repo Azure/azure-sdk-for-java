@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.Constants;
 
@@ -51,7 +52,7 @@ public class Address extends Resource {
     }
 
     void setIsPrimary(boolean isPrimary) {
-        super.set(Constants.Properties.IS_PRIMARY, isPrimary);
+        BridgeInternal.setProperty(this, Constants.Properties.IS_PRIMARY, isPrimary);
     }
 
     public String getProtocolScheme() {
@@ -59,7 +60,7 @@ public class Address extends Resource {
     }
 
     void setProtocol(String protocol) {
-        super.set(Constants.Properties.PROTOCOL, protocol);
+        BridgeInternal.setProperty(this, Constants.Properties.PROTOCOL, protocol);
     }
 
     public String getLogicalUri() {
@@ -67,7 +68,7 @@ public class Address extends Resource {
     }
 
     void setLogicalUri(String logicalUri) {
-        super.set(Constants.Properties.LOGICAL_URI, logicalUri);
+        BridgeInternal.setProperty(this, Constants.Properties.LOGICAL_URI, logicalUri);
     }
 
     public String getPhyicalUri() {
@@ -75,7 +76,7 @@ public class Address extends Resource {
     }
 
     void setPhysicalUri(String phyicalUri) {
-        super.set(Constants.Properties.PHYISCAL_URI, phyicalUri);
+        BridgeInternal.setProperty(this, Constants.Properties.PHYISCAL_URI, phyicalUri);
     }
 
     public String getPartitionIndex() {
@@ -83,7 +84,7 @@ public class Address extends Resource {
     }
 
     void setPartitionIndex(String partitionIndex) {
-        super.set(Constants.Properties.PARTITION_INDEX, partitionIndex);
+        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_INDEX, partitionIndex);
     }
 
     public String getParitionKeyRangeId() {
@@ -91,6 +92,6 @@ public class Address extends Resource {
     }
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
-        super.set(Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+        BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
     }
 }

@@ -26,6 +26,7 @@ package com.azure.data.cosmos.rx.examples.multimaster.samples;
 import com.azure.data.cosmos.AccessCondition;
 import com.azure.data.cosmos.AccessConditionType;
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Conflict;
 import com.azure.data.cosmos.ConflictResolutionPolicy;
 import com.azure.data.cosmos.CosmosClientException;
@@ -498,8 +499,8 @@ public class ConflictWorker {
     private Flux<Document> tryInsertDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
 
         logger.debug("region: {}", client.getWriteEndpoint());
-        document.set("regionId", index);
-        document.set("regionEndpoint", client.getReadEndpoint());
+        BridgeInternal.setProperty(document, "regionId", index);
+        BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
         return client.createDocument(collectionUri, document, null, false)
                 .onErrorResume(e -> {
                     if (hasDocumentClientException(e, 409)) {
@@ -544,8 +545,8 @@ public class ConflictWorker {
     }
 
     private Flux<Document> tryUpdateDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
-        document.set("regionId", index);
-        document.set("regionEndpoint", client.getReadEndpoint());
+        BridgeInternal.setProperty(document, "regionId", index);
+        BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(new AccessCondition());
@@ -566,8 +567,8 @@ public class ConflictWorker {
     }
 
     private Flux<Document> tryDeleteDocument(AsyncDocumentClient client, String collectionUri, Document document, int index) {
-        document.set("regionId", index);
-        document.set("regionEndpoint", client.getReadEndpoint());
+        BridgeInternal.setProperty(document, "regionId", index);
+        BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(new AccessCondition());

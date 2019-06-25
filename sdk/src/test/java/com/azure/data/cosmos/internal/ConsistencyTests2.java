@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
@@ -237,7 +238,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         List<Document> documents = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             Document documentDefinition = getDocumentDefinition();
-            documentDefinition.set(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            BridgeInternal.setProperty(documentDefinition, UUID.randomUUID().toString(), UUID.randomUUID().toString());
             documents.add(documentDefinition);
         }
 

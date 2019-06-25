@@ -23,6 +23,7 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.AsyncDocumentClient.Builder;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
@@ -208,7 +209,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         String propName = "newProp";
         String propValue = "hello";
-        document.set(propName, propValue);
+        BridgeInternal.setProperty(document, propName, propValue);
         
         ResourceResponseValidator<Document> validator = ResourceResponseValidator.builder()
                 .withProperty(propName, propValue)
@@ -331,8 +332,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     private Document getDocumentDefinition() {
         Document doc = new Document();
         doc.id(UUID.randomUUID().toString());
-        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
-        doc.set("name", "Hafez");
+        BridgeInternal.setProperty(doc, PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
+        BridgeInternal.setProperty(doc, "name", "Hafez");
         return doc;
     }
     

@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.JsonSerializable;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.routing.Range;
@@ -105,7 +106,7 @@ public final class CompositeContinuationToken extends JsonSerializable {
      *            the token to set
      */
     private void setToken(String token) {
-        super.set(TokenPropertyName, token);
+        BridgeInternal.setProperty(this, TokenPropertyName, token);
     }
 
     /**
@@ -114,6 +115,6 @@ public final class CompositeContinuationToken extends JsonSerializable {
      */
     private void setRange(Range<String> range) {
         /* TODO: Don't stringify the range */
-        super.set(RangePropertyName, range.toString());
+        BridgeInternal.setProperty(this, RangePropertyName, range.toString());
     }
 }

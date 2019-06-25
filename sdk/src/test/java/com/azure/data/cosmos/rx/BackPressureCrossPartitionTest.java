@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ClientUnderTestBuilder;
 import com.azure.data.cosmos.CosmosBridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
@@ -89,11 +90,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.STRING);
-        stringIndex.set("precision", -1);
+        BridgeInternal.setProperty(stringIndex, "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        numberIndex.set("precision", -1);
+        BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
         includedPath.indexes(indexes);
         includedPaths.add(includedPath);

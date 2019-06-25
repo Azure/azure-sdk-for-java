@@ -118,7 +118,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     
                     if (this.aggregator.getResult() == null || !this.aggregator.getResult().equals(Undefined.Value())) {
                         Document aggregateDocument = new Document();
-                        aggregateDocument.set(Constants.Properties.AGGREGATE, this.aggregator.getResult());
+                        BridgeInternal.setProperty(aggregateDocument, Constants.Properties.AGGREGATE, this.aggregator.getResult());
                         aggregateResults.add(aggregateDocument);
                     }
 

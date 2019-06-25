@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
@@ -100,12 +101,12 @@ abstract class AsyncBenchmark<T> {
                 String uuid = UUID.randomUUID().toString();
                 Document newDoc = new Document();
                 newDoc.id(uuid);
-                newDoc.set(partitionKey, uuid);
-                newDoc.set("dataField1", dataFieldValue);
-                newDoc.set("dataField2", dataFieldValue);
-                newDoc.set("dataField3", dataFieldValue);
-                newDoc.set("dataField4", dataFieldValue);
-                newDoc.set("dataField5", dataFieldValue);
+                BridgeInternal.setProperty(newDoc, partitionKey, uuid);
+                BridgeInternal.setProperty(newDoc, "dataField1", dataFieldValue);
+                BridgeInternal.setProperty(newDoc, "dataField2", dataFieldValue);
+                BridgeInternal.setProperty(newDoc, "dataField3", dataFieldValue);
+                BridgeInternal.setProperty(newDoc, "dataField4", dataFieldValue);
+                BridgeInternal.setProperty(newDoc, "dataField5", dataFieldValue);
                 Flux<Document> obs = client.createDocument(collection.selfLink(), newDoc, null, false)
                                                  .map(ResourceResponse::getResource);
                 createDocumentObservables.add(obs);

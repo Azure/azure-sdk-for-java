@@ -381,10 +381,10 @@ public class TokenResolverTest extends TestSuiteBase {
         String partitionKeyValue = "pk";
         Document document1 = new Document();
         document1.id(id1);
-        document1.set(partitionKey, partitionKeyValue);
+        BridgeInternal.setProperty(document1, partitionKey, partitionKeyValue);
         Document document2 = new Document();
         document2.id(id2);
-        document2.set(partitionKey, partitionKeyValue);
+        BridgeInternal.setProperty(document2, partitionKey, partitionKeyValue);
         try {
             asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
             OffsetDateTime befTime = OffsetDateTime.now();

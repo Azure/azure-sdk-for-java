@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
@@ -195,16 +196,16 @@ public class TopQueryTests extends TestSuiteBase {
         for (int i = 0; i < 10; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
             d.id(Integer.toString(i));
-            d.set(field, i);
-            d.set(partitionKey, firstPk);
+            BridgeInternal.setProperty(d, field, i);
+            BridgeInternal.setProperty(d, partitionKey, firstPk);
             docs.add(d);
         }
 
         for (int i = 10; i < 20; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
             d.id(Integer.toString(i));
-            d.set(field, i);
-            d.set(partitionKey, secondPk);
+            BridgeInternal.setProperty(d, field, i);
+            BridgeInternal.setProperty(d, partitionKey, secondPk);
             docs.add(d);
         }
     }

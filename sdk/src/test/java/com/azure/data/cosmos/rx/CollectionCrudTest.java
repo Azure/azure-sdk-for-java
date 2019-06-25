@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.CompositePathSortOrder;
 import com.azure.data.cosmos.CosmosClient;
@@ -278,8 +279,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             CosmosItemProperties document = new CosmosItemProperties();
             document.id("doc");
-            document.set("name", "New Document");
-            document.set("mypk", "mypkValue");
+            BridgeInternal.setProperty(document, "name", "New Document");
+            BridgeInternal.setProperty(document, "mypk", "mypkValue");
             CosmosItem item = createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             options.partitionKey(new PartitionKey("mypkValue"));
@@ -287,7 +288,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.requestDiagnosticsString());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.requestLatency());
 
-            document.set("name", "New Updated Document");
+            BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.requestDiagnosticsString());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.requestLatency());
@@ -299,8 +300,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
             CosmosItemProperties newDocument = new CosmosItemProperties();
             newDocument.id("doc");
-            newDocument.set("name", "New Created Document");
-            newDocument.set("mypk", "mypk");
+            BridgeInternal.setProperty(newDocument, "name", "New Created Document");
+            BridgeInternal.setProperty(newDocument, "mypk", "mypk");
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.id(), newDocument.get("mypk")).read().block();

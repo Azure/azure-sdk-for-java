@@ -295,4 +295,12 @@ public class BridgeInternal {
     public static PartitionKey getPartitionKey(PartitionKeyInternal partitionKeyInternal) {
         return new PartitionKey(partitionKeyInternal);
     }
+
+    public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
+        jsonSerializable.set(propertyName, value);
+    }
+
+    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
+        jsonSerializable.remove(propertyName);
+    }
 }

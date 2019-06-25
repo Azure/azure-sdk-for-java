@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
@@ -90,7 +91,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         //Keep size as ~ 1.999MB to account for size of other props
         int size = (int) (ONE_MB * 1.999);
-        docDefinition.set("largeString", StringUtils.repeat("x", size));
+        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
 
         Mono<CosmosItemResponse> createObservable = createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());
 

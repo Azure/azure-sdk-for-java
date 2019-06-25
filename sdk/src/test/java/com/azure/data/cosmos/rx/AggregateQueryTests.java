@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
@@ -116,15 +117,15 @@ public class AggregateQueryTests extends TestSuiteBase {
         for (int i = 0; i < values.length; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
             d.id(UUID.randomUUID().toString());
-            d.set(partitionKey, values[i]);
+            BridgeInternal.setProperty(d, partitionKey, values[i]);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
-            d.set(partitionKey, uniquePartitionKey);
-            d.set("resourceId", Integer.toString(i));
-            d.set(field, i + 1);
+            BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
+            BridgeInternal.setProperty(d, "resourceId", Integer.toString(i));
+            BridgeInternal.setProperty(d, field, i + 1);
             d.id(UUID.randomUUID().toString());
             docs.add(d);
         }
@@ -132,7 +133,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
             CosmosItemProperties d = new CosmosItemProperties();
-            d.set(partitionKey, i + 1);
+            BridgeInternal.setProperty(d, partitionKey, i + 1);
             d.id(UUID.randomUUID().toString());
             docs.add(d);
         }

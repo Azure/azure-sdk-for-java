@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.rx.examples;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
@@ -250,11 +251,11 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<Index>();
         Index stringIndex = Index.Range(DataType.STRING);
-        stringIndex.set("precision", -1);
+        BridgeInternal.setProperty(stringIndex, "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.Range(DataType.NUMBER);
-        numberIndex.set("precision", -1);
+        BridgeInternal.setProperty(numberIndex, "precision", -1);
         indexes.add(numberIndex);
         includedPath.indexes(indexes);
         includedPaths.add(includedPath);

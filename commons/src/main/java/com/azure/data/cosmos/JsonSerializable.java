@@ -86,7 +86,7 @@ public class JsonSerializable {
         this.propertyBag = objectNode;
     }
 
-    ObjectMapper getMapper() {
+    private ObjectMapper getMapper() {
         // TODO: Made package private due to #153. #171 adding custom serialization options back.
         if (this.om != null) { return this.om; }
         return OBJECT_MAPPER;
@@ -103,7 +103,7 @@ public class JsonSerializable {
         }
     }
 
-    protected Logger getLogger() {
+    Logger getLogger() {
         return logger;
     }
 
@@ -134,7 +134,7 @@ public class JsonSerializable {
      * 
      * @param propertyName the property to remove.
      */
-    public void remove(String propertyName) {
+    void remove(String propertyName) {
         this.propertyBag.remove(propertyName);
     }
 
@@ -146,7 +146,7 @@ public class JsonSerializable {
      * @param value        the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> void set(String propertyName, T value) {
+    <T> void set(String propertyName, T value) {
         if (value == null) {
             // Sets null.
             this.propertyBag.putNull(propertyName);
@@ -416,7 +416,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the JSONObject.
      */
-    public ObjectNode getObject(String propertyName) {
+    ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ObjectNode jsonObj = (ObjectNode) this.propertyBag.get(propertyName);
             return jsonObj;
@@ -430,7 +430,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the JSONObject collection.
      */
-    public Collection<ObjectNode> getCollection(String propertyName) {
+    Collection<ObjectNode> getCollection(String propertyName) {
         Collection<ObjectNode> result = null;
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             result = new ArrayList<ObjectNode>();
