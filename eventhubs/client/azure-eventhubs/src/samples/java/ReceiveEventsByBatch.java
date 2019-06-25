@@ -26,6 +26,15 @@ public class ReceiveEventsByBatch {
     private static final int EVENT_BATCH_SIZE = 10;
     private static final int NUMBER_OF_EVENTS = 10;
 
+    /**
+     * Main method to invoke this demo about how to receive event batch from an Azure Event Hub instance.
+     *
+     * @param args Unused arguments to the program.
+     * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
+     *         complete.
+     * @throws IOException If we were unable to dispose of the {@link EventHubClient}, {@link EventHubConsumer},
+     *         or the {@link EventHubProducer}
+     */
     public static void main(String[] args) throws InterruptedException, IOException {
         CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
 

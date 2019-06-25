@@ -93,8 +93,6 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 
 ## Examples
 
-
-- [Hello World][sample_hello_world]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Consume events from an Event Hub partition][sample_receive_event]
 
@@ -145,7 +143,6 @@ For detailed information about these and other exceptions that may occur, please
 ## Next steps
 Beyond those discussed, the Azure Event Hubs client library offers support for 
 many additional scenarios to help take advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios, the following set of sample is available:
-- [Hello world][sample_hello_world]
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Publish events to a specific Event Hub partition with producer option][sample_send_producer_option]
@@ -181,7 +178,6 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 [sample_receive_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEvent.java
 [sample_send_event]:https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEvent.java
 [sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
-[sample_hello_world]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/HelloWorld.java
 [sample_send_custom_event_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendCustomEventDataList.java
 [sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsFromKnownSequenceNumberPosition.java
 [sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java

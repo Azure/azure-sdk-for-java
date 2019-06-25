@@ -21,6 +21,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class SendEventsWithProducerOptions {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
+    /**
+     * Main method to invoke this demo about how to send a list of events with partition ID configured in producer option
+     * to an Azure Event Hub instance.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.

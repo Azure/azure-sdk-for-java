@@ -17,6 +17,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to sent events to a specific event hub by defining partition ID in producer option only.
  */
 public class SendCustomEventDataList {
+
+    /**
+     * Main method to invoke this demo about how to send a custom event list to an Azure Event Hub instance.
+     *
+     * @param args Unused arguments to the program.
+     */
     public static void main(String[] args) {
         // The connection string value can be obtained by:
         // 1. Going to your Event Hubs namespace in Azure Portal.
