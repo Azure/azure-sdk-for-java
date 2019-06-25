@@ -1,4 +1,12 @@
 {
+  "advisor/resource-manager": {
+    "source": "specification/advisor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "apimanagement/resource-manager": {
+    "source": "specification/apimanagement/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "applicationinsights/resource-manager": {
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -22,6 +30,10 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "azurestack/resource-manager": {
+    "source": "specification/azurestack/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -34,12 +46,24 @@
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "consumption/resource-manager": {
+    "source": "specification/consumption/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "containerservice/resource-manager": {
     "source": "specification/containerservice/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerregistry/resource-manager": {
     "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "costmanagement/resource-manager": {
+    "source": "specification/cost-management/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "cosmosdb/resource-manager": {
+    "source": "specification/cosmos-db/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
   "datalakeanalytics/resource-manager": {
@@ -69,6 +93,14 @@
   "eventgrid/data-plane": {
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
+  },
+  "eventhub/resource-manager": {
+    "source": "specification/eventhub/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "hanaonazure/resource-manager": {
+    "source": "specification/hanaonazure/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "hdinsight/resource-manager": {
     "source": "specification/hdinsight/resource-manager/readme.md",
@@ -104,6 +136,10 @@
     "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "mariadb/resource-manager": {
+    "source": "specification/mariadb/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "marketplaceordering/resource-manager": {
     "source": "specification/marketplaceordering/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -122,6 +158,10 @@
     "fconfig": {
       "\"moduleName\"": "\"MySQL\""
     }
+  },
+  "monitor/resource-manager": {
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "netapp/resource-manager": {
     "source": "specification/netapp/resource-manager/readme.md",
@@ -158,6 +198,10 @@
       "\"knownPlurals\"": ["\"redis\""],
       "\"knownSingulars\"": ["\"redis\""]
     }
+  },
+  "resourcegraph/resource-manager": {
+    "source": "specification/resourcegraph/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",
