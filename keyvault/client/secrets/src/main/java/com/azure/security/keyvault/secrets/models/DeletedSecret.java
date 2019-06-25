@@ -11,8 +11,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- *  Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretBase}.
- *  It is managed by Secret Service.
+ * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes inherited from {@link SecretBase}.
+ * It is managed by Secret Service.
  *
  *  @see SecretClient
  *  @see SecretAsyncClient

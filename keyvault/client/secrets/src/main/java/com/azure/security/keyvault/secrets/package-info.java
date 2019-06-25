@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains the classes for creating {@link com.azure.security.keyvault.secrets.SecretAsyncClient} and {@link com.azure.security.keyvault.secrets.SecretClient} to
- * perform operations on Azure Key Vault.
+ * Package containing classes for creating {@link com.azure.security.keyvault.secrets.SecretAsyncClient} and
+ * {@link com.azure.security.keyvault.secrets.SecretClient} to perform operations on Azure Key Vault.
  */
 package com.azure.security.keyvault.secrets;
