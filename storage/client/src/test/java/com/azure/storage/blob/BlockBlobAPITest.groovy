@@ -256,7 +256,7 @@ class BlockBlobAPITest extends APISpec {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockFromURLHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -420,8 +420,8 @@ class BlockBlobAPITest extends APISpec {
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .withModifiedAccessConditions(new ModifiedAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
@@ -447,8 +447,8 @@ class BlockBlobAPITest extends APISpec {
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .withModifiedAccessConditions(new ModifiedAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
@@ -476,7 +476,7 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.commitBlockList(new ArrayList<String>(), null, null, new BlobAccessConditions().withLeaseAccessConditions(
+        bu.commitBlockList(new ArrayList<String>(), null, null, new BlobAccessConditions().leaseaccessconditions(
             new LeaseAccessConditions().leaseId("garbage")), null, null)
 
         then:
@@ -487,7 +487,7 @@ class BlockBlobAPITest extends APISpec {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobCommitBlockListHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -616,7 +616,7 @@ class BlockBlobAPITest extends APISpec {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlockBlobGetBlockListHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -733,8 +733,8 @@ class BlockBlobAPITest extends APISpec {
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .withModifiedAccessConditions(new ModifiedAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
@@ -760,8 +760,8 @@ class BlockBlobAPITest extends APISpec {
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .withLeaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
-            .withModifiedAccessConditions(new ModifiedAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
@@ -790,7 +790,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         bu.upload(defaultInputStream.get(), defaultDataSize, null, null,
-            new BlobAccessConditions().withLeaseAccessConditions(new LeaseAccessConditions().leaseId("id")),
+            new BlobAccessConditions().leaseaccessconditions(new LeaseAccessConditions().leaseId("id")),
             null, null)
 
         then:
@@ -801,7 +801,7 @@ class BlockBlobAPITest extends APISpec {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobUploadHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.

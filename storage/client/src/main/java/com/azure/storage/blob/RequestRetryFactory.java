@@ -120,14 +120,14 @@
 //                    httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
 //            if (!tryingPrimary) {
 //                UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
-//                builder.withHost(this.requestRetryOptions.secondaryHost());
+//                builder.host(this.requestRetryOptions.secondaryHost());
 //                try {
-//                    requestCopy.withUrl(builder.toURL());
+//                    requestCopy.url(builder.toURL());
 //                } catch (MalformedURLException e) {
 //                    return Single.error(e);
 //                }
 //            }
-//            requestCopy.withContext(httpRequest.context());
+//            requestCopy.context(httpRequest.context());
 //
 //            // Deadline stuff
 //

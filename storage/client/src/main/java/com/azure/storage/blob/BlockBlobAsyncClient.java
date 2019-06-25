@@ -7,7 +7,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.util.FluxUtil;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -121,7 +120,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length) {
-        return this.upload(data, length, null, null, null, null);
+        return this.upload(data, length, null, null, null);
     }
 
     /**
@@ -148,29 +147,23 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
-            Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+            Metadata metadata, BlobAccessConditions accessConditions) {
         return blockBlobAsyncRawClient
-            .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions, context)
+            .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
     public Mono<Void> uploadFromFile(String filePath) {
-        return this.uploadFromFile(filePath, null, null, null, null);
+        return this.uploadFromFile(filePath, null, null, null);
     }
 
     public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
-                                     BlobAccessConditions accessConditions, Context context) {
+                                     BlobAccessConditions accessConditions) {
         AsynchronousFileChannel channel;
         try {
             channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
@@ -182,9 +175,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
             .flatMap(chunk -> {
                 String blockId = blockIds.get(chunk.offset());
-                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null, context);
+                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
             })
-            .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions, context)))
+            .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
             .then()
             .doOnTerminate(() -> {
                 try {
@@ -236,7 +229,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
-        return this.stageBlock(base64BlockID, data, length, null, null);
+        return this.stageBlock(base64BlockID, data, length, null);
     }
 
     /**
@@ -259,20 +252,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
     public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-            LeaseAccessConditions leaseAccessConditions, Context context) {
+            LeaseAccessConditions leaseAccessConditions) {
         return blockBlobAsyncRawClient
-            .stageBlock(base64BlockID, data, length, leaseAccessConditions, context)
+            .stageBlock(base64BlockID, data, length, leaseAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
@@ -297,7 +284,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
-                null, null, null);
+                null, null);
     }
 
     /**
@@ -322,21 +309,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         lease on the blob.
      * @param sourceModifiedAccessConditions
      *         {@link SourceModifiedAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
     public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
-            SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
+            SourceModifiedAccessConditions sourceModifiedAccessConditions) {
         return blockBlobAsyncRawClient
-            .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions, context)
+            .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
@@ -352,7 +333,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the list of blocks.
      */
     public Flux<BlockItem> listBlocks(BlockListType listType) {
-        return this.listBlocks(listType, null, null);
+        return this.listBlocks(listType, null);
     }
 
     /**
@@ -366,20 +347,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the list of blocks.
      */
     public Flux<BlockItem> listBlocks(BlockListType listType,
-                                      LeaseAccessConditions leaseAccessConditions, Context context) {
+                                      LeaseAccessConditions leaseAccessConditions) {
         return blockBlobAsyncRawClient
-            .listBlocks(listType, leaseAccessConditions, context)
+            .listBlocks(listType, leaseAccessConditions)
             .map(ResponseBase::value)
             .flatMapMany(bl -> {
                 Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
@@ -406,7 +381,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the block blob.
      */
     public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs) {
-        return this.commitBlockList(base64BlockIDs, null, null, null, null);
+        return this.commitBlockList(base64BlockIDs, null, null, null);
     }
 
     /**
@@ -426,20 +401,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the information of the block blob.
      */
     public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs,
-                                              BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions, Context context) {
+                                              BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         return blockBlobAsyncRawClient
-            .commitBlockList(base64BlockIDs, headers, metadata, accessConditions, context)
+            .commitBlockList(base64BlockIDs, headers, metadata, accessConditions)
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
-import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AppendPositionAccessConditions;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -61,11 +60,6 @@ public class BlobOutputStream extends OutputStream {
      */
     private volatile IOException lastError = null;
 
-    /**
-     * Holds the Context for the current stream.
-     */
-    private final Context opContext;
-
 
     private long currentBlobOffset;
 
@@ -91,16 +85,13 @@ public class BlobOutputStream extends OutputStream {
      *
      * @param parentBlob
      *            A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation.
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    private BlobOutputStream(final BlobAsyncClient parentBlob, final Context opContext) throws StorageException {
+    private BlobOutputStream(final BlobAsyncClient parentBlob) throws StorageException {
         this.blobClient = parentBlob;
         this.outBuffer = new ByteArrayOutputStream();
-        this.opContext = opContext;
         this.futureSet = new HashSet<>();
     }
 
@@ -111,14 +102,12 @@ public class BlobOutputStream extends OutputStream {
      *            A {@link BlobAsyncClient} object which represents the blob that this stream is associated with.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation.
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    BlobOutputStream(final BlockBlobAsyncClient parentBlob, final BlobAccessConditions accessCondition, final Context opContext) throws StorageException {
-        this((BlobAsyncClient) parentBlob, opContext);
+    BlobOutputStream(final BlockBlobAsyncClient parentBlob, final BlobAccessConditions accessCondition) throws StorageException {
+        this((BlobAsyncClient) parentBlob);
 
         this.accessCondition = accessCondition;
         this.blockList = new ArrayList<String>();
@@ -138,15 +127,13 @@ public class BlobOutputStream extends OutputStream {
      *            512.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    BlobOutputStream(final PageBlobAsyncClient parentBlob, final long length, final BlobAccessConditions accessCondition, final Context opContext)
+    BlobOutputStream(final PageBlobAsyncClient parentBlob, final long length, final BlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob, opContext);
+        this((BlobAsyncClient) parentBlob);
         this.streamType = BlobType.PAGE_BLOB;
         this.accessCondition = accessCondition;
         this.internalWriteThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
@@ -159,21 +146,19 @@ public class BlobOutputStream extends OutputStream {
      *            A {@link AppendBlobAsyncClient} object which represents the blob that this stream is associated with.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    BlobOutputStream(final AppendBlobAsyncClient parentBlob, final AppendBlobAccessConditions accessCondition, final Context opContext)
+    BlobOutputStream(final AppendBlobAsyncClient parentBlob, final AppendBlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob, opContext);
+        this((BlobAsyncClient) parentBlob);
         this.streamType = BlobType.APPEND_BLOB;
 
         this.accessCondition = new BlobAccessConditions();
         if (accessCondition != null) {
             this.appendPositionAccessConditions = accessCondition.appendPositionAccessConditions();
-            this.accessCondition = new BlobAccessConditions().withModifiedAccessConditions(accessCondition.modifiedAccessConditions()).withLeaseAccessConditions(accessCondition.leaseAccessConditions());
+            this.accessCondition = new BlobAccessConditions().modifiedAccessConditions(accessCondition.modifiedAccessConditions()).leaseAccessConditions(accessCondition.leaseAccessConditions());
             if (accessCondition.appendPositionAccessConditions().appendPosition() != null) {
                 this.currentBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
             } else {
@@ -238,7 +223,7 @@ public class BlobOutputStream extends OutputStream {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             // wait for all blocks to finish
             final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
-            blobRef.commitBlockList(this.blockList, null, null, this.accessCondition, this.opContext).block();
+            blobRef.commitBlockList(this.blockList, null, null, this.accessCondition).block();
         }
     }
 
@@ -306,7 +291,7 @@ public class BlobOutputStream extends OutputStream {
 
         LeaseAccessConditions leaseAccessConditions = accessCondition == null ? null : accessCondition.leaseAccessConditions();
 
-        return blobRef.stageBlock(blockId, blockData, writeLength, leaseAccessConditions, this.opContext)
+        return blobRef.stageBlock(blockId, blockData, writeLength, leaseAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -317,9 +302,9 @@ public class BlobOutputStream extends OutputStream {
     private Mono<Void> writePages(Flux<ByteBuf> pageData, long offset, long writeLength) {
         final PageBlobAsyncClient blobRef = (PageBlobAsyncClient) this.blobClient;
 
-        PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().withLeaseAccessConditions(accessCondition.leaseAccessConditions()).withModifiedAccessConditions(accessCondition.modifiedAccessConditions());
+        PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
 
-        return blobRef.uploadPages(new PageRange().start(offset).end(writeLength), pageData, pageBlobAccessConditions, this.opContext)
+        return blobRef.uploadPages(new PageRange().start(offset).end(writeLength), pageData, pageBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -331,10 +316,8 @@ public class BlobOutputStream extends OutputStream {
         final AppendBlobAsyncClient blobRef = (AppendBlobAsyncClient) this.blobClient;
         this.appendPositionAccessConditions.appendPosition(offset);
 
-//        int previousResultsCount = this.opContext.getRequestResults().size();
-
-        AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().withLeaseAccessConditions(accessCondition.leaseAccessConditions()).withModifiedAccessConditions(accessCondition.modifiedAccessConditions());
-        return blobRef.appendBlock(blockData, writeLength, appendBlobAccessConditions, this.opContext)
+        AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
+        return blobRef.appendBlock(blockData, writeLength, appendBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof IOException || t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);

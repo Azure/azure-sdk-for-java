@@ -178,23 +178,7 @@ public final class ContainerAsyncClient {
      *         true if the container exists, false if it doesn't
      */
     public Mono<Response<Boolean>> exists() {
-        return this.exists(null);
-    }
-
-    /**
-     * Gets if the container this client represents exists in the cloud.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     * @return
-     *         true if the container exists, false if it doesn't
-     */
-    public Mono<Response<Boolean>> exists(Context context) {
-        return this.getProperties(null, context)
+        return this.getProperties(null)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
                 HttpResponse response = ((StorageException) t).response();
@@ -211,7 +195,7 @@ public final class ContainerAsyncClient {
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> create() {
-        return this.create(null, null, null);
+        return this.create(null, null);
     }
 
     /**
@@ -224,19 +208,13 @@ public final class ContainerAsyncClient {
      * @param accessType
      *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType, Context context) {
+    public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType) {
         return containerAsyncRawClient
-            .create(metadata, accessType, context)
+            .create(metadata, accessType)
             .map(VoidResponse::new);
     }
 
@@ -249,7 +227,7 @@ public final class ContainerAsyncClient {
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> delete() {
-        return this.delete(null, null);
+        return this.delete(null);
     }
 
     /**
@@ -259,19 +237,13 @@ public final class ContainerAsyncClient {
      *
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> delete(ContainerAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> delete(ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .delete(accessConditions, context)
+            .delete(accessConditions)
             .map(VoidResponse::new);
     }
 
@@ -283,7 +255,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the container properties.
      */
     public Mono<Response<ContainerProperties>> getProperties() {
-        return this.getProperties(null, null);
+        return this.getProperties(null);
     }
 
     /**
@@ -293,20 +265,13 @@ public final class ContainerAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<Response<ContainerProperties>> getProperties(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
+    public Mono<Response<ContainerProperties>> getProperties(LeaseAccessConditions leaseAccessConditions) {
         return containerAsyncRawClient
-            .getProperties(leaseAccessConditions, context)
+            .getProperties(leaseAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.deserializedHeaders())));
     }
 
@@ -321,7 +286,7 @@ public final class ContainerAsyncClient {
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null);
+        return this.setMetadata(metadata, null);
     }
 
     /**
@@ -332,20 +297,14 @@ public final class ContainerAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions, Context context) {
+            ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .setMetadata(metadata, accessConditions, context)
+            .setMetadata(metadata, accessConditions)
             .map(VoidResponse::new);
     }
 
@@ -358,7 +317,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the container access policy.
      */
     public Mono<Response<PublicAccessType>> getAccessPolicy() {
-        return this.getAccessPolicy(null, null);
+        return this.getAccessPolicy(null);
     }
 
     /**
@@ -369,20 +328,13 @@ public final class ContainerAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<Response<PublicAccessType>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
+    public Mono<Response<PublicAccessType>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
         return containerAsyncRawClient
-            .getAccessPolicy(leaseAccessConditions, context)
+            .getAccessPolicy(leaseAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().blobPublicAccess()));
     }
 
@@ -405,7 +357,7 @@ public final class ContainerAsyncClient {
      */
     public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        return this.setAccessPolicy(accessType, identifiers, null, null);
+        return this.setAccessPolicy(accessType, identifiers, null);
     }
 
     /**
@@ -423,20 +375,14 @@ public final class ContainerAsyncClient {
      *         for more information. Passing null will clear all access policies.
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
+                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .setAccessPolicy(accessType, identifiers, accessConditions, context)
+            .setAccessPolicy(accessType, identifiers, accessConditions)
             .map(VoidResponse::new);
     }
 
@@ -470,7 +416,7 @@ public final class ContainerAsyncClient {
      *      A reactive response emitting the flattened blobs.
      */
     public Flux<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions(), null);
+        return this.listBlobsFlat(new ListBlobsOptions());
     }
 
     /**
@@ -492,24 +438,17 @@ public final class ContainerAsyncClient {
      *
      * @param options
      *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the listed blobs, flattened.
      */
-    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options, Context context) {
+    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
         return containerAsyncRawClient
-            .listBlobsFlatSegment(null, options, context)
-            .flatMapMany(response -> listBlobsFlatHelper(options, context, response));
+            .listBlobsFlatSegment(null, options)
+            .flatMapMany(response -> listBlobsFlatHelper(options, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options,
-                                               Context context, ContainersListBlobFlatSegmentResponse response){
+    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response){
         Flux<BlobItem> result;
         BlobFlatListSegment segment = response.value().segment();
         if (segment != null && segment.blobItems() != null) {
@@ -520,8 +459,8 @@ public final class ContainerAsyncClient {
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(response.value().nextMarker(), options, context)
-                .flatMapMany(r -> listBlobsFlatHelper(options, context, r)));
+            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(response.value().nextMarker(), options)
+                .flatMapMany(r -> listBlobsFlatHelper(options, r)));
         }
 
         return result;
@@ -554,7 +493,7 @@ public final class ContainerAsyncClient {
      *      A reactive response emitting the prefixes and blobs.
      */
     public Flux<BlobItem> listBlobsHierarchy(String prefix) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().withPrefix(prefix), null);
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(prefix));
     }
 
     /**
@@ -582,19 +521,13 @@ public final class ContainerAsyncClient {
      *
      * @param options
      *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the prefixes and blobs.
      */
-    public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Context context) {
-        return containerAsyncRawClient.listBlobsHierarchySegment(null, delimiter, options, context)
-            .flatMapMany(response -> listBlobsHierarchyHelper(delimiter, options, context, response));
+    public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
+        return containerAsyncRawClient.listBlobsHierarchySegment(null, delimiter, options)
+            .flatMapMany(response -> listBlobsHierarchyHelper(delimiter, options, Context.NONE, response));
     }
 
     private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
@@ -616,7 +549,7 @@ public final class ContainerAsyncClient {
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerAsyncRawClient.listBlobsHierarchySegment(response.value().nextMarker(), delimiter, options, context)
+            result = result.concatWith(containerAsyncRawClient.listBlobsHierarchySegment(response.value().nextMarker(), delimiter, options)
                 .flatMapMany(r -> listBlobsHierarchyHelper(delimiter, options, context, r)));
         }
 
@@ -685,9 +618,9 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
 //    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options, Context context) {
+//            ListBlobsOptions options) {
 //        return containerAsyncRawClient
-//            .listBlobsHierarchySegment(null, delimiter, options, context)
+//            .listBlobsHierarchySegment(null, delimiter, options)
 //            .flatMapMany();
 //    }
 
@@ -705,7 +638,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the lease ID.
      */
     public Mono<Response<String>> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null, null);
+        return this.acquireLease(proposedId, duration, null);
     }
 
     /**
@@ -721,20 +654,13 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .acquireLease(proposedID, duration, modifiedAccessConditions, context)
+            .acquireLease(proposedID, duration, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
@@ -748,7 +674,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the renewed lease ID.
      */
     public Mono<Response<String>> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null, null);
+        return this.renewLease(leaseID, null);
     }
 
     /**
@@ -760,19 +686,13 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .renewLease(leaseID, modifiedAccessConditions, context)
+            .renewLease(leaseID, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
@@ -786,7 +706,7 @@ public final class ContainerAsyncClient {
      *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null, null);
+        return this.releaseLease(leaseID, null);
     }
 
     /**
@@ -798,19 +718,13 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .releaseLease(leaseID, modifiedAccessConditions, context)
+            .releaseLease(leaseID, modifiedAccessConditions)
             .map(VoidResponse::new);
     }
 
@@ -822,7 +736,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the remaining time in the broken lease.
      */
     public Mono<Response<Duration>> breakLease() {
-        return this.breakLease(null, null, null);
+        return this.breakLease(null, null);
     }
 
     /**
@@ -839,20 +753,13 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the remaining time in the broken lease.
      */
-    public Mono<Response<Duration>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
-                                               Context context) {
+    public Mono<Response<Duration>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
+            .breakLease(breakPeriodInSeconds, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.deserializedHeaders().leaseTime())));
     }
 
@@ -868,7 +775,7 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the new lease ID.
      */
     public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
-        return this.changeLease(leaseId, proposedID, null, null);
+        return this.changeLease(leaseId, proposedID, null);
     }
 
     /**
@@ -882,19 +789,12 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return A reactive response containing the new lease ID.
      */
-    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .changeLease(leaseId, proposedID, modifiedAccessConditions, context)
+            .changeLease(leaseId, proposedID, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
@@ -906,26 +806,8 @@ public final class ContainerAsyncClient {
      *      A reactive response containing the account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
-        return this.getAccountInfo(null);
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the account info.
-     */
-    public Mono<Response<StorageAccountInfo>> getAccountInfo(Context context) {
         return containerAsyncRawClient
-            .getAccountInfo(context)
+            .getAccountInfo()
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

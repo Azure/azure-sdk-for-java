@@ -74,7 +74,7 @@ final class AccountSASService {
     /**
      * Permission to access blob resources granted.
      */
-    public AccountSASService withBlob(boolean blob) {
+    public AccountSASService blob(boolean blob) {
         this.blob = blob;
         return this;
     }
@@ -89,7 +89,7 @@ final class AccountSASService {
     /**
      * Permission to access file resources granted.
      */
-    public AccountSASService withFile(boolean file) {
+    public AccountSASService file(boolean file) {
         this.file = file;
         return this;
     }
@@ -104,7 +104,7 @@ final class AccountSASService {
     /**
      * Permission to access queue resources granted.
      */
-    public AccountSASService withQueue(boolean queue) {
+    public AccountSASService queue(boolean queue) {
         this.queue = queue;
         return this;
     }
@@ -119,7 +119,7 @@ final class AccountSASService {
     /**
      * Permission to access table resources granted.
      */
-    public AccountSASService withTable(boolean table) {
+    public AccountSASService table(boolean table) {
         this.table = table;
         return this;
     }

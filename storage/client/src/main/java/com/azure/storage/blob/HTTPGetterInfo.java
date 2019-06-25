@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import java.time.Duration;
+
 /**
  * HTTPGetterInfo is a passed to the getter function of a reliable download to specify parameters needed for the GET
  * request.
@@ -24,7 +26,7 @@ final class HTTPGetterInfo {
     /**
      * The start offset that should be used when creating the HTTP GET request's Range header. Defaults to 0.
      */
-    public HTTPGetterInfo withOffset(long offset) {
+    public HTTPGetterInfo offset(long offset) {
         this.offset = offset;
         return this;
     }
@@ -41,7 +43,7 @@ final class HTTPGetterInfo {
      * The count of bytes that should be used to calculate the end offset when creating the HTTP GET request's Range
      * header. {@code} null is the default and indicates that the entire rest of the blob should be retrieved.
      */
-    public HTTPGetterInfo withCount(Long count) {
+    public HTTPGetterInfo count(Long count) {
         if (count != null) {
             Utility.assertInBounds("count", count, 0, Long.MAX_VALUE);
         }
@@ -52,7 +54,7 @@ final class HTTPGetterInfo {
     /**
      * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
      * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobURL#getProperties(BlobAccessConditions, com.microsoft.rest.v2.Context)}. Defaults to null.
+     * BlobClient#getProperties(BlobAccessConditions, Duration)}. Defaults to null.
      */
     public String eTag() {
         return eTag;
@@ -61,9 +63,9 @@ final class HTTPGetterInfo {
     /**
      * The resource's etag that should be used when creating the HTTP GET request's If-Match header. Note that the
      * Etag is returned with any operation that modifies the resource and by a call to {@link
-     * BlobURL#getProperties(BlobAccessConditions, com.microsoft.rest.v2.Context)}. Defaults to null.
+     * BlobClient#getProperties(BlobAccessConditions, Duration)}. Defaults to null.
      */
-    public HTTPGetterInfo withETag(String eTag) {
+    public HTTPGetterInfo eTag(String eTag) {
         this.eTag = eTag;
         return this;
     }

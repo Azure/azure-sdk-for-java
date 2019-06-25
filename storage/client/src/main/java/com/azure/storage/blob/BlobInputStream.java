@@ -78,8 +78,6 @@ public final class BlobInputStream extends InputStream {
      */
     private final long blobRangeOffset;
 
-    private Context context;
-
     /**
      * Initializes a new instance of the BlobInputStream class.
      *
@@ -87,15 +85,12 @@ public final class BlobInputStream extends InputStream {
      *            A {@link BlobClient} object which represents the blob that this stream is associated with.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation.
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
-    protected BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition,
-                              final Context opContext) throws StorageException {
-        this(0, null, blobClient, accessCondition, opContext);
+    protected BlobInputStream(final BlobAsyncClient blobClient, final BlobAccessConditions accessCondition) throws StorageException {
+        this(0, null, blobClient, accessCondition);
     }
 
     /**
@@ -111,19 +106,16 @@ public final class BlobInputStream extends InputStream {
      *            A {@link BlobClient} object which represents the blob that this stream is associated with.
      * @param accessCondition
      *            An {@link BlobAccessConditions} object which represents the access conditions for the blob.
-     * @param opContext
-     *            An {@link Context} object which is used to track the execution of the operation.
      *
      * @throws StorageException
      *             An exception representing any error which occurred during the operation.
      */
     protected BlobInputStream(long blobRangeOffset, Long blobRangeLength, final BlobAsyncClient blobClient,
-                              final BlobAccessConditions accessCondition, final Context opContext)
+                              final BlobAccessConditions accessCondition)
         throws StorageException {
 
         this.blobRangeOffset = blobRangeOffset;
         this.blobClient = blobClient;
-        this.context = opContext;
         this.streamFaulted = false;
         this.currentAbsoluteReadPosition = blobRangeOffset;
         this.readSize = 4 * Constants.MB;
@@ -195,7 +187,7 @@ public final class BlobInputStream extends InputStream {
      */
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
-            this.currentBuffer = this.blobClient.blobAsyncRawClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false, this.context)
+            this.currentBuffer = this.blobClient.blobAsyncRawClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
                 .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asInputStream())
                 .block();
 

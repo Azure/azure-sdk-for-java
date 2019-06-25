@@ -45,7 +45,7 @@ final class IPRange {
     /**
      * The minimum IP address of the range.
      */
-    public IPRange withIpMin(String ipMin) {
+    public IPRange ipMin(String ipMin) {
         this.ipMin = ipMin;
         return this;
     }
@@ -60,7 +60,7 @@ final class IPRange {
     /**
      * The maximum IP address of the range.
      */
-    public IPRange withIpMax(String ipMax) {
+    public IPRange ipMax(String ipMax) {
         this.ipMax = ipMax;
         return this;
     }

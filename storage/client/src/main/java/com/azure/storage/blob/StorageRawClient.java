@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.models.ServicesGetPropertiesResponse;
@@ -13,6 +12,7 @@ import com.azure.storage.blob.models.ServicesGetUserDelegationKeyResponse;
 import com.azure.storage.blob.models.ServicesListContainersSegmentResponse;
 import com.azure.storage.blob.models.ServicesSetPropertiesResponse;
 import com.azure.storage.blob.models.StorageServiceProperties;
+import com.azure.storage.common.credentials.SASTokenCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -64,7 +64,7 @@ final class StorageRawClient {
      */
     public ServicesListContainersSegmentResponse listContainersSegment(String marker,
                                                                              ListContainersOptions options) {
-        return this.listContainersSegment(marker, options,null, null);
+        return this.listContainersSegment(marker, options,null);
     }
 
     /**
@@ -80,12 +80,6 @@ final class StorageRawClient {
      *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -95,8 +89,8 @@ final class StorageRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServicesListContainersSegmentResponse listContainersSegment(String marker,
-                                                                       ListContainersOptions options, Duration timeout, Context context) {
-        Mono<ServicesListContainersSegmentResponse> response = storageAsyncRawClient.listContainersSegment(marker, options, context);
+                                                                       ListContainersOptions options, Duration timeout) {
+        Mono<ServicesListContainersSegmentResponse> response = storageAsyncRawClient.listContainersSegment(marker, options);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -111,19 +105,12 @@ final class StorageRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServicesGetPropertiesResponse getProperties() {
-        return this.getProperties(null, null);
+        return this.getProperties(null);
     }
 
     /**
      * Gets the properties of a storage account’s Blob service. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -131,8 +118,8 @@ final class StorageRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServicesGetPropertiesResponse getProperties(Duration timeout, Context context) {
-        Mono<ServicesGetPropertiesResponse> response = storageAsyncRawClient.getProperties(context);
+    public ServicesGetPropertiesResponse getProperties(Duration timeout) {
+        Mono<ServicesGetPropertiesResponse> response = storageAsyncRawClient.getProperties();
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -152,7 +139,7 @@ final class StorageRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServicesSetPropertiesResponse setProperties(StorageServiceProperties properties) {
-        return this.setProperties(properties, null, null);
+        return this.setProperties(properties, null);
     }
 
     /**
@@ -163,12 +150,6 @@ final class StorageRawClient {
      *
      * @param properties
      *         Configures the service.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -176,14 +157,14 @@ final class StorageRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_getsetprops "Sample code for ServiceURL.setProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServicesSetPropertiesResponse setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<ServicesSetPropertiesResponse> response = storageAsyncRawClient.setProperties(properties, context);
+    public ServicesSetPropertiesResponse setProperties(StorageServiceProperties properties, Duration timeout) {
+        Mono<ServicesSetPropertiesResponse> response = storageAsyncRawClient.setProperties(properties);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link SASTokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -193,29 +174,23 @@ final class StorageRawClient {
      * @return Emits the successful response.
      */
     public ServicesGetUserDelegationKeyResponse getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null, null);
+        return this.getUserDelegationKey(start, expiry, null);
     }
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link SASTokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
      * @param expiry
      *         Expiration of the key's validity.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      */
     public ServicesGetUserDelegationKeyResponse getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-            Duration timeout, Context context) {
-        Mono<ServicesGetUserDelegationKeyResponse> response = storageAsyncRawClient.getUserDelegationKey(start, expiry, context);
+            Duration timeout) {
+        Mono<ServicesGetUserDelegationKeyResponse> response = storageAsyncRawClient.getUserDelegationKey(start, expiry);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -232,7 +207,7 @@ final class StorageRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServicesGetStatisticsResponse getStatistics() {
-        return this.getStatistics(null, null);
+        return this.getStatistics(null);
     }
 
     /**
@@ -241,21 +216,14 @@ final class StorageRawClient {
      * information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
      * @return Emits the successful response.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_stats "Sample code for ServiceURL.getStats")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServicesGetStatisticsResponse getStatistics(Duration timeout, Context context) {
-        Mono<ServicesGetStatisticsResponse> response = storageAsyncRawClient.getStatistics(context);
+    public ServicesGetStatisticsResponse getStatistics(Duration timeout) {
+        Mono<ServicesGetStatisticsResponse> response = storageAsyncRawClient.getStatistics();
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -270,19 +238,12 @@ final class StorageRawClient {
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public ServicesGetAccountInfoResponse getAccountInfo() {
-        return this.getAccountInfo(null, null);
+        return this.getAccountInfo(null);
     }
 
     /**
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -290,8 +251,8 @@ final class StorageRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for ServiceURL.getAccountInfo")] \n
      * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public ServicesGetAccountInfoResponse getAccountInfo(Duration timeout, Context context) {
-        Mono<ServicesGetAccountInfoResponse> response = storageAsyncRawClient.getAccountInfo(context);
+    public ServicesGetAccountInfoResponse getAccountInfo(Duration timeout) {
+        Mono<ServicesGetAccountInfoResponse> response = storageAsyncRawClient.getAccountInfo();
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }
