@@ -8,12 +8,14 @@
 
 package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 
-import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitionProperties;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Role definition.
  */
+@JsonFlatten
 public class RoleDefinitionInner {
     /**
      * The role definition ID.
@@ -34,10 +36,34 @@ public class RoleDefinitionInner {
     private String type;
 
     /**
-     * Role definition properties.
+     * The role name.
      */
-    @JsonProperty(value = "properties")
-    private RoleDefinitionProperties properties;
+    @JsonProperty(value = "properties.roleName")
+    private String roleName;
+
+    /**
+     * The role definition description.
+     */
+    @JsonProperty(value = "properties.description")
+    private String description;
+
+    /**
+     * The role type.
+     */
+    @JsonProperty(value = "properties.type")
+    private String roleType;
+
+    /**
+     * Role definition permissions.
+     */
+    @JsonProperty(value = "properties.permissions")
+    private List<PermissionInner> permissions;
+
+    /**
+     * Role definition assignable scopes.
+     */
+    @JsonProperty(value = "properties.assignableScopes")
+    private List<String> assignableScopes;
 
     /**
      * Get the role definition ID.
@@ -67,22 +93,102 @@ public class RoleDefinitionInner {
     }
 
     /**
-     * Get role definition properties.
+     * Get the role name.
      *
-     * @return the properties value
+     * @return the roleName value
      */
-    public RoleDefinitionProperties properties() {
-        return this.properties;
+    public String roleName() {
+        return this.roleName;
     }
 
     /**
-     * Set role definition properties.
+     * Set the role name.
      *
-     * @param properties the properties value to set
+     * @param roleName the roleName value to set
      * @return the RoleDefinitionInner object itself.
      */
-    public RoleDefinitionInner withProperties(RoleDefinitionProperties properties) {
-        this.properties = properties;
+    public RoleDefinitionInner withRoleName(String roleName) {
+        this.roleName = roleName;
+        return this;
+    }
+
+    /**
+     * Get the role definition description.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the role definition description.
+     *
+     * @param description the description value to set
+     * @return the RoleDefinitionInner object itself.
+     */
+    public RoleDefinitionInner withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the role type.
+     *
+     * @return the roleType value
+     */
+    public String roleType() {
+        return this.roleType;
+    }
+
+    /**
+     * Set the role type.
+     *
+     * @param roleType the roleType value to set
+     * @return the RoleDefinitionInner object itself.
+     */
+    public RoleDefinitionInner withRoleType(String roleType) {
+        this.roleType = roleType;
+        return this;
+    }
+
+    /**
+     * Get role definition permissions.
+     *
+     * @return the permissions value
+     */
+    public List<PermissionInner> permissions() {
+        return this.permissions;
+    }
+
+    /**
+     * Set role definition permissions.
+     *
+     * @param permissions the permissions value to set
+     * @return the RoleDefinitionInner object itself.
+     */
+    public RoleDefinitionInner withPermissions(List<PermissionInner> permissions) {
+        this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Get role definition assignable scopes.
+     *
+     * @return the assignableScopes value
+     */
+    public List<String> assignableScopes() {
+        return this.assignableScopes;
+    }
+
+    /**
+     * Set role definition assignable scopes.
+     *
+     * @param assignableScopes the assignableScopes value to set
+     * @return the RoleDefinitionInner object itself.
+     */
+    public RoleDefinitionInner withAssignableScopes(List<String> assignableScopes) {
+        this.assignableScopes = assignableScopes;
         return this;
     }
 

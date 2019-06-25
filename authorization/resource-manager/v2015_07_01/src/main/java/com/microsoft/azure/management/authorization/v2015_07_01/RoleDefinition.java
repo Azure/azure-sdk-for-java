@@ -25,6 +25,16 @@ import com.microsoft.azure.management.authorization.v2015_07_01.implementation.P
  */
 public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable, Updatable<RoleDefinition.Update>, Refreshable<RoleDefinition>, HasManager<AuthorizationManager> {
     /**
+     * @return the assignableScopes value.
+     */
+    List<String> assignableScopes();
+
+    /**
+     * @return the description value.
+     */
+    String description();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -35,9 +45,19 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
     String name();
 
     /**
-     * @return the properties value.
+     * @return the permissions value.
      */
-    RoleDefinitionProperties properties();
+    List<Permission> permissions();
+
+    /**
+     * @return the roleName value.
+     */
+    String roleName();
+
+    /**
+     * @return the roleType value.
+     */
+    String roleType();
 
     /**
      * @return the type value.
@@ -47,7 +67,7 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
     /**
      * The entirety of the RoleDefinition definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
 
     /**
@@ -69,19 +89,67 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
             * @param scope The scope of the role definition
             * @return the next definition stage
             */
-            WithProperties withScope(String scope);
+            WithCreate withScope(String scope);
         }
 
         /**
-         * The stage of the roledefinition definition allowing to specify Properties.
+         * The stage of the roledefinition definition allowing to specify AssignableScopes.
          */
-        interface WithProperties {
-           /**
-            * Specifies properties.
-            * @param properties Role definition properties
-            * @return the next definition stage
-            */
-            WithCreate withProperties(RoleDefinitionProperties properties);
+        interface WithAssignableScopes {
+            /**
+             * Specifies assignableScopes.
+             * @param assignableScopes Role definition assignable scopes
+             * @return the next definition stage
+             */
+            WithCreate withAssignableScopes(List<String> assignableScopes);
+        }
+
+        /**
+         * The stage of the roledefinition definition allowing to specify Description.
+         */
+        interface WithDescription {
+            /**
+             * Specifies description.
+             * @param description The role definition description
+             * @return the next definition stage
+             */
+            WithCreate withDescription(String description);
+        }
+
+        /**
+         * The stage of the roledefinition definition allowing to specify Permissions.
+         */
+        interface WithPermissions {
+            /**
+             * Specifies permissions.
+             * @param permissions Role definition permissions
+             * @return the next definition stage
+             */
+            WithCreate withPermissions(List<PermissionInner> permissions);
+        }
+
+        /**
+         * The stage of the roledefinition definition allowing to specify RoleName.
+         */
+        interface WithRoleName {
+            /**
+             * Specifies roleName.
+             * @param roleName The role name
+             * @return the next definition stage
+             */
+            WithCreate withRoleName(String roleName);
+        }
+
+        /**
+         * The stage of the roledefinition definition allowing to specify RoleType.
+         */
+        interface WithRoleType {
+            /**
+             * Specifies roleType.
+             * @param roleType The role type
+             * @return the next definition stage
+             */
+            WithCreate withRoleType(String roleType);
         }
 
         /**
@@ -89,13 +157,13 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<RoleDefinition> {
+        interface WithCreate extends Creatable<RoleDefinition>, DefinitionStages.WithAssignableScopes, DefinitionStages.WithDescription, DefinitionStages.WithPermissions, DefinitionStages.WithRoleName, DefinitionStages.WithRoleType {
         }
     }
     /**
      * The template for a RoleDefinition update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<RoleDefinition>, UpdateStages.WithProperties {
+    interface Update extends Appliable<RoleDefinition>, UpdateStages.WithAssignableScopes, UpdateStages.WithDescription, UpdateStages.WithPermissions, UpdateStages.WithRoleName, UpdateStages.WithRoleType {
     }
 
     /**
@@ -103,15 +171,63 @@ public interface RoleDefinition extends HasInner<RoleDefinitionInner>, Indexable
      */
     interface UpdateStages {
         /**
-         * The stage of the roledefinition update allowing to specify Properties.
+         * The stage of the roledefinition update allowing to specify AssignableScopes.
          */
-        interface WithProperties {
+        interface WithAssignableScopes {
             /**
-             * Specifies properties.
-             * @param properties Role definition properties
+             * Specifies assignableScopes.
+             * @param assignableScopes Role definition assignable scopes
              * @return the next update stage
              */
-            Update withProperties(RoleDefinitionProperties properties);
+            Update withAssignableScopes(List<String> assignableScopes);
+        }
+
+        /**
+         * The stage of the roledefinition update allowing to specify Description.
+         */
+        interface WithDescription {
+            /**
+             * Specifies description.
+             * @param description The role definition description
+             * @return the next update stage
+             */
+            Update withDescription(String description);
+        }
+
+        /**
+         * The stage of the roledefinition update allowing to specify Permissions.
+         */
+        interface WithPermissions {
+            /**
+             * Specifies permissions.
+             * @param permissions Role definition permissions
+             * @return the next update stage
+             */
+            Update withPermissions(List<PermissionInner> permissions);
+        }
+
+        /**
+         * The stage of the roledefinition update allowing to specify RoleName.
+         */
+        interface WithRoleName {
+            /**
+             * Specifies roleName.
+             * @param roleName The role name
+             * @return the next update stage
+             */
+            Update withRoleName(String roleName);
+        }
+
+        /**
+         * The stage of the roledefinition update allowing to specify RoleType.
+         */
+        interface WithRoleType {
+            /**
+             * Specifies roleType.
+             * @param roleType The role type
+             * @return the next update stage
+             */
+            Update withRoleType(String roleType);
         }
 
     }

@@ -18,6 +18,11 @@ import com.microsoft.azure.management.authorization.v2015_07_01.implementation.C
  */
 public interface ClassicAdministrator extends HasInner<ClassicAdministratorInner>, HasManager<AuthorizationManager> {
     /**
+     * @return the emailAddress value.
+     */
+    String emailAddress();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -28,9 +33,9 @@ public interface ClassicAdministrator extends HasInner<ClassicAdministratorInner
     String name();
 
     /**
-     * @return the properties value.
+     * @return the role value.
      */
-    ClassicAdministratorProperties properties();
+    String role();
 
     /**
      * @return the type value.
