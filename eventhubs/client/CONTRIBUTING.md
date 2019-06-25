@@ -42,6 +42,7 @@ fewer changes requested. In particular, it is recommended to review:
 Open a command prompt/terminal:
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
 1. Traverse to the repository root.
+1. Execute `mvn compile -f pom.client.xml`
 1. Install the tooling and build the product by executing:
     * `mvn install -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -f pom.client.xml`
 
@@ -49,7 +50,7 @@ Open a command prompt/terminal:
 
 After building the tooling and solution once from the section, [Building all the client libraries](#building-all-the-client-libraries), you can build just the Azure SDK client library for Event Hubs by
 executing:
-1. `mvn install -f eventhubs\client\pom.xml`
+1. `mvn compile -f eventhubs\client\pom.xml`
 
 ## Running tests
 
