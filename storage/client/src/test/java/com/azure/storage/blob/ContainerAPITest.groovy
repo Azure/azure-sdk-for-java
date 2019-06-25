@@ -64,7 +64,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when:
-        cu.create(metadata, null, null, null)
+        cu.create(metadata, null, null)
         HttpHeaders headers = cu.getProperties().headers()
 
         then:
@@ -82,7 +82,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.create(null, publicAccess, null, null)
+        cu.create(null, publicAccess, null)
         PublicAccessType access = cu.getProperties().value().blobPublicAccess()
 
         then:
@@ -212,7 +212,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
         Metadata metadata = new Metadata()
         metadata.put("key", "value")
-        cu.create(metadata, null, null, null)
+        cu.create(metadata, null, null)
         cu.setMetadata(metadata)
 
         expect:

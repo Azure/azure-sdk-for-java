@@ -21,6 +21,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -49,7 +51,7 @@ public class BlobOutputStream extends OutputStream {
      * Holds the futures of the executing tasks. The starting size of the set is a multiple of the concurrent request
      * count to reduce the cost of resizing the set later.
      */
-    private final Set<Future<Void>> futureSet;
+    private final LinkedHashSet<Future<Void>> futureSet;
 
 
     /**
@@ -95,7 +97,7 @@ public class BlobOutputStream extends OutputStream {
     private BlobOutputStream(final BlobAsyncClient parentBlob) throws StorageException {
         this.blobClient = parentBlob;
         this.outBuffer = new ByteArrayOutputStream();
-        this.futureSet = new HashSet<>();
+        this.futureSet = new LinkedHashSet<>();
     }
 
     /**
@@ -307,7 +309,7 @@ public class BlobOutputStream extends OutputStream {
 
         PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
 
-        return blobRef.uploadPages(new PageRange().start(offset).end(writeLength), pageData, pageBlobAccessConditions)
+        return blobRef.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -317,6 +319,9 @@ public class BlobOutputStream extends OutputStream {
 
     private Mono<Void> appendBlock(Flux<ByteBuf> blockData, long offset, long writeLength) {
         final AppendBlobAsyncClient blobRef = (AppendBlobAsyncClient) this.blobClient;
+        if (this.appendPositionAccessConditions == null) {
+            appendPositionAccessConditions = new AppendPositionAccessConditions();
+        }
         this.appendPositionAccessConditions.appendPosition(offset);
 
         AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
@@ -342,8 +347,7 @@ public class BlobOutputStream extends OutputStream {
         this.dispatchWrite();
 
         // Waits for all submitted tasks to complete
-        Set<Future<Void>> requests = new HashSet<Future<Void>>(this.futureSet);
-        for (Future<Void> request : requests) {
+        for (Future<Void> request : futureSet) {
             // wait for the future to complete
             try {
                 request.get();

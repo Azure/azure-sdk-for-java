@@ -207,7 +207,7 @@ class PageBlobAPITest extends APISpec {
 
         where:
         data                                                                        | exceptionType
-        null                                                                        | IllegalArgumentException
+        null                                                                        | NullPointerException
         new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES))     | StorageException
         new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES * 3)) | StorageException
     }

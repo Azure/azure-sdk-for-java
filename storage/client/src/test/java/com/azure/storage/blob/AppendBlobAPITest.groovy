@@ -4,6 +4,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -191,7 +192,7 @@ class AppendBlobAPITest extends APISpec {
 
         where:
         data                        | dataSize            | exceptionType
-        null                        | defaultDataSize     | IllegalArgumentException
+        null                        | defaultDataSize     | NullPointerException
         defaultInputStream.get()    | defaultDataSize + 1 | StorageException
         defaultInputStream.get()    | defaultDataSize - 1 | StorageException
     }

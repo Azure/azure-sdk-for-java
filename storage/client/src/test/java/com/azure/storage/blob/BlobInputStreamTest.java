@@ -30,19 +30,12 @@ public class BlobInputStreamTest {
             containerClient.create();
         }
 
-        BlockBlobClient blobClient = containerClient.getBlockBlobClient(blobName);
+        BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient(blobName);
         byte[] randomBytes = new byte[256 * Constants.MB];
         RANDOM.nextBytes(randomBytes);
-        blobClient.upload(new ByteArrayInputStream(randomBytes), randomBytes.length);
+        blockBlobClient.upload(new ByteArrayInputStream(randomBytes), randomBytes.length);
 
-        BlobAsyncClient blobAsyncClient = BlobAsyncClient.blobClientBuilder()
-            .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
-            .containerName(containerName)
-            .blobName(blobName)            .credential(new SharedKeyCredential(System.getenv("ACCOUNT_NAME"), System.getenv("ACCOUNT_KEY")))
-//            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
-            .buildAsyncClient();
-
-        BlobInputStream blobInputStream = new BlobInputStream(blobAsyncClient, null);
+        BlobInputStream blobInputStream = blockBlobClient.openInputStream();
         Assert.assertEquals(256 * Constants.MB, blobInputStream.skip(256 * Constants.MB));
     }
 }
