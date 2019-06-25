@@ -110,7 +110,7 @@
   </developers>
 
   <modules>
-    <module>azure-keyvault</module>
+    <module>microsoft-azure-keyvault</module>
     <module>microsoft-azure-keyvault-core</module>
     <module>microsoft-azure-keyvault-webkey</module>
     <module>microsoft-azure-keyvault-cryptography</module>
