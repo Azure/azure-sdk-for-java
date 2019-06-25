@@ -40,7 +40,7 @@ fewer changes requested. In particular, it is recommended to review:
 ## Building all the client libraries
 
 Open a command prompt/terminal:
-1. Execute: `git clone https://github.com/Azure/azure-sdk-for-java.git`
+1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
 1. Traverse to the repository root.
 1. Install the tooling and build the product by executing:
     * `mvn install -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -f pom.client.xml`
@@ -77,7 +77,7 @@ following environment variables:
 ## Logging output
 
 Log messages can be seen in the output window by:
-1. Setting `AZURE_LOG_LEVEL` to the desired verbosity.
+1. Setting `AZURE_LOG_LEVEL` to the desired verbosity. Log levels can be found in [ClientLogger][log-level]
 1. Adding an implementation of [slf4j][slf4j] to the classpath. Implementations can be found under section "[Binding with a
    logging framework at deployment time][slf4j-implementations]".
 
@@ -86,6 +86,7 @@ Log messages can be seen in the output window by:
 [event_hubs_create]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
 [java-spec]: https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html
+[log-level]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L40
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
 [slf4j-implementations]: https://www.slf4j.org/manual.html#swapping
