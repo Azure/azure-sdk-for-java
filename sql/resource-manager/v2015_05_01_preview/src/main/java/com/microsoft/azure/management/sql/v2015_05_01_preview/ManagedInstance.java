@@ -71,6 +71,11 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     ManagedInstanceLicenseType licenseType();
 
     /**
+     * @return the maintenanceWindowSettings value.
+     */
+    MaintenanceWindowSettings maintenanceWindowSettings();
+
+    /**
      * @return the managedInstanceCreateMode value.
      */
     ManagedServerCreateMode managedInstanceCreateMode();
@@ -218,6 +223,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance update allowing to specify MaintenanceWindowSettings.
+         */
+        interface WithMaintenanceWindowSettings {
+            /**
+             * Specifies maintenanceWindowSettings.
+             */
+            WithCreate withMaintenanceWindowSettings(MaintenanceWindowSettings maintenanceWindowSettings);
+        }
+
+        /**
          * The stage of the managedinstance update allowing to specify ManagedInstanceCreateMode.
          */
         interface WithManagedInstanceCreateMode {
@@ -322,13 +337,13 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithInstancePoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithManagedInstanceCreateMode, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSku, DefinitionStages.WithSourceManagedInstanceId, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithTimezoneId, DefinitionStages.WithVCores {
+        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithInstancePoolId, DefinitionStages.WithLicenseType, DefinitionStages.WithMaintenanceWindowSettings, DefinitionStages.WithManagedInstanceCreateMode, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSku, DefinitionStages.WithSourceManagedInstanceId, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithTimezoneId, DefinitionStages.WithVCores {
         }
     }
     /**
      * The template for a ManagedInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithInstancePoolId, UpdateStages.WithLicenseType, UpdateStages.WithManagedInstanceCreateMode, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithRestorePointInTime, UpdateStages.WithSku, UpdateStages.WithSourceManagedInstanceId, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithTimezoneId, UpdateStages.WithVCores {
+    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithInstancePoolId, UpdateStages.WithLicenseType, UpdateStages.WithMaintenanceWindowSettings, UpdateStages.WithManagedInstanceCreateMode, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithRestorePointInTime, UpdateStages.WithSku, UpdateStages.WithSourceManagedInstanceId, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithTimezoneId, UpdateStages.WithVCores {
     }
 
     /**
@@ -393,6 +408,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
              * Specifies licenseType.
              */
             Update withLicenseType(ManagedInstanceLicenseType licenseType);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify MaintenanceWindowSettings.
+         */
+        interface WithMaintenanceWindowSettings {
+            /**
+             * Specifies maintenanceWindowSettings.
+             */
+            Update withMaintenanceWindowSettings(MaintenanceWindowSettings maintenanceWindowSettings);
         }
 
         /**

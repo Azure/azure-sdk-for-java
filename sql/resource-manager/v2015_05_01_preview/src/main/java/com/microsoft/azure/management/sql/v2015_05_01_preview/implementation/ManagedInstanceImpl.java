@@ -18,6 +18,7 @@ import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedServerCreateMode;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceLicenseType;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.MaintenanceWindowSettings;
 import rx.functions.Func1;
 
 class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
@@ -113,6 +114,11 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     @Override
     public ManagedInstanceLicenseType licenseType() {
         return this.inner().licenseType();
+    }
+
+    @Override
+    public MaintenanceWindowSettings maintenanceWindowSettings() {
+        return this.inner().maintenanceWindowSettings();
     }
 
     @Override
@@ -232,6 +238,16 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
             this.inner().withLicenseType(licenseType);
         } else {
             this.updateParameter.withLicenseType(licenseType);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withMaintenanceWindowSettings(MaintenanceWindowSettings maintenanceWindowSettings) {
+        if (isInCreateMode()) {
+            this.inner().withMaintenanceWindowSettings(maintenanceWindowSettings);
+        } else {
+            this.updateParameter.withMaintenanceWindowSettings(maintenanceWindowSettings);
         }
         return this;
     }
