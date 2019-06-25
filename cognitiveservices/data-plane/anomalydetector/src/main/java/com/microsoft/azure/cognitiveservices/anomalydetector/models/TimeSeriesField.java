@@ -40,7 +40,13 @@ public enum TimeSeriesField {
     LOWER_MARGIN("lowerMargin"),
 
     /** Enum value period. */
-    PERIOD("period");
+    PERIOD("period"),
+
+    /** Enum value changePointConfidenceScore. */
+    CHANGE_POINT_CONFIDENCE_SCORE("changePointConfidenceScore"),
+
+    /** Enum value anomalyConfidenceScore. */
+    ANOMALY_CONFIDENCE_SCORE("anomalyConfidenceScore");
 
     /** The actual serialized value for a TimeSeriesField instance. */
     private String value;

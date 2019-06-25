@@ -31,7 +31,7 @@ public class InconsistencyDetectRequest {
     /**
      * IDs of time series need to be detected.
      */
-    @JsonProperty(value = "timeSeriesIds")
+    @JsonProperty(value = "timeSeriesIds", required = true)
     private List<String> timeSeriesIds;
 
     /**

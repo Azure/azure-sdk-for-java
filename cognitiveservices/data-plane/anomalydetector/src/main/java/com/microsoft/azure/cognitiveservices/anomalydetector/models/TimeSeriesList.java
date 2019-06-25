@@ -22,10 +22,10 @@ public class TimeSeriesList {
     private List<TimeSeries> series;
 
     /**
-     * The next property.
+     * The nextLink property.
      */
-    @JsonProperty(value = "next")
-    private String next;
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
 
     /**
      * Get array of TimeSeries objects.
@@ -48,22 +48,22 @@ public class TimeSeriesList {
     }
 
     /**
-     * Get the next value.
+     * Get the nextLink value.
      *
-     * @return the next value
+     * @return the nextLink value
      */
-    public String next() {
-        return this.next;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
-     * Set the next value.
+     * Set the nextLink value.
      *
-     * @param next the next value to set
+     * @param nextLink the nextLink value to set
      * @return the TimeSeriesList object itself.
      */
-    public TimeSeriesList withNext(String next) {
-        this.next = next;
+    public TimeSeriesList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
         return this;
     }
 
