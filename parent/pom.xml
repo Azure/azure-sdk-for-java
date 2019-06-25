@@ -99,7 +99,7 @@
 
     <!-- Dependency Versions -->
     <jackson.version>2.9.9</jackson.version>
-    <client-runtime.version>1.6.5</client-runtime.version>
+    <client-runtime.version>1.6.10</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
     <proton-j-version>0.31.0</proton-j-version>
