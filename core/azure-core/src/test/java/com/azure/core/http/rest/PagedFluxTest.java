@@ -59,7 +59,7 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPageWithContinuationToken() throws MalformedURLException {
+    public void testPagedFluxSubscribeToPageFromArbitraryPage() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
         StepVerifier.create(pagedFlux.byPage(pagedResponses.get(2)).log())
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))

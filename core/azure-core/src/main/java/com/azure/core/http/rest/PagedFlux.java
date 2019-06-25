@@ -68,7 +68,7 @@ public class PagedFlux<T> extends Flux<T> {
      * Helper method to return the flux of items contained in the page associated with the next page
      * relative to {@code currentPage}
      *
-     * @param currentPage The continuation token that is used to fetch the next page
+     * @param currentPage The current page from which the {@code nextLink} is used to fetch the next page
      * @return A {@link Flux} of items in this page
      */
     private Flux<T> byT(PagedResponse<T> currentPage) {
