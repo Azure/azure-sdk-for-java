@@ -167,6 +167,10 @@
     "source": "specification/monitor/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "netapp/resource-manager": {
+    "source": "specification/netapp/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "network/resource-manager": {
     "source": "specification/network/resource-manager/readme.md",
     "args": "--multiapi --fluent"
