@@ -17,18 +17,18 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}HEAD("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ * {@literal @}Head("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
  *  boolean checkNameAvailability(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);</pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
- * {@literal @}HEAD(https://management.azure.com/{storageAccountId})
+ * {@literal @}Head(https://management.azure.com/{storageAccountId})
  *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HEAD {
+public @interface Head {
     /**
      * Get the relative path of the annotated method's HEAD URL.
      * @return The relative path of the annotated method's HEAD URL.

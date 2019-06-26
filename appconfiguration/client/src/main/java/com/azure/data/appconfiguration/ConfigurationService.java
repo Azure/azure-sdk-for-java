@@ -6,13 +6,13 @@ package com.azure.data.appconfiguration;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingPage;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.Delete;
 import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Put;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
 @Host("{url}")
 @Service("AppConfig")
 interface ConfigurationService {
-    @GET("kv/{key}")
+    @Get("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -45,7 +45,7 @@ interface ConfigurationService {
                                                      @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
                                                      Context context);
 
-    @PUT("kv/{key}")
+    @Put("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
@@ -55,7 +55,7 @@ interface ConfigurationService {
                                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
                                                 Context context);
 
-    @DELETE("kv/{key}")
+    @Delete("kv/{key}")
     @ExpectedResponses({200, 204})
     @UnexpectedResponseExceptionType(code = {409}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(code = {412}, value = ResourceNotFoundException.class)
@@ -64,7 +64,7 @@ interface ConfigurationService {
                                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
                                                 Context context);
 
-    @PUT("locks/{key}")
+    @Put("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -72,7 +72,7 @@ interface ConfigurationService {
                                                       @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
                                                       Context context);
 
-    @DELETE("locks/{key}")
+    @Delete("locks/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -80,7 +80,7 @@ interface ConfigurationService {
                                                         @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
                                                         Context context);
 
-    @GET("kv")
+    @Get("kv")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
@@ -88,14 +88,14 @@ interface ConfigurationService {
                                                             @QueryParam("$select") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
                                                             Context context);
 
-    @GET("{nextUrl}")
+    @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)
     Mono<PagedResponse<ConfigurationSetting>> listKeyValues(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                             Context context);
 
-    @GET("revisions")
+    @Get("revisions")
     @ExpectedResponses({200, 206})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(ConfigurationSettingPage.class)

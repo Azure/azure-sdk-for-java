@@ -4,9 +4,9 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.Host;
-import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Put;
 import com.azure.core.annotations.Service;
 import com.azure.core.entities.AccessPolicy;
 import com.azure.core.entities.SignedIdentifierInner;
@@ -86,10 +86,10 @@ public class RestProxyXMLTests {
     @Host("http://unused")
     @Service("MyXMLService")
     interface MyXMLService {
-        @GET("GetContainerACLs")
+        @Get("GetContainerACLs")
         SignedIdentifiersWrapper getContainerACLs();
 
-        @PUT("SetContainerACLs")
+        @Put("SetContainerACLs")
         void setContainerACLs(@BodyParam("application/xml") SignedIdentifiersWrapper signedIdentifiers);
     }
 
@@ -191,7 +191,7 @@ public class RestProxyXMLTests {
     @Host("http://unused")
     @Service("MyXMLServiceWithAttributes")
     public interface MyXMLServiceWithAttributes {
-        @GET("GetXMLWithAttributes")
+        @Get("GetXMLWithAttributes")
         Slideshow getSlideshow();
     }
 
