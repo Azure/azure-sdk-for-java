@@ -6,8 +6,6 @@ package secrets;
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**
@@ -20,7 +18,7 @@ public class ListOperationsAsync {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         // Instantiate an async secret client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',

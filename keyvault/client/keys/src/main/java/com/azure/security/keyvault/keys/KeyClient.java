@@ -28,7 +28,12 @@ import java.util.List;
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the client</strong></p>
- * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
+ * <pre>
+ * KeyClient.builder()
+ *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+ *   .credential(new DefaultAzureCredential())
+ *   .build()
+ * </pre>
  *
  * @see KeyClientBuilder
  */

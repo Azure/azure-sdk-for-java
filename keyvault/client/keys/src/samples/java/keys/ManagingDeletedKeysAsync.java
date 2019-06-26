@@ -8,8 +8,6 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 
 /**
@@ -23,7 +21,7 @@ public class ManagingDeletedKeysAsync {
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
-    public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeyException, InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         // NOTE: To manage deleted keys, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
         // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if

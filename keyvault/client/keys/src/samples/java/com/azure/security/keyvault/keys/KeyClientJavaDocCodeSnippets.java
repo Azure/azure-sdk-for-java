@@ -19,7 +19,6 @@ public final class KeyClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyClient}
      */
     public KeyClient createClient() {
-        TokenCredential keyVaultCredential = getKeyVaultCredential();
         // BEGIN: com.azure.keyvault.keys.keyclient.instantiation
         KeyClient keyClient = KeyClient.builder()
             .endpoint("https://myvault.azure.net/")

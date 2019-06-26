@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
  * <p><strong>Samples to construct the client</strong></p>
  * <pre>
  * KeyAsyncClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
+ *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
  *   .credential(new DefaultAzureCredential())
  *   .build()
  * </pre>
@@ -380,6 +380,9 @@ public final class KeyAsyncClient extends ServiceClient {
     public Mono<Response<Key>> getKey(KeyBase keyBase) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
         String keyVersion = "";
+        if (keyBase.version() != null) {
+            keyVersion = keyBase.version();
+        }
         return service.getKey(endpoint, keyBase.name(), keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.asInfo().log("Retrieving key - {}",  keyBase.name()))
                 .doOnSuccess(response -> logger.asInfo().log("Retrieved key - {}", response.value().name()))
