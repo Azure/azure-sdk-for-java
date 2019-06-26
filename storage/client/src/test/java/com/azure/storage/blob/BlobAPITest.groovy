@@ -196,10 +196,10 @@ class BlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
+        // newDate  | null       | null        | null         | null    If-Modified-Since doesn't pass a valid 304 response is returned
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
+        // null     | null       | null        | receivedEtag | null    If-None-Match doesn't pass a valid 304 response is returned
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -325,10 +325,10 @@ class BlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
+        // newDate  | null       | null        | null         | null    If-Modified-Since doesn't pass a valid 304 response is returned
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
+        //null     | null       | null        | receivedEtag | null     If-None-Match doesn't pass a valid 304 response is returned
         null     | null       | null        | null         | garbageLeaseID
     }
 

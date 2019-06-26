@@ -15,10 +15,10 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.netty.ByteBufFlux;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -229,9 +229,9 @@ public final class PageBlobClient extends BlobClient {
             throw new UncheckedIOException(ex);
         }
 
-        Flux<ByteBuf> fluxBody = Flux.just(Unpooled.wrappedBuffer(outputStream.toByteArray()));
-
-        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange, fluxBody, pageBlobAccessConditions);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange,
+            ByteBufFlux.fromInbound(Flux.defer(() -> Flux.just(outputStream.toByteArray())).subscribeOn(Schedulers.elastic())),
+            pageBlobAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

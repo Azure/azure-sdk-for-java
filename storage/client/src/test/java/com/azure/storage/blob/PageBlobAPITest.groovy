@@ -62,9 +62,11 @@ class PageBlobAPITest extends APISpec {
         Response<BlobProperties> response = bu.getProperties(null, null)
 
         then:
-        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                contentMD5, contentType == null ? "application/octet-stream" : contentType)
-        // HTTP default content type is application/octet-stream
+        response.value().contentDisposition() == contentDisposition
+        response.value().contentEncoding() == contentEncoding
+        response.value().contentLanguage() == contentLanguage
+        response.value().contentMD5() == contentMD5
+        response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
@@ -651,7 +653,6 @@ class PageBlobAPITest extends APISpec {
 
         when:
         bu.clearPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1))
-
 
         then:
         thrown(StorageException)

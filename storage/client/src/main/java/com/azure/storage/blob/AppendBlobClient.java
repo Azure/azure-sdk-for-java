@@ -12,16 +12,12 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.Duration;
 
@@ -175,20 +171,19 @@ public final class AppendBlobClient extends BlobClient {
      */
     public Response<AppendBlobItem> appendBlock(InputStream data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(data));
-        int b;
-        try {
-            while ((b = reader.read()) != -1) {
-                outputStream.write(b);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
+        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
+            .map(i -> i * MAX_APPEND_BLOCK_BYTES)
+            .concatMap(pos -> Mono.fromCallable(() -> {
+                long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
+                byte[] cache = new byte[(int) count];
+                int read = 0;
+                while (read < count) {
+                    read += data.read(cache, read, (int) count - read);
+                }
+                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+            }));
 
-        Flux<ByteBuf> fluxBody = Flux.just(Unpooled.wrappedBuffer(outputStream.toByteArray()));
-
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(fluxBody, length, appendBlobAccessConditions);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

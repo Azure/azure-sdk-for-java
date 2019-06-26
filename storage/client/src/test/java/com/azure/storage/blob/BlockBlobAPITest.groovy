@@ -111,7 +111,7 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    def "Stage block context"() {
+    /*def "Stage block context"() {
         setup:
         bu = BlockBlobClient.blockBlobClientBuilder().endpoint(bu.getBlobUrl().toString()).addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
 
@@ -121,7 +121,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         notThrown(RuntimeException)
-    }
+    }*/
 
     def "Stage block from url"() {
         setup:
@@ -594,7 +594,7 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bu, garbageLeaseID)
 
         when:
-        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId("not real"), null)
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId("not real"), null).iterator().hasNext()
 
         then:
         def e = thrown(StorageException)

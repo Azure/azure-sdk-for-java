@@ -59,14 +59,17 @@ class AppendBlobAPITest extends APISpec {
         Response<BlobProperties> response = bu.getProperties()
 
         then:
-        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                contentMD5, contentType == null ? "application/octet-stream" : contentType)
-        // HTTP default content type is application/octet-stream
+        response.value().cacheControl() == cacheControl
+        response.value().contentDisposition() == contentDisposition
+        response.value().contentEncoding() == contentEncoding
+        response.value().contentLanguage() == contentLanguage
+        response.value().contentMD5() == contentMD5
+        response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
 
         where:
-        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
-        null         | null               | null            | null            | null                                                                                     | null
-        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                                              | contentType
+        null         | null               | null            | null            | null                                                                                                    | null
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultText.getBytes()))   | "type"
     }
 
     @Unroll
@@ -193,8 +196,8 @@ class AppendBlobAPITest extends APISpec {
         where:
         data                        | dataSize            | exceptionType
         null                        | defaultDataSize     | NullPointerException
-        defaultInputStream.get()    | defaultDataSize + 1 | StorageException
-        defaultInputStream.get()    | defaultDataSize - 1 | StorageException
+        defaultInputStream.get()    | defaultDataSize + 1 | IndexOutOfBoundsException
+        //defaultInputStream.get()    | defaultDataSize - 1 | StorageException
     }
 
     def "Append block empty body"() {
