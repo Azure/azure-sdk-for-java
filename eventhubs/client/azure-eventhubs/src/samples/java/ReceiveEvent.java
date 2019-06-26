@@ -84,7 +84,11 @@ public class ReceiveEvent {
         }).blockLast(OPERATION_TIMEOUT);
 
         // We wait for all the events to be received before continuing.
-        countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+        boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+
+        if (!isSuccessful) {
+            System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+        }
 
         // Dispose and close of all the resources we've created.
         subscription.dispose();

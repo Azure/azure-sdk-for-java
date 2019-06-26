@@ -48,13 +48,13 @@ public class EventHubConsumerJavaDocCodeSamples {
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure
         consumer.receive().subscribe(new BaseSubscriber<EventData>() {
+            private static final int NUMBER_OF_EVENTS = 5;
             private final AtomicInteger currentNumberOfEvents = new AtomicInteger();
-            private final int numberOfEvents = 5;
 
             @Override
             protected void hookOnSubscribe(Subscription subscription) {
                 // Tell the Publisher we only want 5 events at a time.
-                request(numberOfEvents);
+                request(NUMBER_OF_EVENTS);
             }
 
             @Override
@@ -65,7 +65,7 @@ public class EventHubConsumerJavaDocCodeSamples {
                 // last event the Publisher will provide to us. Invoking request(long) here, tells the Publisher that
                 // the subscriber is ready to get more events from upstream.
                 if (currentNumberOfEvents.incrementAndGet() % 5 == 0) {
-                    request(numberOfEvents);
+                    request(NUMBER_OF_EVENTS);
                 }
             }
         });

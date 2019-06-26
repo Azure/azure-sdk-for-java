@@ -18,6 +18,8 @@ public class EventHubProducerJavaDocCodeSamples {
 
     /**
      * Code snippet demonstrating how to create an EventHubProducer that automatically routes events to any partition.
+     *
+     * @throws IOException if the producer cannot be disposed.
      */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiate
@@ -33,6 +35,8 @@ public class EventHubProducerJavaDocCodeSamples {
 
     /**
      * Code snippet demonstrating how to create an EventHubProducer that routes events to a single partition.
+     *
+     * @throws IOException if the producer cannot be disposed.
      */
     public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer
