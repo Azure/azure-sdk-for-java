@@ -154,7 +154,7 @@ public class EventData implements Comparable<EventData> {
      * <strong>Adding serialization hint using {@code addProperty(String, Object)}</strong>
      * </p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.useProperties}
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @param key The key for this application property
      * @param value The value for this application property.
@@ -182,7 +182,7 @@ public class EventData implements Comparable<EventData> {
      * <strong>Adding serialization hint using {@link #addProperty(String, Object)}</strong>
      * </p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.useProperties}
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @return Application properties associated with this {@link EventData}.
      */
