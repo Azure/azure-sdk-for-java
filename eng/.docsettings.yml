@@ -2,7 +2,7 @@ omitted_paths:
   - archive/*
   - profiles/*
   - loganalytics/data-plane/samples/*
-  - applicationinsights/data-plane/samples/*
+  - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - "*/resource-manager/*"
   - eng/*
 language: java
