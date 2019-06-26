@@ -194,7 +194,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithP2SVpnServerConfigurationPropertiesName {
             /**
              * Specifies p2SVpnServerConfigurationPropertiesName.
-             * @param p2SVpnServerConfigurationPropertiesName The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name
+             * @param p2SVpnServerConfigurationPropertiesName The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Parent VirtualWan resource name
              * @return the next definition stage
              */
             WithCreate withP2SVpnServerConfigurationPropertiesName(String p2SVpnServerConfigurationPropertiesName);
@@ -242,7 +242,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithRadiusServerSecret {
             /**
              * Specifies radiusServerSecret.
-             * @param radiusServerSecret The radius secret property of the P2SVpnServerConfiguration resource for for point to site client connection
+             * @param radiusServerSecret The radius secret property of the P2SVpnServerConfiguration resource for point to site client connection
              * @return the next definition stage
              */
             WithCreate withRadiusServerSecret(String radiusServerSecret);
@@ -356,7 +356,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithP2SVpnServerConfigurationPropertiesName {
             /**
              * Specifies p2SVpnServerConfigurationPropertiesName.
-             * @param p2SVpnServerConfigurationPropertiesName The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Paren VirtualWan resource name
+             * @param p2SVpnServerConfigurationPropertiesName The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource group. This name can be used to access the resource along with Parent VirtualWan resource name
              * @return the next update stage
              */
             Update withP2SVpnServerConfigurationPropertiesName(String p2SVpnServerConfigurationPropertiesName);
@@ -404,7 +404,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithRadiusServerSecret {
             /**
              * Specifies radiusServerSecret.
-             * @param radiusServerSecret The radius secret property of the P2SVpnServerConfiguration resource for for point to site client connection
+             * @param radiusServerSecret The radius secret property of the P2SVpnServerConfiguration resource for point to site client connection
              * @return the next update stage
              */
             Update withRadiusServerSecret(String radiusServerSecret);
