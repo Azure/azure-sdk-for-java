@@ -60,7 +60,7 @@ public class EventHubClientBuilderTest {
         Assert.assertNotNull(builder.buildAsyncClient());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void throwsWithProxyWhenTransportTypeNotChanged() {
         // Arrange
         final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
