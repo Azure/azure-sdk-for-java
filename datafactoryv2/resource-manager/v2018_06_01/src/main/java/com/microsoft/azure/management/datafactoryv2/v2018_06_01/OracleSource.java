@@ -33,18 +33,6 @@ public class OracleSource extends CopySource {
     private Object queryTimeout;
 
     /**
-     * The partition mechanism that will be used for oracle read in parallel.
-     */
-    @JsonProperty(value = "partitionOption")
-    private Object partitionOption;
-
-    /**
-     * The settings that will be leveraged for oracle source partitioning.
-     */
-    @JsonProperty(value = "partitionSettings")
-    private OraclePartitionSettings partitionSettings;
-
-    /**
      * Get oracle reader query. Type: string (or Expression with resultType string).
      *
      * @return the oracleReaderQuery value
@@ -81,46 +69,6 @@ public class OracleSource extends CopySource {
      */
     public OracleSource withQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
-        return this;
-    }
-
-    /**
-     * Get the partition mechanism that will be used for oracle read in parallel.
-     *
-     * @return the partitionOption value
-     */
-    public Object partitionOption() {
-        return this.partitionOption;
-    }
-
-    /**
-     * Set the partition mechanism that will be used for oracle read in parallel.
-     *
-     * @param partitionOption the partitionOption value to set
-     * @return the OracleSource object itself.
-     */
-    public OracleSource withPartitionOption(Object partitionOption) {
-        this.partitionOption = partitionOption;
-        return this;
-    }
-
-    /**
-     * Get the settings that will be leveraged for oracle source partitioning.
-     *
-     * @return the partitionSettings value
-     */
-    public OraclePartitionSettings partitionSettings() {
-        return this.partitionSettings;
-    }
-
-    /**
-     * Set the settings that will be leveraged for oracle source partitioning.
-     *
-     * @param partitionSettings the partitionSettings value to set
-     * @return the OracleSource object itself.
-     */
-    public OracleSource withPartitionSettings(OraclePartitionSettings partitionSettings) {
-        this.partitionSettings = partitionSettings;
         return this;
     }
 

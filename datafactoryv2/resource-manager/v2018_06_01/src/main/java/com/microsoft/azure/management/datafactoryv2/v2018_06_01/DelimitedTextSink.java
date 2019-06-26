@@ -22,20 +22,20 @@ public class DelimitedTextSink extends CopySink {
      * DelimitedText store settings.
      */
     @JsonProperty(value = "storeSettings")
-    private ConnectorWriteSetting storeSettings;
+    private StoreWriteSettings storeSettings;
 
     /**
      * DelimitedText format settings.
      */
     @JsonProperty(value = "formatSettings")
-    private DelimitedTextWriteSetting formatSettings;
+    private DelimitedTextWriteSettings formatSettings;
 
     /**
      * Get delimitedText store settings.
      *
      * @return the storeSettings value
      */
-    public ConnectorWriteSetting storeSettings() {
+    public StoreWriteSettings storeSettings() {
         return this.storeSettings;
     }
 
@@ -45,7 +45,7 @@ public class DelimitedTextSink extends CopySink {
      * @param storeSettings the storeSettings value to set
      * @return the DelimitedTextSink object itself.
      */
-    public DelimitedTextSink withStoreSettings(ConnectorWriteSetting storeSettings) {
+    public DelimitedTextSink withStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
     }
@@ -55,7 +55,7 @@ public class DelimitedTextSink extends CopySink {
      *
      * @return the formatSettings value
      */
-    public DelimitedTextWriteSetting formatSettings() {
+    public DelimitedTextWriteSettings formatSettings() {
         return this.formatSettings;
     }
 
@@ -65,7 +65,7 @@ public class DelimitedTextSink extends CopySink {
      * @param formatSettings the formatSettings value to set
      * @return the DelimitedTextSink object itself.
      */
-    public DelimitedTextSink withFormatSettings(DelimitedTextWriteSetting formatSettings) {
+    public DelimitedTextSink withFormatSettings(DelimitedTextWriteSettings formatSettings) {
         this.formatSettings = formatSettings;
         return this;
     }

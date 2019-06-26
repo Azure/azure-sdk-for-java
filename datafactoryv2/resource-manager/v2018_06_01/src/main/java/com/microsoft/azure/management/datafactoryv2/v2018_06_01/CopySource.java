@@ -63,7 +63,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "CassandraSource", value = CassandraSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
-    @JsonSubTypes.Type(name = "TeradataSource", value = TeradataSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
     @JsonSubTypes.Type(name = "AzureMySqlSource", value = AzureMySqlSource.class),

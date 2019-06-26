@@ -22,14 +22,14 @@ public class ParquetSource extends CopySource {
      * Parquet store settings.
      */
     @JsonProperty(value = "storeSettings")
-    private ConnectorReadSetting storeSettings;
+    private StoreReadSettings storeSettings;
 
     /**
      * Get parquet store settings.
      *
      * @return the storeSettings value
      */
-    public ConnectorReadSetting storeSettings() {
+    public StoreReadSettings storeSettings() {
         return this.storeSettings;
     }
 
@@ -39,7 +39,7 @@ public class ParquetSource extends CopySource {
      * @param storeSettings the storeSettings value to set
      * @return the ParquetSource object itself.
      */
-    public ParquetSource withStoreSettings(ConnectorReadSetting storeSettings) {
+    public ParquetSource withStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
     }

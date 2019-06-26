@@ -22,14 +22,14 @@ public class ParquetSink extends CopySink {
      * Parquet store settings.
      */
     @JsonProperty(value = "storeSettings")
-    private ConnectorWriteSetting storeSettings;
+    private StoreWriteSettings storeSettings;
 
     /**
      * Get parquet store settings.
      *
      * @return the storeSettings value
      */
-    public ConnectorWriteSetting storeSettings() {
+    public StoreWriteSettings storeSettings() {
         return this.storeSettings;
     }
 
@@ -39,7 +39,7 @@ public class ParquetSink extends CopySink {
      * @param storeSettings the storeSettings value to set
      * @return the ParquetSink object itself.
      */
-    public ParquetSink withStoreSettings(ConnectorWriteSetting storeSettings) {
+    public ParquetSink withStoreSettings(StoreWriteSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
     }
