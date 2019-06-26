@@ -41,6 +41,12 @@ public class ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput {
     private List<ReportableException> validationErrors;
 
     /**
+     * Mapping of schemas per database.
+     */
+    @JsonProperty(value = "databaseSchemaMap")
+    private List<ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutputDatabaseSchemaMapItem> databaseSchemaMap;
+
+    /**
      * Get version of the target server.
      *
      * @return the targetServerVersion value
@@ -74,6 +80,26 @@ public class ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput {
      */
     public List<ReportableException> validationErrors() {
         return this.validationErrors;
+    }
+
+    /**
+     * Get mapping of schemas per database.
+     *
+     * @return the databaseSchemaMap value
+     */
+    public List<ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutputDatabaseSchemaMapItem> databaseSchemaMap() {
+        return this.databaseSchemaMap;
+    }
+
+    /**
+     * Set mapping of schemas per database.
+     *
+     * @param databaseSchemaMap the databaseSchemaMap value to set
+     * @return the ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput object itself.
+     */
+    public ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutput withDatabaseSchemaMap(List<ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskOutputDatabaseSchemaMapItem> databaseSchemaMap) {
+        this.databaseSchemaMap = databaseSchemaMap;
+        return this;
     }
 
 }
