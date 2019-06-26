@@ -101,8 +101,23 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
     }
 
     @Override
+    public String invokeUrlTemplate() {
+        return this.inner().invokeUrlTemplate();
+    }
+
+    @Override
+    public Boolean isDisabled() {
+        return this.inner().isDisabled();
+    }
+
+    @Override
     public String kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public String language() {
+        return this.inner().language();
     }
 
     @Override
@@ -128,6 +143,11 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
     @Override
     public String testData() {
         return this.inner().testData();
+    }
+
+    @Override
+    public String testDataHref() {
+        return this.inner().testDataHref();
     }
 
     @Override
@@ -173,8 +193,26 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
     }
 
     @Override
+    public FunctionEnvelopeImpl withInvokeUrlTemplate(String invokeUrlTemplate) {
+        this.inner().withInvokeUrlTemplate(invokeUrlTemplate);
+        return this;
+    }
+
+    @Override
+    public FunctionEnvelopeImpl withIsDisabled(Boolean isDisabled) {
+        this.inner().withIsDisabled(isDisabled);
+        return this;
+    }
+
+    @Override
     public FunctionEnvelopeImpl withKind(String kind) {
         this.inner().withKind(kind);
+        return this;
+    }
+
+    @Override
+    public FunctionEnvelopeImpl withLanguage(String language) {
+        this.inner().withLanguage(language);
         return this;
     }
 
@@ -199,6 +237,12 @@ class FunctionEnvelopeImpl extends CreatableUpdatableImpl<FunctionEnvelope, Func
     @Override
     public FunctionEnvelopeImpl withTestData(String testData) {
         this.inner().withTestData(testData);
+        return this;
+    }
+
+    @Override
+    public FunctionEnvelopeImpl withTestDataHref(String testDataHref) {
+        this.inner().withTestDataHref(testDataHref);
         return this;
     }
 
