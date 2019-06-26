@@ -25,6 +25,7 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,9 +57,7 @@ public final class StorageClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -83,12 +82,8 @@ public final class StorageClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
@@ -129,10 +124,17 @@ public final class StorageClientBuilder {
      */
     public StorageClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
+        URL url;
         try {
-            this.endpoint = new URL(endpoint);
+            url = new URL(endpoint);
+            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Client endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage endpoint url is malformed.");
+        }
+
+        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+        if (credential != null) {
+            this.credential(credential);
         }
 
         return this;
@@ -148,7 +150,7 @@ public final class StorageClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public StorageClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
         return this;
     }
 
@@ -158,7 +160,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
         return this;
     }
 
@@ -168,7 +170,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
         return this;
     }
 
@@ -177,8 +179,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.credentialPolicy = null;
         return this;
     }
 

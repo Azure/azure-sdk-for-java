@@ -60,9 +60,7 @@ public final class BlockBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -93,12 +91,8 @@ public final class BlockBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
@@ -153,7 +147,7 @@ public final class BlockBlobClientBuilder {
 
         SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
         if (credential != null) {
-            this.sasTokenCredential = credential;
+            this.credential(credential);
         }
 
         return this;
@@ -195,7 +189,7 @@ public final class BlockBlobClientBuilder {
      * @return the updated BlockBlobClientBuilder object
      */
     public BlockBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
         return this;
     }
 
@@ -205,7 +199,7 @@ public final class BlockBlobClientBuilder {
      * @return the updated BlockBlobClientBuilder object
      */
     public BlockBlobClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
         return this;
     }
 
@@ -215,7 +209,7 @@ public final class BlockBlobClientBuilder {
      * @return the updated BlockBlobClientBuilder object
      */
     public BlockBlobClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
         return this;
     }
 
@@ -224,8 +218,7 @@ public final class BlockBlobClientBuilder {
      * @return the updated BlockBlobClientBuilder object
      */
     public BlockBlobClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.credentialPolicy = null;
         return this;
     }
 
