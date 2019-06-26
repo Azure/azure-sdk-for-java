@@ -36,6 +36,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
  *
+ * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiation}
+ *
+ * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclient.instantiationEventHub}
+ *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/en-us/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
@@ -122,7 +130,7 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@code null}, the
+     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@codec null}, the
      * events are routed to that specific partition. Otherwise, events are automatically routed to an available
      * partition.
      *

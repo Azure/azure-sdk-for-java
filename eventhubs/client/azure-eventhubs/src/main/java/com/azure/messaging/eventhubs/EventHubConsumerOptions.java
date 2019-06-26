@@ -16,7 +16,6 @@ import java.util.Optional;
  * behavior.
  */
 public class EventHubConsumerOptions implements Cloneable {
-
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -142,7 +141,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Gets the optional text-based identifier label to assign to an event receiver. The identifier is used for
-     * informational purposes only.  If not specified, the receiver will have no assigned identifier label.
+     * informational purposes only. If not specified, the receiver will have no assigned identifier label.
      *
      * @return The identifier of the receiver.
      */
