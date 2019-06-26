@@ -56,7 +56,7 @@ import java.util.stream.Collector;
  * To allow automatic routing of messages to available partition, do not specify the {@link
  * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubProducer}.
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.instantiate}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiate}
  *
  * <p><strong>Create a producer that pushes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  *

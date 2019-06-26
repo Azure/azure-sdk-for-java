@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import reactor.core.publisher.Flux;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
