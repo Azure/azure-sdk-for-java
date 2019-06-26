@@ -230,13 +230,13 @@ public class Poller<T> {
 
     /**
      * Blocks until given {@link OperationStatus} is received or a timeout expires.
-     * @param statusToBlockFor The {@link OperationStatus} to block for which can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
+     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
      * @param timeout The time after which it will stop blocking.
      * @return
      */
     public PollResponse<T> blockUtil(PollResponse.OperationStatus statusToBlockFor, Duration timeout) {
-        if (statusToBlockFor == PollResponse.OperationStatus.OTHER) {
-            throw new IllegalArgumentException("The status input parameter can not be OTHER.");
+        if (statusToBlockFor == null || statusToBlockFor == PollResponse.OperationStatus.OTHER) {
+            throw new IllegalArgumentException("The status input parameter can not be null or OTHER.");
         }
         Objects.requireNonNull(timeout, "The timeout input parameter cannot be null.");
         if (timeout.toNanos() <= 0) {
@@ -267,13 +267,14 @@ public class Poller<T> {
     }
 
     /*
-     * Indicate that the @{Link PollResponse} matches with the status to block for.
+     * Indicate that the @{link PollResponse} matches with the status to block for.
      * @param currentPollResponse The poll response which we have received from the flux.
      * @param otherStatusToBlockFor The other operation status to block for. {@code Null} or empty string are invalid.
      * @param statusToBlockFor The {@link OperationStatus} to block and it can be any valid {@link OperationStatus} value.
      * @return True if the {@link PollResponse} return status matches the status to block for.
      */
     private boolean matchStatus(PollResponse<T> currentPollResponse, String otherStatusToBlockFor, PollResponse.OperationStatus statusToBlockFor) {
+        // perform validations
         if (currentPollResponse == null || statusToBlockFor == null) {
             return false;
         }
@@ -281,7 +282,7 @@ public class Poller<T> {
             && (otherStatusToBlockFor == null || otherStatusToBlockFor.trim().length() == 0)) {
             throw new IllegalArgumentException("The status can not be null or empty.");
         }
-
+        
         if (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER) {
             if (currentPollResponse.getOtherStatus() != null
                 && currentPollResponse.getOtherStatus().equalsIgnoreCase(otherStatusToBlockFor)) {
