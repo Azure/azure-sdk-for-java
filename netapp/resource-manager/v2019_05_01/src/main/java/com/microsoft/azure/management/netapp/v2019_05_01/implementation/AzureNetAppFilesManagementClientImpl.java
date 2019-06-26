@@ -12,6 +12,8 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.netapp.v2019_05_01.CheckNameResourceTypes;
+import com.microsoft.azure.management.netapp.v2019_05_01.ResourceNameAvailabilityRequest;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -294,11 +296,11 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
     interface AzureNetAppFilesManagementClientService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.netapp.v2019_05_01.AzureNetAppFilesManagementClient checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Body Object body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceNameAvailabilityRequest body, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.netapp.v2019_05_01.AzureNetAppFilesManagementClient checkFilePathAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability")
-        Observable<Response<ResponseBody>> checkFilePathAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Body Object body, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkFilePathAvailability(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceNameAvailabilityRequest body, @Header("User-Agent") String userAgent);
 
     }
 
@@ -307,14 +309,16 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
-     * @param body Name availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ResourceNameAvailabilityInner checkNameAvailability(String location, Object body) {
-        return checkNameAvailabilityWithServiceResponseAsync(location, body).toBlocking().single().body();
+    public ResourceNameAvailabilityInner checkNameAvailability(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
+        return checkNameAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup).toBlocking().single().body();
     }
 
     /**
@@ -322,13 +326,15 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
-     * @param body Name availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, Object body, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(location, body), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkNameAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup), serviceCallback);
     }
 
     /**
@@ -336,12 +342,14 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
-     * @param body Name availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, Object body) {
-        return checkNameAvailabilityWithServiceResponseAsync(location, body).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
+    public Observable<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
+        return checkNameAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
                 return response.body();
@@ -354,24 +362,36 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a resource name is available.
      *
      * @param location The location
-     * @param body Name availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(String location, Object body) {
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkNameAvailabilityWithServiceResponseAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.checkNameAvailability(this.subscriptionId(), location, body, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Parameter type is required and cannot be null.");
+        }
+        if (resourceGroup == null) {
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
+        }
+        ResourceNameAvailabilityRequest body = new ResourceNameAvailabilityRequest();
+        body.withName(name);
+        body.withType(type);
+        body.withResourceGroup(resourceGroup);
+        return service.checkNameAvailability(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ResourceNameAvailabilityInner>> call(Response<ResponseBody> response) {
@@ -397,14 +417,16 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
-     * @param body File path availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ResourceNameAvailabilityInner object if successful.
      */
-    public ResourceNameAvailabilityInner checkFilePathAvailability(String location, Object body) {
-        return checkFilePathAvailabilityWithServiceResponseAsync(location, body).toBlocking().single().body();
+    public ResourceNameAvailabilityInner checkFilePathAvailability(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
+        return checkFilePathAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup).toBlocking().single().body();
     }
 
     /**
@@ -412,13 +434,15 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
-     * @param body File path availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, Object body, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkFilePathAvailabilityWithServiceResponseAsync(location, body), serviceCallback);
+    public ServiceFuture<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup, final ServiceCallback<ResourceNameAvailabilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkFilePathAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup), serviceCallback);
     }
 
     /**
@@ -426,12 +450,14 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
-     * @param body File path availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, Object body) {
-        return checkFilePathAvailabilityWithServiceResponseAsync(location, body).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
+    public Observable<ResourceNameAvailabilityInner> checkFilePathAvailabilityAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
+        return checkFilePathAvailabilityWithServiceResponseAsync(location, name, type, resourceGroup).map(new Func1<ServiceResponse<ResourceNameAvailabilityInner>, ResourceNameAvailabilityInner>() {
             @Override
             public ResourceNameAvailabilityInner call(ServiceResponse<ResourceNameAvailabilityInner> response) {
                 return response.body();
@@ -444,24 +470,36 @@ public class AzureNetAppFilesManagementClientImpl extends AzureServiceClient {
      * Check if a file path is available.
      *
      * @param location The location
-     * @param body File path availability request.
+     * @param name Resource name to verify.
+     * @param type Resource type used for verification. Possible values include: 'Microsoft.NetApp/netAppAccounts', 'Microsoft.NetApp/netAppAccounts/capacityPools', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes', 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots'
+     * @param resourceGroup Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceNameAvailabilityInner object
      */
-    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkFilePathAvailabilityWithServiceResponseAsync(String location, Object body) {
+    public Observable<ServiceResponse<ResourceNameAvailabilityInner>> checkFilePathAvailabilityWithServiceResponseAsync(String location, String name, CheckNameResourceTypes type, String resourceGroup) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
-        }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.checkFilePathAvailability(this.subscriptionId(), location, body, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("Parameter type is required and cannot be null.");
+        }
+        if (resourceGroup == null) {
+            throw new IllegalArgumentException("Parameter resourceGroup is required and cannot be null.");
+        }
+        ResourceNameAvailabilityRequest body = new ResourceNameAvailabilityRequest();
+        body.withName(name);
+        body.withType(type);
+        body.withResourceGroup(resourceGroup);
+        return service.checkFilePathAvailability(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ResourceNameAvailabilityInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ResourceNameAvailabilityInner>> call(Response<ResponseBody> response) {
