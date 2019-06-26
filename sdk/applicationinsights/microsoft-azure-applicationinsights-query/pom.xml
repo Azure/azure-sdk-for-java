@@ -14,6 +14,12 @@
     <name>Microsoft Azure SDK for Application Insights Query API</name>
     <description>This package contains Microsoft Application Insights SDK for retrieving metrics, events, and running queries.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-sdk-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../../pom.data.xml</relativePath>
+    </parent>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
