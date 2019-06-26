@@ -49,9 +49,9 @@ import static org.mockito.Mockito.when;
  */
 public class EventHubConsumerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
-    private static String PAYLOAD = "hello";
-    private static byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
-    private static int PREFETCH = 5;
+    private static final String PAYLOAD = "hello";
+    private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
+    private static final int PREFETCH = 5;
 
     private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();

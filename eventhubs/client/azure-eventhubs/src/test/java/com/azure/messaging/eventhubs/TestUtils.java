@@ -28,7 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Contains helper methods for working with AMQP messages
  */
-class TestUtils {
+final class TestUtils {
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
     static final String OFFSET = "an-offset-of-sorts";
