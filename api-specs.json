@@ -194,6 +194,10 @@
     "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "recoveryservicessiterecovery/resource-manager": {
+    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "redis/resource-manager": {
     "source": "specification/redis/resource-manager/readme.md",
     "args": "--multiapi --fluent",
