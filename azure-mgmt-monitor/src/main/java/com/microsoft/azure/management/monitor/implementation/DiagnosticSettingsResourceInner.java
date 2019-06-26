@@ -69,7 +69,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
 
     /**
      * A string indicating whether the export to Log Analytics should use the
-     * default destination type, i.e. AzureDiagnostics, or use a destinatin
+     * default destination type, i.e. AzureDiagnostics, or use a destination
      * type constructed as follows: &lt;normalized service
      * identity&gt;_&lt;normalized category name&gt;. Possible values are:
      * Dedicated and null (null is default.).
@@ -218,7 +218,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destinatin type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
+     * Get a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
      *
      * @return the logAnalyticsDestinationType value
      */
@@ -227,7 +227,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destinatin type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
+     * Set a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
      *
      * @param logAnalyticsDestinationType the logAnalyticsDestinationType value to set
      * @return the DiagnosticSettingsResourceInner object itself.
