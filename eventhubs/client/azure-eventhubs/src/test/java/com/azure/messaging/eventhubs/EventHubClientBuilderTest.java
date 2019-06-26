@@ -47,13 +47,29 @@ public class EventHubClientBuilderTest {
     @Test
     public void customNoneProxyConfigurationBuilder() {
         // Arrange
-        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
+        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
+            null, null);
 
         // Act
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyConfiguration(proxyConfig)
             .transportType(TransportType.AMQP_WEB_SOCKETS);
+
+        // Assert
+        Assert.assertNotNull(builder.buildAsyncClient());
+    }
+
+    @Test
+    public void throwsWithProxyWhenTransportTypeNotChanged() {
+        // Arrange
+        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
+            null, null);
+
+        // Act
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .proxyConfiguration(proxyConfig);
 
         // Assert
         Assert.assertNotNull(builder.buildAsyncClient());
