@@ -6,55 +6,63 @@ variables:
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 jobs:
-  - job: 'Generate_Track_2'
-    variables:
-      skipComponentGovernanceDetection: true
-    timeoutInMinutes: 120
-    pool:
-      vmImage: 'vs2017-win2016'
+  # - job: 'Generate_Track_2'
+  #   variables:
+  #     skipComponentGovernanceDetection: true
+  #   timeoutInMinutes: 120
+  #   pool:
+  #     vmImage: 'vs2017-win2016'
 
-    steps:
-      # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
-      # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-      - task: Maven@3
-        displayName: 'Install reporting tools'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+  #   steps:
+  #     # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
+  #     # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
+  #     - task: Maven@3
+  #       displayName: 'Install reporting tools'
+  #       inputs:
+  #         mavenPomFile: pom.client.xml
+  #         options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+  #         mavenOptions: '$(LoggingOptions)'
+  #         javaHomeOption: 'JDKVersion'
+  #         jdkVersionOption: '1.11'
+  #         jdkArchitectureOption: 'x64'
+  #         publishJUnitResults: false
+  #         goals: 'install'
 
-      - task: Maven@3
-        displayName: 'Generate Doc Site'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'site:site site:stage'
+  #     - task: Maven@3
+  #       displayName: 'Generate Doc Site'
+  #       inputs:
+  #         mavenPomFile: pom.client.xml
+  #         options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+  #         mavenOptions: '$(LoggingOptions)'
+  #         javaHomeOption: 'JDKVersion'
+  #         jdkVersionOption: '1.11'
+  #         jdkArchitectureOption: 'x64'
+  #         publishJUnitResults: false
+  #         goals: 'site:site site:stage'
 
-      - task: Maven@3
-        displayName: 'Install azure-sdk-parent'
-        inputs:
-          mavenPomFile: parent/pom.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
+  #     - task: Maven@3
+  #       displayName: 'Install azure-sdk-parent'
+  #       inputs:
+  #         mavenPomFile: parent/pom.xml
+  #         options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+  #         mavenOptions: '$(LoggingOptions)'
+  #         javaHomeOption: 'JDKVersion'
+  #         jdkVersionOption: '1.11'
+  #         jdkArchitectureOption: 'x64'
+  #         publishJUnitResults: false
+  #         goals: 'install'
 
-      - powershell: |
-          copy -r target/staging $(Build.ArtifactStagingDirectory)/track1
-        displayName: 'Copy reports to artifact staging'
+  #     - powershell: |
+  #         copy -r target/staging $(Build.ArtifactStagingDirectory)
+  #       displayName: 'Copy reports to artifact staging'
+
+  #     - task: PublishPipelineArtifact@0
+  #       condition: succeededOrFailed()
+  #       displayName: 'Publish reports artifact'
+  #       inputs:
+  #         artifactName: track2reports
+  #         targetPath: $(Build.ArtifactStagingDirectory)
+
 
   - job: 'Generate_Track_1'
     variables:
@@ -66,6 +74,18 @@ jobs:
     steps:
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
       # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
+      - task: Maven@3
+        displayName: 'Install client.xml to get spotbugs reporting'
+        inputs:
+          mavenPomFile: pom.client.xml
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dmaven.javadoc.skip=true -DskipTests -Dgpg.skip'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.8'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
       - task: Maven@3
         displayName: 'Install reporting tools'
         inputs:
@@ -103,5 +123,13 @@ jobs:
           goals: 'install'
 
       - powershell: |
-          copy -r target/site/apidocs $(Build.ArtifactStagingDirectory)/track2
+          copy -r target/site/apidocs $(Build.ArtifactStagingDirectory)
         displayName: 'Copy reports to artifact staging'
+
+      - task: PublishPipelineArtifact@0
+        condition: succeededOrFailed()
+        displayName: 'Publish reports artifact'
+        inputs:
+          artifactName: track1reports
+          targetPath: $(Build.ArtifactStagingDirectory)
+
