@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,18 +21,28 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MAXIMUM_PREF
 import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT;
 
 /**
- * This is a logical representation of receiving from an Event Hub partition.
- *
- * <p>
- * A {@link EventHubConsumer#receive()} is tied to a Event Hub partitionId + consumer group combination.
+ * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
+ * consumer group.
  *
  * <ul>
  * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
- * value, then Event Hubs service will guarantee only one active receiver exists per partitionId and consumer group
- * combination. This is the recommended approach to create a {@link EventHubConsumer}.</li>
+ * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
+ * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating receivers.</li>
+ * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
+ *
+ * <p><strong>Consuming events from Event Hub</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+ *
+ * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
+ *
+ * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
+ * BaseSubscriber#request(long)}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
@@ -40,7 +51,6 @@ public class EventHubConsumer implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
 
-    private final Duration operationTimeout;
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(EventHubConsumer.class);
@@ -51,7 +61,6 @@ public class EventHubConsumer implements Closeable {
 
     EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
-        this.operationTimeout = operationTimeout;
 
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.flatMapMany(link -> {
@@ -70,7 +79,7 @@ public class EventHubConsumer implements Closeable {
             }
 
             return link.receive().map(EventData::new);
-        }).timeout(this.operationTimeout)
+        }).timeout(operationTimeout)
             .subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
@@ -117,10 +126,14 @@ public class EventHubConsumer implements Closeable {
     }
 
     /**
-     * Begin receiving events until there are no longer any subscribers, or the parent {@link EventHubClient#close()
+     * Begin consuming events until there are no longer any subscribers, or the parent {@link EventHubClient#close()
      * EventHubClient.close()} is called.
      *
-     * @return A stream of events for this receiver.
+     * <p><strong>Consuming events from Event Hub</strong></p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+     *
+     * @return A stream of events for this consumer.
      */
     public Flux<EventData> receive() {
         return messageFlux;
