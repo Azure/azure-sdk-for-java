@@ -377,11 +377,7 @@ class BlockBlobAPITest extends APISpec {
         Response<BlobProperties> response = bu.getProperties()
 
         then:
-        response.statusCode() == 200
-        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            contentMD5 == null ? null : Base64.getEncoder().encode(contentMD5),
-            contentType == null ? "application/octet-stream" : contentType)
-        // HTTP default content type is application/octet-stream
+        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
@@ -684,21 +680,15 @@ class BlockBlobAPITest extends APISpec {
             .blobContentType(contentType)
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize,
-            headers, null, null, null)
-        HttpHeaders responseHeaders = bu.getProperties().headers()
+        bu.upload(defaultInputStream.get(), defaultDataSize, headers, null, null, null)
+        Response<BlobProperties> response = bu.getProperties()
 
         then:
-        validateBlobHeaders(responseHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            Base64.getEncoder().encode(contentMD5),
-            contentType == null ? "application/octet-stream" : contentType)
-        // For uploading a block blob, the service will auto calculate an MD5 hash if not present
-        // HTTP default content type is application/octet-stream
+        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        // TODO: following line throws NPE
-//        null         | null               | null            | null            | null                                                         | null
+        null         | null               | null            | null            | null                                                         | null
         "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
     }
 
@@ -719,7 +709,7 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         response.statusCode() == 200
-        getMetadataFromHeaders(response.headers()) == metadata
+        response.value().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2

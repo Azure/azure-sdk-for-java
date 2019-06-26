@@ -62,11 +62,7 @@ class PageBlobAPITest extends APISpec {
         Response<BlobProperties> response = bu.getProperties(null, null)
 
         then:
-        response.value().contentDisposition() == contentDisposition
-        response.value().contentEncoding() == contentEncoding
-        response.value().contentLanguage() == contentLanguage
-        response.value().contentMD5() == contentMD5
-        response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
+        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType

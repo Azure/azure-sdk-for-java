@@ -178,7 +178,6 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Download AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
@@ -186,7 +185,7 @@ class BlobAPITest extends APISpec {
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
 
         when:
         bu.download(new ByteArrayOutputStream(), null, null, bac, false, null).statusCode() == 206
@@ -307,7 +306,6 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
@@ -315,7 +313,7 @@ class BlobAPITest extends APISpec {
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
 
         when:
         bu.getProperties(bac, null)
@@ -365,15 +363,14 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(response.headers())
     }
 
-    // TODO: Doesn't work
-//    def "Set HTTP headers min"() {
-//        when:
-//        bu.setHTTPHeaders(new BlobHTTPHeaders().blobContentType("type"))
-//
-//        then:
-//        bu.getProperties().headers().value("x-ms-blob-content-type") == "type"
-//    }
-//
+    /*def "Set HTTP headers min"() {
+        when:
+        bu.setHTTPHeaders(new BlobHTTPHeaders().blobContentType("type"))
+
+        then:
+        bu.getProperties().headers().value("x-ms-blob-content-type") == "type"
+    }*/
+
     @Unroll
     def "Set HTTP headers headers"() {
         setup:
@@ -383,19 +380,18 @@ class BlobAPITest extends APISpec {
             .blobContentLanguage(contentLanguage)
             .blobContentMD5(contentMD5)
             .blobContentType(contentType)
-        bu.setHTTPHeaders(putHeaders, null, null)
 
-        HttpHeaders receivedHeaders = bu.getProperties(null, null).headers()
+        VoidResponse test = bu.setHTTPHeaders(putHeaders)
+
+        Response<BlobProperties> response = bu.getProperties()
 
         expect:
-        validateBlobHeaders(receivedHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            contentMD5, contentType)
+        validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
         null         | null               | null            | null            | null                                                                                     | null
-        // TODO: Doesn't work, double base 64 encoding
-//        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
+        "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
 
     }
 
@@ -1099,7 +1095,7 @@ class BlobAPITest extends APISpec {
             metadata.put(key2, value2)
         }
 
-        BlobsCreateSnapshotResponse response = bu.createSnapshot(metadata, null, null)
+        Response<String> response = bu.createSnapshot(metadata, null, null)
 
         expect:
         response.statusCode() == 201

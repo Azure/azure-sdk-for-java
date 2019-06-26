@@ -6,9 +6,11 @@ package com.azure.storage.blob
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
 import org.junit.Assume
@@ -400,15 +402,14 @@ class APISpec extends Specification {
             headers.value("date") != null
     }
 
-    def validateBlobHeaders(HttpHeaders headers, String cacheControl, String contentDisposition, String contentEncoding,
-                            String contentLangauge, byte[] contentMD5, String contentType) {
-        return headers.value("cache-control") == cacheControl &&
-            headers.value("content-disposition") == contentDisposition &&
-            headers.value("content-encoding") == contentEncoding &&
-            headers.value("content-language") == contentLangauge &&
-            headers.value("content-md5") == (contentMD5 == null ? null : new String((byte[]) contentMD5)) &&
-            headers.value("content-type") == contentType
-
+    def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, byte[] contentMD5, String contentType) {
+        return response.value().cacheControl() == cacheControl &&
+            response.value().contentDisposition() == contentDisposition &&
+            response.value().contentEncoding() == contentEncoding &&
+            response.value().contentLanguage() == contentLanguage &&
+            response.value().contentMD5() == contentMD5 &&
+            response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
     }
 
     static Metadata getMetadataFromHeaders(HttpHeaders headers) {
