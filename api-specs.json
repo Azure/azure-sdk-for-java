@@ -175,6 +175,10 @@
     "source": "specification/network/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "operationsmanagement/resource-manager": {
+    "source": "specification/operationsmanagement/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "policyinsights/resource-manager": {
     "source": "specification/policyinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
