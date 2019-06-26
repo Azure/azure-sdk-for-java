@@ -3,7 +3,7 @@
 
 package com.azure.core.management;
 
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.HostParam;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.management.annotations.AzureHost;
@@ -12,7 +12,7 @@ public class AzureTests {
 
     @AzureHost("{vaultBaseUrl}")
     public interface HttpBinService {
-        @GET("secrets/{secretName}")
+        @Get("secrets/{secretName}")
         String getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl, @PathParam("secretName") String secretName);
     }
 

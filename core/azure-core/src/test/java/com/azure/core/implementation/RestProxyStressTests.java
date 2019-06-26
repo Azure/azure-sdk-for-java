@@ -5,12 +5,12 @@ package com.azure.core.implementation;
 
 import com.azure.core.MockServer;
 import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.Delete;
 import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
-import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Put;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
@@ -173,18 +173,18 @@ public class RestProxyStressTests {
     @Host("https://javasdktest.blob.core.windows.net")
     interface IOService {
         @ExpectedResponses({201})
-        @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
+        @Put("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
 
-        @GET("/javasdktest/upload/100m-{id}.dat?{sas}")
+        @Get("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({201})
-        @PUT("/testcontainer{id}?restype=container&{sas}")
+        @Put("/testcontainer{id}?restype=container&{sas}")
         Mono<VoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({202})
-        @DELETE("/testcontainer{id}?restype=container&{sas}")
+        @Delete("/testcontainer{id}?restype=container&{sas}")
         Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 

@@ -17,18 +17,18 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ * {@literal @}Put("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
  *  VirtualMachine createOrUpdate(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId, @BodyParam VirtualMachine vm);</pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
- * {@literal @}PUT({vaultBaseUrl}/secrets/{secretName})
+ * {@literal @}Put({vaultBaseUrl}/secrets/{secretName})
  *  Secret createOrUpdate(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName, @BodyParam SecretCreateParameters secret);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PUT {
+public @interface Put {
     /**
      * Get the relative path of the annotated method's PUT URL.
      * @return The relative path of the annotated method's PUT URL.
