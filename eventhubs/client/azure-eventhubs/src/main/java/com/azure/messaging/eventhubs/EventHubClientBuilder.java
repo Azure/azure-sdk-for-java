@@ -199,11 +199,6 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder proxyConfiguration(ProxyConfiguration proxyConfiguration) {
         this.proxyConfiguration = proxyConfiguration;
-
-        if (proxyConfiguration != null && proxyConfiguration.isProxyAddressConfigured()) {
-            this.transport = TransportType.AMQP_WEB_SOCKETS;
-        }
-
         return this;
     }
 
