@@ -3,9 +3,9 @@
 
 package com.azure.core.management;
 
-import com.azure.core.annotations.Get;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PathParam;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.management.annotations.AzureHost;
 
 public class AzureTests {

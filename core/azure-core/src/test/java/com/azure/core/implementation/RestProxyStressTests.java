@@ -4,14 +4,14 @@
 package com.azure.core.implementation;
 
 import com.azure.core.MockServer;
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.Delete;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.Get;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.Put;
-import com.azure.core.annotations.PathParam;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.PathParam;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
