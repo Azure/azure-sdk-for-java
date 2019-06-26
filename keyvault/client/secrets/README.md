@@ -1,9 +1,11 @@
 # Azure Key Vault Secret client library for Java
-Azure Key Vault is a cloud service that provides a secure storage of secrets, such as passwords and database connection strings. Secret client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
+Azure Key Vault is a cloud service that provides a secure storage of secrets, such as passwords and database connection strings.
+
+Secret client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
 
 Use the secret client library to create and manage secrets.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 ### Adding the package to your project
@@ -11,9 +13,9 @@ Use the secret client library to create and manage secrets.
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.security</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-preview.1</version>
 </dependency>
 ```
 
@@ -28,7 +30,9 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](#create-secret-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object. Client secret credential way of authentication is being used in this getting started section but you can find more ways to authenticate with [azure-identity](TODO).
+In order to interact with the Key Vault service, you'll need to create an instance of the [SecretClient](#create-secret-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object.
+
+The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
  #### Create/Get credentials
 To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
@@ -72,9 +76,12 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables and replaced **your-vault-url** with the above returned URI, you can create the SecretClient:
 
 ```Java
+import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.security.keyvault.secrets.SecretClient;
+
 SecretClient client = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
+        .credential(new DefaultAzureCredential())
         .build();
 ```
 > NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
@@ -106,9 +113,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
+import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.models.Secret;
+
 SecretClient secretClient = SecretClient.builder()
         .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
+        .credential(new DefaultAzureCredential())
         .build();
 
 Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
@@ -147,9 +158,11 @@ System.out.printf("Deleted Secret's deletion date %s", deletedSecret.deletedDate
 
 List the secrets in the key vault by calling `listSecrets`.
 ```Java
-// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
-secretClient.listSecrets().stream().map(secretClient::getSecret).forEach(secretResponse -> 
-  System.out.printf("Received secret with name %s and value %s", secretResponse.value().name(), secretResponse.value().value()));
+// List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
+for (SecretBase secret : client.listSecrets()) {
+    Secret secretWithValue  = client.getSecret(secret).value();
+    System.out.printf("Received secret with name %s and value %s \n", secretWithValue.name(), secretWithValue.value());
+}
 ```
 
 ### Async API
@@ -165,9 +178,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
+import com.azure.identity.credential.DefaultAzureCredential;
+import com.azure.security.keyvault.secrets.SecretAsyncClient;
+import com.azure.security.keyvault.secrets.models.Secret;
+
 SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
         .endpoint(<your-vault-url>)
-        .credential(new AzureCredential())
+        .credential(new DefaultAzureCredential())
         .build();
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->
@@ -257,7 +274,9 @@ Several KeyVault Java SDK samples are available to you in the SDK's GitHub repos
     * List deleted secrets
     * Recover a deleted secret
     * Purge Deleted secret
-    
+
+###  Additional Documentation
+For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -268,8 +287,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src
-[package]: not-valid-link
 [api_documentation]: not-valid-link
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
 [azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/
@@ -280,12 +299,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java
-[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/HelloWorld.java
-[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/HelloWorldAsync.java
-[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ListOperations.java
-[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ListOperationsAsync.java
-[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/ManagingDeletedSecretsAsync.java
+[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets
+[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/HelloWorld.java
+[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/HelloWorldAsync.java
+[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ListOperations.java
+[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ListOperationsAsync.java
+[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ManagingDeletedSecretsAsync.java
