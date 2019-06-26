@@ -85,7 +85,7 @@ public final class HttpPipelineCallContext {
      * @param request request object
      * @return HttpPipelineCallContext
      */
-    public HttpPipelineCallContext withHttpRequest(HttpRequest request) {
+    public HttpPipelineCallContext httpRequest(HttpRequest request) {
         this.httpRequest = request;
         return this;
     }

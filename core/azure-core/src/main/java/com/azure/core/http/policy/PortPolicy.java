@@ -36,10 +36,10 @@ public class PortPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
         if (overwrite || urlBuilder.port() == null) {
-            LOGGER.info("Changing port to {0}", port);
+            LOGGER.info("Changing port to {}", port);
 
             try {
-                context.httpRequest().withUrl(urlBuilder.withPort(port).toURL());
+                context.httpRequest().url(urlBuilder.port(port).toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
