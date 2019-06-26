@@ -20,6 +20,8 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -61,11 +63,11 @@ public final class StorageClientBuilder {
     private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryPolicy retryPolicy;
     private Configuration configuration;
 
     public StorageClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryPolicy = new RequestRetryPolicy(new RequestRetryOptions());
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }

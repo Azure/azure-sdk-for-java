@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,7 +36,8 @@ public class BlobOutputStreamTest {
     @Test
     public void testBlockBlobOutputStream() throws Exception {
         String blobName = "testblob" + RANDOM.nextInt(1000);
-        byte[] randomBytes = new byte[256 * Constants.MB];
+        int length = 1024 * Constants.MB - 12345;
+        byte[] randomBytes = new byte[length];
         RANDOM.nextBytes(randomBytes);
 
         BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -43,14 +45,16 @@ public class BlobOutputStreamTest {
         outStream.write(randomBytes);
         outStream.close();
 
+        Assert.assertEquals(length, blockBlobClient.getProperties().value().blobSize());
         BlobInputStream blobInputStream = blockBlobClient.openInputStream();
-        byte[] downloaded = ByteStreams.toByteArray(blobInputStream);
-        Assert.assertArrayEquals(randomBytes, downloaded);
+        FileOutputStream fileOutputStream = new FileOutputStream("block-downloaded.dat");
+        ByteStreams.copy(blobInputStream, fileOutputStream);
+        fileOutputStream.close();
     }
 
     @Test
     public void testPageBlobOutputStream() throws Exception {
-        int length = 256 * Constants.MB;
+        int length = 1024 * Constants.MB - 512;
         String blobName = "testblob" + RANDOM.nextInt(1000);
         byte[] randomBytes = new byte[length];
         RANDOM.nextBytes(randomBytes);
@@ -68,12 +72,14 @@ public class BlobOutputStreamTest {
 
     @Test
     public void testAppendBlobOutputStream() throws Exception {
-        int length = 256 * Constants.MB;
+        int length = 0;
         String blobName = "testblob" + RANDOM.nextInt(1000);
         List<byte[]> randomBytes = new ArrayList<>();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        for (int i = 0; i != 256; i+=4) {
-            byte[] bytes = new byte[4 * Constants.MB];
+        for (int i = 0; i != 64; ++i) {
+            int subLength = RANDOM.nextInt(4 * Constants.MB);
+            length += subLength;
+            byte[] bytes = new byte[subLength];
             RANDOM.nextBytes(bytes);
             randomBytes.add(bytes);
             stream.write(bytes);
@@ -84,7 +90,7 @@ public class BlobOutputStreamTest {
         AppendBlobClient appendBlobClient = containerClient.getAppendBlobClient(blobName);
         appendBlobClient.create();
         BlobOutputStream outStream = appendBlobClient.getBlobOutputStream();
-        for (int i = 0; i != 256/4; i++) {
+        for (int i = 0; i != 64; i++) {
             outStream.write(randomBytes.get(i));
         }
         outStream.close();
