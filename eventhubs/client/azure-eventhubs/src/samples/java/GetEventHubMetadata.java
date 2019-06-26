@@ -39,14 +39,14 @@ public class GetEventHubMetadata {
         client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId))
             .subscribe(properties -> {
                 System.out.println("The Event Hub has the following properties:");
-                System.out.println(String.format(
+                System.out.printf(
                     "Event Hub Name: %s; Partition Id: %s; Is partition empty? %s; First Sequence Number: %s; "
-                        + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s",
+                        + "Last Enqueued Time: %s; Last Enqueued Sequence Number: %s; Last Enqueued Offset: %s \n",
                     properties.eventHubPath(), properties.id(), properties.isEmpty(),
                     properties.beginningSequenceNumber(),
                     properties.lastEnqueuedTime(),
                     properties.lastEnqueuedSequenceNumber(),
-                    properties.lastEnqueuedOffset()));
+                    properties.lastEnqueuedOffset());
             }, error -> {
                     System.err.println("Error occurred while fetching partition properties: " + error.toString());
                 }, () -> {
