@@ -14,7 +14,13 @@
     <name>Microsoft Azure SDK for eventgrid</name>
     <description>This package contains Microsoft Azure EventGrid SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
-    <licenses>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-sdk-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../../pom.data.xml</relativePath>
+    </parent>
+      <licenses>
         <license>
             <name>The MIT License (MIT)</name>
             <url>http://opensource.org/licenses/MIT</url>
@@ -53,6 +59,11 @@
             <artifactId>azure-client-authentication</artifactId>
             <version>1.5.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
     </dependencies>
     <build>

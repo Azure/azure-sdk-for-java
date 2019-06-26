@@ -70,7 +70,7 @@ import com.microsoft.azure.eventgrid.models.SubscriptionDeletedEventData;
 import com.microsoft.azure.eventgrid.models.SubscriptionValidationEventData;
 import org.junit.Assert;
 import org.junit.Test;
-import sun.misc.IOUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -1038,7 +1038,7 @@ public class CustomizationTests {
     private String getTestPayloadFromFile(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         try {
-            byte[] bytes = IOUtils.readFully(classLoader.getResourceAsStream("customization\\" + fileName), -1, true);
+            byte[] bytes = IOUtils.resourceToByteArray("customization\\" + fileName);
             return new String(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
