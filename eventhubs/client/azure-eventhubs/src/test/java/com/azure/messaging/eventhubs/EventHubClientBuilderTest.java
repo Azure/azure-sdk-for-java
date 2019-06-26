@@ -32,13 +32,13 @@ public class EventHubClientBuilderTest {
     @Test(expected = IllegalArgumentException.class)
     public void missingConnectionString() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        builder.build();
+        builder.buildAsyncClient();
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        final EventHubClient client = builder.connectionString(CORRECT_CONNECTION_STRING).build();
+        final EventHubClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
 
         Assert.assertNotNull(client);
     }
@@ -54,7 +54,7 @@ public class EventHubClientBuilderTest {
             .proxyConfiguration(proxyConfig);
 
         // Assert
-        Assert.assertNotNull(builder.build());
+        Assert.assertNotNull(builder.buildAsyncClient());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

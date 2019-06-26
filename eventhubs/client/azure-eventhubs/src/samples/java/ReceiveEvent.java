@@ -47,7 +47,7 @@ public class ReceiveEvent {
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait

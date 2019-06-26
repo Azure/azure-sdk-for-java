@@ -24,7 +24,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
 
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString, eventHubPath)
-            .build();
+            .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string
 
         client.close();
@@ -40,7 +40,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
 
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string
 
         client.close();
@@ -59,7 +59,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
             .retry(Retry.getNoRetry())
             .timeout(Duration.ofSeconds(30))
             .scheduler(Schedulers.newElastic("dedicated-event-hub-scheduler"))
-            .build();
+            .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler
 
         client.close();

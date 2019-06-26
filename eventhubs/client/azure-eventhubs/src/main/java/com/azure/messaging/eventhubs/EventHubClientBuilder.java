@@ -30,7 +30,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * EventHubClient}. Calling {@link #build()} constructs an instant of the client.
+ * EventHubClient}. Calling {@link #buildAsyncClient()} constructs an instant of the client.
  *
  * <p>
  * The client requires credentials or a connection string to perform operations against Azure Event Hubs. Setting
@@ -251,8 +251,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code build()} is invoked,
-     * a new instance of {@link EventHubClient} is created.
+     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildAsyncClient()}
+     * is invoked, a new instance of {@link EventHubClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -274,7 +274,7 @@ public class EventHubClientBuilder {
      *         #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
      *         specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient build() {
+    public EventHubClient buildAsyncClient() {
         configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
 
         if (credentials == null) {
