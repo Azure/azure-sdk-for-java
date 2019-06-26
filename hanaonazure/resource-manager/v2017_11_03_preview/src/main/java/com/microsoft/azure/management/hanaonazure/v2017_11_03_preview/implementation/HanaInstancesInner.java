@@ -998,7 +998,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restart(String resourceGroupName, String hanaInstanceName) {
@@ -1066,7 +1066,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginRestart(String resourceGroupName, String hanaInstanceName) {
@@ -1138,11 +1138,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             });
     }
 
-    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1152,7 +1152,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void start(String resourceGroupName, String hanaInstanceName) {
@@ -1220,7 +1220,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginStart(String resourceGroupName, String hanaInstanceName) {
@@ -1292,11 +1292,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             });
     }
 
-    private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1306,7 +1306,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void shutdown(String resourceGroupName, String hanaInstanceName) {
@@ -1374,7 +1374,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginShutdown(String resourceGroupName, String hanaInstanceName) {
@@ -1446,11 +1446,11 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             });
     }
 
-    private ServiceResponse<Void> beginShutdownDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginShutdownDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
