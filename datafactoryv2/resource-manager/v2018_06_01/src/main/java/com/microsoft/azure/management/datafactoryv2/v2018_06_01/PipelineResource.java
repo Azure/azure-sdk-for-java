@@ -75,6 +75,11 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
     Map<String, ParameterSpecification> parameters();
 
     /**
+     * @return the runDimensions value.
+     */
+    Map<String, Object> runDimensions();
+
+    /**
      * @return the type value.
      */
     String type();
@@ -210,6 +215,18 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
         }
 
         /**
+         * The stage of the pipelineresource definition allowing to specify RunDimensions.
+         */
+        interface WithRunDimensions {
+            /**
+             * Specifies runDimensions.
+             * @param runDimensions Dimensions emitted by Pipeline
+             * @return the next definition stage
+             */
+            WithCreate withRunDimensions(Map<String, Object> runDimensions);
+        }
+
+        /**
          * The stage of the pipelineresource definition allowing to specify Variables.
          */
         interface WithVariables {
@@ -226,13 +243,13 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithFolder, DefinitionStages.WithParameters, DefinitionStages.WithVariables {
+        interface WithCreate extends Creatable<PipelineResource>, DefinitionStages.WithActivities, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithAnnotations, DefinitionStages.WithConcurrency, DefinitionStages.WithDescription, DefinitionStages.WithFolder, DefinitionStages.WithParameters, DefinitionStages.WithRunDimensions, DefinitionStages.WithVariables {
         }
     }
     /**
      * The template for a PipelineResource update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PipelineResource>, UpdateStages.WithIfMatch, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithFolder, UpdateStages.WithParameters, UpdateStages.WithVariables {
+    interface Update extends Appliable<PipelineResource>, UpdateStages.WithIfMatch, UpdateStages.WithActivities, UpdateStages.WithAdditionalProperties, UpdateStages.WithAnnotations, UpdateStages.WithConcurrency, UpdateStages.WithDescription, UpdateStages.WithFolder, UpdateStages.WithParameters, UpdateStages.WithRunDimensions, UpdateStages.WithVariables {
     }
 
     /**
@@ -333,6 +350,18 @@ public interface PipelineResource extends HasInner<PipelineResourceInner>, Index
              * @return the next update stage
              */
             Update withParameters(Map<String, ParameterSpecification> parameters);
+        }
+
+        /**
+         * The stage of the pipelineresource update allowing to specify RunDimensions.
+         */
+        interface WithRunDimensions {
+            /**
+             * Specifies runDimensions.
+             * @param runDimensions Dimensions emitted by Pipeline
+             * @return the next update stage
+             */
+            Update withRunDimensions(Map<String, Object> runDimensions);
         }
 
         /**

@@ -55,6 +55,12 @@ public class PipelineRunInner {
     private Map<String, String> parameters;
 
     /**
+     * Run dimension emitted by Pipeline run.
+     */
+    @JsonProperty(value = "runDimension", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, String> runDimension;
+
+    /**
      * Entity that started the pipeline run.
      */
     @JsonProperty(value = "invokedBy", access = JsonProperty.Access.WRITE_ONLY)
@@ -159,6 +165,15 @@ public class PipelineRunInner {
      */
     public Map<String, String> parameters() {
         return this.parameters;
+    }
+
+    /**
+     * Get run dimension emitted by Pipeline run.
+     *
+     * @return the runDimension value
+     */
+    public Map<String, String> runDimension() {
+        return this.runDimension;
     }
 
     /**

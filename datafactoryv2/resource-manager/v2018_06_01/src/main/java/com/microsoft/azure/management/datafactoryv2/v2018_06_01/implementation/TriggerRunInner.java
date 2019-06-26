@@ -74,6 +74,18 @@ public class TriggerRunInner {
     private Map<String, String> triggeredPipelines;
 
     /**
+     * Run dimention for which trigger was fired.
+     */
+    @JsonProperty(value = "runDimension", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, String> runDimension;
+
+    /**
+     * Status of the upstream pipelines.
+     */
+    @JsonProperty(value = "DependencyStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private Map<String, String> dependencyStatus;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -163,6 +175,24 @@ public class TriggerRunInner {
      */
     public Map<String, String> triggeredPipelines() {
         return this.triggeredPipelines;
+    }
+
+    /**
+     * Get run dimention for which trigger was fired.
+     *
+     * @return the runDimension value
+     */
+    public Map<String, String> runDimension() {
+        return this.runDimension;
+    }
+
+    /**
+     * Get status of the upstream pipelines.
+     *
+     * @return the dependencyStatus value
+     */
+    public Map<String, String> dependencyStatus() {
+        return this.dependencyStatus;
     }
 
 }

@@ -128,6 +128,11 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     }
 
     @Override
+    public Map<String, Object> runDimensions() {
+        return this.inner().runDimensions();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
     }
@@ -193,6 +198,12 @@ class PipelineResourceImpl extends CreatableUpdatableImpl<PipelineResource, Pipe
     @Override
     public PipelineResourceImpl withParameters(Map<String, ParameterSpecification> parameters) {
         this.inner().withParameters(parameters);
+        return this;
+    }
+
+    @Override
+    public PipelineResourceImpl withRunDimensions(Map<String, Object> runDimensions) {
+        this.inner().withRunDimensions(runDimensions);
         return this;
     }
 

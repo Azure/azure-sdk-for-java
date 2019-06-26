@@ -74,6 +74,11 @@ class PipelineRunImpl extends WrapperImpl<PipelineRunInner> implements PipelineR
     }
 
     @Override
+    public Map<String, String> runDimension() {
+        return this.inner().runDimension();
+    }
+
+    @Override
     public DateTime runEnd() {
         return this.inner().runEnd();
     }

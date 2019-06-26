@@ -60,6 +60,11 @@ public interface PipelineRun extends HasInner<PipelineRunInner>, HasManager<Data
     String pipelineName();
 
     /**
+     * @return the runDimension value.
+     */
+    Map<String, String> runDimension();
+
+    /**
      * @return the runEnd value.
      */
     DateTime runEnd();

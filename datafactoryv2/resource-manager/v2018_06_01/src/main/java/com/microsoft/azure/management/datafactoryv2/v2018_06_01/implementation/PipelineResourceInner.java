@@ -66,6 +66,12 @@ public class PipelineResourceInner extends SubResource {
     private List<Object> annotations;
 
     /**
+     * Dimensions emitted by Pipeline.
+     */
+    @JsonProperty(value = "properties.runDimensions")
+    private Map<String, Object> runDimensions;
+
+    /**
      * The folder that this Pipeline is in. If not specified, Pipeline will
      * appear at the root level.
      */
@@ -227,6 +233,26 @@ public class PipelineResourceInner extends SubResource {
      */
     public PipelineResourceInner withAnnotations(List<Object> annotations) {
         this.annotations = annotations;
+        return this;
+    }
+
+    /**
+     * Get dimensions emitted by Pipeline.
+     *
+     * @return the runDimensions value
+     */
+    public Map<String, Object> runDimensions() {
+        return this.runDimensions;
+    }
+
+    /**
+     * Set dimensions emitted by Pipeline.
+     *
+     * @param runDimensions the runDimensions value to set
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withRunDimensions(Map<String, Object> runDimensions) {
+        this.runDimensions = runDimensions;
         return this;
     }
 
