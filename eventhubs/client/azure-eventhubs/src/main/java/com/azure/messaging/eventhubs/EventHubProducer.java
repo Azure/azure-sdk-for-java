@@ -52,6 +52,28 @@ import java.util.stream.Collector;
  * </ol>
  * </p>
  *
+ * <p><strong>Create a producer that routes events to any partition</strong></p>
+ * To allow automatic routing of messages to available partition, do not specify the {@link
+ * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubProducer}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiate}
+ *
+ * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
+ *
+ * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
+ * partitionId} when creating an {@link EventHubProducer}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer}
+ *
+ * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ * If developers want to push similar events to end up at the same partition, but do not require them to go to a
+ * specific partition, they can use {@link SendOptions#partitionKey(String)}.
+ *
+ * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
+ * of the available partitions. All that matters to the end user is that they are grouped together.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
+ *
  * @see EventHubClient#createProducer()
  */
 public class EventHubProducer implements Closeable {

@@ -445,7 +445,7 @@
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
-    <Bug pattern="URF_UNREAD_FIELD,NP_LOAD_OF_KNOWN_NULL_VALUE,DLS_DEAD_LOCAL_STORE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <!-- Field initialized by jackson property annotation -->
@@ -468,4 +468,13 @@
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
+
+  <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
+  <Match>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
 </FindBugsFilter>
