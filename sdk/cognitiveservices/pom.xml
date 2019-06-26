@@ -14,6 +14,13 @@
   <description>This package contains the parent module of Microsoft Azure Cognitive Services SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-data-sdk-parent</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.data.xml</relativePath>
+  </parent>
+
   <licenses>
     <license>
       <name>The MIT License (MIT)</name>
