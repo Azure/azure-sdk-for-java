@@ -10,6 +10,7 @@ import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.junit.Ignore;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -20,7 +21,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class EventGridTests {
-    @Test. @Ignore
+    @Test
+    @Ignore
     public void canPublishEvent() throws Exception {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
