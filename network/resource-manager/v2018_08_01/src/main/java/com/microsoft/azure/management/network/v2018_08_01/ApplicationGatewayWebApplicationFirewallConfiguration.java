@@ -54,19 +54,19 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     private Boolean requestBodyCheck;
 
     /**
-     * Maxium request body size for WAF.
+     * Maximum request body size for WAF.
      */
     @JsonProperty(value = "maxRequestBodySize")
     private Integer maxRequestBodySize;
 
     /**
-     * Maxium request body size in Kb for WAF.
+     * Maximum request body size in Kb for WAF.
      */
     @JsonProperty(value = "maxRequestBodySizeInKb")
     private Integer maxRequestBodySizeInKb;
 
     /**
-     * Maxium file upload size in Mb for WAF.
+     * Maximum file upload size in Mb for WAF.
      */
     @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
@@ -198,7 +198,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get maxium request body size for WAF.
+     * Get maximum request body size for WAF.
      *
      * @return the maxRequestBodySize value
      */
@@ -207,7 +207,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set maxium request body size for WAF.
+     * Set maximum request body size for WAF.
      *
      * @param maxRequestBodySize the maxRequestBodySize value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -218,7 +218,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get maxium request body size in Kb for WAF.
+     * Get maximum request body size in Kb for WAF.
      *
      * @return the maxRequestBodySizeInKb value
      */
@@ -227,7 +227,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set maxium request body size in Kb for WAF.
+     * Set maximum request body size in Kb for WAF.
      *
      * @param maxRequestBodySizeInKb the maxRequestBodySizeInKb value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -238,7 +238,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get maxium file upload size in Mb for WAF.
+     * Get maximum file upload size in Mb for WAF.
      *
      * @return the fileUploadLimitInMb value
      */
@@ -247,7 +247,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set maxium file upload size in Mb for WAF.
+     * Set maximum file upload size in Mb for WAF.
      *
      * @param fileUploadLimitInMb the fileUploadLimitInMb value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
