@@ -101,14 +101,6 @@ public class InvoiceSectionsInner {
         @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/elevate")
         Observable<Response<ResponseBody>> elevateToBillingProfile(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections createNext" })
-        @GET
-        Observable<Response<ResponseBody>> createNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections beginCreateNext" })
-        @GET
-        Observable<Response<ResponseBody>> beginCreateNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections listByBillingProfileNameNext" })
         @GET
         Observable<Response<ResponseBody>> listByBillingProfileNameNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -277,16 +269,10 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
+     * @return the InvoiceSectionInner object if successful.
      */
-    public PagedList<BillingProfileInner> create(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response = createSinglePageAsync(billingAccountName, parameters).toBlocking().single();
-        return new PagedList<BillingProfileInner>(response.body()) {
-            @Override
-            public Page<BillingProfileInner> nextPage(String nextPageLink) {
-                return createNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
+    public InvoiceSectionInner create(String billingAccountName, InvoiceSectionCreationRequest parameters) {
+        return createWithServiceResponseAsync(billingAccountName, parameters).toBlocking().last().body();
     }
 
     /**
@@ -298,16 +284,8 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<BillingProfileInner>> createAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters, final ListOperationCallback<BillingProfileInner> serviceCallback) {
-        return AzureServiceFuture.fromHeaderPageResponse(
-            createSinglePageAsync(billingAccountName, parameters),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(String nextPageLink) {
-                    return createNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceFuture<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(createWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
     }
 
     /**
@@ -316,16 +294,15 @@ public class InvoiceSectionsInner {
      * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     * @return the observable for the request
      */
-    public Observable<Page<BillingProfileInner>> createAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        return createWithServiceResponseAsync(billingAccountName, parameters)
-            .map(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Page<BillingProfileInner>>() {
-                @Override
-                public Page<BillingProfileInner> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response) {
-                    return response.body();
-                }
-            });
+    public Observable<InvoiceSectionInner> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
+        return createWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>, InvoiceSectionInner>() {
+            @Override
+            public InvoiceSectionInner call(ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -334,31 +311,9 @@ public class InvoiceSectionsInner {
      * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> createWithServiceResponseAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        return createSinglePageAsync(billingAccountName, parameters)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(createNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param billingAccountName Billing Account Id.
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param parameters Parameters supplied to the Create InvoiceSection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> createSinglePageAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> createWithServiceResponseAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -369,26 +324,8 @@ public class InvoiceSectionsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.create(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> result = createDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>(result.body(), result.headers(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> createDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoiceSectionsCreateHeaders.class);
+        Observable<Response<ResponseBody>> observable = service.create(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<InvoiceSectionInner>() { }.getType(), InvoiceSectionsCreateHeaders.class);
     }
 
     /**
@@ -399,16 +336,10 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
+     * @return the InvoiceSectionInner object if successful.
      */
-    public PagedList<BillingProfileInner> beginCreate(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response = beginCreateSinglePageAsync(billingAccountName, parameters).toBlocking().single();
-        return new PagedList<BillingProfileInner>(response.body()) {
-            @Override
-            public Page<BillingProfileInner> nextPage(String nextPageLink) {
-                return beginCreateNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
+    public InvoiceSectionInner beginCreate(String billingAccountName, InvoiceSectionCreationRequest parameters) {
+        return beginCreateWithServiceResponseAsync(billingAccountName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -420,16 +351,8 @@ public class InvoiceSectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<BillingProfileInner>> beginCreateAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters, final ListOperationCallback<BillingProfileInner> serviceCallback) {
-        return AzureServiceFuture.fromHeaderPageResponse(
-            beginCreateSinglePageAsync(billingAccountName, parameters),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(String nextPageLink) {
-                    return beginCreateNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceFuture<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionCreationRequest parameters, final ServiceCallback<InvoiceSectionInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginCreateWithServiceResponseAsync(billingAccountName, parameters), serviceCallback);
     }
 
     /**
@@ -438,16 +361,15 @@ public class InvoiceSectionsInner {
      * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     * @return the observable to the InvoiceSectionInner object
      */
-    public Observable<Page<BillingProfileInner>> beginCreateAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        return beginCreateWithServiceResponseAsync(billingAccountName, parameters)
-            .map(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Page<BillingProfileInner>>() {
-                @Override
-                public Page<BillingProfileInner> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response) {
-                    return response.body();
-                }
-            });
+    public Observable<InvoiceSectionInner> beginCreateAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
+        return beginCreateWithServiceResponseAsync(billingAccountName, parameters).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>, InvoiceSectionInner>() {
+            @Override
+            public InvoiceSectionInner call(ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -456,31 +378,9 @@ public class InvoiceSectionsInner {
      * @param billingAccountName Billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
+     * @return the observable to the InvoiceSectionInner object
      */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> beginCreateWithServiceResponseAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
-        return beginCreateSinglePageAsync(billingAccountName, parameters)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(beginCreateNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param billingAccountName Billing Account Id.
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param parameters Parameters supplied to the Create InvoiceSection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> beginCreateSinglePageAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters) {
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> beginCreateWithServiceResponseAsync(String billingAccountName, InvoiceSectionCreationRequest parameters) {
         if (billingAccountName == null) {
             throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
@@ -492,12 +392,12 @@ public class InvoiceSectionsInner {
         }
         Validator.validate(parameters);
         return service.beginCreate(billingAccountName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> result = beginCreateDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>(result.body(), result.headers(), result.response()));
+                        ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> clientResponse = beginCreateDelegate(response);
+                        return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -505,9 +405,9 @@ public class InvoiceSectionsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
+    private ServiceResponseWithHeaders<InvoiceSectionInner, InvoiceSectionsCreateHeaders> beginCreateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InvoiceSectionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<InvoiceSectionInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .buildWithHeaders(response, InvoiceSectionsCreateHeaders.class);
@@ -1263,230 +1163,6 @@ public class InvoiceSectionsInner {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
-     */
-    public PagedList<BillingProfileInner> createNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response = createNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BillingProfileInner>(response.body()) {
-            @Override
-            public Page<BillingProfileInner> nextPage(String nextPageLink) {
-                return createNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<BillingProfileInner>> createNextAsync(final String nextPageLink, final ServiceFuture<List<BillingProfileInner>> serviceFuture, final ListOperationCallback<BillingProfileInner> serviceCallback) {
-        return AzureServiceFuture.fromHeaderPageResponse(
-            createNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(String nextPageLink) {
-                    return createNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
-     */
-    public Observable<Page<BillingProfileInner>> createNextAsync(final String nextPageLink) {
-        return createNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Page<BillingProfileInner>>() {
-                @Override
-                public Page<BillingProfileInner> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> createNextWithServiceResponseAsync(final String nextPageLink) {
-        return createNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(createNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> createNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.createNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> result = createNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>(result.body(), result.headers(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> createNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException, InterruptedException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoiceSectionsCreateHeaders.class);
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;BillingProfileInner&gt; object if successful.
-     */
-    public PagedList<BillingProfileInner> beginCreateNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response = beginCreateNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<BillingProfileInner>(response.body()) {
-            @Override
-            public Page<BillingProfileInner> nextPage(String nextPageLink) {
-                return beginCreateNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<BillingProfileInner>> beginCreateNextAsync(final String nextPageLink, final ServiceFuture<List<BillingProfileInner>> serviceFuture, final ListOperationCallback<BillingProfileInner> serviceCallback) {
-        return AzureServiceFuture.fromHeaderPageResponse(
-            beginCreateNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(String nextPageLink) {
-                    return beginCreateNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
-     */
-    public Observable<Page<BillingProfileInner>> beginCreateNextAsync(final String nextPageLink) {
-        return beginCreateNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Page<BillingProfileInner>>() {
-                @Override
-                public Page<BillingProfileInner> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;BillingProfileInner&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> beginCreateNextWithServiceResponseAsync(final String nextPageLink) {
-        return beginCreateNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(beginCreateNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * The operation to create a InvoiceSection.
-     *
-    ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;BillingProfileInner&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> beginCreateNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.beginCreateNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> result = beginCreateNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<BillingProfileInner>, InvoiceSectionsCreateHeaders>(result.body(), result.headers(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<PageImpl<BillingProfileInner>, InvoiceSectionsCreateHeaders> beginCreateNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<BillingProfileInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<BillingProfileInner>>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoiceSectionsCreateHeaders.class);
     }
 
     /**

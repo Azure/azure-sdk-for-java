@@ -64,7 +64,7 @@ public interface InvoiceSections extends HasInner<InvoiceSectionsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingProfile> createAsync(final String billingAccountName, final InvoiceSectionCreationRequest parameters);
+    Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionCreationRequest parameters);
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
