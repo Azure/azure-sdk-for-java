@@ -32,6 +32,8 @@ public class EventHubConsumerJavaDocCodeSamples {
             // process event
         }, error -> System.err.print(error.toString()));
         // END: com.azure.messaging.eventhubs.eventhubconsumer.receive
+
+        subscription.dispose();
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import reactor.core.publisher.Flux;
 
+import java.io.IOException;
 import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -18,7 +19,7 @@ public class EventHubProducerJavaDocCodeSamples {
     /**
      * Code snippet demonstrating how to create an EventHubProducer that automatically routes events to any partition.
      */
-    public void instantiate() {
+    public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiate
         EventHubClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
@@ -26,12 +27,14 @@ public class EventHubProducerJavaDocCodeSamples {
 
         EventHubProducer producer = client.createProducer();
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiate
+
+        producer.close();
     }
 
     /**
      * Code snippet demonstrating how to create an EventHubProducer that routes events to a single partition.
      */
-    public void instantiatePartitionProducer() {
+    public void instantiatePartitionProducer() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer
         EventHubProducerOptions options = new EventHubProducerOptions()
             .partitionId("foo")
@@ -39,6 +42,8 @@ public class EventHubProducerJavaDocCodeSamples {
 
         EventHubProducer producer = client.createProducer(options);
         // END: com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer
+
+        producer.close();
     }
 
     /**
@@ -52,10 +57,11 @@ public class EventHubProducerJavaDocCodeSamples {
             new EventData("wheat".getBytes(UTF_8))
         );
 
-        SendOptions options = new SendOptions().partitionKey("bread");
         EventHubProducer producer = client.createProducer();
+        SendOptions options = new SendOptions()
+            .partitionKey("bread");
 
-        producer.send(events).subscribe(ignored -> System.out.println("sent"),
+        producer.send(events, options).subscribe(ignored -> System.out.println("sent"),
             error -> System.err.println("Error received:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions

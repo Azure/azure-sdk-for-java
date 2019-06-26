@@ -26,6 +26,8 @@ public class EventHubClientBuilderJavaDocCodeSamples {
             .connectionString(connectionString, eventHubPath)
             .build();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string
+
+        client.close();
     }
 
     /**
@@ -40,6 +42,8 @@ public class EventHubClientBuilderJavaDocCodeSamples {
             .connectionString(connectionString)
             .build();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string
+
+        client.close();
     }
 
     /**
@@ -57,5 +61,7 @@ public class EventHubClientBuilderJavaDocCodeSamples {
             .scheduler(Schedulers.newElastic("dedicated-event-hub-scheduler"))
             .build();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler
+
+        client.close();
     }
 }
