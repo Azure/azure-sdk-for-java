@@ -229,12 +229,30 @@ public class Poller<T> {
     }
 
     /**
+     * Blocks indefinitely until given {@link OperationStatus} is received or a timeout expires.
+     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
+     * @return {@link PollResponse} matching the status to block for or times out.
+     * @throws IllegalArgumentException if {@code statusToBlockFor} is {@link OperationStatus#OTHER}.
+     */
+    public PollResponse<T> blockUntil(PollResponse.OperationStatus statusToBlockFor) {
+        if (statusToBlockFor == null || statusToBlockFor == PollResponse.OperationStatus.OTHER) {
+            throw new IllegalArgumentException("The status input parameter can not be null or OTHER.");
+        }
+
+        if (!isAutoPollingEnabled()) {
+            setAutoPollingEnabled(true);
+        }
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, null, statusToBlockFor)).blockFirst();
+    }
+
+    /**
      * Blocks until given {@link OperationStatus} is received or a timeout expires.
      * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
      * @param timeout The time after which it will stop blocking.
-     * @return
+     * @return {@link PollResponse} matching the status to block for or times out.
+     * @throws IllegalArgumentException if {@code timeout} null, zero or negative.
      */
-    public PollResponse<T> blockUtil(PollResponse.OperationStatus statusToBlockFor, Duration timeout) {
+    public PollResponse<T> blockUntil(PollResponse.OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null || statusToBlockFor == PollResponse.OperationStatus.OTHER) {
             throw new IllegalArgumentException("The status input parameter can not be null or OTHER.");
         }
@@ -253,9 +271,10 @@ public class Poller<T> {
      * Blocks until given other operation status is received or a timeout expires.
      * @param otherStatusToBlockFor The other operation status to block for. {@code Null} and empty string are invalid.
      * @param timeout The time after which it will stop blocking.
-     * @return
+     * @return {@link PollResponse} matching the status to block for or times out with no {@link PollResponse}.
+     * @throws IllegalArgumentException if {@code timeout} null, zero or negative.
      */
-    public PollResponse<T> blockUtilOther(String otherStatusToBlockFor, Duration timeout) {
+    public PollResponse<T> blockUntilOther(String otherStatusToBlockFor, Duration timeout) {
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
@@ -264,6 +283,18 @@ public class Poller<T> {
             throw new IllegalArgumentException("Negative or zero value for timeout not allowed.");
         }
         return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, otherStatusToBlockFor, PollResponse.OperationStatus.OTHER)).blockFirst(timeout);
+    }
+
+    /**
+     * Blocks indefinitely until given other operation status is received.
+     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} and empty string are invalid.
+     * @return {@link PollResponse} matching the status to block for or times out.
+     */
+    public PollResponse<T> blockUntilOther(String otherStatusToBlockFor) {
+        if (!isAutoPollingEnabled()) {
+            setAutoPollingEnabled(true);
+        }
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, otherStatusToBlockFor, PollResponse.OperationStatus.OTHER)).blockFirst();
     }
 
     /*
@@ -282,7 +313,7 @@ public class Poller<T> {
             && (otherStatusToBlockFor == null || otherStatusToBlockFor.trim().length() == 0)) {
             throw new IllegalArgumentException("The status can not be null or empty.");
         }
-        
+
         if (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER) {
             if (currentPollResponse.getOtherStatus() != null
                 && currentPollResponse.getOtherStatus().equalsIgnoreCase(otherStatusToBlockFor)) {
