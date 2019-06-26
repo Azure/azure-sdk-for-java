@@ -159,7 +159,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final TextFormat.Setter<HttpRequest> contextSetter = new TextFormat.Setter<HttpRequest>() {
         @Override
         public void put(HttpRequest request, String key, String value) {
-            request.withHeader(key, value);
+            request.header(key, value);
         }
     };
 }
