@@ -38,11 +38,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
  *
  * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationEventHub}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/en-us/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>

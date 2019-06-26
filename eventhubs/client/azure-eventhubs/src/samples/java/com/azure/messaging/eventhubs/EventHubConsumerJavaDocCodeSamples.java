@@ -30,9 +30,7 @@ public class EventHubConsumerJavaDocCodeSamples {
         // subscription.dispose(). This will stop fetching events from the Event Hub.
         Disposable subscription = consumer.receive().subscribe(event -> {
             // process event
-        }, error -> {
-            System.err.print(error.toString());
-        });
+        }, error -> System.err.print(error.toString()));
         // END: com.azure.messaging.eventhubs.eventhubconsumer.receive
     }
 

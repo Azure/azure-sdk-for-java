@@ -40,16 +40,16 @@ import java.util.Objects;
  *
  * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
  *
  * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationEventHub}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
  * <p><strong>Creating an {@link EventHubClient} using Event Hub with no {@link Retry}, different timeout and new
  * Scheduler</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationOptions}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
  *
  * @see EventHubClient
  */
