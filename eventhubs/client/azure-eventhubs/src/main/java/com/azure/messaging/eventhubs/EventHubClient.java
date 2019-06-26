@@ -45,7 +45,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
  * @see EventHubClientBuilder
- * @see <a href="https://docs.microsoft.com/en-us/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
+ * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 public class EventHubClient implements Closeable {
     /**
