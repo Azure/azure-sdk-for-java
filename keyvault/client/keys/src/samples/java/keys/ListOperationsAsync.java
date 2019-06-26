@@ -66,7 +66,7 @@ public class ListOperationsAsync {
         Thread.sleep(2000);
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
-        keyAsyncClient.listKeyVersions("BankAccountPassword").subscribe(keyBase ->
+        keyAsyncClient.listKeyVersions("CloudRsaKey").subscribe(keyBase ->
             keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
                 System.out.printf("Received key's version with name %s, type %s and version %s \n", keyResponse.value().name(),
                         keyResponse.value().keyMaterial().kty(), keyResponse.value().version())));

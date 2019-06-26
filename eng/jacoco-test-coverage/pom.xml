@@ -24,6 +24,7 @@
 
   <properties>
     <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
   </properties>
 
   <distributionManagement>
@@ -38,10 +39,6 @@
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <tag>HEAD</tag>
   </scm>
-
-  <properties>
-    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
-  </properties>
 
   <dependencies>
     <dependency>

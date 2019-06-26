@@ -55,7 +55,7 @@ public class ListOperations {
                 .keySize(4096));
 
         // You need to check all the different versions Cloud Rsa key had previously. Lets print all the versions of this key.
-        for (KeyBase key : keyClient.listKeyVersions("myRsaKey")) {
+        for (KeyBase key : keyClient.listKeyVersions("CloudRsaKey")) {
             Key keyWithMaterial  = keyClient.getKey(key).value();
             System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
