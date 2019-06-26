@@ -48,11 +48,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-auth</artifactId>
-      <version>${version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
       <version>${version}</version>
     </dependency>
