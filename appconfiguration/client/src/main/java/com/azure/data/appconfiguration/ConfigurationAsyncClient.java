@@ -622,49 +622,28 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
+     * @return A {@link PagedFlux} of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
     PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         final Context contextWithSpanName = setSpanName("listSettings", context);
-        return new PagedFlux<>(currentPage -> listPageSettings(options, contextWithSpanName, currentPage));
+        return new PagedFlux<>(() -> listFirstPageSettings(options, context),
+            continuationToken -> listNextPageSettings(contextWithSpanName, continuationToken));
     }
 
-    /**
-     * Fetches one page of configuration settings. If the current page is {@code null}, settings for first page is
-     * retrieved with provided {@code options} and {@code context}. If current page is not {@code null}, the settings for
-     * next page from the current page is retrieved.
-     *
-     * @param options Optional. Options to filter configuration setting results from the service
-     * @param context Additional context that is passed through the Http pipeline during the service call
-     * @param currentPage Current {@link PagedResponse}
-     * @return
-     */
-    private Mono<PagedResponse<ConfigurationSetting>> listPageSettings(SettingSelector options,
-        Context context, PagedResponse<ConfigurationSetting> currentPage) {
-        if (currentPage == null) {
-            return listFirstPageSettings(options, context);
-        } else {
-            return listNextPageSettings(context, currentPage);
-        }
-    }
-
-    private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context,
-        PagedResponse<ConfigurationSetting> currentPage) {
-        String nextPageLink = currentPage.nextLink();
-        if (nextPageLink == null || nextPageLink.isEmpty()) {
+    private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context, String continuationToken) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }
 
-        return service.listKeyValues(serviceEndpoint, nextPageLink, context)
-            .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink,
+        return service.listKeyValues(serviceEndpoint, continuationToken, context)
+            .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", continuationToken))
+            .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", continuationToken,
                     error));
     }
 
-    private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector options,Context context) {
-
+    private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector options, Context context) {
         if (options == null) {
             return service.listKeyValues(serviceEndpoint, null, null, null, null, context)
                 .doOnRequest(ignoredValue -> logger.asInfo().log("Listing all ConfigurationSettings"))

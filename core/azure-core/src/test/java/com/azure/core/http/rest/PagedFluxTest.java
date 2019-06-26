@@ -36,22 +36,22 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testEmptyFirstPage() {
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(page -> getNextPage(page, new ArrayList<>()));
+    public void testEmptyResults() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(0);
         StepVerifier.create(pagedFlux.log()).verifyComplete();
     }
 
     @Test
     public void testPagedFluxSubscribeToItems() throws MalformedURLException {
-        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.log())
             .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
             .verifyComplete();
     }
 
     @Test
-    public void testPagedFluxSubscribeToPages() throws MalformedURLException {
-        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
+    public void testPagedFluxSubscribeToPagesFromStart() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
                 pagedResponses.get(3), pagedResponses.get(4))
@@ -59,47 +59,60 @@ public class PagedFluxTest {
     }
 
     @Test
-    public void testPagedFluxSubscribeToPageFromArbitraryPage() throws MalformedURLException {
-        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux();
-        StepVerifier.create(pagedFlux.byPage(pagedResponses.get(2)).log())
+    public void testPagedFluxSubscribeToPagesFromContinuationToken() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
+        StepVerifier.create(pagedFlux.byPage("3").log())
             .expectNext(pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
     }
 
-    private PagedFlux<Integer> getIntegerPagedFlux() throws MalformedURLException {
+    @Test
+    public void testPagedFluxSubscribeToPagesWithSinglePageResult() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
+        StepVerifier.create(pagedFlux.byPage().log())
+            .expectNext(pagedResponses.get(0))
+            .verifyComplete();
+    }
+
+    @Test
+    public void testPagedFluxSubscribeToPagesFromNullContinuationToken() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
+        StepVerifier.create(pagedFlux.byPage(null).log())
+            .verifyComplete();
+    }
+
+    private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) throws MalformedURLException {
         HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
             .put("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
-        pagedResponses = IntStream.range(0, 5)
+        pagedResponses = IntStream.range(0, noOfPages)
             .boxed()
-            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i))
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
-        return new PagedFlux<>(currentPage -> getNextPage(currentPage, pagedResponses));
+
+        return new PagedFlux<>(() -> pagedResponses.isEmpty()? Mono.empty() : Mono.just(pagedResponses.get(0)),
+            continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
-        HttpHeaders httpHeaders, String deserializedHeaders, Integer i) {
+        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
         return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
             httpHeaders,
             getItems(i),
-            i < 4 ? String.valueOf(i + 1) : null,
+            i < noOfPages - 1 ? String.valueOf(i + 1) : null,
             deserializedHeaders);
     }
 
-    private Mono<PagedResponse<Integer>> getNextPage(PagedResponse<Integer> currentPage,
+    private Mono<PagedResponse<Integer>> getNextPage(String continuationToken,
         List<PagedResponse<Integer>> pagedResponses) {
-        String pageLink = "0";
-        if (currentPage != null) {
-            pageLink = currentPage.nextLink();
-        }
 
-        if (pageLink == null || pageLink.isEmpty() || Integer.valueOf(pageLink) >= pagedResponses.size()) {
+        if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
         }
 
-        return Mono.just(pagedResponses.get(Integer.valueOf(pageLink)));
+        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
     }
 
     private List<Integer> getItems(Integer i) {
