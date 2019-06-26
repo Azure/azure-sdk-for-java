@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -32,6 +33,17 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREF
  * allowed on the same partition and consumer group. This non-exclusive consumer is sometimes referred to as a
  * "Non-Epoch Consumer."</li>
  * </ul>
+ *
+ * <p><strong>Consuming events from Event Hub</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
+ *
+ * <p><string>Rate limiting consumption of events from Event Hub</string></p>
+ *
+ * For event consumers that need to limit the number of events they receive at a given time, they can use
+ * {@link BaseSubscriber#request(long)}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
  *
  * @see EventHubClient#createConsumer(String, String, EventPosition)
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
