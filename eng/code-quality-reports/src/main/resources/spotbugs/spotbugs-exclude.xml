@@ -445,7 +445,7 @@
       <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
       <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
     </Or>
-    <Bug pattern="URF_UNREAD_FIELD,NP_LOAD_OF_KNOWN_NULL_VALUE,DLS_DEAD_LOCAL_STORE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <!-- Field initialized by jackson property annotation -->
