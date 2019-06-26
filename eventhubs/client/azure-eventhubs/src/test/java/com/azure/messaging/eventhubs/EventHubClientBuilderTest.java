@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.TransportType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,7 +52,8 @@ public class EventHubClientBuilderTest {
         // Act
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
-            .proxyConfiguration(proxyConfig);
+            .proxyConfiguration(proxyConfig)
+            .transportType(TransportType.AMQP_WEB_SOCKETS);
 
         // Assert
         Assert.assertNotNull(builder.buildAsyncClient());
