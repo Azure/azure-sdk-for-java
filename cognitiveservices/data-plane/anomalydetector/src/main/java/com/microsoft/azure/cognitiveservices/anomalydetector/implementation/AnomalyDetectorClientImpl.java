@@ -225,7 +225,7 @@ public class AnomalyDetectorClientImpl extends AzureServiceClient implements Ano
         Observable<Response<ResponseBody>> lastDetect(@Body Request body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.anomalydetector.AnomalyDetectorClient changePointDetect" })
-        @POST("timeseries/changepoint/detect")
+        @POST("timeseries/changePoint/detect")
         Observable<Response<ResponseBody>> changePointDetect(@Body ChangePointDetectRequest body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }

@@ -97,7 +97,7 @@ public class TimeSeriesImpl implements com.microsoft.azure.cognitiveservices.ano
         Observable<Response<ResponseBody>> detectOnTimestamp(@Path("timeSeriesId") String timeSeriesId, @Body AnomalyDetectOnTimestampRequest body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.anomalydetector.TimeSeries changePointDetectOnTimestamp" })
-        @POST("timeseries/{timeSeriesId}/changepoint/detect")
+        @POST("timeseries/{timeSeriesId}/changePoint/detect")
         Observable<Response<ResponseBody>> changePointDetectOnTimestamp(@Path("timeSeriesId") String timeSeriesId, @Body ChangePointDetectOnTimestampRequest body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.anomalydetector.TimeSeries label" })
