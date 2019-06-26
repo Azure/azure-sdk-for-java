@@ -3,21 +3,21 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.Delete;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.Get;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.Patch;
-import com.azure.core.annotations.Post;
-import com.azure.core.annotations.Put;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.ReturnValueWireType;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnValueWireType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -38,7 +38,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@Service("KeyVaultSecrets")
+@ServiceInterface("KeyVaultSecrets")
 interface SecretService {
 
     @Put("secrets/{secret-name}")

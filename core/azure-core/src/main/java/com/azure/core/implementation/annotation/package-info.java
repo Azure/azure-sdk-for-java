@@ -4,4 +4,4 @@
 /**
  * Package containing annotations for client side methods that maps to REST APIs.
  */
-package com.azure.core.annotations;
+package com.azure.core.implementation.annotation;
