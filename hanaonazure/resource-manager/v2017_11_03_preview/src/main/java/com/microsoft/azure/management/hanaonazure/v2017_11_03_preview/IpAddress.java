@@ -17,7 +17,7 @@ public class IpAddress {
     /**
      * Specifies the IP address of the network interface.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
@@ -27,6 +27,17 @@ public class IpAddress {
      */
     public String ipAddress() {
         return this.ipAddress;
+    }
+
+    /**
+     * Set specifies the IP address of the network interface.
+     *
+     * @param ipAddress the ipAddress value to set
+     * @return the IpAddress object itself.
+     */
+    public IpAddress withIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
     }
 
 }
