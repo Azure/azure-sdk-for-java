@@ -2,12 +2,11 @@ trigger:
   - master
 
 variables:
-  PythonVersion: '3.6'
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 jobs:
-  - job: 'Generate oom.client.xml'
+  - job: 'Generate_Track_2'
     variables:
       skipComponentGovernanceDetection: true
     timeoutInMinutes: 120
@@ -57,7 +56,7 @@ jobs:
           copy -r target/staging $(Build.ArtifactStagingDirectory)/track1
         displayName: 'Copy reports to artifact staging'
 
-  - job: 'Generate pom.data.xml'
+  - job: 'Generate_Track_1'
     variables:
       skipComponentGovernanceDetection: true
     timeoutInMinutes: 120
