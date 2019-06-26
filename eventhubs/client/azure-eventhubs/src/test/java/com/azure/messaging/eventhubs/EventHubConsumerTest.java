@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -60,7 +61,7 @@ public class EventHubConsumerTest {
     private AmqpReceiveLink amqpReceiveLink;
 
     @Captor
-    private Supplier<Integer> creditSupplier;
+    private ArgumentCaptor<Supplier<Integer>> creditSupplier;
 
     private Mono<AmqpReceiveLink> receiveLinkMono;
     private List<Message> messages = new ArrayList<>();
@@ -259,6 +260,67 @@ public class EventHubConsumerTest {
         // Assert
         Assert.assertEquals(0, countDownLatch.getCount());
         verify(amqpReceiveLink, atLeastOnce()).addCredits(PREFETCH);
+    }
+
+    /**
+     * Verify that the correct number of credits are returned when the link is empty, and there are subscribers.
+     */
+    @Test
+    public void suppliesCreditsWhenSubscribers() {
+        // Arrange
+        final int backPressure = 8;
+
+        when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
+
+        final Disposable subscription = consumer.receive().subscribe(
+            e -> logger.asInfo().log("Event received"),
+            error -> Assert.fail(error.toString()),
+            () -> logger.asInfo().log("Complete"), sub -> {
+                sub.request(backPressure);
+            });
+
+        try {
+            // Act
+            // Capturing the credit supplier that we set when the link was received.
+            verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
+            final Supplier<Integer> supplier = creditSupplier.getValue();
+            final int actualCredits = supplier.get();
+
+            // Assert
+            Assert.assertEquals(backPressure, actualCredits);
+        } finally {
+            subscription.dispose();
+        }
+    }
+
+    /**
+     * Verify that 0 credits are returned when there are no subscribers for this link anymore.
+     */
+    @Test
+    public void suppliesNoCreditsWhenNoSubscribers() {
+        // Arrange
+        final int backPressure = 8;
+
+        when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
+
+        final Disposable subscription = consumer.receive().subscribe(
+            e -> logger.asInfo().log("Event received"),
+            error -> Assert.fail(error.toString()),
+            () -> logger.asInfo().log("Complete"),
+            sub -> sub.request(backPressure));
+
+        // Capturing the credit supplier that we set when the link was received.
+        verify(amqpReceiveLink).setEmptyCreditListener(creditSupplier.capture());
+        final Supplier<Integer> supplier = creditSupplier.getValue();
+
+        // Disposing of the downstream listener we had.
+        subscription.dispose();
+
+        // Act
+        final int actualCredits = supplier.get();
+
+        // Assert
+        Assert.assertEquals(0, actualCredits);
     }
 
     private void sendMessages(int numberOfEvents) {
