@@ -49,7 +49,7 @@ import java.util.Objects;
  * <p><strong>Creating an {@link EventHubClient} using Event Hub with no {@link Retry}, different timeout and new
  * Scheduler</strong></p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationTimeout}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationOptions}
  *
  * @see EventHubClient
  */
