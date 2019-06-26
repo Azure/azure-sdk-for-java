@@ -151,7 +151,7 @@ public class EventHubClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If none is specified, the default configuration store is used to configure the {@link EventHubClient}. Use {@link
+     * If not specified, the default configuration store is used to configure the {@link EventHubClient}. Use {@link
      * Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to configure the {@link EventHubClient}.

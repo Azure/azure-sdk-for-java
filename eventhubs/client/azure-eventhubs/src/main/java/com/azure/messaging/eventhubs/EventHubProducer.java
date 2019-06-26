@@ -58,14 +58,14 @@ import java.util.stream.Collector;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiate}
  *
- * <p><strong>Create a producer that pushes events to partition "foo" with a timeout of 45 seconds.</strong></p>
+ * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
  *
  * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
  * partitionId} when creating an {@link EventHubProducer}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer}
  *
- * <p><strong>Push events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
  * If developers want to push similar events to end up at the same partition, but do not require them to go to a
  * specific partition, they can use {@link SendOptions#partitionKey(String)}.
  *

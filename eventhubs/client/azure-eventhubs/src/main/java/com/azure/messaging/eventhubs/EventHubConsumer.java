@@ -21,17 +21,16 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MAXIMUM_PREF
 import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition and as a member of a
- * specific consumer group.
+ * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
+ * consumer group.
  *
  * <ul>
  * <li>If {@link EventHubConsumer} is created where {@link EventHubConsumerOptions#ownerLevel()} has a
  * value, then Event Hubs service will guarantee only one active consumer exists per partitionId and consumer group
  * combination. This consumer is sometimes referred to as an "Epoch Consumer."</li>
  * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
- * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. A maximum of five concurrent consumers are
- * allowed on the same partition and consumer group. This non-exclusive consumer is sometimes referred to as a
- * "Non-Epoch Consumer."</li>
+ * {@link EventHubConsumerOptions#ownerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+ * referred to as a "Non-Epoch Consumer."</li>
  * </ul>
  *
  * <p><strong>Consuming events from Event Hub</strong></p>
@@ -40,8 +39,8 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREF
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  *
- * For event consumers that need to limit the number of events they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.
+ * For event consumers that need to limit the number of events they receive at a given time, they can use {@link
+ * BaseSubscriber#request(long)}.
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
  *

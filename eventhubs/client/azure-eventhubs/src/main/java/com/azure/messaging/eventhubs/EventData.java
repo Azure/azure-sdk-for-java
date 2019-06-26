@@ -142,8 +142,8 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Adds an event property associated with this event. If the {@code key} exists in the map, its existing value
-     * is overwritten.
+     * Adds a piece of metadata to the event, allowing publishers to offer additional information to event consumers. If
+     * the {@code key} exists in the map, its existing value is overwritten.
      *
      * <p>
      * A common use case for {@link #properties()} is to associate serialization hints for the {@link #body()} as an aid
