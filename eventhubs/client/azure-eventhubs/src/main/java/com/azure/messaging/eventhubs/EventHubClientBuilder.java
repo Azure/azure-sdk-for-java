@@ -240,7 +240,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the retry policy for {@link EventHubClient}. If none is specified, {@link Retry#getDefaultRetry()} is used.
+     * Sets the retry policy for {@link EventHubClient}. If not specified, {@link Retry#getDefaultRetry()} is used.
      *
      * @param retry The retry policy to use.
      * @return The updated {@link EventHubClientBuilder} object.
