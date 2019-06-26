@@ -26,6 +26,7 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -36,6 +37,19 @@ import java.time.ZoneOffset;
  */
 public class Resource extends JsonSerializable {
     private String altLink;
+
+    static void validateResource(Resource resource) {
+        if (!StringUtils.isEmpty(resource.id())) {
+            if (resource.id().indexOf('/') != -1 || resource.id().indexOf('\\') != -1 ||
+                    resource.id().indexOf('?') != -1 || resource.id().indexOf('#') != -1) {
+                throw new IllegalArgumentException("Id contains illegal chars.");
+            }
+
+            if (resource.id().endsWith(" ")) {
+                throw new IllegalArgumentException("Id ends with a space.");
+            }
+        }
+    }
 
     /**
      * Copy constructor.

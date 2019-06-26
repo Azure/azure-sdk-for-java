@@ -61,52 +61,45 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 10;}");
-        CosmosStoredProcedureProperties readBackSp = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().properties();
+        CosmosStoredProcedureProperties readBackSp = createdCollection.getScripts()
+                .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
+                .properties();
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getStoredProcedure(readBackSp.id()).read(null);
+        Mono<CosmosStoredProcedureResponse> readObservable = createdCollection.getScripts()
+                .getStoredProcedure(readBackSp.id()).read(null);
 
         // validate stored procedure creation
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
-                .withId(readBackSp.id())
-                .withStoredProcedureBody("function() {var x = 10;}")
-                .notNullEtag()
-                .build();
+                .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
         validateSuccess(readObservable, validatorForRead);
-        
-        //update stored procedure
+
+        // update stored procedure
         readBackSp.body("function() {var x = 11;}");
 
-        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getStoredProcedure(readBackSp.id()).replace(readBackSp, new RequestOptions());
+        Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
+                .getStoredProcedure(readBackSp.id()).replace(readBackSp, new RequestOptions());
 
-        //validate stored procedure replace
+        // validate stored procedure replace
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
-                .withId(readBackSp.id())
-                .withStoredProcedureBody("function() {var x = 11;}")
-                .notNullEtag()
-                .build();
-        validateSuccess(replaceObservable, validatorForReplace);   
+                .withId(readBackSp.id()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
+        validateSuccess(replaceObservable, validatorForReplace);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
-        CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal.createCosmosStoredProcedureProperties(
-            "{" +
-                "  'id': '" + UUID.randomUUID().toString() + "'," +
-                "  'body':" +
-                "    'function () {" +
-                "      for (var i = 0; i < 10; i++) {" +
-                "        getContext().getResponse().appendValue(\"Body\", i);" +
-                "      }" +
-                "    }'" +
-                "}");
+        CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal
+                .createCosmosStoredProcedureProperties("{" + "  'id': '" + UUID.randomUUID().toString() + "',"
+                        + "  'body':" + "    'function () {" + "      for (var i = 0; i < 10; i++) {"
+                        + "        getContext().getResponse().appendValue(\"Body\", i);" + "      }" + "    }'" + "}");
 
         CosmosStoredProcedure storedProcedure = null;
 
-        storedProcedure = createdCollection.createStoredProcedure(storedProcedureDef,
-            new CosmosStoredProcedureRequestOptions()).block().storedProcedure();
+        storedProcedure = createdCollection.getScripts()
+                .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block()
+                .storedProcedure();
 
         String result = null;
 

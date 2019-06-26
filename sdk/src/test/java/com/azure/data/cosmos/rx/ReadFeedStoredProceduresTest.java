@@ -58,17 +58,15 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> feedObservable = createdCollection.listStoredProcedures(options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> feedObservable = createdCollection.getScripts()
+                .listStoredProcedures(options);
 
         int expectedPageSize = (createdStoredProcedures.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator
-                .Builder<CosmosStoredProcedureProperties>()
+        FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
-                .exactlyContainsInAnyOrder(createdStoredProcedures
-                        .stream()
-                        .map(d -> d.resourceId())
-                        .collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(
+                        createdStoredProcedures.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -82,7 +80,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             createdStoredProcedures.add(createStoredProcedures(createdCollection));
         }
 
@@ -98,6 +96,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties();
         sproc.id(UUID.randomUUID().toString());
         sproc.body("function() {var x = 10;}");
-        return cosmosContainer.createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions()).block().properties();
+        return cosmosContainer.getScripts().createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions())
+                .block().properties();
     }
 }

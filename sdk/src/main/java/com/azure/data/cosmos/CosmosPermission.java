@@ -25,13 +25,32 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Paths;
 import reactor.core.publisher.Mono;
 
-public class CosmosPermission extends CosmosResource{
+public class CosmosPermission {
 
     private final CosmosUser cosmosUser;
+    private String id;
 
     CosmosPermission(String id, CosmosUser user){
-        super(id);
+        this.id = id;
         this.cosmosUser = user; 
+    }
+
+    /**
+     * Get the id of the {@link CosmosPermission}
+     * @return the id of the {@link CosmosPermission}
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Set the id of the {@link CosmosPermission}
+     * @param id the id of the {@link CosmosPermission}
+     * @return the same {@link CosmosPermission} that had the id set
+     */
+    CosmosPermission id(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -94,13 +113,21 @@ public class CosmosPermission extends CosmosResource{
                 .single();
     }
 
-    @Override
-    protected String URIPathSegment() {
+    String URIPathSegment() {
         return Paths.PERMISSIONS_PATH_SEGMENT;
     }
 
-    @Override
-    protected String parentLink() {
+    String parentLink() {
         return cosmosUser.getLink();
+    }
+
+    String getLink() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(parentLink());
+        builder.append("/");
+        builder.append(URIPathSegment());
+        builder.append("/");
+        builder.append(id());
+        return builder.toString();
     }
 }

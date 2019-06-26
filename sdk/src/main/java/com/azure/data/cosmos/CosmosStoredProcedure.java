@@ -25,23 +25,32 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Paths;
 import reactor.core.publisher.Mono;
 
-public class CosmosStoredProcedure extends CosmosResource {
+public class CosmosStoredProcedure {
 
     private CosmosContainer cosmosContainer;
+    private String id;
 
     CosmosStoredProcedure(String id, CosmosContainer cosmosContainer) {
-        super(id);
+        this.id = id;
         this.cosmosContainer = cosmosContainer;
     }
 
-    @Override
-    protected String URIPathSegment() {
-        return Paths.STORED_PROCEDURES_PATH_SEGMENT;
+    /**
+     * Get the id of the {@link CosmosStoredProcedure}
+     * @return the id of the {@link CosmosStoredProcedure}
+     */
+    public String id() {
+        return id;
     }
 
-    @Override
-    protected String parentLink() {
-        return cosmosContainer.getLink();
+    /**
+     * Set the id of the {@link CosmosStoredProcedure}
+     * @param id the id of the {@link CosmosStoredProcedure}
+     * @return the same {@link CosmosStoredProcedure} that had the id set
+     */
+    CosmosStoredProcedure id(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -117,4 +126,21 @@ public class CosmosStoredProcedure extends CosmosResource {
                 .single();
     }
 
+    String URIPathSegment() {
+        return Paths.STORED_PROCEDURES_PATH_SEGMENT;
+    }
+
+    String parentLink() {
+        return cosmosContainer.getLink();
+    }
+
+    String getLink() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(parentLink());
+        builder.append("/");
+        builder.append(URIPathSegment());
+        builder.append("/");
+        builder.append(id());
+        return builder.toString();
+    }
 }

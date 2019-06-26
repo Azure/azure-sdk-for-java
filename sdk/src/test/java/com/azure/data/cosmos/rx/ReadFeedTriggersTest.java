@@ -60,17 +60,14 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.listTriggers(options);
+        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().listTriggers(options);
 
         int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator
-                .Builder<CosmosTriggerProperties>()
+        FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
-                .exactlyContainsInAnyOrder(createdTriggers
-                        .stream()
-                        .map(d -> d.resourceId())
-                        .collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(
+                        createdTriggers.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -84,7 +81,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             this.createdTriggers.add(this.createTriggers(createdCollection));
         }
 
@@ -102,6 +99,6 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        return cosmosContainer.createTrigger(trigger, new CosmosRequestOptions()).block().properties();
+        return cosmosContainer.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().properties();
     }
 }

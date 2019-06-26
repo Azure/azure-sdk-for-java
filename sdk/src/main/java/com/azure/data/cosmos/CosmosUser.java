@@ -4,11 +4,31 @@ import com.azure.data.cosmos.internal.Paths;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class CosmosUser extends CosmosResource {
+public class CosmosUser {
     CosmosDatabase database;
+    private String id;
+
     CosmosUser(String id, CosmosDatabase database) {
-        super(id);
+        this.id = id;
         this.database = database;
+    }
+
+    /**
+     * Get the id of the {@link CosmosUser}
+     * @return the id of the {@link CosmosUser}
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Set the id of the {@link CosmosUser}
+     * @param id the id of the {@link CosmosUser}
+     * @return the same {@link CosmosUser} that had the id set
+     */
+    CosmosUser id(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -143,17 +163,30 @@ public class CosmosUser extends CosmosResource {
     public CosmosPermission getPermission(String id){
         return new CosmosPermission(id, this);
     }
-    
-    @Override
-    protected String URIPathSegment() {
+
+    String URIPathSegment() {
         return Paths.USERS_PATH_SEGMENT;
     }
 
-    @Override
-    protected String parentLink() {
+    String parentLink() {
         return database.getLink()   ;
     }
 
+    String getLink() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(parentLink());
+        builder.append("/");
+        builder.append(URIPathSegment());
+        builder.append("/");
+        builder.append(id());
+        return builder.toString();
+    }
+
+    /**
+     * Gets the parent Database
+     *
+     * @return the (@link CosmosDatabase)
+     */
     public CosmosDatabase getDatabase() {
         return database;
     }

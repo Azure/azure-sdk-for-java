@@ -60,11 +60,11 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTriggerProperties readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().properties();
+        CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().properties();
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosTriggerResponse> readObservable = createdCollection.getTrigger(readBackTrigger.id()).read(new RequestOptions());
+        Mono<CosmosTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read(new RequestOptions());
 
         // validate trigger creation
         CosmosResponseValidator<CosmosTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
@@ -78,7 +78,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         //update trigger
         readBackTrigger.body("function() {var x = 11;}");
 
-        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getTrigger(readBackTrigger.id()).replace(readBackTrigger, new RequestOptions());
+        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger, new RequestOptions());
 
         // validate trigger replace
         CosmosResponseValidator<CosmosTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()

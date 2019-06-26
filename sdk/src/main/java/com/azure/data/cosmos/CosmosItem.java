@@ -25,14 +25,33 @@ package com.azure.data.cosmos;
 import com.azure.data.cosmos.internal.Paths;
 import reactor.core.publisher.Mono;
 
-public class CosmosItem extends CosmosResource{
+public class CosmosItem {
     private Object partitionKey;
     private CosmosContainer container;
+    private String id;
 
-     CosmosItem(String id, Object partitionKey, CosmosContainer container) {
-        super(id);
+    CosmosItem(String id, Object partitionKey, CosmosContainer container) {
+        this.id = id;
         this.partitionKey = partitionKey;
         this.container = container;
+    }
+
+    /**
+     * Get the id of the {@link CosmosItem}
+     * @return the id of the {@link CosmosItem}
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Set the id of the {@link CosmosItem}
+     * @param id the id of the {@link CosmosItem}
+     * @return the same {@link CosmosItem} that had the id set
+     */
+    CosmosItem id(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -145,13 +164,21 @@ public class CosmosItem extends CosmosResource{
         this.container = container;
     }
 
-    @Override
-    protected String URIPathSegment() {
+    String URIPathSegment() {
         return Paths.DOCUMENTS_PATH_SEGMENT;
     }
 
-    @Override
-    protected String parentLink() {
+    String parentLink() {
         return this.container.getLink();
+    }
+
+    String getLink() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(parentLink());
+        builder.append("/");
+        builder.append(URIPathSegment());
+        builder.append("/");
+        builder.append(id());
+        return builder.toString();
     }
 }

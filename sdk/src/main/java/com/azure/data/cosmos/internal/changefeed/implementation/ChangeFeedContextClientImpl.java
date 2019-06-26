@@ -47,6 +47,8 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 
+import static com.azure.data.cosmos.CosmosBridgeInternal.getContextClient;
+
 /**
  * Implementation for ChangeFeedDocumentClient.
  */
@@ -66,7 +68,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         }
 
         this.cosmosContainer = cosmosContainer;
-        this.documentClient = CosmosContainer.getContextClient(cosmosContainer);
+        this.documentClient = getContextClient(cosmosContainer);
         this.rxScheduler = Schedulers.elastic();
     }
 
@@ -82,7 +84,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         }
 
         this.cosmosContainer = cosmosContainer;
-        this.documentClient = CosmosContainer.getContextClient(cosmosContainer);
+        this.documentClient = getContextClient(cosmosContainer);
         this.rxScheduler = rxScheduler;
 
     }

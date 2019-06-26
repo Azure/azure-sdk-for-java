@@ -59,11 +59,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
         CosmosUserDefinedFunctionProperties readBackUdf = null;
 
-            readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();
+            readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();
 
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosUserDefinedFunctionResponse> readObservable = createdCollection.getUserDefinedFunction(readBackUdf.id()).read(new RequestOptions());
+        Mono<CosmosUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).read(new RequestOptions());
 
         // validate udf creation
         CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
@@ -76,7 +76,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         //update udf
         readBackUdf.body("function() {var x = 11;}");
 
-        Mono<CosmosUserDefinedFunctionResponse> replaceObservable = createdCollection.getUserDefinedFunction(readBackUdf.id()).replace(readBackUdf, new RequestOptions());
+        Mono<CosmosUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).replace(readBackUdf, new RequestOptions());
 
         //validate udf replace
         CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()

@@ -60,17 +60,16 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> feedObservable = createdCollection.listUserDefinedFunctions(options);
+        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> feedObservable = createdCollection.getScripts()
+                .listUserDefinedFunctions(options);
 
-        int expectedPageSize = (createdUserDefinedFunctions.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdUserDefinedFunctions.size() + options.maxItemCount() - 1)
+                / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator
-                .Builder<CosmosUserDefinedFunctionProperties>()
+        FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
-                .exactlyContainsInAnyOrder(createdUserDefinedFunctions
-                        .stream()
-                        .map(d -> d.resourceId())
-                        .collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(
+                        createdUserDefinedFunctions.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -84,7 +83,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             createdUserDefinedFunctions.add(createUserDefinedFunctions(createdCollection));
         }
 
@@ -98,9 +97,10 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunctions(CosmosContainer cosmosContainer) {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-         udf.id(UUID.randomUUID().toString());
-         udf.body("function() {var x = 10;}");
-        return cosmosContainer.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();
+        udf.id(UUID.randomUUID().toString());
+        udf.body("function() {var x = 10;}");
+        return cosmosContainer.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block()
+                .settings();
     }
 
     private String getCollectionLink() {

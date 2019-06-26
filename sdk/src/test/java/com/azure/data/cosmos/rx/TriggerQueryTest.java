@@ -66,7 +66,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.queryTriggers(query, options);
+        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         List<CosmosTriggerProperties> expectedDocs = createdTriggers
                 .stream()
@@ -93,7 +93,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.queryTriggers(query, options);
+        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .containsExactly(new ArrayList<>())
@@ -111,7 +111,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.queryTriggers(query, options);
+        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", cosmosTriggerSettings.resourceId()));
 
@@ -137,7 +137,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.queryTriggers(query, options);
+        Flux<FeedResponse<CosmosTriggerProperties>> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
@@ -149,7 +149,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
     public CosmosTriggerProperties createTrigger(CosmosContainer cosmosContainer) {
         CosmosTriggerProperties storedProcedure = getTriggerDef();
-        return cosmosContainer.createTrigger(storedProcedure, new CosmosRequestOptions()).block().properties();
+        return cosmosContainer.getScripts().createTrigger(storedProcedure, new CosmosRequestOptions()).block().properties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

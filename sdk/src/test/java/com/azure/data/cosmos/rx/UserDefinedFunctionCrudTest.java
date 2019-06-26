@@ -56,7 +56,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
 
-        Mono<CosmosUserDefinedFunctionResponse> createObservable = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions());
+        Mono<CosmosUserDefinedFunctionResponse> createObservable = createdCollection.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions());
 
         // validate udf creation
         CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
@@ -73,7 +73,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
-        CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();
+        CosmosUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();
 
         // read udf
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -94,7 +94,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
-        CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();
+        CosmosUserDefinedFunction readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();
 
         // delete udf
         Mono<CosmosResponse> deleteObservable = readBackUdf.delete(new CosmosRequestOptions());

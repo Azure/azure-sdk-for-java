@@ -62,7 +62,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
 
-        Mono<CosmosTriggerResponse> createObservable = createdCollection.createTrigger(trigger, new CosmosRequestOptions());
+        Mono<CosmosTriggerResponse> createObservable = createdCollection.getScripts().createTrigger(trigger, new CosmosRequestOptions());
 
         // validate trigger creation
         CosmosResponseValidator<CosmosTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
@@ -82,7 +82,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTrigger readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().trigger();
+        CosmosTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().trigger();
 
         // read trigger
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -106,7 +106,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTrigger readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().trigger();
+        CosmosTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().trigger();
 
         // delete trigger
         Mono<CosmosResponse> deleteObservable = readBackTrigger.delete(new CosmosRequestOptions());

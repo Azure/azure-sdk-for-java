@@ -214,7 +214,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                         "    });" +
                         "}'" +
                 "}");
-        CosmosStoredProcedure createdSproc = createdContainer.createStoredProcedure(sproc).block().storedProcedure();
+        CosmosStoredProcedure createdSproc = createdContainer.getScripts().createStoredProcedure(sproc).block().storedProcedure();
 
         // Partiton Key value same as what is specified in the stored procedure body
         RequestOptions options = new RequestOptions();

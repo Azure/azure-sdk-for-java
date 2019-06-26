@@ -62,9 +62,11 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(5);
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.queryStoredProcedures(query, options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
+                .queryStoredProcedures(query, options);
 
-        List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream().filter(sp -> filterId.equals(sp.id()) ).collect(Collectors.toList());
+        List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
+                .filter(sp -> filterId.equals(sp.id())).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
@@ -86,11 +88,11 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.queryStoredProcedures(query, options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
+                .queryStoredProcedures(query, options);
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
-                .containsExactly(new ArrayList<>())
-                .numberOfPages(1)
+                .containsExactly(new ArrayList<>()).numberOfPages(1)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
@@ -104,22 +106,19 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(3);
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.queryStoredProcedures(query, options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
+                .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs;
 
         int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator
-            .Builder<CosmosStoredProcedureProperties>()
-            .exactlyContainsInAnyOrder(expectedDocs
-                .stream()
-                .map(d -> d.resourceId())
-                .collect(Collectors.toList()))
-            .numberOfPages(expectedPageSize)
-            .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
-                .requestChargeGreaterThanOrEqualTo(1.0).build())
-            .build();
+        FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
+                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
 
         validateQuerySuccess(queryObservable, validator);
     }
@@ -129,19 +128,17 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.queryStoredProcedures(query, options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> queryObservable = createdCollection.getScripts()
+                .queryStoredProcedures(query, options);
 
-        FailureValidator validator = new FailureValidator.Builder()
-                .instanceOf(CosmosClientException.class)
-                .statusCode(400)
-                .notNullActivityId()
-                .build();
+        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
+                .statusCode(400).notNullActivityId().build();
         validateQueryFailure(queryObservable, validator);
     }
 
     public CosmosStoredProcedureProperties createStoredProc(CosmosContainer cosmosContainer) {
         CosmosStoredProcedureProperties storedProcedure = getStoredProcedureDef();
-        return cosmosContainer.createStoredProcedure(storedProcedure).block().properties();
+        return cosmosContainer.getScripts().createStoredProcedure(storedProcedure).block().properties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
@@ -150,7 +147,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             createdStoredProcs.add(createStoredProc(createdCollection));
         }
 
