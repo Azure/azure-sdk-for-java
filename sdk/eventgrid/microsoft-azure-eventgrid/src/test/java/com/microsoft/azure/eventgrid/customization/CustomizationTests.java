@@ -1038,7 +1038,7 @@ public class CustomizationTests {
     private String getTestPayloadFromFile(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         try {
-            byte[] bytes = IOUtils.resourceToByteArray("customization\\" + fileName);
+            byte[] bytes = IOUtils.resourceToByteArray("customization\\" + fileName, classLoader);
             return new String(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
