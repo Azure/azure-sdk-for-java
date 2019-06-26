@@ -203,6 +203,10 @@
       "\"knownSingulars\"": ["\"redis\""]
     }
   },
+  "relay/resource-manager": {
+    "source": "specification/relay/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "resourcegraph/resource-manager": {
     "source": "specification/resourcegraph/resource-manager/readme.md",
     "args": "--multiapi --fluent"
