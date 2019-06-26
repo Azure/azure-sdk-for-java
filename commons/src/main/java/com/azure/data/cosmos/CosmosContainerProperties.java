@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * Being schema-free, the items in a container do not need to share the same structure or fields. Since containers
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public class CosmosContainerSettings extends Resource {
+public class CosmosContainerProperties extends Resource {
 
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -47,13 +47,13 @@ public class CosmosContainerSettings extends Resource {
      * @param id id of the Container
      * @param partitionKeyPath partition key path
      */
-    public CosmosContainerSettings(String id, String partitionKeyPath) {
+    public CosmosContainerProperties(String id, String partitionKeyPath) {
         super.id(id);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add(partitionKeyPath);
         partitionKeyDef.paths(paths);
-        setPartitionKey(partitionKeyDef);
+        partitionKeyDefinition(partitionKeyDef);
     }
 
     /**
@@ -61,22 +61,22 @@ public class CosmosContainerSettings extends Resource {
      * @param id id of the container
      * @param partitionKeyDefinition the (@link PartitionKeyDefinition)
      */
-    public CosmosContainerSettings(String id, PartitionKeyDefinition partitionKeyDefinition) {
+    public CosmosContainerProperties(String id, PartitionKeyDefinition partitionKeyDefinition) {
         super.id(id);
-        setPartitionKey(partitionKeyDefinition);
+        partitionKeyDefinition(partitionKeyDefinition);
     }
 
-    CosmosContainerSettings(ResourceResponse<DocumentCollection> response) {
+    CosmosContainerProperties(ResourceResponse<DocumentCollection> response) {
         super(response.getResource().toJson());
     }
     
-    // Converting document collection to CosmosContainerSettings
-    CosmosContainerSettings(DocumentCollection collection){
+    // Converting document collection to CosmosContainerProperties
+    CosmosContainerProperties(DocumentCollection collection){
         super(collection.toJson());
     }
     
-    static List<CosmosContainerSettings> getFromV2Results(List<DocumentCollection> results){
-        return results.stream().map(CosmosContainerSettings::new).collect(Collectors.toList());
+    static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results){
+        return results.stream().map(CosmosContainerProperties::new).collect(Collectors.toList());
     }
 
     /**
@@ -100,9 +100,9 @@ public class CosmosContainerSettings extends Resource {
      * Sets the container's indexing policy
      *
      * @param indexingPolicy {@link IndexingPolicy} the indexing policy
-     * @return the CosmosContainerSettings.
+     * @return the CosmosContainerProperties.
      */
-    public CosmosContainerSettings indexingPolicy(IndexingPolicy indexingPolicy) {
+    public CosmosContainerProperties indexingPolicy(IndexingPolicy indexingPolicy) {
         if (indexingPolicy == null) {
             throw new IllegalArgumentException("IndexingPolicy cannot be null.");
         }
@@ -134,9 +134,9 @@ public class CosmosContainerSettings extends Resource {
      * Sets the Containers unique key policy
      * 
      * @param uniqueKeyPolicy the unique key policy
-     * @return the CosmosContainerSettings.
+     * @return the CosmosContainerProperties.
      */
-    public CosmosContainerSettings uniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+    public CosmosContainerProperties uniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         if (uniqueKeyPolicy == null) {
             throw new IllegalArgumentException("uniqueKeyPolicy cannot be null.");
         }
@@ -151,7 +151,7 @@ public class CosmosContainerSettings extends Resource {
      *
      * @return the partition key definition.
      */
-    public PartitionKeyDefinition partitionKey() {
+    public PartitionKeyDefinition partitionKeyDefinition() {
         if (this.partitionKeyDefinition == null) {
 
             if (super.has(Constants.Properties.PARTITION_KEY)) {
@@ -168,11 +168,11 @@ public class CosmosContainerSettings extends Resource {
      * Sets the containers's partition key definition.
      *
      * @param partitionKeyDefinition the partition key definition.
-     * @return the CosmosContainerSettings.
+     * @return the CosmosContainerProperties.
      */
-    public CosmosContainerSettings setPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
+    public CosmosContainerProperties partitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         if (partitionKeyDefinition == null) {
-            throw new IllegalArgumentException("partitionKey cannot be null.");
+            throw new IllegalArgumentException("partitionKeyDefinition cannot be null.");
         }
 
         this.partitionKeyDefinition = partitionKeyDefinition;
@@ -194,9 +194,9 @@ public class CosmosContainerSettings extends Resource {
      * on documents in different regions, in a collection in the Azure Cosmos DB service.
      *
      * @param value ConflictResolutionPolicy to be used.
-     * @return the CosmosContainerSettings.
+     * @return the CosmosContainerProperties.
      */
-    public CosmosContainerSettings conflictResolutionPolicy(ConflictResolutionPolicy value) {
+    public CosmosContainerProperties conflictResolutionPolicy(ConflictResolutionPolicy value) {
         if (value == null) {
             throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
@@ -207,7 +207,7 @@ public class CosmosContainerSettings extends Resource {
 
     DocumentCollection getV2Collection(){
         DocumentCollection collection = new DocumentCollection(this.toJson());
-        collection.setPartitionKey(this.partitionKey());
+        collection.setPartitionKey(this.partitionKeyDefinition());
         collection.setIndexingPolicy(this.indexingPolicy());
         return collection;
     }

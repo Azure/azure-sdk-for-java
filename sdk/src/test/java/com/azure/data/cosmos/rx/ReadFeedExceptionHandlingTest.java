@@ -26,7 +26,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosDatabaseSettings;
+import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.FeedResponse;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
@@ -52,21 +52,21 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readFeedException() throws Exception {
 
-        ArrayList<CosmosDatabaseSettings> dbs = new ArrayList<CosmosDatabaseSettings>();
-        dbs.add(new CosmosDatabaseSettings("db1"));
-        dbs.add(new CosmosDatabaseSettings("db2"));
+        ArrayList<CosmosDatabaseProperties> dbs = new ArrayList<CosmosDatabaseProperties>();
+        dbs.add(new CosmosDatabaseProperties("db1"));
+        dbs.add(new CosmosDatabaseProperties("db2"));
 
-        ArrayList<FeedResponse<CosmosDatabaseSettings>> frps = new ArrayList<FeedResponse<CosmosDatabaseSettings>>();
+        ArrayList<FeedResponse<CosmosDatabaseProperties>> frps = new ArrayList<FeedResponse<CosmosDatabaseProperties>>();
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
 
-        Flux<FeedResponse<CosmosDatabaseSettings>> response = Flux.merge(Flux.fromIterable(frps))
+        Flux<FeedResponse<CosmosDatabaseProperties>> response = Flux.merge(Flux.fromIterable(frps))
                                                                     .mergeWith(Flux.error(new CosmosClientException(0)))
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosClient mockClient = Mockito.spy(client);
         Mockito.when(mockClient.listDatabases(null)).thenReturn(response);
-        TestSubscriber<FeedResponse<CosmosDatabaseSettings>> subscriber = new TestSubscriber<FeedResponse<CosmosDatabaseSettings>>();
+        TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosDatabaseProperties>>();
         mockClient.listDatabases(null).subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);
         assertThat(subscriber.assertNotComplete());

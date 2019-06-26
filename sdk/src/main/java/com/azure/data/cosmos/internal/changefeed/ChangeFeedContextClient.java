@@ -26,7 +26,7 @@ import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
@@ -145,7 +145,7 @@ public interface ChangeFeedContextClient {
      * @param options         the {@link CosmosContainerRequestOptions} for this request; it can be set as null.
      * @return an {@link Mono} containing the read container settings.
      */
-    Mono<CosmosContainerSettings> readContainerSettings(CosmosContainer containerLink, CosmosContainerRequestOptions options);
+    Mono<CosmosContainerProperties> readContainerSettings(CosmosContainer containerLink, CosmosContainerRequestOptions options);
 
     /**
      * @return the Cosmos container client.

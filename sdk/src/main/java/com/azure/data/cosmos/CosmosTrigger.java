@@ -74,7 +74,7 @@ public class CosmosTrigger extends CosmosResource {
      * @param options         the request options.
      * @return an {@link Mono} containing the single resource response with the replaced cosmos trigger or an error.
      */
-    public Mono<CosmosTriggerResponse> replace(CosmosTriggerSettings triggerSettings, RequestOptions options) {
+    public Mono<CosmosTriggerResponse> replace(CosmosTriggerProperties triggerSettings, RequestOptions options) {
         return container.getDatabase()
                 .getDocClientWrapper()
                 .replaceTrigger(new Trigger(triggerSettings.toJson()), options)

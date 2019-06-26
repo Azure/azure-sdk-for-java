@@ -303,4 +303,8 @@ public class BridgeInternal {
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
+
+    public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
+        return new CosmosStoredProcedureProperties(jsonString);
+    }
 }

@@ -27,8 +27,8 @@ import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.CosmosTriggerSettings;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
@@ -55,12 +55,12 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
     public void replaceTrigger() throws Exception {
 
         // create a trigger
-        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
         trigger.id(UUID.randomUUID().toString());
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTriggerSettings readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().settings();
+        CosmosTriggerProperties readBackTrigger = createdCollection.createTrigger(trigger, new CosmosRequestOptions()).block().properties();
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());

@@ -5,12 +5,21 @@ import com.azure.data.cosmos.internal.Constants;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosUserSettings extends Resource {
+public class CosmosUserProperties extends Resource {
     /**
      * Initialize a user object.
      */
-    public CosmosUserSettings() {
+    public CosmosUserProperties() {
         super();
+    }
+
+    /**
+     * Sets the id
+     * @param id the name of the resource.
+     * @return the current instance of cosmos user properties
+     */
+    public CosmosUserProperties id(String id) {
+        return (CosmosUserProperties) super.id(id);
     }
 
     /**
@@ -18,16 +27,16 @@ public class CosmosUserSettings extends Resource {
      *
      * @param jsonString the json string that represents the database user.
      */
-    public CosmosUserSettings(String jsonString) {
+    CosmosUserProperties(String jsonString) {
         super(jsonString);
     }
 
-    CosmosUserSettings(ResourceResponse<User> response) {
+    CosmosUserProperties(ResourceResponse<User> response) {
         super(response.getResource().toJson()); 
     }
 
-    // Converting document collection to CosmosContainerSettings
-    CosmosUserSettings(User user){
+    // Converting document collection to CosmosContainerProperties
+    CosmosUserProperties(User user){
         super(user.toJson());
     }
 
@@ -49,7 +58,7 @@ public class CosmosUserSettings extends Resource {
         return new User(this.toJson());
     }
 
-    static List<CosmosUserSettings> getFromV2Results(List<User> results) {
-        return results.stream().map(CosmosUserSettings::new).collect(Collectors.toList());
+    static List<CosmosUserProperties> getFromV2Results(List<User> results) {
+        return results.stream().map(CosmosUserProperties::new).collect(Collectors.toList());
     }
 }

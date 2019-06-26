@@ -44,7 +44,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.net.URI;
@@ -201,7 +200,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateQuerySuccess(queryFlux, queryValidator);
 
         String documentCreatedBySprocId = "testDoc";
-        CosmosStoredProcedureSettings sproc = new CosmosStoredProcedureSettings(
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
                 "{" +
                         "  'id': '" +UUID.randomUUID().toString() + "'," +
                         "  'body':'" +
@@ -265,7 +264,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     public void testMultiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
         String partitionedCollectionId = "PartitionedCollection" + UUID.randomUUID().toString();
         String IdOfDocumentWithNoPk = UUID.randomUUID().toString();
-        CosmosContainerSettings containerSettings = new CosmosContainerSettings(partitionedCollectionId, "/mypk");
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(partitionedCollectionId, "/mypk");
         CosmosContainer createdContainer = createdDatabase.createContainer(containerSettings).block().container();
         CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
         cosmosItemProperties.id(IdOfDocumentWithNoPk);

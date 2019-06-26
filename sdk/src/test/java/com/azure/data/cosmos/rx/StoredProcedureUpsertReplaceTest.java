@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.rx;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
@@ -29,7 +30,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosStoredProcedure;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosStoredProcedureResponse;
-import com.azure.data.cosmos.CosmosStoredProcedureSettings;
+import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.RequestOptions;
 import org.testng.annotations.AfterClass;
@@ -57,10 +58,10 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     public void replaceStoredProcedure() throws Exception {
 
         // create a stored procedure
-        CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings();
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
         storedProcedureDef.id(UUID.randomUUID().toString());
         storedProcedureDef.body("function() {var x = 10;}");
-        CosmosStoredProcedureSettings readBackSp = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().settings();
+        CosmosStoredProcedureProperties readBackSp = createdCollection.createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().properties();
 
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -91,7 +92,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         // create a stored procedure
-        CosmosStoredProcedureSettings storedProcedureDef = new CosmosStoredProcedureSettings(
+        CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal.createCosmosStoredProcedureProperties(
             "{" +
                 "  'id': '" + UUID.randomUUID().toString() + "'," +
                 "  'body':" +

@@ -28,9 +28,9 @@ import com.azure.data.cosmos.CompositePathSortOrder;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosContainerSettings;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosItem;
@@ -86,13 +86,13 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
     }
 
-    private CosmosContainerSettings getCollectionDefinition(String collectionName) {
+    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
                 collectionName,
                 partitionKeyDef);
 
@@ -101,7 +101,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
-        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         Mono<CosmosContainerResponse> createObservable = database
                 .createContainer(collectionDefinition);
@@ -120,7 +120,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collection = new CosmosContainerSettings(
+        CosmosContainerProperties collection = new CosmosContainerProperties(
                 UUID.randomUUID().toString(),
                 partitionKeyDef);
 
@@ -196,7 +196,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
-        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosContainer collection = createObservable.block().container();
@@ -221,7 +221,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
-        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         
         Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosContainer collection = createObservable.block().container();
@@ -236,10 +236,10 @@ public class CollectionCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void replaceCollection(String collectionName) throws InterruptedException  {
         // create a collection
-        CosmosContainerSettings collectionDefinition = getCollectionDefinition(collectionName);
+        CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
         Mono<CosmosContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosContainer collection = createObservable.block().container();
-        CosmosContainerSettings collectionSettings = collection.read().block().settings();
+        CosmosContainerProperties collectionSettings = collection.read().block().properties();
         // sanity check
         assertThat(collectionSettings.indexingPolicy().indexingMode()).isEqualTo(IndexingMode.CONSISTENT);
         
@@ -274,7 +274,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             paths.add("/mypk");
             partitionKeyDef.paths(paths);
 
-            CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(collectionId, partitionKeyDef);
+            CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
             CosmosContainer collection = createCollection(db, collectionDefinition, new CosmosContainerRequestOptions());
 
             CosmosItemProperties document = new CosmosItemProperties();

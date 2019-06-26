@@ -64,7 +64,7 @@ public class CosmosPermission extends CosmosResource{
      * @param options    the request options.
      * @return an {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    public Mono<CosmosPermissionResponse> replace(CosmosPermissionSettings permissionSettings, RequestOptions options) {
+    public Mono<CosmosPermissionResponse> replace(CosmosPermissionProperties permissionSettings, RequestOptions options) {
         
         return cosmosUser.getDatabase()
                 .getDocClientWrapper()

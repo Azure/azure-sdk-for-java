@@ -26,7 +26,7 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.data.cosmos.CosmosStoredProcedureSettings;
+import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import org.testng.annotations.AfterClass;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     private CosmosContainer createdCollection;
-    private List<CosmosStoredProcedureSettings> createdStoredProcedures = new ArrayList<>();
+    private List<CosmosStoredProcedureProperties> createdStoredProcedures = new ArrayList<>();
 
     private CosmosClient client;
 
@@ -58,19 +58,19 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosStoredProcedureSettings>> feedObservable = createdCollection.listStoredProcedures(options);
+        Flux<FeedResponse<CosmosStoredProcedureProperties>> feedObservable = createdCollection.listStoredProcedures(options);
 
         int expectedPageSize = (createdStoredProcedures.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosStoredProcedureSettings> validator = new FeedResponseListValidator
-                .Builder<CosmosStoredProcedureSettings>()
+        FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator
+                .Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
                 .exactlyContainsInAnyOrder(createdStoredProcedures
                         .stream()
                         .map(d -> d.resourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureSettings>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -94,10 +94,10 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosStoredProcedureSettings createStoredProcedures(CosmosContainer cosmosContainer) {
-        CosmosStoredProcedureSettings sproc = new CosmosStoredProcedureSettings();
+    public CosmosStoredProcedureProperties createStoredProcedures(CosmosContainer cosmosContainer) {
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties();
         sproc.id(UUID.randomUUID().toString());
         sproc.body("function() {var x = 10;}");
-        return cosmosContainer.createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions()).block().settings();
+        return cosmosContainer.createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions()).block().properties();
     }
 }

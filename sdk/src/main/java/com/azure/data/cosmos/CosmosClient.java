@@ -146,11 +146,11 @@ public class CosmosClient implements AutoCloseable {
      * 
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the 
      * created or existing database.
-     * @param databaseSettings CosmosDatabaseSettings
+     * @param databaseSettings CosmosDatabaseProperties
      * @return a {@link Mono} containing the cosmos database response with the created or existing database or
      * an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseSettings databaseSettings) {
+    public Mono<CosmosDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
         return createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.id()));
     }
 
@@ -171,7 +171,7 @@ public class CosmosClient implements AutoCloseable {
             if (exception instanceof CosmosClientException) {
                 CosmosClientException cosmosClientException = (CosmosClientException) exception;
                 if (cosmosClientException.statusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createDatabase(new CosmosDatabaseSettings(database.id()), new CosmosDatabaseRequestOptions());
+                    return createDatabase(new CosmosDatabaseProperties(database.id()), new CosmosDatabaseRequestOptions());
                 }
             }
             return Mono.error(exception);
@@ -186,12 +186,12 @@ public class CosmosClient implements AutoCloseable {
      *      created database.
      * In case of failure the {@link Mono} will error.
      * 
-     * @param databaseSettings {@link CosmosDatabaseSettings}
+     * @param databaseSettings {@link CosmosDatabaseProperties}
      * @param options {@link CosmosDatabaseRequestOptions}
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseSettings databaseSettings,
-            CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
+                                                       CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
@@ -209,10 +209,10 @@ public class CosmosClient implements AutoCloseable {
      *      created database.
      * In case of failure the {@link Mono} will error.
      * 
-     * @param databaseSettings {@link CosmosDatabaseSettings}
+     * @param databaseSettings {@link CosmosDatabaseProperties}
      * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
      */
-    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseSettings databaseSettings) {
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings) {
         return createDatabase(databaseSettings, new CosmosDatabaseRequestOptions());
     }
 
@@ -228,7 +228,7 @@ public class CosmosClient implements AutoCloseable {
      * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
      */
     public Mono<CosmosDatabaseResponse> createDatabase(String id) {
-        return createDatabase(new CosmosDatabaseSettings(id), new CosmosDatabaseRequestOptions());
+        return createDatabase(new CosmosDatabaseProperties(id), new CosmosDatabaseRequestOptions());
     }
 
     /**
@@ -241,9 +241,9 @@ public class CosmosClient implements AutoCloseable {
      * @param options {@link FeedOptions}
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseSettings>> listDatabases(FeedOptions options) {
+    public Flux<FeedResponse<CosmosDatabaseProperties>> listDatabases(FeedOptions options) {
         return getDocClientWrapper().readDatabases(options)
-                .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseSettings.getFromV2Results(response.results()),
+                .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
     }
 
@@ -256,7 +256,7 @@ public class CosmosClient implements AutoCloseable {
      * 
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseSettings>> listDatabases() {
+    public Flux<FeedResponse<CosmosDatabaseProperties>> listDatabases() {
         return listDatabases(new FeedOptions());
     }
 
@@ -272,7 +272,7 @@ public class CosmosClient implements AutoCloseable {
      * @param options the feed options.
      * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseSettings>> queryDatabases(String query, FeedOptions options){
+    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(String query, FeedOptions options){
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
@@ -287,10 +287,10 @@ public class CosmosClient implements AutoCloseable {
      * @param options       the feed options.
      * @return an {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseSettings>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
+    public Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options){
         return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response-> BridgeInternal.createFeedResponse(
-                        CosmosDatabaseSettings.getFromV2Results(response.results()),
+                        CosmosDatabaseProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
     }
 

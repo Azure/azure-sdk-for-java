@@ -26,7 +26,7 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
-import com.azure.data.cosmos.CosmosUserSettings;
+import com.azure.data.cosmos.CosmosUserProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.RequestOptions;
@@ -47,7 +47,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
 
     private CosmosClient client;
-    private List<CosmosUserSettings> createdUsers = new ArrayList<>();
+    private List<CosmosUserProperties> createdUsers = new ArrayList<>();
 
     @Factory(dataProvider = "clientBuilders")
     public ReadFeedUsersTest(CosmosClientBuilder clientBuilder) {
@@ -60,15 +60,15 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosUserSettings>> feedObservable = createdDatabase.listUsers(options);
+        Flux<FeedResponse<CosmosUserProperties>> feedObservable = createdDatabase.listUsers(options);
 
         int expectedPageSize = (createdUsers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosUserSettings> validator = new FeedResponseListValidator.Builder<CosmosUserSettings>()
+        FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(createdUsers.size())
                 .exactlyContainsInAnyOrder(createdUsers.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -92,8 +92,8 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosUserSettings createUsers(CosmosDatabase cosmosDatabase) {
-        CosmosUserSettings user = new CosmosUserSettings();
+    public CosmosUserProperties createUsers(CosmosDatabase cosmosDatabase) {
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         return cosmosDatabase.createUser(user, new RequestOptions()).block().settings();
     }

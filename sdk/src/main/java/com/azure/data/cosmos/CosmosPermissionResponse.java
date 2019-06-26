@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos;
 
-public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionSettings> {
+public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
     CosmosPermission permissionClient; 
     
     CosmosPermissionResponse(ResourceResponse<Permission> response, CosmosUser cosmosUser) {
@@ -30,17 +30,17 @@ public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionSet
         if(response.getResource() == null){
             super.resourceSettings(null);
         }else{
-            super.resourceSettings(new CosmosPermissionSettings(response.getResource().toJson()));
+            super.resourceSettings(new CosmosPermissionProperties(response.getResource().toJson()));
             permissionClient = new CosmosPermission(response.getResource().id(), cosmosUser);
         }
     }
 
     /**
-     * Get the permission settings
+     * Get the permission properties
      *
-     * @return the permission settings
+     * @return the permission properties
      */
-    public CosmosPermissionSettings settings() {
+    public CosmosPermissionProperties properties() {
         return super.resourceSettings();
     }
 
@@ -49,7 +49,7 @@ public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionSet
      *
      * @return the cosmos permission
      */
-    public CosmosPermission getPermission() {
+    public CosmosPermission permission() {
         return permissionClient;
     }
 }

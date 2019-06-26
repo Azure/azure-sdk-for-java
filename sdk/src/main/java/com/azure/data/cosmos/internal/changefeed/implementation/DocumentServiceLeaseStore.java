@@ -24,6 +24,7 @@ package com.azure.data.cosmos.internal.changefeed.implementation;
 
 import com.azure.data.cosmos.AccessCondition;
 import com.azure.data.cosmos.AccessConditionType;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosItem;
@@ -108,7 +109,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         String lockId = this.getStoreLockName();
         CosmosItemProperties containerDocument = new CosmosItemProperties();
         containerDocument.id(lockId);
-        containerDocument.set(com.azure.data.cosmos.internal.Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
+        BridgeInternal.setProperty(containerDocument, com.azure.data.cosmos.internal.Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
 
         DocumentServiceLeaseStore self = this;
 

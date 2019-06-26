@@ -29,8 +29,8 @@ import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosUserDefinedFunction;
+import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionResponse;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionSettings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -52,7 +52,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createUserDefinedFunction() throws Exception {
         // create udf
-        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
 
@@ -70,7 +70,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
         CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();
@@ -91,7 +91,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteUserDefinedFunction() throws Exception {
         // create a udf
-        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
         CosmosUserDefinedFunction readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().userDefinedFunction();

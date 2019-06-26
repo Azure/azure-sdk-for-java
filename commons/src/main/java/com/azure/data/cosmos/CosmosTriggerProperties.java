@@ -28,12 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosTriggerSettings extends Resource {
+public class CosmosTriggerProperties extends Resource {
 
     /**
      * Constructor
      */
-    public CosmosTriggerSettings(){
+    public CosmosTriggerProperties(){
         super();
     }
 
@@ -42,11 +42,11 @@ public class CosmosTriggerSettings extends Resource {
      *
      * @param jsonString the json string that represents the trigger settings.
      */
-    public CosmosTriggerSettings(String jsonString){
+    CosmosTriggerProperties(String jsonString){
         super(jsonString);
     }
 
-    CosmosTriggerSettings(ResourceResponse<Trigger> response) {
+    CosmosTriggerProperties(ResourceResponse<Trigger> response) {
         super(response.getResource().toJson());
     }
 
@@ -56,7 +56,7 @@ public class CosmosTriggerSettings extends Resource {
      * @param id the name of the resource.
      * @return the current cosmos trigger settings instance
      */
-    public CosmosTriggerSettings id(String id) {
+    public CosmosTriggerProperties id(String id) {
         super.id(id);
         return this;
     }
@@ -74,9 +74,9 @@ public class CosmosTriggerSettings extends Resource {
      * Set the body of the trigger.
      *
      * @param body the body of the trigger.
-     * @return the CosmosTriggerSettings.
+     * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerSettings body(String body) {
+    public CosmosTriggerProperties body(String body) {
         super.set(Constants.Properties.BODY, body);
         return this;
     }
@@ -102,9 +102,9 @@ public class CosmosTriggerSettings extends Resource {
      * Set the type of the resource.
      *
      * @param triggerType the trigger type.
-     * @return the CosmosTriggerSettings.
+     * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerSettings triggerType(TriggerType triggerType) {
+    public CosmosTriggerProperties triggerType(TriggerType triggerType) {
         super.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
         return this;
     }
@@ -130,14 +130,14 @@ public class CosmosTriggerSettings extends Resource {
      * Set the operation type of the trigger.
      *
      * @param triggerOperation the trigger operation.
-     * @return the CosmosTriggerSettings.
+     * @return the CosmosTriggerProperties.
      */
-    public CosmosTriggerSettings triggerOperation(TriggerOperation triggerOperation) {
+    public CosmosTriggerProperties triggerOperation(TriggerOperation triggerOperation) {
         super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
         return this;
     }
 
-    static List<CosmosTriggerSettings> getFromV2Results(List<Trigger> results) {
-        return results.stream().map(trigger -> new CosmosTriggerSettings(trigger.toJson())).collect(Collectors.toList());
+    static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {
+        return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson())).collect(Collectors.toList());
     }
 }

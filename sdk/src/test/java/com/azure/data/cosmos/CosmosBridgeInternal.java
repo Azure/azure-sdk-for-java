@@ -8,8 +8,8 @@ public class CosmosBridgeInternal {
         return resource.getLink();
     }
     
-    public static DocumentCollection toDocumentCollection(CosmosContainerSettings cosmosContainerSettings) {
-        return new DocumentCollection(cosmosContainerSettings.toJson());
+    public static DocumentCollection toDocumentCollection(CosmosContainerProperties cosmosContainerProperties) {
+        return new DocumentCollection(cosmosContainerProperties.toJson());
     }
 
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {

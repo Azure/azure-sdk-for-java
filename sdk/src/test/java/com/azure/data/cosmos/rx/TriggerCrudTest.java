@@ -29,8 +29,8 @@ import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosTrigger;
+import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.CosmosTriggerSettings;
 import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
@@ -56,7 +56,7 @@ public class TriggerCrudTest extends TestSuiteBase {
     public void createTrigger() throws Exception {
 
         // create a trigger
-        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
         trigger.id(UUID.randomUUID().toString());
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
@@ -77,7 +77,7 @@ public class TriggerCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readTrigger() throws Exception {
         // create a trigger
-        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
         trigger.id(UUID.randomUUID().toString());
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
@@ -101,7 +101,7 @@ public class TriggerCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {
         // create a trigger
-        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
         trigger.id(UUID.randomUUID().toString());
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);

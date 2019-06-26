@@ -30,7 +30,7 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.FeedOptions;
@@ -210,7 +210,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         feedOptions.enableCrossPartitionQuery(true);
 
         boolean[] booleanValues = new boolean[] {true, false};
-        CosmosContainerSettings containerSettings = documentCollection.read().block().settings();
+        CosmosContainerProperties containerSettings = documentCollection.read().block().properties();
         Iterator<ArrayList<CompositePath>> compositeIndexesIterator = containerSettings.indexingPolicy().compositeIndexes().iterator();
         while (compositeIndexesIterator.hasNext()) {
         ArrayList<CompositePath> compositeIndex = compositeIndexesIterator.next();

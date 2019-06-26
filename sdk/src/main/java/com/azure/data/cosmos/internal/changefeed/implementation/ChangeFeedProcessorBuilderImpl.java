@@ -355,10 +355,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             return this.leaseContextClient.readContainerSettings(this.leaseContextClient.getContainerClient(), null)
                 .flatMap( collectionSettings -> {
                     boolean isPartitioned =
-                        collectionSettings.partitionKey() != null &&
-                            collectionSettings.partitionKey().paths() != null &&
-                            collectionSettings.partitionKey().paths().size() > 0;
-                    if (!isPartitioned || (collectionSettings.partitionKey().paths().size() != 1 || !collectionSettings.partitionKey().paths().get(0).equals("/id"))) {
+                        collectionSettings.partitionKeyDefinition() != null &&
+                            collectionSettings.partitionKeyDefinition().paths() != null &&
+                            collectionSettings.partitionKeyDefinition().paths().size() > 0;
+                    if (!isPartitioned || (collectionSettings.partitionKeyDefinition().paths().size() != 1 || !collectionSettings.partitionKeyDefinition().paths().get(0).equals("/id"))) {
 //                        throw new IllegalArgumentException("The lease collection, if partitioned, must have partition key equal to id.");
                         return Mono.error(new IllegalArgumentException("The lease collection must have partition key equal to id."));
                     }

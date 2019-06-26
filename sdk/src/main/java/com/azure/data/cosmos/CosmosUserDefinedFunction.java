@@ -63,7 +63,7 @@ public class CosmosUserDefinedFunction extends CosmosResource {
      * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
      * or an error.
      */
-    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionSettings udfSettings,
+    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings,
                                                            RequestOptions options) {
         return container.getDatabase()
                 .getDocClientWrapper()

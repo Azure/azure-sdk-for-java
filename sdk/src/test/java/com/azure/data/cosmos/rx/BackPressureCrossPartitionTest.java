@@ -28,8 +28,8 @@ import com.azure.data.cosmos.CosmosBridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosContainerSettings;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.DataType;
@@ -78,7 +78,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
-    static protected CosmosContainerSettings getCollectionDefinition() {
+    static protected CosmosContainerProperties getCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -100,7 +100,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
-        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
                 UUID.randomUUID().toString(),
                 partitionKeyDef);
         collectionDefinition.indexingPolicy(indexingPolicy);

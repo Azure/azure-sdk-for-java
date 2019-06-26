@@ -26,9 +26,9 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
+import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
-import com.azure.data.cosmos.CosmosDatabaseSettings;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -52,7 +52,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase() throws Exception {
-        CosmosDatabaseSettings databaseDefinition = new CosmosDatabaseSettings(CosmosDatabaseForTest.generateId());
+        CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
 
         // create the database
@@ -66,7 +66,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase_AlreadyExists() throws Exception {
-        CosmosDatabaseSettings databaseDefinition = new CosmosDatabaseSettings(CosmosDatabaseForTest.generateId());
+        CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
 
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
@@ -104,7 +104,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         // create the database
-        CosmosDatabaseSettings databaseDefinition = new CosmosDatabaseSettings(CosmosDatabaseForTest.generateId());
+        CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.id());
         CosmosDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().database();
 

@@ -28,16 +28,16 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosPermissionSettings extends Resource {
+public class CosmosPermissionProperties extends Resource {
 
-    public static List<CosmosPermissionSettings> getFromV2Results(List<Permission> results) {
-        return results.stream().map(permission -> new CosmosPermissionSettings(permission.toJson())).collect(Collectors.toList());
+    public static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
+        return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson())).collect(Collectors.toList());
     }
 
     /**
      * Initialize a permission object.
      */
-    public CosmosPermissionSettings() {
+    public CosmosPermissionProperties() {
         super();
     }
 
@@ -45,9 +45,9 @@ public class CosmosPermissionSettings extends Resource {
      * Sets the id
      *
      * @param id the name of the resource.
-     * @return the cosmos permission settings with id set
+     * @return the cosmos permission properties with id set
      */
-    public CosmosPermissionSettings id(String id) {
+    public CosmosPermissionProperties id(String id) {
         super.id(id);
         return this;
     }
@@ -57,7 +57,7 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param jsonString the json string that represents the permission.
      */
-    public CosmosPermissionSettings(String jsonString) {
+    CosmosPermissionProperties(String jsonString) {
         super(jsonString);
     }
 
@@ -75,7 +75,7 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param resourceLink the resource link.
      */
-    public CosmosPermissionSettings resourceLink(String resourceLink) {
+    public CosmosPermissionProperties resourceLink(String resourceLink) {
         super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
         return this;
     }
@@ -95,19 +95,10 @@ public class CosmosPermissionSettings extends Resource {
      *
      * @param permissionMode the permission mode.
      */
-    public CosmosPermissionSettings permissionMode(PermissionMode permissionMode) {
+    public CosmosPermissionProperties permissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
                 permissionMode.toString().toLowerCase());
         return this;
-    }
-
-    /**
-     * Gets the access token granting the defined permission.
-     *
-     * @return the access token.
-     */
-    public String token() {
-        return super.getString(Constants.Properties.TOKEN);
     }
 
     //TODO: need value from JsonSerializable
@@ -130,10 +121,10 @@ public class CosmosPermissionSettings extends Resource {
     /**
      * Sets the resource partition key associated with this permission object.
      *
-     * @param partitionkey the partition key.
+     * @param partitionKey the partition key.
      */
-    public CosmosPermissionSettings resourcePartitionKey(PartitionKey partitionkey) {
-        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionkey.getInternalPartitionKey().toJson());
+    public CosmosPermissionProperties resourcePartitionKey(PartitionKey partitionKey) {
+        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionKey.getInternalPartitionKey().toJson());
         return this;
     }
 

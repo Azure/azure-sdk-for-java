@@ -22,27 +22,27 @@
  */
 package com.azure.data.cosmos;
 
-public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerSettings> {
+public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
-    private CosmosTriggerSettings cosmosTriggerSettings;
+    private CosmosTriggerProperties cosmosTriggerProperties;
     private CosmosTrigger cosmosTrigger;
 
     CosmosTriggerResponse(ResourceResponse<Trigger> response, CosmosContainer container) {
         super(response);
         if(response.getResource() != null) {
-            super.resourceSettings(new CosmosTriggerSettings(response));
-            cosmosTriggerSettings = new CosmosTriggerSettings(response);
-            cosmosTrigger = new CosmosTrigger(cosmosTriggerSettings.id(), container);
+            super.resourceSettings(new CosmosTriggerProperties(response));
+            cosmosTriggerProperties = new CosmosTriggerProperties(response);
+            cosmosTrigger = new CosmosTrigger(cosmosTriggerProperties.id(), container);
         }
     }
 
     /**
-     * Gets the cosmos trigger settings or null
+     * Gets the cosmos trigger properties or null
      *
-     * @return {@link CosmosTriggerSettings}
+     * @return {@link CosmosTriggerProperties}
      */
-    public CosmosTriggerSettings settings() {
-        return cosmosTriggerSettings;
+    public CosmosTriggerProperties properties() {
+        return cosmosTriggerProperties;
     }
 
     /**

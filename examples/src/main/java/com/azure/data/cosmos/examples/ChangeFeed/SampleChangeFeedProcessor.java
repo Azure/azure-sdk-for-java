@@ -28,9 +28,9 @@ import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosContainerSettings;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.SerializationFormattingPolicy;
@@ -161,7 +161,7 @@ public class SampleChangeFeedProcessor {
             }
         }
 
-        CosmosContainerSettings containerSettings = new CosmosContainerSettings(collectionName, "/id");
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(collectionName, "/id");
 
         CosmosContainerRequestOptions requestOptions = new CosmosContainerRequestOptions();
         requestOptions.offerThroughput(10000);
@@ -204,7 +204,7 @@ public class SampleChangeFeedProcessor {
             }
         }
 
-        CosmosContainerSettings containerSettings = new CosmosContainerSettings(leaseCollectionName, "/id");
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(leaseCollectionName, "/id");
         CosmosContainerRequestOptions requestOptions = new CosmosContainerRequestOptions();
         requestOptions.offerThroughput(400);
 

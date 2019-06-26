@@ -27,8 +27,8 @@ import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionResponse;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionSettings;
 import com.azure.data.cosmos.RequestOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -53,11 +53,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     public void replaceUserDefinedFunction() throws Exception {
 
         // create a udf
-        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
 
-        CosmosUserDefinedFunctionSettings readBackUdf = null;
+        CosmosUserDefinedFunctionProperties readBackUdf = null;
 
             readBackUdf = createdCollection.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();
 

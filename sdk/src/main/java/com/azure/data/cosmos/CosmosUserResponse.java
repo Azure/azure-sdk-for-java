@@ -1,6 +1,6 @@
 package com.azure.data.cosmos;
 
-public class CosmosUserResponse extends CosmosResponse<CosmosUserSettings> {
+public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
     private CosmosUser user;
     
     CosmosUserResponse(ResourceResponse<User> response, CosmosDatabase database) {
@@ -8,7 +8,7 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserSettings> {
         if(response.getResource() == null){
             super.resourceSettings(null);
         }else{
-            super.resourceSettings(new CosmosUserSettings(response));
+            super.resourceSettings(new CosmosUserProperties(response));
             this.user = new CosmosUser(resourceSettings().id(), database);
         }
     }
@@ -25,9 +25,9 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserSettings> {
     /**
      * Gets the cosmos user settings
      *
-     * @return {@link CosmosUserSettings}
+     * @return {@link CosmosUserProperties}
      */
-    public CosmosUserSettings settings(){
+    public CosmosUserProperties settings(){
         return resourceSettings();
     }
 }

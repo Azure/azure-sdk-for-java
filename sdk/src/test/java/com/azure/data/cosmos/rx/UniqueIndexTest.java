@@ -27,7 +27,7 @@ import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosItem;
@@ -79,7 +79,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
@@ -135,7 +135,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
@@ -180,7 +180,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collectionDefinition = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
@@ -206,7 +206,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainer createdCollection = database.createContainer(collectionDefinition).block().container();
 
-        CosmosContainerSettings collection = createdCollection.read().block().settings();
+        CosmosContainerProperties collection = createdCollection.read().block().properties();
 
         assertThat(collection.uniqueKeyPolicy()).isNotNull();
         assertThat(collection.uniqueKeyPolicy().uniqueKeys()).isNotNull();

@@ -120,7 +120,7 @@ public final class DocumentCollection extends Resource {
      */
     public void setPartitionKey(PartitionKeyDefinition partitionKey) {
         if (partitionKey == null) {
-            throw new IllegalArgumentException("partitionKey cannot be null.");
+            throw new IllegalArgumentException("partitionKeyDefinition cannot be null.");
         }
 
         this.partitionKeyDefinition = partitionKey;

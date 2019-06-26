@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos;
 
-public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseSettings>{
+public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties>{
     private CosmosDatabase database;
 
     CosmosDatabaseResponse(ResourceResponse<Database> response, CosmosClient client) {
@@ -30,7 +30,7 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseSetting
         if(response.getResource() == null){
             super.resourceSettings(null);
         }else{
-            super.resourceSettings(new CosmosDatabaseSettings(response));
+            super.resourceSettings(new CosmosDatabaseProperties(response));
             database = new CosmosDatabase(resourceSettings().id(), client);
         }
     }
@@ -45,11 +45,11 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseSetting
     }
 
     /**
-     * Gets the cosmos database settings
+     * Gets the cosmos database properties
      *
-     * @return the cosmos database settings
+     * @return the cosmos database properties
      */
-    public CosmosDatabaseSettings settings() {
+    public CosmosDatabaseProperties properties() {
         return resourceSettings();
     }
 

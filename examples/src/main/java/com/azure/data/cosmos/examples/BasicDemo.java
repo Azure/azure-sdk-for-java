@@ -25,7 +25,7 @@ package com.azure.data.cosmos.examples;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
@@ -119,7 +119,7 @@ public class BasicDemo {
     private void createDbAndContainerBlocking() {
         client.createDatabaseIfNotExists(DATABASE_NAME)
                 .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + cosmosDatabaseResponse.database().id()))
-                .flatMap(dbResponse -> dbResponse.database().createContainerIfNotExists(new CosmosContainerSettings(CONTAINER_NAME, "/country")))
+                .flatMap(dbResponse -> dbResponse.database().createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME, "/country")))
                 .doOnSuccess(cosmosContainerResponse -> log("Container: " + cosmosContainerResponse.container().id()))
                 .doOnError(throwable -> log(throwable.getMessage()))
                 .publishOn(Schedulers.elastic())

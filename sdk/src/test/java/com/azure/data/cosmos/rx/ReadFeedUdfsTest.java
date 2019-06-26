@@ -26,7 +26,7 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosRequestOptions;
-import com.azure.data.cosmos.CosmosUserDefinedFunctionSettings;
+import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -45,7 +45,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private CosmosContainer createdCollection;
-    private List<CosmosUserDefinedFunctionSettings> createdUserDefinedFunctions = new ArrayList<>();
+    private List<CosmosUserDefinedFunctionProperties> createdUserDefinedFunctions = new ArrayList<>();
 
     private CosmosClient client;
 
@@ -60,19 +60,19 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosUserDefinedFunctionSettings>> feedObservable = createdCollection.listUserDefinedFunctions(options);
+        Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> feedObservable = createdCollection.listUserDefinedFunctions(options);
 
         int expectedPageSize = (createdUserDefinedFunctions.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosUserDefinedFunctionSettings> validator = new FeedResponseListValidator
-                .Builder<CosmosUserDefinedFunctionSettings>()
+        FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator
+                .Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(createdUserDefinedFunctions.size())
                 .exactlyContainsInAnyOrder(createdUserDefinedFunctions
                         .stream()
                         .map(d -> d.resourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionSettings>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -96,8 +96,8 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosUserDefinedFunctionSettings createUserDefinedFunctions(CosmosContainer cosmosContainer) {
-        CosmosUserDefinedFunctionSettings udf = new CosmosUserDefinedFunctionSettings();
+    public CosmosUserDefinedFunctionProperties createUserDefinedFunctions(CosmosContainer cosmosContainer) {
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
          udf.id(UUID.randomUUID().toString());
          udf.body("function() {var x = 10;}");
         return cosmosContainer.createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();

@@ -27,34 +27,34 @@ import com.azure.data.cosmos.internal.Constants;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosUserDefinedFunctionSettings extends Resource {
+public class CosmosUserDefinedFunctionProperties extends Resource {
 
     /**
      * Constructor
      */
-    public CosmosUserDefinedFunctionSettings(){
+    public CosmosUserDefinedFunctionProperties(){
         super();
     }
 
-    CosmosUserDefinedFunctionSettings(ResourceResponse<UserDefinedFunction> response) {
+    CosmosUserDefinedFunctionProperties(ResourceResponse<UserDefinedFunction> response) {
         super(response.getResource().toJson());
     }
 
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the cosmos user defined function settings.
+     * @param jsonString the json string that represents the cosmos user defined function properties.
      */
-    public CosmosUserDefinedFunctionSettings(String jsonString) {
+    CosmosUserDefinedFunctionProperties(String jsonString) {
         super(jsonString);
     }
 
     /**
      * Sets the id
      * @param id the name of the resource.
-     * @return the current instance of cosmos user defined function settings
+     * @return the current instance of cosmos user defined function properties
      */
-    public CosmosUserDefinedFunctionSettings id(String id) {
+    public CosmosUserDefinedFunctionProperties id(String id) {
         super.id(id);
         return this;
     }
@@ -72,14 +72,14 @@ public class CosmosUserDefinedFunctionSettings extends Resource {
      * Set the body of the user defined function.
      *
      * @param body the body.
-     * @return the CosmosUserDefinedFunctionSettings.
+     * @return the CosmosUserDefinedFunctionProperties.
      */
-    public CosmosUserDefinedFunctionSettings body(String body) {
+    public CosmosUserDefinedFunctionProperties body(String body) {
         super.set(Constants.Properties.BODY, body);
         return this;
     }
 
-    static List<CosmosUserDefinedFunctionSettings> getFromV2Results(List<UserDefinedFunction> results) {
-        return results.stream().map(udf -> new CosmosUserDefinedFunctionSettings(udf.toJson())).collect(Collectors.toList());
+    static List<CosmosUserDefinedFunctionProperties> getFromV2Results(List<UserDefinedFunction> results) {
+        return results.stream().map(udf -> new CosmosUserDefinedFunctionProperties(udf.toJson())).collect(Collectors.toList());
     }
 }

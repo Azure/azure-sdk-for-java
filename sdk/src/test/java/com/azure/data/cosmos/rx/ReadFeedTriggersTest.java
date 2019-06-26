@@ -26,7 +26,7 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosRequestOptions;
-import com.azure.data.cosmos.CosmosTriggerSettings;
+import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.TriggerOperation;
@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 public class ReadFeedTriggersTest extends TestSuiteBase {
 
     private CosmosContainer createdCollection;
-    private List<CosmosTriggerSettings> createdTriggers = new ArrayList<>();
+    private List<CosmosTriggerProperties> createdTriggers = new ArrayList<>();
 
     private CosmosClient client;
 
@@ -60,19 +60,19 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosTriggerSettings>> feedObservable = createdCollection.listTriggers(options);
+        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.listTriggers(options);
 
         int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosTriggerSettings> validator = new FeedResponseListValidator
-                .Builder<CosmosTriggerSettings>()
+        FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator
+                .Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
                 .exactlyContainsInAnyOrder(createdTriggers
                         .stream()
                         .map(d -> d.resourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerSettings>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
@@ -96,12 +96,12 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public CosmosTriggerSettings createTriggers(CosmosContainer cosmosContainer) {
-        CosmosTriggerSettings trigger = new CosmosTriggerSettings();
+    public CosmosTriggerProperties createTriggers(CosmosContainer cosmosContainer) {
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
         trigger.id(UUID.randomUUID().toString());
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        return cosmosContainer.createTrigger(trigger, new CosmosRequestOptions()).block().settings();
+        return cosmosContainer.createTrigger(trigger, new CosmosRequestOptions()).block().properties();
     }
 }

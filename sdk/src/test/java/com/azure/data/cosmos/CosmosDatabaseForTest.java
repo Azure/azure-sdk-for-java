@@ -91,7 +91,7 @@ public class CosmosDatabaseForTest {
     }
 
     public static CosmosDatabaseForTest create(DatabaseManager client) {
-        CosmosDatabaseSettings dbDef = new CosmosDatabaseSettings(generateId());
+        CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
 
         CosmosDatabase db = client.createDatabase(dbDef).block().database();
         CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(db);
@@ -101,12 +101,12 @@ public class CosmosDatabaseForTest {
 
     public static void cleanupStaleTestDatabases(DatabaseManager client) {
         logger.info("Cleaning stale test databases ...");
-        List<CosmosDatabaseSettings> dbs = client.queryDatabases(
+        List<CosmosDatabaseProperties> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
                                  new SqlParameterCollection(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
-                .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
+                                                   .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
 
-        for (CosmosDatabaseSettings db : dbs) {
+        for (CosmosDatabaseProperties db : dbs) {
             assertThat(db.id()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
 
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(client.getDatabase(db.id()));
@@ -123,8 +123,8 @@ public class CosmosDatabaseForTest {
     }
 
     public interface DatabaseManager {
-        Flux<FeedResponse<CosmosDatabaseSettings>> queryDatabases(SqlQuerySpec query);
-        Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseSettings databaseDefinition);
+        Flux<FeedResponse<CosmosDatabaseProperties>> queryDatabases(SqlQuerySpec query);
+        Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
         CosmosDatabase getDatabase(String id);
     }
 }

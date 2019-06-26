@@ -24,8 +24,8 @@ package com.azure.data.cosmos.rx;
 
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
+import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.data.cosmos.CosmosDatabaseSettings;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import org.testng.annotations.AfterClass;
@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
 
 public class ReadFeedDatabasesTest extends TestSuiteBase {
 
-    private List<CosmosDatabaseSettings> createdDatabases = new ArrayList<>();
-    private List<CosmosDatabaseSettings> allDatabases = new ArrayList<>();
+    private List<CosmosDatabaseProperties> createdDatabases = new ArrayList<>();
+    private List<CosmosDatabaseProperties> allDatabases = new ArrayList<>();
 
     private CosmosClient client;
 
@@ -58,14 +58,14 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosDatabaseSettings>> feedObservable = client.listDatabases(options);
+        Flux<FeedResponse<CosmosDatabaseProperties>> feedObservable = client.listDatabases(options);
 
         int expectedPageSize = (allDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
-        FeedResponseListValidator<CosmosDatabaseSettings> validator = new FeedResponseListValidator.Builder<CosmosDatabaseSettings>()
+        FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(allDatabases.size())
                 .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> d.resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -86,9 +86,9 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         allDatabases.addAll(createdDatabases);
     }
 
-    public CosmosDatabaseSettings createDatabase(CosmosClient client) {
-        CosmosDatabaseSettings db = new CosmosDatabaseSettings(UUID.randomUUID().toString());
-        return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().settings();
+    public CosmosDatabaseProperties createDatabase(CosmosClient client) {
+        CosmosDatabaseProperties db = new CosmosDatabaseProperties(UUID.randomUUID().toString());
+        return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().properties();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

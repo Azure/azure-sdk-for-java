@@ -108,7 +108,7 @@ public class CosmosStoredProcedure extends CosmosResource {
      * @param options                 the request options.
      * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
-    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureSettings storedProcedureSettings,
+    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
                                                        RequestOptions options) {
         return cosmosContainer.getDatabase()
                 .getDocClientWrapper()

@@ -22,17 +22,17 @@
  */
 package com.azure.data.cosmos;
 
-public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionSettings> {
+public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
-    private CosmosUserDefinedFunctionSettings cosmosUserDefinedFunctionSettings;
+    private CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
     private CosmosUserDefinedFunction cosmosUserDefinedFunction;
 
     CosmosUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response, CosmosContainer container) {
         super(response);
         if(response.getResource() != null) {
-            super.resourceSettings(new CosmosUserDefinedFunctionSettings(response));
-            cosmosUserDefinedFunctionSettings = new CosmosUserDefinedFunctionSettings(response);
-            cosmosUserDefinedFunction = new CosmosUserDefinedFunction(cosmosUserDefinedFunctionSettings.id(), container);
+            super.resourceSettings(new CosmosUserDefinedFunctionProperties(response));
+            cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(response);
+            cosmosUserDefinedFunction = new CosmosUserDefinedFunction(cosmosUserDefinedFunctionProperties.id(), container);
         }
     }
 
@@ -40,8 +40,8 @@ public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUser
      * Gets the cosmos user defined function settings
      * @return the cosmos user defined function settings
      */
-    public CosmosUserDefinedFunctionSettings settings() {
-        return cosmosUserDefinedFunctionSettings;
+    public CosmosUserDefinedFunctionProperties settings() {
+        return cosmosUserDefinedFunctionProperties;
     }
 
     /**

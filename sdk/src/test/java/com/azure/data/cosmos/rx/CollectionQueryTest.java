@@ -25,7 +25,7 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosContainerSettings;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.FeedOptions;
@@ -66,7 +66,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerSettings>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosContainer> expectedCollections = createdCollections.stream()
                 .filter(c -> StringUtils.equals(filterCollectionId, c.id()) ).collect(Collectors.toList());
@@ -75,11 +75,11 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         int expectedPageSize = (expectedCollections.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosContainerSettings> validator = new FeedResponseListValidator.Builder<CosmosContainerSettings>()
+        FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .totalSize(expectedCollections.size())
-                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().settings().resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().properties().resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -93,7 +93,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        Flux<FeedResponse<CosmosContainerSettings>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosContainer> expectedCollections = createdCollections;
 
@@ -101,11 +101,11 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         int expectedPageSize = (expectedCollections.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosContainerSettings> validator = new FeedResponseListValidator.Builder<CosmosContainerSettings>()
+        FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .totalSize(expectedCollections.size())
-                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().settings().resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedCollections.stream().map(d -> d.read().block().properties().resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -118,12 +118,12 @@ public class CollectionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosContainerSettings>> queryObservable = createdDatabase.queryContainers(query, options);
+        Flux<FeedResponse<CosmosContainerProperties>> queryObservable = createdDatabase.queryContainers(query, options);
 
-        FeedResponseListValidator<CosmosContainerSettings> validator = new FeedResponseListValidator.Builder<CosmosContainerSettings>()
+        FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .containsExactly(new ArrayList<>())
                 .numberOfPages(1)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
         validateQuerySuccess(queryObservable, validator);
@@ -139,7 +139,7 @@ public class CollectionQueryTest extends TestSuiteBase {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
 
-        CosmosContainerSettings collection = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         createdCollections.add(createCollection(client, databaseId, collection));
     }
 

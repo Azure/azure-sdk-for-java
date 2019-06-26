@@ -25,8 +25,8 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerRequestOptions;
-import com.azure.data.cosmos.CosmosContainerSettings;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.FeedOptions;
@@ -67,15 +67,15 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosContainerSettings>> feedObservable = createdDatabase.listContainers(options);
+        Flux<FeedResponse<CosmosContainerProperties>> feedObservable = createdDatabase.listContainers(options);
 
         int expectedPageSize = (createdCollections.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
-        FeedResponseListValidator<CosmosContainerSettings> validator = new FeedResponseListValidator.Builder<CosmosContainerSettings>()
+        FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .totalSize(createdCollections.size())
-                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.read().block().settings().resourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(createdCollections.stream().map(d -> d.read().block().properties().resourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
-                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerSettings>()
+                .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosContainerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
@@ -104,7 +104,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
-        CosmosContainerSettings collection = new CosmosContainerSettings(UUID.randomUUID().toString(), partitionKeyDef);
+        CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         return database.createContainer(collection, new CosmosContainerRequestOptions()).block().container();
     }
 }

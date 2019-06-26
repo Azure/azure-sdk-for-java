@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos;
 
-public class CosmosContainerResponse extends CosmosResponse<CosmosContainerSettings> {
+public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
     private CosmosContainer container;
 
@@ -31,7 +31,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerSetti
         if(response.getResource() == null){
             super.resourceSettings(null);
         }else{
-            super.resourceSettings(new CosmosContainerSettings(response));
+            super.resourceSettings(new CosmosContainerProperties(response));
             container = new CosmosContainer(resourceSettings().id(), database);
         }
     }
@@ -55,10 +55,10 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerSetti
     }
 
     /**
-     * Gets the container settings
-     * @return the cosmos container settings
+     * Gets the container properties
+     * @return the cosmos container properties
      */
-    public CosmosContainerSettings settings() {
+    public CosmosContainerProperties properties() {
         return resourceSettings();
     }
 

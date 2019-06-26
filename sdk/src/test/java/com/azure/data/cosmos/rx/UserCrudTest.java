@@ -30,7 +30,7 @@ import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosUser;
 import com.azure.data.cosmos.CosmosUserResponse;
-import com.azure.data.cosmos.CosmosUserSettings;
+import com.azure.data.cosmos.CosmosUserProperties;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -55,7 +55,7 @@ public class UserCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         //create user
-        CosmosUserSettings user = new CosmosUserSettings();
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
         Mono<CosmosUserResponse> createObservable = createdDatabase.createUser(user, null);
@@ -72,7 +72,7 @@ public class UserCrudTest extends TestSuiteBase {
     public void readUser() throws Exception {
  
         //create user
-        CosmosUserSettings user = new CosmosUserSettings();
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
        
         CosmosUser readBackUser = createdDatabase.createUser(user, null).block().user();
@@ -92,7 +92,7 @@ public class UserCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         //create user
-        CosmosUserSettings user = new CosmosUserSettings();
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
         CosmosUser readBackUser = createdDatabase.createUser(user, null).block().user();
@@ -116,7 +116,7 @@ public class UserCrudTest extends TestSuiteBase {
     public void upsertUser() throws Exception {
 
         //create user
-        CosmosUserSettings user = new CosmosUserSettings();
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
         Mono<CosmosUserResponse> upsertObservable = createdDatabase.upsertUser(user, null);
@@ -134,10 +134,10 @@ public class UserCrudTest extends TestSuiteBase {
     public void replaceUser() throws Exception {
 
         //create user
-        CosmosUserSettings user = new CosmosUserSettings();
+        CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        CosmosUserSettings readBackUser = createdDatabase.createUser(user, null).block().settings();
+        CosmosUserProperties readBackUser = createdDatabase.createUser(user, null).block().settings();
         
         // read user to validate creation
         Mono<CosmosUserResponse> readObservable = createdDatabase.getUser(user.id()).read();

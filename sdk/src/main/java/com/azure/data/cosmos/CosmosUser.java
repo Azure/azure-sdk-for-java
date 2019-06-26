@@ -37,7 +37,7 @@ public class CosmosUser extends CosmosResource {
      * @param options      the request options
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
-    public Mono<CosmosUserResponse> replace(CosmosUserSettings userSettings, RequestOptions options) {
+    public Mono<CosmosUserResponse> replace(CosmosUserProperties userSettings, RequestOptions options) {
         return this.database.getDocClientWrapper()
                 .replaceUser(userSettings.getV2User(), options)
                 .map(response -> new CosmosUserResponse(response, database)).single();
@@ -66,7 +66,7 @@ public class CosmosUser extends CosmosResource {
      * @param options    the request options.
      * @return an {@link Mono} containing the single resource response with the created permission or an error.
      */
-    public Mono<CosmosPermissionResponse> createPermission(CosmosPermissionSettings permissionSettings, CosmosPermissionsRequestOptions options) {
+    public Mono<CosmosPermissionResponse> createPermission(CosmosPermissionProperties permissionSettings, CosmosPermissionsRequestOptions options) {
         if(options == null){
             options = new CosmosPermissionsRequestOptions();
         }
@@ -88,7 +88,7 @@ public class CosmosUser extends CosmosResource {
      * @param options    the request options.
      * @return an {@link Mono} containing the single resource response with the upserted permission or an error.
      */
-    public Mono<CosmosPermissionResponse> upsertPermission(CosmosPermissionSettings permissionSettings, CosmosPermissionsRequestOptions options) {
+    public Mono<CosmosPermissionResponse> upsertPermission(CosmosPermissionProperties permissionSettings, CosmosPermissionsRequestOptions options) {
         Permission permission = permissionSettings.getV2Permissions();
         if(options == null){
             options = new CosmosPermissionsRequestOptions();
@@ -110,10 +110,10 @@ public class CosmosUser extends CosmosResource {
      * @param options        the feed options.
      * @return an {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
-    public Flux<FeedResponse<CosmosPermissionSettings>> listPermissions(FeedOptions options) {
+    public Flux<FeedResponse<CosmosPermissionProperties>> listPermissions(FeedOptions options) {
         return getDatabase().getDocClientWrapper()
                         .readPermissions(getLink(), options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionSettings.getFromV2Results(response.results()),
+                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.results()),
                                 response.responseHeaders()));
     }
 
@@ -128,10 +128,10 @@ public class CosmosUser extends CosmosResource {
      * @param options        the feed options.
      * @return an {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    public Flux<FeedResponse<CosmosPermissionSettings>> queryPermissions(String query, FeedOptions options) {
+    public Flux<FeedResponse<CosmosPermissionProperties>> queryPermissions(String query, FeedOptions options) {
         return getDatabase().getDocClientWrapper()
                         .queryPermissions(getLink(), query, options)
-                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionSettings.getFromV2Results(response.results()),
+                        .map(response-> BridgeInternal.createFeedResponse(CosmosPermissionProperties.getFromV2Results(response.results()),
                                 response.responseHeaders()));
     }
 

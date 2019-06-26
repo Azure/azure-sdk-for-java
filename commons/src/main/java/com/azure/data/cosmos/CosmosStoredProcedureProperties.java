@@ -27,22 +27,22 @@ import com.azure.data.cosmos.internal.Constants;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosStoredProcedureSettings extends Resource {
+public class CosmosStoredProcedureProperties extends Resource {
 
     /**
      * Constructor.
      *
      */
-    public CosmosStoredProcedureSettings() {
+    public CosmosStoredProcedureProperties() {
         super();
     }
 
     /**
      * Sets the id
      * @param id the name of the resource.
-     * @return return the Cosmos stored procedure settings with id set
+     * @return return the Cosmos stored procedure properties with id set
      */
-    public CosmosStoredProcedureSettings id(String id){
+    public CosmosStoredProcedureProperties id(String id){
         super.id(id);
         return this;
     }
@@ -52,7 +52,7 @@ public class CosmosStoredProcedureSettings extends Resource {
      *
      * @param jsonString the json string that represents the stored procedure.
      */
-    public CosmosStoredProcedureSettings(String jsonString) {
+    CosmosStoredProcedureProperties(String jsonString) {
         super(jsonString);
     }
 
@@ -62,13 +62,13 @@ public class CosmosStoredProcedureSettings extends Resource {
      * @param id the id of the stored procedure
      * @param body the body of the stored procedure
      */
-    public CosmosStoredProcedureSettings(String id, String body) {
+    public CosmosStoredProcedureProperties(String id, String body) {
         super();
         super.id(id);
         this.body(body);
     }
 
-    CosmosStoredProcedureSettings(ResourceResponse<StoredProcedure> response) {
+    CosmosStoredProcedureProperties(ResourceResponse<StoredProcedure> response) {
         super(response.getResource().toJson());
     }
 
@@ -91,7 +91,7 @@ public class CosmosStoredProcedureSettings extends Resource {
     }
 
 
-    static List<CosmosStoredProcedureSettings> getFromV2Results(List<StoredProcedure> results) {
-        return results.stream().map(sproc -> new CosmosStoredProcedureSettings(sproc.toJson())).collect(Collectors.toList());
+    static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
+        return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson())).collect(Collectors.toList());
     }
 }
