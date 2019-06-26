@@ -109,6 +109,10 @@ jobs:
           publishJUnitResults: false
           goals: 'site:site'
 
+      - powershell: |
+          copy -r target/site/apidocs $(Build.ArtifactStagingDirectory)
+        displayName: 'Copy reports to artifact staging'
+
       - task: Maven@3
         displayName: 'Install Management Packages'
         inputs:
@@ -132,10 +136,6 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'site:site'
-
-      - powershell: |
-          copy -r target/site/apidocs $(Build.ArtifactStagingDirectory)
-        displayName: 'Copy reports to artifact staging'
 
       - task: PublishPipelineArtifact@0
         condition: succeededOrFailed()
