@@ -13,6 +13,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import com.azure.core.util.polling.PollResponse.OperationStatus;
+
 /**
  * This class offers API that simplifies the task of executing long-running operations against Azure service.
  * The {@link Poller} consist of poll operation, cancel operation if supported by Azure service and polling interval.
@@ -224,6 +226,73 @@ public class Poller<T> {
             setAutoPollingEnabled(true);
         }
         return this.fluxHandle.blockLast();
+    }
+
+    /**
+     * Blocks until given {@link OperationStatus} is received or a timeout expires.
+     * @param statusToBlockFor The {@link OperationStatus} to block for which can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
+     * @param timeout The time after which it will stop blocking.
+     * @return
+     */
+    public PollResponse<T> blockUtil(PollResponse.OperationStatus statusToBlockFor, Duration timeout) {
+        if (statusToBlockFor == PollResponse.OperationStatus.OTHER) {
+            throw new IllegalArgumentException("The status input parameter can not be OTHER.");
+        }
+        Objects.requireNonNull(timeout, "The timeout input parameter cannot be null.");
+        if (timeout.toNanos() <= 0) {
+            throw new IllegalArgumentException("Negative or zero value for timeout not allowed.");
+        }
+
+        if (!isAutoPollingEnabled()) {
+            setAutoPollingEnabled(true);
+        }
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, null, statusToBlockFor)).blockFirst(timeout);
+    }
+
+    /**
+     * Blocks until given other operation status is received or a timeout expires.
+     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} and empty string are invalid.
+     * @param timeout The time after which it will stop blocking.
+     * @return
+     */
+    public PollResponse<T> blockUtilOther(String otherStatusToBlockFor, Duration timeout) {
+        if (!isAutoPollingEnabled()) {
+            setAutoPollingEnabled(true);
+        }
+        Objects.requireNonNull(timeout, "The timeout input parameter cannot be null.");
+        if (timeout.toNanos() <= 0) {
+            throw new IllegalArgumentException("Negative or zero value for timeout not allowed.");
+        }
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, otherStatusToBlockFor, PollResponse.OperationStatus.OTHER)).blockFirst(timeout);
+    }
+
+    /*
+     * Indicate that the @{Link PollResponse} matches with the status to block for.
+     * @param currentPollResponse The poll response which we have received from the flux.
+     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} or empty string are invalid.
+     * @param statusToBlockFor The {@link OperationStatus} to block and it can be any valid {@link OperationStatus} value.
+     * @return True if the {@link PollResponse} return status matches the status to block for.
+     */
+    private boolean matchStatus(PollResponse<T> currentPollResponse, String otherStatusToBlockFor, PollResponse.OperationStatus statusToBlockFor) {
+        if (currentPollResponse == null || statusToBlockFor == null) {
+            return false;
+        }
+        if  (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER
+            && (otherStatusToBlockFor == null || otherStatusToBlockFor.trim().length() == 0)) {
+            throw new IllegalArgumentException("The status can not be null or empty.");
+        }
+
+        if (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER) {
+            if (currentPollResponse.getOtherStatus() != null
+                && currentPollResponse.getOtherStatus().equalsIgnoreCase(otherStatusToBlockFor)) {
+                return true;
+            }
+        } else {
+            if (statusToBlockFor == currentPollResponse.getStatus()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /*
