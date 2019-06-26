@@ -38,7 +38,7 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREF
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receive}
  *
- * <p><string>Rate limiting consumption of events from Event Hub</string></p>
+ * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  *
  * For event consumers that need to limit the number of events they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Code snippets demonstrating various {@link EventHubConsumer} scenarios.
  */
-public class EventHubConsumerJavaDocCodeSnippets {
+public class EventHubConsumerJavaDocCodeSamples {
     private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").build();
 
     /**

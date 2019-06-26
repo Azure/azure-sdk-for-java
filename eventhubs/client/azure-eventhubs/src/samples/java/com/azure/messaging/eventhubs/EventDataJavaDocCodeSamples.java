@@ -8,7 +8,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link EventData}.
  */
-public class EventDataJavaDocCodeSnippets {
+public class EventDataJavaDocCodeSamples {
 
     /**
      * Creates an EventData using application properties.

@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Contains code snippets when generating javadocs through doclets for {@link EventHubClient}.
  */
-public class EventHubClientBuilderJavaDocCodeSnippets {
+public class EventHubClientBuilderJavaDocCodeSamples {
 
     public void instantiation() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
