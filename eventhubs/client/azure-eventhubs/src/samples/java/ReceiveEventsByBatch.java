@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates on how to receive an event batch
+ * Sample demonstrates on how to receive an event batch from an Azure Event Hub instance.
  */
 public class ReceiveEventsByBatch {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
@@ -27,7 +27,7 @@ public class ReceiveEventsByBatch {
     private static final int NUMBER_OF_EVENTS = 10;
 
     /**
-     * Main method to invoke this demo about how to receive event batch from an Azure Event Hub instance.
+     * Main method to invoke this demo about how to receive an event batch from an Azure Event Hub instance.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
@@ -78,13 +78,13 @@ public class ReceiveEventsByBatch {
         EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
         EventHubProducer producer = client.createProducer(producerOptions);
 
-        // Crate 10 events
+        // Create an event data list
         ArrayList<EventData> events = new ArrayList<>(EVENT_BATCH_SIZE);
         for (int i = 0; i < EVENT_BATCH_SIZE; i++) {
             events.add(new EventData(UTF_8.encode("I am Event " + i)));
         }
 
-        // We create 10 events to send to the service and block until the send has completed.
+        // We send a list of events to the service and block until the send has completed.
         producer.send(events).block(OPERATION_TIMEOUT);
         // We wait for all the events to be received before continuing.
         countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);

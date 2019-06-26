@@ -21,7 +21,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class SendEventDataListWIthSendOption {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
-
     /**
      * Main method to invoke this demo about how to send a list of events with partition ID configured in send option
      * to an Azure Event Hub instance.

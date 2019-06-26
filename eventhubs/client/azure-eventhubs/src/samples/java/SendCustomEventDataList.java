@@ -44,15 +44,14 @@ public class SendCustomEventDataList {
         // make informed decisions about how to process them.
         //
         // In order to allow event publishers to offer better context for consumers, event data may also contain custom metadata,
-        // in the form of a set of key/value pairs.  This metadata is not used by, or in any way meaningful to, the Event Hubs
+        // in the form of a set of key/value pairs. This metadata is not used by, or in any way meaningful to, the Event Hubs
         // service; it exists only for coordination between event publishers and consumers.
         //
         // One common scenario for the inclusion of metadata is to provide a hint about the type of data contained by an event,
         // so that consumers understand its format and can deserialize it appropriately.
         //
         // We will publish a small batch of events based on simple sentences, but will attach some custom metadata with
-        // pretend type names and other hints.  Note that the set of metadata is unique to an event; there is no need for every
-
+        // pretend type names and other hints. Note that the set of metadata is unique to an event; there is no need for every
         // event in a batch to have the same metadata properties available nor the same data type for those properties.
         List<EventData> dataList = new ArrayList<>();
         EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));

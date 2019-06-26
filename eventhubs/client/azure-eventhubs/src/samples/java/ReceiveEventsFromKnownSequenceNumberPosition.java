@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to receive events starting from the event of specific sequence number.
+ * Sample demonstrates how to receive events starting from the specific sequence number position in an Event Hub instance.
  */
 public class ReceiveEventsFromKnownSequenceNumberPosition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
@@ -83,12 +83,13 @@ public class ReceiveEventsFromKnownSequenceNumberPosition {
         EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(firstPartition);
         EventHubProducer producer = client.createProducer(producerOptions);
 
+        // Create an event data list
         ArrayList<EventData> events = new ArrayList<>(EVENT_BATCH_SIZE);
         for (int i = 0; i < EVENT_BATCH_SIZE; i++) {
             events.add(new EventData(UTF_8.encode("I am Event " + i)));
         }
 
-        // We create 100 events to send to the service and block until the send has completed.
+        // We create EVENT_BATCH_SIZE events to send to the service and block until the send has completed.
         producer.send(events).block(OPERATION_TIMEOUT);
 
         // We wait for all the events to be received before continuing.
@@ -97,10 +98,10 @@ public class ReceiveEventsFromKnownSequenceNumberPosition {
         System.out.println("Third Event's sequence number is " + thirdEvent.sequenceNumber());
 
         Semaphore semaphore = new Semaphore(1);
-        // Acquiring the semaphore so that this sample does not end before all the partition properties are fetched.
+        // Acquiring the semaphore so that this sample does not end before the receiver receives the events after the sequence event
         semaphore.acquire();
 
-        // Customs the sequence number event position.
+        // Create an event position from a specific sequence number of event.
         // If Inclusive is true, the event with the sequenceNumber is included; otherwise, the next event will be received.
         EventPosition exclusiveSequenceNumberPosition = EventPosition.fromSequenceNumber(thirdEvent.sequenceNumber(), false);
 
@@ -114,7 +115,7 @@ public class ReceiveEventsFromKnownSequenceNumberPosition {
         Disposable newSubscription = newConsumer.receive().subscribe(event -> {
             String contents = UTF_8.decode(event.body()).toString();
             System.out.println(String.format("Sequence Number: %s. Contents: %s", event.sequenceNumber(), contents));
-            // Releasing the semaphore now that we've finished querying for partition properties.
+            // Releasing the semaphore now that we've finished querying for the event
             semaphore.release();
         });
 

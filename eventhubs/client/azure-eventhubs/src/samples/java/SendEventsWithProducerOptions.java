@@ -56,7 +56,7 @@ public class SendEventsWithProducerOptions {
         // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
         EventHubProducer producer = client.createProducer(producerOptions);
 
-        // Create an event list to send.
+        // Create an event list
         List<EventData> dataList = new ArrayList<>();
         dataList.add(new EventData("EventData Sample 1".getBytes(UTF_8)));
         dataList.add(new EventData("EventData Sample 2 ".getBytes(UTF_8)));

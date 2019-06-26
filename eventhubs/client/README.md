@@ -92,16 +92,14 @@ For more concepts and deeper discussion, see: [Event Hubs Features][event_hubs_f
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0][oasis_amqp_v1].
 
 ## Examples
-
+- [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Consume events from an Event Hub partition][sample_receive_event]
 
-
 ## Troubleshooting
 
-### Common exceptions
 
-#### Logging in debug
+### Logging in debug
 You can use the ClientLogger class to get the debug logs. The class supports asVerbose(), asInfo(), asWarning(), and asError() as logging levels. An example of logging level, asInfo(), shows below
 
 ```java
@@ -113,6 +111,7 @@ try {
 }
 ```
 
+### Common exceptions
 #### AMQP exception
 This is a general exception for AMQP related failures, which includes the AMQP errors as ErrorCondition and the context 
 that caused this exception as ErrorContext. 'isTransient' is A boolean indicating if the exception is a transient error
