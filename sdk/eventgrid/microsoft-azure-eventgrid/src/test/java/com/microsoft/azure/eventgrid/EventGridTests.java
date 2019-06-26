@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class EventGridTests {
-    @Test
+    @Test. @Ignore
     public void canPublishEvent() throws Exception {
         String endpoint = System.getenv("EG_ENDPOINT");
         String key = System.getenv("EG_KEY");
