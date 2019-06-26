@@ -31,7 +31,7 @@ public class ResourceCertificateDetails {
     private byte[] certificate;
 
     /**
-     * Certificate friendlyname.
+     * Certificate friendly name.
      */
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
@@ -93,7 +93,7 @@ public class ResourceCertificateDetails {
     }
 
     /**
-     * Get certificate friendlyname.
+     * Get certificate friendly name.
      *
      * @return the friendlyName value
      */
@@ -102,7 +102,7 @@ public class ResourceCertificateDetails {
     }
 
     /**
-     * Set certificate friendlyname.
+     * Set certificate friendly name.
      *
      * @param friendlyName the friendlyName value to set
      * @return the ResourceCertificateDetails object itself.

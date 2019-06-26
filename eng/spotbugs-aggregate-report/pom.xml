@@ -20,7 +20,7 @@
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
-    <azure-messaging-eventhubs.version>1.0.0-SNAPSHOT</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>
     <site>
@@ -48,7 +48,6 @@
                 <source>..\..\core\azure-core\src\main\java</source>
                 <source>..\..\core\azure-core\src\samples\java</source>
                 <source>..\..\core\azure-core-amqp\src\main\java</source>
-                <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
@@ -121,11 +120,6 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
           <version>${azure-core-amqp.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-auth</artifactId>
-          <version>${azure-core-auth.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
