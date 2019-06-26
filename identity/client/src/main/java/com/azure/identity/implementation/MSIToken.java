@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credentials.AccessToken;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -33,6 +34,11 @@ public final class MSIToken extends AccessToken {
      */
     public MSIToken(String token, OffsetDateTime expiresOn) {
         super(token, expiresOn);
+    }
+
+    @JsonCreator
+    private MSIToken(@JsonProperty(value = "access_token") String token, @JsonProperty(value = "expires_on") String expiresOn) {
+        super(token, epoch.plusSeconds(Integer.parseInt(expiresOn)));
     }
 
     @Override
