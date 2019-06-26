@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.annotations.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
@@ -645,27 +644,12 @@ public class RestProxy implements InvocationHandler {
      * Create a proxy implementation of the provided Swagger interface.
      *
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipline that will be used to send Http
-     *                 requests
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
         return create(swaggerInterface, httpPipeline, createDefaultSerializer());
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     *
-     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param serviceClient the ServiceClient that contains the details to use to create the
-     *                      RestProxy implementation of the swagger interface
-     * @param <A> the type of the Swagger interface
-     * @return a proxy implementation of the provided Swagger interface
-     */
-    public static <A> A create(Class<A> swaggerInterface, ServiceClient serviceClient) {
-        return create(swaggerInterface, serviceClient.httpPipeline(), createDefaultSerializer());
     }
 
     /**
