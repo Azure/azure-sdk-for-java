@@ -130,7 +130,7 @@ public class EventHubClient implements Closeable {
 
     /**
      * Creates an Event Hub producer responsible for transmitting {@link EventData} to the Event Hub, grouped together
-     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@codec null}, the
+     * in batches. If {@link EventHubProducerOptions#partitionId() options.partitionId()} is not {@code null}, the
      * events are routed to that specific partition. Otherwise, events are automatically routed to an available
      * partition.
      *

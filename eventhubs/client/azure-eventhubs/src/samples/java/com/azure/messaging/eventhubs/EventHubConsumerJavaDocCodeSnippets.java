@@ -26,8 +26,8 @@ public class EventHubConsumerJavaDocCodeSnippets {
         EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
-        // Keep a reference to `subscription`. When the program is finished receiving events, call subscription.dispose().
-        // This will stop fetching events from the Event Hub.
+        // Keep a reference to `subscription`. When the program is finished receiving events, call
+        // subscription.dispose(). This will stop fetching events from the Event Hub.
         Disposable subscription = consumer.receive().subscribe(event -> {
             // process event
         }, error -> {

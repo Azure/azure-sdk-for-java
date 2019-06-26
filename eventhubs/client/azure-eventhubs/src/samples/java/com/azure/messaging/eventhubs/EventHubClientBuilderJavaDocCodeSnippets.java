@@ -15,7 +15,8 @@ public class EventHubClientBuilderJavaDocCodeSnippets {
 
     public void instantiation() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey}";
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
         String eventHubPath = "my-event-hub";
 
         EventHubClient client = new EventHubClientBuilder()
@@ -26,7 +27,8 @@ public class EventHubClientBuilderJavaDocCodeSnippets {
 
     public void instantiationInstance() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationEventHub
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
@@ -36,7 +38,8 @@ public class EventHubClientBuilderJavaDocCodeSnippets {
 
     public void instantiationRetry() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiationOptions
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
+        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
+            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
