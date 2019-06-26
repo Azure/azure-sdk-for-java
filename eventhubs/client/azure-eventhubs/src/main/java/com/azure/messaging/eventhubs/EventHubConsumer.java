@@ -17,9 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MAXIMUM_PREFETCH_COUNT;
-import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREFETCH_COUNT;
-
 /**
  * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
  * consumer group.
@@ -50,6 +47,10 @@ import static com.azure.messaging.eventhubs.EventHubConsumerOptions.MINIMUM_PREF
 public class EventHubConsumer implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
+
+    // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
+    private static final int MINIMUM_REQUEST = 1;
+    private static final int MAXIMUM_REQUEST = 100;
 
     private final AtomicInteger creditsToRequest = new AtomicInteger(1);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -95,18 +96,18 @@ public class EventHubConsumer implements Closeable {
                 }
             })
             .doOnRequest(request -> {
-                if (request < MINIMUM_PREFETCH_COUNT) {
+                if (request < MINIMUM_REQUEST) {
                     logger.asWarning().log("Back pressure request value not valid. It must be between {} and {}.",
-                        MINIMUM_PREFETCH_COUNT, MAXIMUM_PREFETCH_COUNT);
+                        MINIMUM_REQUEST, MAXIMUM_REQUEST);
                     return;
                 }
 
-                long newRequest = request > MAXIMUM_PREFETCH_COUNT
-                    ? MAXIMUM_PREFETCH_COUNT
-                    : request;
+                final int newRequest = request > MAXIMUM_REQUEST
+                    ? MAXIMUM_REQUEST
+                    : (int) request;
 
                 logger.asInfo().log("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
-                creditsToRequest.set((int) newRequest);
+                creditsToRequest.set(newRequest);
             });
     }
 
