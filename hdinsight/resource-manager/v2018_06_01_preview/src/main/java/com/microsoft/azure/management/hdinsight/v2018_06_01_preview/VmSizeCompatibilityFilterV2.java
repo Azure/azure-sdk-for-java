@@ -22,10 +22,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VmSizeCompatibilityFilterV2 {
     /**
      * The filtering mode. Effectively this can enabling or disabling the VM
-     * sizes in a particular set.
+     * sizes in a particular set. Possible values include: 'Exclude',
+     * 'Include'.
      */
     @JsonProperty(value = "filterMode")
-    private String filterMode;
+    private FilterMode filterMode;
 
     /**
      * The list of regions under the effect of the filter.
@@ -55,7 +56,7 @@ public class VmSizeCompatibilityFilterV2 {
      * The OSType affected, Windows or Linux.
      */
     @JsonProperty(value = "osType")
-    private List<String> osType;
+    private List<OSType> osType;
 
     /**
      * The list of virtual machine sizes to include or exclude.
@@ -64,21 +65,21 @@ public class VmSizeCompatibilityFilterV2 {
     private List<String> vmSizes;
 
     /**
-     * Get the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
+     * Get the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'.
      *
      * @return the filterMode value
      */
-    public String filterMode() {
+    public FilterMode filterMode() {
         return this.filterMode;
     }
 
     /**
-     * Set the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
+     * Set the filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'.
      *
      * @param filterMode the filterMode value to set
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
-    public VmSizeCompatibilityFilterV2 withFilterMode(String filterMode) {
+    public VmSizeCompatibilityFilterV2 withFilterMode(FilterMode filterMode) {
         this.filterMode = filterMode;
         return this;
     }
@@ -168,7 +169,7 @@ public class VmSizeCompatibilityFilterV2 {
      *
      * @return the osType value
      */
-    public List<String> osType() {
+    public List<OSType> osType() {
         return this.osType;
     }
 
@@ -178,7 +179,7 @@ public class VmSizeCompatibilityFilterV2 {
      * @param osType the osType value to set
      * @return the VmSizeCompatibilityFilterV2 object itself.
      */
-    public VmSizeCompatibilityFilterV2 withOsType(List<String> osType) {
+    public VmSizeCompatibilityFilterV2 withOsType(List<OSType> osType) {
         this.osType = osType;
         return this;
     }

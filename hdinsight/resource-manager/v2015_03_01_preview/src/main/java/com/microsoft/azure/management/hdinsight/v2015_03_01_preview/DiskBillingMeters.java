@@ -27,10 +27,11 @@ public class DiskBillingMeters {
     private String sku;
 
     /**
-     * The managed disk billing tier, Standard or Premium.
+     * The managed disk billing tier, Standard or Premium. Possible values
+     * include: 'Standard', 'Premium'.
      */
     @JsonProperty(value = "tier")
-    private String tier;
+    private Tier tier;
 
     /**
      * Get the managed disk meter guid.
@@ -73,21 +74,21 @@ public class DiskBillingMeters {
     }
 
     /**
-     * Get the managed disk billing tier, Standard or Premium.
+     * Get the managed disk billing tier, Standard or Premium. Possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */
-    public String tier() {
+    public Tier tier() {
         return this.tier;
     }
 
     /**
-     * Set the managed disk billing tier, Standard or Premium.
+     * Set the managed disk billing tier, Standard or Premium. Possible values include: 'Standard', 'Premium'.
      *
      * @param tier the tier value to set
      * @return the DiskBillingMeters object itself.
      */
-    public DiskBillingMeters withTier(String tier) {
+    public DiskBillingMeters withTier(Tier tier) {
         this.tier = tier;
         return this;
     }
