@@ -144,8 +144,8 @@ public class ReactorNettyClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", "123")
-                .withBody(Flux.error(new RuntimeException("boo")));
+                .header("Content-Length", "123")
+                .body(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
                 .expectErrorMessage("boo")
@@ -158,8 +158,8 @@ public class ReactorNettyClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
-                .withBody(Flux.just(contentChunk)
+                .header("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+                .body(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
