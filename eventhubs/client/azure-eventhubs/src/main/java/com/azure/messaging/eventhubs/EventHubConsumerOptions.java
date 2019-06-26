@@ -14,6 +14,9 @@ import java.util.Optional;
 /**
  * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its
  * behavior.
+ *
+ * @see EventHubConsumer
+ * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumerOptions implements Cloneable {
     /**
