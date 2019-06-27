@@ -24,6 +24,7 @@
 
   <properties>
     <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
   </properties>
 
   <distributionManagement>
@@ -63,12 +64,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

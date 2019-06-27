@@ -215,6 +215,10 @@
     "source": "specification/resourcegraph/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "resourcehealth/resource-manager": {
+    "source": "specification/resourcehealth/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"

@@ -44,6 +44,8 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
  * types) and Data section is not supported.
  * </p>
+ *
+ * @see EventHubProducer
  */
 public class EventData implements Comparable<EventData> {
     /*
