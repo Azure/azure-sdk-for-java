@@ -58,6 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
+      <version>1.0.0-preview.1</version>
     </dependency>
 
     <dependency>
@@ -69,6 +70,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.1</version>
       <scope>test</scope>
     </dependency>
 

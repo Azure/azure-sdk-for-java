@@ -123,7 +123,6 @@
     <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
 
     <!-- Test Dependency Versions -->
-    <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -186,18 +185,6 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
         <version>${adal4j.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core</artifactId>
-        <version>1.0.0-preview.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-amqp</artifactId>
-        <version>1.0.0-preview.1</version>
       </dependency>
 
       <dependency>
@@ -344,19 +331,6 @@
       </dependency>
 
       <!-- Test dependencies -->
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-test</artifactId>
-        <version>1.0.0-preview.1</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-identity</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <scope>test</scope>
-      </dependency>
-
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
