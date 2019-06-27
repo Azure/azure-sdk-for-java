@@ -15,16 +15,12 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-import reactor.netty.ByteBufFlux;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.Duration;
@@ -218,19 +214,17 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(body));
-        int b;
+        long length = pageRange.end()- pageRange.start();
+        byte[] bufferedData = new byte[(int) length];
+
         try {
-            while ((b = reader.read()) != -1) {
-                outputStream.write(b);
-            }
+            body.read(bufferedData, (int) pageRange.start(), (int) length);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange,
-            ByteBufFlux.fromInbound(Flux.defer(() -> Flux.just(outputStream.toByteArray())).subscribeOn(Schedulers.elastic())),
+            Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(bufferedData))),
             pageBlobAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
