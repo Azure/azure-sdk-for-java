@@ -84,9 +84,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
+        return getBlockBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
+     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
+     * NewBlockBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -102,9 +120,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
+        return getPageBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
+     * NewPageBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -138,9 +174,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
+        return getBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
+     * getBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), null);
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -463,8 +517,8 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
-     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
+     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
      * true.
      *
      * <p>
@@ -485,11 +539,14 @@ public final class ContainerAsyncClient {
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
+     * @param directory
+     *         The directory to list blobs underneath
+     *
      * @return
      *      A reactive response emitting the prefixes and blobs.
      */
-    public Flux<BlobItem> listBlobsHierarchy(String prefix) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(prefix));
+    public Flux<BlobItem> listBlobsHierarchy(String directory) {
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
     }
 
     /**
@@ -515,6 +572,8 @@ public final class ContainerAsyncClient {
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
+     * @param delimiter
+     *         The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options
      *         {@link ListBlobsOptions}
      *

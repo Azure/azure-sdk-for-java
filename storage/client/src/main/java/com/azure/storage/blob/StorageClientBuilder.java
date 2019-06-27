@@ -4,22 +4,23 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -55,17 +56,15 @@ public final class StorageClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private String endpoint;
+    private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public StorageClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
@@ -83,17 +82,13 @@ public final class StorageClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
 
-        policies.add(retryPolicy);
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -129,10 +124,17 @@ public final class StorageClientBuilder {
      */
     public StorageClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
+        URL url;
         try {
-            this.endpoint = new URL(endpoint);
+            url = new URL(endpoint);
+            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Client endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage endpoint url is malformed.");
+        }
+
+        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+        if (credential != null) {
+            this.credential(credential);
         }
 
         return this;
@@ -148,7 +150,7 @@ public final class StorageClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public StorageClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
         return this;
     }
 
@@ -158,7 +160,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
         return this;
     }
 
@@ -168,7 +170,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
         return this;
     }
 
@@ -177,8 +179,7 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.credentialPolicy = null;
         return this;
     }
 
@@ -252,6 +253,16 @@ public final class StorageClientBuilder {
      */
     public StorageClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated StorageClientBuilder object
+     */
+    public StorageClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }

@@ -14,25 +14,10 @@ public class BlockBlobItem {
 
     private String encryptionKeySha256;
 
-    private String blobAppendOffset;
-
-    private Integer blobCommittedBlockCount;
-
     public BlockBlobItem(BlockBlobUploadHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
-    }
-
-    public BlockBlobItem(BlockBlobStageBlockHeaders generatedHeaders) {
-        this.contentMD5 = generatedHeaders.contentMD5();
-        this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
-    }
-
-    public BlockBlobItem(BlockBlobStageBlockFromURLHeaders generatedHeaders) {
-        this.contentMD5 = generatedHeaders.contentMD5();
         this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
     }
 
@@ -58,12 +43,4 @@ public class BlockBlobItem {
     public byte[] contentMD5() {
         return ImplUtils.clone(contentMD5);
     }
-
-    public String blobAppendOffset() {
-        return blobAppendOffset;
-    };
-
-    public Integer blobCommittedBlockCount() {
-        return blobCommittedBlockCount;
-    };
 }

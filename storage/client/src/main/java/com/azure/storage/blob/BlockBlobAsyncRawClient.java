@@ -54,8 +54,8 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      */
-    public BlockBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
+    public BlockBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        super(azureBlobStorage, snapshot);
     }
 
 
@@ -299,7 +299,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
     public Mono<BlockBlobsGetBlockListResponse> listBlocks(BlockListType listType,
                                                            LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, null, null, null, null,
+            null, null, listType, snapshot, null, null, null,
             leaseAccessConditions, Context.NONE));
     }
 

@@ -43,6 +43,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-amqp</artifactId>
+      <version>${azure-core-amqp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-auth</artifactId>
       <version>${version}</version>
     </dependency>
@@ -64,6 +69,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
+      <version>${version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${version}</version>
     </dependency>
     <dependency>

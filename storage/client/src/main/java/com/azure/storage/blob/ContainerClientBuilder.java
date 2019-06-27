@@ -20,6 +20,8 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -55,18 +57,16 @@ public final class ContainerClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private String containerName;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public ContainerClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
@@ -89,17 +89,13 @@ public final class ContainerClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
 
-        policies.add(retryPolicy);
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -138,7 +134,7 @@ public final class ContainerClientBuilder {
         URL url;
         try {
             url = new URL(endpoint);
-            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
+            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
             String path = url.getPath();
             if (path != null && !path.isEmpty() && !path.equals("/")) {
                 path = path.replaceAll("^/", "").replaceAll("/$", "");
@@ -154,7 +150,7 @@ public final class ContainerClientBuilder {
 
         SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
         if (credential != null) {
-            this.sasTokenCredential = credential;
+            this.credential(credential);
         }
 
         return this;
@@ -180,7 +176,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
         return this;
     }
 
@@ -190,7 +186,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
         return this;
     }
 
@@ -200,7 +196,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
         return this;
     }
 
@@ -209,8 +205,7 @@ public final class ContainerClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public ContainerClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.credentialPolicy = null;
         return this;
     }
 
@@ -284,6 +279,16 @@ public final class ContainerClientBuilder {
      */
     public ContainerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated ContainerClientBuilder object
+     */
+    public ContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }

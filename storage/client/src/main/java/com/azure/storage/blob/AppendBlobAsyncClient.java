@@ -13,11 +13,12 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 
 /**
@@ -44,7 +45,7 @@ import java.net.URL;
  * object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
-    private final AppendBlobAsyncRawClient appendBlobAsyncRawClient;
+    final AppendBlobAsyncRawClient appendBlobAsyncRawClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -121,7 +122,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length) {
         return this.appendBlock(data, length, null);
     }
 
@@ -143,10 +144,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions) {
         return appendBlobAsyncRawClient
-            .appendBlock(data, length, appendBlobAccessConditions)
+            .appendBlock(data.map(Unpooled::wrappedBuffer), length, appendBlobAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 

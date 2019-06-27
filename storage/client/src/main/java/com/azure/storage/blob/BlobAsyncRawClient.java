@@ -22,12 +22,15 @@ class BlobAsyncRawClient {
 
     protected AzureBlobStorageImpl azureBlobStorage;
 
+    final String snapshot;
+
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests..
      */
-    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
         this.azureBlobStorage = azureBlobStorage;
+        this.snapshot = snapshot;
     }
 
     /**
@@ -237,7 +240,7 @@ class BlobAsyncRawClient {
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, null, null, null, range.toHeaderValue(), getMD5,
+            null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
             null, null, null, null,
             accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), Context.NONE))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
@@ -288,7 +291,7 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
-            null, null, null, null, null, deleteBlobSnapshotOptions,
+            null, null, snapshot, null, null, deleteBlobSnapshotOptions,
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE));
     }
@@ -323,7 +326,7 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, null, null, null, null,
+            null, null, snapshot, null, null, null,
             null, null, null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }

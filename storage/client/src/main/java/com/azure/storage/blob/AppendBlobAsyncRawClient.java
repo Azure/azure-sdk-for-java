@@ -46,7 +46,7 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
      * pipeline to make HTTP requests.
      */
     AppendBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
+        super(azureBlobStorage, null);
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -187,7 +188,7 @@ public final class BlockBlobClient extends BlobClient {
 
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions);
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, accessConditions);
 
         try {
             if (timeout == null) {
@@ -215,7 +216,7 @@ public final class BlockBlobClient extends BlobClient {
      *         The exact length of the data. It is important that this value match precisely the length of the data
      *         provided in the {@link InputStream}.
      */
-    public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
+    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
         return this.stageBlock(base64BlockID, data, length, null, null);
     }
 
@@ -238,14 +239,14 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public Response<BlockBlobItem> stageBlock(String base64BlockID, InputStream data, long length,
+    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
             LeaseAccessConditions leaseAccessConditions, Duration timeout) throws IOException {
 
         // buffer strategy for UX study only
         byte[] bufferedData = new byte[(int)length];
         data.read(bufferedData);
 
-        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlock(base64BlockID,
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlock(base64BlockID,
             Flux.just(Unpooled.wrappedBuffer(bufferedData)), length, leaseAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
@@ -265,7 +266,7 @@ public final class BlockBlobClient extends BlobClient {
      * @param sourceRange
      *         {@link BlobRange}
      */
-    public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null);
@@ -296,10 +297,10 @@ public final class BlockBlobClient extends BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public Response<BlockBlobItem> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions, Duration timeout) {
-        Mono<Response<BlockBlobItem>> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
+        Mono<VoidResponse> response = blockBlobAsyncClient.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

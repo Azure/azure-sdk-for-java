@@ -17,11 +17,12 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link PageBlobClientBuilder}, via
@@ -48,7 +49,7 @@ import java.net.URL;
  */
 public final class PageBlobAsyncClient extends BlobAsyncClient {
 
-    private final PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    final PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -66,7 +67,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build());
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
@@ -140,7 +141,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
         return this.uploadPages(pageRange, body, null);
     }
 
@@ -165,10 +166,10 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
             PageBlobAccessConditions pageBlobAccessConditions) {
         return pageBlobAsyncRawClient
-            .uploadPages(pageRange, body, pageBlobAccessConditions)
+            .uploadPages(pageRange, body.map(Unpooled::wrappedBuffer), pageBlobAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 

@@ -20,6 +20,8 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -56,19 +58,17 @@ public final class AppendBlobClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private String containerName;
     private String blobName;
-    private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
-    private SASTokenCredential sasTokenCredential;
+    private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public AppendBlobClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
@@ -88,17 +88,13 @@ public final class AppendBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (sharedKeyCredential != null) {
-            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
-        } else if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
-        } else if (sasTokenCredential != null) {
-            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
         } else {
             policies.add(new AnonymousCredentialPolicy());
         }
 
-        policies.add(retryPolicy);
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -138,7 +134,7 @@ public final class AppendBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = new URL(parts.scheme() + "://" + parts.host());
+            this.endpoint = parts.scheme() + "://" + parts.host();;
             this.containerName = parts.containerName();
             this.blobName = parts.blobName();
         } catch (MalformedURLException | UnknownHostException ex) {
@@ -147,7 +143,7 @@ public final class AppendBlobClientBuilder {
 
         SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
         if (credential != null) {
-            this.sasTokenCredential = credential;
+            this.credential(credential);
         }
 
         return this;
@@ -179,7 +175,7 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
         return this;
     }
 
@@ -189,7 +185,7 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
         return this;
     }
 
@@ -199,7 +195,7 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
         return this;
     }
 
@@ -208,8 +204,7 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder anonymousCredential() {
-        this.sharedKeyCredential = null;
-        this.tokenCredential = null;
+        this.credentialPolicy = null;
         return this;
     }
 
@@ -283,6 +278,16 @@ public final class AppendBlobClientBuilder {
      */
     public AppendBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }

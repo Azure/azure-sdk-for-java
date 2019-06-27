@@ -6,9 +6,9 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import reactor.netty.ByteBufFlux;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 /**
  * Provides an input stream to read a given blob resource.
@@ -42,7 +42,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the reference to the current buffered data.
      */
-    private InputStream currentBuffer;
+    private ByteBuffer currentBuffer;
 
     /**
      * Holds an absolute byte position for the mark feature.
@@ -189,7 +189,7 @@ public final class BlobInputStream extends InputStream {
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
             this.currentBuffer = this.blobClient.blobAsyncRawClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
-                .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asInputStream())
+                .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asByteBuffer())
                 .block();
 
             this.bufferSize = readLength;
@@ -375,15 +375,21 @@ public final class BlobInputStream extends InputStream {
         this.checkStreamState();
 
         // if buffer is empty do next get operation
-        if ((this.currentBuffer == null || this.currentBuffer.available() == 0)
+        if ((this.currentBuffer == null || this.currentBuffer.remaining() == 0)
             && this.currentAbsoluteReadPosition < this.streamLength + this.blobRangeOffset) {
             this.dispatchRead((int) Math.min(this.readSize, this.streamLength + this.blobRangeOffset - this.currentAbsoluteReadPosition));
         }
 
         len = Math.min(len, this.readSize);
 
-        // do read from buffer
-        final int numberOfBytesRead = this.currentBuffer.read(b, off, len);
+        final int numberOfBytesRead;
+        if (currentBuffer.remaining() == 0) {
+            numberOfBytesRead = -1;
+        } else {
+            numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());
+            // do read from buffer
+            this.currentBuffer = this.currentBuffer.get(b, off, numberOfBytesRead);
+        }
 
         if (numberOfBytesRead > 0) {
             this.currentAbsoluteReadPosition += numberOfBytesRead;
@@ -406,7 +412,8 @@ public final class BlobInputStream extends InputStream {
      */
     private synchronized void reposition(final long absolutePosition) {
         this.currentAbsoluteReadPosition = absolutePosition;
-        this.currentBuffer = new ByteArrayInputStream(new byte[0]);
+        this.currentBuffer = ByteBuffer.allocate(0);
+        this.bufferStartOffset = absolutePosition;
     }
 
     /**

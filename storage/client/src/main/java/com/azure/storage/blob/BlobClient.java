@@ -91,7 +91,7 @@ public class BlobClient {
     }
 
     /**
-     * Initializes a {@link ContainerClient} object pointing to the containing this blob is in. This method does
+     * Initializes a {@link ContainerClient} object pointing to the container this blob is in. This method does
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
@@ -336,7 +336,7 @@ public class BlobClient {
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public void downloadToFile(String filePath) throws IOException {
-        this.downloadToFile(filePath, null, null, null, false, null);
+        this.downloadToFile(filePath, null, null, null, null, false, null);
     }
 
     /**
@@ -347,6 +347,8 @@ public class BlobClient {
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range
      *         {@link BlobRange}
+     * @param blockSize
+     *         the size of a chunk to download at a time, in bytes
      * @param accessConditions
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
@@ -354,15 +356,15 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range,
+    public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range, Integer blockSize,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
-        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, accessConditions, rangeGetContentMD5, options);
+        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, accessConditions, rangeGetContentMD5, options);
 
         try {
             if (timeout == null) {
                 download.block();
             } else {
-                download.block(timeout); //TODO this isn't doing what we want
+                download.block(timeout);
             }
         } catch (UncheckedIOException e) {
             throw e.getCause();

@@ -10,23 +10,24 @@ import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
+import reactor.core.publisher.Operators;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.channels.CompletionHandler;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 
 public class BlobOutputStream extends OutputStream {
@@ -45,14 +46,7 @@ public class BlobOutputStream extends OutputStream {
     /**
      * Used for block blobs, holds the block list.
      */
-    private ArrayList<String> blockList;
-
-    /**
-     * Holds the futures of the executing tasks. The starting size of the set is a multiple of the concurrent request
-     * count to reduce the cost of resizing the set later.
-     */
-    private final LinkedHashSet<Future<Void>> futureSet;
-
+    private TreeMap<Long, String> blockList;
 
     /**
      * Holds the write threshold of number of bytes to buffer prior to dispatching a write. For block blob this is the
@@ -66,12 +60,7 @@ public class BlobOutputStream extends OutputStream {
     private volatile IOException lastError = null;
 
 
-    private long currentBlobOffset;
-
-    /**
-     * A private buffer to store data prior to committing to the cloud.
-     */
-    private volatile ByteArrayOutputStream outBuffer;
+    private long initialBlobOffset;
 
     /**
      * Holds the reference to the blob this stream is associated with.
@@ -82,8 +71,6 @@ public class BlobOutputStream extends OutputStream {
      * Determines if this stream is used against a page blob or block blob.
      */
     private BlobType streamType = BlobType.BLOCK_BLOB;
-
-    private List<Mono<Void>> completables = new ArrayList<>();
 
     /**
      * Initializes a new instance of the BlobOutputStream class.
@@ -96,8 +83,27 @@ public class BlobOutputStream extends OutputStream {
      */
     private BlobOutputStream(final BlobAsyncClient parentBlob) throws StorageException {
         this.blobClient = parentBlob;
-        this.outBuffer = new ByteArrayOutputStream();
-        this.futureSet = new LinkedHashSet<>();
+//        completion = Flux.defer(() -> {
+//            if (this.streamType == BlobType.APPEND_BLOB) {
+//                return writeProcessor.concatMap(b -> {
+//                    long offset = currentOffset.getAndAdd(b.length);
+//                    return dispatchWrite(b, offset);
+//                });
+//            } else {
+//                return writeProcessor.map(b -> Tuples.of(b, currentOffset.getAndAdd(b.length)))
+//                .flatMap(chunk -> dispatchWrite(chunk.getT1(), chunk.getT2()));
+//            }
+//        })
+//        .doOnError(t -> {
+//            if (t instanceof IOException) {
+//                lastError = (IOException) t;
+//            } else {
+//                lastError = new IOException(t);
+//            }
+//            completionSink.error(t);
+//        })
+//        .doOnNext(length -> completionSink.next(length))
+//        .doOnComplete(() -> completionSink.complete());
     }
 
     /**
@@ -115,7 +121,7 @@ public class BlobOutputStream extends OutputStream {
         this((BlobAsyncClient) parentBlob);
 
         this.accessCondition = accessCondition;
-        this.blockList = new ArrayList<String>();
+        this.blockList = new TreeMap<>();
         this.blockIdPrefix = UUID.randomUUID().toString() + "-";
 
         this.streamType = BlobType.BLOCK_BLOB;
@@ -165,9 +171,9 @@ public class BlobOutputStream extends OutputStream {
             this.appendPositionAccessConditions = accessCondition.appendPositionAccessConditions();
             this.accessCondition = new BlobAccessConditions().modifiedAccessConditions(accessCondition.modifiedAccessConditions()).leaseAccessConditions(accessCondition.leaseAccessConditions());
             if (accessCondition.appendPositionAccessConditions().appendPosition() != null) {
-                this.currentBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
+                this.initialBlobOffset = accessCondition.appendPositionAccessConditions().appendPosition();
             } else {
-                this.currentBlobOffset = parentBlob.getProperties().block().value().blobSize();
+                this.initialBlobOffset = parentBlob.getProperties().block().value().blobSize();
             }
         }
 
@@ -228,7 +234,7 @@ public class BlobOutputStream extends OutputStream {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             // wait for all blocks to finish
             final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
-            blobRef.commitBlockList(this.blockList, null, null, this.accessCondition).block();
+            blobRef.commitBlockList(new ArrayList<>(this.blockList.values()), null, null, this.accessCondition).block();
         }
     }
 
@@ -239,56 +245,37 @@ public class BlobOutputStream extends OutputStream {
      *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
      *             closed.
      */
-    private synchronized void dispatchWrite() throws IOException {
-        final int writeLength = this.outBuffer.size();
+    private Mono<Integer> dispatchWrite(Flux<ByteBuf> bufferRef, int writeLength, long offset) {
         if (writeLength == 0) {
-            return;
+            return Mono.empty();
         }
 
         if (this.streamType == BlobType.PAGE_BLOB && (writeLength % Constants.PAGE_SIZE != 0)) {
-            throw new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength));
+            return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
         }
-
-        Mono<Void> worker = null;
-
-        this.clearCompletedFutures();
-
-        final Flux<ByteBuf> bufferRef = ByteBufFlux.fromInbound(Mono.just(outBuffer.toByteArray()));
 
         if (this.streamType == BlobType.BLOCK_BLOB) {
             final String blockID = this.getCurrentBlockId();
-
-            this.blockList.add(blockID);
-
-            worker = BlobOutputStream.this.writeBlock(bufferRef, blockID, writeLength);
+            this.blockList.put(offset, blockID);
+            return BlobOutputStream.this.writeBlock(bufferRef, blockID, writeLength).then(Mono.just(writeLength));
         }
         else if (this.streamType == BlobType.PAGE_BLOB) {
-            final long opOffset = this.currentBlobOffset;
-            this.currentBlobOffset += writeLength;
-
-            worker = BlobOutputStream.this.writePages(bufferRef, opOffset, writeLength);
+            return BlobOutputStream.this.writePages(bufferRef, offset, writeLength).then(Mono.just(writeLength));
         }
         else if (this.streamType == BlobType.APPEND_BLOB) {
-            final long opOffset = this.currentBlobOffset;
-            this.currentBlobOffset += writeLength;
-
             // We cannot differentiate between max size condition failing only in the retry versus failing in the
             // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle
             // the former in the append block method.
             if (this.appendPositionAccessConditions != null && this.appendPositionAccessConditions.maxSize() != null
-                && this.currentBlobOffset > this.appendPositionAccessConditions.maxSize()) {
+                && this.initialBlobOffset > this.appendPositionAccessConditions.maxSize()) {
                 this.lastError = new IOException(SR.INVALID_BLOCK_SIZE);
-                throw this.lastError;
+                return Mono.error(this.lastError);
             }
 
-            worker = BlobOutputStream.this.appendBlock(bufferRef, opOffset, writeLength);
+            return BlobOutputStream.this.appendBlock(bufferRef, offset, writeLength).then(Mono.justOrEmpty(writeLength));
+        } else {
+            return Mono.error(new RuntimeException("Unknown blob type " + this.streamType));
         }
-
-        // Add future to set
-        this.futureSet.add(worker.toFuture());
-
-        // Reset buffer.
-        this.outBuffer = new ByteArrayOutputStream();
     }
 
     private Mono<Void> writeBlock(Flux<ByteBuf> blockData, String blockId, long writeLength) {
@@ -309,7 +296,7 @@ public class BlobOutputStream extends OutputStream {
 
         PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
 
-        return blobRef.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
+        return blobRef.pageBlobAsyncRawClient.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -325,7 +312,7 @@ public class BlobOutputStream extends OutputStream {
         this.appendPositionAccessConditions.appendPosition(offset);
 
         AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
-        return blobRef.appendBlock(blockData, writeLength, appendBlobAccessConditions)
+        return blobRef.appendBlobAsyncRawClient.appendBlock(blockData, writeLength, appendBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof IOException || t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -343,54 +330,21 @@ public class BlobOutputStream extends OutputStream {
     @Override
     public void flush() throws IOException {
         this.checkStreamState();
-
-        this.dispatchWrite();
-
-        // Waits for all submitted tasks to complete
-        for (Future<Void> request : futureSet) {
-            // wait for the future to complete
-            try {
-                request.get();
-            }
-            catch (Exception e) {
-                throw new IOException(e);
-            }
-
-            // If that task threw an error, fail fast
-            this.checkStreamState();
-        }
     }
 
     /**
      * Generates a new block ID to be used for PutBlock.
      *
      * @return Base64 encoded block ID
-     * @throws IOException
      */
-    private String getCurrentBlockId() throws IOException
+    private String getCurrentBlockId()
     {
         String blockIdSuffix = String.format("%06d", this.blockList.size());
 
         byte[] blockIdInBytes;
-        try {
-            blockIdInBytes = (this.blockIdPrefix + blockIdSuffix).getBytes(Constants.UTF8_CHARSET);
-        } catch (UnsupportedEncodingException e) {
-            // this should never happen, UTF8 is a default charset
-            throw new IOException(e);
-        }
+        blockIdInBytes = (this.blockIdPrefix + blockIdSuffix).getBytes(StandardCharsets.UTF_8);
 
         return Base64.getEncoder().encodeToString(blockIdInBytes);
-    }
-
-    /**
-     * Removes futures which are done from the future set.
-     */
-    private void clearCompletedFutures() {
-        for (Future<Void> request : this.futureSet) {
-            if (request.isDone()) {
-                this.futureSet.remove(request);
-            }
-        }
     }
 
     /**
@@ -466,20 +420,252 @@ public class BlobOutputStream extends OutputStream {
      *             If an I/O error occurs. In particular, an IOException may be thrown if the output stream has been
      *             closed.
      */
+    private void writeInternal(final byte[] data, int offset, int length) {
+        int chunks = (int) (Math.ceil((double) length / (double) this.internalWriteThreshold));
+        Flux<Integer> chunkPositions = Flux.range(0, chunks).map(c -> offset + c * this.internalWriteThreshold);
+        if (this.streamType == BlobType.APPEND_BLOB) {
+            chunkPositions.concatMap(pos -> processChunk(data, pos, offset, length)).then().block();
+        } else {
+            chunkPositions.concatMap(pos -> processChunk(data, pos, offset, length)).then().block();
+        }
 
-    private synchronized void writeInternal(final byte[] data, int offset, int length) throws IOException {
-        while (length > 0) {
-            this.checkStreamState();
+//        synchronized (outBufferLock) {
+//            while (length > 0) {
+//                this.checkStreamState();
+//
+//                final int availableBufferBytes = this.internalWriteThreshold - this.outBuffer.size();
+//                final int nextWrite = Math.min(availableBufferBytes, length);
+//
+//                this.outBuffer.write(data, offset, nextWrite);
+//                offset += nextWrite;
+//                length -= nextWrite;
+//
+//                if (this.outBuffer.size() == this.internalWriteThreshold) {
+//                    this.writeSink.next(outBuffer.toByteArray());
+//                    outBuffer.reset();
+//                    numInFlight.incrementAndGet();
+//                }
+//            }
+//        }
+    }
 
-            final int availableBufferBytes = this.internalWriteThreshold - this.outBuffer.size();
-            final int nextWrite = Math.min(availableBufferBytes, length);
+    private Mono<Integer> processChunk(byte[] data, int position, int offset, int length) {
+        int chunkLength = this.internalWriteThreshold;
+        if (position + chunkLength > offset + length) {
+            chunkLength = offset + length - position;
+        }
+        Flux<ByteBuf> chunkData = new ByteBufStreamFromByteArray(data, 64 * 1024, position, chunkLength);
+        return dispatchWrite(chunkData, chunkLength, position - offset)
+            .doOnError(t -> {
+                if (t instanceof IOException) {
+                    lastError = (IOException) t;
+                } else {
+                    lastError = new IOException(t);
+                }
+            });
+    }
 
-            this.outBuffer.write(data, offset, nextWrite);
-            offset += nextWrite;
-            length -= nextWrite;
+    private static final class ByteBufStreamFromByteArray extends Flux<ByteBuf> {
+        private final ByteBufAllocator alloc;
+        private final byte[] bigByteArray;
+        private final int chunkSize;
+        private final int offset;
+        private final int length;
 
-            if (this.outBuffer.size() == this.internalWriteThreshold) {
-                this.dispatchWrite();
+        ByteBufStreamFromByteArray(byte[] bigByteArray, int chunkSize, int offset, int length) {
+            this.alloc = ByteBufAllocator.DEFAULT;
+            this.bigByteArray = bigByteArray;
+            this.chunkSize = chunkSize;
+            this.offset = offset;
+            this.length = length;
+        }
+
+        @Override
+        public void subscribe(CoreSubscriber<? super ByteBuf> actual) {
+            ByteBufStreamFromByteArray.FileReadSubscription subscription = new ByteBufStreamFromByteArray.FileReadSubscription(actual, bigByteArray, alloc, chunkSize, offset, length);
+            actual.onSubscribe(subscription);
+        }
+
+        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuf> {
+            private static final int NOT_SET = -1;
+            private static final long serialVersionUID = -6831808726875304256L;
+            //
+            private final Subscriber<? super ByteBuf> subscriber;
+            private volatile int position;
+            //
+            private final byte[] bigByteArray;
+            private final ByteBufAllocator alloc;
+            private final int chunkSize;
+            private final int offset;
+            private final int length;
+            //
+            private volatile boolean done;
+            private Throwable error;
+            private volatile ByteBuf next;
+            private volatile boolean cancelled;
+            //
+            volatile int wip;
+            @SuppressWarnings("rawtypes")
+            static final AtomicIntegerFieldUpdater<ByteBufStreamFromByteArray.FileReadSubscription> WIP = AtomicIntegerFieldUpdater.newUpdater(ByteBufStreamFromByteArray.FileReadSubscription.class, "wip");
+            volatile long requested;
+            @SuppressWarnings("rawtypes")
+            static final AtomicLongFieldUpdater<ByteBufStreamFromByteArray.FileReadSubscription> REQUESTED = AtomicLongFieldUpdater.newUpdater(ByteBufStreamFromByteArray.FileReadSubscription.class, "requested");
+            //
+
+            FileReadSubscription(Subscriber<? super ByteBuf> subscriber, byte[] bigByteArray, ByteBufAllocator alloc, int chunkSize, int offset, int length) {
+                this.subscriber = subscriber;
+                //
+                this.bigByteArray = bigByteArray;
+                this.alloc = alloc;
+                this.chunkSize = chunkSize;
+                this.offset = offset;
+                this.length = length;
+                //
+                this.position = NOT_SET;
+            }
+
+            //region Subscription implementation
+
+            @Override
+            public void request(long n) {
+                if (Operators.validate(n)) {
+                    Operators.addCap(REQUESTED, this, n);
+                    drain();
+                }
+            }
+
+            @Override
+            public void cancel() {
+                this.cancelled = true;
+            }
+
+            //endregion
+
+            //region CompletionHandler implementation
+
+            @Override
+            public void completed(Integer bytesRead, ByteBuf buffer) {
+                if (!cancelled) {
+                    if (bytesRead == -1) {
+                        done = true;
+                    } else {
+                        // use local variable to perform fewer volatile reads
+                        int pos = position;
+                        //
+                        int bytesWanted = (int) Math.min(bytesRead, maxRequired(pos));
+                        buffer.writerIndex(bytesWanted);
+                        int position2 = pos + bytesWanted;
+                        //noinspection NonAtomicOperationOnVolatileField
+                        position = position2;
+                        next = buffer;
+                        if (position2 >= offset + length) {
+                            done = true;
+                        }
+                    }
+                    drain();
+                }
+            }
+
+            @Override
+            public void failed(Throwable exc, ByteBuf attachment) {
+                if (!cancelled) {
+                    // must set error before setting done to true
+                    // so that is visible in drain loop
+                    error = exc;
+                    done = true;
+                    drain();
+                }
+            }
+
+            //endregion
+
+            private void drain() {
+                if (WIP.getAndIncrement(this) != 0) {
+                    return;
+                }
+                // on first drain (first request) we initiate the first read
+                if (position == NOT_SET) {
+                    position = offset;
+                    doRead();
+                }
+                int missed = 1;
+                for (;;) {
+                    if (cancelled) {
+                        return;
+                    }
+                    if (REQUESTED.get(this) > 0) {
+                        boolean emitted = false;
+                        // read d before next to avoid race
+                        boolean d = done;
+                        ByteBuf bb = next;
+                        if (bb != null) {
+                            next = null;
+                            //
+                            // try {
+                            subscriber.onNext(bb);
+                            // } finally {
+                            // Note: Don't release here, we follow netty disposal pattern
+                            // it's consumers responsiblity to release chunks after consumption.
+                            //
+                            // ReferenceCountUtil.release(bb);
+                            // }
+                            //
+                            emitted = true;
+                        } else {
+                            emitted = false;
+                        }
+                        if (d) {
+                            if (error != null) {
+                                subscriber.onError(error);
+                                // exit without reducing wip so that further drains will be NOOP
+                                return;
+                            } else {
+                                subscriber.onComplete();
+                                // exit without reducing wip so that further drains will be NOOP
+                                return;
+                            }
+                        }
+                        if (emitted) {
+                            // do this after checking d to avoid calling read
+                            // when done
+                            Operators.produced(REQUESTED, this, 1);
+                            //
+                            doRead();
+                        }
+                    }
+                    missed = WIP.addAndGet(this, -missed);
+                    if (missed == 0) {
+                        return;
+                    }
+                }
+            }
+
+            private void doRead() {
+                // use local variable to limit volatile reads
+                int pos = position;
+                int readSize = Math.min(chunkSize, maxRequired(pos));
+                ByteBuf innerBuf = alloc.buffer(readSize, readSize);
+                try {
+                    innerBuf.writeBytes(bigByteArray, pos, readSize);
+                    completed(readSize, innerBuf);
+                } catch (Exception e) {
+                    failed(e, innerBuf);
+                }
+            }
+
+            private int maxRequired(long pos) {
+                long maxRequired = offset + length - pos;
+                if (maxRequired <= 0) {
+                    return 0;
+                } else {
+                    int m = (int) (maxRequired);
+                    // support really large files by checking for overflow
+                    if (m < 0) {
+                        return Integer.MAX_VALUE;
+                    } else {
+                        return m;
+                    }
+                }
             }
         }
     }

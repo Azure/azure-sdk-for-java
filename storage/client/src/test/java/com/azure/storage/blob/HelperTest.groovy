@@ -114,6 +114,7 @@ class HelperTest extends APISpec {
         def properties = client.getProperties().value()
 
         then:
+        os.toString() == new String(data)
         properties.cacheControl() == "cache"
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
@@ -121,7 +122,6 @@ class HelperTest extends APISpec {
         notThrown(StorageException)
     }
 
-    // TODO : Fix Test : Snapshot creation is not correct - snapshot Id is not appended to URI
     def "serviceSASSignatureValues network test blob snapshot"() {
         setup:
 
@@ -167,6 +167,7 @@ class HelperTest extends APISpec {
         def properties = client.getProperties().value()
 
         then:
+        os.toString() == new String(data)
         properties.cacheControl() == "cache"
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
@@ -212,6 +213,7 @@ class HelperTest extends APISpec {
         notThrown(StorageException)
     }
 
+    // TODO : Wont work because of OAuth - figure out why
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -248,8 +250,6 @@ class HelperTest extends APISpec {
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString() + "/" + blobName + sas)
             .httpClient(getHttpClient())
-
-        System.out.println(cu.getContainerUrl().toString() + "/" + blobName + sas)
         def client = builder.buildClient()
 
         def os = new ByteArrayOutputStream()
@@ -263,77 +263,79 @@ class HelperTest extends APISpec {
         properties.contentLanguage() == "language"
         notThrown(StorageException)
     }
-//
-//    def "serviceSASSignatureValues network test blob snapshot user delegation"() {
-//        setup:
-//        def containerName = generateContainerName()
-//        def blobName = generateBlobName()
-//        def cu = primaryServiceURL.createContainerURL(containerName)
-//        cu.create(null, null, null).blockingGet()
-//        def bu = cu.createBlockBlobURL(blobName)
-//        bu.upload(defaultFlowable, defaultDataSize).blockingGet() // need something to snapshot
-//        def snapshotId = bu.createSnapshot().blockingGet().headers().snapshot()
-//
-//
-//        def v = new ServiceSASSignatureValues()
-//        def p = new BlobSASPermission()
-//                .withRead(true)
-//                .withWrite(true)
-//                .withCreate(true)
-//                .withDelete(true)
-//                .withAdd(true)
-//        v.withPermissions(p.toString())
-//                .withStartTime(OffsetDateTime.now().minusDays(1))
-//                .withExpiryTime(OffsetDateTime.now().plusDays(1))
-//                .withContainerName(containerName)
-//                .withBlobName(blobName)
-//                .withSnapshotId(snapshotId)
-//        def ipR = new IPRange()
-//                .withIpMin("0.0.0.0")
-//                .withIpMax("255.255.255.255")
-//        v.withIpRange(ipR)
-//                .withProtocol(SASProtocol.HTTPS_ONLY)
-//                .withCacheControl("cache")
-//                .withContentDisposition("disposition")
-//                .withContentEncoding("encoding")
-//                .withContentLanguage("language")
-//                .withContentType("type")
-//        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).blockingGet().body()
-//
-//        when:
-//        def parts = URLParser.parse(bu.toURL())
-//        parts.withSasQueryParameters(v.generateSASQueryParameters(key, primaryCreds.accountName)).withScheme("https")
-//        // base blob with snapshot SAS
-//        def bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
-//                new PipelineOptions()))
-//        bsu.download().blockingGet()
-//
-//        then:
-//        // snapshot-level SAS shouldn't be able to access base blob
-//        thrown(StorageException)
-//
-//        when:
-//        // blob snapshot with snapshot SAS
-//        parts.withSnapshot(snapshotId)
-//        bsu = new AppendBlobURL(parts.toURL(), StorageURL.createPipeline(new AnonymousCredentials(),
-//                new PipelineOptions()))
-//        def data = FlowableUtil.collectBytesInBuffer(bsu.download().blockingGet().body(null)).blockingGet()
-//
-//        then:
-//        notThrown(StorageException)
-//        data == defaultData
-//
-//        and:
-//        def properties = bsu.getProperties(null, null).blockingGet().headers()
-//
-//        then:
-//        properties.cacheControl() == "cache"
-//        properties.contentDisposition() == "disposition"
-//        properties.contentEncoding() == "encoding"
-//        properties.contentLanguage() == "language"
-//        properties.contentType() == "type"
-//    }
-//
+
+    // TODO : Wont work because of OAuth - figure out why
+    def "serviceSASSignatureValues network test blob snapshot user delegation"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cu.getBlockBlobClient(blobName)
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().value()
+        def snapshotBlob = cu.getBlockBlobClient(blobName + "?snapshot=" + snapshotId)
+
+        def permissions = new BlobSASPermission()
+                .read(true)
+                .write(true)
+                .create(true)
+                .delete(true)
+                .add(true)
+                .toString()
+        def startTime = OffsetDateTime.now().minusDays(1)
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+        def ipRange = new IPRange()
+                .ipMin("0.0.0.0")
+                .ipMax("255.255.255.255")
+        def sasProtocol = SASProtocol.HTTPS_HTTP
+        def cacheControl = "cache"
+        def contentDisposition = "disposition"
+        def contentEncoding = "encoding"
+        def contentLanguage = "language"
+        def contentType = "type"
+
+        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+
+        when:
+
+        def sas = bu.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, null,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, key)
+
+        // base blob with snapshot SAS
+        def builder1 = new BlockBlobClientBuilder()
+        builder1.endpoint(cu.getContainerUrl().toString() + "/" + blobName + sas)
+            .httpClient(getHttpClient())
+        def client1 = builder1.buildClient()
+
+        client1.download(new ByteArrayOutputStream())
+
+        then:
+        // snapshot-level SAS shouldn't be able to access base blob
+        thrown(StorageException)
+
+        when:
+        // blob snapshot with snapshot SAS
+        def builder2 = new BlockBlobClientBuilder()
+        sas = sas.substring(1)
+        builder2.endpoint(cu.getContainerUrl().toString() + "/" + blobName + "?snapshot=" + snapshotId + "&" + sas)
+        def client2 = builder2.buildClient()
+        def os = new ByteArrayOutputStream()
+        client2.download(os)
+
+        then:
+        notThrown(StorageException)
+        os.toString() == new String(data)
+
+        and:
+        def properties = client2.getProperties(null, null).value()
+
+        then:
+        properties.cacheControl() == "cache"
+        properties.contentDisposition() == "disposition"
+        properties.contentEncoding() == "encoding"
+        properties.contentLanguage() == "language"
+    }
+
+    // TODO : Wont work because of OAuth - figure out why
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new ContainerSASPermission()
@@ -361,66 +363,71 @@ class HelperTest extends APISpec {
         then:
         notThrown(StorageException)
     }
-//
-//    /*
-//     This test will ensure that each field gets placed into the proper location within the string to sign and that null
-//     values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
-//     individual parts later.
-//     */
-//
-//    @Unroll
-//    def "serviceSasSignatures string to sign"() {
-//        when:
-//        def v = new ServiceSASSignatureValues()
-//        if (permissions != null) {
-//            def p = new BlobSASPermission()
-//            p.withRead(true)
-//            v.withPermissions(p.toString())
-//        }
-//        v.withStartTime(startTime)
-//                .withExpiryTime(expiryTime)
-//                .withContainerName("containerName")
-//                .withBlobName("blobName")
-//                .withSnapshotId(snapId)
-//        if (ipRange != null) {
-//            def ipR = new IPRange()
-//            ipR.withIpMin("ip")
-//            v.withIpRange(ipR)
-//        }
-//        v.withIdentifier(identifier)
-//                .withProtocol(protocol)
-//                .withCacheControl(cacheControl)
-//                .withContentDisposition(disposition)
-//                .withContentEncoding(encoding)
-//                .withContentLanguage(language)
-//                .withContentType(type)
-//
-//        def token = v.generateSASQueryParameters(primaryCreds)
-//
-//        then:
-//        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
-//
-//        /*
-//        We don't test the blob or containerName properties because canonicalized resource is always added as at least
-//        /blob/accountName. We test canonicalization of resources later. Again, this is not to test a fully functional
-//        sas but the construction of the string to sign.
-//        Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
-//         */
-//        where:
-//        permissions             | startTime                                                 | expiryTime                                                | identifier | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-//        new BlobSASPermission() | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n\n" + "/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-//        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "\n\n\n/blob/" + primaryCreds.getAccountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
-//    }
+
+    /*
+     This test will ensure that each field gets placed into the proper location within the string to sign and that null
+     values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
+     individual parts later.
+     */
+
+    @Unroll
+    def "serviceSasSignatures string to sign"() {
+        setup:
+        def containerURL = cu.getContainerUrl().toString()
+        def blobName = generateBlobName()
+        System.out.println(containerURL)
+        def data = "test".getBytes()
+        def bu = cu.getBlockBlobClient(blobName)
+        bu.upload(new ByteArrayInputStream(data), data.length)
+        def snapshotId = bu.createSnapshot().value()
+        def snapshotBlob = cu.getBlockBlobClient(blobName + "?snapshot=" + snapshotId)
+
+        def sasProtocol = SASProtocol.HTTPS_HTTP
+
+        def permissions = "r"
+        def expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+
+        when:
+
+
+        if (ipRange != null) {
+            def ipRange = new IPRange()
+            ipRange.ipMin("ip")
+        }
+
+        def sas = bu.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, null,
+            cacheControl, disposition, encoding, language, type)
+        def snapshotSAS = snapshotBlob.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier, cacheControl, disposition, encoding, language, type)
+
+
+        then:
+
+        System.out.println(expectedStringToSign)
+        System.out.println(sas)
+        System.out.println(snapshotSAS)
+
+
+
+        /*
+        We don't test the blob or containerName properties because canonicalized resource is always added as at least
+        /blob/accountName. We test canonicalization of resources later. Again, this is not to test a fully functional
+        sas but the construction of the string to sign.
+        Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
+         */
+        where:
+        startTime                                                                                                    | identifier | ipRange       | protocol               | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+//       null                                                                                                                                                                                                                                | null       | null          | null                   | null         | null          | null       | null       | null   || "r\n\n\n" + "/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)                                                                  | null       | null          | null                   | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       null                                                                                                                 null       | null          | null                   | null         | null          | null       | null       | null   || "\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       null                                                                                                                                                                                                                                | "id"       | null          | null                    | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       null                                                                                                                                                                                                                                | null       | new IPRange() | null                    | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       null                                                                                                                                                                                                                                | null       | null          | SASProtocol.HTTPS_ONLY  | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+//       null                                                                                                                                                                                                                                | null       | null          | null                    | "control"    | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | "disposition" | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | null          | "encoding" | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
+//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | null          | null       | "language" | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+         null                                                                                                                 | null       | null          | null                    | null         | null          | null       | null       | "type" || ""
+    }
 //
 //    @Unroll
 //    def "serviceSasSignatures string to sign user delegation key"() {

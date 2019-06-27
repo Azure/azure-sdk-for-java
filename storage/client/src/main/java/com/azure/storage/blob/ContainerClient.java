@@ -71,6 +71,24 @@ public final class ContainerClient {
     }
 
     /**
+     * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of
+     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
+     * NewBlockBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlockBlobClient} object which references the blob with the specified name in this container.
+     */
+    public BlockBlobClient getBlockBlobClient(String blobName, String snapshot) {
+        return new BlockBlobClient(containerAsyncClient.getBlockBlobAsyncClient(blobName, snapshot));
+    }
+
+    /**
      * Creates creates a new PageBlobClient object by concatenating blobName to the end of
      * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the PageBlobClient and then call its WithPipeline method passing in the
@@ -84,6 +102,24 @@ public final class ContainerClient {
      */
     public PageBlobClient getPageBlobClient(String blobName) {
         return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName));
+    }
+
+    /**
+     * Creates creates a new PageBlobClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the PageBlobClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
+     * NewPageBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link PageBlobClient} object which references the blob with the specified name in this container.
+     */
+    public PageBlobClient getPageBlobClient(String blobName, String snapshot) {
+        return new PageBlobClient(containerAsyncClient.getPageBlobAsyncClient(blobName, snapshot));
     }
 
     /**
@@ -116,6 +152,24 @@ public final class ContainerClient {
      */
     public BlobClient getBlobClient(String blobName) {
         return new BlobClient(containerAsyncClient.getBlobAsyncClient(blobName));
+    }
+
+    /**
+     * Initializes a new BlobClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
+     * getBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
+     */
+    public BlobClient getBlobClient(String blobName, String snapshot) {
+        return new BlobClient(containerAsyncClient.getBlobAsyncClient(blobName, snapshot));
     }
 
     /**
@@ -398,74 +452,78 @@ public final class ContainerClient {
     }
 
     /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
+     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
+     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
+     * </ul>
      *
-     * @return Emits the successful response.
+     * @param directory
+     *         The directory to list blobs underneath
      *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
      */
-//    public Iterable<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options) {
-//        return this.listBlobsHierarchySegment(marker, delimiter, options, null, null);
-//    }
+    public Iterable<BlobItem> listBlobsHierarchy(String directory) {
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
+    }
 
     /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
+     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
+     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
+     * </ul>
+     *
      * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
+     *         The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options
      *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
+     * @param timeout
+     *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
      */
-//    public Iterable<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options, Duration timeout) {
-//        Flux<BlobHierarchyListSegment> response = containerAsyncClient.listBlobsHierarchySegment(marker, delimiter, options);
-//
-//        return timeout == null ?
-//            response.toIterable():
-//            response.timeout(timeout).toIterable();
-//    }
+    public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
+        Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
+
+        return timeout == null ?
+            response.toIterable():
+            response.timeout(timeout).toIterable();
+    }
 
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
