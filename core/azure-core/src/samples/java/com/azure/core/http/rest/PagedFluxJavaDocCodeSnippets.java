@@ -14,6 +14,48 @@ import reactor.core.publisher.Mono;
 public final class PagedFluxJavaDocCodeSnippets {
 
     /**
+     * Code snippets for showing usage of {@link PagedFlux} in class docs
+     */
+    public void classDocSnippet() {
+        PagedFlux<Integer> pagedFlux = createAnInstance();
+        // BEGIN: com.azure.core.http.rest.pagedflux.items
+        // Subscribe to process one item at a time
+        pagedFlux
+            .log()
+            .doOnSubscribe(
+                ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
+            .doOnNext(item -> System.out.println("Processing item " + item))
+            .doOnComplete(() -> System.out.println("Completed processing"))
+            .subscribe();
+        // END: com.azure.core.http.rest.pagedflux.items
+
+        // BEGIN: com.azure.core.http.rest.pagedflux.pages
+        // Subscribe to process one page at a time from the beginning
+        pagedFlux
+            .byPage()
+            .log()
+            .doOnSubscribe(ignoredVal -> System.out
+                .println("Subscribed to paged flux processing pages starting from first page"))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnComplete(() -> System.out.println("Completed processing"))
+            .subscribe();
+        // END: com.azure.core.http.rest.pagedflux.pages
+
+        // BEGIN: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+        // Subscribe to process one page at a time starting from a page associated with
+        // a continuation token
+        String continuationToken = getContinuationToken();
+        pagedFlux
+            .byPage(continuationToken)
+            .log()
+            .doOnSubscribe(ignoredVal -> System.out
+                .println("Subscribed to paged flux processing pages starting from first page"))
+            .doOnNext(page -> System.out.println("Processing page containing " + page.items()))
+            .doOnComplete(() -> System.out.println("Completed processing"))
+            .subscribe();
+        // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
+    }
+    /**
      * Code snippets for creating an instance of {@link PagedFlux}
      * @return An instance of {@link PagedFlux}
      */
