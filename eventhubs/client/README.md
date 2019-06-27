@@ -106,7 +106,7 @@ you can also use the send method to send multiple events using a single call.
 
 #### Producer creation
 
-```event producer
+```java
 EventHubProducer producer = client.createProducer();
 
 // We will publish three events based on simple sentences.
@@ -146,7 +146,7 @@ when creating an event producer.
 
 #### Partition ID
 
-```Producer option
+```java
  EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(partitionId);
  EventHubProducer producer = client.createProducer(producerOptions);
 ```
@@ -154,7 +154,7 @@ Many Event Hub operations take place within the scope of a specific partition. B
 Event Hub, their names are assigned at the time of creation. To understand what partitions are available, You can use 
 the `getPartitionIds` function to get the ids of all available partitions in your Event Hub instance.
 
-```get partition id
+```java
 private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 ...
 
@@ -170,7 +170,8 @@ String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 When an Event Hub producer is not associated with any specific partition, it may be desirable to request that the Event
  Hubs service keep different events or batches of events together on the same partition. This can be accomplished by 
  setting a `partition key` when publishing the events.
-```partitin key
+ 
+```java
 // The partition key is NOT the identifier of a specific partition. Rather, it is an arbitrary piece of string data
 // that Event Hubs uses as the basis to compute a hash value. Event Hubs will associate the hash value with a specific
 // partition, ensuring that any events published with the same partition key are rerouted to the same partition.
@@ -194,14 +195,14 @@ on reading new events as they are published.
 
 #### Consumer creation
 
-```create consumer
+```java
 EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID, 
     EventPosition.latest());
 ```
 
 #### Consume events
 
-```consume events
+```java
 private static final int NUMBER_OF_EVENTS = 10;
 
 ...
@@ -229,10 +230,12 @@ Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {
 countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
 
 ```
-###Close resource
+
+### Close resource
 
 Dispose and close of all the resources we've created.
-```close resource
+
+```java
 subscription.dispose();
 producer.close();
 consumer.close();
@@ -258,7 +261,7 @@ options can be found in [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
 The configuration file below logs trace output from proton-j to the file "proton-trace.log".
 
-``` loggingConfig
+```
 handlers=java.util.logging.FileHandler
 .level=OFF
 proton.trace.level=ALL
@@ -341,4 +344,4 @@ If you would like to become an active contributor to this project please refer t
 [error_context]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
 [amqp_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
-[log_levels]: will-know
+[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
