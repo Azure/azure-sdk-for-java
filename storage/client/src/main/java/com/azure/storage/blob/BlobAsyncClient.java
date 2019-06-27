@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
@@ -123,7 +124,7 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Initializes a {@link ContainerAsyncClient} object pointing to the containing this blob is in. This method does
+     * Initializes a {@link ContainerAsyncClient} object pointing to the container this blob is in. This method does
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
@@ -131,9 +132,14 @@ public class BlobAsyncClient {
      *     A {@link ContainerAsyncClient} object pointing to the container containing the blob
      */
     public ContainerAsyncClient getContainerAsyncClient() {
-        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.stripLastPathSegment(getBlobUrl()).toString())
-            .pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        try {
+            BlobURLParts parts = URLParser.parse(getBlobUrl());
+            return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+                .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
+                .pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

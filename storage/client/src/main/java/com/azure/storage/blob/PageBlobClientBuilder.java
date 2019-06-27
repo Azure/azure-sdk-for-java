@@ -56,7 +56,7 @@ public final class PageBlobClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private String containerName;
     private String blobName;
     private String snapshot;
@@ -133,7 +133,7 @@ public final class PageBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = new URL(parts.scheme() + "://" + parts.host());
+            this.endpoint = parts.scheme() + "://" + parts.host();;
             this.containerName = parts.containerName();
             this.blobName = parts.blobName();
             this.snapshot = parts.snapshot();

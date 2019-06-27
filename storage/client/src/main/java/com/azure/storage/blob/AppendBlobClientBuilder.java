@@ -56,7 +56,7 @@ public final class AppendBlobClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private String containerName;
     private String blobName;
     private HttpPipelinePolicy credentialPolicy;
@@ -132,7 +132,7 @@ public final class AppendBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = new URL(parts.scheme() + "://" + parts.host());
+            this.endpoint = parts.scheme() + "://" + parts.host();;
             this.containerName = parts.containerName();
             this.blobName = parts.blobName();
         } catch (MalformedURLException | UnknownHostException ex) {

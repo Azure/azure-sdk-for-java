@@ -525,8 +525,8 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
-     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
+     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
      * true.
      *
      * <p>
@@ -547,11 +547,14 @@ public final class ContainerAsyncClient {
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
+     * @param directory
+     *         The directory to list blobs underneath
+     *
      * @return
      *      A reactive response emitting the prefixes and blobs.
      */
-    public Flux<BlobItem> listBlobsHierarchy(String prefix) {
-        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(prefix));
+    public Flux<BlobItem> listBlobsHierarchy(String directory) {
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
     }
 
     /**
@@ -577,6 +580,8 @@ public final class ContainerAsyncClient {
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
+     * @param delimiter
+     *         The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options
      *         {@link ListBlobsOptions}
      *

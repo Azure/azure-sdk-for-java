@@ -55,7 +55,7 @@ public final class ContainerClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private String containerName;
     private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
@@ -132,7 +132,7 @@ public final class ContainerClientBuilder {
         URL url;
         try {
             url = new URL(endpoint);
-            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
+            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
             String path = url.getPath();
             if (path != null && !path.isEmpty() && !path.equals("/")) {
                 path = path.replaceAll("^/", "").replaceAll("/$", "");

@@ -56,7 +56,7 @@ public final class StorageClientBuilder {
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
+    private String endpoint;
     private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
@@ -127,7 +127,7 @@ public final class StorageClientBuilder {
         URL url;
         try {
             url = new URL(endpoint);
-            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
+            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage endpoint url is malformed.");
         }

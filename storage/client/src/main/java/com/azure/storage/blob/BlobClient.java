@@ -99,7 +99,7 @@ public class BlobClient {
     }
 
     /**
-     * Initializes a {@link ContainerClient} object pointing to the containing this blob is in. This method does
+     * Initializes a {@link ContainerClient} object pointing to the container this blob is in. This method does
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *

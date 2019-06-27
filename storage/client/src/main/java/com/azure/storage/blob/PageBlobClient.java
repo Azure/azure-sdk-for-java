@@ -23,6 +23,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
@@ -215,7 +216,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
         long length = pageRange.end()- pageRange.start();
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
             .map(i -> i * PAGE_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 byte[] cache = new byte[PAGE_BYTES];
@@ -223,7 +224,7 @@ public final class PageBlobClient extends BlobClient {
                 while (read < PAGE_BYTES) {
                     read += body.read(cache, read, PAGE_BYTES - read);
                 }
-                return ByteBufAllocator.DEFAULT.buffer(PAGE_BYTES).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange,
