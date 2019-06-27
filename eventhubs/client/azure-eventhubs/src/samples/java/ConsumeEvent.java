@@ -67,7 +67,7 @@ public class ConsumeEvent {
         Disposable subscription = consumer.receive().subscribe(event -> {
             String contents = UTF_8.decode(event.body()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
-                event.offset(), contents));
+                event.sequenceNumber(), contents));
 
             countDownLatch.countDown();
         });

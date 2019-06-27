@@ -49,7 +49,6 @@ public class PublishEventsWithPartitionKey {
         dataList.add(new EventData("EventData Sample 2 ".getBytes(UTF_8)));
         dataList.add(new EventData("EventData Sample 3".getBytes(UTF_8)));
 
-        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // When an Event Hub producer is not associated with any specific partition, it may be desirable to request that
         // the Event Hubs service keep different events or batches of events together on the same partition. This can be
@@ -62,13 +61,13 @@ public class PublishEventsWithPartitionKey {
         // Note that there is no means of accurately predicting which partition will be associated with a given partition key;
         // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
         // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
-        SendOptions sendOptions = new SendOptions().partitionKey(firstPartition);
+        SendOptions sendOptions = new SendOptions().partitionKey("ANY_PARTITION_KEY");
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
         producer.send(dataList, sendOptions).subscribe(
-            (ignored) -> System.out.println("A list of event sent to specific partition, partition ID = " + firstPartition),
+            (ignored) -> System.out.println("Sending a list of events to a partition that the partition key maps to..."),
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
 
