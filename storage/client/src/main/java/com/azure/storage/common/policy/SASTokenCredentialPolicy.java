@@ -35,7 +35,7 @@ public final class SASTokenCredentialPolicy implements HttpPipelinePolicy {
             String delimiter = !ImplUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
 
             String newURL = requestURL.toString() + delimiter + credential.sasToken();
-            context.httpRequest().withUrl(new URL(newURL));
+            context.httpRequest().url(new URL(newURL));
         } catch (MalformedURLException ex) {
             throw new IllegalStateException(ex);
         }

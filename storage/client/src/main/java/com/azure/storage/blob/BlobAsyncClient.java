@@ -151,7 +151,7 @@ public class BlobAsyncClient {
         try {
             UrlBuilder urlBuilder = UrlBuilder.parse(blobAsyncRawClient.azureBlobStorage.url());
             if (blobAsyncRawClient.snapshot != null) {
-                urlBuilder.withQuery("snapshot=" + blobAsyncRawClient.snapshot);
+                urlBuilder.query("snapshot=" + blobAsyncRawClient.snapshot);
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {
