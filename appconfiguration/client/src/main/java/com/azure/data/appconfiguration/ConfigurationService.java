@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@ServiceInterface("AppConfig")
+@ServiceInterface(name = "AppConfig")
 interface ConfigurationService {
     @Get("kv/{key}")
     @ExpectedResponses({200})

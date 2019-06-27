@@ -15,7 +15,7 @@ import static java.lang.annotation.ElementType.TYPE;
  * annotation should not have fluent APIs.
  */
 @Target({TYPE})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Fluent {
 
 }

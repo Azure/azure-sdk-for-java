@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class SwaggerInterfaceParser {
     private final String host;
-    private final String service;
+    private final String serviceName;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
     /**
@@ -52,8 +52,8 @@ public class SwaggerInterfaceParser {
         }
 
         ServiceInterface serviceAnnotation = swaggerInterface.getAnnotation(ServiceInterface.class);
-        if (serviceAnnotation != null && !serviceAnnotation.value().isEmpty()) {
-            service = serviceAnnotation.value();
+        if (serviceAnnotation != null && !serviceAnnotation.name().isEmpty()) {
+            serviceName = serviceAnnotation.name();
         } else {
             throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
         }
@@ -84,7 +84,7 @@ public class SwaggerInterfaceParser {
         return host;
     }
 
-    String service() {
-        return service;
+    String serviceName() {
+        return serviceName;
     }
 }

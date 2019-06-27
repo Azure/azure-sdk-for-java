@@ -13,11 +13,17 @@ import static java.lang.annotation.ElementType.TYPE;
  * Annotation given to all service client classes.
  */
 @Target({TYPE})
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface ServiceClient {
 
     /**
      * The builder class that can construct an instance of this class.
      */
     Class<?> builder();
+
+    /**
+     * Represents whether the network IO methods on this client will be performed asynchronously or
+     * synchronously (i.e. blocking).
+     */
+    boolean isAsync() default false;
 }

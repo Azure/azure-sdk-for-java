@@ -65,8 +65,6 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
-    private static final String DEFAULT_SPAN_NAME_TEMPLATE = "Azure.%s/%s";
-
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -171,7 +169,9 @@ public class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        return TracerProxy.start(String.format(DEFAULT_SPAN_NAME_TEMPLATE, interfaceParser.service(), method.getName()), context);
+        String spanName = String.format("Azure.%s/%s", interfaceParser.serviceName(), method.getName());
+        context = TracerProxy.setSpanName(spanName, context);
+        return TracerProxy.start(spanName, context);
     }
 
     /**

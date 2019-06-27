@@ -19,5 +19,5 @@ public @interface ServiceInterface {
      * Name of the service - this must be short and without spaces.
      * @return the service name given to the interface.
      */
-    String value() default "";
+    String name();
 }
