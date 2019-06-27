@@ -99,14 +99,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
@@ -126,15 +124,13 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Create AC fail"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
 
         when:
         bu.create(PageBlobClient.PAGE_BYTES, null, null, null, bac, null)
@@ -147,7 +143,7 @@ class PageBlobAPITest extends APISpec {
         newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null TODO (alzimmer): Determine why this returns a 201
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -213,14 +209,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Upload page AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         PageBlobAccessConditions pac = new PageBlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
             .sequenceNumberAccessConditions(new SequenceNumberAccessConditions()
                 .ifSequenceNumberLessThan(sequenceNumberLT)
@@ -420,14 +414,12 @@ class PageBlobAPITest extends APISpec {
         def pageRange = new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1)
         sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)))
 
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         def pac = new PageBlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
             .sequenceNumberAccessConditions(new SequenceNumberAccessConditions()
                 .ifSequenceNumberLessThan(sequenceNumberLT)
@@ -724,9 +716,8 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges AC fail"() {
         setup:
-        setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
@@ -818,14 +809,12 @@ class PageBlobAPITest extends APISpec {
     def "Get page ranges diff AC"() {
         setup:
         String snapshot = bu.createSnapshot(null, null, null).value()
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
 
         when:
@@ -849,9 +838,8 @@ class PageBlobAPITest extends APISpec {
         setup:
         String snapshot = bu.createSnapshot().value()
 
-        setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
@@ -938,14 +926,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Resize AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
@@ -964,15 +950,13 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Resize AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
 
         when:
         bu.resize(PageBlobClient.PAGE_BYTES * 2, bac, null)
@@ -1040,14 +1024,12 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Sequence number AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
@@ -1067,15 +1049,13 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Sequence number AC fail"() {
         setup:
-        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-        setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
                 .ifMatch(match)
-                .ifNoneMatch(noneMatch))
+                .ifNoneMatch(setupBlobMatchCondition(bu, noneMatch)))
 
         when:
         bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac, null)
