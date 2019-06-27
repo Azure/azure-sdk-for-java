@@ -240,7 +240,7 @@ class BlobAsyncRawClient {
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, null, null, null, range.toHeaderValue(), getMD5,
+            null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
             null, null, null, null,
             accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), Context.NONE))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.

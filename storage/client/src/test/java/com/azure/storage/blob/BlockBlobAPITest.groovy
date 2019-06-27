@@ -5,6 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
+import com.azure.core.http.rest.VoidResponse
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
@@ -26,7 +27,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block"() {
         setup:
-        Response<BlockBlobItem> response = bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
+        VoidResponse response = bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
         HttpHeaders headers = response.headers()
 
         expect:

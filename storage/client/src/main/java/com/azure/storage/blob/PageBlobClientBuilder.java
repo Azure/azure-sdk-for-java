@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
@@ -135,10 +134,19 @@ public final class PageBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = parts.scheme() + "://" + parts.host();;
-            this.containerName = parts.containerName();
-            this.blobName = parts.blobName();
-            this.snapshot = parts.snapshot();
+            this.endpoint = parts.scheme() + "://" + parts.host();
+
+            if (parts.containerName() != null) {
+                this.containerName = parts.containerName();
+            }
+
+            if (parts.blobName() != null) {
+                this.blobName = parts.blobName();
+            }
+
+            if (parts.snapshot() != null) {
+                this.snapshot = parts.snapshot();
+            }
         } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }

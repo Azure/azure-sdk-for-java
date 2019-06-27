@@ -4,18 +4,17 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -105,7 +104,7 @@ public final class AppendBlobClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint.toString(), containerName, blobName))
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline);
     }
 
@@ -134,9 +133,15 @@ public final class AppendBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = parts.scheme() + "://" + parts.host();;
-            this.containerName = parts.containerName();
-            this.blobName = parts.blobName();
+            this.endpoint = parts.scheme() + "://" + parts.host();
+
+            if (parts.containerName() != null) {
+                this.containerName = parts.containerName();
+            }
+
+            if (parts.blobName() != null) {
+                this.blobName = parts.blobName();
+            }
         } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }

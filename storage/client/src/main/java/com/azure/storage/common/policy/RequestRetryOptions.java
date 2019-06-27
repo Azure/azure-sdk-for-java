@@ -61,9 +61,9 @@ public final class RequestRetryOptions {
      *         this field, make sure you understand the issues around reading stale and potentially-inconsistent data at
      *         <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
      *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=pipeline_options "Sample code for RequestRetryOptions constructor")] \n
-     * For more samples, please see the [Samples file] (https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     * <p><strong>Sample Code</strong></p>
+     *
+     * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">samples file</a></p>
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
             Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
