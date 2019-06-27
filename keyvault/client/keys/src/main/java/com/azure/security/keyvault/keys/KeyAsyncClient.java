@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -53,7 +52,7 @@ import reactor.core.publisher.Mono;
  *
  * @see KeyAsyncClientBuilder
  */
-public final class KeyAsyncClient extends ServiceClient {
+public final class KeyAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
@@ -72,10 +71,9 @@ public final class KeyAsyncClient extends ServiceClient {
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     KeyAsyncClient(URL endpoint, HttpPipeline pipeline) {
-        super(pipeline);
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
-        this.service = RestProxy.create(KeyService.class, this);
+        this.service = RestProxy.create(KeyService.class, pipeline);
     }
 
     /**
