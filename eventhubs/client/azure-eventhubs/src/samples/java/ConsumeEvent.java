@@ -83,17 +83,18 @@ public class ConsumeEvent {
             return producer.send(new EventData(body.getBytes(UTF_8)));
         }).blockLast(OPERATION_TIMEOUT);
 
-        // We wait for all the events to be received before continuing.
-        boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-
-        if (!isSuccessful) {
-            System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+        try {
+            // We wait for all the events to be received before continuing.
+            boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            if (!isSuccessful) {
+                System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+            }
+        } finally {
+            // Dispose and close of all the resources we've created.
+            subscription.dispose();
+            producer.close();
+            consumer.close();
+            client.close();
         }
-
-        // Dispose and close of all the resources we've created.
-        subscription.dispose();
-        producer.close();
-        consumer.close();
-        client.close();
     }
 }

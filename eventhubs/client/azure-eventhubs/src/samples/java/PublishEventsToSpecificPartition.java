@@ -11,8 +11,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -39,7 +37,7 @@ public class PublishEventsToSpecificPartition {
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
 
         // To create a consumer, we need to know what partition to connect to. We take the first partition id.
         // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait

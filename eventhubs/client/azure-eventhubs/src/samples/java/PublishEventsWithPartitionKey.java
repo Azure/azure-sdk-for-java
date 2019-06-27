@@ -42,9 +42,9 @@ public class PublishEventsWithPartitionKey {
 
         // We will publish three events based on simple sentences.
         Flux<EventData> data = Flux.just(
-            new EventData("EventData Sample 1".getBytes(UTF_8)),
-            new EventData("EventData Sample 2".getBytes(UTF_8)),
-            new EventData("EventData Sample 3".getBytes(UTF_8)));
+            new EventData("Ball".getBytes(UTF_8)),
+            new EventData("Net".getBytes(UTF_8)),
+            new EventData("Players".getBytes(UTF_8)));
 
         // When an Event Hub producer is not associated with any specific partition, it may be desirable to request that
         // the Event Hubs service keep different events or batches of events together on the same partition. This can be
@@ -54,10 +54,12 @@ public class PublishEventsWithPartitionKey {
         // that Event Hubs uses as the basis to compute a hash value. Event Hubs will associate the hash value with a specific
         // partition, ensuring that any events published with the same partition key are rerouted to the same partition.
         //
+        // All of event data send to the same partition of the partition key 'basketball' associate with.
+        //
         // Note that there is no means of accurately predicting which partition will be associated with a given partition key;
         // we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
         // exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
-        SendOptions sendOptions = new SendOptions().partitionKey("ANY_PARTITION_KEY");
+        SendOptions sendOptions = new SendOptions().partitionKey("basketball");
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
