@@ -20,7 +20,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to receive events starting from the specific sequence number position in an Event Hub instance.
  */
-public class PublishEventsFromKnownSequenceNumberPosition {
+public class ConsumeEventsFromKnownSequenceNumberPosition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static long lastEnqueuedSequenceNumber = -1;
     private static String lastEnqueuedSequencePartitionID = null;
