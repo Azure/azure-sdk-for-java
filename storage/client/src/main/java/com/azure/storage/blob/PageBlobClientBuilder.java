@@ -12,7 +12,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
@@ -62,7 +61,9 @@ public final class PageBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
-    private HttpPipelinePolicy credentialPolicy;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -89,11 +90,15 @@ public final class PageBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-        }
+}
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -135,10 +140,19 @@ public final class PageBlobClientBuilder {
         try {
             url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
-            this.endpoint = parts.scheme() + "://" + parts.host();;
-            this.containerName = parts.containerName();
-            this.blobName = parts.blobName();
-            this.snapshot = parts.snapshot();
+            this.endpoint = parts.scheme() + "://" + parts.host();
+
+            if (parts.containerName() != null) {
+                this.containerName = parts.containerName();
+            }
+
+            if (parts.blobName() != null) {
+                this.blobName = parts.blobName();
+            }
+
+            if (parts.snapshot() != null) {
+                this.snapshot = parts.snapshot();
+            }
         } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
@@ -187,7 +201,9 @@ public final class PageBlobClientBuilder {
      * @return the updated PageBlobClientBuilder object
      */
     public PageBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
+        this.sharedKeyCredential = credential;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -197,7 +213,9 @@ public final class PageBlobClientBuilder {
      * @return the updated PageBlobClientBuilder object
      */
     public PageBlobClientBuilder credential(TokenCredential credential) {
-        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
+        this.tokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -207,7 +225,9 @@ public final class PageBlobClientBuilder {
      * @return the updated PageBlobClientBuilder object
      */
     public PageBlobClientBuilder credential(SASTokenCredential credential) {
-        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
+        this.sasTokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -216,7 +236,9 @@ public final class PageBlobClientBuilder {
      * @return the updated PageBlobClientBuilder object
      */
     public PageBlobClientBuilder anonymousCredential() {
-        this.credentialPolicy = null;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 

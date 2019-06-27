@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageErrorException;
-import reactor.core.publisher.Mono;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
@@ -17,9 +16,8 @@ import reactor.core.publisher.Mono;
  * perform a getProperties request on an entity to determine whether it exists or not. If it does not exists, an
  * exception will be thrown even though this may be considered an expected indication of absence in this case.
  *
- * @apiNote ## Sample Code \n
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=exception "Sample code for StorageExceptions")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * <p><strong>Sample Code</strong></p>
+ * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">sample file</a></p>
  */
 public final class StorageException extends HttpResponseException {
 

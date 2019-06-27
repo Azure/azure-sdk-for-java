@@ -222,6 +222,26 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    def "Download snapshot"() {
+        when:
+        ByteArrayOutputStream originalStream = new ByteArrayOutputStream()
+        bu.download(originalStream)
+
+        String snapshot = bu.createSnapshot().value()
+        BlockBlobClient bu2 = bu.asBlockBlobClient()
+        bu2.upload(new ByteArrayInputStream("ABC".getBytes()), 3)
+
+        then:
+        BlobClient bu3 = BlobClient.blobClientBuilder()
+            .endpoint(bu.getBlobUrl().toString())
+            .snapshot(snapshot)
+            .credential(primaryCreds)
+            .buildClient()
+        ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream()
+        bu3.download(snapshotStream)
+        snapshotStream.toByteArray() == originalStream.toByteArray()
+    }
+
     /*def "Download context"() {
         setup:
         def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(206, BlobDownloadHeaders)))
@@ -280,14 +300,12 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC"() {
         setup:
-        match = setupBlobMatchCondition(bu, match)
-        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
-                .ifMatch(match)
+                .ifMatch(setupBlobMatchCondition(bu, match))
                 .ifNoneMatch(noneMatch))
 
         expect:
@@ -306,9 +324,8 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Get properties AC fail"() {
         setup:
-        setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions()
-            .leaseAccessConditions(new LeaseAccessConditions().leaseId(leaseID))
+            .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
                 .ifModifiedSince(modified)
                 .ifUnmodifiedSince(unmodified)
@@ -356,7 +373,7 @@ class BlobAPITest extends APISpec {
 
     def "Set HTTP headers null"() {
         setup:
-        VoidResponse response = bu.setHTTPHeaders(null, null, null)
+        VoidResponse response = bu.setHTTPHeaders(null)
 
         expect:
         response.statusCode() == 200
@@ -366,7 +383,16 @@ class BlobAPITest extends APISpec {
     // TODO (alzimmer): Figure out why getProperties returns null after setHTTPHeaders
     /*def "Set HTTP headers min"() {
         when:
-        bu.setHTTPHeaders(new BlobHTTPHeaders().blobContentType("type"))
+        BlobProperties properties = bu.getProperties().value()
+        BlobHTTPHeaders headers = new BlobHTTPHeaders()
+            .blobContentEncoding(properties.contentEncoding())
+            .blobContentDisposition(properties.contentDisposition())
+            .blobContentType("type")
+            .blobCacheControl(properties.cacheControl())
+            .blobContentLanguage(properties.contentLanguage())
+            .blobContentMD5(Base64.getDecoder().decode(properties.contentMD5()))
+
+        bu.setHTTPHeaders(headers)
 
         then:
         bu.getProperties().headers().value("x-ms-blob-content-type") == "type"

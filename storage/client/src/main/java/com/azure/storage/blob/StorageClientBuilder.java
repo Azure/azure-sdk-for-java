@@ -57,7 +57,9 @@ public final class StorageClientBuilder {
     private final List<HttpPipelinePolicy> policies;
 
     private String endpoint;
-    private HttpPipelinePolicy credentialPolicy;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -82,11 +84,15 @@ public final class StorageClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-        }
+}
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -99,7 +105,7 @@ public final class StorageClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(endpoint.toString())
+            .url(endpoint)
             .pipeline(pipeline);
     }
 
@@ -141,7 +147,7 @@ public final class StorageClientBuilder {
     }
 
     String endpoint() {
-        return this.endpoint.toString();
+        return this.endpoint;
     }
 
     /**
@@ -150,7 +156,9 @@ public final class StorageClientBuilder {
      * @return the updated ContainerClientBuilder object
      */
     public StorageClientBuilder credential(SharedKeyCredential credential) {
-        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
+        this.sharedKeyCredential = credential;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -160,7 +168,9 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(TokenCredential credential) {
-        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
+        this.tokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -170,7 +180,9 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder credential(SASTokenCredential credential) {
-        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
+        this.sasTokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -179,7 +191,9 @@ public final class StorageClientBuilder {
      * @return the updated StorageClientBuilder object
      */
     public StorageClientBuilder anonymousCredential() {
-        this.credentialPolicy = null;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
