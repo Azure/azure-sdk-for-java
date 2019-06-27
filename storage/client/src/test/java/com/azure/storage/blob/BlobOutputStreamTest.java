@@ -36,7 +36,7 @@ public class BlobOutputStreamTest {
     @Test
     public void testBlockBlobOutputStream() throws Exception {
         String blobName = "testblob" + RANDOM.nextInt(1000);
-        int length = 1024 * Constants.MB - 12345;
+        int length = 512 * Constants.MB - 12345;
         byte[] randomBytes = new byte[length];
         RANDOM.nextBytes(randomBytes);
 
@@ -47,9 +47,8 @@ public class BlobOutputStreamTest {
 
         Assert.assertEquals(length, blockBlobClient.getProperties().value().blobSize());
         BlobInputStream blobInputStream = blockBlobClient.openInputStream();
-        FileOutputStream fileOutputStream = new FileOutputStream("block-downloaded.dat");
-        ByteStreams.copy(blobInputStream, fileOutputStream);
-        fileOutputStream.close();
+        byte[] downloaded = ByteStreams.toByteArray(blobInputStream);
+        Assert.assertArrayEquals(randomBytes, downloaded);
     }
 
     @Test
