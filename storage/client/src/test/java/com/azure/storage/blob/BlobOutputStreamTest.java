@@ -1,15 +1,17 @@
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.ProxyOptions.Type;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.google.common.io.ByteStreams;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,10 +35,11 @@ public class BlobOutputStreamTest {
         }
     }
 
-    @Test
+//    @Test
     public void testBlockBlobOutputStream() throws Exception {
         String blobName = "testblob" + RANDOM.nextInt(1000);
-        byte[] randomBytes = new byte[256 * Constants.MB];
+        int length = 100 * Constants.MB;
+        byte[] randomBytes = new byte[length];
         RANDOM.nextBytes(randomBytes);
 
         BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -44,14 +47,15 @@ public class BlobOutputStreamTest {
         outStream.write(randomBytes);
         outStream.close();
 
+        Assert.assertEquals(length, blockBlobClient.getProperties().value().blobSize());
         BlobInputStream blobInputStream = blockBlobClient.openInputStream();
         byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(randomBytes, downloaded);
     }
 
-    @Test
+//    @Test
     public void testPageBlobOutputStream() throws Exception {
-        int length = 256 * Constants.MB;
+        int length = 1024 * Constants.MB - 512;
         String blobName = "testblob" + RANDOM.nextInt(1000);
         byte[] randomBytes = new byte[length];
         RANDOM.nextBytes(randomBytes);
@@ -67,14 +71,16 @@ public class BlobOutputStreamTest {
         Assert.assertArrayEquals(randomBytes, downloaded);
     }
 
-    @Test
+//    @Test
     public void testAppendBlobOutputStream() throws Exception {
-        int length = 256 * Constants.MB;
+        int length = 0;
         String blobName = "testblob" + RANDOM.nextInt(1000);
         List<byte[]> randomBytes = new ArrayList<>();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        for (int i = 0; i != 256; i+=4) {
-            byte[] bytes = new byte[4 * Constants.MB];
+        for (int i = 0; i != 64; ++i) {
+            int subLength = RANDOM.nextInt(4 * Constants.MB);
+            length += subLength;
+            byte[] bytes = new byte[subLength];
             RANDOM.nextBytes(bytes);
             randomBytes.add(bytes);
             stream.write(bytes);
@@ -85,7 +91,7 @@ public class BlobOutputStreamTest {
         AppendBlobClient appendBlobClient = containerClient.getAppendBlobClient(blobName);
         appendBlobClient.create();
         BlobOutputStream outStream = appendBlobClient.getBlobOutputStream();
-        for (int i = 0; i != 256/4; i++) {
+        for (int i = 0; i != 64; i++) {
             outStream.write(randomBytes.get(i));
         }
         outStream.close();
