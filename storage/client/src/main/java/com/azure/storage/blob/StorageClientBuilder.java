@@ -4,18 +4,17 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -27,7 +26,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,11 +60,11 @@ public final class StorageClientBuilder {
     private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RequestRetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public StorageClientBuilder() {
-        retryPolicy = new RequestRetryPolicy(new RequestRetryOptions());
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
@@ -90,7 +88,7 @@ public final class StorageClientBuilder {
             policies.add(new AnonymousCredentialPolicy());
         }
 
-        policies.add(retryPolicy);
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -255,6 +253,16 @@ public final class StorageClientBuilder {
      */
     public StorageClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated StorageClientBuilder object
+     */
+    public StorageClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }

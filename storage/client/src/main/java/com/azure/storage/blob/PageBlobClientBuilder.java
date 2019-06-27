@@ -20,6 +20,8 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
@@ -63,11 +65,11 @@ public final class PageBlobClientBuilder {
     private HttpPipelinePolicy credentialPolicy;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public PageBlobClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
@@ -93,7 +95,7 @@ public final class PageBlobClientBuilder {
             policies.add(new AnonymousCredentialPolicy());
         }
 
-        policies.add(retryPolicy);
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -288,6 +290,16 @@ public final class PageBlobClientBuilder {
      */
     public PageBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated PageBlobClientBuilder object
+     */
+    public PageBlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }
