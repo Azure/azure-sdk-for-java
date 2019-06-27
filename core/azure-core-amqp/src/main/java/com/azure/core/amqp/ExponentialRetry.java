@@ -6,8 +6,8 @@ package com.azure.core.amqp;
 import java.time.Duration;
 
 /**
- * A policy to govern retrying of messaging operations in which the delay between retries
- * will grow in an exponential manner, allowing more time to recover as the number of retries increases.
+ * A policy to govern retrying of messaging operations in which the delay between retries will grow in an exponential
+ * manner, allowing more time to recover as the number of retries increases.
  */
 public final class ExponentialRetry extends Retry {
     private static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
@@ -57,5 +57,18 @@ public final class ExponentialRetry extends Retry {
             return 0;
         }
         return Math.log(deltaBackoff) / Math.log(super.getMaxRetryCount());
+    }
+
+    /**
+     * Creates a clone of this instance.
+     *
+     * The {@code minBackoff}, {@code maxBackoff}, and {@code maxRetryCount} are not cloned, but these objects are
+     * immutable and not subject to change.
+     *
+     * @return A clone of the {@link ExponentialRetry} instance.
+     */
+    @SuppressWarnings("CloneDoesntCallSuperClone")
+    public ExponentialRetry clone() {
+        return new ExponentialRetry(minBackoff, maxBackoff, getMaxRetryCount());
     }
 }
