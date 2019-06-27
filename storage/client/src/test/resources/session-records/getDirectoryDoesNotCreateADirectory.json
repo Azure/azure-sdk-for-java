@@ -1,0 +1,57 @@
+{
+    "networkCallRecords" : [ {
+        "Method" : "PUT",
+        "Uri" : "https://sima.file.core.windows.net/share78149400?restype=share",
+        "Headers" : {
+            "x-ms-version" : "2018-11-09",
+            "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+        },
+        "Response" : {
+            "x-ms-version" : "2018-11-09",
+            "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+            "ETag" : "\"0x8D6F9315FCA8101\"",
+            "Last-Modified" : "Tue, 25 Jun 2019 05:52:57 GMT",
+            "retry-after" : "0",
+            "Content-Length" : "0",
+            "StatusCode" : "201",
+            "x-ms-request-id" : "d7e8d621-101a-0030-371a-2b95b8000000",
+            "Date" : "Tue, 25 Jun 2019 05:52:56 GMT"
+        }
+    }, {
+        "Method" : "GET",
+        "Uri" : "https://sima.file.core.windows.net/share78149400/testshare?restype=directory",
+        "Headers" : {
+            "x-ms-version" : "2018-11-09",
+            "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+        },
+        "Response" : {
+            "x-ms-version" : "2018-11-09",
+            "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+            "x-ms-error-code" : "ResourceNotFound",
+            "retry-after" : "0",
+            "Content-Length" : "223",
+            "StatusCode" : "404",
+            "x-ms-request-id" : "d7e8d623-101a-0030-381a-2b95b8000000",
+            "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:d7e8d623-101a-0030-381a-2b95b8000000\nTime:2019-06-25T05:52:57.6605339Z</Message></Error>",
+            "Date" : "Tue, 25 Jun 2019 05:52:56 GMT",
+            "Content-Type" : "application/xml"
+        }
+    }, {
+        "Method" : "DELETE",
+        "Uri" : "https://sima.file.core.windows.net/share78149400?restype=share",
+        "Headers" : {
+            "x-ms-version" : "2018-11-09",
+            "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+        },
+        "Response" : {
+            "x-ms-version" : "2018-11-09",
+            "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+            "retry-after" : "0",
+            "Content-Length" : "0",
+            "StatusCode" : "202",
+            "x-ms-request-id" : "d7e8d624-101a-0030-391a-2b95b8000000",
+            "Date" : "Tue, 25 Jun 2019 05:52:57 GMT"
+        }
+    } ],
+    "variables" : [ "share78149400" ]
+}

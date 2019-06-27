@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory710914?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "223",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "fb84d2e0-d01a-008c-2718-2b82c9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:fb84d2e0-d01a-008c-2718-2b82c9000000\nTime:2019-06-25T05:37:42.6145166Z</Message></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:37:41 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directory710914" ]
+}

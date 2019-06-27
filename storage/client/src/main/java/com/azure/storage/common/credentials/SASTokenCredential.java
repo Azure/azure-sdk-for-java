@@ -6,6 +6,7 @@ package com.azure.storage.common.credentials;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Holds a SAS token used for authenticating requests.
@@ -58,19 +59,19 @@ public final class SASTokenCredential {
         }
 
         if (queryParams.size() < 6
-            || !queryParams.containsKey(SIGNED_VERSION)
-            || !queryParams.containsKey(SIGNED_SERVICES)
-            || !queryParams.containsKey(SIGNED_RESOURCE_TYPES)
-            || !queryParams.containsKey(SIGNED_PERMISSIONS)
-            || !queryParams.containsKey(SIGNED_EXPIRY)
-            || !queryParams.containsKey(SIGNATURE)) {
+                || !queryParams.containsKey(SIGNED_VERSION)
+                || !queryParams.containsKey(SIGNED_SERVICES)
+                || !queryParams.containsKey(SIGNED_RESOURCE_TYPES)
+                || !queryParams.containsKey(SIGNED_PERMISSIONS)
+                || !queryParams.containsKey(SIGNED_EXPIRY)
+                || !queryParams.containsKey(SIGNATURE)) {
             return null;
         }
 
         StringBuilder sasTokenBuilder = new StringBuilder(queryParams.get(SIGNED_VERSION))
-            .append("&").append(queryParams.get(SIGNED_SERVICES))
-            .append("&").append(queryParams.get(SIGNED_RESOURCE_TYPES))
-            .append("&").append(queryParams.get(SIGNED_PERMISSIONS));
+                                            .append("&").append(queryParams.get(SIGNED_SERVICES))
+                                            .append("&").append(queryParams.get(SIGNED_RESOURCE_TYPES))
+                                            .append("&").append(queryParams.get(SIGNED_PERMISSIONS));
 
         // SIGNED_START is optional
         if (queryParams.containsKey(SIGNED_START)) {

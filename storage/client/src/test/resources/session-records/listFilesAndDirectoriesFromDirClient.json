@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory673774?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F92F40A50540\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:37:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb84d30d-d01a-008c-5018-2b82c9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 25 Jun 2019 05:37:45 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory673774%2fdirectory6737740?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F92F40BE850C\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:37:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb84d30f-d01a-008c-5218-2b82c9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 25 Jun 2019 05:37:45 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory673774%2fdirectory6737741?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F92F40D3702C\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:37:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb84d311-d01a-008c-5418-2b82c9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 25 Jun 2019 05:37:45 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory673774%2fdirectory6737742?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F92F40E06ABA\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:37:46 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb84d314-d01a-008c-5518-2b82c9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 25 Jun 2019 05:37:46 GMT"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory673774?prefix=directory673774&restype=directory&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "fb84d316-d01a-008c-5718-2b82c9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\" ShareName=\"dirsharename\" DirectoryPath=\"directory673774\"><Prefix>directory673774</Prefix><Entries><Directory><Name>directory6737740</Name><Properties /></Directory><Directory><Name>directory6737741</Name><Properties /></Directory><Directory><Name>directory6737742</Name><Properties /></Directory></Entries><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 25 Jun 2019 05:37:46 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directory673774" ]
+}

@@ -1,0 +1,61 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/share250475f7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "324",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "cf06f120-901a-004c-7419-2b088d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:cf06f120-901a-004c-7419-2b088d000000\nTime:2019-06-25T05:44:21.0777722Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:44:20 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/share250475f7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "Content-Length" : "323",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "cf06f121-901a-004c-7519-2b088d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:cf06f121-901a-004c-7519-2b088d000000\nTime:2019-06-25T05:44:21.1638325Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:44:20 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.file.core.windows.net/share250475f7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "cf06f123-901a-004c-7619-2b088d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:cf06f123-901a-004c-7619-2b088d000000\nTime:2019-06-25T05:44:21.2468923Z</Message></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:44:20 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "share250475f7" ]
+}

@@ -32,7 +32,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * @param url the url value.
      * @return the service client itself.
      */
-    AzureQueueStorageImpl url(String url) {
+    public AzureQueueStorageImpl withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -57,7 +57,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * @param version the version value.
      * @return the service client itself.
      */
-    AzureQueueStorageImpl version(String version) {
+    public AzureQueueStorageImpl withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -132,6 +132,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      */
     public AzureQueueStorageImpl(HttpPipeline httpPipeline) {
         super(httpPipeline);
+        this.version = "2018-03-28";
         this.services = new ServicesImpl(this);
         this.queues = new QueuesImpl(this);
         this.messages = new MessagesImpl(this);

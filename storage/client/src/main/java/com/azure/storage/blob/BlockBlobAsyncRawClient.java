@@ -105,7 +105,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param context
      *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
+     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
      *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
      *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
      *         its parent, forming a linked list.

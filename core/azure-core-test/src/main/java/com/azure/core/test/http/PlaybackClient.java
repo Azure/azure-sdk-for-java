@@ -99,6 +99,7 @@ public final class PlaybackClient implements HttpClient {
         int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
         HttpHeaders headers = new HttpHeaders();
 
+
         for (Map.Entry<String, String> pair : networkCallRecord.response().entrySet()) {
             if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
                 String rawHeader = pair.getValue();

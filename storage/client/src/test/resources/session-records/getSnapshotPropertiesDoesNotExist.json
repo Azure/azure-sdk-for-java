@@ -1,0 +1,57 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/share64310160?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F9302E9778F0\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:44:25 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "cf06f147-901a-004c-0f19-2b088d000000",
+      "Date" : "Tue, 25 Jun 2019 05:44:24 GMT"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sima.file.core.windows.net/share64310160?sharesnapshot=snapshot&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "Content-Length" : "445",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "cf06f149-901a-004c-1019-2b088d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:cf06f149-901a-004c-1019-2b088d000000\nTime:2019-06-25T05:44:25.6320132Z</Message><QueryParameterName>sharesnapshot</QueryParameterName><QueryParameterValue>snapshot</QueryParameterValue><Reason>Must be in the specific snapshot date time format.</Reason></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:44:24 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.file.core.windows.net/share64310160?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "cf06f14a-901a-004c-1119-2b088d000000",
+      "Date" : "Tue, 25 Jun 2019 05:44:24 GMT"
+    }
+  } ],
+  "variables" : [ "share64310160" ]
+}

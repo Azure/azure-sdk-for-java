@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory694789%2ftestfile",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ParentNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "224",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "fb84d331-d01a-008c-6f18-2b82c9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:fb84d331-d01a-008c-6f18-2b82c9000000\nTime:2019-06-25T05:37:48.1923794Z</Message></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:37:47 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directory694789" ]
+}

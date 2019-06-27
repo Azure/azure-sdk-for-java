@@ -18,13 +18,14 @@ import com.azure.core.implementation.CollectionFormat;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesIncludeType;
 import com.azure.storage.file.models.ServicesGetPropertiesResponse;
 import com.azure.storage.file.models.ServicesListSharesSegmentResponse;
 import com.azure.storage.file.models.ServicesSetPropertiesResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import com.azure.storage.file.models.StorageServiceProperties;
 import reactor.core.publisher.Mono;
+
 
 import java.util.List;
 
@@ -58,12 +59,12 @@ public final class ServicesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Files Service")
+    @Service("Storage File Services")
     private interface ServicesService {
         @PUT("")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") StorageServiceProperties storageServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesSetPropertiesResponse> setProperties(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") FileServiceProperties fileServiceProperties, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @GET("")
         @ExpectedResponses({200})
@@ -79,31 +80,31 @@ public final class ServicesImpl {
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param storageServiceProperties The StorageService properties.
+     * @param fileServiceProperties The FileService properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Context context) {
         final Integer timeout = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), restype, comp, context);
+        return service.setProperties(this.client.url(), fileServiceProperties, timeout, this.client.version(), restype, comp, context);
     }
 
     /**
      * Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.
      *
-     * @param storageServiceProperties The StorageService properties.
+     * @param fileServiceProperties The FileService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, Context context) {
+    public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(FileServiceProperties fileServiceProperties, Integer timeout, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), restype, comp, context);
+        return service.setProperties(this.client.url(), fileServiceProperties, timeout, this.client.version(), restype, comp, context);
     }
 
     /**

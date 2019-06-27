@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/storagetests/directory403825?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F7A5CDFE0A70\"",
+      "Last-Modified" : "Sun, 23 Jun 2019 06:41:21 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "50f6a8cf-c01a-0098-3d8e-2941ad000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Sun, 23 Jun 2019 06:41:21 GMT"
+    }
+  } ],
+  "variables" : [ "directory403825" ]
+}

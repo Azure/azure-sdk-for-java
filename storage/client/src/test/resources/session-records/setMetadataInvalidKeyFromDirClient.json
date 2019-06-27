@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory58426c?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D6F92F3ED6D431\"",
+      "Last-Modified" : "Tue, 25 Jun 2019 05:37:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fb84d2e8-d01a-008c-2d18-2b82c9000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 25 Jun 2019 05:37:42 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory58426c?restype=directory&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_211; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidMetadata",
+      "retry-after" : "0",
+      "Content-Length" : "260",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "fb84d2ea-d01a-008c-2f18-2b82c9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:fb84d2ea-d01a-008c-2f18-2b82c9000000\nTime:2019-06-25T05:37:43.4290803Z</Message></Error>",
+      "Date" : "Tue, 25 Jun 2019 05:37:42 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directory58426c" ]
+}

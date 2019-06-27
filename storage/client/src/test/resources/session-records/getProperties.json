@@ -1,0 +1,60 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net/share23809870?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Mon, 17 Jun 2019 22:14:56 GMT",
+      "content-length" : "0",
+      "last-modified" : "Mon, 17 Jun 2019 22:14:57 GMT",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-11-09",
+      "etag" : "\"0x8D6F3713B62FDDE\"",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b1b3868c-601a-0035-215a-25617e000000"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net/share23809870?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Mon, 17 Jun 2019 22:14:56 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-meta-test" : "metadata",
+      "x-ms-version" : "2018-11-09",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-has-legal-hold" : "false",
+      "last-modified" : "Mon, 17 Jun 2019 22:14:57 GMT",
+      "x-ms-share-quota" : "2",
+      "x-ms-has-immutability-policy" : "false",
+      "etag" : "\"0x8D6F3713B62FDDE\"",
+      "x-ms-request-id" : "b1b3868e-601a-0035-225a-25617e000000"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://alzimmerstorage.file.core.windows.net/share23809870?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 11.0.2; Windows 10 10.0"
+    },
+    "Response" : {
+      "date" : "Mon, 17 Jun 2019 22:14:56 GMT",
+      "content-length" : "0",
+      "server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version" : "2018-11-09",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "b1b3868f-601a-0035-235a-25617e000000"
+    }
+  } ],
+  "variables" : [ "share23809870" ]
+}

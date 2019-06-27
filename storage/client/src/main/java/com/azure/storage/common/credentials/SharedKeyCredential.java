@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.credentials;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.ImplUtils;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
@@ -89,17 +90,17 @@ public final class SharedKeyCredential {
 
         return String.join("\n",
             httpMethod,
-            headers.getOrDefault("Content-Encoding", ""),
-            headers.getOrDefault("Content-Language", ""),
+            getStandardHeaderValue(headers, "Content-Encoding"),
+            getStandardHeaderValue(headers, "Content-Language"),
             contentLength,
-            headers.getOrDefault("Content-MD5", ""),
-            headers.getOrDefault("Content-Type", ""),
+            getStandardHeaderValue(headers, "Content-MD5"),
+            getStandardHeaderValue(headers, "Content-Type"),
             dateHeader,
-            headers.getOrDefault("If-Modified-Since", ""),
-            headers.getOrDefault("If-Match", ""),
-            headers.getOrDefault("If-None-Match", ""),
-            headers.getOrDefault("If-Unmodified-Since", ""),
-            headers.getOrDefault("Range", ""),
+            getStandardHeaderValue(headers, "If-Modified-Since"),
+            getStandardHeaderValue(headers, "If-Match"),
+            getStandardHeaderValue(headers, "If-None-Match"),
+            getStandardHeaderValue(headers, "If-Unmodified-Since"),
+            getStandardHeaderValue(headers, "Range"),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));
     }
@@ -181,5 +182,22 @@ public final class SharedKeyCredential {
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
             throw new Error(ex);
         }
+    }
+
+    /**
+     * Returns the standard header value from the specified connection request, or an empty string if no header value
+     * has been specified for the request.
+     *
+     * @param httpHeaders
+     *         A {@code HttpHeaders} object that represents the headers for the request.
+     * @param headerName
+     *         A {@code String} that represents the name of the header being requested.
+     *
+     * @return A {@code String} that represents the header value, or {@code null} if there is no corresponding
+     * header value for {@code headerName}.
+     */
+    private String getStandardHeaderValue(final Map<String, String> httpHeaders, final String headerName) {
+        final String headerValue = httpHeaders.get(headerName);
+        return headerValue == null ? "" : headerValue;
     }
 }
