@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -325,11 +326,6 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         }
     }
 
-    private boolean isMatchingEvent(EventData event, String expectedValue) {
-        return event.properties() != null && event.properties().containsKey(MESSAGE_TRACKING_ID)
-            && expectedValue.equals(event.properties().get(MESSAGE_TRACKING_ID));
-    }
-
     /**
      * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
      * events there.
@@ -344,12 +340,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
         final EventHubProducer producer = client.createProducer(producerOptions);
-        final Flux<EventData> events = Flux.range(0, NUMBER_OF_EVENTS).map(number -> {
-            final EventData eventData = new EventData(("Event " + number).getBytes(UTF_8));
-            eventData.addProperty(MESSAGE_TRACKING_ID, MESSAGE_TRACKING_VALUE);
-            eventData.addProperty(MESSAGE_POSITION_ID, number);
-            return eventData;
-        });
+        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, MESSAGE_TRACKING_VALUE);
 
         try {
             // So we know what instant those messages were pushed to the service and can fetch them.
