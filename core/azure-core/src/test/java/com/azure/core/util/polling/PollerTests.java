@@ -109,12 +109,12 @@ public class PollerTests {
         });
 
         // get Specific Event Observer
-        List<String> observeOtherStates = new ArrayList<>();
-        observeOtherStates.add("OTHER_1");
-        observeOtherStates.add("OTHER_2");
         List<OperationStatus> observeOperationStates = new ArrayList<>();
         observeOperationStates.add(OperationStatus.SUCCESSFULLY_COMPLETED);
-        Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
+        observeOperationStates.add(OperationStatus.fromString("OTHER_1"));
+        observeOperationStates.add(OperationStatus.fromString("OTHER_2"));
+
+        Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates));
         fluxPollResp.subscribe(pr -> {
             debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
@@ -128,18 +128,10 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
-    private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeOperationStates, List<String> observeOtherStates) {
-        List<OperationStatus> operationStates = observeOperationStates != null ? observeOperationStates : new ArrayList<>();
-        if (currentPollResponse.getStatus() == OperationStatus.OTHER
-            && currentPollResponse.getStatus() != null
-            && observeOtherStates != null) {
-            if (observeOtherStates.contains(currentPollResponse.getOtherStatus())) {
-                return Mono.just(true);
-            }
-        } else {
-            if (operationStates.contains(currentPollResponse.getStatus())) {
-                return Mono.just(true);
-            }
+    private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeAllOperationStates) {
+
+        if (observeAllOperationStates.contains(currentPollResponse.getStatus())) {
+            return Mono.just(true);
         }
         return Mono.just(false);
     }
