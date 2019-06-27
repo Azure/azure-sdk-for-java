@@ -110,7 +110,7 @@ public class BlobAsyncClient {
      *      A {@link AppendBlobAsyncClient} to this resource.
      */
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
     }
 
     /**

@@ -60,6 +60,7 @@ public final class AppendBlobClientBuilder {
     private String endpoint;
     private String containerName;
     private String blobName;
+    private String snapshot;
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
@@ -125,7 +126,7 @@ public final class AppendBlobClientBuilder {
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      */
     public AppendBlobAsyncClient buildAsyncClient() {
-        return new AppendBlobAsyncClient(buildImpl());
+        return new AppendBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
@@ -147,6 +148,10 @@ public final class AppendBlobClientBuilder {
 
             if (parts.blobName() != null) {
                 this.blobName = parts.blobName();
+            }
+
+            if (parts.snapshot() != null) {
+                this.snapshot = parts.snapshot();
             }
         } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
@@ -177,6 +182,16 @@ public final class AppendBlobClientBuilder {
      */
     public AppendBlobClientBuilder blobName(String blobName) {
         this.blobName = blobName;
+        return this;
+    }
+
+    /**
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 
