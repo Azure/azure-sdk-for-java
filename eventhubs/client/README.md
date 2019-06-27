@@ -278,10 +278,12 @@ or not. If true, then the request can be retried; otherwise not.
 
 The [ErrorCondition][error_condition] contains error conditions common to the AMQP protocol and used by Azure services. 
 When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP exception
-occurred and if possible, how to mitigate this exception. A list of all the AMQP exceptions can be found in OASIS AMQP
-Version 1.0 Transport Errors.
+occurred and if possible, how to mitigate this exception. A list of all the AMQP exceptions can be found in [OASIS AMQP
+Version 1.0 Transport Errors][oasis_amqp_v1_error].
   
-The [ErrorContext][error_context], provides context that caused the AmqpException.
+The [ErrorContext][error_context] in the [AmqpException][amqp_exception] provides information about the AMQP session, 
+link, or connection that the exception occurred in. This is useful to diagnose which level in the transport this 
+exception occurred at and whether it was an issue in one of the producers or consumers.
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
@@ -337,4 +339,6 @@ If you would like to become an active contributor to this project please refer t
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [error_condition]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
 [error_context]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
+[amqp_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
+[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [log_levels]: will-know
