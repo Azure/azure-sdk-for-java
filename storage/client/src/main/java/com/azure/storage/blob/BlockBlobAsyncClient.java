@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -87,7 +88,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder.build());
+        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
@@ -230,7 +231,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data,
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data,
                                                          long length) {
         return this.stageBlock(base64BlockID, data, length, null);
     }
@@ -259,11 +260,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Response<BlockBlobItem>> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
-            LeaseAccessConditions leaseAccessConditions) {
+    public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
+                 LeaseAccessConditions leaseAccessConditions) {
         return blockBlobAsyncRawClient
             .stageBlock(base64BlockID, data, length, leaseAccessConditions)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            .map(VoidResponse::new);
     }
 
     /**
@@ -284,7 +285,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null);
@@ -316,12 +317,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Response<BlockBlobItem>> stageBlockFromURL(String base64BlockID, URL sourceURL,
+    public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions) {
         return blockBlobAsyncRawClient
             .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
+            .map(VoidResponse::new);
     }
 
     /**
