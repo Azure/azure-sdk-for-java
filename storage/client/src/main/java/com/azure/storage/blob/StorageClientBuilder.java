@@ -141,7 +141,7 @@ public final class StorageClientBuilder {
     }
 
     String endpoint() {
-        return this.endpoint.toString();
+        return this.endpoint;
     }
 
     /**
