@@ -110,9 +110,6 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
-    <azure-core-amqp.version>1.0.0-SNAPSHOT</azure-core-amqp.version>
-    <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
@@ -126,7 +123,6 @@
     <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
 
     <!-- Test Dependency Versions -->
-    <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
     <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
@@ -195,13 +191,13 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core</artifactId>
-        <version>${azure-core.version}</version>
+        <version>1.0.0-preview.1</version>
       </dependency>
 
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-amqp</artifactId>
-        <version>${azure-core-amqp.version}</version>
+        <version>1.0.0-preview.1</version>
       </dependency>
 
       <dependency>
@@ -351,13 +347,13 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core-test</artifactId>
-        <version>${azure-core-test.version}</version>
+        <version>1.0.0-preview.1</version>
       </dependency>
 
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>${azure-identity.version}</version>
+        <version>1.0.0-SNAPSHOT</version>
         <scope>test</scope>
       </dependency>
 
