@@ -227,11 +227,21 @@ public class Poller<T> {
     }
 
     /**
+     * Blocks indefinitely until given {@link OperationStatus} is received.
+     * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} value.
+     * @return {@link PollResponse} matching the desired status.
+     * @throws IllegalArgumentException If {@code statusToBlockFor} is {@code null}.
+     */
+    public PollResponse<T> blockUntil(OperationStatus statusToBlockFor) {
+        return blockUntil(statusToBlockFor, null);
+    }
+
+    /**
      * Blocks until given {@link OperationStatus} is received or a timeout expires if provided. A {@code null} {@code timeout} will cause to block indefinitely for desired status.
-     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} value.
+     * @param statusToBlockFor The desired {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} value.
      * @param timeout The time after which it will stop blocking. A {@code null} value will cause to block indefinitely. Zero or negative are not valid values.
      * @return {@link PollResponse} matching the status to block for or times out.
-     * @throws IllegalArgumentException if {@code timeout} is zero or negative. If {@code statusToBlockFor} is {@code null}.
+     * @throws IllegalArgumentException if {@code timeout} is zero or negative and if {@code statusToBlockFor} is {@code null}.
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
