@@ -44,7 +44,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     private String resourceGroup;
 
     /**
-     * Get the connectionString value.
+     * Get the connection string of the service bus queue endpoint.
      *
      * @return the connectionString value
      */
@@ -53,7 +53,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Set the connectionString value.
+     * Set the connection string of the service bus queue endpoint.
      *
      * @param connectionString the connectionString value to set
      * @return the RoutingServiceBusQueueEndpointProperties object itself.
@@ -64,7 +64,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Get the name value.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same as the actual queue name.
      *
      * @return the name value
      */
@@ -73,7 +73,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types. The name need not be the same as the actual queue name.
      *
      * @param name the name value to set
      * @return the RoutingServiceBusQueueEndpointProperties object itself.
@@ -84,7 +84,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription identifier of the service bus queue endpoint.
      *
      * @return the subscriptionId value
      */
@@ -93,7 +93,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set the subscription identifier of the service bus queue endpoint.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the RoutingServiceBusQueueEndpointProperties object itself.
@@ -104,7 +104,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get the name of the resource group of the service bus queue endpoint.
      *
      * @return the resourceGroup value
      */
@@ -113,7 +113,7 @@ public class RoutingServiceBusQueueEndpointProperties {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set the name of the resource group of the service bus queue endpoint.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the RoutingServiceBusQueueEndpointProperties object itself.

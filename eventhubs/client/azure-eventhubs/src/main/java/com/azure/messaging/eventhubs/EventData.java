@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.MessageConstant;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -43,6 +44,8 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
  * types) and Data section is not supported.
  * </p>
+ *
+ * @see EventHubProducer
  */
 public class EventData implements Comparable<EventData> {
     /*
@@ -50,6 +53,7 @@ public class EventData implements Comparable<EventData> {
      */
     public static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
+    private final ClientLogger logger = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
     private final ByteBuffer body;
     private final SystemProperties systemProperties;
@@ -129,6 +133,10 @@ public class EventData implements Comparable<EventData> {
             Data bodyData = (Data) bodySection;
             this.body = bodyData.getValue().asByteBuffer();
         } else {
+            logger.asWarning().log(String.format(Locale.US,
+                "Message body type is not of type Data, but type: %s. Not setting body contents.",
+                bodySection != null ? bodySection.getType() : "null"));
+
             this.body = null;
         }
 
@@ -136,8 +144,19 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Adds an application property associated with this event. If the {@code key} exists in the map, its existing value
-     * is overwritten.
+     * Adds a piece of metadata to the event, allowing publishers to offer additional information to event consumers. If
+     * the {@code key} exists in the map, its existing value is overwritten.
+     *
+     * <p>
+     * A common use case for {@link #properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * to consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * <p>
+     * <strong>Adding serialization hint using {@code addProperty(String, Object)}</strong>
+     * </p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @param key The key for this application property
      * @param value The value for this application property.
@@ -153,9 +172,21 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Gets the application property bag
+     * The set of free-form event properties which may be used for passing metadata associated with the event with the
+     * event body during Event Hubs operations.
      *
-     * @return Application properties associated with this EventData.
+     * <p>
+     * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * to consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * <p>
+     * <strong>Adding serialization hint using {@link #addProperty(String, Object)}</strong>
+     * </p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
+     *
+     * @return Application properties associated with this {@link EventData}.
      */
     public Map<String, Object> properties() {
         return properties;
@@ -175,10 +206,16 @@ public class EventData implements Comparable<EventData> {
     /**
      * Gets the actual payload/data wrapped by EventData.
      *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #properties()} when creating the event, to associate serialization hints as an aid to consumers who wish
+     * to deserialize the binary data.
+     * </p>
+     *
      * @return ByteBuffer representing the data.
      */
     public ByteBuffer body() {
-        return body;
+        return body.duplicate();
     }
 
     /**
@@ -191,8 +228,8 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to
-     * select a partition to send the message to.
+     * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
+     * a partition to send the message to.
      *
      * @return A partition key for this Event Data.
      */
@@ -214,8 +251,8 @@ public class EventData implements Comparable<EventData> {
      * is unique for every message received in the Event Hub partition.
      *
      * @return Sequence number for this event.
-     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a retrieved
-     *         event.
+     * @throws IllegalStateException if {@link #systemProperties()} does not contain the sequence number in a
+     *         retrieved event.
      */
     public long sequenceNumber() {
         return systemProperties.sequenceNumber();
@@ -308,8 +345,8 @@ public class EventData implements Comparable<EventData> {
          * Event Hub.
          *
          * @return Sequence number for this event.
-         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a retrieved
-         *         event.
+         * @throws IllegalStateException if {@link SystemProperties} does not contain the sequence number in a
+         *         retrieved event.
          */
         private long sequenceNumber() {
             final Long sequenceNumber = this.getSystemProperty(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());

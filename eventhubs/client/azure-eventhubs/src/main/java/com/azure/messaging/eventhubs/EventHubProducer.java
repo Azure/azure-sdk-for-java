@@ -52,6 +52,28 @@ import java.util.stream.Collector;
  * </ol>
  * </p>
  *
+ * <p><strong>Create a producer that routes events to any partition</strong></p>
+ * To allow automatic routing of messages to available partition, do not specify the {@link
+ * EventHubProducerOptions#partitionId() partitionId} when creating the {@link EventHubProducer}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiate}
+ *
+ * <p><strong>Create a producer that publishes events to partition "foo" with a timeout of 45 seconds.</strong></p>
+ *
+ * Developers can push events to a single partition by specifying the {@link EventHubProducerOptions#partitionId(String)
+ * partitionId} when creating an {@link EventHubProducer}.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.instantiatePartitionProducer}
+ *
+ * <p><strong>Publish events to the same partition, grouped together using {@link SendOptions#partitionKey(String)}.</strong></p>
+ * If developers want to push similar events to end up at the same partition, but do not require them to go to a
+ * specific partition, they can use {@link SendOptions#partitionKey(String)}.
+ *
+ * In the sample below, all the "sandwiches" end up in the same partition, but it could end up in partition 0, 1, etc.
+ * of the available partitions. All that matters to the end user is that they are grouped together.
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
+ *
  * @see EventHubClient#createProducer()
  */
 public class EventHubProducer implements Closeable {
@@ -70,8 +92,8 @@ public class EventHubProducer implements Closeable {
     private final boolean isPartitionSender;
 
     /**
-     * Creates a new instance of this {@link EventHubProducer} that sends messages to
-     * {@link EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
+     * Creates a new instance of this {@link EventHubProducer} that sends messages to {@link
+     * EventHubProducerOptions#partitionId() options.partitionId()} if it is not {@code null} or an empty string,
      * otherwise, allows the service to load balance the messages amongst available partitions.
      */
     EventHubProducer(Mono<AmqpSendLink> amqpSendLinkMono, EventHubProducerOptions options) {
@@ -86,7 +108,8 @@ public class EventHubProducer implements Closeable {
      * allowed, an exception will be triggered and the send will fail.
      *
      * For more information regarding the maximum event size allowed, see
-     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * Limits</a>.
      *
      * @param event Event to send to the service.
      * @return A {@link Mono} that completes when the event is pushed to the service.
@@ -102,7 +125,8 @@ public class EventHubProducer implements Closeable {
      * the maximum size allowed, an exception will be triggered and the send will fail.
      *
      * For more information regarding the maximum event size allowed, see
-     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
+     * <a href="https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
+     * Limits</a>.
      *
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
@@ -180,8 +204,8 @@ public class EventHubProducer implements Closeable {
         if (!ImplUtils.isNullOrEmpty(partitionKey)) {
             if (isPartitionSender) {
                 throw new IllegalArgumentException(String.format(Locale.US,
-                    "SendOptions.partitionKey() cannot be set when an EventSender is "
-                        + "created with EventSenderOptions.partitionId() set. This EventSender can only send events to partition '%s'.",
+                    "SendOptions.partitionKey() cannot be set when an EventHubProducer is created with"
+                        + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
                     senderOptions.partitionId()));
             } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
                 throw new IllegalArgumentException(String.format(Locale.US,
@@ -211,7 +235,7 @@ public class EventHubProducer implements Closeable {
             return Mono.empty();
         }
 
-        logger.asInfo().log("Sending with partitionKey[{}], batch size[{}]", batch.getPartitionKey(), batch.getSize());
+        logger.asInfo().log("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
 
         final List<Message> messages = EventDataUtil.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
 
@@ -223,7 +247,8 @@ public class EventHubProducer implements Closeable {
     /**
      * Disposes of the {@link EventHubProducer} by closing the underlying connection to the service.
      *
-     * @throws IOException if the underlying transport could not be closed and its resources could not be disposed.
+     * @throws IOException if the underlying transport could not be closed and its resources could not be
+     *         disposed.
      */
     @Override
     public void close() throws IOException {
@@ -237,9 +262,9 @@ public class EventHubProducer implements Closeable {
 
     /**
      * Collects EventData into EventDataBatch to send to Event Hubs. If {@code maxNumberOfBatches} is {@code null} then
-     * it'll collect as many batches as possible. Otherwise, if there are more events than can fit into
-     * {@code maxNumberOfBatches}, then the collector throws a {@link AmqpException} with
-     * {@link ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
+     * it'll collect as many batches as possible. Otherwise, if there are more events than can fit into {@code
+     * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
+     * ErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
     private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
         private final String partitionKey;

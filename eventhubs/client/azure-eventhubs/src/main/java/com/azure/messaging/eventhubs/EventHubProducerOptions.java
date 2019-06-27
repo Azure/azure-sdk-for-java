@@ -9,6 +9,9 @@ import java.time.Duration;
 
 /**
  * The set of options that can be specified when creating an {@link EventHubProducer} to configure its behavior.
+ *
+ * @see EventHubProducer
+ * @see EventHubClient#createProducer(EventHubProducerOptions)
  */
 public class EventHubProducerOptions implements Cloneable {
     private String partitionId;

@@ -34,7 +34,7 @@ public class RouteCompilationError {
     private RouteErrorRange location;
 
     /**
-     * Get the message value.
+     * Get route error message.
      *
      * @return the message value
      */
@@ -43,7 +43,7 @@ public class RouteCompilationError {
     }
 
     /**
-     * Set the message value.
+     * Set route error message.
      *
      * @param message the message value to set
      * @return the RouteCompilationError object itself.
@@ -54,7 +54,7 @@ public class RouteCompilationError {
     }
 
     /**
-     * Get the severity value.
+     * Get severity of the route error. Possible values include: 'error', 'warning'.
      *
      * @return the severity value
      */
@@ -63,7 +63,7 @@ public class RouteCompilationError {
     }
 
     /**
-     * Set the severity value.
+     * Set severity of the route error. Possible values include: 'error', 'warning'.
      *
      * @param severity the severity value to set
      * @return the RouteCompilationError object itself.
@@ -74,7 +74,7 @@ public class RouteCompilationError {
     }
 
     /**
-     * Get the location value.
+     * Get location where the route error happened.
      *
      * @return the location value
      */
@@ -83,7 +83,7 @@ public class RouteCompilationError {
     }
 
     /**
-     * Set the location value.
+     * Set location where the route error happened.
      *
      * @param location the location value to set
      * @return the RouteCompilationError object itself.

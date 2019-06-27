@@ -8,8 +8,8 @@ import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.amqp.exception.ExceptionUtil;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.ReactorDispatcher;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import com.azure.messaging.eventhubs.implementation.ReactorDispatcher;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -40,7 +40,7 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        logger.asInfo().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
+        logger.asVerbose().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
             getConnectionId(), this.entityName,
             e.getSession().getCondition() == null ? ClientConstants.NOT_APPLICABLE : e.getSession().getCondition().toString());
 
@@ -82,7 +82,7 @@ public class SessionHandler extends Handler {
     public void onSessionLocalClose(Event e) {
         final ErrorCondition condition = e.getSession().getCondition();
 
-        logger.asInfo().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
+        logger.asVerbose().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, getConnectionId(),
             condition == null ? ClientConstants.NOT_APPLICABLE : condition.toString());
     }

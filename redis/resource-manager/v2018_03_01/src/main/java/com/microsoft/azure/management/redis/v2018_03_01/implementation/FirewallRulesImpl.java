@@ -42,41 +42,22 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
         return new RedisFirewallRuleImpl(name, this.manager());
     }
 
-    private Observable<Page<RedisFirewallRuleInner>> listByRedisResourceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FirewallRulesInner client = this.inner();
-        return client.listByRedisResourceNextAsync(nextLink)
-        .flatMap(new Func1<Page<RedisFirewallRuleInner>, Observable<Page<RedisFirewallRuleInner>>>() {
-            @Override
-            public Observable<Page<RedisFirewallRuleInner>> call(Page<RedisFirewallRuleInner> page) {
-                return Observable.just(page).concatWith(listByRedisResourceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RedisFirewallRule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName) {
         FirewallRulesInner client = this.inner();
         return client.listByRedisResourceAsync(resourceGroupName, cacheName)
-        .flatMap(new Func1<Page<RedisFirewallRuleInner>, Observable<Page<RedisFirewallRuleInner>>>() {
-            @Override
-            public Observable<Page<RedisFirewallRuleInner>> call(Page<RedisFirewallRuleInner> page) {
-                return listByRedisResourceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RedisFirewallRuleInner>, Iterable<RedisFirewallRuleInner>>() {
             @Override
             public Iterable<RedisFirewallRuleInner> call(Page<RedisFirewallRuleInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RedisFirewallRuleInner, RedisFirewallRule>() {
             @Override
             public RedisFirewallRule call(RedisFirewallRuleInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
