@@ -129,8 +129,8 @@ public class PollerTests {
     }
 
     /* Test where SDK Client is subscribed all responses.
-     * This scenario is setup where source will generate few in-progress response followed by few OTHER responses and finally successfully completed response.
-     * The sdk client will only subscribe for a specific OTHER response.
+     * This scenario is setup where source will generate few in-progress response followed by few OTHER status responses and finally successfully completed response.
+     * The sdk client will block for a specific OTHER status.
      **/
     @Test
     public void blockForCustomOperationStatusTest() throws Exception {
@@ -144,7 +144,7 @@ public class PollerTests {
         inProgressPollResponseList.add(inProgressPollResponse);
         inProgressPollResponseList.add(other1PollResponse);
         inProgressPollResponseList.add(other2PollResponse);
-        long totalTimeoutInMillis = 1000 * 2;
+        long totalTimeoutInMillis = 1000 * 1;
         Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
 
         Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
