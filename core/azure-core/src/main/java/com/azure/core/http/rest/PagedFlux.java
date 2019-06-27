@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.reactivestreams.Publisher;
@@ -14,29 +15,42 @@ import reactor.core.publisher.Mono;
  * This class is a flux that can operate on a {@link PagedResponse} and
  * also provides the ability to operate on individual items.
  *
- * When used with paged responses, each response will contain the items in the page as
+ * When processing the response by page, each response will contain the items in the page as
  * well as the request details like status code and headers.
  *
- * @param <T> The type of items in a page
+ * @param <T> The type of items in a {@link PagedResponse}
+ *
+ * @see PagedResponse
+ * @see Page
+ * @see Flux
  */
 public class PagedFlux<T> extends Flux<T> {
     private final Supplier<Mono<PagedResponse<T>>> firstPageRetriever;
     private final Function<String, Mono<PagedResponse<T>>> nextPageRetriever;
 
     /**
-     * Creates an instance of {@link PagedFlux}.
+     * Creates an instance of {@link PagedFlux}. The constructor takes in two arguments. The first
+     * argument is a supplier that fetches the first page of {@code T}. The second argument is a
+     * function that fetches subsequent pages of {@code T}
+     * <p></p><p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.http.rest.pagedflux.instantiation}
      *
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
         Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
+        Objects.requireNonNull(firstPageRetriever, "First page supplier cannot be null");
+        Objects.requireNonNull(nextPageRetriever, "Next page retriever function cannot be null");
         this.firstPageRetriever = firstPageRetriever;
         this.nextPageRetriever = nextPageRetriever;
     }
 
     /**
-     * Creates a flux of {@link PagedResponse} starting from the first page
+     * Creates a flux of {@link PagedResponse} starting from the first page.
+     *
+     * <p></p><p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.http.rest.pagedflux.bypage}
      *
      * @return A {@link PagedFlux} starting from the first page
      */
@@ -46,7 +60,10 @@ public class PagedFlux<T> extends Flux<T> {
 
     /**
      * Creates a flux of {@link PagedResponse} starting from the next page associated with the given
-     * continuation token.
+     * continuation token. To start from first page, use {@link #byPage()} instead.
+     *
+     * <p></p><p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.http.rest.pagedflux.bypage#String}
      *
      * @param continuationToken The continuation token used to fetch the next page
      * @return A {@link PagedFlux} starting from the page associated with the continuation token
@@ -56,7 +73,11 @@ public class PagedFlux<T> extends Flux<T> {
     }
 
     /**
-     * {@inheritDoc}
+     * Subscribe to this {@link PagedFlux} to process items in {@link PagedResponse}
+     *
+     * <p></p><p><strong>Code sample</strong></p>
+     * {@codesnippet com.azure.core.http.rest.pagedflux.subscribe}
+     *
      * @param coreSubscriber The subscriber for this {@link PagedFlux}
      */
     @Override

@@ -10,7 +10,6 @@ import com.azure.core.implementation.http.PagedResponseBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -39,6 +38,8 @@ public class PagedFluxTest {
     public void testEmptyResults() throws MalformedURLException {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(0);
         StepVerifier.create(pagedFlux.log()).verifyComplete();
+        StepVerifier.create(pagedFlux.byPage().log()).verifyComplete();
+        StepVerifier.create(pagedFlux.byPage(null).log()).verifyComplete();
     }
 
     @Test
@@ -72,6 +73,33 @@ public class PagedFluxTest {
         StepVerifier.create(pagedFlux.byPage().log())
             .expectNext(pagedResponses.get(0))
             .verifyComplete();
+
+        pagedFlux = getIntegerPagedFlux(1);
+        StepVerifier.create(pagedFlux.byPage(null).log())
+            .verifyComplete();
+
+        pagedFlux = getIntegerPagedFlux(1);
+        StepVerifier.create(pagedFlux.log())
+            .expectNext(0, 1, 2)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testPagedFluxSubscribeToPagesWithTwoPages() throws MalformedURLException {
+        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(2);
+        StepVerifier.create(pagedFlux.byPage().log())
+            .expectNext(pagedResponses.get(0), pagedResponses.get(1))
+            .verifyComplete();
+
+        pagedFlux = getIntegerPagedFlux(2);
+        StepVerifier.create(pagedFlux.byPage("1").log())
+            .expectNext(pagedResponses.get(1))
+            .verifyComplete();
+
+        pagedFlux = getIntegerPagedFlux(2);
+        StepVerifier.create(pagedFlux.log())
+            .expectNext(0, 1, 2, 3, 4, 5)
+            .verifyComplete();
     }
 
     @Test
@@ -92,7 +120,7 @@ public class PagedFluxTest {
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> pagedResponses.isEmpty()? Mono.empty() : Mono.just(pagedResponses.get(0)),
+        return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
