@@ -128,6 +128,35 @@ public class PollerTests {
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
+    /* Test where SDK Client is subscribed all responses.
+     * This scenario is setup where source will generate few in-progress response followed by few OTHER responses and finally successfully completed response.
+     * The sdk client will only subscribe for a specific OTHER response.
+     **/
+    @Test
+    public void blockForCustomOperationStatusTest() throws Exception {
+        PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
+        PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(PollResponse.OperationStatus.fromString("OTHER_1"), new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(PollResponse.OperationStatus.fromString("OTHER_2"), new CreateCertificateResponse("Starting : Cert A"));
+
+        ArrayList<PollResponse<CreateCertificateResponse>> inProgressPollResponseList = new ArrayList<>();
+        inProgressPollResponseList.add(inProgressPollResponse);
+        inProgressPollResponseList.add(inProgressPollResponse);
+        inProgressPollResponseList.add(other1PollResponse);
+        inProgressPollResponseList.add(other2PollResponse);
+        long totalTimeoutInMillis = 1000 * 2;
+        Duration pollInterval = Duration.ofMillis(totalTimeoutInMillis / 20);
+
+        Function<PollResponse<CreateCertificateResponse>, Mono<PollResponse<CreateCertificateResponse>>> pollOperation =
+            createPollOperation(inProgressPollResponseList,
+                successPollResponse, totalTimeoutInMillis - pollInterval.toMillis());
+
+        Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
+        PollResponse<CreateCertificateResponse> pollResponse = createCertPoller.blockUntil(PollResponse.OperationStatus.fromString("OTHER_2"));
+        Assert.assertEquals(pollResponse.getStatus() ,PollResponse.OperationStatus.fromString("OTHER_2"));
+        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+    }
+
     private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeAllOperationStates) {
 
         if (observeAllOperationStates.contains(currentPollResponse.getStatus())) {
