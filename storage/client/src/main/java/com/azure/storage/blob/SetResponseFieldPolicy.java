@@ -21,6 +21,6 @@ final class SetResponseFieldPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process()
             .map(response ->
-                response.withRequest(context.httpRequest()));
+                response.request(context.httpRequest()));
     }
 }

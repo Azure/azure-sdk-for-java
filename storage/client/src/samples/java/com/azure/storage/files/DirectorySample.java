@@ -6,8 +6,7 @@ import com.azure.storage.file.DirectoryClient;
 import com.azure.storage.file.ShareClient;
 import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.StorageErrorException;
-import java.nio.charset.Charset;
-import java.util.Random;
+import java.util.UUID;
 
 /**
  * Sample demonstrates how to create, list and delete directory and its subdirectories and files
@@ -18,9 +17,7 @@ public class DirectorySample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        byte[] array = new byte[16];
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
     public static void main(String[] args) {

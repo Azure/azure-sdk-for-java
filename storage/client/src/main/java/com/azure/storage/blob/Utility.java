@@ -326,11 +326,11 @@ final class Utility {
     static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
         UrlBuilder url = UrlBuilder.parse(baseURL.toString());
         if (url.path() == null) {
-            url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
+            url.path("/"); // .path() will return null if it is empty, so we have to process separately from below.
         } else if (url.path().charAt(url.path().length() - 1) != '/') {
-            url.withPath(url.path() + '/');
+            url.path(url.path() + '/');
         }
-        url.withPath(url.path() + name);
+        url.path(url.path() + name);
         return new URL(url.toString());
     }
 }

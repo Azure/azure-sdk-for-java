@@ -164,7 +164,7 @@ final class BlobURLParts {
      *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
-        UrlBuilder url = new UrlBuilder().withScheme(this.scheme).withHost(this.host);
+        UrlBuilder url = new UrlBuilder().scheme(this.scheme).host(this.host);
 
         StringBuilder path = new StringBuilder();
         if (this.containerName != null) {
@@ -174,7 +174,7 @@ final class BlobURLParts {
                 path.append(this.blobName);
             }
         }
-        url.withPath(path.toString());
+        url.path(path.toString());
 
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
@@ -182,7 +182,7 @@ final class BlobURLParts {
         if (this.sasQueryParameters != null) {
             String encodedSAS = this.sasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
-                url.withQuery(encodedSAS);
+                url.query(encodedSAS);
             }
         }
 

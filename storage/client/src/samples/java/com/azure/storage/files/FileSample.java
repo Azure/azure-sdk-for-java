@@ -14,10 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Random;
+import java.util.UUID;
 
 /**
  * Sample demonstrates how to create, copy and delete a file and how to get and set properties.
@@ -27,10 +26,9 @@ public class FileSample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        byte[] array = new byte[16];
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        return UUID.randomUUID().toString().substring(0, 8);
     }
+
 
     public static void main(String[] args) {
         String shareName = generateRandomName();
@@ -63,7 +61,7 @@ public class FileSample {
         String destFileName = generateRandomName();
         FileClient destFileClient = FileClient.builder().endpoint(ENDPOINT).shareName(shareName)
                                         .filePath(parentDirName + "/" + destFileName).build();
-
+        destFileClient.create(1024);
         // Copy the file from source file to destination file.
         URL clientURL = null;
         try {
@@ -78,7 +76,7 @@ public class FileSample {
         try {
             copyResponse = destFileClient.startCopy(sourceURL, null);
         } catch (StorageErrorException e) {
-            System.out.println("Failed to start the copy of source file. Reasons: " + e.getMessage());
+            throw new RuntimeException("Failed to start the copy of source file. Reasons: " + e.getMessage());
         }
 
         // Abort the copy if the status is pending.

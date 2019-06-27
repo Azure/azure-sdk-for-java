@@ -58,7 +58,7 @@ public final class TokenCredentials implements ICredentials {
         if (!context.httpRequest().url().getProtocol().equals(Constants.HTTPS)) {
             throw new Error("Token credentials require a URL using the https protocol scheme");
         }
-        context.httpRequest().withHeader(Constants.HeaderConstants.AUTHORIZATION,
+        context.httpRequest().header(Constants.HeaderConstants.AUTHORIZATION,
             "Bearer " + this.getToken());
         return next.process();
     }

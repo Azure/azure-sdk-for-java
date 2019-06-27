@@ -75,7 +75,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
             azureStorageFileEndpoint = "https://teststorage.file.core.windows.net/";
         }
         UrlBuilder urlBuilder = UrlBuilder.parse(azureStorageFileEndpoint);
-        String endpointURL = new UrlBuilder().withScheme(urlBuilder.scheme()).withHost(urlBuilder.host()).toString();
+        String endpointURL = new UrlBuilder().scheme(urlBuilder.scheme()).host(urlBuilder.host()).toString();
         Assert.assertEquals(endpointURL, directoryClient.url());
     }
 

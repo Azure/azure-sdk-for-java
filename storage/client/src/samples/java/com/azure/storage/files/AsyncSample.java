@@ -2,8 +2,7 @@ package com.azure.storage.files;
 
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.file.FileServiceAsyncClient;
-import java.nio.charset.Charset;
-import java.util.Random;
+import java.util.UUID;
 
 /**
  * Sample demonstrates how to create, list and delete a share using the async file service client.
@@ -13,10 +12,9 @@ public class AsyncSample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        byte[] array = new byte[16];
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        return UUID.randomUUID().toString().substring(0, 8);
     }
+
 
     public static void main(String[] args) {
         // Create a file service client
