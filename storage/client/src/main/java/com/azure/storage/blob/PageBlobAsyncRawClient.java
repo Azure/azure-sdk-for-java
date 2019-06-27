@@ -57,8 +57,8 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * pipeline to make HTTP requests.
      *
      */
-    public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
+    public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        super(azureBlobStorage, snapshot);
     }
 
     private static String pageRangeToString(PageRange pageRange) {
@@ -394,7 +394,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
-            null, null, null, null, null, blobRange.toHeaderValue(),
+            null, null, snapshot, null, null, blobRange.toHeaderValue(),
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE));
     }
@@ -449,7 +449,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
-            null, null, null, null, null, prevSnapshot,
+            null, null, snapshot, null, null, prevSnapshot,
             blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }

@@ -70,15 +70,12 @@ public class BlobAsyncClient {
 
     final BlobAsyncRawClient blobAsyncRawClient;
 
-    private final String snapshot;
-
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
-        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder.build());
-        this.snapshot = snapshot;
+        this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
@@ -99,7 +96,7 @@ public class BlobAsyncClient {
      *      A {@link BlockBlobAsyncClient} to this resource.
      */
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
     }
 
     /**
@@ -121,7 +118,7 @@ public class BlobAsyncClient {
      *      A {@link PageBlobAsyncClient} to this resource.
      */
     public PageBlobAsyncClient asPageBlobAsyncClient() {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new PageBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
     }
 
     /**

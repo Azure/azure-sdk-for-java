@@ -66,7 +66,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      */
     PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build());
+        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
