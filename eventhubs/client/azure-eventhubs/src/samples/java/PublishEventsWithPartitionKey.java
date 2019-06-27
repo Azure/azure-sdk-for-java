@@ -35,7 +35,7 @@ public class PublishEventsWithPartitionKey {
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments
         EventHubProducer producer = client.createProducer();

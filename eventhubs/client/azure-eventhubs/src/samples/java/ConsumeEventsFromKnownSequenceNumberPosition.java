@@ -47,7 +47,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
 
         client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId))
             .subscribe(
