@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing annotations for client side methods that maps to REST APIs.
+ * Annotations for client side methods that maps to REST APIs.
  */
 package com.azure.core.annotations;
