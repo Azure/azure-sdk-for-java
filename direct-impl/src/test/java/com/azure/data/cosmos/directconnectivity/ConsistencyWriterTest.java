@@ -25,10 +25,12 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.PartitionIsMigratingException;
-import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.rx.FailureValidator;

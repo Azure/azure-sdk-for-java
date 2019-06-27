@@ -418,7 +418,7 @@ public class CosmosDatabase {
                         + cosmosDatabaseResponse.resourceSettings().resourceId() + "'", new FeedOptions())
                 .single().flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.results().isEmpty()) {
-                        return Mono.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                        return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                                 "No offers found for the resource"));
                     }
                     return getDocClientWrapper().readOffer(offerFeedResponse.results().get(0).selfLink()).single();
@@ -439,7 +439,7 @@ public class CosmosDatabase {
                         + cosmosDatabaseResponse.resourceSettings().resourceId() + "'", new FeedOptions())
                 .single().flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.results().isEmpty()) {
-                        return Mono.error(new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                        return Mono.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                                 "No offers found for the resource"));
                     }
                     Offer offer = offerFeedResponse.results().get(0);

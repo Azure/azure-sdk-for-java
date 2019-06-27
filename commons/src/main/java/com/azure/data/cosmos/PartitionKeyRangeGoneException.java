@@ -21,11 +21,10 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
+import com.azure.data.cosmos.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
@@ -56,11 +55,11 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
         this(message, null, null, null);
     }
 
-    public PartitionKeyRangeGoneException(String message, Exception innerException) {
+    PartitionKeyRangeGoneException(String message, Exception innerException) {
         this(message, innerException, null, null);
     }
 
-    public PartitionKeyRangeGoneException(Exception innerException) {
+    PartitionKeyRangeGoneException(Exception innerException) {
         this(RMResources.Gone, innerException, null, null);
     }
 
@@ -70,7 +69,7 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
         this.setSubstatus();
     }
 
-    public PartitionKeyRangeGoneException(String message, Exception innerException, HttpHeaders headers, String requestUriString) {
+    PartitionKeyRangeGoneException(String message, Exception innerException, HttpHeaders headers, String requestUriString) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
         this.setSubstatus();
     }

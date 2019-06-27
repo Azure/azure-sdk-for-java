@@ -26,6 +26,7 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.AccessCondition;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.IndexingDirective;
+import com.azure.data.cosmos.PartitionKey;
 
 import java.util.HashMap;
 import java.util.List;

@@ -39,7 +39,7 @@ import com.azure.data.cosmos.HashIndex;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.UniqueKey;
 import com.azure.data.cosmos.UniqueKeyPolicy;

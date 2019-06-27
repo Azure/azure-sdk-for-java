@@ -25,13 +25,14 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.BadRequestException;
+import com.azure.data.cosmos.BadRequestException;
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IRetryPolicy;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
+import com.azure.data.cosmos.InvalidPartitionException;
 import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.PartitionIsMigratingException;
-import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.testng.annotations.Test;

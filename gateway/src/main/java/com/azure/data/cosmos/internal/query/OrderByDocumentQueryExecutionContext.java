@@ -163,7 +163,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     outOrderByContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for OrderBy~Context",
                         continuationToken);
-                throw new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -175,7 +175,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             if (compositeContinuationToken.getRange().isEmpty()) {
                 String message = String.format("INVALID RANGE in the continuation token %s for OrderBy~Context.",
                         continuationToken);
-                throw new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 

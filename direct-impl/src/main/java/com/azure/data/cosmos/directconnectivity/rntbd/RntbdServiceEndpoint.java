@@ -25,7 +25,7 @@
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.directconnectivity.GoneException;
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.directconnectivity.RntbdTransportClient.Options;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.fasterxml.jackson.core.JsonGenerator;

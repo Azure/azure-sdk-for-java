@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.Undefined;
 import com.azure.data.cosmos.internal.RMResources;

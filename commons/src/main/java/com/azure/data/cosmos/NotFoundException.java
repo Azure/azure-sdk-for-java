@@ -20,12 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
@@ -56,7 +55,7 @@ public class NotFoundException extends CosmosClientException {
         this(message, null, headers, requestUri);
     }
 
-    public NotFoundException(String message, HttpHeaders headers, String requestUri) {
+    NotFoundException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
 
@@ -64,18 +63,18 @@ public class NotFoundException extends CosmosClientException {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
-    public NotFoundException(Exception innerException) {
+    NotFoundException(Exception innerException) {
         this(RMResources.NotFound, innerException, (Map) null, null);
     }
 
-    public NotFoundException(String message,
+    NotFoundException(String message,
                                  Exception innerException,
                                  HttpHeaders headers,
                                  String requestUri) {
         this(message, innerException, HttpUtils.asMap(headers), requestUri);
     }
 
-    public NotFoundException(String message,
+    NotFoundException(String message,
                              Exception innerException,
                              Map<String, String> headers,
                              String requestUri) {

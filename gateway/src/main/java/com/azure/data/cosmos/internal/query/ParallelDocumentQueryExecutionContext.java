@@ -141,7 +141,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     outCompositeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Parallel~Context",
                         continuationToken);
-                throw new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 

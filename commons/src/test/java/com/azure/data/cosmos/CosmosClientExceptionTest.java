@@ -34,42 +34,42 @@ public class CosmosClientExceptionTest {
 
     @Test(groups = { "unit" })
     public void headerNotNull1() {
-        CosmosClientException dce = new CosmosClientException(0);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException(0);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull2() {
-        CosmosClientException dce = new CosmosClientException(0, "dummy");
+        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, "dummy");
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull3() {
-        CosmosClientException dce = new CosmosClientException(0, new RuntimeException());
+        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, new RuntimeException());
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
-        CosmosClientException dce = new CosmosClientException(0, (CosmosError) null, (Map) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, (CosmosError) null, (Map) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull5() {
-        CosmosClientException dce = new CosmosClientException((String) null, 0, (CosmosError) null, (Map) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, 0, (CosmosError) null, (Map) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull6() {
-        CosmosClientException dce = new CosmosClientException((String) null, (Exception) null, (Map) null, 0, (String) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, (Map) null, 0, (String) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
@@ -77,7 +77,7 @@ public class CosmosClientExceptionTest {
     @Test(groups = { "unit" })
     public void headerNotNull7() {
         ImmutableMap<String, String> respHeaders = ImmutableMap.of("key", "value");
-        CosmosClientException dce = new CosmosClientException((String) null, (Exception) null, respHeaders, 0, (String) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, respHeaders, 0, (String) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).contains(respHeaders.entrySet().iterator().next());
     }

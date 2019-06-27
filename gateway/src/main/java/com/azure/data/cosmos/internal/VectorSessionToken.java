@@ -25,6 +25,7 @@ package com.azure.data.cosmos.internal;
 
 
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.InternalServerErrorException;
 import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

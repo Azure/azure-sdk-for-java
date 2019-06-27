@@ -32,7 +32,7 @@ import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterCollection;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.SqlQuerySpec;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
@@ -96,7 +96,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_ParameterizedQueryWithInClause() throws Exception {
         String query = "SELECT * from c where c.prop IN (@param1, @param2)";
-        SqlParameterCollection params = new SqlParameterCollection(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
+        SqlParameterList params = new SqlParameterList(new SqlParameter("@param1", 3), new SqlParameter("@param2", 4));
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
         
         FeedOptions options = new FeedOptions();
@@ -123,7 +123,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_ParameterizedQuery() throws Exception {
         String query = "SELECT * from c where c.prop = @param";
-        SqlParameterCollection params = new SqlParameterCollection(new SqlParameter("@param", 3));
+        SqlParameterList params = new SqlParameterList(new SqlParameter("@param", 3));
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
 
         FeedOptions options = new FeedOptions();

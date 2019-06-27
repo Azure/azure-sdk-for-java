@@ -29,6 +29,7 @@ import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PartitionKind;
 import com.azure.data.cosmos.rx.FailureValidator;

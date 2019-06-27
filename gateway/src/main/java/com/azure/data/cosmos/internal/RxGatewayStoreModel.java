@@ -368,7 +368,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                         if (!(exception instanceof CosmosClientException)) {
                             // wrap in CosmosClientException
                             logger.error("Network failure", exception);
-                            CosmosClientException dce = new CosmosClientException(0, exception);
+                            CosmosClientException dce = BridgeInternal.createCosmosClientException(0, exception);
                             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                             return Mono.error(dce);
                         }
@@ -389,7 +389,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     body = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     logger.error("Failed to get content from the http response", e);
-                    CosmosClientException dce = new CosmosClientException(0, e);
+                    CosmosClientException dce = BridgeInternal.createCosmosClientException(0, e);
                     BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                     throw dce;
                 } finally {
@@ -406,7 +406,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosClientException dce = new CosmosClientException(statusCode, cosmosError, headers.toMap());
+            CosmosClientException dce = BridgeInternal.createCosmosClientException(statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

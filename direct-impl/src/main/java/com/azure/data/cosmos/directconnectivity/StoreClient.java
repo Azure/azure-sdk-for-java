@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.internal.BackoffRetryUtility;
@@ -32,7 +33,7 @@ import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.IRetryPolicy;
 import com.azure.data.cosmos.internal.ISessionToken;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
+import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.ResourceType;
@@ -113,7 +114,7 @@ public class StoreClient implements IStoreClient {
                         return;
                     }
 
-                    exception.clientSideRequestStatistics(request.requestContext.clientSideRequestStatistics);
+                    exception = BridgeInternal.setClientSideRequestStatistics(exception, request.requestContext.clientSideRequestStatistics);
 
                     handleUnsuccessfulStoreResponse(request, exception);
                 } catch (Throwable throwable) {

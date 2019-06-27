@@ -26,27 +26,27 @@ package com.azure.data.cosmos.directconnectivity.rntbd;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosError;
-import com.azure.data.cosmos.directconnectivity.ConflictException;
-import com.azure.data.cosmos.directconnectivity.ForbiddenException;
-import com.azure.data.cosmos.directconnectivity.GoneException;
-import com.azure.data.cosmos.directconnectivity.LockedException;
-import com.azure.data.cosmos.directconnectivity.MethodNotAllowedException;
-import com.azure.data.cosmos.directconnectivity.PartitionKeyRangeGoneException;
-import com.azure.data.cosmos.directconnectivity.PreconditionFailedException;
-import com.azure.data.cosmos.directconnectivity.RequestEntityTooLargeException;
-import com.azure.data.cosmos.directconnectivity.RequestRateTooLargeException;
-import com.azure.data.cosmos.directconnectivity.RequestTimeoutException;
-import com.azure.data.cosmos.directconnectivity.RetryWithException;
-import com.azure.data.cosmos.directconnectivity.ServiceUnavailableException;
+import com.azure.data.cosmos.ConflictException;
+import com.azure.data.cosmos.ForbiddenException;
+import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.LockedException;
+import com.azure.data.cosmos.MethodNotAllowedException;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.PreconditionFailedException;
+import com.azure.data.cosmos.RequestEntityTooLargeException;
+import com.azure.data.cosmos.RequestRateTooLargeException;
+import com.azure.data.cosmos.RequestTimeoutException;
+import com.azure.data.cosmos.RetryWithException;
+import com.azure.data.cosmos.ServiceUnavailableException;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
-import com.azure.data.cosmos.directconnectivity.UnauthorizedException;
+import com.azure.data.cosmos.UnauthorizedException;
 import com.azure.data.cosmos.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
-import com.azure.data.cosmos.internal.BadRequestException;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
-import com.azure.data.cosmos.internal.NotFoundException;
-import com.azure.data.cosmos.internal.PartitionIsMigratingException;
-import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.BadRequestException;
+import com.azure.data.cosmos.InternalServerErrorException;
+import com.azure.data.cosmos.InvalidPartitionException;
+import com.azure.data.cosmos.NotFoundException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -743,7 +743,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = new CosmosClientException(status.code(), cosmosError, responseHeaders);
+                    cause = BridgeInternal.createCosmosClientException(status.code(), cosmosError, responseHeaders);
                     break;
             }
 

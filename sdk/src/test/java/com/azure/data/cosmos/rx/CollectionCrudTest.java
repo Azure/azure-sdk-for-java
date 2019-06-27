@@ -41,7 +41,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RetryAnalyzer;
 import com.azure.data.cosmos.SpatialSpec;
@@ -54,7 +54,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 

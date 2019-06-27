@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;

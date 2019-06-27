@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
@@ -33,42 +31,41 @@ import com.azure.data.cosmos.internal.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
-public class UnauthorizedException extends CosmosClientException {
-
-    public UnauthorizedException() {
-        this(RMResources.Unauthorized);
+public class MethodNotAllowedException extends CosmosClientException {
+    MethodNotAllowedException() {
+        this(RMResources.MethodNotAllowed);
     }
 
-    public UnauthorizedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.UNAUTHORIZED, cosmosError, responseHeaders);
+    public MethodNotAllowedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.METHOD_NOT_ALLOWED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public UnauthorizedException(String message) {
+    MethodNotAllowedException(String message) {
         this(message, null, null, null);
     }
 
-    public UnauthorizedException(String message, HttpHeaders headers, String requestUriString) {
+    MethodNotAllowedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }
 
-    public UnauthorizedException(String message, HttpHeaders headers, URI requestUri) {
+    MethodNotAllowedException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
-    public UnauthorizedException(Exception innerException) {
-        this(RMResources.Unauthorized, innerException, null, null);
+    MethodNotAllowedException(Exception innerException) {
+        this(RMResources.MethodNotAllowed, innerException, null, null);
     }
 
-    public UnauthorizedException(String message,
+    public MethodNotAllowedException(String message,
                                  Exception innerException,
-                                 HttpHeaders headers,
-                                 String requestUri) {
-        super(String.format("%s: %s", RMResources.Unauthorized, message),
+                                     HttpHeaders headers,
+                                 String requestUriString) {
+        super(String.format("%s: %s", RMResources.MethodNotAllowed, message),
                 innerException,
                 HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.UNAUTHORIZED,
-                requestUri);
+                HttpConstants.StatusCodes.METHOD_NOT_ALLOWED,
+                requestUriString);
     }
 }

@@ -26,7 +26,6 @@ import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.internal.Paths;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.ResourceType;

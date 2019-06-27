@@ -62,7 +62,7 @@ public class CosmosClientException extends Exception {
     URI requestUri;
     String resourceAddress;
 
-    private CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
+    CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause, /* enableSuppression */ true, /* writableStackTrace */ false);
         this.statusCode = statusCode;
         this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
@@ -73,7 +73,7 @@ public class CosmosClientException extends Exception {
      *
      * @param statusCode the http status code of the response.
      */
-    public CosmosClientException(int statusCode) {
+    CosmosClientException(int statusCode) {
         this(statusCode, null, null, null);
     }
 
@@ -83,7 +83,7 @@ public class CosmosClientException extends Exception {
      * @param statusCode   the http status code of the response.
      * @param errorMessage the error message.
      */
-    public CosmosClientException(int statusCode, String errorMessage) {
+    CosmosClientException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
         cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
@@ -95,7 +95,7 @@ public class CosmosClientException extends Exception {
      * @param statusCode     the http status code of the response.
      * @param innerException the original exception.
      */
-    public CosmosClientException(int statusCode, Exception innerException) {
+    CosmosClientException(int statusCode, Exception innerException) {
         this(statusCode, null, null, innerException);
     }
 
@@ -106,7 +106,7 @@ public class CosmosClientException extends Exception {
      * @param cosmosErrorResource   the error resource object.
      * @param responseHeaders the response headers.
      */
-    public CosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    CosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
         this(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
@@ -119,7 +119,7 @@ public class CosmosClientException extends Exception {
      * @param responseHeaders the response headers.
      */
 
-    public CosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    CosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
@@ -134,7 +134,7 @@ public class CosmosClientException extends Exception {
      * @param responseHeaders the response headers.
      * @param resourceAddress the address of the resource the request is associated with.
      */
-    public CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
+    CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
         this(statusCode, message, responseHeaders, exception);
         this.resourceAddress = resourceAddress;
     }
@@ -199,6 +199,10 @@ public class CosmosClientException extends Exception {
         return this.cosmosError;
     }
 
+    void error(CosmosError cosmosError) {
+        this.cosmosError = cosmosError;
+    }
+
     /**
      * Gets the recommended time interval after which the client can retry failed
      * requests
@@ -254,8 +258,7 @@ public class CosmosClientException extends Exception {
         return clientSideRequestStatistics;
     }
 
-    // TODO: make private
-    public CosmosClientException clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
+    CosmosClientException clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
         this.clientSideRequestStatistics = clientSideRequestStatistics;
         return this;
     }

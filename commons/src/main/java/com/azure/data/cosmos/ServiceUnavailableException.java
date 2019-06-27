@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ *  
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,58 +20,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+package com.azure.data.cosmos;
+
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
+import java.net.URI;
 import java.util.Map;
 
-/**
- * While this class is public, but it is not part of our published public APIs.
- * This is meant to be internally used only by our sdk.
- */
-public class LockedException extends CosmosClientException {
-    private static final long serialVersionUID = 1L;
-
-    public LockedException() {
-        this(RMResources.Locked);
+public class ServiceUnavailableException extends CosmosClientException {
+    ServiceUnavailableException() {
+        this(RMResources.ServiceUnavailable);
     }
 
-    public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.LOCKED, cosmosError, responseHeaders);
+    public ServiceUnavailableException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.NOTFOUND, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public LockedException(String msg) {
-        super(HttpConstants.StatusCodes.LOCKED, msg);
+    ServiceUnavailableException(String message) {
+        this(message, null, null, null);
     }
 
-    public LockedException(String msg, String resourceAddress) {
-        super(msg, null, null, HttpConstants.StatusCodes.LOCKED, resourceAddress);
-    }
-
-    public LockedException(String message, HttpHeaders headers, String requestUriString) {
+    ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }
 
-    public LockedException(Exception innerException) {
-        this(RMResources.Locked,  innerException, null, null);
+    public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
+        this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
 
-    public LockedException(String message,
-                           Exception innerException,
-                           HttpHeaders headers,
-                           String requestUriString) {
-        super(String.format("%s: %s", RMResources.Locked, message),
+    ServiceUnavailableException(Exception innerException) {
+        this(RMResources.ServiceUnavailable, innerException, null, null);
+    }
+
+    public ServiceUnavailableException(String message,
+                                       Exception innerException,
+                                       HttpHeaders headers,
+                                       String requestUriString) {
+        super(String.format("%s: %s", RMResources.ServiceUnavailable, message),
                 innerException,
                 HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.LOCKED,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 requestUriString);
     }
 }

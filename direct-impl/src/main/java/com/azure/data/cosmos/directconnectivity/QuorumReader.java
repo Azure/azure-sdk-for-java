@@ -26,9 +26,10 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
+import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.internal.JavaStreamUtils;
 import com.azure.data.cosmos.internal.MutableVolatile;
 import com.azure.data.cosmos.internal.Quadruple;

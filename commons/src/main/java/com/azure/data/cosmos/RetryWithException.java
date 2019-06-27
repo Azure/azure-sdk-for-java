@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
@@ -40,11 +38,11 @@ public class RetryWithException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public RetryWithException(String message, URI requestUri) {
+    RetryWithException(String message, URI requestUri) {
         this(message, null, null, requestUri);
     }
 
-    public RetryWithException(String message,
+    RetryWithException(String message,
                               Exception innerException,
                               URI requestUri) {
         this(message, innerException, null, requestUri);
@@ -54,11 +52,11 @@ public class RetryWithException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH, requestUri != null ? requestUri.toString() : null);
     }
 
-    public RetryWithException(String message, HttpHeaders headers, String requestUriString) {
+    RetryWithException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH, requestUriString);
     }
 
-    public RetryWithException(String message,
+    RetryWithException(String message,
                               Exception innerException,
                               HttpHeaders headers,
                               URI requestUri) {

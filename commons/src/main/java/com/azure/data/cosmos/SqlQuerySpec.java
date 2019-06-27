@@ -31,7 +31,7 @@ import java.util.Collection;
  */
 public final class SqlQuerySpec extends JsonSerializable {
 
-    private SqlParameterCollection parameters;
+    private SqlParameterList parameters;
 
     /**
      * Initializes a new instance of the SqlQuerySpec class.
@@ -59,7 +59,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param queryText  the query text.
      * @param parameters the query parameters.
      */
-    public SqlQuerySpec(String queryText, SqlParameterCollection parameters) {
+    public SqlQuerySpec(String queryText, SqlParameterList parameters) {
         super();
         this.queryText(queryText);
         this.parameters = parameters;
@@ -91,14 +91,14 @@ public final class SqlQuerySpec extends JsonSerializable {
      * 
      * @return the query parameters.
      */
-    public SqlParameterCollection parameters() {
+    public SqlParameterList parameters() {
         if (this.parameters == null) {
             Collection<SqlParameter> sqlParameters = super.getCollection("parameters", SqlParameter.class);
             if (sqlParameters == null) {
                 sqlParameters = new ArrayList<SqlParameter>();
             }
 
-            this.parameters = new SqlParameterCollection(sqlParameters);
+            this.parameters = new SqlParameterList(sqlParameters);
         }
 
         return this.parameters;
@@ -111,7 +111,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      *            the query parameters.
      * @return the SqlQuerySpec.
      */
-    public SqlQuerySpec parameters(SqlParameterCollection parameters) {
+    public SqlQuerySpec parameters(SqlParameterList parameters) {
         this.parameters = parameters;
         return this;
     }

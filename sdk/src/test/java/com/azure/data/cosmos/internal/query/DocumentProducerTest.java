@@ -737,7 +737,7 @@ public class DocumentProducerTest {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
-            return new CosmosClientException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
+            return BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
         }
 
         protected void capture(String partitionId, CapturedInvocation captureInvocation) {

@@ -20,13 +20,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.util.Map;
@@ -49,12 +48,12 @@ public class PartitionIsMigratingException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public PartitionIsMigratingException(String msg) {
+    PartitionIsMigratingException(String msg) {
         super(HttpConstants.StatusCodes.GONE, msg);
         setSubStatus();
     }
 
-    public PartitionIsMigratingException(String msg, String resourceAddress) {
+    PartitionIsMigratingException(String msg, String resourceAddress) {
         super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
         setSubStatus();
     }
@@ -63,11 +62,11 @@ public class PartitionIsMigratingException extends CosmosClientException {
         this(message, null, headers, requestUri);
     }
 
-    public PartitionIsMigratingException(Exception innerException) {
+    PartitionIsMigratingException(Exception innerException) {
         this(RMResources.Gone, innerException, null, null);
     }
 
-    public PartitionIsMigratingException(String message,
+    PartitionIsMigratingException(String message,
                                          Exception innerException,
                                          HttpHeaders headers,
                                          String requestUri) {

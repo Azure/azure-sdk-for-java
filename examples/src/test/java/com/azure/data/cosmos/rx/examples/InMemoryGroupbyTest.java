@@ -33,7 +33,7 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterCollection;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.SqlQuerySpec;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -128,7 +128,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
-                                new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
+                                new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
                 .flatMap(page -> Flux.fromIterable(page.results()));
 
@@ -160,7 +160,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         Flux<Document> documentsObservable = client
                 .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
-                                new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
+                                new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
                         options)
                 .flatMap(page -> Flux.fromIterable(page.results()));
 

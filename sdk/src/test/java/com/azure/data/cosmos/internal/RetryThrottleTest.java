@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
@@ -123,7 +124,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
-                    return Flux.error(new CosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
+                    return Flux.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }

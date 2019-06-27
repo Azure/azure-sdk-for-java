@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.InternalServerErrorException;
 import org.testng.annotations.Test;
 
 import static com.azure.data.cosmos.internal.Utils.ValueHolder;

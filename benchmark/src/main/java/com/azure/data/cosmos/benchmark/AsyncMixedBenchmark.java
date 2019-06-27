@@ -26,7 +26,7 @@ package com.azure.data.cosmos.benchmark;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.ResourceResponse;
 import org.apache.commons.lang3.RandomStringUtils;

@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.directconnectivity.RequestTimeoutException;
+import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;

@@ -104,7 +104,7 @@ public class DatabaseForTest {
         logger.info("Cleaning stale test databases ...");
         List<Database> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
-                                 new SqlParameterCollection(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
+                                 new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
                 .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
 
         for (Database db : dbs) {

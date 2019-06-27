@@ -24,9 +24,11 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
-import com.azure.data.cosmos.internal.PartitionIsMigratingException;
-import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.InvalidPartitionException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;

@@ -11,7 +11,7 @@
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *  
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,54 +20,61 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.azure.data.cosmos;
 
-package com.azure.data.cosmos.directconnectivity;
-
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
-import java.net.URI;
 import java.util.Map;
 
-public class ServiceUnavailableException extends CosmosClientException {
-    public ServiceUnavailableException() {
-        this(RMResources.ServiceUnavailable);
+/**
+ * While this class is public, but it is not part of our published public APIs.
+ * This is meant to be internally used only by our sdk.
+ */
+public class ConflictException extends CosmosClientException {
+
+    private static final long serialVersionUID = 1L;
+
+    ConflictException() {
+        this(RMResources.EntityAlreadyExists);
     }
 
-    public ServiceUnavailableException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.NOTFOUND, cosmosError, responseHeaders);
+    public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.CONFLICT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public ServiceUnavailableException(String message) {
-        this(message, null, null, null);
+    ConflictException(String msg) {
+        super(HttpConstants.StatusCodes.CONFLICT, msg);
     }
 
-    public ServiceUnavailableException(String message, HttpHeaders headers, String requestUriString) {
+    ConflictException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.CONFLICT, resourceAddress);
+    }
+
+    public ConflictException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }
 
-    public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
-        this(message, headers, requestUri != null ? requestUri.toString() : null);
+    ConflictException(Exception innerException) {
+        this(RMResources.EntityAlreadyExists, innerException, null, null);
     }
 
-    public ServiceUnavailableException(Exception innerException) {
-        this(RMResources.ServiceUnavailable, innerException, null, null);
+    ConflictException(CosmosError cosmosError, Map<String, String> headers) {
+        super(HttpConstants.StatusCodes.CONFLICT, cosmosError, headers);
     }
 
-    public ServiceUnavailableException(String message,
-                                       Exception innerException,
-                                       HttpHeaders headers,
-                                       String requestUriString) {
-        super(String.format("%s: %s", RMResources.ServiceUnavailable, message),
+    ConflictException(String message,
+                             Exception innerException,
+                             HttpHeaders headers,
+                             String requestUriString) {
+        super(String.format("%s: %s", RMResources.EntityAlreadyExists, message),
                 innerException,
                 HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.StatusCodes.CONFLICT,
                 requestUriString);
     }
 }

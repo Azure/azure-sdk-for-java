@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
@@ -45,17 +43,17 @@ public class RequestRateTooLargeException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public RequestRateTooLargeException(String message, URI requestUri) {
+    RequestRateTooLargeException(String message, URI requestUri) {
         this(message, null, null, requestUri);
     }
 
-    public RequestRateTooLargeException(String message,
+    RequestRateTooLargeException(String message,
                                         Exception innerException,
                                         URI requestUri) {
         this(message, innerException, null, requestUri);
     }
 
-    public RequestRateTooLargeException(Exception innerException) {
+    RequestRateTooLargeException(Exception innerException) {
         this(RMResources.TooManyRequests, innerException, null, null);
     }
 
@@ -63,11 +61,11 @@ public class RequestRateTooLargeException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUri != null ? requestUri.toString() : null);
     }
 
-    public RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
+    RequestRateTooLargeException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS, requestUriString);
     }
 
-    public RequestRateTooLargeException(String message,
+    RequestRateTooLargeException(String message,
                                         Exception innerException,
                                         HttpHeaders headers,
                                         URI requestUri) {

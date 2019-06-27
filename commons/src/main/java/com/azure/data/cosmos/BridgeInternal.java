@@ -23,8 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.internal.ReplicationPolicy;
 import com.azure.data.cosmos.internal.ResourceResponse;
@@ -330,5 +330,41 @@ public class BridgeInternal {
 
     public static Object getValue(JsonNode value) {
         return JsonSerializable.getValue(value);
+    }
+
+    public static CosmosClientException setClientSideRequestStatistics(CosmosClientException cosmosClientException, ClientSideRequestStatistics clientSideRequestStatistics) {
+        return cosmosClientException.clientSideRequestStatistics(clientSideRequestStatistics);
+    }
+
+    public static CosmosClientException createCosmosClientException(int statusCode) {
+        return new CosmosClientException(statusCode, null, null, null);
+    }
+
+    public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
+        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
+        cosmosClientException.error(new CosmosError());
+        cosmosClientException.error().set(Constants.Properties.MESSAGE, errorMessage);
+        return cosmosClientException;
+    }
+
+    public static CosmosClientException createCosmosClientException(int statusCode, Exception innerException) {
+        return new CosmosClientException(statusCode, null, null, innerException);
+    }
+
+    public static CosmosClientException createCosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+        return new CosmosClientException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
+    }
+
+    public static CosmosClientException createCosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
+        cosmosClientException.resourceAddress = resourceAddress;
+        cosmosClientException.error(cosmosErrorResource);
+        return cosmosClientException;
+    }
+
+    public static CosmosClientException createCosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
+        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders, exception);
+        cosmosClientException.resourceAddress = resourceAddress;
+        return cosmosClientException;
     }
 }

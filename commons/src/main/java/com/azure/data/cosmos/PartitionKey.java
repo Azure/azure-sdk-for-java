@@ -21,8 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 
 /**
@@ -33,7 +34,7 @@ public class PartitionKey {
 
     private PartitionKeyInternal internalPartitionKey;
 
-    public PartitionKey(PartitionKeyInternal partitionKeyInternal) {
+    PartitionKey(PartitionKeyInternal partitionKeyInternal) {
         this.internalPartitionKey = partitionKeyInternal;
     }
 

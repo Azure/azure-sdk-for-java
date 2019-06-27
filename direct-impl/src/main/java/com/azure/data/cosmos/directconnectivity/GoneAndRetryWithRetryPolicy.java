@@ -23,12 +23,16 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
+import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.RetryWithException;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IRetryPolicy;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
-import com.azure.data.cosmos.internal.PartitionIsMigratingException;
-import com.azure.data.cosmos.internal.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.InvalidPartitionException;
+import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
 import com.azure.data.cosmos.internal.Quadruple;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.apache.commons.lang3.time.StopWatch;
@@ -101,7 +105,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     } else {
                         logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = new CosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        exceptionToThrow = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                                 exception);
                     }
 
@@ -116,7 +120,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                         logger.warn(
                                 "Received partition key range gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = new CosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        exceptionToThrow = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                                 exception);
                     }
                 } else if (exception instanceof InvalidPartitionException) {
@@ -129,7 +133,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                         logger.warn(
                                 "Received invalid collection partition exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
-                        exceptionToThrow = new CosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        exceptionToThrow = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                                 exception);
                     }
                 } else {
@@ -167,7 +171,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                         exception.toString());
                 return Mono.just(ShouldRetryResult
-                        .error(new CosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
+                        .error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
             }
 
             if (this.request != null) {
@@ -177,7 +181,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 logger.error("Received unexpected invalid collection exception, request should be non-null.",
                         exception);
                 return Mono.just(ShouldRetryResult
-                        .error(new CosmosClientException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, exception)));
+                        .error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, exception)));
             }
             forceRefreshAddressCache = false;
         } else if (exception instanceof PartitionKeyRangeIsSplittingException) {

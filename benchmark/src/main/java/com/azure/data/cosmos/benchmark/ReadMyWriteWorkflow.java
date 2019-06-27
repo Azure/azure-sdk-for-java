@@ -26,13 +26,13 @@ package com.azure.data.cosmos.benchmark;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.SqlParameterList;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.Utils;
 import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.BaseSubscriber;
@@ -382,14 +382,14 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                 }
 
                 @Override
-                SqlParameterCollection getSqlParameterCollection() {
-                    return new SqlParameterCollection(this.parameters);
+                SqlParameterList getSqlParameterCollection() {
+                    return new SqlParameterList(this.parameters);
                 }
             }
 
             abstract String getWhereCondition(String rootName);
 
-            abstract SqlParameterCollection getSqlParameterCollection();
+            abstract SqlParameterList getSqlParameterCollection();
         }
 
         SqlQuerySpec toSqlQuerySpec() {

@@ -25,13 +25,14 @@ package com.azure.data.cosmos.directconnectivity;
 
 
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ICollectionRoutingMapCache;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
-import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.InvalidPartitionException;
+import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;

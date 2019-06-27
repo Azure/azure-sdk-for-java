@@ -22,9 +22,11 @@
  */
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import io.netty.handler.timeout.ReadTimeoutException;

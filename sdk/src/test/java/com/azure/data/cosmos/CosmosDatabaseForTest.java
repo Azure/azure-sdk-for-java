@@ -103,7 +103,7 @@ public class CosmosDatabaseForTest {
         logger.info("Cleaning stale test databases ...");
         List<CosmosDatabaseProperties> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
-                                 new SqlParameterCollection(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
+                                 new SqlParameterList(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
                                                    .flatMap(page -> Flux.fromIterable(page.results())).collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {

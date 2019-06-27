@@ -61,7 +61,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         frps.add(BridgeInternal.createFeedResponse(dbs, null));
 
         Flux<FeedResponse<CosmosDatabaseProperties>> response = Flux.merge(Flux.fromIterable(frps))
-                                                                    .mergeWith(Flux.error(new CosmosClientException(0)))
+                                                                    .mergeWith(Flux.error(BridgeInternal.createCosmosClientException(0)))
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosClient mockClient = Mockito.spy(client);

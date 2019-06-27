@@ -1,6 +1,5 @@
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalHelper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.testng.annotations.Test;

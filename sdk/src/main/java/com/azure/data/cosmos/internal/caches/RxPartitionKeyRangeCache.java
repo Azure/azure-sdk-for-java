@@ -29,7 +29,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.NotFoundException;
+import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;

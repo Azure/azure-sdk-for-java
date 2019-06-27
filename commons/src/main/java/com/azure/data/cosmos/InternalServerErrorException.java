@@ -21,12 +21,11 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.internal;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
 import java.net.URI;
@@ -42,7 +41,7 @@ import java.util.Map;
  */
 public class InternalServerErrorException extends CosmosClientException {
 
-    public InternalServerErrorException() {
+    InternalServerErrorException() {
         this(RMResources.InternalServerError);
     }
 
@@ -57,11 +56,11 @@ public class InternalServerErrorException extends CosmosClientException {
     }
 
 
-    public InternalServerErrorException(String message, Exception innerException) {
+    InternalServerErrorException(String message, Exception innerException) {
         this(message, innerException, (HttpHeaders) null, (String) null);
     }
 
-    public InternalServerErrorException(Exception innerException) {
+    InternalServerErrorException(Exception innerException) {
         this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
     }
     
@@ -69,19 +68,19 @@ public class InternalServerErrorException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUri != null ? requestUri.toString() : null);
     }
 
-    public InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
+    InternalServerErrorException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
     }
 
-    public InternalServerErrorException(String message, HttpHeaders headers, URL requestUrl) {
+    InternalServerErrorException(String message, HttpHeaders headers, URL requestUrl) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUrl != null ? requestUrl.toString() : null);
     }
 
-    public InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
+    InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, URI requestUri) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUri != null ? requestUri.toString() : null);
     }
 
-    public InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, String requestUriString) {
+    InternalServerErrorException(String message, Exception innerException, HttpHeaders headers, String requestUriString) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);
     }
 

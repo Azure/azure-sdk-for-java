@@ -26,7 +26,7 @@ package com.azure.data.cosmos.directconnectivity;
 import com.azure.data.cosmos.internal.AuthorizationTokenType;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
+import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.PathsHelper;
 import com.azure.data.cosmos.internal.RMResources;

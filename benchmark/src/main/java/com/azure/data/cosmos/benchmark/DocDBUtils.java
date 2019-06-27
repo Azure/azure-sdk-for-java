@@ -28,7 +28,7 @@ import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterCollection;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.SqlQuerySpec;
 
 class DocDBUtils {
@@ -39,7 +39,7 @@ class DocDBUtils {
     static Database getDatabase(AsyncDocumentClient client, String databaseId) {
         FeedResponse<Database> feedResponsePages = client
                 .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                        new SqlParameterCollection(new SqlParameter("@id", databaseId))), null)
+                        new SqlParameterList(new SqlParameter("@id", databaseId))), null)
                 .single().block();
 
         if (feedResponsePages.results().isEmpty()) {
@@ -53,7 +53,7 @@ class DocDBUtils {
         FeedResponse<DocumentCollection> feedResponsePages = client
                 .queryCollections(databaseLink,
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", collectionId))),
+                                new SqlParameterList(new SqlParameter("@id", collectionId))),
                         null)
                 .single().block();
 

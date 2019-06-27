@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.directconnectivity.GoneException;
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
 import com.azure.data.cosmos.directconnectivity.StoreResponseBuilder;
 import com.azure.data.cosmos.directconnectivity.StoreResponseValidator;

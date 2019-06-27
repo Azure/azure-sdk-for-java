@@ -58,7 +58,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             if (!TakeContinuationToken.tryParse(topContinuationToken, outTakeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Top~Context",
                         topContinuationToken);
-                CosmosClientException dce = new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
                 return Flux.error(dce);
             }
@@ -70,7 +70,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             String message = String.format(
                     "top count in continuation token: %d can not be greater than the top count in the query: %d.",
                     takeContinuationToken.getTakeCount(), topCount);
-            CosmosClientException dce = new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST, message);
+            CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST, message);
             return Flux.error(dce);
         }
 

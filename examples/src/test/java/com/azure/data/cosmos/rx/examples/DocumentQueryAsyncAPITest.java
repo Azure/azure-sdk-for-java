@@ -33,9 +33,9 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -412,7 +412,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         }
 
         // Query for the documents order by the prop field
-        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterCollection());
+        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
         FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
         options.maxItemCount(5);

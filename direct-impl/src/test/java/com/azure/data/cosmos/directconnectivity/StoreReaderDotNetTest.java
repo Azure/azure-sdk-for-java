@@ -25,7 +25,9 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.ServiceUnavailableException;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.ReplicationPolicy;
 import com.azure.data.cosmos.internal.AuthorizationTokenType;
@@ -33,7 +35,7 @@ import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.InvalidPartitionException;
+import com.azure.data.cosmos.InvalidPartitionException;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.ResourceType;

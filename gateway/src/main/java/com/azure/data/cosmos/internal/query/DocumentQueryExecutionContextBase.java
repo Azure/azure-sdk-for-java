@@ -26,9 +26,9 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.OperationType;
@@ -240,7 +240,7 @@ implements IDocumentQueryExecutionContext<T> {
         String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
-            SqlParameterCollection params = querySpec.parameters();
+            SqlParameterList params = querySpec.parameters();
             Utils.checkStateOrThrow(params != null && params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());

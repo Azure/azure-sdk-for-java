@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
@@ -50,14 +48,14 @@ public class RequestTimeoutException extends CosmosClientException {
         this(message, null, null, requestUri);
     }
 
-    public RequestTimeoutException(String message,
+    RequestTimeoutException(String message,
                                    Exception innerException,
                                    URI requestUri,
                                    String localIpAddress) {
         this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
-    public RequestTimeoutException(Exception innerException) {
+    RequestTimeoutException(Exception innerException) {
         this(RMResources.Gone, innerException, (HttpHeaders) null, null);
     }
 
@@ -65,11 +63,11 @@ public class RequestTimeoutException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUrl != null ? requestUrl.toString() : null);
     }
 
-    public RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
+    RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUriString);
     }
 
-    public RequestTimeoutException(String message,
+    RequestTimeoutException(String message,
                                    Exception innerException,
                                    HttpHeaders headers,
                                    URI requestUrl) {

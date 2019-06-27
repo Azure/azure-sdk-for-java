@@ -23,8 +23,10 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.InternalServerErrorException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

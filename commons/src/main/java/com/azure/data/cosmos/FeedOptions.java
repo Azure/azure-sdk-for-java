@@ -23,8 +23,6 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.PartitionKey;
-
 import java.util.Map;
 
 /**

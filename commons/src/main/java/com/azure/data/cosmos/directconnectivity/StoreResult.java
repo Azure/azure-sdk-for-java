@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.ISessionToken;
-import com.azure.data.cosmos.internal.InternalServerErrorException;
+import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.Strings;

@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.GoneException;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.Strings;
 import reactor.core.publisher.Mono;

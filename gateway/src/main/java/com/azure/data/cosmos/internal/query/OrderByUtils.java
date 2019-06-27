@@ -24,7 +24,7 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.internal.BadRequestException;
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
 import com.azure.data.cosmos.internal.ResourceId;
 import com.azure.data.cosmos.internal.query.orderbyquery.OrderByRowResult;

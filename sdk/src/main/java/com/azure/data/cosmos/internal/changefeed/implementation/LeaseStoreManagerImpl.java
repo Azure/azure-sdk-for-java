@@ -28,7 +28,7 @@ import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlParameter;
-import com.azure.data.cosmos.SqlParameterCollection;
+import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
@@ -416,7 +416,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         param.value(prefix);
         SqlQuerySpec querySpec = new SqlQuerySpec(
             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            new SqlParameterCollection(param));
+            new SqlParameterList(param));
 
         Flux<FeedResponse<CosmosItemProperties>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),

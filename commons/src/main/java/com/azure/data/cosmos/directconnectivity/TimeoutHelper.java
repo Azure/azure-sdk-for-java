@@ -23,6 +23,9 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.GoneException;
+import com.azure.data.cosmos.RequestTimeoutException;
+
 import java.time.Duration;
 import java.time.Instant;
 

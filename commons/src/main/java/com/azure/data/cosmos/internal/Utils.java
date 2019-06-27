@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.DocumentCollection;
 import com.fasterxml.jackson.core.JsonParser;

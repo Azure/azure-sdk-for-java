@@ -35,7 +35,7 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.StoredProcedure;

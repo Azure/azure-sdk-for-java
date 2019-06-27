@@ -28,6 +28,7 @@ import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;

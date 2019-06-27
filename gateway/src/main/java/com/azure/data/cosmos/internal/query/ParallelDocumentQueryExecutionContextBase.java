@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos.internal.query;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -129,7 +130,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         }
 
         if (minIndex == partitionKeyRanges.size()) {
-            throw new CosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+            throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
                     String.format("Could not find partition key range for continuation token: {0}", needle));
         }
 

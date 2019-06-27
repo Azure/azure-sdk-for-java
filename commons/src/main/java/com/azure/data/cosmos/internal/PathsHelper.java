@@ -24,6 +24,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.Attachment;
+import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.Conflict;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;

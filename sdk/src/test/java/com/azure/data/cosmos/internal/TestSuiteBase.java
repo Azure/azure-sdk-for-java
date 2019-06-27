@@ -42,6 +42,7 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryOptions;

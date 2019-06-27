@@ -28,27 +28,28 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Represents a collection of SQL parameters to for a SQL query  in the Azure Cosmos DB database service.
  */
-public final class SqlParameterCollection implements Collection<SqlParameter> {
+public final class SqlParameterList implements List<SqlParameter> {
 
     private List<SqlParameter> parameters;
 
     /**
-     * Initializes a new instance of the SqlParameterCollection class.
+     * Initializes a new instance of the SqlParameterList class.
      */
-    public SqlParameterCollection() {
+    public SqlParameterList() {
         this.parameters = new ArrayList<SqlParameter>();
     }
 
     /**
-     * Initializes a new instance of the SqlParameterCollection class from an array of parameters.
+     * Initializes a new instance of the SqlParameterList class from an array of parameters.
      *
      * @param parameters the array of parameters.
      */
-    public SqlParameterCollection(SqlParameter... parameters) {
+    public SqlParameterList(SqlParameter... parameters) {
         if (parameters == null) {
             throw new IllegalArgumentException("parameters");
         }
@@ -57,11 +58,11 @@ public final class SqlParameterCollection implements Collection<SqlParameter> {
     }
 
     /**
-     * Initializes a new instance of the SqlParameterCollection class from a collection of parameters.
+     * Initializes a new instance of the SqlParameterList class from a collection of parameters.
      *
      * @param parameters the collection of parameters.
      */
-    public SqlParameterCollection(Collection<SqlParameter> parameters) {
+    public SqlParameterList(Collection<SqlParameter> parameters) {
         if (parameters == null) {
             throw new IllegalArgumentException("parameters");
         }
@@ -80,8 +81,58 @@ public final class SqlParameterCollection implements Collection<SqlParameter> {
     }
 
     @Override
+    public boolean addAll(int index, Collection<? extends SqlParameter> c) {
+        return this.parameters.addAll(index, c);
+    }
+
+    @Override
     public void clear() {
         this.parameters.clear();
+    }
+
+    @Override
+    public SqlParameter get(int index) {
+        return this.parameters.get(index);
+    }
+
+    @Override
+    public SqlParameter set(int index, SqlParameter element) {
+        return this.parameters.set(index, element);
+    }
+
+    @Override
+    public void add(int index, SqlParameter element) {
+        this.parameters.add(index, element);
+    }
+
+    @Override
+    public SqlParameter remove(int index) {
+        return this.parameters.remove(index);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return this.parameters.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return this.parameters.lastIndexOf(o);
+    }
+
+    @Override
+    public ListIterator<SqlParameter> listIterator() {
+        return this.listIterator();
+    }
+
+    @Override
+    public ListIterator<SqlParameter> listIterator(int index) {
+        return this.listIterator(index);
+    }
+
+    @Override
+    public List<SqlParameter> subList(int fromIndex, int toIndex) {
+        return this.parameters.subList(fromIndex, toIndex);
     }
 
     @Override

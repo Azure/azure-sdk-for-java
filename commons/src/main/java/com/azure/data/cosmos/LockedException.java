@@ -20,54 +20,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.azure.data.cosmos;
 
-package com.azure.data.cosmos.directconnectivity;
-
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
-import java.net.URI;
 import java.util.Map;
 
-public class ForbiddenException extends CosmosClientException {
-    public ForbiddenException() {
-        this(RMResources.Forbidden);
+/**
+ * While this class is public, but it is not part of our published public APIs.
+ * This is meant to be internally used only by our sdk.
+ */
+public class LockedException extends CosmosClientException {
+    private static final long serialVersionUID = 1L;
+
+    LockedException() {
+        this(RMResources.Locked);
     }
 
-    public ForbiddenException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.FORBIDDEN, cosmosError, responseHeaders);
+    public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.LOCKED, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
-    public ForbiddenException(String message) {
-        this(message, null, null, null);
+    LockedException(String msg) {
+        super(HttpConstants.StatusCodes.LOCKED, msg);
     }
 
-    public ForbiddenException(String message, HttpHeaders headers, String requestUrlString) {
-        this(message, null, headers, requestUrlString);
+    LockedException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.LOCKED, resourceAddress);
     }
 
-    public ForbiddenException(String message, HttpHeaders headers, URI requestUri) {
-        this(message, headers, requestUri != null ? requestUri.toString() : null);
+    public LockedException(String message, HttpHeaders headers, String requestUriString) {
+        this(message, null, headers, requestUriString);
     }
 
-    public ForbiddenException(Exception innerException) {
-        this(RMResources.Forbidden, innerException, null, null);
+    LockedException(Exception innerException) {
+        this(RMResources.Locked,  innerException, null, null);
     }
 
-    public ForbiddenException(String message,
-                              Exception innerException,
-                              HttpHeaders headers,
-                              String requestUrlString) {
-        super(String.format("%s: %s", RMResources.Forbidden, message),
+    LockedException(String message,
+                           Exception innerException,
+                           HttpHeaders headers,
+                           String requestUriString) {
+        super(String.format("%s: %s", RMResources.Locked, message),
                 innerException,
                 HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.FORBIDDEN,
-                requestUrlString);
+                HttpConstants.StatusCodes.LOCKED,
+                requestUriString);
     }
 }

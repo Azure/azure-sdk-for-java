@@ -21,11 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos.directconnectivity;
+package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.CosmosError;
+import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
@@ -54,14 +52,14 @@ public class GoneException extends CosmosClientException {
         this(message, null, new HashMap<>(), requestUri);
     }
 
-    public GoneException(String message,
+    GoneException(String message,
                          Exception innerException,
                          URI requestUri,
                          String localIpAddress) {
         this(message(localIpAddress, message), innerException, null, requestUri);
     }
 
-    public GoneException(Exception innerException) {
+    GoneException(Exception innerException) {
         this(RMResources.Gone, innerException, new HashMap<>(), null);
     }
 
@@ -69,7 +67,7 @@ public class GoneException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null ? requestUrl.toString() : null);
     }
 
-    public GoneException(String message, HttpHeaders headers, String requestUriString) {
+    GoneException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
@@ -87,7 +85,7 @@ public class GoneException extends CosmosClientException {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
-    public GoneException(CosmosError cosmosError, Map<String, String> headers) {
+    GoneException(CosmosError cosmosError, Map<String, String> headers) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, headers);
     }
 
