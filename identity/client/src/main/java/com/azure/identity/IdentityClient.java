@@ -187,7 +187,7 @@ public final class IdentityClient {
             Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : "";
 
-            return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+            return Mono.just(adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
         } catch (IOException e) {
             return Mono.error(e);
         } finally {
