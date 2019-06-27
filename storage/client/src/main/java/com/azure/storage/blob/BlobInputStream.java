@@ -6,7 +6,6 @@ import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobRange;
 import reactor.netty.ByteBufFlux;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -383,9 +382,14 @@ public final class BlobInputStream extends InputStream {
 
         len = Math.min(len, this.readSize);
 
-        final int numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());
-        // do read from buffer
-        this.currentBuffer = this.currentBuffer.get(b, off, numberOfBytesRead);
+        final int numberOfBytesRead;
+        if (currentBuffer.remaining() == 0) {
+            numberOfBytesRead = -1;
+        } else {
+            numberOfBytesRead = Math.min(len, this.currentBuffer.remaining());
+            // do read from buffer
+            this.currentBuffer = this.currentBuffer.get(b, off, numberOfBytesRead);
+        }
 
         if (numberOfBytesRead > 0) {
             this.currentAbsoluteReadPosition += numberOfBytesRead;
@@ -409,6 +413,7 @@ public final class BlobInputStream extends InputStream {
     private synchronized void reposition(final long absolutePosition) {
         this.currentAbsoluteReadPosition = absolutePosition;
         this.currentBuffer = ByteBuffer.allocate(0);
+        this.bufferStartOffset = absolutePosition;
     }
 
     /**
