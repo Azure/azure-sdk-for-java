@@ -711,6 +711,15 @@ class ContainerAPITest extends APISpec {
         return snapshotTime
     }
 
+    def blobListResponseToList(Iterator<BlobItem> blobs) {
+        ArrayList<BlobItem> blobQueue = new ArrayList<>()
+        while (blobs.hasNext()) {
+            blobQueue.add(blobs.next())
+        }
+
+        return blobQueue
+    }
+
     def "List blobs flat options copy"() {
         setup:
         ListBlobsOptions options = new ListBlobsOptions().details(new BlobListDetails().copy(true))
@@ -721,22 +730,18 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsFlat(options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsFlat(options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blob = blobs.next()
-        blob.name() == copyName
-        blob.properties().copyId() != null
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyId() != null
         // Comparing the urls isn't reliable because the service may use https.
-        blob.properties().copySource().contains(normalName)
-        blob.properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-        blob.properties().copyProgress() != null
-        blob.properties().copyCompletionTime() != null
-        blobs.next() != null
-        !blobs.hasNext() // Normal, copy, metadata
+        blobs.get(1).properties().copySource().contains(normalName)
+        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).properties().copyProgress() != null
+        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs flat options metadata"() {
@@ -749,20 +754,15 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsFlat(options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsFlat(options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blob = blobs.next()
-        blob.name() == copyName
-        blob.properties().copyCompletionTime() == null
-
-        blob = blobs.next()
-        blob.name() == metadataName
-        blob.metadata().get("foo") == "bar"
-        !blobs.hasNext() // Normal, copy, metadata
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyCompletionTime() == null
+        blobs.get(2).name() == metadataName
+        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs flat options snapshots"() {
@@ -775,19 +775,13 @@ class ContainerAPITest extends APISpec {
         String snapshotTime = setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsFlat(options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsFlat(options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-        blob.snapshot() == snapshotTime
-
-        blob = blobs.next()
-        blob.name() == normalName
-
-        blobs.next()
-        blobs.next()
-        !blobs.hasNext() // Normal, snapshot, copy, metadata
+        blobs.get(0).name() == normalName
+        blobs.get(0).snapshot() == snapshotTime
+        blobs.get(1).name() == normalName
+        blobs.size() == 4 // Normal, snapshot, copy, metadata
     }
 
     def "List blobs flat options uncommitted"() {
@@ -800,18 +794,12 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsFlat(options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsFlat(options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blobs.next()
-        blobs.next()
-
-        blob = blobs.next()
-        blob.name() == uncommittedName
-        !blobs.hasNext() // Normal, copy, metadata, uncommitted
+        blobs.get(0).name() == normalName
+        blobs.get(3).name() == uncommittedName
+        blobs.size() == 4 // Normal, copy, metadata, uncommitted
     }
 
     def "List blobs flat options deleted"() {
@@ -959,23 +947,18 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsHierarchy("", options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blob = blobs.next()
-        blob.name() == copyName
-        blob.properties().copyId() != null
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyId() != null
         // Comparing the urls isn't reliable because the service may use https.
-        blob.properties().copySource().contains(normalName)
-        blob.properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
-        blob.properties().copyProgress() != null
-        blob.properties().copyCompletionTime() != null
-
-        blobs.next()
-        !blobs.hasNext() // Normal, copy, metadata
+        blobs.get(1).properties().copySource().contains(normalName)
+        blobs.get(1).properties().copyStatus() == CopyStatusType.SUCCESS // We waited for the copy to complete.
+        blobs.get(1).properties().copyProgress() != null
+        blobs.get(1).properties().copyCompletionTime() != null
+        blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs hier options metadata"() {
@@ -988,21 +971,15 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsHierarchy("", options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blob = blobs.next()
-        blob.name() == copyName
-        blob.properties().copyCompletionTime() == null
-
-        blob = blobs.next()
-        blob.name() == metadataName
-        blob.metadata().additionalProperties().get("foo") == "bar"
-
-        !blobs.hasNext() // Normal, copy, metadata
+        blobs.get(0).name() == normalName
+        blobs.get(1).name() == copyName
+        blobs.get(1).properties().copyCompletionTime() == null
+        blobs.get(2).name() == metadataName
+        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.size() == 3 // Normal, copy, metadata
     }
 
     def "List blobs hier options uncommitted"() {
@@ -1015,19 +992,12 @@ class ContainerAPITest extends APISpec {
         setupListBlobsTest(normalName, copyName, metadataName, uncommittedName)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsHierarchy("", options, null).iterator()
+        List<BlobItem> blobs = blobListResponseToList(cu.listBlobsHierarchy("", options, null).iterator())
 
         then:
-        BlobItem blob = blobs.next()
-        blob.name() == normalName
-
-        blobs.next()
-        blobs.next()
-
-        blob = blobs.next()
-        blob.name() == uncommittedName
-
-        !blobs.hasNext() // Normal, copy, metadata, uncommitted
+        blobs.get(0).name() == normalName
+        blobs.get(3).name() == uncommittedName
+        blobs.size() == 4 // Normal, copy, metadata, uncommitted
     }
 
     def "List blobs hier options deleted"() {
