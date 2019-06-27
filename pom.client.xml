@@ -270,7 +270,7 @@
             <phase>package</phase>
             <configuration>
               <target>
-                <copy file="${pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
               </target>
             </configuration>
             <goals>
@@ -296,6 +296,19 @@
             <configuration>
               <!--Sets the name of the property containing the settings for JaCoCo runtime agent.-->
               <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <!-- This generates the unit test reports for individual modules.
+              jacoco-test-coverage generates aggregate reports for all modules -->
+            <id>post-unit-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <!-- Sets the output directory for the code coverage report. -->
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -325,7 +338,8 @@
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*
+              com.azure.core.test*:
+              com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
               <group>
@@ -333,16 +347,28 @@
                 <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
               </group>
               <group>
-                <title>Azure Core - Management</title>
-                <packages>com.azure.core.management*</packages>
+                <title>Azure Core - AMQP</title>
+                <packages>com.azure.core.amqp*</packages>
               </group>
               <group>
                 <title>Azure Core - Authentication</title>
                 <packages>com.azure.core.auth*</packages>
               </group>
               <group>
+                <title>Azure Core - Management</title>
+                <packages>com.azure.core.management*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
+              </group>
+              <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Identity</title>
+                <packages>com.azure.identity*</packages>
               </group>
               <group>
                 <title>Azure Key Vault</title>
@@ -490,6 +516,8 @@
                   So, path for aggregate reports have to be defined relative to parent pom -->
               <additionalOptions>-maxLineLength 120
                 -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
+                -snippetpath ${project.basedir}/core/azure-core/src/samples/java
+                -snippetpath ${project.basedir}/eventhubs/client/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
               </additionalOptions>
@@ -669,6 +697,7 @@
   <modules>
     <module>./appconfiguration/client</module>
     <module>./core</module>
+    <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
     <module>./tracing</module>
     <module>./identity/client</module>

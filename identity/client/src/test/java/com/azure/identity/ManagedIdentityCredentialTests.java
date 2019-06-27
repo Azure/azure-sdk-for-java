@@ -3,8 +3,8 @@
 
 package com.azure.identity;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.ConfigurationManager;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.ManagedIdentityCredential;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,8 +12,10 @@ import org.junit.Test;
 public class ManagedIdentityCredentialTests {
     @Test
     public void testAppServiceMSICredentialConfigurations() {
-        ConfigurationManager.getConfiguration().put(BaseConfigurations.MSI_ENDPOINT, "").put(BaseConfigurations.MSI_SECRET, "");
-        ManagedIdentityCredential credential = new ManagedIdentityCredential().msiEndpoint("http://foo").msiSecret("bar");
+        ConfigurationManager.getConfiguration()
+                .put(BaseConfigurations.MSI_ENDPOINT, "http://foo")
+                .put(BaseConfigurations.MSI_SECRET, "bar");
+        ManagedIdentityCredential credential = new ManagedIdentityCredential();
         Assert.assertEquals("http://foo", credential.msiEndpoint());
         Assert.assertEquals("bar", credential.msiSecret());
     }
@@ -22,9 +24,7 @@ public class ManagedIdentityCredentialTests {
     public void testVirtualMachineMSICredentialConfigurations() {
         ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_ENDPOINT);
         ConfigurationManager.getConfiguration().remove(BaseConfigurations.MSI_SECRET);
-        ManagedIdentityCredential credential = new ManagedIdentityCredential().clientId("foo").identityId("bar").objectId("baz");
+        ManagedIdentityCredential credential = new ManagedIdentityCredential().clientId("foo");
         Assert.assertEquals("foo", credential.clientId());
-        Assert.assertEquals("bar", credential.identityId());
-        Assert.assertEquals("baz", credential.objectId());
     }
 }

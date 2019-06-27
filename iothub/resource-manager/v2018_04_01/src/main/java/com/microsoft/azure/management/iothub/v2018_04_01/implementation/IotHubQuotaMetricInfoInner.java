@@ -33,7 +33,7 @@ public class IotHubQuotaMetricInfoInner {
     private Long maxValue;
 
     /**
-     * Get the name value.
+     * Get the name of the quota metric.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class IotHubQuotaMetricInfoInner {
     }
 
     /**
-     * Get the currentValue value.
+     * Get the current value for the quota metric.
      *
      * @return the currentValue value
      */
@@ -51,7 +51,7 @@ public class IotHubQuotaMetricInfoInner {
     }
 
     /**
-     * Get the maxValue value.
+     * Get the maximum value of the quota metric.
      *
      * @return the maxValue value
      */

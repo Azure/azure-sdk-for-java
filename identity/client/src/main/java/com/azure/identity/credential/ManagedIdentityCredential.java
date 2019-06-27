@@ -3,15 +3,13 @@
 
 package com.azure.identity.credential;
 
-import com.azure.core.configuration.BaseConfigurations;
-import com.azure.core.configuration.Configuration;
-import com.azure.core.configuration.ConfigurationManager;
-import com.azure.core.credentials.TokenCredential;
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.util.configuration.BaseConfigurations;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.IdentityClient;
 import com.azure.identity.IdentityClientOptions;
-import com.azure.identity.implementation.AppServiceMSICredential;
-import com.azure.identity.implementation.VirtualMachineMSICredential;
 import reactor.core.publisher.Mono;
 
 /**
@@ -35,7 +33,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     public ManagedIdentityCredential(IdentityClientOptions identityClientOptions) {
         IdentityClient identityClient = new IdentityClient(identityClientOptions);
         Configuration configuration = ConfigurationManager.getConfiguration();
-        if (configuration.contains(BaseConfigurations.MSI_ENDPOINT) && configuration.contains(BaseConfigurations.MSI_SECRET)) {
+        if (configuration.contains(BaseConfigurations.MSI_ENDPOINT)) {
             appServiceMSICredential = new AppServiceMSICredential(identityClient);
             virtualMachineMSICredential = null;
         } else {
@@ -45,37 +43,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     /**
-     * @return the principal id of user assigned or system assigned identity.
-     */
-    public String objectId() {
-        return this.virtualMachineMSICredential == null ? null : this.virtualMachineMSICredential.objectId();
-    }
-
-    /**
      * @return the client id of user assigned or system assigned identity.
      */
     public String clientId() {
-        return this.virtualMachineMSICredential == null ? null : this.virtualMachineMSICredential.clientId();
-    }
-
-    /**
-     * @return the ARM resource id of the user assigned identity resource.
-     */
-    public String identityId() {
-        return this.virtualMachineMSICredential == null ? null : this.virtualMachineMSICredential.identityId();
-    }
-
-    /**
-     * specifies the principal id of user assigned or system assigned identity.
-     *
-     * @param objectId the object (principal) id
-     * @return ManagedIdentityCredential
-     */
-    public ManagedIdentityCredential objectId(String objectId) {
-        if (this.virtualMachineMSICredential != null) {
-            this.virtualMachineMSICredential.objectId(objectId);
-        }
-        return this;
+        return this.appServiceMSICredential != null ? this.appServiceMSICredential.clientId() : this.virtualMachineMSICredential.clientId();
     }
 
     /**
@@ -85,21 +56,10 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @return ManagedIdentityCredential
      */
     public ManagedIdentityCredential clientId(String clientId) {
-        if (this.virtualMachineMSICredential != null) {
+        if (this.appServiceMSICredential != null) {
+            this.appServiceMSICredential.clientId(clientId);
+        } else {
             this.virtualMachineMSICredential.clientId(clientId);
-        }
-        return this;
-    }
-
-    /**
-     * Specifies the ARM resource id of the user assigned identity resource.
-     *
-     * @param identityId the identity ARM id
-     * @return ManagedIdentityCredential
-     */
-    public ManagedIdentityCredential identityId(String identityId) {
-        if (this.virtualMachineMSICredential != null) {
-            this.virtualMachineMSICredential.identityId(identityId);
         }
         return this;
     }
@@ -115,30 +75,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
      */
     public String msiSecret() {
         return this.appServiceMSICredential == null ? null : this.appServiceMSICredential.msiSecret();
-    }
-
-    /**
-     * Specifies the Managed Service Identity endpoint for the App Service.
-     * @param msiEndpoint the end point for acquiring a token on App Service.
-     * @return ManagedIdentityCredential
-     */
-    public ManagedIdentityCredential msiEndpoint(String msiEndpoint) {
-        if (this.appServiceMSICredential != null) {
-            this.appServiceMSICredential.msiEndpoint(msiEndpoint);
-        }
-        return this;
-    }
-
-    /**
-     * Specifies the Managed Service Identity secret for the App Service.
-     * @param msiSecret the secret for acquiring a token on App Service.
-     * @return ManagedIdentityCredential
-     */
-    public ManagedIdentityCredential msiSecret(String msiSecret) {
-        if (this.appServiceMSICredential != null) {
-            this.appServiceMSICredential.msiSecret(msiSecret);
-        }
-        return this;
     }
 
     @Override

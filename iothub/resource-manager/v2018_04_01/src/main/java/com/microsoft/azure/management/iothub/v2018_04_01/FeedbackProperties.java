@@ -39,7 +39,7 @@ public class FeedbackProperties {
     private Integer maxDeliveryCount;
 
     /**
-     * Get the lockDurationAsIso8601 value.
+     * Get the lock duration for the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @return the lockDurationAsIso8601 value
      */
@@ -48,7 +48,7 @@ public class FeedbackProperties {
     }
 
     /**
-     * Set the lockDurationAsIso8601 value.
+     * Set the lock duration for the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @param lockDurationAsIso8601 the lockDurationAsIso8601 value to set
      * @return the FeedbackProperties object itself.
@@ -59,7 +59,7 @@ public class FeedbackProperties {
     }
 
     /**
-     * Get the ttlAsIso8601 value.
+     * Get the period of time for which a message is available to consume before it is expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @return the ttlAsIso8601 value
      */
@@ -68,7 +68,7 @@ public class FeedbackProperties {
     }
 
     /**
-     * Set the ttlAsIso8601 value.
+     * Set the period of time for which a message is available to consume before it is expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @param ttlAsIso8601 the ttlAsIso8601 value to set
      * @return the FeedbackProperties object itself.
@@ -79,7 +79,7 @@ public class FeedbackProperties {
     }
 
     /**
-     * Get the maxDeliveryCount value.
+     * Get the number of times the IoT hub attempts to deliver a message on the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @return the maxDeliveryCount value
      */
@@ -88,7 +88,7 @@ public class FeedbackProperties {
     }
 
     /**
-     * Set the maxDeliveryCount value.
+     * Set the number of times the IoT hub attempts to deliver a message on the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
      *
      * @param maxDeliveryCount the maxDeliveryCount value to set
      * @return the FeedbackProperties object itself.

@@ -56,7 +56,7 @@ public class ExpressRoutePortInner extends Resource {
     private ExpressRoutePortsEncapsulation encapsulation;
 
     /**
-     * Ethertype of the physical port.
+     * Ether type of the physical port.
      */
     @JsonProperty(value = "properties.etherType", access = JsonProperty.Access.WRITE_ONLY)
     private String etherType;
@@ -186,7 +186,7 @@ public class ExpressRoutePortInner extends Resource {
     }
 
     /**
-     * Get ethertype of the physical port.
+     * Get ether type of the physical port.
      *
      * @return the etherType value
      */

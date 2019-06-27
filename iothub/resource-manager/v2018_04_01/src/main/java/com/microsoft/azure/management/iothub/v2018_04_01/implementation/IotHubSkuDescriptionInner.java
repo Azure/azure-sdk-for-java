@@ -35,7 +35,7 @@ public class IotHubSkuDescriptionInner {
     private IotHubCapacity capacity;
 
     /**
-     * Get the resourceType value.
+     * Get the type of the resource.
      *
      * @return the resourceType value
      */
@@ -44,7 +44,7 @@ public class IotHubSkuDescriptionInner {
     }
 
     /**
-     * Get the sku value.
+     * Get the type of the resource.
      *
      * @return the sku value
      */
@@ -53,7 +53,7 @@ public class IotHubSkuDescriptionInner {
     }
 
     /**
-     * Set the sku value.
+     * Set the type of the resource.
      *
      * @param sku the sku value to set
      * @return the IotHubSkuDescriptionInner object itself.
@@ -64,7 +64,7 @@ public class IotHubSkuDescriptionInner {
     }
 
     /**
-     * Get the capacity value.
+     * Get iotHub capacity.
      *
      * @return the capacity value
      */
@@ -73,7 +73,7 @@ public class IotHubSkuDescriptionInner {
     }
 
     /**
-     * Set the capacity value.
+     * Set iotHub capacity.
      *
      * @param capacity the capacity value to set
      * @return the IotHubSkuDescriptionInner object itself.

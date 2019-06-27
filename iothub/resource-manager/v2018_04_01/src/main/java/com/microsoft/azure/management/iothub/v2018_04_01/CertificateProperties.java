@@ -59,7 +59,7 @@ public class CertificateProperties {
     private String certificate;
 
     /**
-     * Get the subject value.
+     * Get the certificate's subject name.
      *
      * @return the subject value
      */
@@ -68,7 +68,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the expiry value.
+     * Get the certificate's expiration date and time.
      *
      * @return the expiry value
      */
@@ -80,7 +80,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get the certificate's thumbprint.
      *
      * @return the thumbprint value
      */
@@ -89,7 +89,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the isVerified value.
+     * Get determines whether certificate has been verified.
      *
      * @return the isVerified value
      */
@@ -98,7 +98,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the created value.
+     * Get the certificate's create date and time.
      *
      * @return the created value
      */
@@ -110,7 +110,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the updated value.
+     * Get the certificate's last update date and time.
      *
      * @return the updated value
      */
@@ -122,7 +122,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the certificate value.
+     * Get the certificate content.
      *
      * @return the certificate value
      */
@@ -131,7 +131,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Set the certificate value.
+     * Set the certificate content.
      *
      * @param certificate the certificate value to set
      * @return the CertificateProperties object itself.
