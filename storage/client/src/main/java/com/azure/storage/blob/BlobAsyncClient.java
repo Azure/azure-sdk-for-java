@@ -7,6 +7,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.AccessTier;
@@ -141,7 +142,11 @@ public class BlobAsyncClient {
      */
     public URL getBlobUrl() {
         try {
-            return new URL(blobAsyncRawClient.azureBlobStorage.url());
+            UrlBuilder urlBuilder = UrlBuilder.parse(blobAsyncRawClient.azureBlobStorage.url());
+            if (blobAsyncRawClient.snapshot != null) {
+                urlBuilder.withQuery("snapshot=" + blobAsyncRawClient.snapshot);
+            }
+            return urlBuilder.toURL();
         } catch (MalformedURLException e) {
             throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), blobAsyncRawClient.azureBlobStorage.url()), e);
         }
