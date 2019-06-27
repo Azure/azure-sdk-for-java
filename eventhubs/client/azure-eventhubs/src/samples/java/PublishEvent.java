@@ -14,7 +14,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to send a message to an Azure Event Hub.
  */
-public class SendEvent {
+public class PublishEvent {
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
      *

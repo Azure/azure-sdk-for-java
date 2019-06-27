@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to sent events to a specific event hub by defining partition ID in producer option only.
  */
-public class SendCustomEventDataList {
+public class PublishEventsWithCustomMetadata {
 
     /**
      * Main method to invoke this demo about how to send a custom event list to an Azure Event Hub instance.

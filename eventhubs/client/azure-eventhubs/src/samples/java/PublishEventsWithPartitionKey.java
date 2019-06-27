@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Send a list of events with send option configured
  */
-public class SendEventDataListWIthSendOption {
+public class PublishEventsWithPartitionKey {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**

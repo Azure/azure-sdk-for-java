@@ -18,7 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to sent events to specific event hub by define partition ID in producer option only.
  */
-public class SendEventsWithProducerOptions {
+public class PublishEventsToSpecificPartition {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
