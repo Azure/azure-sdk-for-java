@@ -114,27 +114,27 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>${azure-core.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>${azure-core-amqp.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>${azure-core-management.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>${azure-core-test.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>${azure-core-test.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
