@@ -4,17 +4,17 @@
 package com.azure.core.management;
 
 import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.Delete;
 import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HEAD;
+import com.azure.core.annotations.Get;
+import com.azure.core.annotations.Head;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Headers;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Patch;
+import com.azure.core.annotations.Post;
+import com.azure.core.annotations.Put;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.Service;
@@ -52,15 +52,15 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service1")
     private interface Service1 {
-        @GET("bytes/100")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         byte[] getByteArray();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         Mono<byte[]> getByteArrayAsync();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         Mono<byte[]> getByteArrayAsyncWithNoExpectedResponses();
     }
 
@@ -93,11 +93,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://{hostName}.org")
     @Service("Service2")
     private interface Service2 {
-        @GET("bytes/{numberOfBytes}")
+        @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         byte[] getByteArray(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
 
-        @GET("bytes/{numberOfBytes}")
+        @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         Mono<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
     }
@@ -122,11 +122,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service3")
     private interface Service3 {
-        @GET("bytes/2")
+        @Get("bytes/2")
         @ExpectedResponses({200})
         void getNothing();
 
-        @GET("bytes/2")
+        @Get("bytes/2")
         @ExpectedResponses({200})
         Mono<Void> getNothingAsync();
     }
@@ -146,23 +146,23 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service5")
     private interface Service5 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything();
 
-        @GET("anything/with+plus")
+        @Get("anything/with+plus")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPlus();
 
-        @GET("anything/{path}")
+        @Get("anything/{path}")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPathParam(@PathParam("path") String pathParam);
 
-        @GET("anything/{path}")
+        @Get("anything/{path}")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync();
     }
@@ -243,15 +243,15 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service6")
     private interface Service6 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything(@QueryParam("a") String a, @QueryParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
     }
@@ -292,11 +292,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service7")
     private interface Service7 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything(@HeaderParam("a") String a, @HeaderParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync(@HeaderParam("a") String a, @HeaderParam("b") int b);
     }
@@ -333,11 +333,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service8")
     private interface Service8 {
-        @POST("post")
+        @Post("post")
         @ExpectedResponses({200})
         HttpBinJSON post(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
-        @POST("post")
+        @Post("post")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
@@ -362,19 +362,19 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service9")
     private interface Service9 {
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyAzureException.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
@@ -429,20 +429,20 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service10")
     private interface Service10 {
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         ResponseBase<Void, Void> restResponseHead();
 
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         void voidHead();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         Mono<ResponseBase<Void, Void>> restResponseHeadAsync();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         Mono<Void> completableHeadAsync();
     }
@@ -479,11 +479,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service11")
     private interface Service11 {
-        @DELETE("delete")
+        @Delete("delete")
         @ExpectedResponses({200})
         HttpBinJSON delete(@BodyParam(ContentType.APPLICATION_JSON) boolean bodyBoolean);
 
-        @DELETE("delete")
+        @Delete("delete")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_JSON) boolean bodyBoolean);
     }
@@ -508,11 +508,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service12")
     private interface Service12 {
-        @PATCH("patch")
+        @Patch("patch")
         @ExpectedResponses({200})
         HttpBinJSON patch(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
 
-        @PATCH("patch")
+        @Patch("patch")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
@@ -537,12 +537,12 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service13")
     private interface Service13 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get();
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Mono<HttpBinJSON> getAsync();
@@ -578,12 +578,12 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("https://httpbin.org")
     @Service("Service14")
     private interface Service14 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         HttpBinJSON get();
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         Mono<HttpBinJSON> getAsync();
@@ -604,7 +604,7 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("https://httpbin.org")
     @Service("Service15")
     private interface Service15 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Flux<HttpBinJSON> get();
     }
@@ -624,11 +624,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service16")
     private interface Service16 {
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] putBody);
     }
@@ -657,11 +657,11 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("http://{hostPart1}{hostPart2}.org")
     @Service("Service17")
     private interface Service17 {
-        @GET("get")
+        @Get("get")
         @ExpectedResponses({200})
         HttpBinJSON get(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
 
-        @GET("get")
+        @Get("get")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAsync(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
     }
@@ -685,31 +685,31 @@ public abstract class AzureProxyToRestProxyTests {
     @Host("https://httpbin.org")
     @Service("Service18")
     private interface Service18 {
-        @GET("status/200")
+        @Get("status/200")
         void getStatus200();
 
-        @GET("status/200")
+        @Get("status/200")
         @ExpectedResponses({200})
         void getStatus200WithExpectedResponse200();
 
-        @GET("status/300")
+        @Get("status/300")
         void getStatus300();
 
-        @GET("status/300")
+        @Get("status/300")
         @ExpectedResponses({300})
         void getStatus300WithExpectedResponse300();
 
-        @GET("status/400")
+        @Get("status/400")
         void getStatus400();
 
-        @GET("status/400")
+        @Get("status/400")
         @ExpectedResponses({400})
         void getStatus400WithExpectedResponse400();
 
-        @GET("status/500")
+        @Get("status/500")
         void getStatus500();
 
-        @GET("status/500")
+        @Get("status/500")
         @ExpectedResponses({500})
         void getStatus500WithExpectedResponse500();
     }

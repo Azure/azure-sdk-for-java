@@ -5,10 +5,10 @@ package com.azure.core.implementation;
 
 import com.azure.core.annotations.BodyParam;
 import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.annotations.Host;
-import com.azure.core.annotations.POST;
+import com.azure.core.annotations.Post;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.Service;
 import com.azure.core.entities.HttpBinJSON;
@@ -57,27 +57,27 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Host("http://httpbin.org")
     @Service("Service1")
     private interface Service1 {
-        @GET("Base64UrlBytes/10")
+        @Get("Base64UrlBytes/10")
         @ReturnValueWireType(Base64Url.class)
         byte[] getBase64UrlBytes10();
 
-        @GET("Base64UrlListOfBytes")
+        @Get("Base64UrlListOfBytes")
         @ReturnValueWireType(Base64Url.class)
         List<byte[]> getBase64UrlListOfBytes();
 
-        @GET("Base64UrlListOfListOfBytes")
+        @Get("Base64UrlListOfListOfBytes")
         @ReturnValueWireType(Base64Url.class)
         List<List<byte[]>> getBase64UrlListOfListOfBytes();
 
-        @GET("Base64UrlMapOfBytes")
+        @Get("Base64UrlMapOfBytes")
         @ReturnValueWireType(Base64Url.class)
         Map<String, byte[]> getBase64UrlMapOfBytes();
 
-        @GET("DateTimeRfc1123")
+        @Get("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
         OffsetDateTime getDateTimeRfc1123();
 
-        @GET("UnixTime")
+        @Get("UnixTime")
         @ReturnValueWireType(UnixTime.class)
         OffsetDateTime getDateTimeUnix();
     }
@@ -170,7 +170,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Host("http://httpbin.org")
     @Service("ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
-        @GET("/get")
+        @Get("/get")
         @ExpectedResponses({400})
         HttpBinJSON get();
     }
@@ -315,16 +315,16 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Host("https://www.example.com")
     @Service("ServiceHeaderCollections")
     interface ServiceHeaderCollections {
-        @GET("url/path")
+        @Get("url/path")
         ResponseBase<HeaderCollectionTypePublicFields, Void> publicFields();
 
-        @GET("url/path")
+        @Get("url/path")
         ResponseBase<HeaderCollectionTypeProtectedFields, Void> protectedFields();
 
-        @GET("url/path")
+        @Get("url/path")
         ResponseBase<HeaderCollectionTypePrivateFields, Void> privateFields();
 
-        @GET("url/path")
+        @Get("url/path")
         ResponseBase<HeaderCollectionTypePackagePrivateFields, Void> packagePrivateFields();
     }
 
@@ -537,17 +537,17 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Host("http://echo.org")
     @Service("Service2")
     interface Service2 {
-        @POST("anything/json")
+        @Post("anything/json")
         @ExpectedResponses({200})
         @ReturnValueWireType(KeyValuePage.class)
         PagedResponse<KeyValue> getPage(@BodyParam(ContentType.APPLICATION_JSON) Page<KeyValue> values);
 
-        @POST("anything/json")
+        @Post("anything/json")
         @ExpectedResponses({200})
         @ReturnValueWireType(Page.class)
         Mono<PagedResponse<KeyValue>> getPageAsync(@BodyParam(ContentType.APPLICATION_JSON) Page<KeyValue> values);
 
-        @POST("anything/json")
+        @Post("anything/json")
         @ExpectedResponses({200})
         @ReturnValueWireType(Page.class)
         Mono<PagedResponse<KeyValue>> getPageAsyncSerializes(@BodyParam(ContentType.APPLICATION_JSON) NonComformingPage<KeyValue> values);

@@ -4,7 +4,7 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
+import com.azure.core.annotations.Get;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.Service;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
@@ -51,7 +51,7 @@ public class SwaggerInterfaceParserTests {
     @Host("https://azure.com")
     @Service("myService")
     interface TestInterface4 {
-        @GET("my/url/path")
+        @Get("my/url/path")
         @ExpectedResponses({200})
         void testMethod4();
     }

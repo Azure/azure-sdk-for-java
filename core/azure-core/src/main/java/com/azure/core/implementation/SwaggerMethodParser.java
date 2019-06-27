@@ -4,17 +4,17 @@
 package com.azure.core.implementation;
 
 import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
+import com.azure.core.annotations.Delete;
 import com.azure.core.annotations.ExpectedResponses;
 import com.azure.core.annotations.FormParam;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HEAD;
+import com.azure.core.annotations.Get;
+import com.azure.core.annotations.Head;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Headers;
 import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Patch;
+import com.azure.core.annotations.Post;
+import com.azure.core.annotations.Put;
 import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
@@ -89,26 +89,26 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
 
-        if (swaggerMethod.isAnnotationPresent(GET.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(GET.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(PUT.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(HEAD.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(DELETE.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(POST.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(POST.class).value());
-        } else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
-            setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(PATCH.class).value());
+        if (swaggerMethod.isAnnotationPresent(Get.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(Get.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Put.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(Put.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Head.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(Head.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Delete.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(Delete.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Post.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(Post.class).value());
+        } else if (swaggerMethod.isAnnotationPresent(Patch.class)) {
+            setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(Patch.class).value());
         } else {
             final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
-            requiredAnnotationOptions.add(GET.class);
-            requiredAnnotationOptions.add(PUT.class);
-            requiredAnnotationOptions.add(HEAD.class);
-            requiredAnnotationOptions.add(DELETE.class);
-            requiredAnnotationOptions.add(POST.class);
-            requiredAnnotationOptions.add(PATCH.class);
+            requiredAnnotationOptions.add(Get.class);
+            requiredAnnotationOptions.add(Put.class);
+            requiredAnnotationOptions.add(Head.class);
+            requiredAnnotationOptions.add(Delete.class);
+            requiredAnnotationOptions.add(Post.class);
+            requiredAnnotationOptions.add(Patch.class);
             throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
         }
 

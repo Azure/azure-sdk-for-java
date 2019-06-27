@@ -17,18 +17,18 @@ import java.lang.annotation.Target;
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
  * <pre>
- * {@literal @}DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ * {@literal @}Delete("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
  *  void delete(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);</pre>
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
  * <pre>
- * {@literal @}DELETE({vaultBaseUrl}/secrets/{secretName})
+ * {@literal @}Delete({vaultBaseUrl}/secrets/{secretName})
  *  void delete(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DELETE {
+public @interface Delete {
     /**
      * Get the relative path of the annotated method's DELETE URL.
      * @return The relative path of the annotated method's DELETE URL.
