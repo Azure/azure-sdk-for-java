@@ -37,9 +37,12 @@
   </distributionManagement>
 
   <scm>
-    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+    <tag>HEAD</tag>
   </scm>
-
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
