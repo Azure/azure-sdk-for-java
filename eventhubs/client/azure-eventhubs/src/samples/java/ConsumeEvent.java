@@ -21,7 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to receive events from an Azure Event Hub instance.
  */
-public class ReceiveEvent {
+public class ConsumeEvent {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     private static final int NUMBER_OF_EVENTS = 10;
 
@@ -67,7 +67,7 @@ public class ReceiveEvent {
         Disposable subscription = consumer.receive().subscribe(event -> {
             String contents = UTF_8.decode(event.body()).toString();
             System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(),
-                event.offset(), contents));
+                event.sequenceNumber(), contents));
 
             countDownLatch.countDown();
         });
@@ -83,17 +83,18 @@ public class ReceiveEvent {
             return producer.send(new EventData(body.getBytes(UTF_8)));
         }).blockLast(OPERATION_TIMEOUT);
 
-        // We wait for all the events to be received before continuing.
-        boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-
-        if (!isSuccessful) {
-            System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+        try {
+            // We wait for all the events to be received before continuing.
+            boolean isSuccessful = countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+            if (!isSuccessful) {
+                System.err.printf("Did not complete successfully. There are: %s events left.", countDownLatch.getCount());
+            }
+        } finally {
+            // Dispose and close of all the resources we've created.
+            subscription.dispose();
+            producer.close();
+            consumer.close();
+            client.close();
         }
-
-        // Dispose and close of all the resources we've created.
-        subscription.dispose();
-        producer.close();
-        consumer.close();
-        client.close();
     }
 }
