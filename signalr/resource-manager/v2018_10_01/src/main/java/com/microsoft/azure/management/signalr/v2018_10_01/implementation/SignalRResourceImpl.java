@@ -10,6 +10,9 @@ package com.microsoft.azure.management.signalr.v2018_10_01.implementation;
 
 import com.microsoft.azure.management.signalr.v2018_10_01.SignalRResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRCorsSettings;
+import java.util.List;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeature;
 import com.microsoft.azure.management.signalr.v2018_10_01.ProvisioningState;
 import com.microsoft.azure.management.signalr.v2018_10_01.ResourceSku;
 import java.util.Map;
@@ -27,8 +30,18 @@ class SignalRResourceImpl extends WrapperImpl<SignalRResourceInner> implements S
     }
 
     @Override
+    public SignalRCorsSettings cors() {
+        return this.inner().cors();
+    }
+
+    @Override
     public String externalIP() {
         return this.inner().externalIP();
+    }
+
+    @Override
+    public List<SignalRFeature> features() {
+        return this.inner().features();
     }
 
     @Override

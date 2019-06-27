@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.signalr.v2018_10_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,6 +22,26 @@ public class SignalRCreateOrUpdateProperties {
      */
     @JsonProperty(value = "hostNamePrefix")
     private String hostNamePrefix;
+
+    /**
+     * List of SignalR featureFlags. e.g. ServiceMode.
+     *
+     * FeatureFlags that are not included in the parameters for the update
+     * operation will not be modified.
+     * And the response will only include featureFlags that are explicitly set.
+     * When a featureFlag is not explicitly set, SignalR service will use its
+     * globally default value.
+     * But keep in mind, the default value doesn't mean "false". It varies in
+     * terms of different FeatureFlags.
+     */
+    @JsonProperty(value = "features")
+    private List<SignalRFeature> features;
+
+    /**
+     * Cross-Origin Resource Sharing (CORS) settings.
+     */
+    @JsonProperty(value = "cors")
+    private SignalRCorsSettings cors;
 
     /**
      * Get prefix for the hostName of the SignalR service. Retained for future use.
@@ -41,6 +62,54 @@ public class SignalRCreateOrUpdateProperties {
      */
     public SignalRCreateOrUpdateProperties withHostNamePrefix(String hostNamePrefix) {
         this.hostNamePrefix = hostNamePrefix;
+        return this;
+    }
+
+    /**
+     * Get list of SignalR featureFlags. e.g. ServiceMode.
+     FeatureFlags that are not included in the parameters for the update operation will not be modified.
+     And the response will only include featureFlags that are explicitly set.
+     When a featureFlag is not explicitly set, SignalR service will use its globally default value.
+     But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     *
+     * @return the features value
+     */
+    public List<SignalRFeature> features() {
+        return this.features;
+    }
+
+    /**
+     * Set list of SignalR featureFlags. e.g. ServiceMode.
+     FeatureFlags that are not included in the parameters for the update operation will not be modified.
+     And the response will only include featureFlags that are explicitly set.
+     When a featureFlag is not explicitly set, SignalR service will use its globally default value.
+     But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     *
+     * @param features the features value to set
+     * @return the SignalRCreateOrUpdateProperties object itself.
+     */
+    public SignalRCreateOrUpdateProperties withFeatures(List<SignalRFeature> features) {
+        this.features = features;
+        return this;
+    }
+
+    /**
+     * Get cross-Origin Resource Sharing (CORS) settings.
+     *
+     * @return the cors value
+     */
+    public SignalRCorsSettings cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set cross-Origin Resource Sharing (CORS) settings.
+     *
+     * @param cors the cors value to set
+     * @return the SignalRCreateOrUpdateProperties object itself.
+     */
+    public SignalRCreateOrUpdateProperties withCors(SignalRCorsSettings cors) {
+        this.cors = cors;
         return this;
     }
 

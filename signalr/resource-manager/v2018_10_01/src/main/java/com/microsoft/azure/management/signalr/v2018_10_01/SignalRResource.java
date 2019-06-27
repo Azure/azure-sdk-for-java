@@ -12,6 +12,7 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRResourceInner;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,9 +20,19 @@ import java.util.Map;
  */
 public interface SignalRResource extends HasInner<SignalRResourceInner>, HasManager<SignalRServiceManager> {
     /**
+     * @return the cors value.
+     */
+    SignalRCorsSettings cors();
+
+    /**
      * @return the externalIP value.
      */
     String externalIP();
+
+    /**
+     * @return the features value.
+     */
+    List<SignalRFeature> features();
 
     /**
      * @return the hostName value.

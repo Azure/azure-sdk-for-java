@@ -28,11 +28,11 @@ public class SignalRManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Client Api Version. Possible values include: '2018-03-01-preview', '2018-10-01'. */
+    /** Client Api Version. */
     private String apiVersion;
 
     /**
-     * Gets Client Api Version. Possible values include: '2018-03-01-preview', '2018-10-01'.
+     * Gets Client Api Version.
      *
      * @return the apiVersion value.
      */
@@ -202,7 +202,7 @@ public class SignalRManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = 2018-10-01;
+        this.apiVersion = "2018-10-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
