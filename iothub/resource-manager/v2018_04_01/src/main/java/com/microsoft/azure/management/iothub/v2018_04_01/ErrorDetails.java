@@ -39,7 +39,7 @@ public class ErrorDetails {
     private String details;
 
     /**
-     * Get the code value.
+     * Get the error code.
      *
      * @return the code value
      */
@@ -48,7 +48,7 @@ public class ErrorDetails {
     }
 
     /**
-     * Get the httpStatusCode value.
+     * Get the HTTP status code.
      *
      * @return the httpStatusCode value
      */
@@ -57,7 +57,7 @@ public class ErrorDetails {
     }
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -66,7 +66,7 @@ public class ErrorDetails {
     }
 
     /**
-     * Get the details value.
+     * Get the error details.
      *
      * @return the details value
      */

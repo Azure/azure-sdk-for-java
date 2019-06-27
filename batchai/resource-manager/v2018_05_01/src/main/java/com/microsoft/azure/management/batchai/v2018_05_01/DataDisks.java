@@ -11,41 +11,46 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Settings for the data disk which would be created for the File Server.
+ * Data disks settings.
  */
 public class DataDisks {
     /**
-     * Initial disk size in GB for blank data disks, and the new desired size
-     * for resizing existing data disks.
+     * Disk size in GB.
+     * Disk size in GB for the blank data disks.
      */
     @JsonProperty(value = "diskSizeInGB", required = true)
     private int diskSizeInGB;
 
     /**
-     * None, ReadOnly, ReadWrite. Default value is None. This property is not
-     * patchable.
-     * Possible values include: 'none', 'readonly', 'readwrite'.
+     * Caching type.
+     * Caching type for the disks. Available values are none (default),
+     * readonly, readwrite. Caching type can be set only for VM sizes
+     * supporting premium storage. Possible values include: 'none', 'readonly',
+     * 'readwrite'.
      */
     @JsonProperty(value = "cachingType")
     private CachingType cachingType;
 
     /**
-     * Number of data disks to be attached to the VM. RAID level 0 will be
-     * applied in the case of multiple disks.
+     * Number of data disks.
+     * Number of data disks attached to the File Server. If multiple disks
+     * attached, they will be configured in RAID level 0.
      */
     @JsonProperty(value = "diskCount", required = true)
     private int diskCount;
 
     /**
-     * Specifies the type of storage account to be used on the disk. Possible
-     * values are: Standard_LRS or Premium_LRS.
-     * Possible values include: 'Standard_LRS', 'Premium_LRS'.
+     * Storage account type.
+     * Type of storage account to be used on the disk. Possible values are:
+     * Standard_LRS or Premium_LRS. Premium storage account type can only be
+     * used with VM sizes supporting premium storage. Possible values include:
+     * 'Standard_LRS', 'Premium_LRS'.
      */
     @JsonProperty(value = "storageAccountType", required = true)
     private StorageAccountType storageAccountType;
 
     /**
-     * Get the diskSizeInGB value.
+     * Get disk size in GB for the blank data disks.
      *
      * @return the diskSizeInGB value
      */
@@ -54,7 +59,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the diskSizeInGB value.
+     * Set disk size in GB for the blank data disks.
      *
      * @param diskSizeInGB the diskSizeInGB value to set
      * @return the DataDisks object itself.
@@ -65,7 +70,7 @@ public class DataDisks {
     }
 
     /**
-     * Get the cachingType value.
+     * Get caching type for the disks. Available values are none (default), readonly, readwrite. Caching type can be set only for VM sizes supporting premium storage. Possible values include: 'none', 'readonly', 'readwrite'.
      *
      * @return the cachingType value
      */
@@ -74,7 +79,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the cachingType value.
+     * Set caching type for the disks. Available values are none (default), readonly, readwrite. Caching type can be set only for VM sizes supporting premium storage. Possible values include: 'none', 'readonly', 'readwrite'.
      *
      * @param cachingType the cachingType value to set
      * @return the DataDisks object itself.
@@ -85,7 +90,7 @@ public class DataDisks {
     }
 
     /**
-     * Get the diskCount value.
+     * Get number of data disks attached to the File Server. If multiple disks attached, they will be configured in RAID level 0.
      *
      * @return the diskCount value
      */
@@ -94,7 +99,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the diskCount value.
+     * Set number of data disks attached to the File Server. If multiple disks attached, they will be configured in RAID level 0.
      *
      * @param diskCount the diskCount value to set
      * @return the DataDisks object itself.
@@ -105,7 +110,7 @@ public class DataDisks {
     }
 
     /**
-     * Get the storageAccountType value.
+     * Get type of storage account to be used on the disk. Possible values are: Standard_LRS or Premium_LRS. Premium storage account type can only be used with VM sizes supporting premium storage. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @return the storageAccountType value
      */
@@ -114,7 +119,7 @@ public class DataDisks {
     }
 
     /**
-     * Set the storageAccountType value.
+     * Set type of storage account to be used on the disk. Possible values are: Standard_LRS or Premium_LRS. Premium storage account type can only be used with VM sizes supporting premium storage. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @param storageAccountType the storageAccountType value to set
      * @return the DataDisks object itself.

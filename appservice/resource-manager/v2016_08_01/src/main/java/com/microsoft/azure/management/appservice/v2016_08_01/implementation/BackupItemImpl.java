@@ -25,6 +25,7 @@ class BackupItemImpl extends IndexableRefreshableWrapperImpl<BackupItem, BackupI
     BackupItemImpl(BackupItemInner inner,  AppServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.backupId = IdParsingUtils.getValueFromIdByName(inner.id(), "backups");

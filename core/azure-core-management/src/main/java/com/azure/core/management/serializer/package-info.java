@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * The package contains classes that handle serialization and deserialization for the REST call payloads in Azure ARM.
+ * Package containing classes that handle serialization and deserialization for the REST call payloads in Azure ARM.
  */
 package com.azure.core.management.serializer;

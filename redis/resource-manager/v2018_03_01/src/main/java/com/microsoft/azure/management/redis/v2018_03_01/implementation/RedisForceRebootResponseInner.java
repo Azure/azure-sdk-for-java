@@ -21,7 +21,7 @@ public class RedisForceRebootResponseInner {
     private String message;
 
     /**
-     * Get the message value.
+     * Get status message.
      *
      * @return the message value
      */

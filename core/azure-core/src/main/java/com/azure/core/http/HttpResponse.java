@@ -107,7 +107,7 @@ public abstract class HttpResponse implements Closeable {
      * @param request the request
      * @return this HTTP response
      */
-    public final HttpResponse withRequest(HttpRequest request) {
+    public final HttpResponse request(HttpRequest request) {
         this.request = request;
         return this;
     }

@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteInner;
 
 /**
@@ -40,6 +41,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the clientCertEnabled value.
      */
     Boolean clientCertEnabled();
+
+    /**
+     * @return the clientCertExclusionPaths value.
+     */
+    String clientCertExclusionPaths();
 
     /**
      * @return the cloningInfo value.
@@ -72,6 +78,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
     List<String> enabledHostNames();
 
     /**
+     * @return the geoDistributions value.
+     */
+    List<GeoDistribution> geoDistributions();
+
+    /**
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
@@ -97,9 +108,19 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
     Boolean httpsOnly();
 
     /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
+
+    /**
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
+
+    /**
+     * @return the inProgressOperationId value.
+     */
+    UUID inProgressOperationId();
 
     /**
      * @return the isDefaultContainer value.
@@ -137,6 +158,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
     String possibleOutboundIpAddresses();
 
     /**
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
+
+    /**
      * @return the repositorySiteName value.
      */
     String repositorySiteName();
@@ -170,11 +196,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the slotSwapStatus value.
      */
     SlotSwapStatus slotSwapStatus();
-
-    /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
 
     /**
      * @return the state value.
@@ -224,13 +245,287 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         }
 
         /**
+         * The stage of the sites definition allowing to specify ClientAffinityEnabled.
+         */
+        interface WithClientAffinityEnabled {
+            /**
+             * Specifies clientAffinityEnabled.
+             * @param clientAffinityEnabled &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;
+             * @return the next definition stage
+             */
+            WithCreate withClientAffinityEnabled(Boolean clientAffinityEnabled);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify ClientCertEnabled.
+         */
+        interface WithClientCertEnabled {
+            /**
+             * Specifies clientCertEnabled.
+             * @param clientCertEnabled &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
+             */
+            WithCreate withClientCertEnabled(Boolean clientCertEnabled);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             * @param clientCertExclusionPaths client certificate authentication comma-separated exclusion paths
+             * @return the next definition stage
+             */
+            WithCreate withClientCertExclusionPaths(String clientCertExclusionPaths);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify CloningInfo.
+         */
+        interface WithCloningInfo {
+            /**
+             * Specifies cloningInfo.
+             * @param cloningInfo If specified during app creation, the app is cloned from a source app
+             * @return the next definition stage
+             */
+            WithCreate withCloningInfo(CloningInfo cloningInfo);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify ContainerSize.
+         */
+        interface WithContainerSize {
+            /**
+             * Specifies containerSize.
+             * @param containerSize Size of the function container
+             * @return the next definition stage
+             */
+            WithCreate withContainerSize(Integer containerSize);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify DailyMemoryTimeQuota.
+         */
+        interface WithDailyMemoryTimeQuota {
+            /**
+             * Specifies dailyMemoryTimeQuota.
+             * @param dailyMemoryTimeQuota Maximum allowed daily memory-time quota (applicable on dynamic apps only)
+             * @return the next definition stage
+             */
+            WithCreate withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify Enabled.
+         */
+        interface WithEnabled {
+            /**
+             * Specifies enabled.
+             * @param enabled &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline)
+             * @return the next definition stage
+             */
+            WithCreate withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             * @param geoDistributions GeoDistributions for this site
+             * @return the next definition stage
+             */
+            WithCreate withGeoDistributions(List<GeoDistribution> geoDistributions);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify HostingEnvironmentProfile.
+         */
+        interface WithHostingEnvironmentProfile {
+            /**
+             * Specifies hostingEnvironmentProfile.
+             * @param hostingEnvironmentProfile App Service Environment to use for the app
+             * @return the next definition stage
+             */
+            WithCreate withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify HostNamesDisabled.
+         */
+        interface WithHostNamesDisabled {
+            /**
+             * Specifies hostNamesDisabled.
+             * @param hostNamesDisabled &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+  If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process
+             * @return the next definition stage
+             */
+            WithCreate withHostNamesDisabled(Boolean hostNamesDisabled);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify HostNameSslStates.
+         */
+        interface WithHostNameSslStates {
+            /**
+             * Specifies hostNameSslStates.
+             * @param hostNameSslStates Hostname SSL states are used to manage the SSL bindings for app's hostnames
+             * @return the next definition stage
+             */
+            WithCreate withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify HttpsOnly.
+         */
+        interface WithHttpsOnly {
+            /**
+             * Specifies httpsOnly.
+             * @param httpsOnly HttpsOnly: configures a web site to accept only https requests. Issues redirect for
+ http requests
+             * @return the next definition stage
+             */
+            WithCreate withHttpsOnly(Boolean httpsOnly);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             * @param hyperV Hyper-V sandbox
+             * @return the next definition stage
+             */
+            WithCreate withHyperV(Boolean hyperV);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity the identity parameter value
+             * @return the next definition stage
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify IsXenon.
+         */
+        interface WithIsXenon {
+            /**
+             * Specifies isXenon.
+             * @param isXenon Obsolete: Hyper-V sandbox
+             * @return the next definition stage
+             */
+            WithCreate withIsXenon(Boolean isXenon);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify Kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
+             */
+            WithCreate withKind(String kind);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             * @param redundancyMode Site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'
+             * @return the next definition stage
+             */
+            WithCreate withRedundancyMode(RedundancyMode redundancyMode);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify Reserved.
+         */
+        interface WithReserved {
+            /**
+             * Specifies reserved.
+             * @param reserved &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
+             */
+            WithCreate withReserved(Boolean reserved);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify ScmSiteAlsoStopped.
+         */
+        interface WithScmSiteAlsoStopped {
+            /**
+             * Specifies scmSiteAlsoStopped.
+             * @param scmSiteAlsoStopped &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
+             */
+            WithCreate withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify ServerFarmId.
+         */
+        interface WithServerFarmId {
+            /**
+             * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next definition stage
+             */
+            WithCreate withServerFarmId(String serverFarmId);
+        }
+
+        /**
+         * The stage of the sites definition allowing to specify SiteConfig.
+         */
+        interface WithSiteConfig {
+            /**
+             * Specifies siteConfig.
+             * @param siteConfig Configuration of the app
+             * @return the next definition stage
+             */
+            WithCreate withSiteConfig(SiteConfig siteConfig);
+        }
+
+        /**
+         * The stage of the definition which contains all the minimum required inputs for
+         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * for any other optional settings to be specified.
+         */
+        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithClientCertExclusionPaths, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithGeoDistributions, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithRedundancyMode, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
+        }
+    }
+    /**
+     * The template for a Sites update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIdentity, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
+    }
+
+    /**
+     * Grouping of Sites update stages.
+     */
+    interface UpdateStages {
+        /**
          * The stage of the sites update allowing to specify ClientAffinityEnabled.
          */
         interface WithClientAffinityEnabled {
             /**
              * Specifies clientAffinityEnabled.
+             * @param clientAffinityEnabled &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;
+             * @return the next update stage
              */
-            WithCreate withClientAffinityEnabled(Boolean clientAffinityEnabled);
+            Update withClientAffinityEnabled(Boolean clientAffinityEnabled);
         }
 
         /**
@@ -239,8 +534,22 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithClientCertEnabled {
             /**
              * Specifies clientCertEnabled.
+             * @param clientCertEnabled &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
-            WithCreate withClientCertEnabled(Boolean clientCertEnabled);
+            Update withClientCertEnabled(Boolean clientCertEnabled);
+        }
+
+        /**
+         * The stage of the sites update allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             * @param clientCertExclusionPaths client certificate authentication comma-separated exclusion paths
+             * @return the next update stage
+             */
+            Update withClientCertExclusionPaths(String clientCertExclusionPaths);
         }
 
         /**
@@ -249,8 +558,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithCloningInfo {
             /**
              * Specifies cloningInfo.
+             * @param cloningInfo If specified during app creation, the app is cloned from a source app
+             * @return the next update stage
              */
-            WithCreate withCloningInfo(CloningInfo cloningInfo);
+            Update withCloningInfo(CloningInfo cloningInfo);
         }
 
         /**
@@ -259,8 +570,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithContainerSize {
             /**
              * Specifies containerSize.
+             * @param containerSize Size of the function container
+             * @return the next update stage
              */
-            WithCreate withContainerSize(Integer containerSize);
+            Update withContainerSize(Integer containerSize);
         }
 
         /**
@@ -269,8 +582,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithDailyMemoryTimeQuota {
             /**
              * Specifies dailyMemoryTimeQuota.
+             * @param dailyMemoryTimeQuota Maximum allowed daily memory-time quota (applicable on dynamic apps only)
+             * @return the next update stage
              */
-            WithCreate withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
+            Update withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
         }
 
         /**
@@ -279,8 +594,22 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithEnabled {
             /**
              * Specifies enabled.
+             * @param enabled &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline)
+             * @return the next update stage
              */
-            WithCreate withEnabled(Boolean enabled);
+            Update withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the sites update allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             * @param geoDistributions GeoDistributions for this site
+             * @return the next update stage
+             */
+            Update withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**
@@ -289,8 +618,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithHostingEnvironmentProfile {
             /**
              * Specifies hostingEnvironmentProfile.
+             * @param hostingEnvironmentProfile App Service Environment to use for the app
+             * @return the next update stage
              */
-            WithCreate withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
+            Update withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
         }
 
         /**
@@ -299,8 +630,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithHostNamesDisabled {
             /**
              * Specifies hostNamesDisabled.
+             * @param hostNamesDisabled &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+  If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process
+             * @return the next update stage
              */
-            WithCreate withHostNamesDisabled(Boolean hostNamesDisabled);
+            Update withHostNamesDisabled(Boolean hostNamesDisabled);
         }
 
         /**
@@ -309,8 +643,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithHostNameSslStates {
             /**
              * Specifies hostNameSslStates.
+             * @param hostNameSslStates Hostname SSL states are used to manage the SSL bindings for app's hostnames
+             * @return the next update stage
              */
-            WithCreate withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
+            Update withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
         }
 
         /**
@@ -319,8 +655,23 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithHttpsOnly {
             /**
              * Specifies httpsOnly.
+             * @param httpsOnly HttpsOnly: configures a web site to accept only https requests. Issues redirect for
+ http requests
+             * @return the next update stage
              */
-            WithCreate withHttpsOnly(Boolean httpsOnly);
+            Update withHttpsOnly(Boolean httpsOnly);
+        }
+
+        /**
+         * The stage of the sites update allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             * @param hyperV Hyper-V sandbox
+             * @return the next update stage
+             */
+            Update withHyperV(Boolean hyperV);
         }
 
         /**
@@ -329,8 +680,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithIdentity {
             /**
              * Specifies identity.
+             * @param identity the identity parameter value
+             * @return the next update stage
              */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
+            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**
@@ -339,8 +692,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithIsXenon {
             /**
              * Specifies isXenon.
+             * @param isXenon Obsolete: Hyper-V sandbox
+             * @return the next update stage
              */
-            WithCreate withIsXenon(Boolean isXenon);
+            Update withIsXenon(Boolean isXenon);
         }
 
         /**
@@ -349,8 +704,22 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
-            WithCreate withKind(String kind);
+            Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the sites update allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             * @param redundancyMode Site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'
+             * @return the next update stage
+             */
+            Update withRedundancyMode(RedundancyMode redundancyMode);
         }
 
         /**
@@ -359,8 +728,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithReserved {
             /**
              * Specifies reserved.
+             * @param reserved &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
-            WithCreate withReserved(Boolean reserved);
+            Update withReserved(Boolean reserved);
         }
 
         /**
@@ -369,8 +740,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithScmSiteAlsoStopped {
             /**
              * Specifies scmSiteAlsoStopped.
+             * @param scmSiteAlsoStopped &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
-            WithCreate withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
+            Update withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
         }
 
         /**
@@ -379,8 +752,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithServerFarmId {
             /**
              * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next update stage
              */
-            WithCreate withServerFarmId(String serverFarmId);
+            Update withServerFarmId(String serverFarmId);
         }
 
         /**
@@ -389,206 +764,10 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         interface WithSiteConfig {
             /**
              * Specifies siteConfig.
-             */
-            WithCreate withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the sites update allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            WithCreate withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithSnapshotInfo {
-        }
-    }
-    /**
-     * The template for a Sites update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig, UpdateStages.WithSnapshotInfo {
-    }
-
-    /**
-     * Grouping of Sites update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the sites {0} allowing to specify ClientAffinityEnabled.
-         */
-        interface WithClientAffinityEnabled {
-            /**
-             * Specifies clientAffinityEnabled.
-             */
-            Update withClientAffinityEnabled(Boolean clientAffinityEnabled);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify ClientCertEnabled.
-         */
-        interface WithClientCertEnabled {
-            /**
-             * Specifies clientCertEnabled.
-             */
-            Update withClientCertEnabled(Boolean clientCertEnabled);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify CloningInfo.
-         */
-        interface WithCloningInfo {
-            /**
-             * Specifies cloningInfo.
-             */
-            Update withCloningInfo(CloningInfo cloningInfo);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify ContainerSize.
-         */
-        interface WithContainerSize {
-            /**
-             * Specifies containerSize.
-             */
-            Update withContainerSize(Integer containerSize);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify DailyMemoryTimeQuota.
-         */
-        interface WithDailyMemoryTimeQuota {
-            /**
-             * Specifies dailyMemoryTimeQuota.
-             */
-            Update withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify Enabled.
-         */
-        interface WithEnabled {
-            /**
-             * Specifies enabled.
-             */
-            Update withEnabled(Boolean enabled);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify HostingEnvironmentProfile.
-         */
-        interface WithHostingEnvironmentProfile {
-            /**
-             * Specifies hostingEnvironmentProfile.
-             */
-            Update withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify HostNamesDisabled.
-         */
-        interface WithHostNamesDisabled {
-            /**
-             * Specifies hostNamesDisabled.
-             */
-            Update withHostNamesDisabled(Boolean hostNamesDisabled);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify HostNameSslStates.
-         */
-        interface WithHostNameSslStates {
-            /**
-             * Specifies hostNameSslStates.
-             */
-            Update withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify HttpsOnly.
-         */
-        interface WithHttpsOnly {
-            /**
-             * Specifies httpsOnly.
-             */
-            Update withHttpsOnly(Boolean httpsOnly);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify IsXenon.
-         */
-        interface WithIsXenon {
-            /**
-             * Specifies isXenon.
-             */
-            Update withIsXenon(Boolean isXenon);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify Kind.
-         */
-        interface WithKind {
-            /**
-             * Specifies kind.
-             */
-            Update withKind(String kind);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify Reserved.
-         */
-        interface WithReserved {
-            /**
-             * Specifies reserved.
-             */
-            Update withReserved(Boolean reserved);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify ScmSiteAlsoStopped.
-         */
-        interface WithScmSiteAlsoStopped {
-            /**
-             * Specifies scmSiteAlsoStopped.
-             */
-            Update withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify ServerFarmId.
-         */
-        interface WithServerFarmId {
-            /**
-             * Specifies serverFarmId.
-             */
-            Update withServerFarmId(String serverFarmId);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify SiteConfig.
-         */
-        interface WithSiteConfig {
-            /**
-             * Specifies siteConfig.
+             * @param siteConfig Configuration of the app
+             * @return the next update stage
              */
             Update withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the sites {0} allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            Update withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
         }
 
     }

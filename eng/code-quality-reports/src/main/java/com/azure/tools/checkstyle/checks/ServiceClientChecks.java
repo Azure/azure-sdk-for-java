@@ -113,6 +113,9 @@ public class ServiceClientChecks extends AbstractCheck {
             case TokenTypes.LITERAL_NEW:
                 isInstanceNamingCorrect(token);
                 break;
+            default:
+                // Checkstyle complains if there's no default block in switch
+                break;
         }
     }
 

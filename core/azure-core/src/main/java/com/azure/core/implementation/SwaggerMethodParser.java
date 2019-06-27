@@ -19,8 +19,9 @@ import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.ReturnValueWireType;
 import com.azure.core.annotations.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpRequestException;
-import com.azure.core.http.ContextData;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.core.util.Context;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -80,8 +81,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *                host value in an HTTP request, it must be processed through the possible host
      *                substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, SerializerAdapter serializer, String rawHost) {
-        this.serializer = serializer;
+    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+        this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -135,7 +136,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (!headerName.isEmpty()) {
                         final String headerValue = header.substring(colonIndex + 1).trim();
                         if (!headerValue.isEmpty()) {
-                            this.headers.set(headerName, headerValue);
+                            this.headers.put(headerName, headerValue);
                         }
                     }
                 }
@@ -255,26 +256,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
-        final List<EncodedParameter> result = new ArrayList<>();
-        if (querySubstitutions != null) {
-            final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-
-            for (Substitution querySubstitution : querySubstitutions) {
-                final int parameterIndex = querySubstitution.methodParameterIndex();
-                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                    final Object methodArgument = swaggerMethodArguments[querySubstitution.methodParameterIndex()];
-                    String parameterValue = serialize(methodArgument);
-                    if (parameterValue != null) {
-                        if (querySubstitution.shouldEncode() && escaper != null) {
-                            parameterValue = escaper.escape(parameterValue);
-                        }
-
-                        result.add(new EncodedParameter(querySubstitution.urlParameterName(), parameterValue));
-                    }
-                }
-            }
-        }
-        return result;
+        return encodeParameters(swaggerMethodArguments, querySubstitutions);
     }
 
     /**
@@ -286,23 +268,27 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return an Iterable with the encoded form parameters
      */
     public Iterable<EncodedParameter> encodedFormParameters(Object[] swaggerMethodArguments) {
-        if (formSubstitutions == null) {
+        return encodeParameters(swaggerMethodArguments, formSubstitutions);
+    }
+
+    private Iterable<EncodedParameter> encodeParameters(Object[] swaggerMethodArguments,
+        List<Substitution> substitutions) {
+        if (substitutions == null) {
             return Collections.emptyList();
         }
+        
         final List<EncodedParameter> result = new ArrayList<>();
         final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-
-        for (Substitution formSubstitution : formSubstitutions) {
-            final int parameterIndex = formSubstitution.methodParameterIndex();
+        for (Substitution substitution : substitutions) {
+            final int parameterIndex = substitution.methodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
-                final Object methodArgument = swaggerMethodArguments[formSubstitution.methodParameterIndex()];
+                final Object methodArgument = swaggerMethodArguments[substitution.methodParameterIndex()];
                 String parameterValue = serialize(methodArgument);
                 if (parameterValue != null) {
-                    if (formSubstitution.shouldEncode() && escaper != null) {
+                    if (substitution.shouldEncode() && escaper != null) {
                         parameterValue = escaper.escape(parameterValue);
                     }
-
-                    result.add(new EncodedParameter(formSubstitution.urlParameterName(), parameterValue));
+                    result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
                 }
             }
         }
@@ -328,12 +314,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                             final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                             final String headerValue = serialize(headerCollectionEntry.getValue());
-                            result.set(headerName, headerValue);
+                            result.put(headerName, headerValue);
                         }
                     } else {
                         final String headerName = headerSubstitution.urlParameterName();
                         final String headerValue = serialize(methodArgument);
-                        result.set(headerName, headerValue);
+                        result.put(headerName, headerValue);
                     }
                 }
             }
@@ -342,15 +328,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link ContextData} passed into the proxy method.
+     * Get the {@link Context} passed into the proxy method.
      *
      * @param swaggerMethodArguments the arguments passed to the proxy method
-     * @return the context, or null if no context was provided
+     * @return the context, or {@link Context#NONE} if no context was provided
      */
-    public ContextData contextData(Object[] swaggerMethodArguments) {
-        ContextData context = ImplUtils.findFirstOfType(swaggerMethodArguments, ContextData.class);
+    public Context context(Object[] swaggerMethodArguments) {
+        Context context = ImplUtils.findFirstOfType(swaggerMethodArguments, Context.class);
 
-        return (context != null) ? context : ContextData.NONE;
+        return (context != null) ? context : Context.NONE;
     }
 
     /**
@@ -580,7 +566,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedExceptionInformation(HttpRequestException.class);
+            defaultException = new UnexpectedExceptionInformation(HttpResponseException.class);
         }
 
         return exceptionHashMap;

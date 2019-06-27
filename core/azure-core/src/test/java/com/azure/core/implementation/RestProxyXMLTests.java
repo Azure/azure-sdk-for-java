@@ -7,6 +7,7 @@ import com.azure.core.annotations.BodyParam;
 import com.azure.core.annotations.GET;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.PUT;
+import com.azure.core.annotations.Service;
 import com.azure.core.entities.AccessPolicy;
 import com.azure.core.entities.SignedIdentifierInner;
 import com.azure.core.entities.SignedIdentifiersWrapper;
@@ -47,8 +48,7 @@ public class RestProxyXMLTests {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/xml");
+            HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/xml");
             HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
             return res;
         }
@@ -84,6 +84,7 @@ public class RestProxyXMLTests {
     }
 
     @Host("http://unused")
+    @Service("MyXMLService")
     interface MyXMLService {
         @GET("GetContainerACLs")
         SignedIdentifiersWrapper getContainerACLs();
@@ -95,7 +96,9 @@ public class RestProxyXMLTests {
     @Test
     public void canReadXMLResponse() throws Exception {
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockXMLHTTPClient())
+            .build();
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
@@ -143,7 +146,7 @@ public class RestProxyXMLTests {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
-        request.withBody(bytes);
+        request.body(bytes);
 
         SignedIdentifierInner si = new SignedIdentifierInner();
         si.withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
@@ -159,7 +162,9 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
-        final HttpPipeline pipeline = new HttpPipeline(httpClient);
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(httpClient)
+            .build();
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
                 pipeline,
@@ -184,6 +189,7 @@ public class RestProxyXMLTests {
     }
 
     @Host("http://unused")
+    @Service("MyXMLServiceWithAttributes")
     public interface MyXMLServiceWithAttributes {
         @GET("GetXMLWithAttributes")
         Slideshow getSlideshow();
@@ -193,7 +199,9 @@ public class RestProxyXMLTests {
     public void canDeserializeXMLWithAttributes() throws Exception {
         JacksonAdapter serializer = new JacksonAdapter();
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
+        final HttpPipeline pipeline = HttpPipeline.builder()
+            .httpClient(new MockXMLHTTPClient())
+            .build();
 
         //
         MyXMLServiceWithAttributes myXMLService = RestProxy.create(

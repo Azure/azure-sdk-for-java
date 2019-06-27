@@ -68,7 +68,7 @@ public class MockHttpResponse extends HttpResponse {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = ImplUtils.clone(bodyBytes);
-        this.withRequest(request);
+        this.request(request);
     }
 
     /**
@@ -170,7 +170,7 @@ public class MockHttpResponse extends HttpResponse {
      * @return The updated response object.
      */
     public MockHttpResponse addHeader(String name, String value) {
-        headers.set(name, value);
+        headers.put(name, value);
         return this;
     }
 }

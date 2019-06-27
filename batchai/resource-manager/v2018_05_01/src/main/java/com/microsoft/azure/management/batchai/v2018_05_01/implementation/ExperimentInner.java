@@ -15,17 +15,19 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Contains information about the experiment.
+ * Experiment information.
  */
 @JsonFlatten
 public class ExperimentInner extends ProxyResource {
     /**
+     * Creation time.
      * Time when the Experiment was created.
      */
     @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
 
     /**
+     * Provisioning state.
      * The provisioned state of the experiment. Possible values include:
      * 'creating', 'succeeded', 'failed', 'deleting'.
      */
@@ -33,14 +35,14 @@ public class ExperimentInner extends ProxyResource {
     private ProvisioningState provisioningState;
 
     /**
-     * The time at which the experiment entered its current provisioning state.
+     * Provisioning state transition time.
      * The time at which the experiment entered its current provisioning state.
      */
     @JsonProperty(value = "properties.provisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime provisioningStateTransitionTime;
 
     /**
-     * Get the creationTime value.
+     * Get time when the Experiment was created.
      *
      * @return the creationTime value
      */
@@ -49,7 +51,7 @@ public class ExperimentInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioned state of the experiment. Possible values include: 'creating', 'succeeded', 'failed', 'deleting'.
      *
      * @return the provisioningState value
      */
@@ -58,7 +60,7 @@ public class ExperimentInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningStateTransitionTime value.
+     * Get the time at which the experiment entered its current provisioning state.
      *
      * @return the provisioningStateTransitionTime value
      */

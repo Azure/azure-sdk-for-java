@@ -3,6 +3,8 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.Context;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,7 +13,7 @@ import java.util.Optional;
  */
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
-    private ContextData data;
+    private Context data;
 
     //<editor-fold defaultstate="collapsed" desc="Package internal methods">
     /**
@@ -24,7 +26,7 @@ public final class HttpPipelineCallContext {
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
     HttpPipelineCallContext(HttpRequest httpRequest) {
-        this(httpRequest, ContextData.NONE);
+        this(httpRequest, Context.NONE);
     }
 
     /**
@@ -37,7 +39,7 @@ public final class HttpPipelineCallContext {
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest, ContextData data) {
+    HttpPipelineCallContext(HttpRequest httpRequest, Context data) {
         Objects.requireNonNull(httpRequest);
         Objects.requireNonNull(data);
         //
@@ -83,7 +85,7 @@ public final class HttpPipelineCallContext {
      * @param request request object
      * @return HttpPipelineCallContext
      */
-    public HttpPipelineCallContext withHttpRequest(HttpRequest request) {
+    public HttpPipelineCallContext httpRequest(HttpRequest request) {
         this.httpRequest = request;
         return this;
     }

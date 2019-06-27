@@ -5,12 +5,9 @@ package com.azure.core.exception;
 
 /**
  * A runtime exception indicating service response failure caused by one of the following scenarios:
- * Service is not able to handle a well-format request by some reasons.
- * OR The request was sent, but the client failed to understand the response.
- *
- * These errors may not be safe to retry.
- *
- * @see AzureException
+ * 1. The request was sent, but the client failed to understand the response. (Not in the right format, partial response etc.)
+ * 2. The connection may have timed out. These errors can be retried for idempotent or
+ *    safe operations.
  */
 public class ServiceResponseException extends AzureException {
 
@@ -23,15 +20,13 @@ public class ServiceResponseException extends AzureException {
         super(message);
     }
 
-
     /**
      * Initializes a new instance of the ServiceResponseException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param cause the Throwable which caused the creation of this HttpRequestException
+     * @param message the exception message.
+     * @param cause the Throwable which caused the creation of this ServiceResponseException.
      */
     public ServiceResponseException(final String message, final Throwable cause) {
         super(message, cause);
     }
-
 }

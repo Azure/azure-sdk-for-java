@@ -11,32 +11,38 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The system automatically scales the cluster up and down (within
- * minimumNodeCount and maximumNodeCount) based on the pending and running jobs
- * on the cluster.
+ * Auto-scale settings for the cluster. The system automatically scales the
+ * cluster up and down (within minimumNodeCount and maximumNodeCount) based on
+ * the number of queued and running jobs assigned to the cluster.
  */
 public class AutoScaleSettings {
     /**
-     * Specifies the minimum number of compute nodes the cluster can have.
+     * Minimum node count.
+     * The minimum number of compute nodes the Batch AI service will try to
+     * allocate for the cluster. Note, the actual number of nodes can be less
+     * than the specified value if the subscription has not enough quota to
+     * fulfill the request.
      */
     @JsonProperty(value = "minimumNodeCount", required = true)
     private int minimumNodeCount;
 
     /**
-     * Specifies the maximum number of compute nodes the cluster can have.
+     * Maximum node count.
+     * The maximum number of compute nodes the cluster can have.
      */
     @JsonProperty(value = "maximumNodeCount", required = true)
     private int maximumNodeCount;
 
     /**
-     * Specifies the number of compute nodes to allocate on cluster creation.
-     * Note that this value is used only during cluster creation.
+     * Initial node count.
+     * The number of compute nodes to allocate on cluster creation. Note that
+     * this value is used only during cluster creation. Default: 0.
      */
     @JsonProperty(value = "initialNodeCount")
     private Integer initialNodeCount;
 
     /**
-     * Get the minimumNodeCount value.
+     * Get the minimum number of compute nodes the Batch AI service will try to allocate for the cluster. Note, the actual number of nodes can be less than the specified value if the subscription has not enough quota to fulfill the request.
      *
      * @return the minimumNodeCount value
      */
@@ -45,7 +51,7 @@ public class AutoScaleSettings {
     }
 
     /**
-     * Set the minimumNodeCount value.
+     * Set the minimum number of compute nodes the Batch AI service will try to allocate for the cluster. Note, the actual number of nodes can be less than the specified value if the subscription has not enough quota to fulfill the request.
      *
      * @param minimumNodeCount the minimumNodeCount value to set
      * @return the AutoScaleSettings object itself.
@@ -56,7 +62,7 @@ public class AutoScaleSettings {
     }
 
     /**
-     * Get the maximumNodeCount value.
+     * Get the maximum number of compute nodes the cluster can have.
      *
      * @return the maximumNodeCount value
      */
@@ -65,7 +71,7 @@ public class AutoScaleSettings {
     }
 
     /**
-     * Set the maximumNodeCount value.
+     * Set the maximum number of compute nodes the cluster can have.
      *
      * @param maximumNodeCount the maximumNodeCount value to set
      * @return the AutoScaleSettings object itself.
@@ -76,7 +82,7 @@ public class AutoScaleSettings {
     }
 
     /**
-     * Get the initialNodeCount value.
+     * Get the number of compute nodes to allocate on cluster creation. Note that this value is used only during cluster creation. Default: 0.
      *
      * @return the initialNodeCount value
      */
@@ -85,7 +91,7 @@ public class AutoScaleSettings {
     }
 
     /**
-     * Set the initialNodeCount value.
+     * Set the number of compute nodes to allocate on cluster creation. Note that this value is used only during cluster creation. Default: 0.
      *
      * @param initialNodeCount the initialNodeCount value to set
      * @return the AutoScaleSettings object itself.

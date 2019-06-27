@@ -56,6 +56,12 @@ public class CloningInfo {
     private String sourceWebAppId;
 
     /**
+     * Location of source app ex: West US or North Europe.
+     */
+    @JsonProperty(value = "sourceWebAppLocation")
+    private String sourceWebAppLocation;
+
+    /**
      * App Service Environment.
      */
     @JsonProperty(value = "hostingEnvironment")
@@ -195,6 +201,26 @@ public class CloningInfo {
      */
     public CloningInfo withSourceWebAppId(String sourceWebAppId) {
         this.sourceWebAppId = sourceWebAppId;
+        return this;
+    }
+
+    /**
+     * Get location of source app ex: West US or North Europe.
+     *
+     * @return the sourceWebAppLocation value
+     */
+    public String sourceWebAppLocation() {
+        return this.sourceWebAppLocation;
+    }
+
+    /**
+     * Set location of source app ex: West US or North Europe.
+     *
+     * @param sourceWebAppLocation the sourceWebAppLocation value to set
+     * @return the CloningInfo object itself.
+     */
+    public CloningInfo withSourceWebAppLocation(String sourceWebAppLocation) {
+        this.sourceWebAppLocation = sourceWebAppLocation;
         return this;
     }
 

@@ -90,6 +90,9 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithCertificateOrder {
            /**
             * Specifies resourceGroupName, certificateOrderName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param certificateOrderName Name of the certificate order
+            * @return the next definition stage
             */
             WithLocation withExistingCertificateOrder(String resourceGroupName, String certificateOrderName);
         }
@@ -100,6 +103,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource Location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -110,6 +115,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault resource Id
+             * @return the next definition stage
              */
             WithCreate withKeyVaultId(String keyVaultId);
         }
@@ -120,6 +127,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next definition stage
              */
             WithCreate withKeyVaultSecretName(String keyVaultSecretName);
         }
@@ -130,6 +139,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -140,6 +151,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -168,6 +181,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault resource Id
+             * @return the next update stage
              */
             Update withKeyVaultId(String keyVaultId);
         }
@@ -178,6 +193,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next update stage
              */
             Update withKeyVaultSecretName(String keyVaultSecretName);
         }
@@ -188,6 +205,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }

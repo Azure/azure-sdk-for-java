@@ -35,7 +35,7 @@ public class IpFilterRule {
     private String ipMask;
 
     /**
-     * Get the filterName value.
+     * Get the name of the IP filter rule.
      *
      * @return the filterName value
      */
@@ -44,7 +44,7 @@ public class IpFilterRule {
     }
 
     /**
-     * Set the filterName value.
+     * Set the name of the IP filter rule.
      *
      * @param filterName the filterName value to set
      * @return the IpFilterRule object itself.
@@ -55,7 +55,7 @@ public class IpFilterRule {
     }
 
     /**
-     * Get the action value.
+     * Get the desired action for requests captured by this rule. Possible values include: 'Accept', 'Reject'.
      *
      * @return the action value
      */
@@ -64,7 +64,7 @@ public class IpFilterRule {
     }
 
     /**
-     * Set the action value.
+     * Set the desired action for requests captured by this rule. Possible values include: 'Accept', 'Reject'.
      *
      * @param action the action value to set
      * @return the IpFilterRule object itself.
@@ -75,7 +75,7 @@ public class IpFilterRule {
     }
 
     /**
-     * Get the ipMask value.
+     * Get a string that contains the IP address range in CIDR notation for the rule.
      *
      * @return the ipMask value
      */
@@ -84,7 +84,7 @@ public class IpFilterRule {
     }
 
     /**
-     * Set the ipMask value.
+     * Set a string that contains the IP address range in CIDR notation for the rule.
      *
      * @param ipMask the ipMask value to set
      * @return the IpFilterRule object itself.

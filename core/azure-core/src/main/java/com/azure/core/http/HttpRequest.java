@@ -7,13 +7,16 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request.
  */
-public class HttpRequest {
+public class HttpRequest implements Serializable {
+    private static final long serialVersionUID = 6338479743058758810L;
+
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
@@ -61,7 +64,7 @@ public class HttpRequest {
      * @param httpMethod the request method
      * @return this HttpRequest
      */
-    public HttpRequest withHttpMethod(HttpMethod httpMethod) {
+    public HttpRequest httpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -81,7 +84,7 @@ public class HttpRequest {
      * @param url target address as {@link URL}
      * @return this HttpRequest
      */
-    public HttpRequest withUrl(URL url) {
+    public HttpRequest url(URL url) {
         this.url = url;
         return this;
     }
@@ -101,7 +104,7 @@ public class HttpRequest {
      * @param headers the set of headers
      * @return this HttpRequest
      */
-    public HttpRequest withHeaders(HttpHeaders headers) {
+    public HttpRequest headers(HttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -114,8 +117,8 @@ public class HttpRequest {
      * @param value the header value
      * @return this HttpRequest
      */
-    public HttpRequest withHeader(String name, String value) {
-        headers.set(name, value);
+    public HttpRequest header(String name, String value) {
+        headers.put(name, value);
         return this;
     }
 
@@ -134,9 +137,9 @@ public class HttpRequest {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(String content) {
+    public HttpRequest body(String content) {
         final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return withBody(bodyBytes);
+        return body(bodyBytes);
     }
 
     /**
@@ -146,10 +149,10 @@ public class HttpRequest {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(byte[] content) {
-        headers.set("Content-Length", String.valueOf(content.length));
+    public HttpRequest body(byte[] content) {
+        headers.put("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
-        return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
+        return body(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
     }
 
     /**
@@ -161,7 +164,7 @@ public class HttpRequest {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(Flux<ByteBuf> content) {
+    public HttpRequest body(Flux<ByteBuf> content) {
         this.body = content;
         return this;
     }
