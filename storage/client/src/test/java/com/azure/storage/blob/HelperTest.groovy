@@ -3,24 +3,16 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
-import com.azure.core.http.ProxyOptions
-import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
 import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.UserDelegationKey
-import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.util.function.Supplier
 
 class HelperTest extends APISpec {
 
@@ -51,7 +43,12 @@ class HelperTest extends APISpec {
     @Unroll
     def "Blob range"() {
         expect:
-        new BlobRange(offset, count).toHeaderValue() == result
+        if (count == null) {
+            assert new BlobRange(offset).toHeaderValue() == result
+        } else {
+            assert new BlobRange(offset, count).toHeaderValue() == result
+        }
+
 
         where:
         offset | count || result
@@ -213,7 +210,7 @@ class HelperTest extends APISpec {
         notThrown(StorageException)
     }
 
-    // TODO : Wont work because of OAuth - figure out why
+
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -257,6 +254,7 @@ class HelperTest extends APISpec {
         def properties = client.getProperties().value()
 
         then:
+        os.toString() == new String(data)
         properties.cacheControl() == "cache"
         properties.contentDisposition() == "disposition"
         properties.contentEncoding() == "encoding"
@@ -264,7 +262,6 @@ class HelperTest extends APISpec {
         notThrown(StorageException)
     }
 
-    // TODO : Wont work because of OAuth - figure out why
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
         def data = "test".getBytes()
@@ -297,7 +294,7 @@ class HelperTest extends APISpec {
 
         when:
 
-        def sas = bu.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, null,
+        def sas = snapshotBlob.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, null,
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, key)
 
         // base blob with snapshot SAS
@@ -305,7 +302,6 @@ class HelperTest extends APISpec {
         builder1.endpoint(cu.getContainerUrl().toString() + "/" + blobName + sas)
             .httpClient(getHttpClient())
         def client1 = builder1.buildClient()
-
         client1.download(new ByteArrayOutputStream())
 
         then:
@@ -313,6 +309,7 @@ class HelperTest extends APISpec {
         thrown(StorageException)
 
         when:
+
         // blob snapshot with snapshot SAS
         def builder2 = new BlockBlobClientBuilder()
         sas = sas.substring(1)
@@ -335,7 +332,6 @@ class HelperTest extends APISpec {
         properties.contentLanguage() == "language"
     }
 
-    // TODO : Wont work because of OAuth - figure out why
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
         def permissions = new ContainerSASPermission()
@@ -372,41 +368,36 @@ class HelperTest extends APISpec {
 
     @Unroll
     def "serviceSasSignatures string to sign"() {
-        setup:
-        def containerURL = cu.getContainerUrl().toString()
-        def blobName = generateBlobName()
-        System.out.println(containerURL)
-        def data = "test".getBytes()
-        def bu = cu.getBlockBlobClient(blobName)
-        bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value()
-        def snapshotBlob = cu.getBlockBlobClient(blobName + "?snapshot=" + snapshotId)
-
-        def sasProtocol = SASProtocol.HTTPS_HTTP
-
-        def permissions = "r"
-        def expiryTime = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-
         when:
-
-
-        if (ipRange != null) {
-            def ipRange = new IPRange()
-            ipRange.ipMin("ip")
+        def v = new ServiceSASSignatureValues()
+        if (permissions == null) {
+            def p = new BlobSASPermission()
+            p.read(true)
+            v.permissions(p.toString())
         }
+        v.startTime(startTime)
+        if(expiryTime == null) {
+            def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+            v.expiryTime(e)
+        }
+        v.canonicalName("containerName/blobName")
+            .snapshotId(snapId)
+        if (ipRange != null) {
+            def ipR = new IPRange()
+            ipR.ipMin("ip")
+            v.ipRange(ipR)
+        }
+        v.identifier(identifier)
+            .protocol(protocol)
+            .cacheControl(cacheControl)
+            .contentDisposition(disposition)
+            .contentEncoding(encoding)
+            .contentLanguage(language)
+            .contentType(type)
 
-        def sas = bu.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, null,
-            cacheControl, disposition, encoding, language, type)
-        def snapshotSAS = snapshotBlob.generateSAS(null, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier, cacheControl, disposition, encoding, language, type)
-
-
+        def token = v.generateSASQueryParameters(primaryCreds)
         then:
-
-        System.out.println(expectedStringToSign)
-        System.out.println(sas)
-        System.out.println(snapshotSAS)
-
-
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
 
         /*
         We don't test the blob or containerName properties because canonicalized resource is always added as at least
@@ -415,102 +406,114 @@ class HelperTest extends APISpec {
         Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
          */
         where:
-        startTime                                                                                                    | identifier | ipRange       | protocol               | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-//       null                                                                                                                                                                                                                                | null       | null          | null                   | null         | null          | null       | null       | null   || "r\n\n\n" + "/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)                                                                  | null       | null          | null                   | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       null                                                                                                                 null       | null          | null                   | null         | null          | null       | null       | null   || "\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       null                                                                                                                                                                                                                                | "id"       | null          | null                    | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       null                                                                                                                                                                                                                                | null       | new IPRange() | null                    | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       null                                                                                                                                                                                                                                | null       | null          | SASProtocol.HTTPS_ONLY  | null         | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//       null                                                                                                                                                                                                                                | null       | null          | null                    | "control"    | null          | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | "disposition" | null       | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | null          | "encoding" | null       | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-//       null                                                                                                                                                                                                                                | null       | null          | null                    | null         | null          | null       | "language" | null   || "\n\n\n/blob/" + containerURL + "/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-         null                                                                                                                 | null       | null          | null                    | null         | null          | null       | null       | "type" || ""
+        permissions             | startTime                                                 | expiryTime                                                | identifier | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\n" + "containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+ "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\nsnapId\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\ncontrol\n\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\ndisposition\n\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\nencoding\n\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\nlanguage\n"
+        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n"+Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))+"\ncontainerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\ntype"
     }
-//
-//    @Unroll
-//    def "serviceSasSignatures string to sign user delegation key"() {
-//        when:
-//        def v = new ServiceSASSignatureValues()
-//        if (permissions != null) {
-//            def p = new BlobSASPermission()
-//            p.read(true)
-//            v.permissions(p.toString())
-//        }
-//        v.startTime(startTime)
-//                .expiryTime(expiryTime)
-//        if (ipRange != null) {
-//            def ipR = new IPRange()
-//            ipR.ipMin("ip")
-//            v.ipRange(ipR)
-//        }
-//        v.protocol(protocol)
-//                .cacheControl(cacheControl)
-//                .contentDisposition(disposition)
-//                .contentEncoding(encoding)
-//                .contentLanguage(language)
-//                .contentType(type)
-//                .canonicalName("")
-//        def key = new UserDelegationKey()
-//                .signedOid(keyOid)
-//                .signedTid(keyTid)
-//                .signedStart(keyStart)
-//                .signedExpiry(keyExpiry)
-//                .signedService(keyService)
-//                .signedVersion(keyVersion)
-//                .value(keyValue)
-//        def token = v.generateSASQueryParameters(key, primaryCreds.accountName())
-//
-//        then:
-//        token.signature() == Utility.delegateComputeHmac256(key, expectedStringToSign)
-//
-//        /*
-//        We test string to sign functionality directly related to user delegation sas specific parameters
-//         */
-//        where:
-//        permissions             | startTime                                                 | expiryTime                                                | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-//        new BlobSASPermission() | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n\n" + "/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-//        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | "type" || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
-//    }
-//
-//    @Unroll
-//    def "serviceSASSignatureValues canonicalizedResource"() {
-//        setup:
-//        def v = new ServiceSASSignatureValues()
-//                .withContainerName(containerName)
-//                .withBlobName(blobName)
-//                .withSnapshotId(snapId)
-//
-//        when:
-//        def token = v.generateSASQueryParameters(primaryCreds)
-//
-//        then:
-//        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
-//        token.resource() == expectedResource
-//
-//        where:
-//        containerName | blobName | snapId || expectedResource | expectedStringToSign
-//        "c"           | "b"      | "id"   || "bs"             | "\n\n\n" + "/blob/" + primaryCreds.getAccountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
-//        "c"           | "b"      | null   || "b"              | "\n\n\n" + "/blob/" + primaryCreds.getAccountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-//        "c"           | null     | null   || "c"              | "\n\n\n" + "/blob/" + primaryCreds.getAccountName() + "/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
-//
-//    }
+
+    @Unroll
+    def "serviceSasSignatures string to sign user delegation key"() {
+        when:
+        def v = new ServiceSASSignatureValues()
+        if (permissions == null) {
+            def p = new BlobSASPermission()
+            p.read(true)
+            v.permissions(p.toString())
+        }
+        v.startTime(startTime)
+        if(expiryTime == null) {
+            def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
+            v.expiryTime(e)
+        }
+        v.canonicalName("containerName/blobName")
+            .snapshotId(snapId)
+        if (ipRange != null) {
+            def ipR = new IPRange()
+            ipR.ipMin("ip")
+            v.ipRange(ipR)
+        }
+        v.protocol(protocol)
+            .cacheControl(cacheControl)
+            .contentDisposition(disposition)
+            .contentEncoding(encoding)
+            .contentLanguage(language)
+            .contentType(type)
+        def key = new UserDelegationKey()
+            .signedOid(keyOid)
+            .signedTid(keyTid)
+            .signedStart(keyStart)
+            .signedExpiry(keyExpiry)
+            .signedService(keyService)
+            .signedVersion(keyVersion)
+            .value(keyValue)
+        def token = v.generateSASQueryParameters(key, primaryCreds.accountName())
+
+        then:
+        token.signature() == Utility.delegateComputeHmac256(key, expectedStringToSign)
+
+        /*
+        We test string to sign functionality directly related to user delegation sas specific parameters
+         */
+        where:
+        permissions             | startTime                                                 | expiryTime                                                | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + "containerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  | null                                   | null                                   | null                                                                  | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null | null | null | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null | null | null | null | null | null | null | null || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null | null | null | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null | null | null | null | null | null | null | null || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) +"\ncontainerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\nb\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\nsnapId\n\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | "control"    | null          | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\ncontrol\n\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\ndisposition\n\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\nencoding\n\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | "language" | null   || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\nlanguage\n"
+        null                    | null                                                      | null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null          | null                   | null     | null         | null          | null       | null       | "type" || "r\n\n"+ Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\ncontainerName/blobName\n\n\n\n\n\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n\n\n\n\n\n\ntype"
+    }
+
+    @Unroll
+    def "serviceSASSignatureValues canonicalizedResource"() {
+        setup:
+        def name = "/"
+        if(containerName!=null){
+            name+=containerName
+        }
+        if(blobName!=null){
+            name+="/"+blobName
+        }
+        def v = new ServiceSASSignatureValues()
+                .canonicalName(name)
+                .snapshotId(snapId)
+                .resource(resource)
+                .identifier("id")
+
+        when:
+        def token = v.generateSASQueryParameters(primaryCreds)
+
+        then:
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+
+        where:
+        containerName | blobName | snapId | resource || expectedStringToSign
+        "c"           | "b"      | "id"   | "bs"             || "\n\n\n" + "/c/b\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
+        "c"           | "b"      | null   | "b"              || "\n\n\n" + "/c/b\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        "c"           | null     | null   | "c"              || "\n\n\n" + "/c\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
+
+    }
 
     @Unroll
     def "serviceSasSignatureValues IA"() {
@@ -676,231 +679,232 @@ class HelperTest extends APISpec {
         "a"      || "a" | null
         ""       || ""  | null
     }
-//
-//    @Unroll
-//    def "SASProtocol parse"() {
-//        expect:
-//        SASProtocol.parse(protocolStr) == protocol
-//
-//        where:
-//        protocolStr  || protocol
-//        "https"      || SASProtocol.HTTPS_ONLY
-//        "https,http" || SASProtocol.HTTPS_HTTP
-//    }
-//
-//    /*
-//     This test will ensure that each field gets placed into the proper location within the string to sign and that null
-//     values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
-//     individual parts later.
-//     */
-//
-//    @Unroll
-//    def "accountSasSignatures string to sign"() {
-//        when:
-//        def v = new AccountSASSignatureValues()
-//        def p = new AccountSASPermission()
-//                .withRead(true)
-//        v.withPermissions(p.toString())
-//                .withServices("b")
-//                .withResourceTypes("o")
-//                .withStartTime(startTime)
-//                .withExpiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-//        if (ipRange != null) {
-//            def ipR = new IPRange()
-//            ipR.withIpMin("ip")
-//            v.withIpRange(ipR)
-//        }
-//        v.withProtocol(protocol)
-//
-//        def token = v.generateSASQueryParameters(primaryCreds)
-//
-//        then:
-//        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
-//
-//        where:
-//        startTime                                                 | ipRange       | protocol               || expectedStringToSign
-//        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null          | null                   || primaryCreds.getAccountName() + "\nr\nb\no\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
-//        null                                                      | new IPRange() | null                   || primaryCreds.getAccountName() + "\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
-//        null                                                      | null          | SASProtocol.HTTPS_ONLY || primaryCreds.getAccountName() + "\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
-//    }
-//
-//    @Unroll
-//    def "accountSasSignatureValues IA"() {
-//        setup:
-//        def v = new AccountSASSignatureValues()
-//                .withPermissions(permissions)
-//                .withServices(service)
-//                .withResourceTypes(resourceType)
-//                .withExpiryTime(expiryTime)
-//                .withVersion(version)
-//
-//        when:
-//        v.generateSASQueryParameters(creds)
-//
-//        then:
-//        def e = thrown(IllegalArgumentException)
-//        e.getMessage().contains(parameter)
-//
-//        where:
-//        permissions | service | resourceType | expiryTime           | version | creds        || parameter
-//        null        | "b"     | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "permissions"
-//        "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "services"
-//        "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCreds || "resourceTypes"
-//        "c"         | "b"     | "c"          | null                 | "v"     | primaryCreds || "expiryTime"
-//        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCreds || "version"
-//        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null         || "SharedKeyCredentials"
-//    }
-//
-//    @Unroll
-//    def "AccountSASPermissions toString"() {
-//        setup:
-//        def perms = new AccountSASPermission()
-//        perms.withRead(read)
-//                .withWrite(write)
-//                .withDelete(delete)
-//                .withList(list)
-//                .withAdd(add)
-//                .withCreate(create)
-//                .withUpdate(update)
-//                .withProcessMessages(process)
-//
-//        expect:
-//        perms.toString() == expectedString
-//
-//        where:
-//        read  | write | delete | list  | add   | create | update | process || expectedString
-//        true  | false | false  | false | false | false  | false  | false   || "r"
-//        false | true  | false  | false | false | false  | false  | false   || "w"
-//        false | false | true   | false | false | false  | false  | false   || "d"
-//        false | false | false  | true  | false | false  | false  | false   || "l"
-//        false | false | false  | false | true  | false  | false  | false   || "a"
-//        false | false | false  | false | false | true   | false  | false   || "c"
-//        false | false | false  | false | false | false  | true   | false   || "u"
-//        false | false | false  | false | false | false  | false  | true    || "p"
-//        true  | true  | true   | true  | true  | true   | true   | true    || "rwdlacup"
-//    }
-//
-//    @Unroll
-//    def "AccountSASPermissions parse"() {
-//        when:
-//        def perms = AccountSASPermission.parse(permString)
-//
-//        then:
-//        perms.read() == read
-//        perms.write() == write
-//        perms.delete() == delete
-//        perms.list() == list
-//        perms.add() == add
-//        perms.create() == create
-//        perms.update() == update
-//        perms.processMessages() == process
-//
-//        where:
-//        permString || read  | write | delete | list  | add   | create | update | process
-//        "r"        || true  | false | false  | false | false | false  | false  | false
-//        "w"        || false | true  | false  | false | false | false  | false  | false
-//        "d"        || false | false | true   | false | false | false  | false  | false
-//        "l"        || false | false | false  | true  | false | false  | false  | false
-//        "a"        || false | false | false  | false | true  | false  | false  | false
-//        "c"        || false | false | false  | false | false | true   | false  | false
-//        "u"        || false | false | false  | false | false | false  | true   | false
-//        "p"        || false | false | false  | false | false | false  | false  | true
-//        "rwdlacup" || true  | true  | true   | true  | true  | true   | true   | true
-//        "lwrupcad" || true  | true  | true   | true  | true  | true   | true   | true
-//    }
-//
-//    def "AccountSASPermissions parse IA"() {
-//        when:
-//        AccountSASPermission.parse("rwaq")
-//
-//        then:
-//        thrown(IllegalArgumentException)
-//    }
-//
-//    @Unroll
-//    def "AccountSASResourceType toString"() {
-//        setup:
-//        def resourceTypes = new AccountSASResourceType()
-//                .withService(service)
-//                .withContainer(container)
-//                .withObject(object)
-//
-//        expect:
-//        resourceTypes.toString() == expectedString
-//
-//        where:
-//        service | container | object || expectedString
-//        true    | false     | false  || "s"
-//        false   | true      | false  || "c"
-//        false   | false     | true   || "o"
-//        true    | true      | true   || "sco"
-//    }
-//
-//    @Unroll
-//    def "AccountSASResourceType parse"() {
-//        when:
-//        def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
-//
-//        then:
-//        resourceTypes.service() == service
-//        resourceTypes.container() == container
-//        resourceTypes.object() == object
-//
-//        where:
-//        resourceTypeString || service | container | object
-//        "s"                || true    | false     | false
-//        "c"                || false   | true      | false
-//        "o"                || false   | false     | true
-//        "sco"              || true    | true      | true
-//    }
-//
-//    @Unroll
-//    def "AccountSASResourceType IA"() {
-//        when:
-//        AccountSASResourceType.parse("scq")
-//
-//        then:
-//        thrown(IllegalArgumentException)
-//    }
-//
-//    def "BlobURLParts"() {
-//        setup:
-//        def parts = new BlobURLParts()
-//        parts.withScheme("http")
-//                .withHost("host")
-//                .withContainerName("container")
-//                .withBlobName("blob")
-//                .withSnapshot("snapshot")
-//        def sasValues = new ServiceSASSignatureValues()
-//                .withPermissions("r")
-//                .withContainerName("container")
-//        parts.withSasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
-//
-//        when:
-//        def splitParts = parts.toURL().toString().split("\\?")
-//
-//        then:
-//        splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
-//        splitParts[0] == "http://host/container/blob"
-//        splitParts[1].contains("snapshot=snapshot")
-//        splitParts[1].contains("sp=r")
-//        splitParts[1].contains("sig=")
-//        splitParts[1].split("&").size() == 5 // snapshot & sv & sr & sp & sig
-//    }
-//
-//    def "URLParser"() {
-//        when:
-//        def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
-//
-//        then:
-//        parts.scheme() == "http"
-//        parts.host() == "host"
-//        parts.containerName() == "container"
-//        parts.blobName() == "blob"
-//        parts.snapshot() == "snapshot"
-//        parts.sasQueryParameters().permissions() == "r"
-//        parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
-//        parts.sasQueryParameters().resource() == "c"
-//        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
-//    }
+
+    @Unroll
+    def "SASProtocol parse"() {
+        expect:
+        SASProtocol.parse(protocolStr) == protocol
+
+        where:
+        protocolStr  || protocol
+        "https"      || SASProtocol.HTTPS_ONLY
+        "https,http" || SASProtocol.HTTPS_HTTP
+    }
+
+    /*
+     This test will ensure that each field gets placed into the proper location within the string to sign and that null
+     values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
+     individual parts later.
+     */
+
+    @Unroll
+    def "accountSasSignatures string to sign"() {
+        when:
+        def v = new AccountSASSignatureValues()
+        def p = new AccountSASPermission()
+                .read(true)
+        v.permissions(p.toString())
+                .services("b")
+                .resourceTypes("o")
+                .startTime(startTime)
+                .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+        if (ipRange != null) {
+            def ipR = new IPRange()
+            ipR.ipMin("ip")
+            v.ipRange(ipR)
+        }
+        v.protocol(protocol)
+
+        def token = v.generateSASQueryParameters(primaryCreds)
+
+        then:
+        token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
+
+        where:
+        startTime                                                 | ipRange       | protocol               || expectedStringToSign
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null          | null                   || primaryCreds.accountName() + "\nr\nb\no\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+        null                                                      | new IPRange() | null                   || primaryCreds.accountName() + "\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+        null                                                      | null          | SASProtocol.HTTPS_ONLY || primaryCreds.accountName() + "\nr\nb\no\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\n"
+    }
+
+    @Unroll
+    def "accountSasSignatureValues IA"() {
+        setup:
+        def v = new AccountSASSignatureValues()
+                .permissions(permissions)
+                .services(service)
+                .resourceTypes(resourceType)
+                .expiryTime(expiryTime)
+                .version(version)
+
+        when:
+        v.generateSASQueryParameters(creds)
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        e.getMessage().contains(parameter)
+
+        where:
+        permissions | service | resourceType | expiryTime           | version | creds        || parameter
+        null        | "b"     | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "permissions"
+        "c"         | null    | "c"          | OffsetDateTime.now() | "v"     | primaryCreds || "services"
+        "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCreds || "resourceTypes"
+        "c"         | "b"     | "c"          | null                 | "v"     | primaryCreds || "expiryTime"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCreds || "version"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null         || "SharedKeyCredentials"
+    }
+
+    @Unroll
+    def "AccountSASPermissions toString"() {
+        setup:
+        def perms = new AccountSASPermission()
+        perms.read(read)
+                .write(write)
+                .delete(delete)
+                .list(list)
+                .add(add)
+                .create(create)
+                .update(update)
+                .processMessages(process)
+
+        expect:
+        perms.toString() == expectedString
+
+        where:
+        read  | write | delete | list  | add   | create | update | process || expectedString
+        true  | false | false  | false | false | false  | false  | false   || "r"
+        false | true  | false  | false | false | false  | false  | false   || "w"
+        false | false | true   | false | false | false  | false  | false   || "d"
+        false | false | false  | true  | false | false  | false  | false   || "l"
+        false | false | false  | false | true  | false  | false  | false   || "a"
+        false | false | false  | false | false | true   | false  | false   || "c"
+        false | false | false  | false | false | false  | true   | false   || "u"
+        false | false | false  | false | false | false  | false  | true    || "p"
+        true  | true  | true   | true  | true  | true   | true   | true    || "rwdlacup"
+    }
+
+    @Unroll
+    def "AccountSASPermissions parse"() {
+        when:
+        def perms = AccountSASPermission.parse(permString)
+
+        then:
+        perms.read() == read
+        perms.write() == write
+        perms.delete() == delete
+        perms.list() == list
+        perms.add() == add
+        perms.create() == create
+        perms.update() == update
+        perms.processMessages() == process
+
+        where:
+        permString || read  | write | delete | list  | add   | create | update | process
+        "r"        || true  | false | false  | false | false | false  | false  | false
+        "w"        || false | true  | false  | false | false | false  | false  | false
+        "d"        || false | false | true   | false | false | false  | false  | false
+        "l"        || false | false | false  | true  | false | false  | false  | false
+        "a"        || false | false | false  | false | true  | false  | false  | false
+        "c"        || false | false | false  | false | false | true   | false  | false
+        "u"        || false | false | false  | false | false | false  | true   | false
+        "p"        || false | false | false  | false | false | false  | false  | true
+        "rwdlacup" || true  | true  | true   | true  | true  | true   | true   | true
+        "lwrupcad" || true  | true  | true   | true  | true  | true   | true   | true
+    }
+
+    def "AccountSASPermissions parse IA"() {
+        when:
+        AccountSASPermission.parse("rwaq")
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "AccountSASResourceType toString"() {
+        setup:
+        def resourceTypes = new AccountSASResourceType()
+                .service(service)
+                .container(container)
+                .object(object)
+
+        expect:
+        resourceTypes.toString() == expectedString
+
+        where:
+        service | container | object || expectedString
+        true    | false     | false  || "s"
+        false   | true      | false  || "c"
+        false   | false     | true   || "o"
+        true    | true      | true   || "sco"
+    }
+
+    @Unroll
+    def "AccountSASResourceType parse"() {
+        when:
+        def resourceTypes = AccountSASResourceType.parse(resourceTypeString)
+
+        then:
+        resourceTypes.service() == service
+        resourceTypes.container() == container
+        resourceTypes.object() == object
+
+        where:
+        resourceTypeString || service | container | object
+        "s"                || true    | false     | false
+        "c"                || false   | true      | false
+        "o"                || false   | false     | true
+        "sco"              || true    | true      | true
+    }
+
+    @Unroll
+    def "AccountSASResourceType IA"() {
+        when:
+        AccountSASResourceType.parse("scq")
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "BlobURLParts"() {
+        setup:
+        def parts = new BlobURLParts()
+        parts.scheme("http")
+                .host("host")
+                .containerName("container")
+                .blobName("blob")
+                .snapshot("snapshot")
+        def sasValues = new ServiceSASSignatureValues()
+                .permissions("r")
+                .canonicalName("/containerName/blobName")
+                .expiryTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
+        parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
+
+        when:
+        def splitParts = parts.toURL().toString().split("\\?")
+
+        then:
+        splitParts.size() == 2 // Ensure that there is only one question mark even when sas and snapshot are present
+        splitParts[0] == "http://host/container/blob"
+        splitParts[1].contains("snapshot=snapshot")
+        splitParts[1].contains("sp=r")
+        splitParts[1].contains("sig=")
+        splitParts[1].split("&").size() == 5 // snapshot & sv & sr & sp & sig
+    }
+
+    def "URLParser"() {
+        when:
+        def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+
+        then:
+        parts.scheme() == "http"
+        parts.host() == "host"
+        parts.containerName() == "container"
+        parts.blobName() == "blob"
+        parts.snapshot() == "snapshot"
+        parts.sasQueryParameters().permissions() == "r"
+        parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
+        parts.sasQueryParameters().resource() == "c"
+        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+    }
 }
