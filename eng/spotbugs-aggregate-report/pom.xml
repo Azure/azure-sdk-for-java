@@ -47,10 +47,6 @@
                 <source>..\..\appconfiguration\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
                 <source>..\..\core\azure-core\src\samples\java</source>
-<<<<<<< HEAD
-                <source>..\..\core\azure-core-amqp\src\main\java</source>
-=======
->>>>>>>  removing spotbug issues (#4033)
                 <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
