@@ -1,67 +1,64 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://servbatch.centralus.batch.azure.com/pools/batchuser-testpool?api-version=2018-12-01.8.0&%24expand=stats",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-testpool?api-version=2019-06-01.9.0&%24expand=stats",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:c155a71592633a265521026a09aea85197b0d0ac239c7c7329dba103664da0ff Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 22 Feb 2019 22:17:34 GMT",
+      "date" : "Wed, 19 Jun 2019 18:05:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "e1d011e2-c252-4822-9fbb-393d095627fa",
+      "request-id" : "4e6a68e6-1605-4e1d-a146-38aecdfdbcd5",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Fri, 22 Feb 2019 18:46:12 GMT",
+      "last-modified" : "Wed, 19 Jun 2019 17:56:05 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "b889cfd9-1614-4248-bd4c-b4c31a3c24c7",
+      "client-request-id" : "c298b567-418b-4e86-ba98-50fd107a011c",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D698F604973A3E",
+      "etag" : "0x8D6F4DF66A56D88",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#pools/@Element\",\"stats@odata.navigationLinkUrl\":\"https://servbatch.centralus.batch.azure.com/pools/batchuser-testpool/stats\",\"stats\":{\r\n    \"url\":\"https://servbatch.centralus.batch.azure.com/pools/batchuser-testpool/stats\",\"usageStats\":{\r\n      \"startTime\":\"2019-02-22T18:46:12.590035Z\",\"lastUpdateTime\":\"2019-02-22T21:30:00Z\",\"dedicatedCoreTime\":\"PT36M17.681S\"\r\n    },\"resourceStats\":{\r\n      \"startTime\":\"2019-02-22T18:46:12.590035Z\",\"diskReadIOps\":\"13062\",\"diskWriteIOps\":\"285924\",\"lastUpdateTime\":\"2019-02-22T21:30:00Z\",\"avgCPUPercentage\":0.0040261501720815782,\"avgMemoryGiB\":0.735909833836487,\"peakMemoryGiB\":0.93490219116210938,\"avgDiskGiB\":6.6508136344701159,\"peakDiskGiB\":6.6595993041992187,\"diskReadGiB\":0.86869239807128906,\"diskWriteGiB\":4.0991983413696289,\"networkReadGiB\":0.32389387488365173,\"networkWriteGiB\":0.044384395703673363\r\n    }\r\n  },\"id\":\"batchuser-testpool\",\"url\":\"https://servbatch.centralus.batch.azure.com/pools/batchuser-testpool\",\"eTag\":\"0x8D698F604973A3E\",\"lastModified\":\"2019-02-22T18:46:12.590035Z\",\"creationTime\":\"2019-02-22T18:46:12.590035Z\",\"state\":\"active\",\"stateTransitionTime\":\"2019-02-22T18:46:12.590035Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2019-02-22T18:47:54.1922662Z\",\"vmSize\":\"small\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":3,\"targetDedicatedNodes\":3,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"userAccounts\":[\r\n    {\r\n      \"name\":\"test-user\",\"elevationLevel\":\"admin\",\"windowsUserConfiguration\":{\r\n        \"loginMode\":\"interactive\"\r\n      }\r\n    }\r\n  ],\"maxTasksPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool\",\"url\":\"https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-testpool\",\"eTag\":\"0x8D6F4DF66A56D88\",\"lastModified\":\"2019-06-19T17:56:05.6505736Z\",\"creationTime\":\"2019-06-19T17:56:05.6505736Z\",\"state\":\"active\",\"stateTransitionTime\":\"2019-06-19T17:56:05.6505736Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2019-06-19T17:57:46.6347959Z\",\"vmSize\":\"small\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":3,\"targetDedicatedNodes\":3,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"userAccounts\":[\r\n    {\r\n      \"name\":\"test-user\",\"elevationLevel\":\"admin\",\"windowsUserConfiguration\":{\r\n        \"loginMode\":\"interactive\"\r\n      }\r\n    }\r\n  ],\"maxTasksPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"cloudServiceConfiguration\":{\r\n    \"osFamily\":\"4\",\"osVersion\":\"*\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://servbatch.centralus.batch.azure.com/pools?api-version=2018-12-01.8.0&%24select=id%2C%20state",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-06-01.9.0&%24select=id%2C%20state",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:c155a71592633a265521026a09aea85197b0d0ac239c7c7329dba103664da0ff Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 22 Feb 2019 22:17:34 GMT",
+      "date" : "Wed, 19 Jun 2019 18:05:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "e5a921ba-a8f8-4fac-8b4c-047520fd403c",
+      "client-request-id" : "14a74940-f789-4cd1-902e-5271a241f9c1",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "803135df-d020-45fb-a590-df241e4a2b3e",
+      "request-id" : "a197b489-04cd-44ac-a760-0a50b53eb0ed",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    {\r\n      \"id\":\"BatchUser-testIaaSpool\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"batchuser-testpool\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"VssAdministrator-testIaaSpool\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"VssAdministrator-testpool\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    {\r\n      \"id\":\"BatchUser-testpool\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"ncj-ubuntu1404\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"ncj-windows-2012-r2\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"xplatTestPool\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://servbatch.centralus.batch.azure.com/pools?api-version=2018-12-01.8.0&%24filter=state%20eq%20%27deleting%27",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-06-01.9.0&%24filter=state%20eq%20%27deleting%27",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:c155a71592633a265521026a09aea85197b0d0ac239c7c7329dba103664da0ff Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 22 Feb 2019 22:17:34 GMT",
+      "date" : "Wed, 19 Jun 2019 18:05:30 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "1588503e-0e16-49b6-85fc-346223cecf3b",
+      "client-request-id" : "141d8034-1d45-44ac-89bd-fdae57e9b295",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "2ed3f93f-cbe6-4a52-aef1-6f483c2d968e",
+      "request-id" : "3478c5b3-6657-43be-8870-c8e47a2deee5",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    \r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    \r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   } ],
