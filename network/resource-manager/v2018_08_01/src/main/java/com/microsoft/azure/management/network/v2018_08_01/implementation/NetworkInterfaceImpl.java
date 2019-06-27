@@ -209,10 +209,4 @@ class NetworkInterfaceImpl extends GroupableResourceCoreImpl<NetworkInterface, N
         return this;
     }
 
-    @Override
-    public NetworkInterfaceImpl withVirtualMachine(SubResource virtualMachine) {
-        this.inner().withVirtualMachine(virtualMachine);
-        return this;
-    }
-
 }

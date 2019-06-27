@@ -217,19 +217,21 @@ jobs:
           mergeTestResults: true
           testRunTitle: '$(OSName) on Java $(JavaVersion)'
 
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS
+      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+      # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
           reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
           failIfCoverageEmpty: true
 
-      # Publish code coverage to an artifact so it can be uploaded to the Maven site
+      # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+      # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
       - task: PublishPipelineArtifact@0
         displayName: 'Publish coverage artifact'
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'))
         inputs:
           artifactName: coverage
           targetPath: eng/jacoco-test-coverage/target/site/

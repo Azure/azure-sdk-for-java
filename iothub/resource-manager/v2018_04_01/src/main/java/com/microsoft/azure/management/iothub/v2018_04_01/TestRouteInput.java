@@ -27,7 +27,13 @@ public class TestRouteInput {
     private RouteProperties route;
 
     /**
-     * Get the message value.
+     * Routing Twin Reference.
+     */
+    @JsonProperty(value = "twin")
+    private RoutingTwin twin;
+
+    /**
+     * Get routing message.
      *
      * @return the message value
      */
@@ -36,7 +42,7 @@ public class TestRouteInput {
     }
 
     /**
-     * Set the message value.
+     * Set routing message.
      *
      * @param message the message value to set
      * @return the TestRouteInput object itself.
@@ -47,7 +53,7 @@ public class TestRouteInput {
     }
 
     /**
-     * Get the route value.
+     * Get route properties.
      *
      * @return the route value
      */
@@ -56,13 +62,33 @@ public class TestRouteInput {
     }
 
     /**
-     * Set the route value.
+     * Set route properties.
      *
      * @param route the route value to set
      * @return the TestRouteInput object itself.
      */
     public TestRouteInput withRoute(RouteProperties route) {
         this.route = route;
+        return this;
+    }
+
+    /**
+     * Get routing Twin Reference.
+     *
+     * @return the twin value
+     */
+    public RoutingTwin twin() {
+        return this.twin;
+    }
+
+    /**
+     * Set routing Twin Reference.
+     *
+     * @param twin the twin value to set
+     * @return the TestRouteInput object itself.
+     */
+    public TestRouteInput withTwin(RoutingTwin twin) {
+        this.twin = twin;
         return this;
     }
 

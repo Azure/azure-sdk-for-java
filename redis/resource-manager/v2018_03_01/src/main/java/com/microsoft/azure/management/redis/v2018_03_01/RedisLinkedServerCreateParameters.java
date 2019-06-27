@@ -36,7 +36,7 @@ public class RedisLinkedServerCreateParameters {
     private ReplicationRole serverRole;
 
     /**
-     * Get the linkedRedisCacheId value.
+     * Get fully qualified resourceId of the linked redis cache.
      *
      * @return the linkedRedisCacheId value
      */
@@ -45,7 +45,7 @@ public class RedisLinkedServerCreateParameters {
     }
 
     /**
-     * Set the linkedRedisCacheId value.
+     * Set fully qualified resourceId of the linked redis cache.
      *
      * @param linkedRedisCacheId the linkedRedisCacheId value to set
      * @return the RedisLinkedServerCreateParameters object itself.
@@ -56,7 +56,7 @@ public class RedisLinkedServerCreateParameters {
     }
 
     /**
-     * Get the linkedRedisCacheLocation value.
+     * Get location of the linked redis cache.
      *
      * @return the linkedRedisCacheLocation value
      */
@@ -65,7 +65,7 @@ public class RedisLinkedServerCreateParameters {
     }
 
     /**
-     * Set the linkedRedisCacheLocation value.
+     * Set location of the linked redis cache.
      *
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set
      * @return the RedisLinkedServerCreateParameters object itself.
@@ -76,7 +76,7 @@ public class RedisLinkedServerCreateParameters {
     }
 
     /**
-     * Get the serverRole value.
+     * Get role of the linked server. Possible values include: 'Primary', 'Secondary'.
      *
      * @return the serverRole value
      */
@@ -85,7 +85,7 @@ public class RedisLinkedServerCreateParameters {
     }
 
     /**
-     * Set the serverRole value.
+     * Set role of the linked server. Possible values include: 'Primary', 'Secondary'.
      *
      * @param serverRole the serverRole value to set
      * @return the RedisLinkedServerCreateParameters object itself.

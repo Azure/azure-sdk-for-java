@@ -99,7 +99,7 @@
 
     <!-- Dependency Versions -->
     <jackson.version>2.9.9</jackson.version>
-    <client-runtime.version>1.6.5</client-runtime.version>
+    <client-runtime.version>1.6.10</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
     <proton-j-version>0.31.0</proton-j-version>
@@ -111,7 +111,7 @@
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
     <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
-    <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
+    <azure-core-amqp.version>1.0.0-SNAPSHOT</azure-core-amqp.version>
     <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
@@ -127,6 +127,7 @@
 
     <!-- Test Dependency Versions -->
     <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
+    <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -166,6 +167,7 @@
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.18</checkstyle.version>
+    <mockito-core.version>2.28.2</mockito-core.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
   </properties>
 
@@ -198,8 +200,8 @@
 
       <dependency>
         <groupId>com.azure</groupId>
-        <artifactId>azure-core-auth</artifactId>
-        <version>${azure-core-auth.version}</version>
+        <artifactId>azure-core-amqp</artifactId>
+        <version>${azure-core-amqp.version}</version>
       </dependency>
 
       <dependency>
@@ -353,6 +355,13 @@
       </dependency>
 
       <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-identity</artifactId>
+        <version>${azure-identity.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
         <version>${azure-mgmt-storage.version}</version>
@@ -475,6 +484,13 @@
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
         <version>${jetty-server.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito-core.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

@@ -36,7 +36,7 @@ public class ScheduleEntry {
     private Period maintenanceWindow;
 
     /**
-     * Get the dayOfWeek value.
+     * Get day of the week when a cache can be patched. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Everyday', 'Weekend'.
      *
      * @return the dayOfWeek value
      */
@@ -45,7 +45,7 @@ public class ScheduleEntry {
     }
 
     /**
-     * Set the dayOfWeek value.
+     * Set day of the week when a cache can be patched. Possible values include: 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Everyday', 'Weekend'.
      *
      * @param dayOfWeek the dayOfWeek value to set
      * @return the ScheduleEntry object itself.
@@ -56,7 +56,7 @@ public class ScheduleEntry {
     }
 
     /**
-     * Get the startHourUtc value.
+     * Get start hour after which cache patching can start.
      *
      * @return the startHourUtc value
      */
@@ -65,7 +65,7 @@ public class ScheduleEntry {
     }
 
     /**
-     * Set the startHourUtc value.
+     * Set start hour after which cache patching can start.
      *
      * @param startHourUtc the startHourUtc value to set
      * @return the ScheduleEntry object itself.
@@ -76,7 +76,7 @@ public class ScheduleEntry {
     }
 
     /**
-     * Get the maintenanceWindow value.
+     * Get iSO8601 timespan specifying how much time cache patching can take.
      *
      * @return the maintenanceWindow value
      */
@@ -85,7 +85,7 @@ public class ScheduleEntry {
     }
 
     /**
-     * Set the maintenanceWindow value.
+     * Set iSO8601 timespan specifying how much time cache patching can take.
      *
      * @param maintenanceWindow the maintenanceWindow value to set
      * @return the ScheduleEntry object itself.
