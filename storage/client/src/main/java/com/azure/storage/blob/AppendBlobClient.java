@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,6 +18,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 
 
@@ -171,7 +171,7 @@ public final class AppendBlobClient extends BlobClient {
      */
     public Response<AppendBlobItem> appendBlock(InputStream data, long length,
                                                            AppendBlobAccessConditions appendBlobAccessConditions, Duration timeout) {
-        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
+        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) MAX_APPEND_BLOCK_BYTES))
             .map(i -> i * MAX_APPEND_BLOCK_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 long count = pos + MAX_APPEND_BLOCK_BYTES > length ? length - pos : MAX_APPEND_BLOCK_BYTES;
@@ -180,7 +180,7 @@ public final class AppendBlobClient extends BlobClient {
                 while (read < count) {
                     read += data.read(cache, read, (int) count - read);
                 }
-                return ByteBufAllocator.DEFAULT.buffer((int) count).writeBytes(cache);
+                return ByteBuffer.wrap(cache);
             }));
 
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlock(fbb.subscribeOn(Schedulers.elastic()), length, appendBlobAccessConditions);

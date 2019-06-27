@@ -63,7 +63,8 @@ import java.util.UUID;
  * object through {@link Mono#toFuture()}.
  */
 public final class BlockBlobAsyncClient extends BlobAsyncClient {
-    static final long BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
     final BlockBlobAsyncRawClient blockBlobAsyncRawClient;
 
@@ -163,45 +164,59 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     public Mono<Void> uploadFromFile(String filePath) {
-        return this.uploadFromFile(filePath, null, null, null);
+        return this.uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
     }
 
-    public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
+    public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
-        AsynchronousFileChannel channel;
-        try {
-            channel = AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-        } catch (IOException e) {
-            return Mono.error(e);
+        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
+            throw new IllegalArgumentException("Block size should not exceed 100MB");
         }
-        final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(filePath))
-            .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
-            .flatMap(chunk -> {
-                String blockId = blockIds.get(chunk.offset());
-                return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
-            })
-            .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
-            .then()
-            .doOnTerminate(() -> {
+        return Mono.using(() -> {
+                try {
+                    return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }, channel -> {
+                final SortedMap<Long, String> blockIds = new TreeMap<>();
+                return Flux.fromIterable(sliceFile(filePath, blockSize))
+                    .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
+                    .flatMap(chunk -> {
+                        String blockId = blockIds.get(chunk.offset());
+                        return stageBlock(blockId, FluxUtil.byteBufStreamFromFile(channel, chunk.offset(), chunk.count()), chunk.count(), null);
+                    })
+                    .then(Mono.defer(() -> commitBlockList(new ArrayList<>(blockIds.values()), headers, metadata, accessConditions)))
+                    .then()
+                    .doOnTerminate(() -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    });
+            }, channel -> {
                 try {
                     channel.close();
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
-            });
+        });
     }
 
     private String getBlockID() {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(String path) {
+    private List<BlobRange> sliceFile(String path, Integer blockSize) {
+        if (blockSize == null) {
+            blockSize = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
         File file = new File(path);
         assert file.exists();
         List<BlobRange> ranges = new ArrayList<>();
-        for (long pos = 0; pos < file.length(); pos += BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) {
-            long count = BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        for (long pos = 0; pos < file.length(); pos += blockSize) {
+            long count = blockSize;
             if (pos + count > file.length()) {
                 count = file.length() - pos;
             }

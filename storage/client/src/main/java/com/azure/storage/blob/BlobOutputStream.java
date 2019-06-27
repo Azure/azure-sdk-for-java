@@ -317,7 +317,7 @@ public class BlobOutputStream extends OutputStream {
 
         PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
 
-        return blobRef.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
+        return blobRef.pageBlobAsyncRawClient.uploadPages(new PageRange().start(offset).end(offset + writeLength - 1), pageData, pageBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);
@@ -333,7 +333,7 @@ public class BlobOutputStream extends OutputStream {
         this.appendPositionAccessConditions.appendPosition(offset);
 
         AppendBlobAccessConditions appendBlobAccessConditions = accessCondition == null ? null : new AppendBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
-        return blobRef.appendBlock(blockData, writeLength, appendBlobAccessConditions)
+        return blobRef.appendBlobAsyncRawClient.appendBlock(blockData, writeLength, appendBlobAccessConditions)
             .then()
             .onErrorResume(t -> t instanceof IOException || t instanceof StorageException, e -> {
                 this.lastError = new IOException(e);

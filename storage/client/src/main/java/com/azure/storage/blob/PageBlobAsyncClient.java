@@ -17,11 +17,9 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -51,7 +49,7 @@ import java.nio.ByteBuffer;
  */
 public final class PageBlobAsyncClient extends BlobAsyncClient {
 
-    private final PageBlobAsyncRawClient pageBlobAsyncRawClient;
+    final PageBlobAsyncRawClient pageBlobAsyncRawClient;
 
     /**
      * Indicates the number of bytes in a page.
