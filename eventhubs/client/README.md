@@ -91,20 +91,154 @@ For more concepts and deeper discussion, see: [Event Hubs Features][event_hubs_f
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0][oasis_amqp_v1].
 
 ## Examples
-will re-doc this section tonight
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Consume events from an Event Hub partition][sample_receive_event]
 
+### Publish events to an Event Hub
+In order to publish events, you'll need to create an EventHubProducer. Producers may be dedicated to a specific partition,
+or allow the Event Hubs service to decide which partition events should be published to. It is recommended to use 
+automatic routing when the publishing of events needs to be highly available or when event data should be distributed 
+evenly among the partitions. In the our example, we will take advantage of automatic routing.
+
+you can also use the send method to send multiple events using a single call.
+#### Producer creation
+```event producer
+EventHubProducer producer = client.createProducer();
+
+// Create a list of two events to send.
+List<EventData> dataList = new ArrayList<>();
+EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));
+EventData secEvent = new EventData("EventData Sample 2 ".getBytes(UTF_8));
+
+// Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
+// event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
+// the event.
+producer.send(dataList).subscribe(
+    (ignored) -> System.out.println("Event sent."),
+    error -> {
+        System.err.println("There was an error sending the event: " + error.toString());
+
+        if (error instanceof AmqpException) {
+            AmqpException amqpException = (AmqpException) error;
+
+            System.err.println(String.format("Is send operation retriable? %s. Error condition: %s",
+                amqpException.isTransient(), amqpException.getErrorCondition()));
+        }
+    }, () -> {
+        // Disposing of our producer and client.
+        try {
+            producer.close();
+        } catch (IOException e) {
+            System.err.println("Error encountered while closing producer: " + e.toString());
+            client.close();
+        }
+    }
+);
+```
+
+To send events to a particular partition, set the optional parameter `partitionId` on the `EventHubProducerOptions` 
+when creating an event producer. 
+#### Partition ID
+```Producer option
+ EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(partitionId);
+ EventHubProducer producer = client.createProducer(producerOptions);
+```
+Many Event Hub operations take place within the scope of a specific partition. Because partitions are owned by the 
+Event Hub, their names are assigned at the time of creation. To understand what partitions are available, You can use 
+the `getPartitionIds` function to get the ids of all available partitions in your Event Hub instance.
+
+```get partition id
+private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
+...
+
+// We take the first partition id.
+// .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
+// time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
+// TimeoutException is thrown.
+
+String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
+```
+#### Partition Key
+When an Event Hub producer is not associated with any specific partition, it may be desirable to request that the Event
+ Hubs service keep different events or batches of events together on the same partition. This can be accomplished by 
+ setting a `partition key` when publishing the events.
+```partitin key
+// The partition key is NOT the identifier of a specific partition. Rather, it is an arbitrary piece of string data
+// that Event Hubs uses as the basis to compute a hash value. Event Hubs will associate the hash value with a specific
+// partition, ensuring that any events published with the same partition key are rerouted to the same partition.
+//
+// Note that there is no means of accurately predicting which partition will be associated with a given partition key;
+// we can only be assured that it will be a consistent choice of partition. If you have a need to understand which
+// exact partition an event is published to, you will need to use an Event Hub producer associated with that partition.
+
+SendOptions sendOptions = new SendOptions().partitionKey("ANY_PARTITION_KEY");
+producer.send(dataList, sendOptions).subscribe(
+    ...
+);
+```
+
+### Consume events from an Event Hub
+In order to consume events, you'll need to create an EventHubConsumer for a specific partition and consumer group 
+combination. When an Event Hub is created, it starts with a default consumer group that can be used to get started. 
+A consumer also needs to specify where in the event stream to begin receiving events; in our example, we will focus 
+on reading new events as they are published.
+
+#### Consumer creation
+```create consumer
+EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID, EventPosition.latest());
+```
+
+#### Consume events
+```consume events
+private static final int NUMBER_OF_EVENTS = 10;
+
+...
+
+CountDownLatch countDownLatch = new CountDownLatch(NUMBER_OF_EVENTS);
+
+Disposable subscription = consumer.receive().subscribe(event -> {
+    String contents = UTF_8.decode(event.body()).toString();
+    System.out.println(String.format("[%s] Sequence Number: %s. Contents: %s", countDownLatch.getCount(), 
+    event.sequenceNumber(), contents));
+    countDownLatch.countDown();
+});
+
+// Because the consumer is only listening to new events, we need to send some events to `firstPartition`.
+EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(partitionID);
+EventHubProducer producer = client.createProducer(producerOptions);
+
+// We create 10 events to send to the service and block until the send has completed.
+Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {
+    String body = String.format("Hello world! Number: %s", number);
+    return producer.send(new EventData(body.getBytes(UTF_8)));
+}).blockLast(OPERATION_TIMEOUT);
+
+// We wait for all the events to be received before continuing.
+countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+
+```
+###Close resource
+Dispose and close of all the resources we've created.
+```close resource
+subscription.dispose();
+producer.close();
+consumer.close();
+client.close();
+```
 ## Troubleshooting
 
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For example,
-setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can be found here: [log levels][log_levels].
+setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can be found 
+here: [log levels][log_levels].
 
 ### Enable AMQP transport logging
 If enabling client logging is not enough to diagnose your issues. You can enable logging to a file 
-in the underlying AMQP library, [Qpid Proton-J][qpid_proton_j_apache]. Qpid Proton-J uses `java.util.logging`. You can enable logging by create a configuration file with the contents below. Or set `proton.trace.level=ALL` and whichever configuration options you want for the `java.util.logging.Handler` implementation. Implementation classes and their options can be found in [Java 8 SDK javadoc][java_8_sdk_javadocs].
+in the underlying AMQP library, [Qpid Proton-J][qpid_proton_j_apache]. Qpid Proton-J uses `java.util.logging`. You can 
+enable logging by create a configuration file with the contents below. Or set `proton.trace.level=ALL` and whichever 
+configuration options you want for the `java.util.logging.Handler` implementation. Implementation classes and their
+options can be found in [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
 #### Sample "logging.config" file ####
 ``` logging config
