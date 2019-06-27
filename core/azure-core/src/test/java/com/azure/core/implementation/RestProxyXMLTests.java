@@ -146,7 +146,7 @@ public class RestProxyXMLTests {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
         HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
-        request.withBody(bytes);
+        request.body(bytes);
 
         SignedIdentifierInner si = new SignedIdentifierInner();
         si.withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");

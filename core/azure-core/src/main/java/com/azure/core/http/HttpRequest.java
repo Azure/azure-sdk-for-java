@@ -64,7 +64,7 @@ public class HttpRequest implements Serializable {
      * @param httpMethod the request method
      * @return this HttpRequest
      */
-    public HttpRequest withHttpMethod(HttpMethod httpMethod) {
+    public HttpRequest httpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -84,7 +84,7 @@ public class HttpRequest implements Serializable {
      * @param url target address as {@link URL}
      * @return this HttpRequest
      */
-    public HttpRequest withUrl(URL url) {
+    public HttpRequest url(URL url) {
         this.url = url;
         return this;
     }
@@ -104,7 +104,7 @@ public class HttpRequest implements Serializable {
      * @param headers the set of headers
      * @return this HttpRequest
      */
-    public HttpRequest withHeaders(HttpHeaders headers) {
+    public HttpRequest headers(HttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -117,7 +117,7 @@ public class HttpRequest implements Serializable {
      * @param value the header value
      * @return this HttpRequest
      */
-    public HttpRequest withHeader(String name, String value) {
+    public HttpRequest header(String name, String value) {
         headers.put(name, value);
         return this;
     }
@@ -137,9 +137,9 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(String content) {
+    public HttpRequest body(String content) {
         final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return withBody(bodyBytes);
+        return body(bodyBytes);
     }
 
     /**
@@ -149,10 +149,10 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(byte[] content) {
+    public HttpRequest body(byte[] content) {
         headers.put("Content-Length", String.valueOf(content.length));
         // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
-        return withBody(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
+        return body(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
     }
 
     /**
@@ -164,7 +164,7 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest withBody(Flux<ByteBuf> content) {
+    public HttpRequest body(Flux<ByteBuf> content) {
         this.body = content;
         return this;
     }
