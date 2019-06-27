@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobPrefix;
 import com.azure.storage.blob.models.ContainerAccessConditions;
+import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
@@ -374,7 +375,7 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<Response<PublicAccessType>> getAccessPolicy() {
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy() {
         return this.getAccessPolicy(null);
     }
 
@@ -390,10 +391,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<Response<PublicAccessType>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
-        return containerAsyncRawClient
-            .getAccessPolicy(leaseAccessConditions)
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().blobPublicAccess()));
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
+        return containerAsyncRawClient.getAccessPolicy(leaseAccessConditions);
     }
 
     /**
