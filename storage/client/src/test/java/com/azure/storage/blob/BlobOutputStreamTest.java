@@ -5,10 +5,11 @@ import com.google.common.io.ByteStreams;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.netty.ByteBufFlux;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -44,7 +45,7 @@ public class BlobOutputStreamTest {
         outStream.close();
 
         BlobInputStream blobInputStream = blockBlobClient.openInputStream();
-        byte[] downloaded = ByteStreams.toByteArray(blobInputStream);
+        byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(randomBytes, downloaded);
     }
 
@@ -62,7 +63,7 @@ public class BlobOutputStreamTest {
         outStream.close();
 
         BlobInputStream blobInputStream = pageBlobClient.openInputStream();
-        byte[] downloaded = ByteStreams.toByteArray(blobInputStream);
+        byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(randomBytes, downloaded);
     }
 
@@ -91,7 +92,21 @@ public class BlobOutputStreamTest {
 
         Assert.assertEquals(length, appendBlobClient.getProperties().value().blobSize());
         BlobInputStream blobInputStream = appendBlobClient.openInputStream();
-        byte[] downloaded = ByteStreams.toByteArray(blobInputStream);
+        byte[] downloaded = convertInputStreamToByteArray(blobInputStream);
         Assert.assertArrayEquals(uploaded, downloaded);
+    }
+
+    private byte[] convertInputStreamToByteArray(InputStream inputStream) {
+        int b;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        return outputStream.toByteArray();
     }
 }
