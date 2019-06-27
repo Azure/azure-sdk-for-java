@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.annotations.ResumeOperation;
+import com.azure.core.implementation.annotation.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;

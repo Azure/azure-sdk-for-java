@@ -3,14 +3,14 @@
 
 package com.azure.core.management.implementation;
 
-import com.azure.core.annotations.Delete;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.Get;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.Put;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.ResumeOperation;
-import com.azure.core.annotations.Service;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.ResumeOperation;
+import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -55,7 +55,7 @@ public class AzureProxyTests {
     }
 
     @Host("https://mock.azure.com")
-    @Service("MockResourceService")
+    @ServiceInterface("MockResourceService")
     private interface MockResourceService {
         @Get("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
         @ExpectedResponses({200})

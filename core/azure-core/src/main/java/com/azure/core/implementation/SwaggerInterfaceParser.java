@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.Service;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.ServiceInterface;
 import com.azure.core.implementation.exception.MissingRequiredAnnotationException;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.util.ImplUtils;
@@ -51,11 +51,11 @@ public class SwaggerInterfaceParser {
             }
         }
 
-        Service serviceAnnotation = swaggerInterface.getAnnotation(Service.class);
+        ServiceInterface serviceAnnotation = swaggerInterface.getAnnotation(ServiceInterface.class);
         if (serviceAnnotation != null && !serviceAnnotation.value().isEmpty()) {
             service = serviceAnnotation.value();
         } else {
-            throw new MissingRequiredAnnotationException(Service.class, swaggerInterface);
+            throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
         }
     }
 
