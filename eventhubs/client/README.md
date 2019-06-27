@@ -242,11 +242,11 @@ Beyond those discussed, the Azure Event Hubs client library offers support for m
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available:
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_send_event]
-- [Publish events to a specific Event Hub partition with producer option][sample_send_producer_option]
-- [Publish events to a specific Event Hub partition with send option][sample_send_send_option]
-- [Publish events with custom metadata][sample_send_custom_event_data]
-- [Consume events from an Event Hub partition][sample_receive_event]
+- [Publish an event to an Event Hub][sample_publish_event]
+- [Publish events to a specific Event Hub partition with partition identifier][sample_publish_partition_ID]
+- [Publish events to a specific Event Hub partition with partition key][sample_publish_partition_key]
+- [Publish events with custom metadata][sample_publish_custom_meta_data]
+- [Consume events from an Event Hub partition][sample_consume_event]
 - [Save the last read event and resume from that point][sample_sequence_number]
 
 ## Contributing
@@ -265,13 +265,13 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
-[sample_receive_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEvent.java
-[sample_send_event]:https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEvent.java
+[sample_consume_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ConsumeEvent.java
+[sample_publish_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEvent.java
 [sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
-[sample_send_custom_event_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendCustomEventDataList.java
-[sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsFromKnownSequenceNumberPosition.java
-[sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java
-[sample_send_send_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventDataListWIthSendOption.java
+[sample_publish_custom_meta_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsWithCustomMetadata.java
+[sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ConsumeEventsFromKnownSequenceNumberPosition.java
+[sample_publish_partition_ID]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsToSpecificPartition.java
+[sample_publish_partition_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsWithPartitionKey.java
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [error_condition]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
