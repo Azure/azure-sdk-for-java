@@ -60,7 +60,9 @@ public final class AppendBlobClientBuilder {
     private String endpoint;
     private String containerName;
     private String blobName;
-    private HttpPipelinePolicy credentialPolicy;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -87,11 +89,15 @@ public final class AppendBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-        }
+}
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -180,7 +186,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
+        this.sharedKeyCredential = credential;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -190,7 +198,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(TokenCredential credential) {
-        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
+        this.tokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -200,7 +210,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SASTokenCredential credential) {
-        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
+        this.sasTokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -209,7 +221,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder anonymousCredential() {
-        this.credentialPolicy = null;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
