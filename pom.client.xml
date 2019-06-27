@@ -338,7 +338,6 @@
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
@@ -357,6 +356,10 @@
               <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Test</title>
+                <packages>com.azure.core.test*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
