@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -73,7 +75,6 @@ public class BackCompatTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         // Arrange
-        final String messageTrackingId = "messageTrackingId";
         final String messageTrackingValue = UUID.randomUUID().toString();
 
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
@@ -83,7 +84,7 @@ public class BackCompatTest extends ApiTestBase {
         applicationProperties.put("intProperty", "3");
 
         // We want to ensure that we fetch the event data corresponding to this test and not some other test case.
-        applicationProperties.put(messageTrackingId, messageTrackingValue);
+        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
 
         final Message message = Proton.message();
         message.setApplicationProperties(new ApplicationProperties(applicationProperties));
@@ -93,11 +94,7 @@ public class BackCompatTest extends ApiTestBase {
         final EventData eventData = new EventData(message);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().filter(received -> {
-            return received.properties() != null
-                && received.properties().containsKey(messageTrackingId)
-                && messageTrackingValue.equals(received.properties().get(messageTrackingId));
-        }).take(1))
+        StepVerifier.create(consumer.receive().filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .then(() -> producer.send(eventData).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event))
             .verifyComplete();
