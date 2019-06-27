@@ -7,6 +7,7 @@ import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.messaging.eventhubs.EventHubProducerOptions;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -56,17 +57,17 @@ public class PublishEventsToSpecificPartition {
         // Create a producer. Consequently, events sent from this producer will deliver to the specific partition ID Event Hub instance.
         EventHubProducer producer = client.createProducer(producerOptions);
 
-        // Create an event list
-        List<EventData> dataList = new ArrayList<>();
-        dataList.add(new EventData("EventData Sample 1".getBytes(UTF_8)));
-        dataList.add(new EventData("EventData Sample 2 ".getBytes(UTF_8)));
-        dataList.add(new EventData("EventData Sample 3".getBytes(UTF_8)));
+        // We will publish three events based on simple sentences.
+        Flux<EventData> data = Flux.just(
+            new EventData("EventData Sample 1".getBytes(UTF_8)),
+            new EventData("EventData Sample 2".getBytes(UTF_8)),
+            new EventData("EventData Sample 3".getBytes(UTF_8)));
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        producer.send(dataList).subscribe(
-            (ignored) -> System.out.println("A list of Event sent."),
+        producer.send(data).subscribe(
+            (ignored) -> System.out.println("Events sent."),
             error -> {
                 System.err.println("There was an error sending the event: " + error.toString());
 

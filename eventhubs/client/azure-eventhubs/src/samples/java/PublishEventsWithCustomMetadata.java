@@ -6,10 +6,10 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -17,6 +17,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to sent events to a specific event hub by defining partition ID in producer option only.
  */
 public class PublishEventsWithCustomMetadata {
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
      * Main method to invoke this demo about how to send a custom event list to an Azure Event Hub instance.
@@ -30,7 +31,6 @@ public class PublishEventsWithCustomMetadata {
         // 3. Creating a "Shared access policy" for your Event Hub instance.
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
-
 
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
@@ -50,33 +50,32 @@ public class PublishEventsWithCustomMetadata {
         // One common scenario for the inclusion of metadata is to provide a hint about the type of data contained by an event,
         // so that consumers understand its format and can deserialize it appropriately.
         //
-        // We will publish a small batch of events based on simple sentences, but will attach some custom metadata with
+        // We will publish two events based on simple sentences, but will attach some custom metadata with
         // pretend type names and other hints. Note that the set of metadata is unique to an event; there is no need for every
         // event in a batch to have the same metadata properties available nor the same data type for those properties.
-        List<EventData> dataList = new ArrayList<>();
         EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));
         firstEvent.properties().put("EventType", "com.microsoft.samples.hello-event");
         firstEvent.properties().put("priority", 1);
         firstEvent.properties().put("score", 9.0);
 
-        EventData secEvent = new EventData("EventData Sample 2 ".getBytes(UTF_8));
+        EventData secEvent = new EventData("EventData Sample 2".getBytes(UTF_8));
         secEvent.properties().put("EventType", "com.microsoft.samples.goodbye-event");
         secEvent.properties().put("priority", "17");
         secEvent.properties().put("blob", true);
 
-        dataList.add(firstEvent);
-        dataList.add(secEvent);
+        final Flux<EventData> data = Flux.just(firstEvent, secEvent);
 
-        // Replace it with the partition ID you known. By list all partition IDs, you can use
-        // String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT)
-        // to find the first partition ID information belong to the hub
-        final String partitionID = "0";
+        // To create a consumer, we need to know what partition to connect to. We take the first partition id.
+        // .blockFirst() here is used to synchronously block until the first partition id is emitted. The maximum wait
+        // time is set by passing in the OPERATION_TIMEOUT value. If no item is emitted before the timeout elapses, a
+        // TimeoutException is thrown.
+        String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        producer.send(dataList).subscribe(
-            (ignored) -> System.out.println("Event sent to specific partition, ID = " + partitionID),
+        producer.send(data).subscribe(
+            (ignored) -> System.out.println("Event sent to specific partition, ID = " + firstPartition),
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
 

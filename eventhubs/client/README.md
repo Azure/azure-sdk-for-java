@@ -74,8 +74,7 @@ EventHubClient client = new EventHubClientBuilder()
   in a raw or transformed fashion. Event Hub consumers are often robust and high-scale platform infrastructure parts 
   with built-in analytics capabilities, like Azure Stream Analytics, Apache Spark, or Apache Storm.
 
-- A **partition** is an ordered sequence of events that is held in an Event Hub. Partitions are a means of data 
-  organization associated with the parallelism required by event consumers. Azure Event Hubs provides message streaming
+- A **partition** is an ordered sequence of events that is held in an Event Hub. Azure Event Hubs provides message streaming
   through a partitioned consumer pattern in which each consumer only reads a specific subset, or partition, of the 
   message stream. As newer events arrive, they are added to the end of this sequence. The number of partitions is
   specified at the time an Event Hub is created and cannot be changed.
@@ -91,30 +90,35 @@ For more concepts and deeper discussion, see: [Event Hubs Features][event_hubs_f
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0][oasis_amqp_v1].
 
 ## Examples
+
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Consume events from an Event Hub partition][sample_receive_event]
 
 ### Publish events to an Event Hub
+
 In order to publish events, you'll need to create an EventHubProducer. Producers may be dedicated to a specific partition,
 or allow the Event Hubs service to decide which partition events should be published to. It is recommended to use 
 automatic routing when the publishing of events needs to be highly available or when event data should be distributed 
 evenly among the partitions. In the our example, we will take advantage of automatic routing.
 
 you can also use the send method to send multiple events using a single call.
+
 #### Producer creation
+
 ```event producer
 EventHubProducer producer = client.createProducer();
 
-// Create a list of two events to send.
-List<EventData> dataList = new ArrayList<>();
-EventData firstEvent = new EventData("EventData Sample 1".getBytes(UTF_8));
-EventData secEvent = new EventData("EventData Sample 2 ".getBytes(UTF_8));
+// We will publish three events based on simple sentences.
+Flux<EventData> data = Flux.just(
+    new EventData("EventData Sample 1".getBytes(UTF_8)),
+    new EventData("EventData Sample 2".getBytes(UTF_8)),
+    new EventData("EventData Sample 3".getBytes(UTF_8)));
 
 // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
 // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
 // the event.
-producer.send(dataList).subscribe(
+producer.send(data).subscribe(
     (ignored) -> System.out.println("Event sent."),
     error -> {
         System.err.println("There was an error sending the event: " + error.toString());
@@ -139,7 +143,9 @@ producer.send(dataList).subscribe(
 
 To send events to a particular partition, set the optional parameter `partitionId` on the `EventHubProducerOptions` 
 when creating an event producer. 
+
 #### Partition ID
+
 ```Producer option
  EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(partitionId);
  EventHubProducer producer = client.createProducer(producerOptions);
@@ -160,6 +166,7 @@ private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 String firstPartition = client.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 ```
 #### Partition Key
+
 When an Event Hub producer is not associated with any specific partition, it may be desirable to request that the Event
  Hubs service keep different events or batches of events together on the same partition. This can be accomplished by 
  setting a `partition key` when publishing the events.
@@ -179,17 +186,21 @@ producer.send(dataList, sendOptions).subscribe(
 ```
 
 ### Consume events from an Event Hub
+
 In order to consume events, you'll need to create an EventHubConsumer for a specific partition and consumer group 
 combination. When an Event Hub is created, it starts with a default consumer group that can be used to get started. 
 A consumer also needs to specify where in the event stream to begin receiving events; in our example, we will focus 
 on reading new events as they are published.
 
 #### Consumer creation
+
 ```create consumer
-EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID, EventPosition.latest());
+EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID, 
+    EventPosition.latest());
 ```
 
 #### Consume events
+
 ```consume events
 private static final int NUMBER_OF_EVENTS = 10;
 
@@ -219,6 +230,7 @@ countDownLatch.await(OPERATION_TIMEOUT.getSeconds(), TimeUnit.SECONDS);
 
 ```
 ###Close resource
+
 Dispose and close of all the resources we've created.
 ```close resource
 subscription.dispose();
@@ -229,41 +241,50 @@ client.close();
 ## Troubleshooting
 
 ### Enable client logging
+
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For example,
 setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can be found 
 here: [log levels][log_levels].
 
 ### Enable AMQP transport logging
+
 If enabling client logging is not enough to diagnose your issues. You can enable logging to a file 
 in the underlying AMQP library, [Qpid Proton-J][qpid_proton_j_apache]. Qpid Proton-J uses `java.util.logging`. You can 
 enable logging by create a configuration file with the contents below. Or set `proton.trace.level=ALL` and whichever 
 configuration options you want for the `java.util.logging.Handler` implementation. Implementation classes and their
 options can be found in [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
-#### Sample "logging.config" file ####
-``` logging config
+#### Sample "logging.config" file
+
+The configuration file below logs trace output from proton-j to the file "proton-trace.log".
+
+``` loggingConfig
 handlers=java.util.logging.FileHandler
 .level=OFF
 proton.trace.level=ALL
 java.util.logging.FileHandler.level=ALL
-java.util.logging.FileHandler.pattern=tracefilename
+java.util.logging.FileHandler.pattern=proton-trace.log
 java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
 java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
 
 ### Common exceptions
+
 #### AMQP exception
+
 This is a general exception for AMQP related failures, which includes the AMQP errors as ErrorCondition and the context 
 that caused this exception as ErrorContext. 'isTransient' is a boolean indicating if the exception is a transient error
 or not. If true, then the request can be retried; otherwise not.
 
-- ErrorCondition: it contains constants common to the AMQP protocol and constants shared by Azure services. More detail
-  can be found in the link: [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions].
-- ErrorContext, it provides context that caused the AmqpException. The error occurs could be from AmqpConnection, 
-  AmqpSession, or AmqpLink. Such as SessionErrorContext and LinkErrorContext, the context for an error that occurs in an
-  AMQP session and AMQP link, respectively.
+The [ErrorCondition][error_condition] contains error conditions common to the AMQP protocol and used by Azure services. 
+When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP exception
+occurred and if possible, how to mitigate this exception. A list of all the AMQP exceptions can be found in OASIS AMQP
+Version 1.0 Transport Errors.
+  
+The [ErrorContext][error_context], provides context that caused the AmqpException.
 
-The recommended way to solve the specific exception the AMQP exception represents is to follow the [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
+The recommended way to solve the specific exception the AMQP exception represents is to follow the
+[Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
 
 #### Operation cancelled exception
 It occurs when the underlying AMQP layer encounters an abnormal link abort or the connection is disconnected in an 
@@ -275,32 +296,24 @@ any associated metadata and system overhead. The best approach for resolving thi
 being sent in a batch or the size of data included in the message. Because size limits are subject to change, please 
 refer to Azure Event Hubs quotas and limits for specifics.
 
-
 ### Other exceptions
 For detailed information about these and other exceptions that may occur, please refer to 
 [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions].
 
 ## Next steps
-Beyond those discussed, the Azure Event Hubs client library offers support for 
-many additional scenarios to help take advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios, the following set of sample is available:
+Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take 
+advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
+the following set of sample is available:
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Publish events to a specific Event Hub partition with producer option][sample_send_producer_option]
 - [Publish events to a specific Event Hub partition with send option][sample_send_send_option]
 - [Publish events with custom metadata][sample_send_custom_event_data]
 - [Consume events from an Event Hub partition][sample_receive_event]
-- [Consume event batch][sample_receive_batch]
 - [Save the last read event and resume from that point][sample_sequence_number]
 
 ## Contributing
-
-If you would like to become an active contributor to this project please refer to our [Contribution Guidelines](./../../CONTRIBUTING.md) for more information.
-
-1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+If you would like to become an active contributor to this project please refer to our [Contribution Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [api_documentation]: https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html
@@ -320,7 +333,8 @@ If you would like to become an active contributor to this project please refer t
 [sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsFromKnownSequenceNumberPosition.java
 [sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java
 [sample_send_send_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventDataListWIthSendOption.java
-[sample_receive_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsByBatch.java
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[error_condition]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
+[error_context]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
 [log_levels]: will-know

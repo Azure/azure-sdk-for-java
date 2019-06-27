@@ -7,11 +7,9 @@ import com.azure.messaging.eventhubs.EventHubClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
 import com.azure.messaging.eventhubs.SendOptions;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -19,7 +17,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Send a list of events with send option configured
  */
 public class PublishEventsWithPartitionKey {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
      * Main method to invoke this demo about how to send a list of events with partition ID configured in send option
@@ -43,12 +40,11 @@ public class PublishEventsWithPartitionKey {
         // Create a producer. This overload of `createProducer` does not accept any arguments
         EventHubProducer producer = client.createProducer();
 
-        // We will publish a small batch of events based on simple sentences.
-        List<EventData> dataList = new ArrayList<>();
-        dataList.add(new EventData("EventData Sample 1".getBytes(UTF_8)));
-        dataList.add(new EventData("EventData Sample 2 ".getBytes(UTF_8)));
-        dataList.add(new EventData("EventData Sample 3".getBytes(UTF_8)));
-
+        // We will publish three events based on simple sentences.
+        Flux<EventData> data = Flux.just(
+            new EventData("EventData Sample 1".getBytes(UTF_8)),
+            new EventData("EventData Sample 2".getBytes(UTF_8)),
+            new EventData("EventData Sample 3".getBytes(UTF_8)));
 
         // When an Event Hub producer is not associated with any specific partition, it may be desirable to request that
         // the Event Hubs service keep different events or batches of events together on the same partition. This can be
@@ -66,7 +62,7 @@ public class PublishEventsWithPartitionKey {
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
-        producer.send(dataList, sendOptions).subscribe(
+        producer.send(data, sendOptions).subscribe(
             (ignored) -> System.out.println("Sending a list of events to a partition that the partition key maps to..."),
             error -> {
                 System.err.println("There was an error sending the event batch: " + error.toString());
