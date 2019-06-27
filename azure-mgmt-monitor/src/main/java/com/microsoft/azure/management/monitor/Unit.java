@@ -40,7 +40,19 @@ public enum Unit {
     BYTE_SECONDS("ByteSeconds"),
 
     /** Enum value Unspecified. */
-    UNSPECIFIED("Unspecified");
+    UNSPECIFIED("Unspecified"),
+
+    /** Enum value Cores. */
+    CORES("Cores"),
+
+    /** Enum value MilliCores. */
+    MILLI_CORES("MilliCores"),
+
+    /** Enum value NanoCores. */
+    NANO_CORES("NanoCores"),
+
+    /** Enum value BitsPerSecond. */
+    BITS_PER_SECOND("BitsPerSecond");
 
     /** The actual serialized value for a Unit instance. */
     private String value;

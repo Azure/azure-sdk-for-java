@@ -48,25 +48,34 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     private String eventHubName;
 
     /**
-     * the list of metric settings.
+     * The list of metric settings.
      */
     @JsonProperty(value = "properties.metrics")
     private List<MetricSettings> metrics;
 
     /**
-     * the list of logs settings.
+     * The list of logs settings.
      */
     @JsonProperty(value = "properties.logs")
     private List<LogSettings> logs;
 
     /**
-     * The workspace ID (resource ID of a Log Analytics workspace) for a Log
-     * Analytics workspace to which you would like to send Diagnostic Logs.
-     * Example:
+     * The full ARM resource ID of the Log Analytics workspace to which you
+     * would like to send Diagnostic Logs. Example:
      * /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
      */
     @JsonProperty(value = "properties.workspaceId")
     private String workspaceId;
+
+    /**
+     * A string indicating whether the export to Log Analytics should use the
+     * default destination type, i.e. AzureDiagnostics, or use a destination
+     * type constructed as follows: &lt;normalized service
+     * identity&gt;_&lt;normalized category name&gt;. Possible values are:
+     * Dedicated and null (null is default.).
+     */
+    @JsonProperty(value = "properties.logAnalyticsDestinationType")
+    private String logAnalyticsDestinationType;
 
     /**
      * Get the resource ID of the storage account to which you would like to send Diagnostic Logs.
@@ -189,7 +198,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the workspace ID (resource ID of a Log Analytics workspace) for a Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
+     * Get the full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
      *
      * @return the workspaceId value
      */
@@ -198,13 +207,33 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the workspace ID (resource ID of a Log Analytics workspace) for a Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
+     * Set the full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
      *
      * @param workspaceId the workspaceId value to set
      * @return the DiagnosticSettingsResourceInner object itself.
      */
     public DiagnosticSettingsResourceInner withWorkspaceId(String workspaceId) {
         this.workspaceId = workspaceId;
+        return this;
+    }
+
+    /**
+     * Get a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
+     *
+     * @return the logAnalyticsDestinationType value
+     */
+    public String logAnalyticsDestinationType() {
+        return this.logAnalyticsDestinationType;
+    }
+
+    /**
+     * Set a string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null (null is default.).
+     *
+     * @param logAnalyticsDestinationType the logAnalyticsDestinationType value to set
+     * @return the DiagnosticSettingsResourceInner object itself.
+     */
+    public DiagnosticSettingsResourceInner withLogAnalyticsDestinationType(String logAnalyticsDestinationType) {
+        this.logAnalyticsDestinationType = logAnalyticsDestinationType;
         return this;
     }
 

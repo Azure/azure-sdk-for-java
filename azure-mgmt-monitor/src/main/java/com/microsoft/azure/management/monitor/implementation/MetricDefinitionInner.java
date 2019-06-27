@@ -46,7 +46,8 @@ public class MetricDefinitionInner {
     /**
      * the unit of the metric. Possible values include: 'Count', 'Bytes',
      * 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent',
-     * 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
+     * 'MilliSeconds', 'ByteSeconds', 'Unspecified', 'Cores', 'MilliCores',
+     * 'NanoCores', 'BitsPerSecond'.
      */
     @JsonProperty(value = "unit")
     private Unit unit;
@@ -166,7 +167,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
+     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified', 'Cores', 'MilliCores', 'NanoCores', 'BitsPerSecond'.
      *
      * @return the unit value
      */
@@ -175,7 +176,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Set the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified'.
+     * Set the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'CountPerSecond', 'BytesPerSecond', 'Percent', 'MilliSeconds', 'ByteSeconds', 'Unspecified', 'Cores', 'MilliCores', 'NanoCores', 'BitsPerSecond'.
      *
      * @param unit the unit value to set
      * @return the MetricDefinitionInner object itself.
