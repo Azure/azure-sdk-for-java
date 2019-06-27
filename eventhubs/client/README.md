@@ -16,8 +16,7 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
 - Receive events from one or more publishers, transform them to better meet the needs of your ecosystem, then publish
   the transformed events to a new stream for consumers to observe.
 
-[Source code][source_code] | [Package (Maven) (coming soon)][package] | [API reference documentation][api_documentation]
-| [Product documentation][event_hubs_product_docs]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][event_hubs_product_docs]
 
 ## Getting started
 
@@ -36,7 +35,7 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>5.0.0-preview.1</version>
 </dependency>
 ```
 
@@ -55,9 +54,9 @@ Event Hubs. Create an `EventHubClient` using the `EventHubClientBuilder`:
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
-EventHubClientBuilder builder = new EventHubClientBuilder()
-    .connectionString(connectionString, eventHubName);
-EventHubClient client = builder.build();
+EventHubClient client = new EventHubClientBuilder()
+    .connectionString(connectionString, eventHubName)
+    .build();
 ```
 
 ## Key concepts
@@ -71,7 +70,7 @@ EventHubClient client = builder.build();
   some client or server based business solution, or a web site.  
 
 - An **Event Hub consumer** picks up such information from the Event Hub and processes it. Processing may involve 
-  aggregation, complex computation and filtering. Processing may also involve distribution or storage of the information
+  aggregation, complex computation, and filtering. Processing may also involve distribution or storage of the information
   in a raw or transformed fashion. Event Hub consumers are often robust and high-scale platform infrastructure parts 
   with built-in analytics capabilities, like Azure Stream Analytics, Apache Spark, or Apache Storm.
 
@@ -92,29 +91,36 @@ For more concepts and deeper discussion, see: [Event Hubs Features][event_hubs_f
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 1.0][oasis_amqp_v1].
 
 ## Examples
+will re-doc this section tonight
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
 - [Publish an event to an Event Hub][sample_send_event]
 - [Consume events from an Event Hub partition][sample_receive_event]
 
 ## Troubleshooting
 
+### Enable client logging
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For example,
+setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can be found here: [log levels][log_levels].
 
-### Logging in debug
-You can use the ClientLogger class to get the debug logs. The class supports asVerbose(), asInfo(), asWarning(), and asError() as logging levels. An example of logging level, asInfo(), shows below
+### Enable AMQP transport logging
+If enabling client logging is not enough to diagnose your issues. You can enable logging to a file 
+in the underlying AMQP library, [Qpid Proton-J][qpid_proton_j_apache]. Qpid Proton-J uses `java.util.logging`. You can enable logging by create a configuration file with the contents below. Or set `proton.trace.level=ALL` and whichever configuration options you want for the `java.util.logging.Handler` implementation. Implementation classes and their options can be found in [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
-```java
-ClientLogger logger = new ClientLogger(Example.class);
-try {
-    upload(resource);
-} catch (Throwable ex) {
-    logger.asError().log("Failed to upload {}", resource.name(), ex);
-}
+#### Sample "logging.config" file ####
+``` logging config
+handlers=java.util.logging.FileHandler
+.level=OFF
+proton.trace.level=ALL
+java.util.logging.FileHandler.level=ALL
+java.util.logging.FileHandler.pattern=tracefilename
+java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
+java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
 
 ### Common exceptions
 #### AMQP exception
 This is a general exception for AMQP related failures, which includes the AMQP errors as ErrorCondition and the context 
-that caused this exception as ErrorContext. 'isTransient' is A boolean indicating if the exception is a transient error
+that caused this exception as ErrorContext. 'isTransient' is a boolean indicating if the exception is a transient error
 or not. If true, then the request can be retried; otherwise not.
 
 - ErrorCondition: it contains constants common to the AMQP protocol and constants shared by Azure services. More detail
@@ -123,7 +129,8 @@ or not. If true, then the request can be retried; otherwise not.
   AmqpSession, or AmqpLink. Such as SessionErrorContext and LinkErrorContext, the context for an error that occurs in an
   AMQP session and AMQP link, respectively.
 
-The recommend way to solve the specific exception the AMQP exception represents, please take the recommended action in [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions].
+The recommended way to solve the specific exception the AMQP exception represents is to follow the [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
+
 #### Operation cancelled exception
 It occurs when the underlying AMQP layer encounters an abnormal link abort or the connection is disconnected in an 
 unexpected fashion. It is recommended to attempt to verify the current state and retry if necessary.
@@ -153,8 +160,7 @@ many additional scenarios to help take advantage of the full feature set of the 
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft
-Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+If you would like to become an active contributor to this project please refer to our [Contribution Guidelines](./../../CONTRIBUTING.md) for more information.
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
@@ -169,7 +175,6 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 [event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_features]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-features
 [maven]: https://maven.apache.org/
-[package]: not-valid-link
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/eventhubs/client/
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
@@ -182,3 +187,6 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 [sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java
 [sample_send_send_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventDataListWIthSendOption.java
 [sample_receive_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsByBatch.java
+[qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[log_levels]: will-know
