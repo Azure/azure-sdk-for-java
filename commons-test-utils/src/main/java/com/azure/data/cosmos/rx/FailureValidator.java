@@ -24,7 +24,7 @@ package com.azure.data.cosmos.rx;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
@@ -133,13 +133,13 @@ public interface FailureValidator {
             return this;
         }
 
-        public <T extends Throwable> Builder error(Error error) {
+        public <T extends Throwable> Builder error(CosmosError cosmosError) {
             validators.add(new FailureValidator() {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).error().toJson()).isEqualTo(error.toJson());
+                    assertThat(((CosmosClientException) t).error().toJson()).isEqualTo(cosmosError.toJson());
                 }
             });
             return this;

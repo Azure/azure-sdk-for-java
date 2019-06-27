@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.StoredProcedure;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 

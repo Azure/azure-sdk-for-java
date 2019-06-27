@@ -21,52 +21,62 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.Resource;
 
 /**
- * Represents a database user in the Azure Cosmos DB database service.
+ * Represents a stored procedure in the Azure Cosmos DB database service.
+ * <p>
+ * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a document collection. The
+ * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
+ * additional details, refer to the server-side JavaScript API documentation.
  */
-public class User extends Resource {
+public class StoredProcedure extends Resource {
 
     /**
-     * Initialize a user object.
+     * Constructor.
      */
-    public User() {
+    public StoredProcedure() {
         super();
     }
 
     /**
-     * Initialize a user object from json string.
+     * Constructor.
      *
-     * @param jsonString the json string that represents the database user.
+     * @param jsonString the json string that represents the stored procedure.
      */
-    public User(String jsonString) {
+    public StoredProcedure(String jsonString) {
         super(jsonString);
     }
 
     /**
      * Sets the id
      * @param id the name of the resource.
-     * @return the current instance of User
+     * @return the current stored procedure
      */
-    public User id(String id){
+    public StoredProcedure id(String id){
         super.id(id);
         return this;
     }
 
     /**
-     * Gets the self-link of the permissions associated with the user.
+     * Get the body of the stored procedure.
      *
-     * @return the permissions link.
+     * @return the body of the stored procedure.
      */
-    public String getPermissionsLink() {
-        String selfLink = this.selfLink();
-        if (selfLink.endsWith("/")) {
-            return selfLink + super.getString(Constants.Properties.PERMISSIONS_LINK);
-        } else {
-            return selfLink + "/" + super.getString(Constants.Properties.PERMISSIONS_LINK);
-        }
+    public String getBody() {
+        return super.getString(Constants.Properties.BODY);
+    }
+
+    /**
+     * Set the body of the stored procedure.
+     *
+     * @param body the body of the stored procedure.
+     */
+    public void setBody(String body) {
+        BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
     }
 }
+

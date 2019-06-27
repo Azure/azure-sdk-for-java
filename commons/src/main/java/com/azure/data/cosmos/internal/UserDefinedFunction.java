@@ -21,48 +21,51 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
+
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.Resource;
 
 /**
- * Options used with attachment content (aka media) creation in the Azure Cosmos DB database service.
+ * Represents a user defined function in the Azure Cosmos DB database service.
+ * <p>
+ * Cosmos DB supports JavaScript UDFs which can be used inside queries, stored procedures and triggers. For additional
+ * details, refer to the server-side JavaScript API documentation.
  */
-public final class MediaOptions {
-    private String slug;
-    private String contentType;
+public class UserDefinedFunction extends Resource {
 
     /**
-     * Gets the HTTP Slug header value.
-     *
-     * @return the slug.
+     * Constructor.
      */
-    public String getSlug() {
-        return this.slug;
+    public UserDefinedFunction() {
+        super();
     }
 
     /**
-     * Sets the HTTP Slug header value.
+     * Constructor.
      *
-     * @param slug the slug.
+     * @param jsonString the json string that represents the user defined function.
      */
-    public void setSlug(String slug) {
-        this.slug = slug;
+    public UserDefinedFunction(String jsonString) {
+        super(jsonString);
     }
 
     /**
-     * Gets the HTTP ContentType header value.
+     * Get the body of the user defined function.
      *
-     * @return the content type.
+     * @return the body.
      */
-    public String getContentType() {
-        return this.contentType;
+    public String getBody() {
+        return super.getString(Constants.Properties.BODY);
     }
 
     /**
-     * Sets the HTTP ContentType header value.
+     * Set the body of the user defined function.
      *
-     * @param contentType the content type.
+     * @param body the body.
      */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setBody(String body) {
+        BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
     }
 }
+

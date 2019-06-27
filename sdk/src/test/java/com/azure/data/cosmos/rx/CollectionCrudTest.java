@@ -41,7 +41,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.RetryAnalyzer;
 import com.azure.data.cosmos.SpatialSpec;
@@ -55,6 +55,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -152,7 +153,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         compositeIndex2.add(compositePath5);
         compositeIndex2.add(compositePath6);
 
-        Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+        List<List<CompositePath>> compositeIndexes = new ArrayList<>();
         compositeIndexes.add(compositeIndex1);
         compositeIndexes.add(compositeIndex2);
         indexingPolicy.compositeIndexes(compositeIndexes);
@@ -163,9 +164,9 @@ public class CollectionCrudTest extends TestSuiteBase {
                 SpatialType.POLYGON,
                 SpatialType.MULTI_POLYGON
         };
-        Collection<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
+        List<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
         for (int index = 0; index < 2; index++) {
-            Collection<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
+            List<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
 
             SpatialSpec spec = new SpatialSpec();
             spec.path("/path" + index + "/*");

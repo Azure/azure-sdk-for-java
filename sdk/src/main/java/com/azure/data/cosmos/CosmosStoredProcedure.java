@@ -23,6 +23,8 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
+import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.StoredProcedure;
 import reactor.core.publisher.Mono;
 
 public class CosmosStoredProcedure {

@@ -23,7 +23,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.internal.caches.RxClientCollectionCache;
 import reactor.core.publisher.Mono;
 

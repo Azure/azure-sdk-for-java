@@ -28,7 +28,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.benchmark.Configuration.Operation;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;

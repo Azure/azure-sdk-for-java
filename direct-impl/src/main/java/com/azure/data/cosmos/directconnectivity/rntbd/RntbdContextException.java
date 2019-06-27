@@ -25,7 +25,7 @@
 package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.TransportException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -34,7 +34,7 @@ import java.util.Map;
 
 public final class RntbdContextException extends TransportException {
 
-    final private Error error;
+    final private CosmosError cosmosError;
     final private Map<String, Object> responseHeaders;
     final private HttpResponseStatus status;
 
@@ -42,13 +42,13 @@ public final class RntbdContextException extends TransportException {
 
         super(status + ": " + details, null);
 
-        this.error = BridgeInternal.createError(details);
+        this.cosmosError = BridgeInternal.createCosmosError(details);
         this.responseHeaders = responseHeaders;
         this.status = status;
     }
 
-    public Error getError() {
-        return error;
+    public CosmosError getCosmosError() {
+        return cosmosError;
     }
 
     public Map<String, Object> getResponseHeaders() {

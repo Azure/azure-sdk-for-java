@@ -25,7 +25,7 @@ package com.azure.data.cosmos.directconnectivity.rntbd;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.ConflictException;
 import com.azure.data.cosmos.directconnectivity.ForbiddenException;
 import com.azure.data.cosmos.directconnectivity.GoneException;
@@ -649,9 +649,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create Error instance
 
-            final Error error = response.hasPayload() ?
-                BridgeInternal.createError(RntbdObjectMapper.readTree(response)) :
-                new Error(Integer.toString(status.code()), status.reasonPhrase(), status.codeClass().name());
+            final CosmosError cosmosError = response.hasPayload() ?
+                BridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response)) :
+                new CosmosError(Integer.toString(status.code()), status.reasonPhrase(), status.codeClass().name());
 
             // ..Map RNTBD response headers to HTTP response headers
 
@@ -664,15 +664,15 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             switch (status.code()) {
 
                 case StatusCodes.BADREQUEST:
-                    cause = new BadRequestException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new BadRequestException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.CONFLICT:
-                    cause = new ConflictException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ConflictException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.FORBIDDEN:
-                    cause = new ForbiddenException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ForbiddenException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.GONE:
@@ -681,69 +681,69 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                     switch (subStatusCode) {
                         case SubStatusCodes.COMPLETING_SPLIT:
-                            cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            cause = new PartitionKeyRangeIsSplittingException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
-                            cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            cause = new PartitionIsMigratingException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
-                            cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            cause = new InvalidPartitionException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
-                            cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            cause = new PartitionKeyRangeGoneException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
-                            cause = new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            cause = new GoneException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                     }
                     break;
 
                 case StatusCodes.INTERNAL_SERVER_ERROR:
-                    cause = new InternalServerErrorException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new InternalServerErrorException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.LOCKED:
-                    cause = new LockedException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new LockedException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.METHOD_NOT_ALLOWED:
-                    cause = new MethodNotAllowedException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new MethodNotAllowedException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.NOTFOUND:
-                    cause = new NotFoundException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new NotFoundException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.PRECONDITION_FAILED:
-                    cause = new PreconditionFailedException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new PreconditionFailedException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.REQUEST_ENTITY_TOO_LARGE:
-                    cause = new RequestEntityTooLargeException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new RequestEntityTooLargeException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.REQUEST_TIMEOUT:
-                    cause = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new RequestTimeoutException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.RETRY_WITH:
-                    cause = new RetryWithException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new RetryWithException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.SERVICE_UNAVAILABLE:
-                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ServiceUnavailableException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.TOO_MANY_REQUESTS:
-                    cause = new RequestRateTooLargeException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new RequestRateTooLargeException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 case StatusCodes.UNAUTHORIZED:
-                    cause = new UnauthorizedException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new UnauthorizedException(cosmosError, lsn, partitionKeyRangeId, responseHeaders);
                     break;
 
                 default:
-                    cause = new CosmosClientException(status.code(), error, responseHeaders);
+                    cause = new CosmosClientException(status.code(), cosmosError, responseHeaders);
                     break;
             }
 

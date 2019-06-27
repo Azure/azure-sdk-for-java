@@ -24,9 +24,9 @@
 package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;

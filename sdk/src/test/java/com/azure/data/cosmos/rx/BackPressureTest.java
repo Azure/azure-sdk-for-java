@@ -33,7 +33,7 @@ import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.Offer;
+import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
 import io.reactivex.subscribers.TestSubscriber;

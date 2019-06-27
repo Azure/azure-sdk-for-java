@@ -26,7 +26,7 @@ import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.Exceptions;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.NotFoundException;

@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;

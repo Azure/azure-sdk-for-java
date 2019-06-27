@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;

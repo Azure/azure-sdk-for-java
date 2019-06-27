@@ -32,10 +32,11 @@ import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.UniqueKey;
 import com.azure.data.cosmos.UniqueKeyPolicy;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import io.reactivex.subscribers.TestSubscriber;
 import org.hamcrest.Matchers;
 import org.testng.annotations.AfterClass;
@@ -44,7 +45,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -64,7 +64,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/field"));
-        uniqueKeyPolicy.uniqueKeys(Collections.singleton(uniqueKey));
+        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

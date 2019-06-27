@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.internal.RequestOptions;
+
 /**
  * Encapsulates options that can be specified for a request issued to cosmos stored procedure.
  */

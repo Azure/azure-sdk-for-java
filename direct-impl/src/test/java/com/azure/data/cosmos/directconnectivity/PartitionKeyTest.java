@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.Undefined;
 import com.azure.data.cosmos.internal.RMResources;
@@ -63,7 +63,7 @@ public class PartitionKeyTest {
      */
     @Test(groups = "unit", dataProvider = "paramProvider")
     public void partitionKeyCompare(Object partitionKey, String partitionKeyAsJson) {
-        assertThat(new PartitionKey(partitionKey)).isEqualTo(PartitionKey.FromJsonString(partitionKeyAsJson));
+        assertThat(new PartitionKey(partitionKey)).isEqualTo(PartitionKey.fromJsonString(partitionKeyAsJson));
     }
 
     /**
@@ -73,7 +73,7 @@ public class PartitionKeyTest {
     public void tooFewPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.paths(ImmutableList.of("/pk1", "/pk2"));
-        PartitionKey pk = PartitionKey.FromJsonString("[\"PartitionKeyValue\"]");
+        PartitionKey pk = PartitionKey.fromJsonString("[\"PartitionKeyValue\"]");
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(pk.getInternalPartitionKey(), pkd);
@@ -90,7 +90,7 @@ public class PartitionKeyTest {
     public void tooManyPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.paths(ImmutableList.of("/pk1"));
-        PartitionKey pk = PartitionKey.FromJsonString("[true, false]");
+        PartitionKey pk = PartitionKey.fromJsonString("[true, false]");
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(pk.getInternalPartitionKey(), pkd);

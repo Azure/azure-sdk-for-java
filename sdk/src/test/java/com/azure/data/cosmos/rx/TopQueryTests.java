@@ -29,7 +29,7 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.RetryAnalyzer;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.TakeContinuationToken;

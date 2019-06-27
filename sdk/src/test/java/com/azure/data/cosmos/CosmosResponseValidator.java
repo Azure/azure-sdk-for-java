@@ -117,14 +117,14 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             return this;
         }
 
-        public Builder<T> withCompositeIndexes(Collection<ArrayList<CompositePath>> compositeIndexesWritten) {
+        public Builder<T> withCompositeIndexes(List<List<CompositePath>> compositeIndexesWritten) {
             validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
                 public void validate(CosmosContainerResponse resourceResponse) {
-                    Iterator<ArrayList<CompositePath>> compositeIndexesReadIterator = resourceResponse.properties()
+                    Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.properties()
                             .indexingPolicy().compositeIndexes().iterator();
-                    Iterator<ArrayList<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
+                    Iterator<List<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
                     
                     ArrayList<String> readIndexesStrings = new ArrayList<String>();
                     ArrayList<String> writtenIndexesStrings = new ArrayList<String>();

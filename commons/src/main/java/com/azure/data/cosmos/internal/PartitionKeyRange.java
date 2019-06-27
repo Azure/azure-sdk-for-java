@@ -21,9 +21,10 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.routing.Range;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public void setMinInclusive(String minInclusive) {
-        super.set("minInclusive", minInclusive);
+        BridgeInternal.setProperty(this, "minInclusive", minInclusive);
     }
 
     public String getMaxExclusive() {
@@ -92,7 +93,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public void setMaxExclusive(String maxExclusive) {
-        super.set("maxExclusive", maxExclusive);
+        BridgeInternal.setProperty(this, "maxExclusive", maxExclusive);
     }
 
     public Range<String> toRange() {
@@ -121,8 +122,8 @@ public class PartitionKeyRange extends Resource {
         return hash;
     }
 
-    void setParents(List<String> parents) {
-        this.set(Constants.Properties.PARENTS, parents);
+    public void setParents(List<String> parents) {
+        BridgeInternal.setProperty(this, Constants.Properties.PARENTS, parents);
     }
 
     /**

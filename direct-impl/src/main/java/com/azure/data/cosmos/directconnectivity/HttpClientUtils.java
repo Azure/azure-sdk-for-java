@@ -23,8 +23,9 @@
 
 package com.azure.data.cosmos.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.http.HttpRequest;
@@ -53,10 +54,10 @@ public class HttpClientUtils {
         Mono<String> readStream = ResponseUtils.toString(httpResponse.body());
 
         return readStream.map(body -> {
-            Error error = new Error(body);
+            CosmosError cosmosError = BridgeInternal.createCosmosError(body);
 
             // TODO: we should set resource address in the Document Client Exception
-            return new CosmosClientException(httpResponse.statusCode(), error,
+            return new CosmosClientException(httpResponse.statusCode(), cosmosError,
                     httpResponse.headers().toMap());
         });
     }

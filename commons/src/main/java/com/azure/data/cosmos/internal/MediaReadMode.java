@@ -21,50 +21,24 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
-
-import com.azure.data.cosmos.internal.Constants;
+package com.azure.data.cosmos.internal;
 
 /**
- * Represents a user defined function in the Azure Cosmos DB database service.
- * <p>
- * Cosmos DB supports JavaScript UDFs which can be used inside queries, stored procedures and triggers. For additional
- * details, refer to the server-side JavaScript API documentation.
+ * Represents the mode for use with downloading attachment content (aka media) from the Azure Cosmos DB database service.
  */
-public class UserDefinedFunction extends Resource {
+public enum MediaReadMode {
 
     /**
-     * Constructor.
+     * Content is buffered at the client and not directly streamed from the
+     * content store. Use Buffered to reduce the time taken to read and write
+     * media files.
      */
-    public UserDefinedFunction() {
-        super();
-    }
+    Buffered,
 
     /**
-     * Constructor.
-     *
-     * @param jsonString the json string that represents the user defined function.
+     * Content is directly streamed from the content store without any buffering
+     * at the client. Use Streamed to reduce the client memory overhead of
+     * reading and writing media files.
      */
-    public UserDefinedFunction(String jsonString) {
-        super(jsonString);
-    }
-
-    /**
-     * Get the body of the user defined function.
-     *
-     * @return the body.
-     */
-    public String getBody() {
-        return super.getString(Constants.Properties.BODY);
-    }
-
-    /**
-     * Set the body of the user defined function.
-     *
-     * @param body the body.
-     */
-    public void setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
-    }
+    Streamed
 }
-

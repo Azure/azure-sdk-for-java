@@ -21,8 +21,10 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
@@ -45,7 +47,7 @@ public final class ResourceResponse<T extends Resource> {
     private Map<String, Long> usageHeaders;
     private Map<String, Long> quotaHeaders;
 
-    ResourceResponse(RxDocumentServiceResponse response, Class<T> cls) {
+    public ResourceResponse(RxDocumentServiceResponse response, Class<T> cls) {
         this.response = response;
         this.usageHeaders = new HashMap<String, Long>();
         this.quotaHeaders = new HashMap<String, Long>();

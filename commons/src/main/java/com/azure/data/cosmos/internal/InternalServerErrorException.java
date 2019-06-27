@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 
@@ -46,8 +46,8 @@ public class InternalServerErrorException extends CosmosClientException {
         this(RMResources.InternalServerError);
     }
 
-    public InternalServerErrorException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, error, responseHeaders);
+    public InternalServerErrorException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }

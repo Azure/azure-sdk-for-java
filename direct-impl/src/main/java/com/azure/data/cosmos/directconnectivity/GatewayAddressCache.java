@@ -26,7 +26,7 @@ package com.azure.data.cosmos.directconnectivity;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.AuthorizationTokenType;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.Exceptions;

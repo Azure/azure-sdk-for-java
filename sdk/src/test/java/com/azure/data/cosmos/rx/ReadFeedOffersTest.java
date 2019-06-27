@@ -28,7 +28,7 @@ import com.azure.data.cosmos.DatabaseForTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.Offer;
+import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.testng.annotations.AfterClass;

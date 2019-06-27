@@ -27,7 +27,7 @@ import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.QueryMetrics;
+import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -240,8 +240,8 @@ public interface FeedResponseListValidator<T extends Resource> {
             return this;
         }
 
-        public Builder<T> withOrderedResults(ArrayList<CosmosItemProperties> expectedOrderedList,
-                ArrayList<CompositePath> compositeIndex) {
+        public Builder<T> withOrderedResults(List<CosmosItemProperties> expectedOrderedList,
+                List<CompositePath> compositeIndex) {
             validators.add(new FeedResponseListValidator<CosmosItemProperties>() {
                 @Override
                 public void validate(List<FeedResponse<CosmosItemProperties>> feedList) {

@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.ICollectionRoutingMapCache;
 import com.azure.data.cosmos.internal.IRoutingMapProvider;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;

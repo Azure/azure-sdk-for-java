@@ -54,7 +54,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      *
      * @param jsonString the JSON string that represents the partition key definition.
      */
-    public PartitionKeyDefinition(String jsonString) {
+    PartitionKeyDefinition(String jsonString) {
         super(jsonString);
     }
 

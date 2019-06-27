@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.UserDefinedFunction;
+
 public class CosmosUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
     private CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;

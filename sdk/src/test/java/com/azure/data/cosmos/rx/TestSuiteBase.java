@@ -54,7 +54,7 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryOptions;
@@ -346,7 +346,7 @@ public class TestSuiteBase extends CosmosClientTest {
         CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDefinition);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+        List<List<CompositePath>> compositeIndexes = new ArrayList<>();
 
         //Simple
         ArrayList<CompositePath> compositeIndexSimple = new ArrayList<CompositePath>();
@@ -508,7 +508,7 @@ public class TestSuiteBase extends CosmosClientTest {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
+        List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();

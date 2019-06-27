@@ -1,9 +1,9 @@
 package com.azure.data.cosmos.internal.query.metrics;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.QueryMetrics;
-import com.azure.data.cosmos.QueryPreparationTimes;
-import com.azure.data.cosmos.RuntimeExecutionTimes;
+import com.azure.data.cosmos.internal.QueryMetrics;
+import com.azure.data.cosmos.internal.QueryPreparationTimes;
+import com.azure.data.cosmos.internal.RuntimeExecutionTimes;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.time.Duration;

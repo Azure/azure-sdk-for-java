@@ -54,7 +54,7 @@ public class CosmosClientException extends Exception {
     private final Map<String, String> responseHeaders;
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
-    private Error error;
+    private CosmosError cosmosError;
 
     long lsn;
     String partitionKeyRangeId;
@@ -85,8 +85,8 @@ public class CosmosClientException extends Exception {
      */
     public CosmosClientException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
-        this.error = new Error();
-        error.set(Constants.Properties.MESSAGE, errorMessage);
+        this.cosmosError = new CosmosError();
+        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
@@ -103,11 +103,11 @@ public class CosmosClientException extends Exception {
      * Creates a new instance of the CosmosClientException class.
      *
      * @param statusCode      the http status code of the response.
-     * @param errorResource   the error resource object.
+     * @param cosmosErrorResource   the error resource object.
      * @param responseHeaders the response headers.
      */
-    public CosmosClientException(int statusCode, Error errorResource, Map<String, String> responseHeaders) {
-        this(/* resourceAddress */ null, statusCode, errorResource, responseHeaders);
+    public CosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+        this(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
     /**
@@ -115,14 +115,14 @@ public class CosmosClientException extends Exception {
      *
      * @param resourceAddress the address of the resource the request is associated with.
      * @param statusCode      the http status code of the response.
-     * @param errorResource   the error resource object.
+     * @param cosmosErrorResource   the error resource object.
      * @param responseHeaders the response headers.
      */
 
-    public CosmosClientException(String resourceAddress, int statusCode, Error errorResource, Map<String, String> responseHeaders) {
-        this(statusCode, errorResource == null ? null : errorResource.getMessage(), responseHeaders, null);
+    public CosmosClientException(String resourceAddress, int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+        this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
-        this.error = errorResource;
+        this.cosmosError = cosmosErrorResource;
     }
 
     /**
@@ -195,8 +195,8 @@ public class CosmosClientException extends Exception {
      *
      * @return the error.
      */
-    public Error error() {
-        return this.error;
+    public CosmosError error() {
+        return this.cosmosError;
     }
 
     /**
@@ -262,17 +262,17 @@ public class CosmosClientException extends Exception {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "error=" + error + ", resourceAddress='" + resourceAddress + '\''
+        return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='" + resourceAddress + '\''
                 + ", statusCode=" + statusCode + ", message=" + getMessage() + ", causeInfo=" + causeInfo()
                 + ", responseHeaders=" + responseHeaders + ", requestHeaders=" + requestHeaders + '}';
     }
 
     String innerErrorMessage() {
         String innerErrorMessage = super.getMessage();
-        if (error != null) {
-            innerErrorMessage = error.getMessage();
+        if (cosmosError != null) {
+            innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(error.get("Errors"));
+                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
             }
         }
         return innerErrorMessage;

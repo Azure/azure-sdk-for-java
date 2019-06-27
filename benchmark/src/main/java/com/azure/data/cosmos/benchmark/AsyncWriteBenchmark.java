@@ -25,7 +25,7 @@ package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;

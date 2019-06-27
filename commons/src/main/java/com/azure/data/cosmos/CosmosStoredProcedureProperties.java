@@ -23,6 +23,8 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.StoredProcedure;
 
 import java.util.List;
 import java.util.stream.Collectors;

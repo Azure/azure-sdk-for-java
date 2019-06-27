@@ -26,9 +26,9 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IRetryPolicyFactory;
@@ -737,7 +737,7 @@ public class DocumentProducerTest {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
-            return new CosmosClientException(HttpConstants.StatusCodes.GONE, new Error(), headers);
+            return new CosmosClientException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
         }
 
         protected void capture(String partitionId, CapturedInvocation captureInvocation) {

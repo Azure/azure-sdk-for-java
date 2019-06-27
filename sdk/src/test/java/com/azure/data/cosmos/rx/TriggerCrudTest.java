@@ -31,7 +31,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosTrigger;
 import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
 import org.testng.annotations.AfterClass;

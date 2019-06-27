@@ -25,7 +25,7 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.DatabaseAccount;
-import com.azure.data.cosmos.ReplicationPolicy;
+import com.azure.data.cosmos.internal.ReplicationPolicy;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 

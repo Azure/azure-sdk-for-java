@@ -21,9 +21,12 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.TriggerOperation;
+import com.azure.data.cosmos.TriggerType;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -65,7 +68,7 @@ public class Trigger extends Resource {
      * @param body the body of the trigger.
      */
     public void setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+        BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
     }
 
     /**
@@ -91,7 +94,7 @@ public class Trigger extends Resource {
      * @param triggerType the trigger type.
      */
     public void setTriggerType(TriggerType triggerType) {
-        super.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
+        BridgeInternal.setProperty(this, Constants.Properties.TRIGGER_TYPE, triggerType.toString());
     }
 
     /**
@@ -117,6 +120,6 @@ public class Trigger extends Resource {
      * @param triggerOperation the trigger operation.
      */
     public void setTriggerOperation(TriggerOperation triggerOperation) {
-        super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
+        BridgeInternal.setProperty(this, Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
     }
 }

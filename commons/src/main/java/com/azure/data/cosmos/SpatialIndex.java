@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
  */
-public final class SpatialIndex extends Index {
+final class SpatialIndex extends Index {
 
     /**
      * Initializes a new instance of the SpatialIndex class.
@@ -45,7 +45,7 @@ public final class SpatialIndex extends Index {
      *
      * @param dataType specifies the target data type for the index path specification.
      */
-    public SpatialIndex(DataType dataType) {
+    SpatialIndex(DataType dataType) {
         super(IndexKind.SPATIAL);
         this.dataType(dataType);
     }
@@ -55,7 +55,7 @@ public final class SpatialIndex extends Index {
      *
      * @param jsonString the json string that represents the index.
      */
-    public SpatialIndex(String jsonString) {
+    SpatialIndex(String jsonString) {
         super(jsonString, IndexKind.SPATIAL);
         if (this.dataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");

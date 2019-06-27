@@ -29,7 +29,7 @@ import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.OperationType;

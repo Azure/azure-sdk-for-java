@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Permission;
+import com.azure.data.cosmos.internal.ResourceResponse;
+
 public class CosmosPermissionResponse extends CosmosResponse<CosmosPermissionProperties> {
     CosmosPermission permissionClient; 
     

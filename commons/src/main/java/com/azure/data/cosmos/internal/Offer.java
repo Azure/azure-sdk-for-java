@@ -21,10 +21,10 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -70,7 +70,7 @@ public class Offer extends Resource {
      * @param resourceLink the resource link.
      */
     void setResourceLink(String resourceLink) {
-        super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
+        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_LINK, resourceLink);
     }
 
     /**
@@ -88,7 +88,7 @@ public class Offer extends Resource {
      * @param resourceId the resource id.
      */
     void setOfferResourceId(String resourceId) {
-        super.set(Constants.Properties.OFFER_RESOURCE_ID, resourceId);
+        BridgeInternal.setProperty(this, Constants.Properties.OFFER_RESOURCE_ID, resourceId);
     }
 
     /**
@@ -106,7 +106,7 @@ public class Offer extends Resource {
      * @param offerType the offer type.
      */
     public void setOfferType(String offerType) {
-        super.set(Constants.Properties.OFFER_TYPE, offerType);
+        BridgeInternal.setProperty(this, Constants.Properties.OFFER_TYPE, offerType);
     }
 
     /**
@@ -124,7 +124,7 @@ public class Offer extends Resource {
      * @param offerVersion the version of the offer.
      */
     public void setOfferVersion(String offerVersion) {
-        super.set(Constants.Properties.OFFER_VERSION, offerVersion);
+        BridgeInternal.setProperty(this, Constants.Properties.OFFER_VERSION, offerVersion);
     }
 
     /**
@@ -146,10 +146,10 @@ public class Offer extends Resource {
     }
 
     private ObjectNode getContent() {
-        return super.getObject(Constants.Properties.OFFER_CONTENT);
+        return BridgeInternal.getObject(this, Constants.Properties.OFFER_CONTENT);
     }
 
     private void setContent(ObjectNode offerContent) {
-        super.set(Constants.Properties.OFFER_CONTENT, offerContent);
+        BridgeInternal.setProperty(this, Constants.Properties.OFFER_CONTENT, offerContent);
     }
 }

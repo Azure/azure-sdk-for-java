@@ -283,6 +283,7 @@
           <additionalOptions>${javadoc.opts}</additionalOptions>
           <sourceFileExcludes>
             <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
+            <sourceFileExclude>**/*BridgeInternal.java</sourceFileExclude>
           </sourceFileExcludes>
         </configuration>
         <executions>

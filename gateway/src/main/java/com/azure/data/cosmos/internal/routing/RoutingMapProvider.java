@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 
 import java.util.Collection;
 

@@ -22,6 +22,10 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.StoredProcedure;
+import com.azure.data.cosmos.internal.StoredProcedureResponse;
+
 public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
     private CosmosStoredProcedure storedProcedure;

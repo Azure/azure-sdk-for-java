@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class JsonSerializable {
         }
     }
 
-    Logger getLogger() {
+    public Logger getLogger() {
         return logger;
     }
 
@@ -309,7 +310,11 @@ public class JsonSerializable {
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 try {
-                    return c.getConstructor(String.class).newInstance(toJson(jsonObj));
+                    Constructor<T> constructor = c.getDeclaredConstructor(String.class);
+                    if(Modifier.isPrivate(constructor.getModifiers())) {
+                        constructor.setAccessible(true);
+                    }
+                    return constructor.newInstance(toJson(jsonObj));
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to instantiate class object.", e);
@@ -376,7 +381,11 @@ public class JsonSerializable {
                 } else if (isJsonSerializable) {
                     // JsonSerializable
                     try {
-                        result.add(c.getConstructor(String.class).newInstance(toJson(n)));
+                        Constructor<T> constructor = c.getDeclaredConstructor(String.class);
+                        if(Modifier.isPrivate(constructor.getModifiers())) {
+                            constructor.setAccessible(true);
+                        }
+                        result.add(constructor.newInstance(toJson(n)));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to instantiate class object.", e);

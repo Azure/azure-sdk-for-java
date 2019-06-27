@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.Trigger;
+
 public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
     private CosmosTriggerProperties cosmosTriggerProperties;

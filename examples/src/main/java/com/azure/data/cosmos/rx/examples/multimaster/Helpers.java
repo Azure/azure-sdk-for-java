@@ -27,7 +27,7 @@ import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

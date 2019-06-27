@@ -26,13 +26,14 @@ import com.azure.data.cosmos.internal.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the
  * collection in the Azure Cosmos DB service.
  */
 public class UniqueKeyPolicy extends JsonSerializable {
-    private Collection<UniqueKey> uniqueKeys;
+    private List<UniqueKey> uniqueKeys;
 
     public UniqueKeyPolicy() {
         super();
@@ -43,7 +44,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      *
      * @param jsonString the json string that represents the Unique Key policy.
      */
-    public UniqueKeyPolicy(String jsonString) {
+    UniqueKeyPolicy(String jsonString) {
         super(jsonString);
     }
 
@@ -55,7 +56,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      */
     public Collection<UniqueKey> uniqueKeys() {
         if (this.uniqueKeys == null) {
-            this.uniqueKeys = super.getCollection(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
+            this.uniqueKeys = super.getList(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
             if (this.uniqueKeys == null) {
                 this.uniqueKeys = new ArrayList<>();
             }
@@ -63,7 +64,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
         return this.uniqueKeys;
     }
 
-    public UniqueKeyPolicy uniqueKeys(Collection<UniqueKey> uniqueKeys) {
+    public UniqueKeyPolicy uniqueKeys(List<UniqueKey> uniqueKeys) {
         if (uniqueKeys == null) {
             throw new IllegalArgumentException("uniqueKeys cannot be null.");
         }

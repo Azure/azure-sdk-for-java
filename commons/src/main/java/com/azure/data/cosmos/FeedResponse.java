@@ -25,6 +25,8 @@ package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.QueryMetrics;
+import com.azure.data.cosmos.internal.QueryMetricsConstants;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;

@@ -25,7 +25,7 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
@@ -44,8 +44,8 @@ public class GoneException extends CosmosClientException {
         this(RMResources.Gone, null);
     }
 
-    public GoneException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.GONE, error, responseHeaders);
+    public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
@@ -87,8 +87,8 @@ public class GoneException extends CosmosClientException {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
-    public GoneException(Error error, Map<String, String> headers) {
-        super(HttpConstants.StatusCodes.GONE, error, headers);
+    public GoneException(CosmosError cosmosError, Map<String, String> headers) {
+        super(HttpConstants.StatusCodes.GONE, cosmosError, headers);
     }
 
     private static String message(String localIP, String baseMessage) {

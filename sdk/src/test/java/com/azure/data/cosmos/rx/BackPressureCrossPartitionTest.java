@@ -85,7 +85,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         partitionKeyDef.paths(paths);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
+        List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();

@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.StoredProcedureResponse;
+
 import java.time.Duration;
 import java.util.Map;
 

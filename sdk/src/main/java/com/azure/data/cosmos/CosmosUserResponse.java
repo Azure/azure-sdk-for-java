@@ -1,5 +1,8 @@
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.User;
+
 public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
     private CosmosUser user;
     

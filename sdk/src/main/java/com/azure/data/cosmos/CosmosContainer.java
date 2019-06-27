@@ -23,7 +23,12 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.internal.Paths;
+import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.StoredProcedure;
+import com.azure.data.cosmos.internal.Trigger;
+import com.azure.data.cosmos.internal.UserDefinedFunction;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

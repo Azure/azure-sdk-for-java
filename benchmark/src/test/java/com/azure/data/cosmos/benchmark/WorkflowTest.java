@@ -32,7 +32,7 @@ import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.rx.TestConfigurations;
 import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +43,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -324,7 +325,7 @@ public class WorkflowTest {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
+        List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();

@@ -37,8 +37,8 @@ import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.RequestOptions;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -394,7 +394,7 @@ public class CollectionCRUDAsyncAPITest extends DocumentClientTest {
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
+        List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();

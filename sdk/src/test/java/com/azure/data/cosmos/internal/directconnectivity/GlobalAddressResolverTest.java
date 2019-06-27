@@ -26,7 +26,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.directconnectivity.GatewayAddressCache;
 import com.azure.data.cosmos.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.data.cosmos.directconnectivity.Protocol;

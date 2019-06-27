@@ -27,7 +27,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.DatabaseAccount;
-import com.azure.data.cosmos.ReplicationPolicy;
+import com.azure.data.cosmos.internal.ReplicationPolicy;
 import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;

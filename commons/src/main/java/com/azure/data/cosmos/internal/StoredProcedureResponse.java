@@ -21,10 +21,11 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+import com.azure.data.cosmos.Attachment;
+import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ public final class StoredProcedureResponse {
      *
      * @param response the document service response.
      */
-    StoredProcedureResponse(RxDocumentServiceResponse response) {
+    public StoredProcedureResponse(RxDocumentServiceResponse response) {
         this.response = response;
     }
 

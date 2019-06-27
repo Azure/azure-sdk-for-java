@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-class QueryMetricsUtils {
+public class QueryMetricsUtils {
     static final String Indent = StringUtils.SPACE;
     private static final int NANOS_TO_MILLIS = 1000000;
     private static final String BytesUnitString = "bytes";

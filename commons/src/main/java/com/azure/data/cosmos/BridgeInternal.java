@@ -24,10 +24,16 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.internal.QueryMetrics;
+import com.azure.data.cosmos.internal.ReplicationPolicy;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
+import com.azure.data.cosmos.internal.StoredProcedureResponse;
 import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -47,8 +53,12 @@ import static com.azure.data.cosmos.internal.Constants.QueryExecutionContext.INC
  **/
 public class BridgeInternal {
 
-    public static Error createError(ObjectNode objectNode) {
-        return new Error(objectNode);
+    public static CosmosError createCosmosError(ObjectNode objectNode) {
+        return new CosmosError(objectNode);
+    }
+
+    public static CosmosError createCosmosError(String jsonString) {
+        return new CosmosError(jsonString);
     }
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
@@ -56,13 +66,8 @@ public class BridgeInternal {
     }
 
     public static <T extends Resource> ResourceResponse<T> toResourceResponse(RxDocumentServiceResponse response,
-            Class<T> cls) {
+                                                                              Class<T> cls) {
         return new ResourceResponse<T>(response, cls);
-    }
-
-    public static <T extends Resource> MediaResponse toMediaResponse(RxDocumentServiceResponse response,
-            boolean willBuffer) {
-        return new MediaResponse(response, willBuffer);
     }
 
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
@@ -300,11 +305,19 @@ public class BridgeInternal {
         jsonSerializable.set(propertyName, value);
     }
 
+    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getObject(propertyName);
+    }
+
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
         return new CosmosStoredProcedureProperties(jsonString);
+    }
+
+    public static Object getValue(JsonNode value) {
+        return JsonSerializable.getValue(value);
     }
 }

@@ -22,7 +22,7 @@
  */
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.QueryMetrics;
+import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.BadRequestException;
 import com.azure.data.cosmos.internal.RequestChargeTracker;

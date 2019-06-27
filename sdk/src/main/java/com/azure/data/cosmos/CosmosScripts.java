@@ -22,6 +22,9 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.StoredProcedure;
+import com.azure.data.cosmos.internal.Trigger;
+import com.azure.data.cosmos.internal.UserDefinedFunction;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

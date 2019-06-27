@@ -23,7 +23,17 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.Offer;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
+import com.azure.data.cosmos.internal.Permission;
+import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
+import com.azure.data.cosmos.internal.StoredProcedure;
+import com.azure.data.cosmos.internal.StoredProcedureResponse;
+import com.azure.data.cosmos.internal.Trigger;
+import com.azure.data.cosmos.internal.User;
+import com.azure.data.cosmos.internal.UserDefinedFunction;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -624,7 +634,7 @@ public interface AsyncDocumentClient {
      * @return an {@link Flux} containing the single resource response with the created stored procedure or an error.
      */
     Flux<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
-                                                                        RequestOptions options);
+                                                                  RequestOptions options);
 
     /**
      * Upserts a stored procedure.
@@ -871,7 +881,7 @@ public interface AsyncDocumentClient {
      * @return an {@link Flux} containing the single resource response with the created user defined function or an error.
      */
     Flux<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
-                                                                                RequestOptions options);
+                                                                          RequestOptions options);
 
     /**
      * Upserts a user defined function.

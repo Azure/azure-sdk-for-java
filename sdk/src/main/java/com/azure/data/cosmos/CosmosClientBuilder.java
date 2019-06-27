@@ -23,6 +23,7 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.Permission;
 
 import java.util.List;
 

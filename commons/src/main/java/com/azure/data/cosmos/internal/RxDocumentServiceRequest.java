@@ -24,7 +24,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.FeedOptionsBase;
-import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.directconnectivity.WFConstants;

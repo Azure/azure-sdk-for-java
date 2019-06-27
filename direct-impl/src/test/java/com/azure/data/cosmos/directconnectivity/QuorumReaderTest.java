@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;

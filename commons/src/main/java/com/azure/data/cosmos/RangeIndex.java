@@ -73,7 +73,7 @@ public final class RangeIndex extends Index {
      *
      * @param jsonString the json string that represents the index.
      */
-    public RangeIndex(String jsonString) {
+    RangeIndex(String jsonString) {
         super(jsonString, IndexKind.RANGE);
         if (this.dataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");

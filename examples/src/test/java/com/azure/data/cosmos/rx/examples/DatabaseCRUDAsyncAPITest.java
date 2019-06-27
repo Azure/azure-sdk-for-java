@@ -30,7 +30,7 @@ import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

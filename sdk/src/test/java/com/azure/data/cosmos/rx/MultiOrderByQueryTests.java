@@ -67,7 +67,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
     private static final String MEDIUM_STRING_FIELD = "mediumStringField";
     private static final String LONG_STRING_FIELD = "longStringField";
     private static final String PARTITION_KEY = "pk";
-    private ArrayList<CosmosItemProperties> documents = new ArrayList<CosmosItemProperties>();
+    private List<CosmosItemProperties> documents = new ArrayList<CosmosItemProperties>();
     private CosmosContainer documentCollection;
     private CosmosClient client;
 
@@ -211,9 +211,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         boolean[] booleanValues = new boolean[] {true, false};
         CosmosContainerProperties containerSettings = documentCollection.read().block().properties();
-        Iterator<ArrayList<CompositePath>> compositeIndexesIterator = containerSettings.indexingPolicy().compositeIndexes().iterator();
+        Iterator<List<CompositePath>> compositeIndexesIterator = containerSettings.indexingPolicy().compositeIndexes().iterator();
         while (compositeIndexesIterator.hasNext()) {
-        ArrayList<CompositePath> compositeIndex = compositeIndexesIterator.next();
+        List<CompositePath> compositeIndex = compositeIndexesIterator.next();
             // for every order
             for (boolean invert : booleanValues) {
                 // for normal and inverted order
@@ -261,7 +261,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                                 "FROM root " + whereString + " " +
                                 "ORDER BY " + orderByItemStringBuilder.toString();
                         
-                        ArrayList<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
+                        List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
                         
                         Flux<FeedResponse<CosmosItemProperties>> queryObservable = documentCollection.queryItems(query, feedOptions);
 
@@ -291,8 +291,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    private ArrayList<CosmosItemProperties> top(ArrayList<CosmosItemProperties> arrayList, boolean hasTop, int topCount) {
-        ArrayList<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
+    private List<CosmosItemProperties> top(List<CosmosItemProperties> arrayList, boolean hasTop, int topCount) {
+        List<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
         int counter = 0;
         if (hasTop) {
             while (counter < topCount && counter < arrayList.size()) {
@@ -305,7 +305,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return result;
     }
 
-    private ArrayList<CosmosItemProperties> sort(ArrayList<CosmosItemProperties> arrayList, ArrayList<CompositePath> compositeIndex,
+    private List<CosmosItemProperties> sort(List<CosmosItemProperties> arrayList, List<CompositePath> compositeIndex,
                                                  boolean invert) {
         Collection<Comparator<CosmosItemProperties>> comparators = new ArrayList<Comparator<CosmosItemProperties>>();
         Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
@@ -326,8 +326,8 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return arrayList;
     }
 
-    private ArrayList<CosmosItemProperties> filter(ArrayList<CosmosItemProperties> cosmosItemSettings, boolean hasFilter) {
-        ArrayList<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
+    private List<CosmosItemProperties> filter(List<CosmosItemProperties> cosmosItemSettings, boolean hasFilter) {
+        List<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
         if (hasFilter) {
             for (CosmosItemProperties document : cosmosItemSettings) {
                 if (document.getInt(NUMBER_FIELD) % 2 == 0) {

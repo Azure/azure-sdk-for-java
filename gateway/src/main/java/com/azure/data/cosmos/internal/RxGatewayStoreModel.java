@@ -26,7 +26,7 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.directconnectivity.HttpUtils;
 import com.azure.data.cosmos.directconnectivity.StoreResponse;
@@ -400,13 +400,13 @@ class RxGatewayStoreModel implements RxStoreModel {
             String statusCodeString = status.reasonPhrase() != null
                     ? status.reasonPhrase().replace(" ", "")
                     : "";
-            Error error;
-            error = (StringUtils.isNotEmpty(body)) ? new Error(body) : new Error();
-            error = new Error(statusCodeString,
-                    String.format("%s, StatusCode: %s", error.getMessage(), statusCodeString),
-                    error.getPartitionedQueryExecutionInfo());
+            CosmosError cosmosError;
+            cosmosError = (StringUtils.isNotEmpty(body)) ? BridgeInternal.createCosmosError(body) : new CosmosError();
+            cosmosError = new CosmosError(statusCodeString,
+                    String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
+                    cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosClientException dce = new CosmosClientException(statusCode, error, headers.toMap());
+            CosmosClientException dce = new CosmosClientException(statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }

@@ -23,6 +23,8 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.PartitionKey;
+import com.azure.data.cosmos.internal.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

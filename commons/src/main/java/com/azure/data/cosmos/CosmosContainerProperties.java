@@ -23,6 +23,7 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.ResourceResponse;
 
 import java.util.ArrayList;
 import java.util.List;

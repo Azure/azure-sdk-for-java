@@ -41,22 +41,10 @@ import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.JsonSerializable;
-import com.azure.data.cosmos.MediaOptions;
-import com.azure.data.cosmos.Offer;
-import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.PartitionKeyRange;
-import com.azure.data.cosmos.Permission;
-import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.StoredProcedure;
-import com.azure.data.cosmos.StoredProcedureResponse;
 import com.azure.data.cosmos.TokenResolver;
-import com.azure.data.cosmos.Trigger;
-import com.azure.data.cosmos.User;
-import com.azure.data.cosmos.UserDefinedFunction;
 import com.azure.data.cosmos.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.data.cosmos.directconnectivity.ServerStoreModel;
 import com.azure.data.cosmos.directconnectivity.StoreClient;
@@ -898,25 +886,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private Map<String, String> getFeedHeaders(FeedOptionsBase options) {
         return BridgeInternal.getFeedHeaders(options);
-    }
-
-    private Map<String, String> getMediaHeaders(MediaOptions options) {
-        Map<String, String> requestHeaders = new HashMap<>();
-
-        if (options == null || StringUtils.isEmpty(options.getContentType())) {
-            requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.OCTET_STREAM);
-        }
-
-        if (options != null) {
-            if (!StringUtils.isEmpty(options.getContentType())) {
-                requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, options.getContentType());
-            }
-
-            if (!StringUtils.isEmpty(options.getSlug())) {
-                requestHeaders.put(HttpConstants.HttpHeaders.SLUG, options.getSlug());
-            }
-        }
-        return requestHeaders;
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,

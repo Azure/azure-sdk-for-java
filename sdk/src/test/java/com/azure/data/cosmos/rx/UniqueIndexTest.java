@@ -39,7 +39,7 @@ import com.azure.data.cosmos.HashIndex;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKey;
+import com.azure.data.cosmos.internal.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.UniqueKey;
 import com.azure.data.cosmos.UniqueKeyPolicy;
@@ -49,6 +49,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -83,7 +84,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Collections.singleton(uniqueKey));
+        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.uniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -139,7 +140,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Collections.singleton(uniqueKey));
+        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.uniqueKeyPolicy(uniqueKeyPolicy);
 
         collection = database.createContainer(collectionDefinition).block().container();
@@ -184,7 +185,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.paths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Collections.singleton(uniqueKey));
+        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.uniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();

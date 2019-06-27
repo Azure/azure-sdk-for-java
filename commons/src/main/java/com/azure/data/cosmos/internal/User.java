@@ -21,61 +21,52 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.Resource;
 
 /**
- * Represents a stored procedure in the Azure Cosmos DB database service.
- * <p>
- * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a document collection. The
- * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
- * additional details, refer to the server-side JavaScript API documentation.
+ * Represents a database user in the Azure Cosmos DB database service.
  */
-public class StoredProcedure extends Resource {
+public class User extends Resource {
 
     /**
-     * Constructor.
+     * Initialize a user object.
      */
-    public StoredProcedure() {
+    public User() {
         super();
     }
 
     /**
-     * Constructor.
+     * Initialize a user object from json string.
      *
-     * @param jsonString the json string that represents the stored procedure.
+     * @param jsonString the json string that represents the database user.
      */
-    public StoredProcedure(String jsonString) {
+    public User(String jsonString) {
         super(jsonString);
     }
 
     /**
      * Sets the id
      * @param id the name of the resource.
-     * @return the current stored procedure
+     * @return the current instance of User
      */
-    public StoredProcedure id(String id){
+    public User id(String id){
         super.id(id);
         return this;
     }
 
     /**
-     * Get the body of the stored procedure.
+     * Gets the self-link of the permissions associated with the user.
      *
-     * @return the body of the stored procedure.
+     * @return the permissions link.
      */
-    public String getBody() {
-        return super.getString(Constants.Properties.BODY);
-    }
-
-    /**
-     * Set the body of the stored procedure.
-     *
-     * @param body the body of the stored procedure.
-     */
-    public void setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+    public String getPermissionsLink() {
+        String selfLink = this.selfLink();
+        if (selfLink.endsWith("/")) {
+            return selfLink + super.getString(Constants.Properties.PERMISSIONS_LINK);
+        } else {
+            return selfLink + "/" + super.getString(Constants.Properties.PERMISSIONS_LINK);
+        }
     }
 }
-

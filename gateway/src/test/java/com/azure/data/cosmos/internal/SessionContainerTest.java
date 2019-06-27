@@ -24,7 +24,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.GatewayTestUtils;
-import com.azure.data.cosmos.PartitionKeyRange;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;

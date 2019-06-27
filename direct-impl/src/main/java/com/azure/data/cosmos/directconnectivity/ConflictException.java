@@ -24,7 +24,7 @@ package com.azure.data.cosmos.directconnectivity;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Error;
+import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
@@ -43,8 +43,8 @@ public class ConflictException extends CosmosClientException {
         this(RMResources.EntityAlreadyExists);
     }
 
-    public ConflictException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
-        super(HttpConstants.StatusCodes.CONFLICT, error, responseHeaders);
+    public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.CONFLICT, cosmosError, responseHeaders);
         BridgeInternal.setLSN(this, lsn);
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
@@ -65,8 +65,8 @@ public class ConflictException extends CosmosClientException {
         this(RMResources.EntityAlreadyExists, innerException, null, null);
     }
 
-    public ConflictException(Error error, Map<String, String> headers) {
-        super(HttpConstants.StatusCodes.CONFLICT, error, headers);
+    public ConflictException(CosmosError cosmosError, Map<String, String> headers) {
+        super(HttpConstants.StatusCodes.CONFLICT, cosmosError, headers);
     }
 
     public ConflictException(String message,

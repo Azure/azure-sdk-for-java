@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
 public final class QueryMetricsConstants {
     // QueryMetrics

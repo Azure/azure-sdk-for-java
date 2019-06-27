@@ -21,9 +21,10 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.JsonSerializable;
 
 /**
  * Encapsulates the replication policy in the Azure Cosmos DB database service.
@@ -53,9 +54,9 @@ public class ReplicationPolicy extends JsonSerializable {
         return maxReplicaSetSize;
     }
 
-    void setMaxReplicaSetSize(int value) {
+    public void setMaxReplicaSetSize(int value) {
         Integer maxReplicaSetSize = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);
-        super.set(Constants.Properties.MAX_REPLICA_SET_SIZE, value);
+        BridgeInternal.setProperty(this, Constants.Properties.MAX_REPLICA_SET_SIZE, value);
     }
 
     public int getMinReplicaSetSize() {

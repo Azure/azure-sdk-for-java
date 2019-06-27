@@ -21,9 +21,8 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 
 /**
@@ -34,7 +33,7 @@ public class PartitionKey {
 
     private PartitionKeyInternal internalPartitionKey;
 
-    PartitionKey(PartitionKeyInternal partitionKeyInternal) {
+    public PartitionKey(PartitionKeyInternal partitionKeyInternal) {
         this.internalPartitionKey = partitionKeyInternal;
     }
 
@@ -49,13 +48,13 @@ public class PartitionKey {
     }
 
     /**
-     * CREATE a new instance of the PartitionKey object from a serialized JSON
+     * Create a new instance of the PartitionKey object from a serialized JSON
      * partition key.
      *
      * @param jsonString the JSON string representation of this PartitionKey object.
      * @return the PartitionKey instance.
      */
-    public static PartitionKey FromJsonString(String jsonString) {
+    public static PartitionKey fromJsonString(String jsonString) {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 

@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.RequestOptions;
 import reactor.core.publisher.Mono;
 
 import static com.azure.data.cosmos.internal.Paths.CONFLICTS_PATH_SEGMENT;

@@ -21,9 +21,11 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.BridgeInternal;
+import com.azure.data.cosmos.PermissionMode;
+import com.azure.data.cosmos.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,7 +74,7 @@ public class Permission extends Resource {
      * @param resourceLink the resource link.
      */
     public void setResourceLink(String resourceLink) {
-        super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
+        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_LINK, resourceLink);
     }
 
     /**
@@ -91,7 +93,7 @@ public class Permission extends Resource {
      * @param permissionMode the permission mode.
      */
     public void setPermissionMode(PermissionMode permissionMode) {
-        this.set(Constants.Properties.PERMISSION_MODE,
+        BridgeInternal.setProperty(this, Constants.Properties.PERMISSION_MODE,
                 permissionMode.toString().toLowerCase());
     }
 
@@ -114,7 +116,7 @@ public class Permission extends Resource {
         Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
         if (value != null) {
             ArrayNode arrayValue = (ArrayNode) value;
-            key = new PartitionKey(getValue(arrayValue.get(0)));
+            key = new PartitionKey(BridgeInternal.getValue(arrayValue.get(0)));
         }
 
         return key;
@@ -126,6 +128,6 @@ public class Permission extends Resource {
      * @param partitionkey the partition key.
      */
     public void setResourcePartitionKey(PartitionKey partitionkey) {
-        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionkey.getInternalPartitionKey().toJson());
+        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_PARTITION_KEY, partitionkey.getInternalPartitionKey().toJson());
     }
 }

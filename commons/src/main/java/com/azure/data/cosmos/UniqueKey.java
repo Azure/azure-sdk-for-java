@@ -26,6 +26,7 @@ import com.azure.data.cosmos.internal.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
@@ -36,13 +37,13 @@ import java.util.Collection;
  * @see UniqueKeyPolicy
  */
 public class UniqueKey extends JsonSerializable {
-    private Collection<String> paths;
+    private List<String> paths;
 
     public UniqueKey() {
         super();
     }
 
-    public UniqueKey(String jsonString) {
+    UniqueKey(String jsonString) {
         super(jsonString);
     }
 
@@ -56,7 +57,7 @@ public class UniqueKey extends JsonSerializable {
      */
     public Collection<String> paths() {
         if (this.paths == null) {
-            this.paths = super.getCollection(Constants.Properties.PATHS, String.class);
+            this.paths = super.getList(Constants.Properties.PATHS, String.class);
 
             if (this.paths == null) {
                 this.paths = new ArrayList<String>();
@@ -76,7 +77,7 @@ public class UniqueKey extends JsonSerializable {
      * @param paths the unique paths.
      * @return the Unique Key.
      */
-    public UniqueKey paths(Collection<String> paths) {
+    public UniqueKey paths(List<String> paths) {
         this.paths = paths;
         return this;
     }

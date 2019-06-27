@@ -24,7 +24,7 @@ package com.azure.data.cosmos.internal.changefeed.implementation;
 
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.PartitionKeyRange;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.LeaseContainer;

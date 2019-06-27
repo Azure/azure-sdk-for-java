@@ -22,6 +22,8 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.ResourceResponse;
+
 public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
     private CosmosContainer container;

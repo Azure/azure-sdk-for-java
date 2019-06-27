@@ -55,14 +55,14 @@ public class CosmosClientExceptionTest {
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
-        CosmosClientException dce = new CosmosClientException(0, (Error) null, (Map) null);
+        CosmosClientException dce = new CosmosClientException(0, (CosmosError) null, (Map) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull5() {
-        CosmosClientException dce = new CosmosClientException((String) null, 0, (Error) null, (Map) null);
+        CosmosClientException dce = new CosmosClientException((String) null, 0, (CosmosError) null, (Map) null);
         assertThat(dce.responseHeaders()).isNotNull();
         assertThat(dce.responseHeaders()).isEmpty();
     }

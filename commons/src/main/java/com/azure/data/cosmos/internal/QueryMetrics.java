@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
 import com.azure.data.cosmos.internal.query.metrics.FetchExecutionRange;
@@ -186,7 +186,7 @@ public final class QueryMetrics {
     /**
      * @return the clientSideMetrics
      */
-    ClientSideMetrics getClientSideMetrics() {
+    public ClientSideMetrics getClientSideMetrics() {
         return clientSideMetrics;
     }
 
@@ -219,7 +219,7 @@ public final class QueryMetrics {
         return stringBuilder.toString();
     }
 
-    static QueryMetrics createFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
+    public static QueryMetrics createFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
         long retrievedDocumentCount = 0;
         long retrievedDocumentSize = 0;
         long outputDocumentCount = 0;
@@ -268,14 +268,14 @@ public final class QueryMetrics {
         return doubleReference == null ? 0 : doubleReference;
     }
 
-    static QueryMetrics createFromDelimitedString(String delimitedString) {
+    public static QueryMetrics createFromDelimitedString(String delimitedString) {
         HashMap<String, Double> metrics = QueryMetricsUtils.parseDelimitedString(delimitedString);
         return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(delimitedString,
                 new ClientSideMetrics(0, 0, new ArrayList<FetchExecutionRange>(),
                         new ArrayList<ImmutablePair<String, SchedulingTimeSpan>>()), "");
     }
 
-    static QueryMetrics createFromDelimitedStringAndClientSideMetrics(String delimitedString, ClientSideMetrics clientSideMetrics,
+    public static QueryMetrics createFromDelimitedStringAndClientSideMetrics(String delimitedString, ClientSideMetrics clientSideMetrics,
                                                                       String activityId) {
         HashMap<String, Double> metrics = QueryMetricsUtils.parseDelimitedString(delimitedString);
         double indexHitRatio;

@@ -33,7 +33,7 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.RequestOptions;
+import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlParameterCollection;
 import com.azure.data.cosmos.SqlQuerySpec;

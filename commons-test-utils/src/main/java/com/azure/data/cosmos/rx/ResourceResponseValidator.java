@@ -26,18 +26,18 @@ import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.IndexingMode;
-import com.azure.data.cosmos.Offer;
-import com.azure.data.cosmos.Permission;
+import com.azure.data.cosmos.internal.Offer;
+import com.azure.data.cosmos.internal.Permission;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.ResourceResponse;
+import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.SpatialSpec;
 import com.azure.data.cosmos.SpatialType;
-import com.azure.data.cosmos.StoredProcedure;
-import com.azure.data.cosmos.Trigger;
+import com.azure.data.cosmos.internal.StoredProcedure;
+import com.azure.data.cosmos.internal.Trigger;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
-import com.azure.data.cosmos.UserDefinedFunction;
+import com.azure.data.cosmos.internal.UserDefinedFunction;
 import org.assertj.core.api.Condition;
 
 import java.time.Instant;
@@ -300,7 +300,7 @@ public interface ResourceResponseValidator<T extends Resource> {
 
                 @Override
                 public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
-                    Iterator<ArrayList<CompositePath>> compositeIndexesReadIterator = resourceResponse.getResource()
+                    Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getResource()
                             .getIndexingPolicy().compositeIndexes().iterator();
                     Iterator<ArrayList<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
                     

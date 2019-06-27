@@ -42,15 +42,11 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.IncludedPath;
 import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
-import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.RequestOptions;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.ResourceResponse;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.Undefined;
-import com.azure.data.cosmos.User;
 import com.azure.data.cosmos.directconnectivity.Protocol;
 import com.azure.data.cosmos.rx.FailureValidator;
 import com.azure.data.cosmos.rx.FeedResponseListValidator;
@@ -342,7 +338,7 @@ public class TestSuiteBase extends DocumentClientTest {
         DocumentCollection documentCollection = new DocumentCollection();
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+        List<List<CompositePath>> compositeIndexes = new ArrayList<>();
 
         //Simple
         ArrayList<CompositePath> compositeIndexSimple = new ArrayList<CompositePath>();
@@ -508,7 +504,7 @@ public class TestSuiteBase extends DocumentClientTest {
         paths.add("/mypk");
         partitionKeyDef.paths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
+        List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.path("/*");
         Collection<Index> indexes = new ArrayList<>();

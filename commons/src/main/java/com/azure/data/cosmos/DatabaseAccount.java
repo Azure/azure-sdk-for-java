@@ -24,6 +24,7 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.ReplicationPolicy;
 import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.commons.lang3.ObjectUtils;

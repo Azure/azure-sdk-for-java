@@ -23,6 +23,8 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.MediaReadMode;
+
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;

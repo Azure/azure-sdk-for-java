@@ -29,11 +29,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Encapsulates error related details in the Azure Cosmos DB database service.
  */
-public class Error extends Resource {
+public class CosmosError extends Resource {
     /**
      * Initialize a new instance of the Error object.
      */
-    public Error() {
+    public CosmosError() {
         super();
     }
 
@@ -42,7 +42,7 @@ public class Error extends Resource {
      *
      * @param objectNode the {@link ObjectNode} that represents the error.
      */
-    Error(ObjectNode objectNode) {
+    CosmosError(ObjectNode objectNode) {
         super(objectNode);
     }
 
@@ -51,7 +51,7 @@ public class Error extends Resource {
      *
      * @param jsonString the jsonString that represents the error.
      */
-    public Error(String jsonString) {
+    CosmosError(String jsonString) {
         super(jsonString);
     }
 
@@ -61,7 +61,7 @@ public class Error extends Resource {
      * @param errorCode the error code.
      * @param message   the error message.
      */
-    public Error(String errorCode, String message) {
+    public CosmosError(String errorCode, String message) {
         this(errorCode, message, null);
     }
 
@@ -75,7 +75,7 @@ public class Error extends Resource {
      * @param additionalErrorInfo
      *            additional error info.
      */
-    public Error(String errorCode, String message, String additionalErrorInfo) {
+    public CosmosError(String errorCode, String message, String additionalErrorInfo) {
         super();
         this.setCode(errorCode);
         this.setMessage(message);

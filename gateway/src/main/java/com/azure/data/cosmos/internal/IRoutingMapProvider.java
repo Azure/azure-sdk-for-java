@@ -22,7 +22,6 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.PartitionKeyRange;
 import com.azure.data.cosmos.internal.routing.Range;
 import reactor.core.publisher.Mono;
 

@@ -117,7 +117,7 @@ public class Resource extends JsonSerializable {
      * @param id the name of the resource.
      * @return the resource.
      */
-    Resource id(String id) {
+    public Resource id(String id) {
         super.set(Constants.Properties.ID, id);
         return this;
     }
