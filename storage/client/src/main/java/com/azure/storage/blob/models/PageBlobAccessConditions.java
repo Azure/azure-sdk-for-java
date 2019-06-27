@@ -1,11 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
-
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.SequenceNumberAccessConditions;
+package com.azure.storage.blob.models;
 
 /**
  * This class contains values that restrict the successful completion of PageBlob operations to certain conditions.
@@ -41,7 +37,7 @@ public final class PageBlobAccessConditions {
     /**
      * Access conditions that will fail the request if the sequence number does not meet the provided condition.
      */
-    public PageBlobAccessConditions withSequenceNumberAccessConditions(
+    public PageBlobAccessConditions sequenceNumberAccessConditions(
             SequenceNumberAccessConditions sequenceNumberAccessConditions) {
         this.sequenceNumberAccessConditions = sequenceNumberAccessConditions;
         return this;
@@ -61,7 +57,7 @@ public final class PageBlobAccessConditions {
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
      */
-    public PageBlobAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public PageBlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -78,7 +74,7 @@ public final class PageBlobAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      */
-    public PageBlobAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+    public PageBlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
         this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }

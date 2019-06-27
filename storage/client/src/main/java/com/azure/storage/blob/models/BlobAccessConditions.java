@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
-
-import com.azure.storage.blob.models.LeaseAccessConditions;
-import com.azure.storage.blob.models.ModifiedAccessConditions;
+package com.azure.storage.blob.models;
 
 /**
  * This class contains values which will restrict the successful operation of a variety of requests to the conditions
@@ -12,7 +9,7 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
  * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
  * information on those particular access conditions.
  */
-public final class ContainerAccessConditions {
+public final class BlobAccessConditions {
 
     private ModifiedAccessConditions modifiedAccessConditions;
 
@@ -21,9 +18,9 @@ public final class ContainerAccessConditions {
     /**
      * Creates an instance which has fields set to non-null, empty values.
      */
-    public ContainerAccessConditions() {
-        this.modifiedAccessConditions = new ModifiedAccessConditions();
-        this.leaseAccessConditions = new LeaseAccessConditions();
+    public BlobAccessConditions() {
+        modifiedAccessConditions = new ModifiedAccessConditions();
+        leaseAccessConditions = new LeaseAccessConditions();
     }
 
     /**
@@ -40,7 +37,7 @@ public final class ContainerAccessConditions {
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
      */
-    public ContainerAccessConditions withModifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
+    public BlobAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
         return this;
     }
@@ -57,8 +54,8 @@ public final class ContainerAccessConditions {
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
      */
-    public ContainerAccessConditions withLeaseAccessConditions(LeaseAccessConditions leaseID) {
-        this.leaseAccessConditions = leaseID;
+    public BlobAccessConditions leaseAccessConditions(LeaseAccessConditions leaseAccessConditions) {
+        this.leaseAccessConditions = leaseAccessConditions;
         return this;
     }
 }

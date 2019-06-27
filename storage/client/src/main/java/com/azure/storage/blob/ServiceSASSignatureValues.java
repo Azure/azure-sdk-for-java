@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
@@ -180,6 +181,7 @@ final class ServiceSASSignatureValues {
         return resource;
     }
 
+
     /**
      * The specific resource.
      */
@@ -311,11 +313,11 @@ final class ServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials
-     *         A {@link SharedKeyCredentials} object used to sign the SAS values.
+     *         A {@link SharedKeyCredential} object used to sign the SAS values.
      *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 

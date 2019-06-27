@@ -55,6 +55,12 @@ final class Constants {
     static final int TRANSFER_MANAGER_DEFAULT_PARALLELISM = 5;
 
     /**
+     * The size of a page, in bytes, in a page blob.
+     */
+    public static final int PAGE_SIZE = 512;
+
+
+    /**
      * Private Default Ctor
      */
     private Constants() {
@@ -69,11 +75,6 @@ final class Constants {
          * The Authorization header.
          */
         static final String AUTHORIZATION = "Authorization";
-
-        /**
-         * The format string for specifying ranges with only begin offset.
-         */
-        static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
 
         /**
          * The header that indicates the client request ID.
@@ -139,11 +140,6 @@ final class Constants {
          * The Range header.
          */
         static final String RANGE = "Range";
-
-        /**
-         * The format string for specifying ranges.
-         */
-        static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
 
         /**
          * The copy source header.

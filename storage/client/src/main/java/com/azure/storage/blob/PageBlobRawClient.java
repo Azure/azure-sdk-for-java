@@ -3,11 +3,13 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobsClearPagesResponse;
 import com.azure.storage.blob.models.PageBlobsCopyIncrementalResponse;
 import com.azure.storage.blob.models.PageBlobsCreateResponse;
@@ -90,7 +92,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsCreateResponse create(long size) {
-        return this.create(size, null, null, null, null, null, null);
+        return this.create(size, null, null, null, null, null);
     }
 
     /**
@@ -110,12 +112,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -124,11 +120,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsCreateResponse create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-                                          Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsCreateResponse> response = pageBlobAsyncRawClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+                                          Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<PageBlobsCreateResponse> response = pageBlobAsyncRawClient.create(size, sequenceNumber, headers, metadata, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -154,7 +148,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsUploadPagesResponse uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
-        return this.uploadPages(pageRange, body, null, null, null);
+        return this.uploadPages(pageRange, body, null, null);
     }
 
     /**
@@ -174,12 +168,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -188,11 +176,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsUploadPagesResponse uploadPages(PageRange pageRange, Flux<ByteBuf> body,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsUploadPagesResponse> response = pageBlobAsyncRawClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
+        Mono<PageBlobsUploadPagesResponse> response = pageBlobAsyncRawClient.uploadPages(pageRange, body, pageBlobAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -222,7 +208,7 @@ final class PageBlobRawClient extends BlobRawClient {
      */
     public PageBlobsUploadPagesFromURLResponse uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null, null, null);
+                null, null);
     }
 
     /**
@@ -250,12 +236,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *          {@link PageBlobAccessConditions}
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -265,12 +245,10 @@ final class PageBlobRawClient extends BlobRawClient {
      */
     public PageBlobsUploadPagesFromURLResponse uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
 
-        Mono<PageBlobsUploadPagesFromURLResponse> response = pageBlobAsyncRawClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+        Mono<PageBlobsUploadPagesFromURLResponse> response = pageBlobAsyncRawClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -290,7 +268,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsClearPagesResponse clearPages(PageRange pageRange) {
-        return this.clearPages(pageRange, null, null, null);
+        return this.clearPages(pageRange, null, null);
     }
 
     /**
@@ -302,12 +280,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
@@ -318,11 +290,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsClearPagesResponse clearPages(PageRange pageRange,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsClearPagesResponse> response = pageBlobAsyncRawClient.clearPages(pageRange, pageBlobAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
+        Mono<PageBlobsClearPagesResponse> response = pageBlobAsyncRawClient.clearPages(pageRange, pageBlobAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -339,7 +309,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsGetPageRangesResponse getPageRanges(BlobRange blobRange) {
-        return this.getPageRanges(blobRange, null, null, null);
+        return this.getPageRanges(blobRange, null, null);
     }
 
     /**
@@ -350,12 +320,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         {@link BlobRange}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -364,11 +328,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsGetPageRangesResponse getPageRanges(BlobRange blobRange,
-            BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsGetPageRangesResponse> response = pageBlobAsyncRawClient.getPageRanges(blobRange, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<PageBlobsGetPageRangesResponse> response = pageBlobAsyncRawClient.getPageRanges(blobRange, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -389,7 +351,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsGetPageRangesDiffResponse getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null, null);
+        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
     }
 
     /**
@@ -404,12 +366,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -418,11 +374,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsGetPageRangesDiffResponse getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsGetPageRangesDiffResponse> response =pageBlobAsyncRawClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<PageBlobsGetPageRangesDiffResponse> response =pageBlobAsyncRawClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -440,7 +394,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsResizeResponse resize(long size) {
-        return this.resize(size, null, null, null);
+        return this.resize(size, null, null);
     }
 
     /**
@@ -452,12 +406,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         blob, then all pages above the specified value are cleared.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -465,11 +413,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public PageBlobsResizeResponse resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsResizeResponse> response = pageBlobAsyncRawClient.resize(size, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public PageBlobsResizeResponse resize(long size, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<PageBlobsResizeResponse> response = pageBlobAsyncRawClient.resize(size, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -490,7 +436,7 @@ final class PageBlobRawClient extends BlobRawClient {
      */
     public PageBlobsUpdateSequenceNumberResponse updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return this.updateSequenceNumber(action, sequenceNumber, null, null, null);
+        return this.updateSequenceNumber(action, sequenceNumber, null, null);
     }
 
     /**
@@ -504,12 +450,6 @@ final class PageBlobRawClient extends BlobRawClient {
      *         requests and manage concurrency issues.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -518,11 +458,9 @@ final class PageBlobRawClient extends BlobRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public PageBlobsUpdateSequenceNumberResponse updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsUpdateSequenceNumberResponse> response = pageBlobAsyncRawClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<PageBlobsUpdateSequenceNumberResponse> response = pageBlobAsyncRawClient.updateSequenceNumber(action, sequenceNumber, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -541,7 +479,7 @@ final class PageBlobRawClient extends BlobRawClient {
      * @return Emits the successful response.
      */
     public PageBlobsCopyIncrementalResponse copyIncremental(URL source, String snapshot) {
-        return this.copyIncremental(source, snapshot, null, null, null);
+        return this.copyIncremental(source, snapshot, null, null);
     }
 
     /**
@@ -560,20 +498,12 @@ final class PageBlobRawClient extends BlobRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return Emits the successful response.
      */
     public PageBlobsCopyIncrementalResponse copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobsCopyIncrementalResponse> response = pageBlobAsyncRawClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        Mono<PageBlobsCopyIncrementalResponse> response = pageBlobAsyncRawClient.copyIncremental(source, snapshot, modifiedAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

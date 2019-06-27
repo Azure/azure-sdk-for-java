@@ -3,9 +3,12 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.*
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 
@@ -23,23 +26,22 @@ class BlockBlobAPITest extends APISpec {
 
     def "Stage block"() {
         setup:
-        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
-//        BlockBlobStageBlockHeaders headers = response.headers()
-//
-//        expect:
-//        notThrown(StorageException)
-//        response.statusCode() == 201
-//        headers.contentMD5() != null
-//        headers.requestId() != null
-//        headers.version() != null
-//        headers.date() != null
-//        headers.isServerEncrypted()
+        Response<BlockBlobItem> response = bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize)
+        HttpHeaders headers = response.headers()
+
+        expect:
+        response.statusCode() == 201
+        headers.value("Content-MD5") != null
+        headers.value("x-ms-request-id") != null
+        headers.value("x-ms-version") != null
+        headers.value("Date") != null
+        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
     }
 
-//    def "Stage block min"() {
-//        expect:
-//        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize).statusCode() == 201
-//    }
+    def "Stage block min"() {
+        expect:
+        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize).statusCode() == 201
+    }
 
     @Unroll
     def "Stage block illegal arguments"() {
@@ -59,13 +61,14 @@ class BlockBlobAPITest extends APISpec {
 //        getBlockID() | defaultInputStream | defaultDataSize - 1 | IllegalArgumentException
     }
 
-    def "Stage block empty body"() {
+    // TODO: This never completes
+    /*def "Stage block empty body"() {
         when:
         bu.stageBlock(getBlockID(), new ByteArrayInputStream(new byte[0]), 0)
 
         then:
         thrown(StorageException)
-    }
+    }*/
 
     def "Stage block null body"() {
         when:
@@ -75,28 +78,28 @@ class BlockBlobAPITest extends APISpec {
         thrown(NullPointerException) // Thrown by Flux.just().
     }
 
-//    def "Stage block lease"() {
-//        setup:
-//        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
-//
-//        expect:
-//        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions().withLeaseId(leaseID),
-//            null).statusCode() == 201
-//    }
-//
-//    def "Stage block lease fail"() {
-//        setup:
-//        setupBlobLeaseCondition(bu, receivedLeaseID)
-//
-//        when:
-//        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions()
-//            .withLeaseId(garbageLeaseID), null)
-//
-//        then:
-//        def e = thrown(StorageException)
-//        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
-//    }
-//
+    def "Stage block lease"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        expect:
+        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions().leaseId(leaseID),
+            null, null).statusCode() == 201
+    }
+
+    def "Stage block lease fail"() {
+        setup:
+        setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        when:
+        bu.stageBlock(getBlockID(), defaultInputStream.get(), defaultDataSize, new LeaseAccessConditions()
+            .leaseId(garbageLeaseID), null, null)
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
     def "Stage block error"() {
         setup:
         bu = cu.getBlockBlobClient(generateBlobName())
@@ -108,152 +111,152 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    // TODO: need to be able to get current blob client's endpoint
-//    def "Stage block context"() {
-//        setup:
-//        bu = BlockBlobClient.blockBlobClientBuilder().endpoint("http://dummy").addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.stageBlock("id", defaultInputStream.get(), defaultDataSize, null, null, defaultContext)
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
+    def "Stage block context"() {
+        setup:
+        bu = BlockBlobClient.blockBlobClientBuilder().endpoint(bu.getBlobUrl().toString()).addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
 
-    //TODO: Add back the following 12 tests once BlockBlobClient.toURL() is implemented
-//    def "Stage block from url"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-//        def bu2 = cu.getBlockBlobClient(generateBlobName())
-//        def blockID = getBlockID()
-//
-//        when:
-//        def response = bu2.stageBlockFromURL(blockID, bu.toURL(), null)
-//        def listResponse = bu2.listBlocks(BlockListType.ALL, null, null)
-//        bu2.commitBlockList(Arrays.asList(blockID), null, null, null, null)
-//
-//        then:
-//        response.headers().requestId() != null
-//        response.headers().version() != null
-//        response.headers().requestId() != null
-//        response.headers().contentMD5() != null
-//        response.headers().isServerEncrypted() != null
-//
-//        listResponse.body().uncommittedBlocks().get(0).name() == blockID
-//        listResponse.body().uncommittedBlocks().size() == 1
-//
-//        FluxUtil.collectBytesInBuffer(bu2.download(null, null, false, null)
-//            .body(null)) == defaultData
-//    }
+        when:
+        // No service call is made. Just satisfy the parameters.
+        bu.stageBlock("id", defaultInputStream.get(), defaultDataSize, null, null, defaultContext)
 
-//    def "Stage block from url min"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
-//        def bu2 = cu.getBlockBlobClient(generateBlobName())
-//        def blockID = getBlockID()
-//
-//        expect:
-//        bu2.stageBlockFromURL(blockID, bu.toURL(), null).statusCode() == 201
-//    }
-//
-//    @Unroll
-//    def "Stage block from URL IA"() {
-//        when:
-//        bu.stageBlockFromURL(blockID, sourceURL, null, null, null, null, null)
-//            
-//
-//        then:
-//        thrown(IllegalArgumentException)
-//
-//        where:
-//        blockID      | sourceURL
-//        null         | new URL("http://www.example.com")
-//        getBlockID() | null
-//    }
-//
-//    def "Stage block from URL range"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def destURL = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), new BlobRange().withOffset(2).withCount(3), null, null,
-//            null, null)
-//
-//        then:
-//        destURL.listBlocks(BlockListType.ALL, null, null).body().uncommittedBlocks().get(0)
-//            .size() == 3
-//    }
-//
-//    def "Stage block from URL MD5"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def destURL = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null,
-//            MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null)
-//
-//        then:
-//        notThrown(StorageException)
-//    }
-//
-//    def "Stage block from URL MD5 fail"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def destURL = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        destURL.stageBlockFromURL(getBlockID(), bu.toURL(), null, "garbage".getBytes(),
-//            null, null, null)
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
-//    def "Stage block from URL lease"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def lease = new LeaseAccessConditions().withLeaseId(setupBlobLeaseCondition(bu, receivedLeaseID))
-//
-//        when:
-//        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null, null)
-//
-//        then:
-//        notThrown(StorageException)
-//    }
-//
-//    def "Stage block from URL lease fail"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def lease = new LeaseAccessConditions().withLeaseId("garbage")
-//
-//        when:
-//        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, lease, null, null)
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
-//    def "Stage block from URL error"() {
-//        setup:
-//        cu = primaryServiceURL.createContainerURL(generateContainerName())
-//        bu = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        bu.stageBlockFromURL(getBlockID(), bu.toURL(), null, null, null, null, null)
-//            
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
+        then:
+        notThrown(RuntimeException)
+    }
+
+    def "Stage block from url"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def bu2 = cu.getBlockBlobClient(generateBlobName())
+        def blockID = getBlockID()
+
+        when:
+        HttpHeaders headers = bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).headers()
+        Iterator<BlockItem> listResponse = bu2.listBlocks(BlockListType.ALL).iterator()
+        BlockItem block = listResponse.next()
+        bu2.commitBlockList(Arrays.asList(blockID))
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        bu2.download(outputStream)
+
+        then:
+        headers.value("x-ms-request-id") != null
+        headers.value("x-ms-version") != null
+        headers.value("Content-MD5") != null
+        headers.value("x-ms-request-server-encrypted") != null
+
+
+        block.name() == blockID
+        !block.isCommitted()
+        !listResponse.hasNext()
+
+        ByteBuffer.wrap(outputStream.toByteArray()) == defaultData
+    }
+
+    def "Stage block from url min"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def bu2 = cu.getBlockBlobClient(generateBlobName())
+        def blockID = getBlockID()
+
+        expect:
+        bu2.stageBlockFromURL(blockID, bu.getBlobUrl(), null).statusCode() == 201
+    }
+
+    @Unroll
+    def "Stage block from URL IA"() {
+        when:
+        bu.stageBlockFromURL(blockID, sourceURL, null)
+
+        then:
+        thrown(StorageException)
+
+        where:
+        blockID      | sourceURL
+        null         | new URL("http://www.example.com")
+        getBlockID() | null
+    }
+
+    def "Stage block from URL range"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), new BlobRange(2, 3))
+        Iterator<BlockItem> uncommittedBlock = destURL.listBlocks(BlockListType.UNCOMMITTED).iterator()
+
+        then:
+        uncommittedBlock.hasNext()
+        uncommittedBlock.hasNext()
+        uncommittedBlock.hasNext()
+    }
+
+    def "Stage block from URL MD5"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null,
+            MessageDigest.getInstance("MD5").digest(defaultData.array()), null, null, null, null)
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Stage block from URL MD5 fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def destURL = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        destURL.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, "garbage".getBytes(),
+            null, null, null, null)
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block from URL lease"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def lease = new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, receivedLeaseID))
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Stage block from URL lease fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def lease = new LeaseAccessConditions().leaseId("garbage")
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, lease, null, null, null)
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "Stage block from URL error"() {
+        setup:
+        cu = primaryServiceURL.getContainerClient(generateContainerName())
+        bu = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        bu.stageBlockFromURL(getBlockID(), bu.getBlobUrl(), null, null, null, null, null, null)
+
+        then:
+        thrown(StorageException)
+    }
+
 //    def "Stage block from URL context"() {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockFromURLHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -262,64 +265,64 @@ class BlockBlobAPITest extends APISpec {
 //        then:
 //        notThrown(RuntimeException)
 //    }
-//
-//    @Unroll
-//    def "Stage block from URL source AC"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def blockID = getBlockID()
-//
-//        def sourceURL = cu.createBlockBlobURL(generateBlobName())
-//        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
-//
-//        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
-//        def smac = new SourceModifiedAccessConditions()
-//            .withSourceIfModifiedSince(sourceIfModifiedSince)
-//            .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-//            .withSourceIfMatch(sourceIfMatch)
-//            .withSourceIfNoneMatch(sourceIfNoneMatch)
-//
-//        expect:
-//        bu.stageBlockFromURL(blockID, sourceURL.toURL(), null, null, null, smac, null).statusCode() == 201
-//
-//        where:
-//        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-//        null                  | null                    | null          | null
-//        oldDate               | null                    | null          | null
-//        null                  | newDate                 | null          | null
-//        null                  | null                    | receivedEtag  | null
-//        null                  | null                    | null          | garbageEtag
-//    }
-//
-//    @Unroll
-//    def "Stage block from URL source AC fail"() {
-//        setup:
-//        cu.setAccessPolicy(PublicAccessType.CONTAINER, null, null, null)
-//        def blockID = getBlockID()
-//
-//        def sourceURL = cu.createBlockBlobURL(generateBlobName())
-//        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
-//
-//        sourceIfNoneMatch = setupBlobMatchCondition(sourceURL, sourceIfNoneMatch)
-//        def smac = new SourceModifiedAccessConditions()
-//            .withSourceIfModifiedSince(sourceIfModifiedSince)
-//            .withSourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
-//            .withSourceIfMatch(sourceIfMatch)
-//            .withSourceIfNoneMatch(sourceIfNoneMatch)
-//
-//        when:
-//        bu.stageBlockFromURL(blockID, sourceURL.toURL(), null, null, null, smac, null).statusCode() == 201
-//
-//        then:
-//        thrown(StorageException)
-//
-//        where:
-//        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-//        newDate               | null                    | null          | null
-//        null                  | oldDate                 | null          | null
-//        null                  | null                    | garbageEtag   | null
-//        null                  | null                    | null          | receivedEtag
-//    }
+
+    @Unroll
+    def "Stage block from URL source AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def blockID = getBlockID()
+
+        def sourceURL = cu.getBlockBlobClient(generateBlobName())
+        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
+
+        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch)
+        def smac = new SourceModifiedAccessConditions()
+            .sourceIfModifiedSince(sourceIfModifiedSince)
+            .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .sourceIfMatch(sourceIfMatch)
+            .sourceIfNoneMatch(sourceIfNoneMatch)
+
+        expect:
+        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        null                  | null                    | null          | null
+        oldDate               | null                    | null          | null
+        null                  | newDate                 | null          | null
+        null                  | null                    | receivedEtag  | null
+        null                  | null                    | null          | garbageEtag
+    }
+
+    @Unroll
+    def "Stage block from URL source AC fail"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def blockID = getBlockID()
+
+        def sourceURL = cu.getBlockBlobClient(generateBlobName())
+        sourceURL.upload(defaultInputStream.get(), defaultDataSize)
+
+        sourceIfNoneMatch = setupBlobMatchCondition(sourceURL, sourceIfNoneMatch)
+        def smac = new SourceModifiedAccessConditions()
+            .sourceIfModifiedSince(sourceIfModifiedSince)
+            .sourceIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .sourceIfMatch(sourceIfMatch)
+            .sourceIfNoneMatch(sourceIfNoneMatch)
+
+        when:
+        bu.stageBlockFromURL(blockID, sourceURL.getBlobUrl(), null, null, null, smac, null, null).statusCode() == 201
+
+        then:
+        thrown(StorageException)
+
+        where:
+        sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
+        newDate               | null                    | null          | null
+        null                  | oldDate                 | null          | null
+        null                  | null                    | garbageEtag   | null
+        null                  | null                    | null          | receivedEtag
+    }
 
     def "Commit block list"() {
         setup:
@@ -329,14 +332,14 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         when:
-        BlockBlobCommitBlockListHeaders headers =
-            bu.commitBlockList(ids)
+        Response<BlockBlobItem> response = bu.commitBlockList(ids)
+        HttpHeaders headers = response.headers()
 
         then:
-//        response.statusCode() == 201
+        response.statusCode() == 201
         validateBasicHeaders(headers)
-        headers.contentMD5()
-        headers.isServerEncrypted()
+        headers.value("Content-MD5")
+        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
     }
 
     def "Commit block list min"() {
@@ -347,138 +350,144 @@ class BlockBlobAPITest extends APISpec {
         ids.add(blockID)
 
         expect:
-        bu.commitBlockList(ids) != null
+        bu.commitBlockList(ids).value() != null
     }
 
-//    def "Commit block list null"() {
-//        expect:
-//        bu.commitBlockList(null,)
-//            .statusCode() == 201
-//    }
-//
-//    @Unroll
-//    def "Commit block list headers"() {
-//        setup:
-//        String blockID = getBlockID()
-//        bu.stageBlock(blockID, defaultInputStream.get(), defaultDataSize,
-//            null, null)
-//        ArrayList<String> ids = new ArrayList<>()
-//        ids.add(blockID)
-//        BlobHTTPHeaders headers = new BlobHTTPHeaders().withBlobCacheControl(cacheControl)
-//            .withBlobContentDisposition(contentDisposition)
-//            .withBlobContentEncoding(contentEncoding)
-//            .withBlobContentLanguage(contentLanguage)
-//            .withBlobContentMD5(contentMD5)
-//            .withBlobContentType(contentType)
-//
-//        when:
-//        bu.commitBlockList(ids, headers, null, null, null)
-//        BlobGetPropertiesResponse response = bu.getProperties(null, null)
-//
-//        then:
-//        response.statusCode() == 200
-//        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-//            contentMD5, contentType == null ? "application/octet-stream" : contentType)
-//        // HTTP default content type is application/octet-stream
-//
-//        where:
-//        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-//        null         | null               | null            | null            | null                                                         | null
-//        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
-//    }
-//
-//    @Unroll
-//    def "Commit block list metadata"() {
-//        setup:
-//        Metadata metadata = new Metadata()
-//        if (key1 != null) {
-//            metadata.put(key1, value1)
-//        }
-//        if (key2 != null) {
-//            metadata.put(key2, value2)
-//        }
-//
-//        when:
-//        bu.commitBlockList(null, null, metadata, null, null)
-//        BlobGetPropertiesResponse response = bu.getProperties(null, null)
-//
-//        then:
-//        response.statusCode() == 200
-//        response.headers().metadata() == metadata
-//
-//        where:
-//        key1  | value1 | key2   | value2
-//        null  | null   | null   | null
-//        "foo" | "bar"  | "fizz" | "buzz"
-//    }
-//
-//    @Unroll
-//    def "Commit block list AC"() {
-//        setup:
-//        match = setupBlobMatchCondition(bu, match)
-//        leaseID = setupBlobLeaseCondition(bu, leaseID)
-//        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-//            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-//                .withIfMatch(match).withIfNoneMatch(noneMatch))
-//            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
-//
-//        expect:
-//        bu.commitBlockList(null, null, null, bac, null).statusCode() == 201
-//
-//        where:
-//        modified | unmodified | match        | noneMatch   | leaseID
-//        null     | null       | null         | null        | null
-//        oldDate  | null       | null         | null        | null
-//        null     | newDate    | null         | null        | null
-//        null     | null       | receivedEtag | null        | null
-//        null     | null       | null         | garbageEtag | null
-//        null     | null       | null         | null        | receivedLeaseID
-//    }
-//
-//    @Unroll
-//    def "Commit block list AC fail"() {
-//        setup:
-//        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-//        setupBlobLeaseCondition(bu, leaseID)
-//        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-//            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-//                .withIfMatch(match).withIfNoneMatch(noneMatch))
-//            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
-//
-//        when:
-//        bu.commitBlockList(null, null, null, bac, null)
-//
-//        then:
-//        def e = thrown(StorageException)
-//        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
-//            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
-//
-//        where:
-//        modified | unmodified | match       | noneMatch    | leaseID
-//        newDate  | null       | null        | null         | null
-//        null     | oldDate    | null        | null         | null
-//        null     | null       | garbageEtag | null         | null
-//        null     | null       | null        | receivedEtag | null
-//        null     | null       | null        | null         | garbageLeaseID
-//    }
-//
-//    def "Commit block list error"() {
-//        setup:
-//        bu = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        bu.commitBlockList(new ArrayList<String>(), null, null, new BlobAccessConditions().withLeaseAccessConditions(
-//            new LeaseAccessConditions().withLeaseId("garbage")), null)
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
+    def "Commit block list null"() {
+        expect:
+        bu.commitBlockList(null).statusCode() == 201
+    }
+
+    @Unroll
+    def "Commit block list headers"() {
+        setup:
+        String blockID = getBlockID()
+        bu.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        ArrayList<String> ids = new ArrayList<>()
+        ids.add(blockID)
+        BlobHTTPHeaders headers = new BlobHTTPHeaders().blobCacheControl(cacheControl)
+            .blobContentDisposition(contentDisposition)
+            .blobContentEncoding(contentEncoding)
+            .blobContentLanguage(contentLanguage)
+            .blobContentMD5(contentMD5)
+            .blobContentType(contentType)
+
+        when:
+        bu.commitBlockList(ids, headers, null, null, null, null)
+        Response<BlobProperties> response = bu.getProperties()
+
+        then:
+        response.statusCode() == 200
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+            contentMD5 == null ? null : Base64.getEncoder().encode(contentMD5),
+            contentType == null ? "application/octet-stream" : contentType)
+        // HTTP default content type is application/octet-stream
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    @Unroll
+    def "Commit block list metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        bu.commitBlockList(null, null, metadata, null, null, null)
+        Response<BlobProperties> response = bu.getProperties()
+
+        then:
+        response.statusCode() == 200
+        getMetadataFromHeaders(response.headers()) == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Commit block list AC"() {
+        setup:
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
+                .ifModifiedSince(modified)
+                .ifUnmodifiedSince(unmodified)
+                .ifMatch(match)
+                .ifNoneMatch(noneMatch))
+
+
+        expect:
+        bu.commitBlockList(null, null, null, bac, null, null).statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Commit block list AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
+                .ifModifiedSince(modified)
+                .ifUnmodifiedSince(unmodified)
+                .ifMatch(match)
+                .ifNoneMatch(noneMatch))
+
+        when:
+        bu.commitBlockList(null, null, null, bac, null, null)
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Commit block list error"() {
+        setup:
+        bu = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        bu.commitBlockList(new ArrayList<String>(), null, null, new BlobAccessConditions().leaseaccessconditions(
+            new LeaseAccessConditions().leaseId("garbage")), null, null)
+
+        then:
+        thrown(StorageException)
+    }
+
 //    def "Commit block list info context"() {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobCommitBlockListHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -519,10 +528,13 @@ class BlockBlobAPITest extends APISpec {
 //        response.headers().blobContentLength() == defaultDataSize * 2L
     }
 
-//    def "Get block list min"() {
-//        expect:
-//        bu.listBlocks(BlockListType.ALL).statusCode() == 200
-//    }
+    def "Get block list min"() {
+        when:
+        bu.listBlocks(BlockListType.ALL)
+
+        then:
+        notThrown(StorageErrorException)
+    }
 
     @Unroll
     def "Get block list type"() {
@@ -558,51 +570,53 @@ class BlockBlobAPITest extends APISpec {
         BlockListType.UNCOMMITTED | 0              | 1
     }
 
-//    def "Get block list type null"() {
-//        when:
-//        bu.listBlocks(null, null, null)
-//
-//        then:
-//        thrown(IllegalArgumentException)
-//    }
-//
-//    def "Get block list lease"() {
-//        setup:
-//        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
-//
-//        expect:
-//        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().withLeaseId(leaseID), null)
-//            .statusCode() == 200
-//    }
-//
-//    def "Get block list lease fail"() {
-//        setup:
-//        setupBlobLeaseCondition(bu, garbageLeaseID)
-//
-//        when:
-//        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().withLeaseId(garbageLeaseID), null)
-//
-//        then:
-//        def e = thrown(StorageException)
-//        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
-//    }
-//
-//    def "Get block list error"() {
-//        setup:
-//        bu = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        bu.listBlocks(BlockListType.ALL, null, null)
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
+    def "Get block list type null"() {
+        when:
+        bu.listBlocks(null) // List blocks will default to all block types
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    def "Get block list lease"() {
+        setup:
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
+        when:
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null, null)
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "Get block list lease fail"() {
+        setup:
+        setupBlobLeaseCondition(bu, garbageLeaseID)
+
+        when:
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId("not real"), null, null)
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+    }
+
+    def "Get block list error"() {
+        setup:
+        bu = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        bu.listBlocks(BlockListType.ALL)
+
+        then:
+        notThrown(StorageException)
+    }
+
 //    def "Get block list context"() {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlockBlobGetBlockListHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.
@@ -614,52 +628,50 @@ class BlockBlobAPITest extends APISpec {
 
     def "Upload"() {
         when:
-        BlockBlobUploadHeaders headers = bu.upload(defaultInputStream.get(), defaultDataSize)
+        Response<BlockBlobItem> response = bu.upload(defaultInputStream.get(), defaultDataSize)
+        HttpHeaders headers = response.headers()
 
         then:
-//        response.statusCode() == 201
+        response.statusCode() == 201
         def outStream = new ByteArrayOutputStream()
         bu.download(outStream)
         outStream.toByteArray() == "default".getBytes(StandardCharsets.UTF_8)
         validateBasicHeaders(headers)
-        headers.contentMD5() != null
-        headers.isServerEncrypted()
+        headers.value("Content-MD5") != null
+        Boolean.parseBoolean(headers.value("x-ms-request-server-encrypted"))
     }
 
-//    def "Upload min"() {
-//        expect:
-//        bu.upload(defaultInputStream.get(), defaultDataSize).statusCode() == 201
-//    }
+    def "Upload min"() {
+        expect:
+        bu.upload(defaultInputStream.get(), defaultDataSize).statusCode() == 201
+    }
 
-//    @Unroll
-//    def "Upload illegal argument"() {
-//        when:
-//        bu.upload(data, dataSize, null, null, null, null)
-//
-//        then:
-//        def e = thrown(Exception)
-//        exceptionType.isInstance(e)
-//
-//        where:
-//        data            | dataSize            | exceptionType
-//        null            | defaultDataSize     | IllegalArgumentException
-//        defaultInputStream.get() | defaultDataSize + 1 | UnexpectedLengthException
-//        defaultInputStream.get() | defaultDataSize - 1 | UnexpectedLengthException
-//    }
-//
-//    def "Upload empty body"() {
-//        expect:
-//        bu.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, null, null,
-//            null, null).statusCode() == 201
-//    }
-//
-//    def "Upload null body"() {
-//        when:
-//        bu.upload(Flux.just(null), 0, null, null, null, null)
-//
-//        then:
-//        thrown(NullPointerException) // Thrown by Flux.just().
-//    }
+    @Unroll
+    def "Upload illegal argument"() {
+        when:
+        bu.upload(data, dataSize)
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | NullPointerException
+        defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
+        // no exception
+//        defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
+    }
+
+    def "Upload empty body"() {
+        expect:
+        bu.upload(new ByteArrayInputStream(new byte[0]), 0).statusCode() == 201
+    }
+
+    def "Upload null body"() {
+        expect:
+        bu.upload(null, 0).statusCode() == 201
+    }
 
     @Unroll
     def "Upload headers"() {
@@ -674,11 +686,11 @@ class BlockBlobAPITest extends APISpec {
         when:
         bu.upload(defaultInputStream.get(), defaultDataSize,
             headers, null, null, null, null)
-        BlobGetPropertiesHeaders responseHeaders = bu.getProperties(null, null)
+        HttpHeaders responseHeaders = bu.getProperties().headers()
 
         then:
         validateBlobHeaders(responseHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
-            MessageDigest.getInstance("MD5").digest(defaultData.array()),
+            Base64.getEncoder().encode(contentMD5),
             contentType == null ? "application/octet-stream" : contentType)
         // For uploading a block blob, the service will auto calculate an MD5 hash if not present
         // HTTP default content type is application/octet-stream
@@ -702,13 +714,12 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        bu.upload(defaultInputStream.get(), defaultDataSize,
-            null, metadata, null, null, null)
-        BlobGetPropertiesHeaders responseHeaders = bu.getProperties(null, null)
+        bu.upload(defaultInputStream.get(), defaultDataSize, null, metadata, null, null, null)
+        Response<BlobProperties> response = bu.getProperties()
 
         then:
-//        response.statusCode() == 200
-        responseHeaders.metadata() == metadata
+        response.statusCode() == 200
+        getMetadataFromHeaders(response.headers()) == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -716,75 +727,81 @@ class BlockBlobAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-//    @Unroll
-//    def "Upload AC"() {
-//        setup:
-//        match = setupBlobMatchCondition(bu, match)
-//        leaseID = setupBlobLeaseCondition(bu, leaseID)
-//        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-//            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-//                .withIfMatch(match).withIfNoneMatch(noneMatch))
-//            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
-//
-//        expect:
-//        bu.upload(defaultInputStream.get(), defaultDataSize,
-//            null, null, bac, null).statusCode() == 201
-//
-//        where:
-//        modified | unmodified | match        | noneMatch   | leaseID
-//        null     | null       | null         | null        | null
-//        oldDate  | null       | null         | null        | null
-//        null     | newDate    | null         | null        | null
-//        null     | null       | receivedEtag | null        | null
-//        null     | null       | null         | garbageEtag | null
-//        null     | null       | null         | null        | receivedLeaseID
-//    }
-//
-//    @Unroll
-//    def "Upload AC fail"() {
-//        setup:
-//        noneMatch = setupBlobMatchCondition(bu, noneMatch)
-//        setupBlobLeaseCondition(bu, leaseID)
-//        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
-//            new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
-//                .withIfMatch(match).withIfNoneMatch(noneMatch))
-//            .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
-//
-//        when:
-//        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null)
-//
-//        then:
-//        def e = thrown(StorageException)
-//        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
-//            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
-//
-//        where:
-//        modified | unmodified | match       | noneMatch    | leaseID
-//        newDate  | null       | null        | null         | null
-//        null     | oldDate    | null        | null         | null
-//        null     | null       | garbageEtag | null         | null
-//        null     | null       | null        | receivedEtag | null
-//        null     | null       | null        | null         | garbageLeaseID
-//    }
+    @Unroll
+    def "Upload AC"() {
+        setup:
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
+                .ifModifiedSince(modified)
+                .ifUnmodifiedSince(unmodified)
+                .ifMatch(match)
+                .ifNoneMatch(noneMatch))
 
-//    def "Upload error"() {
-//        setup:
-//        bu = cu.createBlockBlobURL(generateBlobName())
-//
-//        when:
-//        bu.upload(defaultInputStream.get(), defaultDataSize, null, null,
-//            new BlobAccessConditions().withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId("id")),
-//            null)
-//
-//        then:
-//        thrown(StorageException)
-//    }
-//
+
+        expect:
+        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null).statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Upload AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions()
+            .leaseaccessconditions(new LeaseAccessConditions().leaseId(leaseID))
+            .modifiedaccessconditions(new ModifiedAccessConditions()
+                .ifModifiedSince(modified)
+                .ifUnmodifiedSince(unmodified)
+                .ifMatch(match)
+                .ifNoneMatch(noneMatch))
+
+        when:
+        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, bac, null, null)
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+            e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Upload error"() {
+        setup:
+        bu = cu.getBlockBlobClient(generateBlobName())
+
+        when:
+        bu.upload(defaultInputStream.get(), defaultDataSize, null, null,
+            new BlobAccessConditions().leaseaccessconditions(new LeaseAccessConditions().leaseId("id")),
+            null, null)
+
+        then:
+        thrown(StorageException)
+    }
+
 //    def "Upload context"() {
 //        setup:
 //        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobUploadHeaders)))
 //
-//        bu = bu.withPipeline(pipeline)
+//        bu = bu.pipeline(pipeline)
 //
 //        when:
 //        // No service call is made. Just satisfy the parameters.

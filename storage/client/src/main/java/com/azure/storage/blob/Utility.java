@@ -3,10 +3,12 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Mono;
+import reactor.util.annotation.Nullable;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,6 +22,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -256,7 +259,10 @@ final class Utility {
     private static <T> Mono<T> addErrorWrappingToSingle(Mono<T> s) {
         return s.onErrorResume(
             StorageErrorException.class,
-            e -> e.response().bodyAsString().flatMap(body -> Mono.error(new StorageException(e, body))));
+            e -> e.response()
+                .bodyAsString()
+                .switchIfEmpty(Mono.just(""))
+                .flatMap(body -> Mono.error(new StorageException(e, body))));
     }
 
     /*
@@ -267,7 +273,7 @@ final class Utility {
     private static <T> Mono<T> scrubEtagHeaderInResponse(Mono<T> s) {
         return s.map(response -> {
             try {
-                Object headers = response.getClass().getMethod("headers").invoke(response);
+                Object headers = response.getClass().getMethod("deserializedHeaders").invoke(response);
                 Method etagGetterMethod = headers.getClass().getMethod("eTag");
                 String etag = (String) etagGetterMethod.invoke(headers);
                 // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
@@ -275,7 +281,10 @@ final class Utility {
                     return response;
                 }
                 etag = etag.replace("\"", ""); // Etag headers without the quotes will be unaffected.
-                headers.getClass().getMethod("withETag", String.class).invoke(headers, etag);
+                headers.getClass().getMethod("eTag", String.class).invoke(headers, etag);
+
+                HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
+                rawHeaders.put("ETag", etag);
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
             } catch (IllegalAccessException | InvocationTargetException e) {
@@ -320,17 +329,43 @@ final class Utility {
      *
      * @return A url with the name appended.
      *
-     * @throws MalformedURLException
+     * @throws RuntimeException
      *         Appending the specified name produced an invalid URL.
      */
-    static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
-        UrlBuilder url = UrlBuilder.parse(baseURL.toString());
+    static URL appendToURLPath(URL baseURL, String name) {
+        UrlBuilder url = UrlBuilder.parse(baseURL);
         if (url.path() == null) {
             url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
         } else if (url.path().charAt(url.path().length() - 1) != '/') {
             url.withPath(url.path() + '/');
         }
         url.withPath(url.path() + name);
-        return new URL(url.toString());
+        try {
+            return url.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static URL stripLastPathSegment(URL baseURL) {
+        UrlBuilder url = UrlBuilder.parse(baseURL);
+        if (url.path() != null || !url.path().contains("/")) {
+            throw new IllegalArgumentException(String.format("URL %s does not contain path segments", baseURL));
+        }
+        String newPath = url.path().substring(0, url.path().lastIndexOf('/'));
+        url.withPath(newPath);
+        try {
+            return url.toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+     static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+         if (timeout == null) {
+             return response.block();
+         } else {
+             return response.block(timeout);
+         }
     }
 }

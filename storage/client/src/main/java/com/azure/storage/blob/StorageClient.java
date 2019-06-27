@@ -3,17 +3,22 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.ListContainersOptions;
+import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -35,14 +40,13 @@ import java.time.OffsetDateTime;
 public final class StorageClient {
 
     private StorageAsyncClient storageAsyncClient;
-    private StorageClientBuilder builder;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param storageAsyncClient the async storage account client
      */
-    StorageClient(AzureBlobStorageImpl azureBlobStorage) {
-        this.storageAsyncClient = new StorageAsyncClient(azureBlobStorage);
+    StorageClient(StorageAsyncClient storageAsyncClient) {
+        this.storageAsyncClient = storageAsyncClient;
     }
 
     /**
@@ -56,15 +60,6 @@ public final class StorageClient {
     }
 
     /**
-     * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param builder the storage account client builder
-     */
-    StorageClient(StorageClientBuilder builder) {
-        this.builder = builder;
-        this.storageAsyncClient = new StorageAsyncClient(builder);
-    }
-
-    /**
      * Initializes a {@link ContainerClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
@@ -74,11 +69,46 @@ public final class StorageClient {
      *     A {@link ContainerClient} object pointing to the specified container
      */
     public ContainerClient getContainerClient(String containerName) {
-        try {
-            return new ContainerClient(this.builder.copyAsContainerBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), containerName).toString()));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new ContainerClient(storageAsyncClient.getContainerAsyncClient(containerName));
+    }
+
+    /**
+     * Creates a new container within a storage account. If a container with the same name already exists, the operation
+     * fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * @param containerName Name of the container to create
+     * @return A response containing a {@link ContainerClient} used to interact with the container created.
+     */
+    public Response<ContainerClient> createContainer(String containerName) {
+        return createContainer(containerName, null, null);
+    }
+
+    /**
+     * Creates a new container within a storage account. If a container with the same name already exists, the operation
+     * fails. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * @param containerName Name of the container to create
+     * @param metadata
+     *         {@link Metadata}
+     * @param accessType
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
+     *         in the Azure Docs for more information. Pass null for no public access.
+     * @return A response containing a {@link ContainerClient} used to interact with the container created.
+     */
+    public Response<ContainerClient> createContainer(String containerName, Metadata metadata, PublicAccessType accessType) {
+        ContainerClient client = getContainerClient(containerName);
+
+        return new SimpleResponse<>(client.create(metadata, accessType, null), client);
+    }
+
+    /**
+     * Gets the URL of the storage account represented by this client.
+     * @return the URL.
+     */
+    public URL getAccountUrl() {
+        return storageAsyncClient.getAccountUrl();
     }
 
     /**
@@ -107,7 +137,7 @@ public final class StorageClient {
      *      The list of containers.
      */
     public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
-        Flux<ContainerItem> response = storageAsyncClient.listContainers(options, null);
+        Flux<ContainerItem> response = storageAsyncClient.listContainers(options);
 
         return timeout == null ?
             response.toIterable():
@@ -121,8 +151,8 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public StorageServiceProperties getProperties() {
-        return this.getProperties(null, null);
+    public Response<StorageServiceProperties> getProperties() {
+        return this.getProperties(null);
     }
 
     /**
@@ -131,23 +161,15 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account properties.
      */
-    public StorageServiceProperties getProperties(Duration timeout, Context context) {
+    public Response<StorageServiceProperties> getProperties(Duration timeout) {
 
-        Mono<StorageServiceProperties> response = storageAsyncClient.getProperties(context);
+        Mono<Response<StorageServiceProperties>> response = storageAsyncClient.getProperties();
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -162,8 +184,8 @@ public final class StorageClient {
      * @return
      *      The storage account properties.
      */
-    public void setProperties(StorageServiceProperties properties) {
-        this.setProperties(properties, null, null);
+    public VoidResponse setProperties(StorageServiceProperties properties) {
+        return this.setProperties(properties, null);
     }
 
     /**
@@ -176,29 +198,19 @@ public final class StorageClient {
      *         Configures the service.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account properties.
      */
-    public void setProperties(StorageServiceProperties properties, Duration timeout, Context context) {
-        Mono<Void> response = storageAsyncClient.setProperties(properties, context);
+    public VoidResponse setProperties(StorageServiceProperties properties, Duration timeout) {
+        Mono<VoidResponse> response = storageAsyncClient.setProperties(properties);
 
-        if (timeout == null) {
-            response.block();
-        } else {
-            response.block(timeout);
-        }
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -208,13 +220,13 @@ public final class StorageClient {
      * @return
      *      The user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return this.getUserDelegationKey(start, expiry, null, null);
+    public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
+        return this.getUserDelegationKey(start, expiry, null);
     }
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredential} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -222,23 +234,15 @@ public final class StorageClient {
      *         Expiration of the key's validity.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The user delegation key.
      */
-    public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
-            Duration timeout, Context context) {
-        Mono<UserDelegationKey> response = storageAsyncClient.getUserDelegationKey(start, expiry, context);
+    public Response<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry,
+            Duration timeout) {
+        Mono<Response<UserDelegationKey>> response = storageAsyncClient.getUserDelegationKey(start, expiry);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -250,8 +254,8 @@ public final class StorageClient {
      * @return
      *      The storage account statistics.
      */
-    public StorageServiceStats getStatistics() {
-        return this.getStatistics(null, null);
+    public Response<StorageServiceStats> getStatistics() {
+        return this.getStatistics(null);
     }
 
     /**
@@ -262,22 +266,14 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account statistics.
      */
-    public StorageServiceStats getStatistics(Duration timeout, Context context) {
-        Mono<StorageServiceStats> response = storageAsyncClient.getStatistics(context);
+    public Response<StorageServiceStats> getStatistics(Duration timeout) {
+        Mono<Response<StorageServiceStats>> response = storageAsyncClient.getStatistics();
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -287,8 +283,8 @@ public final class StorageClient {
      * @return
      *      The storage account info.
      */
-    public StorageAccountInfo getAccountInfo() {
-        return this.getAccountInfo(null, null);
+    public Response<StorageAccountInfo> getAccountInfo() {
+        return this.getAccountInfo(null);
     }
 
     /**
@@ -297,21 +293,13 @@ public final class StorageClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The storage account info.
      */
-    public StorageAccountInfo getAccountInfo(Duration timeout, Context context) {
-        Mono<StorageAccountInfo> response = storageAsyncClient.getAccountInfo(context);
+    public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
+        Mono<Response<StorageAccountInfo>> response = storageAsyncClient.getAccountInfo();
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }

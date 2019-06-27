@@ -1,51 +1,54 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
+
+import com.azure.storage.blob.ContainerClient;
 
 /**
- * Defines options available to configure the behavior of a call to listContainersSegment on a {@link ServiceURL}
- * object. See the constructor for details on each of the options. Null may be passed in place of an object of this
- * type if no options are desirable.
+ * Defines options available to configure the behavior of a call to listBlobsFlatSegment on a {@link ContainerClient}
+ * object. See the constructor for details on each of the options.
  */
-public final class ListContainersOptions {
+public final class ListBlobsOptions {
 
-    private ContainerListDetails details;
+    private BlobListDetails details;
 
     private String prefix;
 
     private Integer maxResults;
 
-    public ListContainersOptions() {
-        this.details = new ContainerListDetails();
+    public ListBlobsOptions() {
+        this.details = new BlobListDetails();
     }
 
     /**
-     * {@link ContainerListDetails}
+     * {@link BlobListDetails}
      */
-    public ContainerListDetails details() {
+    public BlobListDetails details() {
         return details;
     }
 
     /**
-     * {@link ContainerListDetails}
+     * {@link BlobListDetails}
      */
-    public ListContainersOptions withDetails(ContainerListDetails details) {
+    public ListBlobsOptions details(BlobListDetails details) {
         this.details = details;
         return this;
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return
+     * all blobs.
      */
     public String prefix() {
         return prefix;
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     * Filters the results to return only blobs whose names begin with the specified prefix. May be null to return
+     * all blobs.
      */
-    public ListContainersOptions withPrefix(String prefix) {
+    public ListBlobsOptions prefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -62,11 +65,13 @@ public final class ListContainersOptions {
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      */
-    public ListContainersOptions withMaxResults(Integer maxResults) {
+    public ListBlobsOptions maxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
             throw new IllegalArgumentException("MaxResults must be greater than 0.");
         }
         this.maxResults = maxResults;
         return this;
     }
+
+
 }

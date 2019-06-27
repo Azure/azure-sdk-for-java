@@ -3,9 +3,11 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.ContainerGetPropertiesHeaders
+import com.azure.storage.blob.models.Metadata
 import com.azure.storage.blob.models.PublicAccessType
 import org.junit.Assume
 import spock.lang.Unroll
@@ -22,18 +24,18 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(containerName)
 
         when:
-        cu.create(null, null, null, null)
+        cu.create()
 
         then:
         System.out.println(cu.properties.toString())
     }
 
     def "delete"(){
-        cu.delete(null, null, null)
-        when:
-        cu.getProperties()
-        then:
-        thrown(StorageException)
+        setup:
+        cu.delete()
+
+        expect:
+        !cu.exists().value()
     }
 
     /////////////////////////////////////
@@ -63,10 +65,10 @@ class ContainerAPITest extends APISpec {
 
         when:
         cu.create(metadata, null, null, null)
-        ContainerGetPropertiesHeaders response = cu.getProperties()
+        HttpHeaders headers = cu.getProperties().headers()
 
         then:
-        response.metadata() == metadata
+        getMetadataFromHeaders(headers) == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -81,8 +83,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         cu.create(null, publicAccess, null, null)
-        PublicAccessType access =
-            cu.getProperties().blobPublicAccess()
+        PublicAccessType access = cu.getProperties().value().blobPublicAccess()
 
         then:
         access.toString() == publicAccess.toString()
@@ -114,7 +115,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // No service call is made. Just satisfy the parameters.
-        cuContext.create(null, null, null, defaultContext)
+        cuContext.create()
 
         then:
         notThrown(RuntimeException)
@@ -147,7 +148,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // No service call is made. Just satisfy the parameters.
-        cuDeleteContext.delete(null, null, defaultContext)
+        cuDeleteContext.delete()
 
         then:
         notThrown(RuntimeException)
@@ -158,10 +159,10 @@ class ContainerAPITest extends APISpec {
         setup:
         String name = generateBlobName()
         PageBlobClient bu = cu.getPageBlobClient(name)
-        bu.create(512, null, null, null, null, null, null)
+        bu.create(512)
 
         when:
-        List<BlobItem> blobs = cu.listBlobsFlat(null, null, null).asList()
+        List<BlobItem> blobs = cu.listBlobsFlat().asList()
 
         then:
         blobs.size() == 1
@@ -178,7 +179,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(0).properties().leaseDuration() == null
         blobs.get(0).properties().contentLength() != null
         blobs.get(0).properties().contentType() != null
-        blobs.get(0).properties().contentMD5 == null
+        blobs.get(0).properties().contentMD5() == null
         blobs.get(0).properties().contentEncoding() == null
         blobs.get(0).properties().contentDisposition() == null
         blobs.get(0).properties().contentLanguage() == null
@@ -194,10 +195,10 @@ class ContainerAPITest extends APISpec {
         when:
         def containerName = generateBlobName()
         BlockBlobClient bu = cu.getBlockBlobClient(containerName)
-        bu.upload(defaultInputStream, defaultDataSize)
+        bu.upload(defaultInputStream.get(), defaultDataSize)
 
         then:
-        cu.listBlobsFlat(null).each() {
+        cu.listBlobsFlat().each() {
             blob ->
             Assume.assumeTrue(blob.name().contains("javabloblistblobsflatmin"))
             System.out.println("blob name: " + blob.name())
@@ -215,7 +216,7 @@ class ContainerAPITest extends APISpec {
         cu.setMetadata(metadata)
 
         expect:
-        cu.getProperties().metadata().size() == 1
+        getMetadataFromHeaders(cu.getProperties().headers()).size() == 1
     }
 
     def "Set metadata min"() {
@@ -227,7 +228,7 @@ class ContainerAPITest extends APISpec {
         cu.setMetadata(metadata)
 
         then:
-        cu.getProperties().metadata() == metadata
+        getMetadataFromHeaders(cu.getProperties().headers()) == metadata
     }
 
     @Unroll
@@ -243,7 +244,7 @@ class ContainerAPITest extends APISpec {
         cu.setMetadata(metadata)
 
         expect:
-        cu.getProperties().metadata() == metadata
+        getMetadataFromHeaders(cu.getProperties().headers()) == metadata
 
         where:
         key1  | value1 | key2   | value2
@@ -256,7 +257,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.setMetadata(null, null, null, null)
+        cu.setMetadata(null)
 
         then:
         thrown(StorageException)
@@ -269,7 +270,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // No service call is made. Just satisfy the parameters.
-        cuMetadataContext.setMetadata(null, null, null, defaultContext)
+        cuMetadataContext.setMetadata(null)
 
         then:
         notThrown(RuntimeException)
@@ -278,20 +279,21 @@ class ContainerAPITest extends APISpec {
 
     def "Get properties null"() {
         when:
-        ContainerGetPropertiesHeaders headers = cu.getProperties(null, null, null)
+        Response<ContainerProperties> response = cu.getProperties()
+        HttpHeaders headers = response.headers()
 
         then:
         validateBasicHeaders(headers)
-        headers.blobPublicAccess() == null
-        headers.leaseDuration() == null
-        headers.metadata().size() == 0
-        !headers.hasImmutabilityPolicy()
-        !headers.hasLegalHold()
+        headers.value("x-ms-lease-duration") == null
+        getMetadataFromHeaders(headers).size() == 0
+        !response.value().hasImmutabilityPolicy()
+        !response.value().hasLegalHold()
+        response.value().blobPublicAccess() == null
     }
 
     def "Get properties min"() {
         expect:
-        cu.getProperties().blobPublicAccess() == null
+        cu.getProperties().value().blobPublicAccess() == null
     }
 
     def "Get properties error"() {
@@ -299,7 +301,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.getProperties(null, null, null)
+        cu.getProperties()
 
         then:
         thrown(StorageException)
@@ -312,7 +314,7 @@ class ContainerAPITest extends APISpec {
 
         when:
         // No service call is made. Just satisfy the parameters.
-        cu.getProperties(null, null, defaultContext)
+        cu.getProperties()
 
         then:
         notThrown(RuntimeException)

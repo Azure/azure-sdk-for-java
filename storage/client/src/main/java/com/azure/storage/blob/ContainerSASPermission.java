@@ -83,7 +83,7 @@ final class ContainerSASPermission {
     /**
      * Specifies Read access granted.
      */
-    public ContainerSASPermission withRead(boolean read) {
+    public ContainerSASPermission read(boolean read) {
         this.read = read;
         return this;
     }
@@ -98,7 +98,7 @@ final class ContainerSASPermission {
     /**
      * Specifies Add access granted.
      */
-    public ContainerSASPermission withAdd(boolean add) {
+    public ContainerSASPermission add(boolean add) {
         this.add = add;
         return this;
     }
@@ -113,7 +113,7 @@ final class ContainerSASPermission {
     /**
      * Specifies Create access granted.
      */
-    public ContainerSASPermission withCreate(boolean create) {
+    public ContainerSASPermission create(boolean create) {
         this.create = create;
         return this;
     }
@@ -128,7 +128,7 @@ final class ContainerSASPermission {
     /**
      * Specifies Write access granted.
      */
-    public ContainerSASPermission withWrite(boolean write) {
+    public ContainerSASPermission write(boolean write) {
         this.write = write;
         return this;
     }
@@ -143,7 +143,7 @@ final class ContainerSASPermission {
     /**
      * Specifies Delete access granted.
      */
-    public ContainerSASPermission withDelete(boolean delete) {
+    public ContainerSASPermission delete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -158,7 +158,7 @@ final class ContainerSASPermission {
     /**
      * Specifies List access granted.
      */
-    public ContainerSASPermission withList(boolean list) {
+    public ContainerSASPermission list(boolean list) {
         this.list = list;
         return this;
     }

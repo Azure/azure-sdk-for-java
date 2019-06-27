@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.blob.models;
 
-import com.azure.storage.blob.models.ListContainersIncludeType;
+import com.azure.storage.blob.StorageClient;
 
 /**
  * This type allows users to specify additional information the service should return with each container when listing
- * containers in an account (via a {@link ServiceURL} object). This type is immutable to ensure thread-safety of
+ * containers in an account (via a {@link StorageClient} object). This type is immutable to ensure thread-safety of
  * requests, so changing the details for a different listing operation requires construction of a new object. Null may
  * be passed if none of the options are desirable.
  */
@@ -29,7 +29,7 @@ public final class ContainerListDetails {
     /**
      * Whether metadata should be returned.
      */
-    public ContainerListDetails withMetadata(boolean metadata) {
+    public ContainerListDetails metadata(boolean metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -39,7 +39,7 @@ public final class ContainerListDetails {
      It is intended to mirror the BlobListDetails.toList() method, but is slightly different since there is only one
      possible value here currently. The customer should never have need for this.
      */
-    ListContainersIncludeType toIncludeType() {
+    public ListContainersIncludeType toIncludeType() {
         if (this.metadata) {
             return ListContainersIncludeType.METADATA;
         }

@@ -69,7 +69,7 @@ final class AccountSASResourceType {
     /**
      * Permission to access service level APIs granted.
      */
-    public AccountSASResourceType withService(boolean service) {
+    public AccountSASResourceType service(boolean service) {
         this.service = service;
         return this;
     }
@@ -84,7 +84,7 @@ final class AccountSASResourceType {
     /**
      * Permission to access container level APIs (Blob Containers, Tables, Queues, File Shares) granted.
      */
-    public AccountSASResourceType withContainer(boolean container) {
+    public AccountSASResourceType container(boolean container) {
         this.container = container;
         return this;
     }
@@ -99,7 +99,7 @@ final class AccountSASResourceType {
     /**
      * Permission to access object level APIs (Blobs, Table Entities, Queue Messages, Files) granted.
      */
-    public AccountSASResourceType withObject(boolean object) {
+    public AccountSASResourceType object(boolean object) {
         this.object = object;
         return this;
     }

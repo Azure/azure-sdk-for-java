@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.configuration.Configuration;
+import com.azure.core.credentials.TokenCredential;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -14,8 +16,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SASTokenCredentialPolicy;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +40,7 @@ import java.util.Objects;
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}}.
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
+ *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>
@@ -42,13 +48,18 @@ import java.util.Objects;
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 public final class ContainerClientBuilder {
-    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
-    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ACCOUNT_NAME = "accountname";
+    private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
+    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
-    private ICredentials credentials = new AnonymousCredentials();
+    private String containerName;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RetryPolicy retryPolicy;
@@ -60,35 +71,33 @@ public final class ContainerClientBuilder {
         policies = new ArrayList<>();
     }
 
-    ContainerClientBuilder(List<HttpPipelinePolicy> policies, URL endpoint, ICredentials credentials,
-            HttpClient httpClient, HttpLogDetailLevel logLevel, RetryPolicy retryPolicy, Configuration configuration) {
-        this.policies = policies;
-        this.endpoint = endpoint;
-        this.credentials = credentials;
-        this.httpClient = httpClient;
-        this.logLevel = logLevel;
-        this.retryPolicy = retryPolicy;
-        this.configuration = configuration;
-    }
-
-    ContainerClientBuilder copyBuilder() {
-        return new ContainerClientBuilder(this.policies, this.endpoint, this.credentials, this.httpClient, this.logLevel, this.retryPolicy, this.configuration);
-    }
-
     /**
      * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
      * @return a new client instance
      */
-    AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(containerName);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        if (configuration == null) {
+            configuration = ConfigurationManager.getConfiguration();
+        }
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(credentials); // This needs to be a different credential type.
+
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s://%s/.default", endpoint.getProtocol(), endpoint.getHost())));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        } else {
+            policies.add(new AnonymousCredentialPolicy());
+        }
 
         policies.add(retryPolicy);
 
@@ -101,23 +110,22 @@ public final class ContainerClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .url(String.format("%s/%s", endpoint.toString(), containerName))
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link ContainerClient} created from the configurations in this builder.
      */
     public ContainerClient buildClient() {
-        return new ContainerClient(this);
+        return new ContainerClient(buildAsyncClient());
     }
 
     /**
      * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
      */
     public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(this);
+        return new ContainerAsyncClient(buildImpl());
     }
 
     /**
@@ -127,12 +135,38 @@ public final class ContainerClientBuilder {
      */
     public ContainerClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
+        URL url;
         try {
-            this.endpoint = new URL(endpoint);
+            url = new URL(endpoint);
+            this.endpoint = new URL(url.getProtocol() + "://" + url.getAuthority());
+            String path = url.getPath();
+            if (path != null && !path.isEmpty() && !path.equals("/")) {
+                path = path.replaceAll("^/", "").replaceAll("/$", "");
+                if (path.contains("/")) {
+                    throw new IllegalArgumentException("Endpoint should contain exactly 0 or 1 path segments");
+                } else {
+                    this.containerName = path;
+                }
+            }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
+        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+        if (credential != null) {
+            this.sasTokenCredential = credential;
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the name of the container this client is connecting to.
+     * @param containerName the name of the container
+     * @return the updated ContainerClientBuilder object
+     */
+    public ContainerClientBuilder containerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 
@@ -141,31 +175,42 @@ public final class ContainerClientBuilder {
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(SharedKeyCredentials credentials) {
-        this.credentials = credentials;
+    public ContainerClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder credentials(TokenCredentials credentials) {
-        this.credentials = credentials;
+    public ContainerClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
         return this;
     }
 
     /**
-     * Clears the credentials used to authorize requests sent to the service
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
      */
-    public ContainerClientBuilder anonymousCredentials() {
-        this.credentials = new AnonymousCredentials();
+    public ContainerClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Clears the credential used to authorize requests sent to the service
+     * @return the updated ContainerClientBuilder object
+     */
+    public ContainerClientBuilder anonymousCredential() {
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -185,15 +230,20 @@ public final class ContainerClientBuilder {
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
-        // Use accountName and accountKey to get the SAS token using the credential class.
-        credentials = new SharedKeyCredentials(accountName, accountKey);
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            endpoint(endpoint);
+        }
 
-        return this;
+        // Use accountName and accountKey to get the SAS token using the credential class.
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**

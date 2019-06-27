@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.credentials.SharedKeyCredential;
+
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -61,7 +63,7 @@ final class AccountSASSignatureValues {
     /**
      * If null or empty, this defaults to the service version targeted by this version of the library.
      */
-    public AccountSASSignatureValues withVersion(String version) {
+    public AccountSASSignatureValues version(String version) {
         this.version = version;
         return this;
     }
@@ -76,7 +78,7 @@ final class AccountSASSignatureValues {
     /**
      * {@link SASProtocol}
      */
-    public AccountSASSignatureValues withProtocol(SASProtocol protocol) {
+    public AccountSASSignatureValues protocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -91,7 +93,7 @@ final class AccountSASSignatureValues {
     /**
      * When the SAS will take effect.
      */
-    public AccountSASSignatureValues withStartTime(OffsetDateTime startTime) {
+    public AccountSASSignatureValues startTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -106,7 +108,7 @@ final class AccountSASSignatureValues {
     /**
      * The time after which the SAS will no longer work.
      */
-    public AccountSASSignatureValues withExpiryTime(OffsetDateTime expiryTime) {
+    public AccountSASSignatureValues expiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -123,7 +125,7 @@ final class AccountSASSignatureValues {
      * Specifies which operations the SAS user may perform. Please refer to {@link AccountSASPermission} for help
      * constructing the permissions string.
      */
-    public AccountSASSignatureValues withPermissions(String permissions) {
+    public AccountSASSignatureValues permissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -138,7 +140,7 @@ final class AccountSASSignatureValues {
     /**
      * {@link IPRange}
      */
-    public AccountSASSignatureValues withIpRange(IPRange ipRange) {
+    public AccountSASSignatureValues ipRange(IPRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -155,7 +157,7 @@ final class AccountSASSignatureValues {
      * The values that indicate the services accessible with this SAS. Please refer to {@link AccountSASService} to
      * construct this value.
      */
-    public AccountSASSignatureValues withServices(String services) {
+    public AccountSASSignatureValues services(String services) {
         this.services = services;
         return this;
     }
@@ -172,7 +174,7 @@ final class AccountSASSignatureValues {
      * The values that indicate the resource types accessible with this SAS. Please refer
      * to {@link AccountSASResourceType} to construct this value.
      */
-    public AccountSASSignatureValues withResourceTypes(String resourceTypes) {
+    public AccountSASSignatureValues resourceTypes(String resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
     }
@@ -186,8 +188,8 @@ final class AccountSASSignatureValues {
      *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
-        Utility.assertNotNull("SharedKeyCredentials", sharedKeyCredentials);
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
+        Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
         Utility.assertNotNull("services", this.services);
         Utility.assertNotNull("resourceTypes", this.resourceTypes);
         Utility.assertNotNull("expiryTime", this.expiryTime);
@@ -209,9 +211,9 @@ final class AccountSASSignatureValues {
                 null, this.permissions, signature, null, null, null, null, null, null);
     }
 
-    private String stringToSign(final SharedKeyCredentials sharedKeyCredentials) {
+    private String stringToSign(final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
-                sharedKeyCredentials.getAccountName(),
+                sharedKeyCredentials.accountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,

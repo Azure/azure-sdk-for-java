@@ -1,5 +1,6 @@
 package com.azure.storage.blob;
 
+import com.azure.storage.blob.models.ReliableDownloadOptions;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;

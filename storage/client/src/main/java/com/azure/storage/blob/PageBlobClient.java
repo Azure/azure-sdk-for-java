@@ -3,18 +3,15 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.Context;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.core.http.rest.Response;
+import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
-import com.azure.storage.blob.models.PageBlobClearPagesHeaders;
-import com.azure.storage.blob.models.PageBlobCreateHeaders;
-import com.azure.storage.blob.models.PageBlobResizeHeaders;
-import com.azure.storage.blob.models.PageBlobUpdateSequenceNumberHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesFromURLHeaders;
-import com.azure.storage.blob.models.PageBlobUploadPagesHeaders;
+import com.azure.storage.blob.models.PageBlobAccessConditions;
+import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -41,8 +38,7 @@ import java.time.Duration;
  * for more information.
  */
 public final class PageBlobClient extends BlobClient {
-
-    private PageBlobAsyncClient pageBlobAsyncClient;
+    private final PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -56,11 +52,11 @@ public final class PageBlobClient extends BlobClient {
 
     /**
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
-     * @param azureBlobStorage the API client for blob storage API
+     * @param pageBlobAsyncClient the async page blob client
      */
-    PageBlobClient(AzureBlobStorageImpl azureBlobStorage) {
-        super(azureBlobStorage);
-        this.pageBlobAsyncClient = new PageBlobAsyncClient(azureBlobStorage);
+    PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient) {
+        super(pageBlobAsyncClient);
+        this.pageBlobAsyncClient = pageBlobAsyncClient;
     }
 
     /**
@@ -68,6 +64,42 @@ public final class PageBlobClient extends BlobClient {
      */
     public static PageBlobClientBuilder pageBlobClientBuilder() {
         return new PageBlobClientBuilder();
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(long length) {
+        return getBlobOutputStream(length, null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
+     * it will be overwritten.
+     *
+     * @param length
+     *            A <code>long</code> which represents the length, in bytes, of the stream to create. This value must be
+     *            a multiple of 512.
+     * @param accessConditions
+     *            A {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
+        return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
     }
 
     // TODO: Figure out if this method needs to change to public to access method in wrappers
@@ -100,8 +132,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the created page blob.
      */
-    public PageBlobCreateHeaders create(long size) {
-        return this.create(size, null, null, null, null, null, null);
+    public Response<PageBlobItem> create(long size) {
+        return this.create(size, null, null, null, null, null);
     }
 
     /**
@@ -123,22 +155,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the created page blob.
      */
-    public PageBlobCreateHeaders create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
-                                        Metadata metadata, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobCreateHeaders> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public Response<PageBlobItem> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
+                                         Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.create(size, sequenceNumber, headers, metadata, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -160,8 +184,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
-        return this.uploadPages(pageRange, body, null, null, null);
+    public Response<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
+        return this.uploadPages(pageRange, body, null, null);
     }
 
     /**
@@ -183,22 +207,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link PageBlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesHeaders uploadPages(PageRange pageRange, Flux<ByteBuf> body,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobUploadPagesHeaders> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public Response<PageBlobItem> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange, body, pageBlobAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -223,9 +239,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
+    public Response<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
         return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null, null, null);
+                null, null);
     }
 
     /**
@@ -255,24 +271,16 @@ public final class PageBlobClient extends BlobClient {
      *          {@link SourceModifiedAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *          {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *          {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *          arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *          immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *          its parent, forming a linked list.
      *
      * @return
      *      The information of the uploaded pages.
      */
-    public PageBlobUploadPagesFromURLHeaders uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
+    public Response<PageBlobItem> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
-            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout, Context context) {
+            SourceModifiedAccessConditions sourceAccessConditions, Duration timeout) {
 
-        Mono<PageBlobUploadPagesFromURLHeaders> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions, context);
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -288,8 +296,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public PageBlobClearPagesHeaders clearPages(PageRange pageRange) {
-        return this.clearPages(pageRange, null, null, null);
+    public Response<PageBlobItem> clearPages(PageRange pageRange) {
+        return this.clearPages(pageRange, null, null);
     }
 
     /**
@@ -303,25 +311,17 @@ public final class PageBlobClient extends BlobClient {
      *         are 0-511, 512-1023, etc.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
      * @return
      *      The information of the cleared pages.
      */
-    public PageBlobClearPagesHeaders clearPages(PageRange pageRange,
-            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout, Context context) {
-        Mono<PageBlobClearPagesHeaders> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions, context);
+    public Response<PageBlobItem> clearPages(PageRange pageRange,
+            PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.clearPages(pageRange, pageBlobAccessConditions);
 
-        return timeout == null ?
-            response.block():
-            response.block(timeout);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -335,7 +335,7 @@ public final class PageBlobClient extends BlobClient {
      *      The information of the cleared pages.
      */
     public Iterable<PageRange> getPageRanges(BlobRange blobRange) {
-        return this.getPageRanges(blobRange, null, null, null);
+        return this.getPageRanges(blobRange, null, null);
     }
 
     /**
@@ -348,19 +348,13 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      All the page ranges.
      */
     public Iterable<PageRange> getPageRanges(BlobRange blobRange,
-            BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions, context);
+            BlobAccessConditions accessConditions, Duration timeout) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions);
         return timeout == null?
             response.toIterable():
             response.timeout(timeout).toIterable();
@@ -381,7 +375,7 @@ public final class PageBlobClient extends BlobClient {
      *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null, null);
+        return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
     }
 
     /**
@@ -398,19 +392,13 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      All the different page ranges.
      */
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions, context);
+            BlobAccessConditions accessConditions, Duration timeout) {
+        Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
         return timeout == null?
             response.toIterable():
             response.timeout(timeout).toIterable();
@@ -427,8 +415,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The resized page blob.
      */
-    public PageBlobResizeHeaders resize(long size) {
-        return this.resize(size, null, null, null);
+    public Response<PageBlobItem> resize(long size) {
+        return this.resize(size, null, null);
     }
 
     /**
@@ -442,21 +430,13 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The resized page blob.
      */
-    public PageBlobResizeHeaders resize(long size, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobResizeHeaders> response = pageBlobAsyncClient.resize(size, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public Response<PageBlobItem> resize(long size, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.resize(size, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -472,9 +452,9 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The updated page blob.
      */
-    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
+    public Response<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action,
             Long sequenceNumber) {
-        return this.updateSequenceNumber(action, sequenceNumber, null, null,null);
+        return this.updateSequenceNumber(action, sequenceNumber, null, null);
     }
 
     /**
@@ -490,22 +470,14 @@ public final class PageBlobClient extends BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      The updated page blob.
      */
-    public PageBlobUpdateSequenceNumberHeaders updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout, Context context) {
-        Mono<PageBlobUpdateSequenceNumberHeaders> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public Response<PageBlobItem> updateSequenceNumber(SequenceNumberActionType action,
+            Long sequenceNumber, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.updateSequenceNumber(action, sequenceNumber, accessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -524,8 +496,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The copy status.
      */
-    public CopyStatusType copyIncremental(URL source, String snapshot) {
-        return this.copyIncremental(source, snapshot, null, null, null);
+    public Response<CopyStatusType> copyIncremental(URL source, String snapshot) {
+        return this.copyIncremental(source, snapshot, null, null);
     }
 
     /**
@@ -546,21 +518,13 @@ public final class PageBlobClient extends BlobClient {
      *         will fail if the specified condition is not satisfied.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      The copy status.
      */
-    public CopyStatusType copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout, Context context) {
-        Mono<CopyStatusType> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions, context);
-        return timeout == null?
-            response.block():
-            response.block(timeout);
+    public Response<CopyStatusType> copyIncremental(URL source, String snapshot,
+            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        Mono<Response<CopyStatusType>> response = pageBlobAsyncClient.copyIncremental(source, snapshot, modifiedAccessConditions);
+        return Utility.blockWithOptionalTimeout(response, timeout);
     }
 }
