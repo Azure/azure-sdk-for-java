@@ -7,7 +7,6 @@ import com.azure.data.appconfiguration.credentials.ConfigurationClientCredential
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.core.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -44,7 +43,7 @@ import java.util.Objects;
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
-public final class ConfigurationAsyncClient extends ServiceClient {
+public final class ConfigurationAsyncClient {
     private static final String SPAN_NAME_TEMPLATE = "Azure.AppConfig/%s";
 
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
@@ -63,9 +62,7 @@ public final class ConfigurationAsyncClient extends ServiceClient {
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
-        super(pipeline);
-
-        this.service = RestProxy.create(ConfigurationService.class, this);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline);
         this.serviceEndpoint = serviceEndpoint.toString();
     }
 
