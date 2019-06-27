@@ -64,7 +64,7 @@ public class PollerTests {
                 if (LocalDateTime.now().isBefore(timeToReturnFinalResponse)) {
                     int indexForIntermediateResponse = prePollResponse.getValue() == null || prePollResponse.getValue().intermediateResponseIndex >= intermediateOtherPollResponseList.size() ? 0 : prePollResponse.getValue().intermediateResponseIndex;
                     PollResponse<CreateCertificateResponse> intermediatePollResponse = intermediateOtherPollResponseList.get(indexForIntermediateResponse);
-                    debug(" Service poll function called ", " returning intermediate response status, otherstatus, value " + intermediatePollResponse.getStatus().toString() + "," + intermediatePollResponse.getOtherStatus() + "," + intermediatePollResponse.getValue().response);
+                    debug(" Service poll function called ", " returning intermediate response status, otherstatus, value " + intermediatePollResponse.getStatus().toString() + "," + intermediatePollResponse.getValue().response);
                     intermediatePollResponse.getValue().intermediateResponseIndex = indexForIntermediateResponse + 1;
                     return Mono.just(intermediatePollResponse);
                 } else {
@@ -83,8 +83,8 @@ public class PollerTests {
     public void subscribeToSpecificOtherOperationStatusTest() throws Exception {
         PollResponse<CreateCertificateResponse> successPollResponse = new PollResponse<>(OperationStatus.SUCCESSFULLY_COMPLETED, new CreateCertificateResponse("Created : Cert A"));
         PollResponse<CreateCertificateResponse> inProgressPollResponse = new PollResponse<>(OperationStatus.IN_PROGRESS, new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>("OTHER_1", new CreateCertificateResponse("Starting : Cert A"));
-        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>("OTHER_2", new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other1PollResponse = new PollResponse<>(PollResponse.OperationStatus.fromString("OTHER_1"), new CreateCertificateResponse("Starting : Cert A"));
+        PollResponse<CreateCertificateResponse> other2PollResponse = new PollResponse<>(PollResponse.OperationStatus.fromString("OTHER_2"), new CreateCertificateResponse("Starting : Cert A"));
 
         ArrayList<PollResponse<CreateCertificateResponse>> inProgressPollResponseList = new ArrayList<>();
         inProgressPollResponseList.add(inProgressPollResponse);
@@ -101,7 +101,7 @@ public class PollerTests {
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         Flux<PollResponse<CreateCertificateResponse>> fluxPollResp =  createCertPoller.getObserver();
         fluxPollResp.subscribe(pr -> {
-            debug("0 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
+            debug("0 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
 
         createCertPoller.getObserver().subscribe(x -> {
@@ -116,10 +116,10 @@ public class PollerTests {
         observeOperationStates.add(OperationStatus.SUCCESSFULLY_COMPLETED);
         Flux<PollResponse<CreateCertificateResponse>> fluxPollRespFiltered = fluxPollResp.filterWhen(tPollResponse -> matchesState(tPollResponse, observeOperationStates, observeOtherStates));
         fluxPollResp.subscribe(pr -> {
-            debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
+            debug("1 Got Observer() Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
         fluxPollRespFiltered.subscribe(pr -> {
-            debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().toString() + " " + pr.getOtherStatus() + " " + pr.getValue().response);
+            debug("2 Got Observer(SUCCESSFULLY_COMPLETED, OTHER_1,2) Response " + pr.getStatus().toString() + " " + pr.getValue().response);
         });
 
         Thread.sleep(totalTimeoutInMillis + 3 * pollInterval.toMillis());

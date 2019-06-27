@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -114,15 +113,15 @@ public class Poller<T> {
      *{@link Mono} returned from poll operation should never return {@link Mono#error(Throwable)}.If any unexpected scenario happens in poll operation,
      * it should be handled by client library and return a valid {@link PollResponse}. However if poll operation returns {@link Mono#error(Throwable)},
      * the {@link Poller} will disregard that and continue to poll.
-     * @throws NullPointerException If {@code pollInterval} or {@code pollOperation} are {@code null}.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
-        Objects.requireNonNull(pollInterval, "The poll interval input parameter cannot be null.");
-        if (pollInterval.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for poll interval not allowed.");
+        if (pollInterval == null || pollInterval.toNanos() <= 0) {
+            throw new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed.");
         }
-        Objects.requireNonNull(pollOperation, "The poll operation input parameter cannot be null.");
+        if (pollOperation == null) {
+            throw new IllegalArgumentException("Null value for poll operation is not allowed.");
+        }
 
         this.pollInterval = pollInterval;
         this.pollOperation = pollOperation;
@@ -152,8 +151,7 @@ public class Poller<T> {
      * the {@link Poller} will disregard that and continue to poll.
      * @param cancelOperation cancel operation if cancellation is supported by the service. It can be {@code null} which will indicate to the {@link Poller}
      * that cancel operation is not supported by Azure service.
-     * @throws NullPointerException If {@code pollInterval} or {@code pollOperation} are {@code null}.
-     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero.
+     * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
         this(pollInterval, pollOperation);
@@ -230,99 +228,53 @@ public class Poller<T> {
 
     /**
      * Blocks indefinitely until given {@link OperationStatus} is received or a timeout expires.
-     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
+     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus}.
      * @return {@link PollResponse} matching the status to block for or times out.
-     * @throws IllegalArgumentException if {@code statusToBlockFor} is {@link OperationStatus#OTHER}.
+     * @throws IllegalArgumentException if {@code statusToBlockFor} is {@code null}.
      */
     public PollResponse<T> blockUntil(PollResponse.OperationStatus statusToBlockFor) {
-        if (statusToBlockFor == null || statusToBlockFor == PollResponse.OperationStatus.OTHER) {
-            throw new IllegalArgumentException("The status input parameter can not be null or OTHER.");
+        if (statusToBlockFor == null) {
+            throw new IllegalArgumentException("Null value for status is not allowed.");
         }
-
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, null, statusToBlockFor)).blockFirst();
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, statusToBlockFor)).blockFirst();
     }
 
     /**
      * Blocks until given {@link OperationStatus} is received or a timeout expires.
-     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} except {@link OperationStatus#OTHER}.
+     * @param statusToBlockFor The {@link OperationStatus} to block for and it can be any valid {@link OperationStatus} value.
      * @param timeout The time after which it will stop blocking.
      * @return {@link PollResponse} matching the status to block for or times out.
-     * @throws IllegalArgumentException if {@code timeout} null, zero or negative.
+     * @throws IllegalArgumentException if {@code timeout} is null, zero or negative and id {@code statusToBlockFor} os {@code null}.
      */
     public PollResponse<T> blockUntil(PollResponse.OperationStatus statusToBlockFor, Duration timeout) {
-        if (statusToBlockFor == null || statusToBlockFor == PollResponse.OperationStatus.OTHER) {
-            throw new IllegalArgumentException("The status input parameter can not be null or OTHER.");
+        if (statusToBlockFor == null) {
+            throw new IllegalArgumentException("Null value for status is not allowed.");
         }
-        Objects.requireNonNull(timeout, "The timeout input parameter cannot be null.");
-        if (timeout.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for timeout not allowed.");
+        if (timeout == null || timeout.toNanos() <= 0) {
+            throw new IllegalArgumentException("Null, negative or zero value for timeout is not allowed.");
         }
-
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);
         }
-        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, null, statusToBlockFor)).blockFirst(timeout);
-    }
-
-    /**
-     * Blocks until given other operation status is received or a timeout expires.
-     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} and empty string are invalid.
-     * @param timeout The time after which it will stop blocking.
-     * @return {@link PollResponse} matching the status to block for or times out with no {@link PollResponse}.
-     * @throws IllegalArgumentException if {@code timeout} null, zero or negative.
-     */
-    public PollResponse<T> blockUntilOther(String otherStatusToBlockFor, Duration timeout) {
-        if (!isAutoPollingEnabled()) {
-            setAutoPollingEnabled(true);
-        }
-        Objects.requireNonNull(timeout, "The timeout input parameter cannot be null.");
-        if (timeout.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for timeout not allowed.");
-        }
-        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, otherStatusToBlockFor, PollResponse.OperationStatus.OTHER)).blockFirst(timeout);
-    }
-
-    /**
-     * Blocks indefinitely until given other operation status is received.
-     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} and empty string are invalid.
-     * @return {@link PollResponse} matching the status to block for or times out.
-     */
-    public PollResponse<T> blockUntilOther(String otherStatusToBlockFor) {
-        if (!isAutoPollingEnabled()) {
-            setAutoPollingEnabled(true);
-        }
-        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, otherStatusToBlockFor, PollResponse.OperationStatus.OTHER)).blockFirst();
+        return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, statusToBlockFor)).blockFirst(timeout);
     }
 
     /*
      * Indicate that the @{link PollResponse} matches with the status to block for.
      * @param currentPollResponse The poll response which we have received from the flux.
-     * @param otherStatusToBlockFor The other operation status to block for. {@code Null} or empty string are invalid.
      * @param statusToBlockFor The {@link OperationStatus} to block and it can be any valid {@link OperationStatus} value.
      * @return True if the {@link PollResponse} return status matches the status to block for.
      */
-    private boolean matchStatus(PollResponse<T> currentPollResponse, String otherStatusToBlockFor, PollResponse.OperationStatus statusToBlockFor) {
-        // perform validations
+    private boolean matchStatus(PollResponse<T> currentPollResponse,  PollResponse.OperationStatus statusToBlockFor) {
+        // perform validation
         if (currentPollResponse == null || statusToBlockFor == null) {
             return false;
         }
-        if  (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER
-            && (otherStatusToBlockFor == null || otherStatusToBlockFor.trim().length() == 0)) {
-            throw new IllegalArgumentException("The status can not be null or empty.");
-        }
-
-        if (currentPollResponse.getStatus() == PollResponse.OperationStatus.OTHER) {
-            if (currentPollResponse.getOtherStatus() != null
-                && currentPollResponse.getOtherStatus().equalsIgnoreCase(otherStatusToBlockFor)) {
-                return true;
-            }
-        } else {
-            if (statusToBlockFor == currentPollResponse.getStatus()) {
-                return true;
-            }
+        if (statusToBlockFor == currentPollResponse.getStatus()) {
+            return true;
         }
         return false;
     }
