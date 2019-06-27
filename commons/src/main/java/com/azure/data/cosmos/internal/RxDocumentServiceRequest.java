@@ -23,7 +23,8 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.FeedOptionsBase;
+import com.azure.data.cosmos.ChangeFeedOptions;
+import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.directconnectivity.WFConstants;
@@ -1037,8 +1038,10 @@ public class RxDocumentServiceRequest {
             return null;
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
-        } else if (options instanceof FeedOptionsBase) {
-            return ((FeedOptionsBase) options).properties();
+        } else if (options instanceof FeedOptions) {
+            return ((FeedOptions) options).properties();
+        } else if (options instanceof ChangeFeedOptions) {
+            return ((ChangeFeedOptions) options).properties();
         } else {
             return null;
         }

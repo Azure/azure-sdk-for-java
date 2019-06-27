@@ -23,10 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.FeedOptionsBase;
-import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.*;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,7 +47,7 @@ class Fetcher<T extends Resource> {
 
     public Fetcher(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
                    Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc,
-                   FeedOptionsBase options,
+                   String continuationToken,
                    boolean isChangeFeed,
                    int top,
                    int maxItemCount) {
@@ -59,7 +56,7 @@ class Fetcher<T extends Resource> {
         this.executeFunc = executeFunc;
         this.isChangeFeed = isChangeFeed;
 
-        this.continuationToken = options.requestContinuation();
+        this.continuationToken = continuationToken;
         this.top = top;
         if (top == -1) {
             this.maxItemCount = maxItemCount;

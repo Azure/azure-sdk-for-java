@@ -49,6 +49,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -83,11 +85,6 @@ implements IDocumentQueryExecutionContext<T> {
 
     @Override
     abstract public Flux<FeedResponse<T>> executeAsync();
-
-    public String getPartitionKeyId() {
-        // TODO Auto-generated method stub
-        return this.feedOptions.partitionKeyRangeIdInternal();
-    }
 
     public RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
                                                                  SqlQuerySpec querySpec,

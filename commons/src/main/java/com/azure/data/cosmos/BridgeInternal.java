@@ -99,7 +99,7 @@ public class BridgeInternal {
         return account;
     }
 
-    public static Map<String, String> getFeedHeaders(FeedOptionsBase options) {
+    public static Map<String, String> getFeedHeaders(ChangeFeedOptions options) {
 
         if (options == null)
             return new HashMap<>();
@@ -110,58 +110,69 @@ public class BridgeInternal {
             headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.maxItemCount().toString());
         }
 
-        if (options instanceof ChangeFeedOptions) {
-            ChangeFeedOptions changeFeedOptions = (ChangeFeedOptions) options;
+        String ifNoneMatchValue = null;
+        if (options.requestContinuation() != null) {
+            ifNoneMatchValue = options.requestContinuation();
+        } else if (!options.startFromBeginning()) {
+            ifNoneMatchValue = "*";
+        }
+        // On REST level, change feed is using IF_NONE_MATCH/ETag instead of
+        // continuation.
+        if (ifNoneMatchValue != null) {
+            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, ifNoneMatchValue);
+        }
 
-            String ifNoneMatchValue = null;
-            if (changeFeedOptions.requestContinuation() != null) {
-                ifNoneMatchValue = changeFeedOptions.requestContinuation();
-            } else if (!changeFeedOptions.startFromBeginning()) {
-                ifNoneMatchValue = "*";
-            }
-            // On REST level, change feed is using IF_NONE_MATCH/ETag instead of
-            // continuation.
-            if (ifNoneMatchValue != null) {
-                headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, ifNoneMatchValue);
-            }
+        headers.put(HttpConstants.HttpHeaders.A_IM, INCREMENTAL_FEED_HEADER_VALUE);
 
-            headers.put(HttpConstants.HttpHeaders.A_IM, INCREMENTAL_FEED_HEADER_VALUE);
-        } else if (options.requestContinuation() != null) {
+        return headers;
+    }
+
+    public static Map<String, String> getFeedHeaders(FeedOptions options) {
+
+        if (options == null)
+            return new HashMap<>();
+
+        Map<String, String> headers = new HashMap<>();
+
+        if (options.maxItemCount() != null) {
+            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.maxItemCount().toString());
+        }
+
+        if (options.requestContinuation() != null) {
             headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.requestContinuation());
         }
 
-        FeedOptions feedOptions = options instanceof FeedOptions ? (FeedOptions) options : null;
-        if (feedOptions != null) {
-            if (feedOptions.sessionToken() != null) {
-                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.sessionToken());
+        if (options != null) {
+            if (options.sessionToken() != null) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.sessionToken());
             }
 
-            if (feedOptions.enableScanInQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, feedOptions.enableScanInQuery().toString());
+            if (options.enableScanInQuery() != null) {
+                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.enableScanInQuery().toString());
             }
 
-            if (feedOptions.emitVerboseTracesInQuery() != null) {
+            if (options.emitVerboseTracesInQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                        feedOptions.emitVerboseTracesInQuery().toString());
+                        options.emitVerboseTracesInQuery().toString());
             }
 
-            if (feedOptions.enableCrossPartitionQuery() != null) {
+            if (options.enableCrossPartitionQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.ENABLE_CROSS_PARTITION_QUERY,
-                        feedOptions.enableCrossPartitionQuery().toString());
+                        options.enableCrossPartitionQuery().toString());
             }
 
-            if (feedOptions.maxDegreeOfParallelism() != 0) {
+            if (options.maxDegreeOfParallelism() != 0) {
                 headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
             }
 
-            if (feedOptions.responseContinuationTokenLimitInKb() > 0) {
+            if (options.responseContinuationTokenLimitInKb() > 0) {
                 headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                        Strings.toString(feedOptions.responseContinuationTokenLimitInKb()));
+                        Strings.toString(options.responseContinuationTokenLimitInKb()));
             }
 
-            if (feedOptions.populateQueryMetrics()) {
+            if (options.populateQueryMetrics()) {
                 headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                        String.valueOf(feedOptions.populateQueryMetrics()));
+                        String.valueOf(options.populateQueryMetrics()));
             }
         }
 

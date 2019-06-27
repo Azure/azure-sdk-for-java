@@ -179,7 +179,7 @@ class DocumentProducer<T extends Resource> {
                 (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
-                        feedOptions, 
+                        feedOptions.requestContinuation(),
                         sourcePartitionCreateRequestFunc,
                         executeRequestFuncWithRetries, 
                         resourceType, 

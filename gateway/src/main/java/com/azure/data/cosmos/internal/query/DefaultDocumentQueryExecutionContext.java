@@ -61,6 +61,8 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -234,8 +236,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 this.query,
                 this.getPartitionKeyInternal());
 
-        if (!StringUtils.isEmpty(feedOptions.partitionKeyRangeIdInternal())) {
-            request.routeTo(new PartitionKeyRangeIdentity(feedOptions.partitionKeyRangeIdInternal()));
+        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(feedOptions))) {
+            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(feedOptions)));
         }
 
         return request;

@@ -52,6 +52,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
@@ -128,7 +129,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.maxItemCount(3);
-        changeFeedOption.partitionKeyRangeId(pkRangeId);
+        partitionKeyRangeIdInternal(changeFeedOption, pkRangeId);
         changeFeedOption.startFromBeginning(true);
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
                 .collectList().block();

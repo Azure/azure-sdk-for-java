@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+
 class ChangeFeedQueryImpl<T extends Resource> {
 
     private static final String IfNonMatchAllHeaderValue = "*";
@@ -58,12 +60,12 @@ class ChangeFeedQueryImpl<T extends Resource> {
         changeFeedOptions = changeFeedOptions != null ? changeFeedOptions: new ChangeFeedOptions();
         
 
-        if (resourceType.isPartitioned() && changeFeedOptions.partitionKeyRangeId() == null && changeFeedOptions.partitionKey() == null) {
+        if (resourceType.isPartitioned() && partitionKeyRangeIdInternal(changeFeedOptions) == null && changeFeedOptions.partitionKey() == null) {
             throw new IllegalArgumentException(RMResources.PartitionKeyRangeIdOrPartitionKeyMustBeSpecified);
         }
 
         if (changeFeedOptions.partitionKey() != null &&
-                !Strings.isNullOrEmpty(changeFeedOptions.partitionKeyRangeId())) {
+                !Strings.isNullOrEmpty(partitionKeyRangeIdInternal(changeFeedOptions))) {
 
             throw new IllegalArgumentException(String.format(
                     RMResources.PartitionKeyAndParitionKeyRangeIdBothSpecified
@@ -120,8 +122,8 @@ class ChangeFeedQueryImpl<T extends Resource> {
                 headers,
                 options);
 
-        if (options.partitionKeyRangeId() != null) {
-            req.routeTo(new PartitionKeyRangeIdentity(this.options.partitionKeyRangeId()));
+        if (partitionKeyRangeIdInternal(options) != null) {
+            req.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(this.options)));
         }
 
         return req;

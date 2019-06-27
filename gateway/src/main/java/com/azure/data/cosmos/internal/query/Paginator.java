@@ -24,7 +24,6 @@ package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
@@ -47,7 +46,7 @@ public class Paginator {
             ChangeFeedOptions feedOptions, BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
-        return getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType,
+        return getPaginatedQueryResultAsObservable(feedOptions.requestContinuation(), createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize, true);
     }
 
@@ -56,28 +55,28 @@ public class Paginator {
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int maxPageSize) {
-        return getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType,
+        return getPaginatedQueryResultAsObservable(feedOptions.requestContinuation(), createRequestFunc, executeFunc, resourceType,
                 -1, maxPageSize);
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            FeedOptions options,
+            String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize) {
-        return getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, resourceType,
+        return getPaginatedQueryResultAsObservable(continuationToken, createRequestFunc, executeFunc, resourceType,
                 top, maxPageSize, false);
     }
 
     private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            FeedOptionsBase options,
+            String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Flux<FeedResponse<T>>> executeFunc, Class<T> resourceType,
             int top, int maxPageSize, boolean isChangeFeed) {
 
         return Flux.defer(() -> {
             Flux<Flux<FeedResponse<T>>> generate = Flux.generate(() ->
-                    new Fetcher<>(createRequestFunc, executeFunc, options, isChangeFeed, top, maxPageSize),
+                    new Fetcher<>(createRequestFunc, executeFunc, continuationToken, isChangeFeed, top, maxPageSize),
                     (tFetcher, sink) -> {
                         if (tFetcher.shouldFetchMore()) {
                             Flux<FeedResponse<T>> nextPage = tFetcher.nextPage();

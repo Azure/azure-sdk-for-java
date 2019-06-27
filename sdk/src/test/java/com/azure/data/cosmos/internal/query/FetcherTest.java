@@ -26,7 +26,6 @@ package com.azure.data.cosmos.internal.query;
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import io.reactivex.subscribers.TestSubscriber;
@@ -98,7 +97,7 @@ public class FetcherTest {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(
                     getExpectedMaxItemCountInRequest(options, top, feedResponseList, requestIndex.get()));
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options, feedResponseList, requestIndex.get()));
+                    getExpectedContinuationTokenInRequest(options.requestContinuation(), feedResponseList, requestIndex.get()));
             requestIndex.getAndIncrement();
 
             return mock(RxDocumentServiceRequest.class);
@@ -113,7 +112,7 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options, false, top,
+                new Fetcher<>(createRequestFunc, executeFunc, options.requestContinuation(), false, top,
                         options.maxItemCount());
 
         validateFetcher(fetcher, options, top, feedResponseList);
@@ -165,7 +164,7 @@ public class FetcherTest {
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (token, maxItemCount) -> {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(options.maxItemCount());
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options, feedResponseList, requestIndex.getAndIncrement()));
+                    getExpectedContinuationTokenInRequest(options.requestContinuation(), feedResponseList, requestIndex.getAndIncrement()));
 
             return mock(RxDocumentServiceRequest.class);
         };
@@ -177,7 +176,7 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options, isChangeFeed, top,
+                new Fetcher<>(createRequestFunc, executeFunc, options.requestContinuation(), isChangeFeed, top,
                         options.maxItemCount());
 
         validateFetcher(fetcher, options, feedResponseList);
@@ -206,17 +205,17 @@ public class FetcherTest {
         return subscriber.values().get(0);
     }
 
-    private String getExpectedContinuationTokenInRequest(FeedOptionsBase options,
+    private String getExpectedContinuationTokenInRequest(String continuationToken,
                                                          List<FeedResponse<Document>> feedResponseList,
                                                          int requestIndex) {
         if (requestIndex == 0) {
-            return options.requestContinuation();
+            return continuationToken;
         }
 
         return feedResponseList.get(requestIndex - 1).continuationToken();
     }
 
-    private int getExpectedMaxItemCountInRequest(FeedOptionsBase options,
+    private int getExpectedMaxItemCountInRequest(FeedOptions options,
                                                  int top,
                                                  List<FeedResponse<Document>> feedResponseList,
                                                  int requestIndex) {

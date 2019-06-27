@@ -41,6 +41,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 
+import static com.azure.data.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+
 /**
  * Implementation for {@link PartitionProcessor}.
  */
@@ -64,7 +66,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
         this.options = new ChangeFeedOptions();
         this.options.maxItemCount(settings.getMaxItemCount());
-        this.options.partitionKeyRangeId(settings.getPartitionKeyRangeId());
+        partitionKeyRangeIdInternal(this.options, settings.getPartitionKeyRangeId());
         // this.options.sessionToken(settings.sessionToken());
         this.options.startFromBeginning(settings.isStartFromBeginning());
         this.options.requestContinuation(settings.getStartContinuation());

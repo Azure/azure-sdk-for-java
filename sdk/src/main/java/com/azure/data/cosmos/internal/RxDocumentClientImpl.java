@@ -37,7 +37,6 @@ import com.azure.data.cosmos.DatabaseAccountManagerInternal;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedOptionsBase;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.JsonSerializable;
@@ -882,10 +881,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return headers;
-    }
-
-    private Map<String, String> getFeedHeaders(FeedOptionsBase options) {
-        return BridgeInternal.getFeedHeaders(options);
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request, Document document,

@@ -31,4 +31,40 @@ public class CommonsBridgeInternal {
     public static void setV2(PartitionKeyDefinition pkd) {
         pkd.version(PartitionKeyDefinitionVersion.V2);
     }
+
+    /**
+     * Gets the partitionKeyRangeId.
+     *
+     * @return the partitionKeyRangeId.
+     */
+    public static String partitionKeyRangeIdInternal(FeedOptions options) {
+        return options.partitionKeyRangeIdInternal();
+    }
+
+    /**
+     * Gets the partitionKeyRangeId.
+     *
+     * @return the partitionKeyRangeId.
+     */
+    public static String partitionKeyRangeIdInternal(ChangeFeedOptions options) {
+        return options.partitionKeyRangeId();
+    }
+
+    /**
+     * Sets the partitionKeyRangeId.
+     *
+     * @return the partitionKeyRangeId.
+     */
+    public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
+        return options.partitionKeyRangeIdInternal(partitionKeyRangeId);
+    }
+
+    /**
+     * Sets the partitionKeyRangeId.
+     *
+     * @return the partitionKeyRangeId.
+     */
+    public static ChangeFeedOptions partitionKeyRangeIdInternal(ChangeFeedOptions options, String partitionKeyRangeId) {
+        return options.partitionKeyRangeId(partitionKeyRangeId);
+    }
 }
