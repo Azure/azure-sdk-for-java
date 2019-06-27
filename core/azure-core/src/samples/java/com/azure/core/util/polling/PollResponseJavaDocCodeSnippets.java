@@ -6,6 +6,7 @@ package com.azure.core.util.polling;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 /**
  * Code snipper for PollResponse
@@ -25,7 +26,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // BEGIN: com.azure.core.util.polling.pollresponse.custom.status
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
+            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
             "my custom response");
         // END: com.azure.core.util.polling.pollresponse.custom.status
     }
@@ -40,7 +41,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
         // BEGIN: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
+            = new PollResponse<>(OperationStatus.fromString("CUSTOM_OTHER_STATUS"),
             "my custom response", Duration.ofMillis(5000));
         // END: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
     }
@@ -50,13 +51,21 @@ public final class PollResponseJavaDocCodeSnippets<T> {
      * @param status v
      * @param value v
      */
-    public void initialise(PollResponse.OperationStatus status, T value) {
+    public void initialise(OperationStatus status, T value) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value
         // Lets say we want to crete poll response with status as IN_PROGRESS
 
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, "my custom response");
+            = new PollResponse<>(OperationStatus.IN_PROGRESS, "my custom response");
+
         // END: com.azure.core.util.polling.pollresponse.status.value
+
+        // BEGIN: com.azure.core.util.polling.pollresponse.custom.status.value
+        // Lets say we want to crete poll response with custom status as OTHER_CUSTOM_STATUS
+
+        PollResponse<String> pollResponseWithCustomStatus
+            = new PollResponse<>(OperationStatus.fromString("OTHER_CUSTOM_STATUS"), "my custom status response");
+        // END: com.azure.core.util.polling.pollresponse.custom.status.value
     }
 
     /**
@@ -66,7 +75,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
      * @param retryAfter v
      * @param properties v
      */
-    public void initialise(PollResponse.OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
+    public void initialise(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
 
         // We can store some properties which we might need to execute poll Operation call.
@@ -77,7 +86,7 @@ public final class PollResponseJavaDocCodeSnippets<T> {
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS, "mycustom response",
+            = new PollResponse<>(OperationStatus.IN_PROGRESS, "mycustom response",
             Duration.ofMillis(2000), prop);
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties
     }
@@ -89,13 +98,13 @@ public final class PollResponseJavaDocCodeSnippets<T> {
      * @param value v
      * @param retryAfter v
      */
-    public void initialise(PollResponse.OperationStatus status, T value, Duration retryAfter) {
+    public void initialise(OperationStatus status, T value, Duration retryAfter) {
         // BEGIN: com.azure.core.util.polling.pollresponse.status.value.retryAfter
 
         // Lets say we want to crete poll response with status as IN_PROGRESS
         // If nextRetry should happen after 2 seconds ...
         PollResponse<String> inProgressPollResponse
-            = new PollResponse<>(PollResponse.OperationStatus.IN_PROGRESS,  "my custom response",
+            = new PollResponse<>(OperationStatus.IN_PROGRESS,  "my custom response",
             Duration.ofMillis(2000));
         // END: com.azure.core.util.polling.pollresponse.status.value.retryAfter
     }

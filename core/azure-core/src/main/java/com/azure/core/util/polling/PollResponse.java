@@ -17,6 +17,9 @@ import java.util.Objects;
  *<p><strong>Code Sample Creating PollResponse Object</strong></p>
  * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
  *
+ * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
+ * {@codesnippet com.azure.core.util.polling.pollresponse.custom.status.value}
+ *
  * @param <T> Type of poll response value.
  *
  * @see OperationStatus

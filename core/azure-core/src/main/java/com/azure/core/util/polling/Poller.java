@@ -245,7 +245,7 @@ public class Poller<T> {
         }
         if (timeout != null) {
             return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, statusToBlockFor)).blockFirst(timeout);
-        } else { 
+        } else {
             return this.fluxHandle.filter(tPollResponse -> matchStatus(tPollResponse, statusToBlockFor)).blockFirst();
         }
     }
