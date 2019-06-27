@@ -91,6 +91,15 @@ public final class ApplicationGatewaySslCipherSuite extends ExpandableStringEnum
     /** Static value TLS_RSA_WITH_3DES_EDE_CBC_SHA for ApplicationGatewaySslCipherSuite. */
     public static final ApplicationGatewaySslCipherSuite TLS_RSA_WITH_3DES_EDE_CBC_SHA = fromString("TLS_RSA_WITH_3DES_EDE_CBC_SHA");
 
+    /** Static value TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA for ApplicationGatewaySslCipherSuite. */
+    public static final ApplicationGatewaySslCipherSuite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA = fromString("TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA");
+
+    /** Static value TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 for ApplicationGatewaySslCipherSuite. */
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 = fromString("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
+
+    /** Static value TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 for ApplicationGatewaySslCipherSuite. */
+    public static final ApplicationGatewaySslCipherSuite TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 = fromString("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
+
     /**
      * Creates or finds a ApplicationGatewaySslCipherSuite from its string representation.
      * @param name a name to look for

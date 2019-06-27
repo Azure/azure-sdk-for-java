@@ -31,7 +31,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @SuppressWarnings("unchecked")
-    T withNameValue(String name, T value, Class<T> clazz) {
+    T nameValue(String name, T value, Class<T> clazz) {
         this.name = name;
         this.clazz = clazz;
         ((ConcurrentMap<String, T>) valuesByName).put(uniqueKey(clazz, name), value);
@@ -58,7 +58,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
         try {
             T value = clazz.newInstance();
-            return value.withNameValue(name, value, clazz);
+            return value.nameValue(name, value, clazz);
         } catch (InstantiationException | IllegalAccessException e) {
             return null;
         }

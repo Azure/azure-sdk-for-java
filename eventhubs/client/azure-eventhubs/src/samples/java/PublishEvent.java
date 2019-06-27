@@ -31,7 +31,7 @@ public class PublishEvent {
         // Instantiate a client that will be used to call the service.
         EventHubClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
-            .build();
+            .buildAsyncClient();
 
         // Create a producer. This overload of `createProducer` does not accept any arguments. Consequently, events
         // sent from this producer are load balanced between all available partitions in the Event Hub instance.
