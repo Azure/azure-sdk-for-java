@@ -112,7 +112,6 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
 
             this.processorCancellation.cancel();
             this.renewerCancellation.cancel();
-            executorService.shutdown();
 
             if (self.processor.getResultException() != null) {
                 throw self.processor.getResultException();
