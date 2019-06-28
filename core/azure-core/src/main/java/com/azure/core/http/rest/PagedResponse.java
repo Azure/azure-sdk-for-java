@@ -10,20 +10,7 @@ import java.util.List;
  *
  * @param <T> the type items in the page
  */
-public interface PagedResponse<T> extends Response<List<T>>, Closeable {
-    /**
-     * Gets the items in the page.
-     *
-     * @return The items in the page.
-     */
-    List<T> items();
-
-    /**
-     * Get the link to retrieve PagedResponse containing next page.
-     *
-     * @return the next page link.
-     */
-    String nextLink();
+public interface PagedResponse<T> extends Page<T>, Response<List<T>>, Closeable {
 
     /**
      * Returns the items in the page.
