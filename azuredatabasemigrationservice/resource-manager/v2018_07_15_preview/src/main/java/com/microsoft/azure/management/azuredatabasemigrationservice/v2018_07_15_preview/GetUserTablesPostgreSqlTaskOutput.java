@@ -26,7 +26,7 @@ public class GetUserTablesPostgreSqlTaskOutput {
      * List of valid tables found for this database.
      */
     @JsonProperty(value = "tables", access = JsonProperty.Access.WRITE_ONLY)
-    private List<QueryTable> tables;
+    private List<DatabaseTable> tables;
 
     /**
      * Validation errors associated with the task.
@@ -48,7 +48,7 @@ public class GetUserTablesPostgreSqlTaskOutput {
      *
      * @return the tables value
      */
-    public List<QueryTable> tables() {
+    public List<DatabaseTable> tables() {
         return this.tables;
     }
 

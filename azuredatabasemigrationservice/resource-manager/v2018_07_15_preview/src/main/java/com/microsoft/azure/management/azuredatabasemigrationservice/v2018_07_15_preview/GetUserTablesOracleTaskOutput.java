@@ -26,7 +26,7 @@ public class GetUserTablesOracleTaskOutput {
      * List of valid tables found for this schema.
      */
     @JsonProperty(value = "tables", access = JsonProperty.Access.WRITE_ONLY)
-    private List<QueryTable> tables;
+    private List<DatabaseTable> tables;
 
     /**
      * Validation errors associated with the task.
@@ -48,7 +48,7 @@ public class GetUserTablesOracleTaskOutput {
      *
      * @return the tables value
      */
-    public List<QueryTable> tables() {
+    public List<DatabaseTable> tables() {
         return this.tables;
     }
 

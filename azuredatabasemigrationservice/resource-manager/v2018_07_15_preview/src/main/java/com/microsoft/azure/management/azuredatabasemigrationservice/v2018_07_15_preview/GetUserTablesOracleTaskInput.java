@@ -23,7 +23,7 @@ public class GetUserTablesOracleTaskInput {
     private OracleConnectionInfo connectionInfo;
 
     /**
-     * List of Oracle Schemas for which to collect tables.
+     * List of Oracle schemas for which to collect tables.
      */
     @JsonProperty(value = "selectedSchemas", required = true)
     private List<String> selectedSchemas;
@@ -49,7 +49,7 @@ public class GetUserTablesOracleTaskInput {
     }
 
     /**
-     * Get list of Oracle Schemas for which to collect tables.
+     * Get list of Oracle schemas for which to collect tables.
      *
      * @return the selectedSchemas value
      */
@@ -58,7 +58,7 @@ public class GetUserTablesOracleTaskInput {
     }
 
     /**
-     * Set list of Oracle Schemas for which to collect tables.
+     * Set list of Oracle schemas for which to collect tables.
      *
      * @param selectedSchemas the selectedSchemas value to set
      * @return the GetUserTablesOracleTaskInput object itself.
