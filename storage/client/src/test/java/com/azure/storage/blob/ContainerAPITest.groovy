@@ -761,7 +761,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).name() == copyName
         blobs.get(1).properties().copyCompletionTime() == null
         blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.get(2).metadata().additionalProperties().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
@@ -889,7 +889,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.listBlobsFlat()
+        cu.listBlobsFlat().iterator().hasNext()
 
         then:
         thrown(StorageException)
@@ -917,7 +917,7 @@ class ContainerAPITest extends APISpec {
         bu.create(512)
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsHierarchy("/").iterator()
+        Iterator<BlobItem> blobs = cu.listBlobsHierarchy(null).iterator()
 
         then:
 //        response.statusCode() == 200
@@ -978,7 +978,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).name() == copyName
         blobs.get(1).properties().copyCompletionTime() == null
         blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().get("foo") == "bar"
+        blobs.get(2).metadata().additionalProperties().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
@@ -1080,7 +1080,7 @@ class ContainerAPITest extends APISpec {
         }
 
         when:
-        Iterator<BlobItem> blobs = cu.listBlobsHierarchy("/").iterator()
+        Iterator<BlobItem> blobs = cu.listBlobsHierarchy(null).iterator()
 
         and:
         ArrayDeque<String> expectedBlobs = new ArrayDeque<>()
@@ -1105,8 +1105,8 @@ class ContainerAPITest extends APISpec {
             }
         }
 
-        expectedBlobs.isEmpty()
         expectedPrefixes.isEmpty()
+        expectedBlobs.isEmpty()
     }
 
     // TODO (alzimmer): Turn this on when paged response become available
@@ -1135,7 +1135,7 @@ class ContainerAPITest extends APISpec {
         cu = primaryServiceURL.getContainerClient(generateContainerName())
 
         when:
-        cu.listBlobsHierarchy(".")
+        cu.listBlobsHierarchy(".").iterator().hasNext()
 
         then:
         thrown(StorageException)
@@ -1693,14 +1693,10 @@ class ContainerAPITest extends APISpec {
         setup:
         cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        try {
+        if (!cu.exists().value()) {
             cu.create()
         }
-        catch (StorageException se) {
-            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
-                throw se
-            }
-        }
+
         AppendBlobClient bu = cu.getAppendBlobClient("rootblob")
 
         expect:
@@ -1711,13 +1707,8 @@ class ContainerAPITest extends APISpec {
         setup:
         cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
         // Create root container if not exist.
-        try {
+        if (!cu.exists().value()) {
             cu.create()
-        }
-        catch (StorageException se) {
-            if (se.errorCode() != StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
-                throw se
-            }
         }
 
         AppendBlobClient bu = new AppendBlobClientBuilder()
@@ -1787,7 +1778,7 @@ class ContainerAPITest extends APISpec {
 
         then:
         response.headers().value("Date") != null
-        response.headers().value("x-ms-versions") != null
+        response.headers().value("x-ms-version") != null
         response.headers().value("x-ms-request-id") != null
         response.value().accountKind() != null
         response.value().skuName() != null

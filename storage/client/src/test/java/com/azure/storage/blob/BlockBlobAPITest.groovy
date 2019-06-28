@@ -317,10 +317,10 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        newDate               | null                    | null          | null // TODO (alzimmer): Determine why this returns a 304 when documentation says 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag // TODO (alzimmer): Determine why this returns a 304 when documentation says 412
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Commit block list"() {
@@ -589,7 +589,7 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bu, garbageLeaseID)
 
         when:
-        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId("notreal"), null).iterator().hasNext()
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(garbageLeaseID), null).iterator().hasNext()
 
         then:
         def e = thrown(StorageException)

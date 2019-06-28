@@ -511,9 +511,9 @@ class AppendBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        // newDate               | null                    | null          | null TODO (alzimmer): Figure out why this is returning a 304 instead of the documented 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag TODO (alzimmer): Figure out why this is returning a 304 instead of the documented 412
+        null                  | null                    | null          | receivedEtag
     }
 }
