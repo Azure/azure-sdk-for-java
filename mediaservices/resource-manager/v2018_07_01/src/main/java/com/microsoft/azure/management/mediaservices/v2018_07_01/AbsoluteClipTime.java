@@ -23,13 +23,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class AbsoluteClipTime extends ClipTime {
     /**
      * The time position on the timeline of the input media. It is usually
-     * speicified as an ISO8601 period. e.g PT30S for 30 seconds.
+     * specified as an ISO8601 period. e.g PT30S for 30 seconds.
      */
     @JsonProperty(value = "time", required = true)
     private Period time;
 
     /**
-     * Get the time position on the timeline of the input media. It is usually speicified as an ISO8601 period. e.g PT30S for 30 seconds.
+     * Get the time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
      *
      * @return the time value
      */
@@ -38,7 +38,7 @@ public class AbsoluteClipTime extends ClipTime {
     }
 
     /**
-     * Set the time position on the timeline of the input media. It is usually speicified as an ISO8601 period. e.g PT30S for 30 seconds.
+     * Set the time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
      *
      * @param time the time value to set
      * @return the AbsoluteClipTime object itself.
