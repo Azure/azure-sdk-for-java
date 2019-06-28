@@ -178,7 +178,7 @@ class AppendBlobAPITest extends APISpec {
         data                        | dataSize            | exceptionType
         null                        | defaultDataSize     | NullPointerException
         defaultInputStream.get()    | defaultDataSize + 1 | IndexOutOfBoundsException
-        // This doesn't error as it isn't reading the entire stream which is valid in the new client
+        // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
         //defaultInputStream.get()    | defaultDataSize - 1 | StorageException
     }
 
