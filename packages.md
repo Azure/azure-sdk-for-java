@@ -7,7 +7,6 @@
 | [`azure-applicationinsights-query`]( applicationinsights/data-plane/pom.xml )| `com.microsoft.azure` | [Readme](applicationinsights/data-plane/README.md) | [Maven]( https://search.maven.org/artifact/com.microsoft.azure/azure-applicationinsights-query ) |
 | [`azure-authentication-msi-token-provider`]( authorization/msi-auth-token-provider-jar/pom.xml )| `com.microsoft.azure.msi_auth_token_provider` | [Readme](authorization/msi-auth-token-provider-jar/readme.md) | [Maven]( https://search.maven.org/artifact/com.microsoft.azure.msi_auth_token_provider/azure-authentication-msi-token-provider ) |
 | [`azure-batch`]( batch/data-plane/pom.xml )| `com.microsoft.azure` | [Readme](batch/data-plane/README.md) | [Maven]( https://search.maven.org/artifact/com.microsoft.azure/azure-batch ) |
-| [`azure-core-auth`]( core/azure-core-auth/pom.xml )| `com.azure` |  N/A  |  N/A  |
 | [`azure-core-management`]( core/azure-core-management/pom.xml )| `com.azure` |  N/A  |  N/A  |
 | [`azure-core-test`]( core/azure-core-test/pom.xml )| `com.azure` | [Readme](core/azure-core-test/README.md) |  N/A  |
 | [`azure-eventgrid`]( eventgrid/data-plane/pom.xml )| `com.microsoft.azure` | [Readme](eventgrid/data-plane/README.md) | [Maven]( https://search.maven.org/artifact/com.microsoft.azure/azure-eventgrid ) |

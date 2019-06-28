@@ -47,11 +47,7 @@
                 <source>..\..\appconfiguration\client\src\samples\java</source>
                 <source>..\..\core\azure-core\src\main\java</source>
                 <source>..\..\core\azure-core\src\samples\java</source>
-<<<<<<< HEAD
                 <source>..\..\core\azure-core-amqp\src\main\java</source>
-=======
->>>>>>>  removing spotbug issues (#4033)
-                <source>..\..\core\azure-core-auth\src\main\java</source>
                 <source>..\..\core\azure-core-management\src\main\java</source>
                 <source>..\..\core\azure-core-test\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
@@ -118,32 +114,27 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>${azure-core.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>${azure-core-amqp.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-auth</artifactId>
-          <version>${azure-core-auth.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>${azure-core-management.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>${azure-core-test.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>${azure-core-test.version}</version>
+          <version>1.0.0-preview.1</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

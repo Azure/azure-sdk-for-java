@@ -110,10 +110,6 @@
     <client-runtime.version.v2>2.1.1</client-runtime.version.v2>
     <slf4j-api.version>1.7.5</slf4j-api.version>
     <slf4j-log4j12.version>1.7.0</slf4j-log4j12.version>
-    <azure-core.version>1.0.0-SNAPSHOT</azure-core.version>
-    <azure-core-amqp.version>1.0.0-SNAPSHOT</azure-core-amqp.version>
-    <azure-core-auth.version>1.0.0-SNAPSHOT</azure-core-auth.version>
-    <azure-core-management.version>1.0.0-SNAPSHOT</azure-core-management.version>
     <reactor-netty.version>0.8.3.RELEASE</reactor-netty.version>
     <netty.version>4.1.33.Final</netty.version>
     <async-http-client.version>2.5.2</async-http-client.version>
@@ -127,8 +123,6 @@
     <codesnippet4javadoc.version>0.31</codesnippet4javadoc.version>
 
     <!-- Test Dependency Versions -->
-    <azure-core-test.version>1.0.0-SNAPSHOT</azure-core-test.version>
-    <azure-identity.version>1.0.0-SNAPSHOT</azure-identity.version>
     <adal4j.version>1.6.3</adal4j.version>
     <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
     <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
@@ -191,24 +185,6 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
         <version>${adal4j.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core</artifactId>
-        <version>${azure-core.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-amqp</artifactId>
-        <version>${azure-core-amqp.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-auth</artifactId>
-        <version>${azure-core-auth.version}</version>
       </dependency>
 
       <dependency>
@@ -356,19 +332,6 @@
 
       <!-- Test dependencies -->
       <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-test</artifactId>
-        <version>${azure-core-test.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-identity</artifactId>
-        <version>${azure-identity.version}</version>
-        <scope>test</scope>
-      </dependency>
-
-      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
         <version>${azure-mgmt-storage.version}</version>
@@ -445,7 +408,7 @@
         <version>${spock-core.version}</version>
       </dependency>
 
-     <dependency>
+      <dependency>
         <groupId>cglib</groupId>
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib-nodep.version}</version>
