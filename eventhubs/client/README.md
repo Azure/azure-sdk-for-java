@@ -129,8 +129,8 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ## Examples
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_send_event]
-- [Consume events from an Event Hub partition][sample_receive_event]
+- [Publish an event to an Event Hub][sample_publish_event]
+- [Consume events from an Event Hub partition][sample_consume_event]
 
 ### Publish events to an Event Hub
 
