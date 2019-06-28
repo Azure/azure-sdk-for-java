@@ -52,7 +52,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
 
     /**
      * Gateway connection type. Possible values are:
-     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values
+     * 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values
      * include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      */
     @JsonProperty(value = "properties.connectionType", required = true)
@@ -241,7 +241,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
+     * Get gateway connection type. Possible values are: 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      *
      * @return the connectionType value
      */
@@ -250,7 +250,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
+     * Set gateway connection type. Possible values are: 'IPsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      *
      * @param connectionType the connectionType value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.

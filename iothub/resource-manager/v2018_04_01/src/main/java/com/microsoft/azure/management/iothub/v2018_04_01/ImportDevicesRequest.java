@@ -28,7 +28,7 @@ public class ImportDevicesRequest {
     private String outputBlobContainerUri;
 
     /**
-     * Get the inputBlobContainerUri value.
+     * Get the input blob container URI.
      *
      * @return the inputBlobContainerUri value
      */
@@ -37,7 +37,7 @@ public class ImportDevicesRequest {
     }
 
     /**
-     * Set the inputBlobContainerUri value.
+     * Set the input blob container URI.
      *
      * @param inputBlobContainerUri the inputBlobContainerUri value to set
      * @return the ImportDevicesRequest object itself.
@@ -48,7 +48,7 @@ public class ImportDevicesRequest {
     }
 
     /**
-     * Get the outputBlobContainerUri value.
+     * Get the output blob container URI.
      *
      * @return the outputBlobContainerUri value
      */
@@ -57,7 +57,7 @@ public class ImportDevicesRequest {
     }
 
     /**
-     * Set the outputBlobContainerUri value.
+     * Set the output blob container URI.
      *
      * @param outputBlobContainerUri the outputBlobContainerUri value to set
      * @return the ImportDevicesRequest object itself.

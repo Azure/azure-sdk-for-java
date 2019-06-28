@@ -28,7 +28,7 @@ public class CheckNameAvailabilityParameters {
     private String type;
 
     /**
-     * Get the name value.
+     * Get resource name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class CheckNameAvailabilityParameters {
     }
 
     /**
-     * Set the name value.
+     * Set resource name.
      *
      * @param name the name value to set
      * @return the CheckNameAvailabilityParameters object itself.
@@ -48,7 +48,7 @@ public class CheckNameAvailabilityParameters {
     }
 
     /**
-     * Get the type value.
+     * Get resource type. The only legal value of this property for checking redis cache name availability is 'Microsoft.Cache/redis'.
      *
      * @return the type value
      */
@@ -57,7 +57,7 @@ public class CheckNameAvailabilityParameters {
     }
 
     /**
-     * Set the type value.
+     * Set resource type. The only legal value of this property for checking redis cache name availability is 'Microsoft.Cache/redis'.
      *
      * @param type the type value to set
      * @return the CheckNameAvailabilityParameters object itself.

@@ -8,13 +8,25 @@
 
 package com.microsoft.azure.management.iothub.v2018_04_01.implementation;
 
+import com.microsoft.azure.management.iothub.v2018_04_01.Name;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.ProxyResource;
 
 /**
  * User subscription quota response.
  */
-public class UserSubscriptionQuotaInner extends ProxyResource {
+public class UserSubscriptionQuotaInner {
+    /**
+     * IotHub type id.
+     */
+    @JsonProperty(value = "id")
+    private String id;
+
+    /**
+     * Response type.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
     /**
      * Unit of IotHub type.
      */
@@ -34,7 +46,53 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     private Integer limit;
 
     /**
-     * Get the unit value.
+     * IotHub type.
+     */
+    @JsonProperty(value = "name")
+    private Name name;
+
+    /**
+     * Get iotHub type id.
+     *
+     * @return the id value
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set iotHub type id.
+     *
+     * @param id the id value to set
+     * @return the UserSubscriptionQuotaInner object itself.
+     */
+    public UserSubscriptionQuotaInner withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get response type.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set response type.
+     *
+     * @param type the type value to set
+     * @return the UserSubscriptionQuotaInner object itself.
+     */
+    public UserSubscriptionQuotaInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get unit of IotHub type.
      *
      * @return the unit value
      */
@@ -43,7 +101,7 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     }
 
     /**
-     * Set the unit value.
+     * Set unit of IotHub type.
      *
      * @param unit the unit value to set
      * @return the UserSubscriptionQuotaInner object itself.
@@ -54,7 +112,7 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     }
 
     /**
-     * Get the currentValue value.
+     * Get current number of IotHub type.
      *
      * @return the currentValue value
      */
@@ -63,7 +121,7 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     }
 
     /**
-     * Set the currentValue value.
+     * Set current number of IotHub type.
      *
      * @param currentValue the currentValue value to set
      * @return the UserSubscriptionQuotaInner object itself.
@@ -74,7 +132,7 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     }
 
     /**
-     * Get the limit value.
+     * Get numerical limit on IotHub type.
      *
      * @return the limit value
      */
@@ -83,13 +141,33 @@ public class UserSubscriptionQuotaInner extends ProxyResource {
     }
 
     /**
-     * Set the limit value.
+     * Set numerical limit on IotHub type.
      *
      * @param limit the limit value to set
      * @return the UserSubscriptionQuotaInner object itself.
      */
     public UserSubscriptionQuotaInner withLimit(Integer limit) {
         this.limit = limit;
+        return this;
+    }
+
+    /**
+     * Get iotHub type.
+     *
+     * @return the name value
+     */
+    public Name name() {
+        return this.name;
+    }
+
+    /**
+     * Set iotHub type.
+     *
+     * @param name the name value to set
+     * @return the UserSubscriptionQuotaInner object itself.
+     */
+    public UserSubscriptionQuotaInner withName(Name name) {
+        this.name = name;
         return this;
     }
 

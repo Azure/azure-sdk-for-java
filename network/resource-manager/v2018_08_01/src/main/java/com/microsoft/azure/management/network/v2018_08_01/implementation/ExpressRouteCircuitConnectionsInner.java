@@ -361,7 +361,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -378,7 +378,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -394,7 +394,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -414,7 +414,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -450,7 +450,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -467,7 +467,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -483,7 +483,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitConnectionInner object
      */
@@ -503,7 +503,7 @@ public class ExpressRouteCircuitConnectionsInner {
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit circuit connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExpressRouteCircuitConnectionInner object
      */

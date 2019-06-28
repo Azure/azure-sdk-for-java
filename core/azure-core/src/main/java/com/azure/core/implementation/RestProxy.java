@@ -16,7 +16,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.TokenCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
@@ -199,13 +199,13 @@ public class RestProxy implements InvocationHandler {
             // We add path to the UrlBuilder first because this is what is
             // provided to the HTTP Method annotation. Any path substitutions
             // from other substitution annotations will overwrite this.
-            urlBuilder.withPath(path);
+            urlBuilder.path(path);
 
             final String scheme = methodParser.scheme(args);
-            urlBuilder.withScheme(scheme);
+            urlBuilder.scheme(scheme);
 
             final String host = methodParser.host(args);
-            urlBuilder.withHost(host);
+            urlBuilder.host(host);
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
@@ -217,7 +217,7 @@ public class RestProxy implements InvocationHandler {
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final HttpHeader header : methodParser.headers(args)) {
-            request.withHeader(header.name(), header.value());
+            request.header(header.name(), header.value());
         }
 
         return request;
@@ -236,7 +236,7 @@ public class RestProxy implements InvocationHandler {
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final String headerName : operationDescription.headers().keySet()) {
-            request.withHeader(headerName, operationDescription.headers().get(headerName));
+            request.header(headerName, operationDescription.headers().get(headerName));
         }
 
         return request;
@@ -270,21 +270,21 @@ public class RestProxy implements InvocationHandler {
 
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
-                request.withBody(bodyContentString);
+                request.body(bodyContentString);
             } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
-                request.withBody((Flux<ByteBuf>) bodyContentObject);
+                request.body((Flux<ByteBuf>) bodyContentObject);
             } else if (bodyContentObject instanceof byte[]) {
-                request.withBody((byte[]) bodyContentObject);
+                request.body((byte[]) bodyContentObject);
             } else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
-                    request.withBody(bodyContentString);
+                    request.body(bodyContentString);
                 }
             } else {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
-                request.withBody(bodyContentString);
+                request.body(bodyContentString);
             }
         }
 
@@ -607,7 +607,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     public static HttpPipeline createDefaultPipeline(TokenCredential credentials) {
-        return createDefaultPipeline(new TokenCredentialPolicy(credentials));
+        return createDefaultPipeline(new BearerTokenAuthenticationPolicy(credentials));
     }
 
     /**

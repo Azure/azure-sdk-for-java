@@ -43,7 +43,7 @@ public class RoutingEventHubProperties {
     private String resourceGroup;
 
     /**
-     * Get the connectionString value.
+     * Get the connection string of the event hub endpoint.
      *
      * @return the connectionString value
      */
@@ -52,7 +52,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Set the connectionString value.
+     * Set the connection string of the event hub endpoint.
      *
      * @param connectionString the connectionString value to set
      * @return the RoutingEventHubProperties object itself.
@@ -63,7 +63,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Get the name value.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @return the name value
      */
@@ -72,7 +72,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Set the name value.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @param name the name value to set
      * @return the RoutingEventHubProperties object itself.
@@ -83,7 +83,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription identifier of the event hub endpoint.
      *
      * @return the subscriptionId value
      */
@@ -92,7 +92,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set the subscription identifier of the event hub endpoint.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the RoutingEventHubProperties object itself.
@@ -103,7 +103,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get the name of the resource group of the event hub endpoint.
      *
      * @return the resourceGroup value
      */
@@ -112,7 +112,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set the name of the resource group of the event hub endpoint.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the RoutingEventHubProperties object itself.
