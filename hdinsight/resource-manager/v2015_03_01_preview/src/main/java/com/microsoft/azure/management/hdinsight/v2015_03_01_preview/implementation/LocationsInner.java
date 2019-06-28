@@ -59,12 +59,16 @@ public class LocationsInner {
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/usages")
         Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hdinsight.v2015_03_01_preview.Locations listBillingSpecs" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.HDInsight/locations/{location}/billingSpecs")
+        Observable<Response<ResponseBody>> listBillingSpecs(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
      * Gets the capabilities for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -77,7 +81,7 @@ public class LocationsInner {
     /**
      * Gets the capabilities for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -89,7 +93,7 @@ public class LocationsInner {
     /**
      * Gets the capabilities for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CapabilitiesResultInner object
      */
@@ -105,7 +109,7 @@ public class LocationsInner {
     /**
      * Gets the capabilities for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CapabilitiesResultInner object
      */
@@ -143,7 +147,7 @@ public class LocationsInner {
     /**
      * Lists the usages for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -156,7 +160,7 @@ public class LocationsInner {
     /**
      * Lists the usages for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -168,7 +172,7 @@ public class LocationsInner {
     /**
      * Lists the usages for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UsagesListResultInner object
      */
@@ -184,7 +188,7 @@ public class LocationsInner {
     /**
      * Lists the usages for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UsagesListResultInner object
      */
@@ -215,6 +219,85 @@ public class LocationsInner {
     private ServiceResponse<UsagesListResultInner> listUsagesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<UsagesListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<UsagesListResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the billingSpecs for the specified subscription and location.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BillingResponseListResultInner object if successful.
+     */
+    public BillingResponseListResultInner listBillingSpecs(String location) {
+        return listBillingSpecsWithServiceResponseAsync(location).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the billingSpecs for the specified subscription and location.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BillingResponseListResultInner> listBillingSpecsAsync(String location, final ServiceCallback<BillingResponseListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listBillingSpecsWithServiceResponseAsync(location), serviceCallback);
+    }
+
+    /**
+     * Lists the billingSpecs for the specified subscription and location.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingResponseListResultInner object
+     */
+    public Observable<BillingResponseListResultInner> listBillingSpecsAsync(String location) {
+        return listBillingSpecsWithServiceResponseAsync(location).map(new Func1<ServiceResponse<BillingResponseListResultInner>, BillingResponseListResultInner>() {
+            @Override
+            public BillingResponseListResultInner call(ServiceResponse<BillingResponseListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the billingSpecs for the specified subscription and location.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BillingResponseListResultInner object
+     */
+    public Observable<ServiceResponse<BillingResponseListResultInner>> listBillingSpecsWithServiceResponseAsync(String location) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listBillingSpecs(this.client.subscriptionId(), location, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingResponseListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BillingResponseListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BillingResponseListResultInner> clientResponse = listBillingSpecsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BillingResponseListResultInner> listBillingSpecsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BillingResponseListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BillingResponseListResultInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

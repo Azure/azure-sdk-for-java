@@ -17,7 +17,7 @@ public interface Locations {
     /**
      * Gets the capabilities for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -26,10 +26,19 @@ public interface Locations {
     /**
      * Lists the usages for the specified location.
      *
-     * @param location The location.
+     * @param location The Azure location (region) for which to make the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
     Observable<UsagesListResult> listUsagesAsync(String location);
+
+    /**
+     * Lists the billingSpecs for the specified subscription and location.
+     *
+     * @param location The Azure location (region) for which to make the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BillingResponseListResult> listBillingSpecsAsync(String location);
 
 }
