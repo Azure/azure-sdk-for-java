@@ -25,7 +25,6 @@ package com.azure.data.cosmos.internal;
 import com.azure.data.cosmos.ClientUnderTestBuilder;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.internal.http.HttpResponse;

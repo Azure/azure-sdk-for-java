@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal.changefeed;
 import com.azure.data.cosmos.CosmosContainer;
 
 /**
- * Captures LeaseStoreManager settings.
+ * Captures LeaseStoreManager properties.
  */
 public class LeaseStoreManagerSettings {
     String containerNamePrefix;

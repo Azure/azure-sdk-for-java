@@ -28,7 +28,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Implementation for the partition processor settings.
+ * Implementation for the partition processor properties.
  */
 public class ProcessorSettings {
     private CosmosContainer collectionSelfLink;

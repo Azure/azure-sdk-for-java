@@ -200,24 +200,6 @@ public final class ChangeFeedOptions {
     }
 
     /**
-     * Gets the option to enable populate query metrics
-     * @return whether to enable populate query metrics
-     */
-    public boolean populateQueryMetrics() {
-        return populateQueryMetrics;
-    }
-
-    /**
-     * Sets the option to enable/disable getting metrics relating to query execution on document query requests
-     * @param populateQueryMetrics whether to enable or disable query metrics
-     * @return the FeedOptionsBase.
-     */
-    public ChangeFeedOptions populateQueryMetrics(boolean populateQueryMetrics) {
-        this.populateQueryMetrics = populateQueryMetrics;
-        return this;
-    }
-
-    /**
      * Gets the properties
      *
      * @return Map of request options properties

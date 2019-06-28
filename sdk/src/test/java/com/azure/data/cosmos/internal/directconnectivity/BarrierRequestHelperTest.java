@@ -23,17 +23,14 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.internal.directconnectivity.BarrierRequestHelper;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.directconnectivity.BarrierRequestHelper;
-import com.azure.data.cosmos.internal.directconnectivity.WFConstants;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;
 import com.azure.data.cosmos.internal.TestConfigurations;
 import org.testng.annotations.DataProvider;

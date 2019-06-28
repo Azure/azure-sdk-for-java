@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.internal.RxDocumentClientImpl;
 import com.azure.data.cosmos.internal.http.HttpClient;

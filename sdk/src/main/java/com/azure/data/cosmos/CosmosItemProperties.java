@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

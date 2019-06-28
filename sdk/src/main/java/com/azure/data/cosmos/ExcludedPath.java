@@ -42,7 +42,7 @@ public class ExcludedPath extends JsonSerializable {
      *
      * @param jsonString the json string that represents the excluded path.
      */
-    public ExcludedPath(String jsonString) {
+    ExcludedPath(String jsonString) {
         super(jsonString);
     }
 

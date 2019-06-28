@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.internal.directconnectivity;
 
 
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyRangeGoneException;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
@@ -37,10 +37,6 @@ import com.azure.data.cosmos.internal.OperationType;
 import com.azure.data.cosmos.internal.ResourceType;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;
-import com.azure.data.cosmos.internal.directconnectivity.AddressInformation;
-import com.azure.data.cosmos.internal.directconnectivity.AddressResolver;
-import com.azure.data.cosmos.internal.directconnectivity.IAddressCache;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.azure.data.cosmos.internal.routing.CollectionRoutingMap;
 import com.azure.data.cosmos.internal.routing.IServerIdentity;
 import com.azure.data.cosmos.internal.routing.InMemoryCollectionRoutingMap;

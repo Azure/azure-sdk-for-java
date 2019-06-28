@@ -69,7 +69,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosContainerProperties>> feedObservable = createdDatabase.listContainers(options);
+        Flux<FeedResponse<CosmosContainerProperties>> feedObservable = createdDatabase.readAllContainers(options);
 
         int expectedPageSize = (createdCollections.size() + options.maxItemCount() - 1) / options.maxItemCount();
 

@@ -23,7 +23,7 @@
 package com.azure.data.cosmos.internal.changefeed;
 
 import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

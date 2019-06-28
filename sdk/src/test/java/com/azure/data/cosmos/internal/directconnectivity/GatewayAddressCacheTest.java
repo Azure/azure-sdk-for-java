@@ -22,14 +22,13 @@
  */
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.internal.*;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.Database;
+import com.azure.data.cosmos.internal.Document;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.internal.directconnectivity.*;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpClientConfig;
 import com.azure.data.cosmos.internal.routing.PartitionKeyRangeIdentity;

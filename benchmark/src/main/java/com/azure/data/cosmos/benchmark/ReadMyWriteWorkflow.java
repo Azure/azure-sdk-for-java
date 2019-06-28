@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.benchmark;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.PartitionKey;

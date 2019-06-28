@@ -46,7 +46,7 @@ public class CosmosPermissionProperties extends Resource {
      * Sets the id
      *
      * @param id the name of the resource.
-     * @return the cosmos permission properties with id set
+     * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties id(String id) {
         super.id(id);
@@ -75,6 +75,7 @@ public class CosmosPermissionProperties extends Resource {
      * Sets the self-link of resource to which the permission applies.
      *
      * @param resourceLink the resource link.
+     * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties resourceLink(String resourceLink) {
         super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
@@ -95,6 +96,7 @@ public class CosmosPermissionProperties extends Resource {
      * Sets the permission mode.
      *
      * @param permissionMode the permission mode.
+     * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties permissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
@@ -123,6 +125,7 @@ public class CosmosPermissionProperties extends Resource {
      * Sets the resource partition key associated with this permission object.
      *
      * @param partitionKey the partition key.
+     * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties resourcePartitionKey(PartitionKey partitionKey) {
         super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionKey.getInternalPartitionKey().toJson());

@@ -20,20 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.Offer;
-import com.azure.data.cosmos.internal.PartitionKeyRange;
-import com.azure.data.cosmos.internal.Permission;
-import com.azure.data.cosmos.internal.RequestOptions;
-import com.azure.data.cosmos.internal.ResourceResponse;
-import com.azure.data.cosmos.internal.RxDocumentClientImpl;
-import com.azure.data.cosmos.internal.StoredProcedure;
-import com.azure.data.cosmos.internal.StoredProcedureResponse;
-import com.azure.data.cosmos.internal.Trigger;
-import com.azure.data.cosmos.internal.User;
-import com.azure.data.cosmos.internal.UserDefinedFunction;
+import com.azure.data.cosmos.ChangeFeedOptions;
+import com.azure.data.cosmos.ConnectionPolicy;
+import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.FeedOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.TokenResolver;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
@@ -387,7 +382,7 @@ public interface AsyncDocumentClient {
      * @return an {@link Flux} containing the single resource response with the created collection or an error.
      */
     Flux<ResourceResponse<DocumentCollection>> createCollection(String databaseLink, DocumentCollection collection,
-                                                                      RequestOptions options);
+                                                                RequestOptions options);
 
     /**
      * Replaces a document collection.
@@ -483,7 +478,7 @@ public interface AsyncDocumentClient {
      * @return an {@link Flux} containing the single resource response with the created document or an error.
      */
     Flux<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
-                                                          boolean disableAutomaticIdGeneration);
+                                                    boolean disableAutomaticIdGeneration);
 
     /**
      * Upserts a document.

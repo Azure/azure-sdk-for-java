@@ -23,7 +23,7 @@
 package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;

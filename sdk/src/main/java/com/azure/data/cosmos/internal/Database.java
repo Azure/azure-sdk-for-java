@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.Resource;
 import org.apache.commons.lang3.StringUtils;
 
 /**

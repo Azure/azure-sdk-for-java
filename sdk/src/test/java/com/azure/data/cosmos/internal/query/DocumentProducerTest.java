@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal.query;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.CosmosError;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.PartitionKeyRange;

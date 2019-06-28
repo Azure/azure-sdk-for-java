@@ -36,7 +36,7 @@ public abstract class Index extends JsonSerializable {
      *
      * @param indexKind the kind of the index
      */
-    protected Index(IndexKind indexKind) {
+    Index(IndexKind indexKind) {
         super();
         this.kind(indexKind);
     }
@@ -47,7 +47,7 @@ public abstract class Index extends JsonSerializable {
      * @param jsonString the json string that represents the index.
      * @param indexKind the kind of the index
      */
-    protected Index(String jsonString, IndexKind indexKind) {
+    Index(String jsonString, IndexKind indexKind) {
         super(jsonString);
         this.kind(indexKind);
     }

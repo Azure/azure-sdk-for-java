@@ -23,6 +23,9 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.DatabaseAccount;
+import com.azure.data.cosmos.internal.DatabaseAccountLocation;
+
 import java.util.List;
 
 /**

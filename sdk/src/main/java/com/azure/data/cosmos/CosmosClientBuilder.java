@@ -58,17 +58,15 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Configs
-     * @param configs
-     * @return current builder
+     * Gets the token resolver
+     * @return the token resolver
      */
-    public CosmosClientBuilder configs(Configs configs) {
-        this.configs = configs;
-        return this;
+    public TokenResolver tokenResolver() {
+        return tokenResolver;
     }
 
     /**
-     * Token Resolver
+     * Sets the token resolver
      * @param tokenResolver
      * @return current builder
      */
@@ -78,29 +76,76 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * The service endpoint url
-     * @param serviceEndpoint the service endpoint
+     * Gets the Azure Cosmos DB endpoint the SDK will connect to
+     * @return the endpoint
+     */
+    public String endpoint() {
+        return serviceEndpoint;
+    }
+
+    /**
+     * Sets the Azure Cosmos DB endpoint the SDK will connect to
+     * @param endpoint the service endpoint
      * @return current Builder
      */
-    public CosmosClientBuilder endpoint(String serviceEndpoint) {
-        this.serviceEndpoint = serviceEndpoint;
+    public CosmosClientBuilder endpoint(String endpoint) {
+        this.serviceEndpoint = endpoint;
         return this;
     }
 
     /**
-     * This method will take either key or resource token and perform authentication
+     * Gets either a master or readonly key used to perform authentication
+     * for accessing resource.
+     * @return the key
+     */
+    public String key() {
+        return keyOrResourceToken;
+    }
+
+    /**
+     * Sets either a master or readonly key used to perform authentication
      * for accessing resource.
      *
-     * @param keyOrResourceToken key or resourceToken for authentication .
+     * @param key master or readonly key
      * @return current Builder.
      */
-    public CosmosClientBuilder key(String keyOrResourceToken) {
-        this.keyOrResourceToken = keyOrResourceToken;
+    public CosmosClientBuilder key(String key) {
+        this.keyOrResourceToken = key;
         return this;
     }
 
     /**
-     * This method will accept the permission list , which contains the
+     * Sets a resource token used to perform authentication
+     * for accessing resource.
+     * @return the resourceToken
+     */
+    public String resourceToken() {
+        return keyOrResourceToken;
+    }
+
+    /**
+     * Sets a resource token used to perform authentication
+     * for accessing resource.
+     *
+     * @param resourceToken resourceToken for authentication
+     * @return current Builder.
+     */
+    public CosmosClientBuilder resourceToken(String resourceToken) {
+        this.keyOrResourceToken = resourceToken;
+        return this;
+    }
+
+    /**
+     * Gets the permission list, which contains the
+     * resource tokens needed to access resources.
+     * @return the permission list
+     */
+    public List<Permission> permissions() {
+        return permissions;
+    }
+
+    /**
+     * Sets the permission list, which contains the
      * resource tokens needed to access resources.
      *
      * @param permissions Permission list for authentication.
@@ -112,7 +157,15 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * This method accepts the (@link ConsistencyLevel) to be used
+     * Gets the (@link ConsistencyLevel) to be used
+     * @return the consistency level
+     */
+    public ConsistencyLevel consistencyLevel() {
+        return this.desiredConsistencyLevel;
+    }
+
+    /**
+     * Sets the (@link ConsistencyLevel) to be used
      * @param desiredConsistencyLevel {@link ConsistencyLevel}
      * @return current Builder
      */
@@ -122,7 +175,15 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * The (@link ConnectionPolicy) to be used
+     * Gets the (@link ConnectionPolicy) to be used
+     * @return the connection policy
+     */
+    public ConnectionPolicy connectionPolicy() {
+        return connectionPolicy;
+    }
+
+    /**
+     * Sets the (@link ConnectionPolicy) to be used
      * @param connectionPolicy {@link ConnectionPolicy}
      * @return current Builder
      */
@@ -131,14 +192,8 @@ public class CosmosClientBuilder {
         return this;
     }
 
-    private void ifThrowIllegalArgException(boolean value, String error) {
-        if (value) {
-            throw new IllegalArgumentException(error);
-        }
-    }
-
     /**
-     * Builds a cosmos configuration object with the provided settings
+     * Builds a cosmos configuration object with the provided properties
      * @return CosmosClient
      */
     public CosmosClient build() {
@@ -151,31 +206,23 @@ public class CosmosClientBuilder {
         return new CosmosClient(this);
     }
 
-    String getServiceEndpoint() {
-        return serviceEndpoint;
-    }
-
-    String getKeyOrResourceToken() {
-        return keyOrResourceToken;
-    }
-
-    public ConnectionPolicy getConnectionPolicy() {
-        return connectionPolicy;
-    }
-
-    public ConsistencyLevel getDesiredConsistencyLevel() {
-        return desiredConsistencyLevel;
-    }
-
-    List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public Configs getConfigs() {
+    Configs configs() {
         return configs;
     }
 
-    public TokenResolver getTokenResolver() {
-        return tokenResolver;
+    /**
+     * Configs
+     * @param configs
+     * @return current builder
+     */
+    CosmosClientBuilder configs(Configs configs) {
+        this.configs = configs;
+        return this;
+    }
+
+    private void ifThrowIllegalArgException(boolean value, String error) {
+        if (value) {
+            throw new IllegalArgumentException(error);
+        }
     }
 }

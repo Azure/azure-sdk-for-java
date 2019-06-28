@@ -23,12 +23,8 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.internal.directconnectivity.AddressSelector;
-import com.azure.data.cosmos.internal.directconnectivity.ReadMode;
-import com.azure.data.cosmos.internal.directconnectivity.StoreReader;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.directconnectivity.*;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Mono;

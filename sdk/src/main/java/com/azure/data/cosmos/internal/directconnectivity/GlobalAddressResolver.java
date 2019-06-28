@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 
 import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.PartitionKeyRange;

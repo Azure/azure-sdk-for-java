@@ -59,7 +59,7 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        Mono<CosmosUserResponse> createObservable = createdDatabase.createUser(user, null);
+        Mono<CosmosUserResponse> createObservable = createdDatabase.createUser(user);
 
         // validate user creation
         CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
@@ -76,10 +76,10 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
        
-        CosmosUser readBackUser = createdDatabase.createUser(user, null).block().user();
+        CosmosUser readBackUser = createdDatabase.createUser(user).block().user();
 
         // read user
-        Mono<CosmosUserResponse> readObservable = readBackUser.read(null);
+        Mono<CosmosUserResponse> readObservable = readBackUser.read();
         
         //validate user read
         CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
@@ -96,10 +96,10 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        CosmosUser readBackUser = createdDatabase.createUser(user, null).block().user();
+        CosmosUser readBackUser = createdDatabase.createUser(user).block().user();
 
         // delete user
-        Mono<CosmosUserResponse> deleteObservable = readBackUser.delete(null);
+        Mono<CosmosUserResponse> deleteObservable = readBackUser.delete();
 
         // validate user delete
         CosmosResponseValidator<CosmosUserResponse> validator = new CosmosResponseValidator.Builder<CosmosUserResponse>()
@@ -108,7 +108,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
 
         // attempt to read the user which was deleted
-        Mono<CosmosUserResponse> readObservable = readBackUser.read(null);
+        Mono<CosmosUserResponse> readObservable = readBackUser.read();
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateFailure(readObservable, notFoundValidator);
     }
@@ -120,7 +120,7 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        Mono<CosmosUserResponse> upsertObservable = createdDatabase.upsertUser(user, null);
+        Mono<CosmosUserResponse> upsertObservable = createdDatabase.upsertUser(user);
         
         //validate user upsert
         CosmosResponseValidator<CosmosUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosUserResponse>()
@@ -138,7 +138,7 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties user = new CosmosUserProperties();
         user.id(UUID.randomUUID().toString());
         
-        CosmosUserProperties readBackUser = createdDatabase.createUser(user, null).block().settings();
+        CosmosUserProperties readBackUser = createdDatabase.createUser(user).block().properties();
         
         // read user to validate creation
         Mono<CosmosUserResponse> readObservable = createdDatabase.getUser(user.id()).read();
@@ -155,7 +155,7 @@ public class UserCrudTest extends TestSuiteBase {
         String oldId = readBackUser.id();
         readBackUser.id(UUID.randomUUID().toString());
 
-        Mono<CosmosUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser, null);
+        Mono<CosmosUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser);
 
         // validate user replace
         CosmosResponseValidator<CosmosUserResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosUserResponse>()

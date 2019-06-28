@@ -26,7 +26,6 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -152,7 +151,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
     public CosmosTriggerProperties createTrigger(CosmosContainer cosmosContainer) {
         CosmosTriggerProperties storedProcedure = getTriggerDef();
-        return cosmosContainer.getScripts().createTrigger(storedProcedure, new CosmosRequestOptions()).block().properties();
+        return cosmosContainer.getScripts().createTrigger(storedProcedure).block().properties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

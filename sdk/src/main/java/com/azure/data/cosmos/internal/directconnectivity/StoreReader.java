@@ -27,7 +27,7 @@ import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.GoneException;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.PartitionIsMigratingException;
 import com.azure.data.cosmos.PartitionKeyRangeGoneException;

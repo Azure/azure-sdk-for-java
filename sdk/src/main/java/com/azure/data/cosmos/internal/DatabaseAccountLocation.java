@@ -21,9 +21,11 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.JsonSerializable;
+
+import static com.azure.data.cosmos.BridgeInternal.setProperty;
 
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
@@ -34,7 +36,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      * DEFAULT Constructor. Creates a new instance of the
      * DatabaseAccountLocation object.
      */
-    DatabaseAccountLocation() {
+    public DatabaseAccountLocation() {
         super();
     }
 
@@ -63,7 +65,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      * @param name the name of the database account location.
      */
     public void setName(String name) {
-        super.set(Constants.Properties.Name, name);
+        setProperty(this, Constants.Properties.Name, name);
     }
 
     /**
@@ -81,6 +83,6 @@ public class DatabaseAccountLocation extends JsonSerializable {
      * @param endpoint the endpoint of the database account location.
      */
     public void setEndpoint(String endpoint) {
-        super.set(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
+        setProperty(this, Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
     }
 }

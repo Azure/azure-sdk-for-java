@@ -22,12 +22,8 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionMode;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.http.HttpRequest;

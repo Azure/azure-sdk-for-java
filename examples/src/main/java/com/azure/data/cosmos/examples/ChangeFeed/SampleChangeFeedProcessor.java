@@ -163,9 +163,8 @@ public class SampleChangeFeedProcessor {
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(collectionName, "/id");
 
         CosmosContainerRequestOptions requestOptions = new CosmosContainerRequestOptions();
-        requestOptions.offerThroughput(10000);
 
-        containerResponse = databaseLink.createContainer(containerSettings, requestOptions).block();
+        containerResponse = databaseLink.createContainer(containerSettings, 10000, requestOptions).block();
 
         if (containerResponse == null) {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", collectionName, databaseName));
@@ -205,9 +204,8 @@ public class SampleChangeFeedProcessor {
 
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(leaseCollectionName, "/id");
         CosmosContainerRequestOptions requestOptions = new CosmosContainerRequestOptions();
-        requestOptions.offerThroughput(400);
 
-        leaseContainerResponse = databaseLink.createContainer(containerSettings, requestOptions).block();
+        leaseContainerResponse = databaseLink.createContainer(containerSettings, 400,requestOptions).block();
 
         if (leaseContainerResponse == null) {
             throw new RuntimeException(String.format("Failed to create collection %s in database %s.", leaseCollectionName, databaseName));

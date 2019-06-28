@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class CosmosResponse<T extends Resource> {
     private T resourceSettings;
-    protected ResourceResponse resourceResponseWrapper;
+    ResourceResponse resourceResponseWrapper;
 
     CosmosResponse(ResourceResponse resourceResponse){
         this.resourceResponseWrapper = resourceResponse;
@@ -44,11 +44,11 @@ public class CosmosResponse<T extends Resource> {
     CosmosResponse(StoredProcedureResponse response) {
     }
 
-    protected T resourceSettings() {
+    T resourceSettings() {
         return resourceSettings;
     }
     
-    protected CosmosResponse<T> resourceSettings(T resourceSettings){
+    CosmosResponse<T> resourceSettings(T resourceSettings){
         this.resourceSettings = resourceSettings;
         return this;
     }

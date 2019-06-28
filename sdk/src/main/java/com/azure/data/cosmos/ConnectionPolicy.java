@@ -23,8 +23,6 @@
 
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.MediaReadMode;
-
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +44,6 @@ public final class ConnectionPolicy {
     private int requestTimeoutInMillis;
     private int mediaRequestTimeoutInMillis;
     private ConnectionMode connectionMode;
-    private MediaReadMode mediaReadMode;
     private int maxPoolSize;
     private int idleConnectionTimeoutInMillis;
     private String userAgentSuffix;
@@ -65,7 +62,6 @@ public final class ConnectionPolicy {
         this.enableReadRequestsFallback = null;
         this.idleConnectionTimeoutInMillis = DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
         this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-        this.mediaReadMode = MediaReadMode.Buffered;
         this.mediaRequestTimeoutInMillis = ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS;
         this.requestTimeoutInMillis = ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS;
         this.retryOptions = new RetryOptions();
@@ -371,7 +367,6 @@ public final class ConnectionPolicy {
                 "requestTimeoutInMillis=" + requestTimeoutInMillis +
                 ", mediaRequestTimeoutInMillis=" + mediaRequestTimeoutInMillis +
                 ", connectionMode=" + connectionMode +
-                ", mediaReadMode=" + mediaReadMode +
                 ", maxPoolSize=" + maxPoolSize +
                 ", idleConnectionTimeoutInMillis=" + idleConnectionTimeoutInMillis +
                 ", userAgentSuffix='" + userAgentSuffix + '\'' +

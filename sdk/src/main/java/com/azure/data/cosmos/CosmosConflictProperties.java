@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Conflict;
 import com.azure.data.cosmos.internal.Constants;
 import com.azure.data.cosmos.internal.Strings;
 
@@ -61,7 +62,7 @@ public class CosmosConflictProperties extends Resource {
      *
      * @return the resource type.
      */
-    public String resouceType() {
+    public String resourceType() {
         return super.getString(Constants.Properties.RESOURCE_TYPE);
     }
 
@@ -69,7 +70,7 @@ public class CosmosConflictProperties extends Resource {
      * Gets the resource ID for the conflict in the Azure Cosmos DB service.
      * @return resource Id for the conflict.
      */
-    public String sourceResourceId() {
+    String sourceResourceId() {
         return super.getString(Constants.Properties.SOURCE_RESOURCE_ID);
     }
 

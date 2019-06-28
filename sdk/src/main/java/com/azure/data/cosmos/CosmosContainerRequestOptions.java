@@ -27,18 +27,19 @@ import com.azure.data.cosmos.internal.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos container.
  */
-public class CosmosContainerRequestOptions extends CosmosRequestOptions {
+public class CosmosContainerRequestOptions {
     private Integer offerThroughput;
     private boolean populateQuotaInfo;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
+    private AccessCondition accessCondition;
 
     /**
      * Gets the throughput in the form of Request Units per second when creating a cosmos container.
      *
      * @return the throughput value.
      */
-    public Integer offerThroughput() {
+    Integer offerThroughput() {
         return offerThroughput;
     }
 
@@ -48,7 +49,7 @@ public class CosmosContainerRequestOptions extends CosmosRequestOptions {
      * @param offerThroughput the throughput value.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions offerThroughput(Integer offerThroughput) {
+    CosmosContainerRequestOptions offerThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
         return this;
     }
@@ -117,13 +118,33 @@ public class CosmosContainerRequestOptions extends CosmosRequestOptions {
         return this;
     }
 
-    @Override
-    protected RequestOptions toRequestOptions() {
-        super.toRequestOptions();
-        requestOptions.setOfferThroughput(offerThroughput);
-        requestOptions.setPopulateQuotaInfo(populateQuotaInfo);
-        requestOptions.setSessionToken(sessionToken);
-        requestOptions.setConsistencyLevel(consistencyLevel);
-        return requestOptions;
+    /**
+     * Gets the conditions associated with the request.
+     *
+     * @return the access condition.
+     */
+    public AccessCondition accessCondition() {
+        return accessCondition;
+    }
+
+    /**
+     * Sets the conditions associated with the request.
+     *
+     * @param accessCondition the access condition.
+     * @return the current request options
+     */
+    public CosmosContainerRequestOptions accessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+        return this;
+    }
+
+    RequestOptions toRequestOptions() {
+        RequestOptions options = new RequestOptions();
+        options.setAccessCondition(accessCondition);
+        options.setOfferThroughput(offerThroughput);
+        options.setPopulateQuotaInfo(populateQuotaInfo);
+        options.setSessionToken(sessionToken);
+        options.setConsistencyLevel(consistencyLevel);
+        return options;
     }
 }

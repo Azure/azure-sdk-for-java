@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.internal.*;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;

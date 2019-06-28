@@ -23,12 +23,7 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.BadRequestException;
-import com.azure.data.cosmos.Conflict;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -71,8 +66,6 @@ public class PathsHelper {
             return resourceOwnerFullName + "/" + Paths.TRIGGERS_PATH_SEGMENT + "/" + resourceName;
         } else if (resourceType instanceof Conflict) {
             return resourceOwnerFullName + "/" + Paths.CONFLICTS_PATH_SEGMENT + "/" + resourceName;
-        } else if (resourceType instanceof Attachment) {
-            return resourceOwnerFullName + "/" + Paths.ATTACHMENTS_PATH_SEGMENT + "/" + resourceName;
         } else if (resourceType instanceof User) {
             return resourceOwnerFullName + "/" + Paths.USERS_PATH_SEGMENT + "/" + resourceName;
         } else if (resourceType instanceof Permission) {
@@ -859,7 +852,6 @@ public class PathsHelper {
                 resourceType instanceof UserDefinedFunction ||
                 resourceType instanceof Trigger ||
                 resourceType instanceof Conflict ||
-                resourceType instanceof Attachment ||
                 resourceType instanceof User ||
                 resourceType instanceof Permission ||
                 resourceType instanceof Document ||

@@ -22,8 +22,8 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CompositePath;
 import com.azure.data.cosmos.CompositePathSortOrder;
@@ -32,10 +32,7 @@ import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DataType;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentClientTest;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.IncludedPath;
@@ -43,10 +40,8 @@ import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.Undefined;
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -458,7 +453,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return client.getDatabaseAccount().single().block().getConsistencyPolicy().getDefaultConsistencyLevel();
+        return client.getDatabaseAccount().single().block().getConsistencyPolicy().defaultConsistencyLevel();
     }
 
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {

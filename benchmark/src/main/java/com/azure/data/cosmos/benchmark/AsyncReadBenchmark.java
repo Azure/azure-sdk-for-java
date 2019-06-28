@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.benchmark;
 
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.ResourceResponse;

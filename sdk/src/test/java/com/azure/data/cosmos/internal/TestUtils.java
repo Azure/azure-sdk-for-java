@@ -22,8 +22,6 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.Database;
-
 public class TestUtils {
     private static final String DATABASES_PATH_SEGMENT = "dbs";
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";

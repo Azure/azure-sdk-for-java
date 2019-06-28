@@ -22,15 +22,10 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.SpyClientBuilder;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

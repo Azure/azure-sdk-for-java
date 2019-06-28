@@ -26,11 +26,11 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
     }
 
     /**
-     * Gets the cosmos user settings
+     * Gets the cosmos user properties
      *
      * @return {@link CosmosUserProperties}
      */
-    public CosmosUserProperties settings(){
+    public CosmosUserProperties properties(){
         return resourceSettings();
     }
 }

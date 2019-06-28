@@ -26,7 +26,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 import com.azure.data.cosmos.BadRequestException;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.InternalServerErrorException;
 import com.azure.data.cosmos.InvalidPartitionException;
 import com.azure.data.cosmos.NotFoundException;

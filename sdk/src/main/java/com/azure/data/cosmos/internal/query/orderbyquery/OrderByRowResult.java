@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.query.orderbyquery;
 
-import com.azure.data.cosmos.Document;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.query.QueryItem;
 

@@ -22,7 +22,10 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.Database;
+import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.Permission;
 import reactor.core.publisher.Flux;
@@ -49,13 +52,13 @@ public class CosmosClient implements AutoCloseable {
 
 
      CosmosClient(CosmosClientBuilder builder) {
-         this.configs = builder.getConfigs();
-         this.serviceEndpoint = builder.getServiceEndpoint();
-        this.keyOrResourceToken = builder.getKeyOrResourceToken();
-        this.connectionPolicy = builder.getConnectionPolicy();
-        this.desiredConsistencyLevel = builder.getDesiredConsistencyLevel();
-        this.permissions = builder.getPermissions();
-        this.tokenResolver = builder.getTokenResolver();
+         this.configs = builder.configs();
+         this.serviceEndpoint = builder.endpoint();
+        this.keyOrResourceToken = builder.key();
+        this.connectionPolicy = builder.connectionPolicy();
+        this.desiredConsistencyLevel = builder.consistencyLevel();
+        this.permissions = builder.permissions();
+        this.tokenResolver = builder.tokenResolver();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(this.serviceEndpoint)
                 .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -70,10 +73,6 @@ public class CosmosClient implements AutoCloseable {
         return this.asyncDocumentClient;
     }
 
-    public static AsyncDocumentClient getContextClient(CosmosClient cosmosClient) {
-        return cosmosClient.asyncDocumentClient;
-    }
-
     /**
      * Instantiate the cosmos client builder to build cosmos client
      * @return {@link CosmosClientBuilder}
@@ -86,7 +85,7 @@ public class CosmosClient implements AutoCloseable {
      * Get the service endpoint
      * @return the service endpoint
      */
-    public String getServiceEndpoint() {
+    String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
@@ -102,7 +101,7 @@ public class CosmosClient implements AutoCloseable {
      * Get the connection policy
      * @return {@link ConnectionPolicy}
      */
-    public ConnectionPolicy getConnectionPolicy() {
+    ConnectionPolicy getConnectionPolicy() {
         return connectionPolicy;
     }
 
@@ -110,7 +109,7 @@ public class CosmosClient implements AutoCloseable {
      * Gets the consistency level
      * @return the (@link ConsistencyLevel)
      */
-    public ConsistencyLevel getDesiredConsistencyLevel() {
+    ConsistencyLevel getDesiredConsistencyLevel() {
         return desiredConsistencyLevel;
     }
 
@@ -118,7 +117,7 @@ public class CosmosClient implements AutoCloseable {
      * Gets the permission list
      * @return the permission list
      */
-    public List<Permission> getPermissions() {
+    List<Permission> getPermissions() {
         return permissions;
     }
 
@@ -130,7 +129,7 @@ public class CosmosClient implements AutoCloseable {
      * Gets the configs
      * @return the configs
      */
-    public Configs getConfigs() {
+    Configs getConfigs() {
         return configs;
     }
 
@@ -138,7 +137,7 @@ public class CosmosClient implements AutoCloseable {
      * Gets the token resolver
      * @return the token resolver
      */
-    public TokenResolver getTokenResolver() {
+    TokenResolver getTokenResolver() {
         return tokenResolver;
     }
 
@@ -233,6 +232,68 @@ public class CosmosClient implements AutoCloseable {
     }
 
     /**
+     * Creates a database.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the
+     *      created database.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param databaseSettings {@link CosmosDatabaseProperties}
+     * @param throughput the throughput for the database
+     * @param options {@link CosmosDatabaseRequestOptions}
+     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
+     */
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings,
+                                                       int throughput,
+                                                       CosmosDatabaseRequestOptions options) {
+        if (options == null) {
+            options = new CosmosDatabaseRequestOptions();
+        }
+        options.offerThroughput(throughput);
+        Database wrappedDatabase = new Database();
+        wrappedDatabase.id(databaseSettings.id());
+        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions()).map(databaseResourceResponse ->
+                new CosmosDatabaseResponse(databaseResourceResponse, this)).single();
+    }
+
+    /**
+     * Creates a database.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the
+     *      created database.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param databaseSettings {@link CosmosDatabaseProperties}
+     * @param throughput the throughput for the database
+     * @return an {@link Mono} containing the single cosmos database response with the created database or an error.
+     */
+    public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
+        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
+        options.offerThroughput(throughput);
+        return createDatabase(databaseSettings, options);
+    }
+
+    /**
+     * Creates a database.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the
+     *      created database.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param id id of the database
+     * @param throughput the throughput for the database
+     * @return a {@link Mono} containing the single cosmos database response with the created database or an error.
+     */
+    public Mono<CosmosDatabaseResponse> createDatabase(String id, int throughput) {
+        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
+        options.offerThroughput(throughput);
+        return createDatabase(new CosmosDatabaseProperties(id), options);
+    }
+
+    /**
      * Reads all databases.
      * 
      * After subscription the operation will be performed. 
@@ -242,7 +303,7 @@ public class CosmosClient implements AutoCloseable {
      * @param options {@link FeedOptions}
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> listDatabases(FeedOptions options) {
+    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases(FeedOptions options) {
         return getDocClientWrapper().readDatabases(options)
                 .map(response-> BridgeInternal.createFeedResponse(CosmosDatabaseProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
@@ -257,8 +318,8 @@ public class CosmosClient implements AutoCloseable {
      * 
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    public Flux<FeedResponse<CosmosDatabaseProperties>> listDatabases() {
-        return listDatabases(new FeedOptions());
+    public Flux<FeedResponse<CosmosDatabaseProperties>> readAllDatabases() {
+        return readAllDatabases(new FeedOptions());
     }
 
 

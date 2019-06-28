@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.azure.data.cosmos.BridgeInternal.extractContainerSelfLink;
+
 /**
  * Implementation for the partition synchronizer.
  */
@@ -120,7 +122,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
         // STRING partitionKeyRangesPath = STRING.format("%spkranges", this.collectionSelfLink);
-        String partitionKeyRangesPath = CosmosContainer.getSelfLink(this.collectionSelfLink);
+        String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.maxItemCount(this.maxBatchSize);
         feedOptions.requestContinuation(null);

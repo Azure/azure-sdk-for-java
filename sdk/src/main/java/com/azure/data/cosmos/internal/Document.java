@@ -21,12 +21,16 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+
+import static com.azure.data.cosmos.BridgeInternal.remove;
+import static com.azure.data.cosmos.BridgeInternal.setProperty;
+import static com.azure.data.cosmos.BridgeInternal.setMapper;
 
 /**
  * Represents a document in the Azure Cosmos DB database service.
@@ -62,7 +66,8 @@ public class Document extends Resource {
      */
     Document(String jsonString, ObjectMapper objectMapper) {
         // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        super(jsonString, objectMapper);
+        super(jsonString);
+        setMapper(this, objectMapper);
     }
 
     /**
@@ -74,7 +79,7 @@ public class Document extends Resource {
         super(jsonString);
     }
 
-    static Document FromObject(Object document, ObjectMapper objectMapper) {
+    public static Document FromObject(Object document, ObjectMapper objectMapper) {
         Document typedDocument;
         if (document instanceof Document) {
             typedDocument = (Document) document;
@@ -121,9 +126,9 @@ public class Document extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            super.set(Constants.Properties.TTL, timeToLive);
+            setProperty(this, Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
-            super.remove(Constants.Properties.TTL);
+            remove(this, Constants.Properties.TTL);
         }
     }
 }

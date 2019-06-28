@@ -25,9 +25,8 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
-import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
@@ -63,7 +62,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         options.maxItemCount(2);
 
         Flux<FeedResponse<CosmosUserDefinedFunctionProperties>> feedObservable = createdCollection.getScripts()
-                .listUserDefinedFunctions(options);
+                .readAllUserDefinedFunctions(options);
 
         int expectedPageSize = (createdUserDefinedFunctions.size() + options.maxItemCount() - 1)
                 / options.maxItemCount();
@@ -101,8 +100,8 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
         udf.id(UUID.randomUUID().toString());
         udf.body("function() {var x = 10;}");
-        return cosmosContainer.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block()
-                .settings();
+        return cosmosContainer.getScripts().createUserDefinedFunction(udf).block()
+                .properties();
     }
 
     private String getCollectionLink() {

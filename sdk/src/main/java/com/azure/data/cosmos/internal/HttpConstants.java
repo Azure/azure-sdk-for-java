@@ -219,7 +219,7 @@ public class HttpConstants {
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
 
-        // These settings were added to support RNTBD and they've been added here to
+        // These properties were added to support RNTBD and they've been added here to
         // reduce merge conflicts
 
         public static final String CAN_CHARGE = "x-ms-cancharge";

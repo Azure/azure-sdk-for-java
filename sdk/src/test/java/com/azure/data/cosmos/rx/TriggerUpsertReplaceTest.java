@@ -25,11 +25,9 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.CosmosTriggerResponse;
-import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
 import org.testng.annotations.AfterClass;
@@ -60,11 +58,11 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().properties();
+        CosmosTriggerProperties readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().properties();
         
         // read trigger to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read(new RequestOptions());
+        Mono<CosmosTriggerResponse> readObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).read();
 
         // validate trigger creation
         CosmosResponseValidator<CosmosTriggerResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()
@@ -78,7 +76,7 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         //update trigger
         readBackTrigger.body("function() {var x = 11;}");
 
-        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger, new RequestOptions());
+        Mono<CosmosTriggerResponse> updateObservable = createdCollection.getScripts().getTrigger(readBackTrigger.id()).replace(readBackTrigger);
 
         // validate trigger replace
         CosmosResponseValidator<CosmosTriggerResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosTriggerResponse>()

@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 

@@ -25,7 +25,6 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
@@ -62,7 +61,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().listTriggers(options);
+        Flux<FeedResponse<CosmosTriggerProperties>> feedObservable = createdCollection.getScripts().readAllTriggers(options);
 
         int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
@@ -101,6 +100,6 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
         trigger.body("function() {var x = 10;}");
         trigger.triggerOperation(TriggerOperation.CREATE);
         trigger.triggerType(TriggerType.PRE);
-        return cosmosContainer.getScripts().createTrigger(trigger, new CosmosRequestOptions()).block().properties();
+        return cosmosContainer.getScripts().createTrigger(trigger).block().properties();
     }
 }

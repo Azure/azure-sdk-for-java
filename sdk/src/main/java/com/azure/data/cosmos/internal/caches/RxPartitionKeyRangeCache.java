@@ -22,9 +22,9 @@
  */
 package com.azure.data.cosmos.internal.caches;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.internal.Exceptions;

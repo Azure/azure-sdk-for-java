@@ -23,7 +23,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.UserDefinedFunction;
 import reactor.core.publisher.Mono;
 
@@ -56,18 +55,17 @@ public class CosmosUserDefinedFunction {
     }
 
     /**
-     * READ a user defined function.
+     * Read a user defined function.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read user defined
      * function.
      * In case of failure the {@link Mono} will error.
      *
-     * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
-    public Mono<CosmosUserDefinedFunctionResponse> read(RequestOptions options) {
-        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), options)
+    public Mono<CosmosUserDefinedFunctionResponse> read() {
+        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
                 .map(response -> new CosmosUserDefinedFunctionResponse(response, container)).single();
     }
 
@@ -79,17 +77,15 @@ public class CosmosUserDefinedFunction {
      * defined function.
      * In case of failure the {@link Mono} will error.
      *
-     * @param udfSettings the cosmos user defined function settings.
-     * @param options     the request options.
+     * @param udfSettings the cosmos user defined function properties.
      * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
      * or an error.
      */
-    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings,
-                                                           RequestOptions options) {
+    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
         return container.getDatabase()
                 .getDocClientWrapper()
                 .replaceUserDefinedFunction(new UserDefinedFunction(udfSettings.toJson())
-                        , options)
+                        , null)
                 .map(response -> new CosmosUserDefinedFunctionResponse(response, container))
                 .single();
     }
@@ -101,14 +97,13 @@ public class CosmosUserDefinedFunction {
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted user defined function.
      * In case of failure the {@link Mono} will error.
      *
-     * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the deleted cosmos user defined function or
      * an error.
      */
-    public Mono<CosmosResponse> delete(CosmosRequestOptions options) {
+    public Mono<CosmosResponse> delete() {
         return container.getDatabase()
                 .getDocClientWrapper()
-                .deleteUserDefinedFunction(this.getLink(), options.toRequestOptions())
+                .deleteUserDefinedFunction(this.getLink(), null)
                 .map(response -> new CosmosResponse(response.getResource()))
                 .single();
     }

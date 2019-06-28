@@ -43,9 +43,9 @@ import com.azure.data.cosmos.CosmosDatabaseResponse;
 import com.azure.data.cosmos.CosmosItem;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemResponse;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosUser;
 import com.azure.data.cosmos.CosmosUserProperties;
 import com.azure.data.cosmos.DataType;
@@ -59,8 +59,13 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.Configs;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
+import com.azure.data.cosmos.internal.PathParser;
+import com.azure.data.cosmos.internal.TestConfigurations;
+import com.azure.data.cosmos.internal.Utils;
 import com.azure.data.cosmos.internal.directconnectivity.Protocol;
-import com.azure.data.cosmos.internal.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -87,6 +92,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static com.azure.data.cosmos.BridgeInternal.extractConfigs;
+import static com.azure.data.cosmos.BridgeInternal.injectConfigs;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
@@ -199,11 +206,9 @@ public class TestSuiteBase extends CosmosClientTest {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
             SHARED_DATABASE = dbForTest.createdDatabase;
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-            options.offerThroughput(10100);
-            SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options);
+            SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 10100);
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(SHARED_DATABASE, getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
-            options.offerThroughput(6000);
-            SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options);
+            SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
         }
     }
 
@@ -252,14 +257,12 @@ public class TestSuiteBase extends CosmosClientTest {
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.results()))
                 .flatMap(trigger -> {
-                    CosmosRequestOptions requestOptions = new CosmosRequestOptions();
-
 //                    if (paths != null && !paths.isEmpty()) {
 //                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                        return cosmosContainer.getScripts().getTrigger(trigger.id()).delete(requestOptions);
+                        return cosmosContainer.getScripts().getTrigger(trigger.id()).delete();
                     }).then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
@@ -268,14 +271,13 @@ public class TestSuiteBase extends CosmosClientTest {
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.results()))
                 .flatMap(storedProcedure -> {
-                    CosmosRequestOptions requestOptions = new CosmosRequestOptions();
 
 //                    if (paths != null && !paths.isEmpty()) {
 //                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                    return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.id()).delete(requestOptions);
+                    return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.id()).delete(new CosmosStoredProcedureRequestOptions());
                     }).then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
@@ -284,21 +286,20 @@ public class TestSuiteBase extends CosmosClientTest {
                        .publishOn(Schedulers.parallel())
                 .flatMap(page -> Flux.fromIterable(page.results()))
                 .flatMap(udf -> {
-                    CosmosRequestOptions requestOptions = new CosmosRequestOptions();
 
 //                    if (paths != null && !paths.isEmpty()) {
 //                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
 //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                    return cosmosContainer.getScripts().getUserDefinedFunction(udf.id()).delete(requestOptions);
+                    return cosmosContainer.getScripts().getUserDefinedFunction(udf.id()).delete();
                     }).then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
 
     protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
-        switch (clientBuilder.getDesiredConsistencyLevel()) {
+        switch (clientBuilder.consistencyLevel()) {
             case EVENTUAL:
             case CONSISTENT_PREFIX:
                 logger.info(" additional wait in EVENTUAL mode so the replica catch up");
@@ -315,6 +316,11 @@ public class TestSuiteBase extends CosmosClientTest {
             default:
                 break;
         }
+    }
+
+    public static CosmosContainer createCollection(CosmosDatabase database, CosmosContainerProperties cosmosContainerProperties,
+                                                   CosmosContainerRequestOptions options, int throughput) {
+        return database.createContainer(cosmosContainerProperties, throughput, options).block().container();
     }
 
     public static CosmosContainer createCollection(CosmosDatabase database, CosmosContainerProperties cosmosContainerProperties,
@@ -590,7 +596,7 @@ public class TestSuiteBase extends CosmosClientTest {
     }
 
     public static void deleteUser(CosmosDatabase database, String userId) {
-        database.getUser(userId).read().block().user().delete(null).block();
+        database.getUser(userId).read().block().user().delete().block();
     }
 
     static private CosmosDatabase safeCreateDatabase(CosmosClient client, CosmosDatabaseProperties databaseSettings) {
@@ -627,7 +633,7 @@ public class TestSuiteBase extends CosmosClientTest {
 
     static protected void safeDeleteAllCollections(CosmosDatabase database) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.listContainers()
+            List<CosmosContainerProperties> collections = database.readAllContainers()
                                                                   .flatMap(p -> Flux.fromIterable(p.results()))
                                                                   .collectList()
                                                                   .block();
@@ -830,9 +836,9 @@ public class TestSuiteBase extends CosmosClientTest {
         }
 
         cosmosConfigurations.forEach(c -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-                                          c.getConnectionPolicy().connectionMode(),
-                                          c.getDesiredConsistencyLevel(),
-                                          c.getConfigs().getProtocol()
+                                          c.connectionPolicy().connectionMode(),
+                                          c.consistencyLevel(),
+                                          extractConfigs(c).getProtocol()
         ));
 
         cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null));
@@ -921,9 +927,9 @@ public class TestSuiteBase extends CosmosClientTest {
         }
 
         cosmosConfigurations.forEach(c -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-                                          c.getConnectionPolicy().connectionMode(),
-                                          c.getDesiredConsistencyLevel(),
-                                          c.getConfigs().getProtocol()
+                                          c.connectionPolicy().connectionMode(),
+                                          c.consistencyLevel(),
+                                          extractConfigs(c).getProtocol()
         ));
 
         cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations));
@@ -976,11 +982,12 @@ public class TestSuiteBase extends CosmosClientTest {
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
-        return CosmosClient.builder().endpoint(TestConfigurations.HOST)
+        CosmosClientBuilder builder = CosmosClient.builder().endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .connectionPolicy(connectionPolicy)
-                .consistencyLevel(consistencyLevel)
-                .configs(configs);
+                .consistencyLevel(consistencyLevel);
+
+        return injectConfigs(builder, configs);
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {

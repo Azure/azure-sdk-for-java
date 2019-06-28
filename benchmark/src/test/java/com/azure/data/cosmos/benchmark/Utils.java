@@ -47,11 +47,11 @@ package com.azure.data.cosmos.benchmark;
  */
 
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.internal.DatabaseForTest;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.RetryOptions;

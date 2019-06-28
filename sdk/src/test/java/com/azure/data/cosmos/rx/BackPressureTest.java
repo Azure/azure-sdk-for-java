@@ -88,7 +88,7 @@ public class BackPressureTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(1);
         options.enableCrossPartitionQuery(true);
-        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.listItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> queryObservable = createdCollection.readAllItems(options);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -165,11 +165,10 @@ public class BackPressureTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.offerThroughput(1000);
         client = new ClientUnderTestBuilder(clientBuilder()).build();
         createdDatabase = getSharedCosmosDatabase(client);
 
-        createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options);
+        createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options, 1000);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
 

@@ -25,7 +25,7 @@
 package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.JsonSerializable;
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 
 /**
  * Used internally for query in the Azure Cosmos DB database service.

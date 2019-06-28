@@ -23,7 +23,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.Trigger;
 import reactor.core.publisher.Mono;
 
@@ -62,13 +61,12 @@ public class CosmosTrigger {
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
      * In case of failure the {@link Mono} will error.
      *
-     * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the read cosmos trigger or an error.
      */
-    public Mono<CosmosTriggerResponse> read(RequestOptions options) {
+    public Mono<CosmosTriggerResponse> read() {
         return container.getDatabase()
                 .getDocClientWrapper()
-                .readTrigger(getLink(), options)
+                .readTrigger(getLink(), null)
                 .map(response -> new CosmosTriggerResponse(response, container))
                 .single();
     }
@@ -81,14 +79,13 @@ public class CosmosTrigger {
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced trigger.
      * In case of failure the {@link Mono} will error.
      *
-     * @param triggerSettings the cosmos trigger settings.
-     * @param options         the request options.
+     * @param triggerSettings the cosmos trigger properties.
      * @return an {@link Mono} containing the single resource response with the replaced cosmos trigger or an error.
      */
-    public Mono<CosmosTriggerResponse> replace(CosmosTriggerProperties triggerSettings, RequestOptions options) {
+    public Mono<CosmosTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
         return container.getDatabase()
                 .getDocClientWrapper()
-                .replaceTrigger(new Trigger(triggerSettings.toJson()), options)
+                .replaceTrigger(new Trigger(triggerSettings.toJson()), null)
                 .map(response -> new CosmosTriggerResponse(response, container))
                 .single();
     }
@@ -100,13 +97,12 @@ public class CosmosTrigger {
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted trigger.
      * In case of failure the {@link Mono} will error.
      *
-     * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the deleted cosmos trigger or an error.
      */
-    public Mono<CosmosResponse> delete(CosmosRequestOptions options) {
+    public Mono<CosmosResponse> delete() {
         return container.getDatabase()
                 .getDocClientWrapper()
-                .deleteTrigger(getLink(), options.toRequestOptions())
+                .deleteTrigger(getLink(), null)
                 .map(response -> new CosmosResponse(response.getResource()))
                 .single();
     }

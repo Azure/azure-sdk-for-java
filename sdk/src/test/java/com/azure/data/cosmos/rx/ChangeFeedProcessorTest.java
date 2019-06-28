@@ -244,7 +244,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     @AfterClass(groups = { "emulator" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
 //        try {
-//            client.listDatabases()
+//            client.readAllDatabases()
 //                .flatMap(cosmosDatabaseSettingsFeedResponse -> reactor.core.publisher.Flux.fromIterable(cosmosDatabaseSettingsFeedResponse.results()))
 //                .flatMap(cosmosDatabaseSettings -> {
 //                    CosmosDatabase cosmosDatabase = client.getDatabase(cosmosDatabaseSettings.id());
@@ -281,15 +281,13 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     private CosmosContainer createFeedCollection() {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
-        optionsFeedCollection.offerThroughput(10100);
-        return createCollection(createdDatabase, getCollectionDefinition(), optionsFeedCollection);
+        return createCollection(createdDatabase, getCollectionDefinition(), optionsFeedCollection, 10100);
     }
 
     private CosmosContainer createLeaseCollection() {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.offerThroughput(400);
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), "/id");
-        return createCollection(createdDatabase, collectionDefinition, options);
+        return createCollection(createdDatabase, collectionDefinition, options, 400);
     }
 
     private static synchronized void processItem(CosmosItemProperties item) {

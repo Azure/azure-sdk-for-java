@@ -24,12 +24,9 @@
 package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.PartitionKeyRangeGoneException;
 import com.azure.data.cosmos.RequestTimeoutException;
-import com.azure.data.cosmos.internal.directconnectivity.AddressSelector;
-import com.azure.data.cosmos.internal.directconnectivity.ConsistencyWriter;
-import com.azure.data.cosmos.internal.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.PartitionIsMigratingException;
 import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;

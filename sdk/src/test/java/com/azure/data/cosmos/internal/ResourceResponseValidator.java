@@ -22,9 +22,7 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.CompositePath;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.Resource;
@@ -248,17 +246,6 @@ public interface ResourceResponseValidator<T extends Resource> {
                 public void validate(ResourceResponse<Trigger> resourceResponse) {
                     assertThat(resourceResponse.getResource().getTriggerType()).isEqualTo(type);
                     assertThat(resourceResponse.getResource().getTriggerOperation()).isEqualTo(op);
-                }
-            });
-            return this;
-        }
-
-        public Builder<T> withContentType(final String contentType) {
-            validators.add(new ResourceResponseValidator<Attachment>() {
-
-                @Override
-                public void validate(ResourceResponse<Attachment> resourceResponse) {
-                    assertThat(resourceResponse.getResource().getContentType()).isEqualTo(contentType);
                 }
             });
             return this;

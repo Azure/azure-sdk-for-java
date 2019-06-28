@@ -21,7 +21,7 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.internal.ISessionToken;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;

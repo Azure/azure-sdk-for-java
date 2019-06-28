@@ -23,8 +23,8 @@
 package com.azure.data.cosmos.internal.caches;
 
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.DocumentCollection;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.internal.AuthorizationTokenType;
 import com.azure.data.cosmos.internal.ClearingSessionContainerClientRetryPolicy;
 import com.azure.data.cosmos.internal.HttpConstants;

@@ -58,15 +58,15 @@ public abstract class CosmosClientTest implements ITest {
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
-        if (this.clientBuilder.getConnectionPolicy() != null && this.clientBuilder.getConfigs() != null) {
-            String connectionMode = this.clientBuilder.getConnectionPolicy().connectionMode() == ConnectionMode.DIRECT
-                    ? "Direct " + this.clientBuilder.getConfigs().getProtocol()
+        if (this.clientBuilder.connectionPolicy() != null && this.clientBuilder.configs() != null) {
+            String connectionMode = this.clientBuilder.connectionPolicy().connectionMode() == ConnectionMode.DIRECT
+                    ? "Direct " + this.clientBuilder.configs().getProtocol()
                     : "Gateway";
 
             this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
                     testClassAndMethodName,
                     connectionMode,
-                    clientBuilder.getDesiredConsistencyLevel());
+                    clientBuilder.consistencyLevel());
         } else {
             this.testName = testClassAndMethodName;
         }

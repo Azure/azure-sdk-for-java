@@ -23,22 +23,34 @@
 
 package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.JsonSerializable;
+
 /**
- * Represents the mode for use with downloading attachment content (aka media) from the Azure Cosmos DB database service.
+ * Represents the 'Undefined' partition key in the Azure Cosmos DB database service.
  */
-public enum MediaReadMode {
+public class Undefined extends JsonSerializable {
+    
+    private final static Undefined value = new Undefined();
+    
+    /**
+     * Constructor. CREATE a new instance of the Undefined object.
+    */
+    private Undefined() {
+    }
+    
+    /**
+     * Returns the singleton value of Undefined.
+     *
+     * @return the Undefined value
+    */
+    public static Undefined Value() {
+        return value;
+    }
 
     /**
-     * Content is buffered at the client and not directly streamed from the
-     * content store. Use Buffered to reduce the time taken to read and write
-     * media files.
-     */
-    Buffered,
-
-    /**
-     * Content is directly streamed from the content store without any buffering
-     * at the client. Use Streamed to reduce the client memory overhead of
-     * reading and writing media files.
-     */
-    Streamed
+     * Returns the string representation of Undfined.
+    */
+    public String toString() {
+        return "{}";
+    }
 }

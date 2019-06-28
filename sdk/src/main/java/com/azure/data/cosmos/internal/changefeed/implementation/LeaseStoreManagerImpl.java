@@ -121,10 +121,10 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<LeaseStoreManager> build() {
-        if (this.settings == null) throw new IllegalArgumentException("settings");
-        if (this.settings.getContainerNamePrefix() == null) throw new IllegalArgumentException("settings.containerNamePrefix");
-        if (this.settings.getLeaseCollectionLink() == null) throw new IllegalArgumentException("settings.leaseCollectionLink");
-        if (this.settings.getHostName() == null || this.settings.getHostName().isEmpty()) throw new IllegalArgumentException("settings.hostName");
+        if (this.settings == null) throw new IllegalArgumentException("properties");
+        if (this.settings.getContainerNamePrefix() == null) throw new IllegalArgumentException("properties.containerNamePrefix");
+        if (this.settings.getLeaseCollectionLink() == null) throw new IllegalArgumentException("properties.leaseCollectionLink");
+        if (this.settings.getHostName() == null || this.settings.getHostName().isEmpty()) throw new IllegalArgumentException("properties.hostName");
         if (this.leaseDocumentClient == null) throw new IllegalArgumentException("leaseDocumentClient");
         if (this.requestOptionsFactory == null) throw new IllegalArgumentException("requestOptionsFactory");
         if (this.leaseUpdater == null) {

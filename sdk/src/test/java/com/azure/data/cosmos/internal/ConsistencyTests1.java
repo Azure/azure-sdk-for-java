@@ -23,18 +23,12 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PartitionKind;
-import com.azure.data.cosmos.internal.FailureValidator;
-import com.azure.data.cosmos.internal.ResourceResponseValidator;
-import com.azure.data.cosmos.internal.TestConfigurations;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;

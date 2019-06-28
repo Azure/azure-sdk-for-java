@@ -92,6 +92,10 @@ public class JsonSerializable {
         if (this.om != null) { return this.om; }
         return OBJECT_MAPPER;
     }
+
+    void setMapper(ObjectMapper om) {
+        this.om = om;
+    }
         
     private static void checkForValidPOJO(Class<?> c) {
         if (c.isAnonymousClass() || c.isLocalClass()) {

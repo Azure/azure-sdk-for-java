@@ -28,7 +28,7 @@ import com.azure.data.cosmos.internal.Constants;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Encapsulates the settings for consistency policy in the Azure Cosmos DB database service.
+ * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
  */
 public final class ConsistencyPolicy extends JsonSerializable {
     private static final ConsistencyLevel DEFAULT_DEFAULT_CONSISTENCY_LEVEL =
@@ -49,7 +49,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      *
      * @param jsonString the json string that represents the consistency policy.
      */
-    public ConsistencyPolicy(String jsonString) {
+    ConsistencyPolicy(String jsonString) {
         super(jsonString);
     }
 
@@ -58,7 +58,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      *
      * @return the default consistency level.
      */
-    public ConsistencyLevel getDefaultConsistencyLevel() {
+    public ConsistencyLevel defaultConsistencyLevel() {
 
         ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
         try {

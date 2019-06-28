@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.query.aggregation;
 
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 
 public class SumAggregator implements Aggregator {
     private Double sum;

@@ -27,11 +27,31 @@ import com.azure.data.cosmos.internal.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos stored procedure.
  */
-public class CosmosStoredProcedureRequestOptions extends CosmosRequestOptions {
+public class CosmosStoredProcedureRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private PartitionKey partitionKey;
     private String sessionToken;
+    private AccessCondition accessCondition;
 
+    /**
+     * Gets the conditions associated with the request.
+     *
+     * @return the access condition.
+     */
+    public AccessCondition accessCondition() {
+        return accessCondition;
+    }
+
+    /**
+     * Sets the conditions associated with the request.
+     *
+     * @param accessCondition the access condition.
+     * @return the current request options
+     */
+    public CosmosStoredProcedureRequestOptions accessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+        return this;
+    }
     /**
      * Gets the consistency level required for the request.
      *
@@ -92,9 +112,9 @@ public class CosmosStoredProcedureRequestOptions extends CosmosRequestOptions {
         return this;
     }
 
-    @Override
-    protected RequestOptions toRequestOptions() {
-        super.toRequestOptions();
+    RequestOptions toRequestOptions() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setAccessCondition(accessCondition);
         requestOptions.setConsistencyLevel(consistencyLevel());
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);

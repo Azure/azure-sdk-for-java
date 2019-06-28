@@ -25,13 +25,13 @@ package com.azure.data.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.data.cosmos.AccessCondition;
 import com.azure.data.cosmos.AccessConditionType;
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.Conflict;
+import com.azure.data.cosmos.internal.Conflict;
 import com.azure.data.cosmos.ConflictResolutionPolicy;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.Document;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.RequestOptions;

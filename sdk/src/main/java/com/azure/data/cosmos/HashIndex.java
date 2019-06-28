@@ -76,7 +76,7 @@ public final class HashIndex extends Index {
      *
      * @param jsonString the json string that represents the index.
      */
-    public HashIndex(String jsonString) {
+    HashIndex(String jsonString) {
         super(jsonString, IndexKind.HASH);
         if (this.dataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");

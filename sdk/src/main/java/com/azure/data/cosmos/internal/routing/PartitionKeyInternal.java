@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.routing;
 
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.Strings;
 import com.azure.data.cosmos.internal.Utils;

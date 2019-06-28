@@ -23,7 +23,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.internal.caches.IPartitionKeyRangeCache;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;

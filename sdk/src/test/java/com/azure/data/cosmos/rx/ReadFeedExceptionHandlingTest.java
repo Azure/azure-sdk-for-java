@@ -25,7 +25,6 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
-import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.FeedResponse;
 import io.reactivex.subscribers.TestSubscriber;
@@ -65,9 +64,9 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.fromIterable(frps));
 
         final CosmosClient mockClient = Mockito.spy(client);
-        Mockito.when(mockClient.listDatabases(null)).thenReturn(response);
+        Mockito.when(mockClient.readAllDatabases(null)).thenReturn(response);
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosDatabaseProperties>>();
-        mockClient.listDatabases(null).subscribe(subscriber);
+        mockClient.readAllDatabases(null).subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);
         assertThat(subscriber.assertNotComplete());
         assertThat(subscriber.assertTerminated());

@@ -68,9 +68,9 @@ public class BasicDemo {
         TestObject testObject2 = new TestObject("item_new_id_2", "test2", "test description2", "CA");
 
         //CREATE an Item async
-        Mono<CosmosItemResponse> itemResponseMono = container.createItem(testObject, testObject.country);
+        Mono<CosmosItemResponse> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosItemResponse> itemResponseMono1 = container.createItem(testObject2, testObject2.country);
+        Mono<CosmosItemResponse> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {
@@ -100,7 +100,7 @@ public class BasicDemo {
         CosmosItem cosmosItem = null;
         //CREATE item sync
         try {
-            cosmosItem = container.createItem(replaceObject, replaceObject.country)
+            cosmosItem = container.createItem(replaceObject)
                     .doOnError(throwable -> log("CREATE 3", throwable))
                     .publishOn(Schedulers.elastic())
                     .block()

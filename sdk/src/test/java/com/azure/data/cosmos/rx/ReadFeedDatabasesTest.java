@@ -60,7 +60,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosDatabaseProperties>> feedObservable = client.listDatabases(options);
+        Flux<FeedResponse<CosmosDatabaseProperties>> feedObservable = client.readAllDatabases(options);
 
         int expectedPageSize = (allDatabases.size() + options.maxItemCount() - 1) / options.maxItemCount();
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
@@ -77,7 +77,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws URISyntaxException {
         client = clientBuilder().build();
-        allDatabases = client.listDatabases(null)
+        allDatabases = client.readAllDatabases(null)
                              .map(frp -> frp.results())
                              .collectList()
                              .map(list -> list.stream().flatMap(x -> x.stream()).collect(Collectors.toList()))

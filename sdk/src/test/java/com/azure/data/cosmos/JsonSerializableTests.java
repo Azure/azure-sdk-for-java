@@ -1,5 +1,6 @@
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Document;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -7,6 +8,7 @@ import org.testng.annotations.Test;
 
 import java.io.Serializable;
 
+import static com.azure.data.cosmos.BridgeInternal.setProperty;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
@@ -53,29 +55,29 @@ public class JsonSerializableTests {
     public void getObjectAndCastToClass() {
         Document document = new Document();
         // numeric values
-        document.set("intValue", Integer.MAX_VALUE);
-        document.set("doubleValue", Double.MAX_VALUE);
-        document.set("longValue", Long.MAX_VALUE);
+        setProperty(document, "intValue", Integer.MAX_VALUE);
+        setProperty(document, "doubleValue", Double.MAX_VALUE);
+        setProperty(document, "longValue", Long.MAX_VALUE);
 
         assertThat(document.getObject("intValue", Integer.class).intValue()).isEqualTo(Integer.MAX_VALUE);
         assertThat(document.getObject("doubleValue", Double.class).doubleValue()).isEqualTo(Double.MAX_VALUE);
         assertThat(document.getObject("longValue", Long.class).longValue()).isEqualTo(Long.MAX_VALUE);
 
         // string
-        document.set("stringValue", "stringField");
+        setProperty(document, "stringValue", "stringField");
         assertThat(document.getObject("stringValue", String.class)).isEqualTo("stringField");
 
         // boolean
-        document.set("boolValue", true);
+        setProperty(document, "boolValue", true);
         assertThat(document.getObject("boolValue", Boolean.class)).isEqualTo(true);
 
         // enum
-        document.set("enumValue", "third");
+        setProperty(document, "enumValue", "third");
         assertThat(document.getObject("enumValue", enums.class)).isEqualTo(enums.third);
 
         // Pojo
         Pojo pojo = new Pojo(1, 2);
-        document.set("pojoValue", pojo);
+        setProperty(document, "pojoValue", pojo);
         Pojo readPojo = document.getObject("pojoValue", Pojo.class);
         assertThat(readPojo.getA()).isEqualTo(pojo.getA());
         assertThat(readPojo.getB()).isEqualTo(pojo.getB());
@@ -83,7 +85,7 @@ public class JsonSerializableTests {
         // JsonSerializable
         Document innerDocument = new Document();
         innerDocument.id("innerDocument");
-        document.set("innerDocument", innerDocument);
+        setProperty(document, "innerDocument", innerDocument);
         Document readInnerDocument = document.getObject("innerDocument", Document.class);
         assertThat(readInnerDocument.id()).isEqualTo(innerDocument.id());
     }

@@ -23,7 +23,6 @@
 package com.azure.data.cosmos;
 
 import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.StoredProcedure;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +55,21 @@ public class CosmosStoredProcedure {
     }
 
     /**
-     * READ a stored procedure by the stored procedure link.
+     * Read a stored procedure by the stored procedure link.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the read stored
+     * procedure.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
+     */
+    public Mono<CosmosStoredProcedureResponse> read() {
+        return read(null);
+    }
+
+    /**
+     * Read a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored
@@ -66,9 +79,25 @@ public class CosmosStoredProcedure {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the read stored procedure or an error.
      */
-    public Mono<CosmosStoredProcedureResponse> read(RequestOptions options) {
-        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(), options)
+    public Mono<CosmosStoredProcedureResponse> read(CosmosStoredProcedureRequestOptions options) {
+        if(options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+        return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(), options.toRequestOptions())
                 .map(response -> new CosmosStoredProcedureResponse(response, cosmosContainer)).single();
+    }
+
+    /**
+     * Deletes a stored procedure by the stored procedure link.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
+     */
+    public Mono<CosmosResponse> delete() {
+        return delete(null);
     }
 
     /**
@@ -81,7 +110,10 @@ public class CosmosStoredProcedure {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the deleted stored procedure or an error.
      */
-    public Mono<CosmosResponse> delete(CosmosRequestOptions options) {
+    public Mono<CosmosResponse> delete(CosmosStoredProcedureRequestOptions options) {
+        if(options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
         return cosmosContainer.getDatabase()
                 .getDocClientWrapper()
                 .deleteStoredProcedure(getLink(), options.toRequestOptions())
@@ -100,10 +132,13 @@ public class CosmosStoredProcedure {
      * @param options         the request options.
      * @return an {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    public Mono<CosmosStoredProcedureResponse> execute(Object[] procedureParams, RequestOptions options) {
+    public Mono<CosmosStoredProcedureResponse> execute(Object[] procedureParams, CosmosStoredProcedureRequestOptions options) {
+        if(options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
         return cosmosContainer.getDatabase()
                 .getDocClientWrapper()
-                .executeStoredProcedure(getLink(), options, procedureParams)
+                .executeStoredProcedure(getLink(), options.toRequestOptions(), procedureParams)
                 .map(response -> new CosmosStoredProcedureResponse(response, cosmosContainer))
                 .single();
     }
@@ -115,15 +150,32 @@ public class CosmosStoredProcedure {
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored procedure.
      * In case of failure the {@link Mono} will error.
      *
-     * @param storedProcedureSettings the stored procedure settings.
+     * @param storedProcedureSettings the stored procedure properties
+     * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
+     */
+    public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings) {
+        return replace(storedProcedureSettings, null);
+    }
+
+    /**
+     * Replaces a stored procedure.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored procedure.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param storedProcedureSettings the stored procedure properties.
      * @param options                 the request options.
      * @return an {@link Mono} containing the single resource response with the replaced stored procedure or an error.
      */
     public Mono<CosmosStoredProcedureResponse> replace(CosmosStoredProcedureProperties storedProcedureSettings,
-                                                       RequestOptions options) {
+                                                       CosmosStoredProcedureRequestOptions options) {
+        if(options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
         return cosmosContainer.getDatabase()
                 .getDocClientWrapper()
-                .replaceStoredProcedure(new StoredProcedure(storedProcedureSettings.toJson()), options)
+                .replaceStoredProcedure(new StoredProcedure(storedProcedureSettings.toJson()), options.toRequestOptions())
                 .map(response -> new CosmosStoredProcedureResponse(response, cosmosContainer))
                 .single();
     }

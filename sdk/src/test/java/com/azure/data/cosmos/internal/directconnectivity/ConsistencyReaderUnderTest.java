@@ -23,8 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ISessionContainer;
-import com.azure.data.cosmos.internal.directconnectivity.*;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
 import org.mockito.Mockito;

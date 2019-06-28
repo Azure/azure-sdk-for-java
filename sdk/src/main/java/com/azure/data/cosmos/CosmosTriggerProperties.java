@@ -42,7 +42,7 @@ public class CosmosTriggerProperties extends Resource {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the trigger settings.
+     * @param jsonString the json string that represents the trigger properties.
      */
     CosmosTriggerProperties(String jsonString){
         super(jsonString);
@@ -56,7 +56,7 @@ public class CosmosTriggerProperties extends Resource {
      * Sets the id
      *
      * @param id the name of the resource.
-     * @return the current cosmos trigger settings instance
+     * @return the current cosmos trigger properties instance
      */
     public CosmosTriggerProperties id(String id) {
         super.id(id);

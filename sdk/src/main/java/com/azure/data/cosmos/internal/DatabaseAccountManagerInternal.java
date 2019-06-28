@@ -20,8 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
+import com.azure.data.cosmos.ConnectionPolicy;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;

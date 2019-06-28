@@ -27,7 +27,7 @@ import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.GoneException;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.RequestTimeoutException;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;

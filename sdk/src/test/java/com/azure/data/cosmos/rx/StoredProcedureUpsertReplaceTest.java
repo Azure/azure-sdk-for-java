@@ -28,11 +28,10 @@ import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosStoredProcedure;
+import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosStoredProcedureResponse;
-import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.internal.RequestOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -79,7 +78,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         readBackSp.body("function() {var x = 11;}");
 
         Mono<CosmosStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
-                .getStoredProcedure(readBackSp.id()).replace(readBackSp, new RequestOptions());
+                .getStoredProcedure(readBackSp.id()).replace(readBackSp);
 
         // validate stored procedure replace
         CosmosResponseValidator<CosmosStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
@@ -103,8 +102,8 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
         String result = null;
 
-        RequestOptions options = new RequestOptions();
-        options.setPartitionKey(PartitionKey.None);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.partitionKey(PartitionKey.None);
         result = storedProcedure.execute(null, options).block().responseAsString();
 
         assertThat(result).isEqualTo("\"0123456789\"");

@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.internal.ResourceResponse;
 
 import java.util.List;

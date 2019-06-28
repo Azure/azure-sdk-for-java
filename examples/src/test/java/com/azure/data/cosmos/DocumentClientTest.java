@@ -23,6 +23,7 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.google.common.base.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;

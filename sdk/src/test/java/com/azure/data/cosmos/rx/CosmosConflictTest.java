@@ -58,7 +58,7 @@ public class CosmosConflictTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
 
-        Flux<FeedResponse<CosmosConflictProperties>> conflictReadFeedFlux = createdCollection.listConflicts(options);
+        Flux<FeedResponse<CosmosConflictProperties>> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
 
         Iterator<FeedResponse<CosmosConflictProperties>> it = conflictReadFeedFlux.toIterable().iterator();
 

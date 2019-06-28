@@ -31,11 +31,11 @@ import java.net.URISyntaxException;
 public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
-        this.configs(builder.getConfigs());
-        this.connectionPolicy(builder.getConnectionPolicy());
-        this.consistencyLevel(builder.getDesiredConsistencyLevel());
-        this.key(builder.getKeyOrResourceToken());
-        this.endpoint(builder.getServiceEndpoint());
+        this.configs(builder.configs());
+        this.connectionPolicy(builder.connectionPolicy());
+        this.consistencyLevel(builder.consistencyLevel());
+        this.key(builder.key());
+        this.endpoint(builder.endpoint());
     }
 
     @Override
@@ -43,11 +43,11 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         RxDocumentClientUnderTest rxClient;
         try {
             rxClient = new RxDocumentClientUnderTest(
-                new URI(this.getServiceEndpoint()),
-                this.getKeyOrResourceToken(),
-                this.getConnectionPolicy(),
-                this.getDesiredConsistencyLevel(),
-                this.getConfigs());
+                new URI(this.endpoint()),
+                this.key(),
+                this.connectionPolicy(),
+                this.consistencyLevel(),
+                this.configs());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

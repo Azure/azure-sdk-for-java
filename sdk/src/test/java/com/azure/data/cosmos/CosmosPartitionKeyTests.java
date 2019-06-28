@@ -182,7 +182,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux, queryValidator);
 
-        queryFlux = createdContainer.listItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -210,12 +210,12 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         // Partiton Key value same as what is specified in the stored procedure body
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(PartitionKey.None);
-        int result = Integer.parseInt(createdSproc.execute(null, options).block().responseAsString());
+        int result = Integer.parseInt(createdSproc.execute(null, new CosmosStoredProcedureRequestOptions()).block().responseAsString());
         assertThat(result).isEqualTo(1);
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.listItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(4)
                 .numberOfPages(1)
@@ -243,7 +243,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .nullResource().build();
         validateSuccess(deleteMono, validator);
 
-        queryFlux = createdContainer.listItems(feedOptions);
+        queryFlux = createdContainer.readAllItems(feedOptions);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(0)
                 .numberOfPages(1)

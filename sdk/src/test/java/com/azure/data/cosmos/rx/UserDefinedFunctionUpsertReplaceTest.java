@@ -25,11 +25,9 @@ package com.azure.data.cosmos.rx;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionResponse;
-import com.azure.data.cosmos.internal.RequestOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -59,11 +57,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
         CosmosUserDefinedFunctionProperties readBackUdf = null;
 
-            readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf, new CosmosRequestOptions()).block().settings();
+            readBackUdf = createdCollection.getScripts().createUserDefinedFunction(udf).block().properties();
 
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(clientBuilder());
-        Mono<CosmosUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).read(new RequestOptions());
+        Mono<CosmosUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).read();
 
         // validate udf creation
         CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
@@ -76,7 +74,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         //update udf
         readBackUdf.body("function() {var x = 11;}");
 
-        Mono<CosmosUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).replace(readBackUdf, new RequestOptions());
+        Mono<CosmosUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.id()).replace(readBackUdf);
 
         //validate udf replace
         CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()

@@ -25,10 +25,8 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpRequest;
-import com.azure.data.cosmos.internal.FailureValidator;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;

@@ -139,11 +139,11 @@ public interface ChangeFeedContextClient {
     URI getServiceEndpoint();
 
     /**
-     * Reads and returns the container settings.
+     * Reads and returns the container properties.
      *
      * @param containerLink   a reference to the container.
      * @param options         the {@link CosmosContainerRequestOptions} for this request; it can be set as null.
-     * @return an {@link Mono} containing the read container settings.
+     * @return an {@link Mono} containing the read container properties.
      */
     Mono<CosmosContainerProperties> readContainerSettings(CosmosContainer containerLink, CosmosContainerRequestOptions options);
 

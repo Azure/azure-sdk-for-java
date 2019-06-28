@@ -29,13 +29,14 @@ import java.util.List;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
-public class CosmosItemRequestOptions extends CosmosRequestOptions {
+public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
     private PartitionKey partitionKey;
+    private AccessCondition accessCondition;
 
     /**
      * Constructor
@@ -56,7 +57,27 @@ public class CosmosItemRequestOptions extends CosmosRequestOptions {
             partitionKey(new PartitionKey(partitionKey));
         }
     }
-    
+
+    /**
+     * Gets the conditions associated with the request.
+     *
+     * @return the access condition.
+     */
+    public AccessCondition accessCondition() {
+        return accessCondition;
+    }
+
+    /**
+     * Sets the conditions associated with the request.
+     *
+     * @param accessCondition the access condition.
+     * @return the current request options
+     */
+    public CosmosItemRequestOptions accessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+        return this;
+    }
+
     /**
      * Gets the consistency level required for the request.
      *
@@ -175,10 +196,10 @@ public class CosmosItemRequestOptions extends CosmosRequestOptions {
         return partitionKey;
     }
 
-    @Override
-    protected RequestOptions toRequestOptions() {
+    RequestOptions toRequestOptions() {
         //TODO: Should we set any default values instead of nulls?
-        super.toRequestOptions();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setAccessCondition(accessCondition);
         requestOptions.setAccessCondition(accessCondition());
         requestOptions.setConsistencyLevel(consistencyLevel());
         requestOptions.setIndexingDirective(indexingDirective);

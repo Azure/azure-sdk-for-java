@@ -67,12 +67,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.options = new ChangeFeedOptions();
         this.options.maxItemCount(settings.getMaxItemCount());
         partitionKeyRangeIdInternal(this.options, settings.getPartitionKeyRangeId());
-        // this.options.sessionToken(settings.sessionToken());
+        // this.options.sessionToken(properties.sessionToken());
         this.options.startFromBeginning(settings.isStartFromBeginning());
         this.options.requestContinuation(settings.getStartContinuation());
         this.options.startDateTime(settings.getStartTime());
 
-        //this.query = documentClient.createDocumentChangeFeedQuery(self.settings.getCollectionSelfLink(), this.options);
+        //this.query = documentClient.createDocumentChangeFeedQuery(self.properties.getCollectionSelfLink(), this.options);
     }
 
     @Override
@@ -111,7 +111,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     if (ex.getCause() instanceof CosmosClientException) {
 
                         CosmosClientException clientException = (CosmosClientException) ex.getCause();
-                        // this.logger.WarnException("exception: partition '{0}'", clientException, this.settings.PartitionKeyRangeId);
+                        // this.logger.WarnException("exception: partition '{0}'", clientException, this.properties.PartitionKeyRangeId);
                         StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                         switch (docDbError) {
@@ -143,7 +143,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             }
                         }
                     } else if (ex instanceof TaskCancelledException) {
-                        // this.logger.WarnException("exception: partition '{0}'", canceledException, this.settings.PartitionKeyRangeId);
+                        // this.logger.WarnException("exception: partition '{0}'", canceledException, this.properties.PartitionKeyRangeId);
                         self.resultException = ex;
                     }
                 }

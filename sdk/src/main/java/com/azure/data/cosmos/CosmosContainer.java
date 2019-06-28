@@ -31,6 +31,10 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.data.cosmos.Resource.validateResource;
 
+/**
+ * Provides methods for reading, deleting, and replacing existing Containers.
+ * Provides methods for interacting with child resources (Items, Scripts, Conflicts)
+ */
 public class CosmosContainer {
 
     private CosmosDatabase database;
@@ -60,42 +64,6 @@ public class CosmosContainer {
     CosmosContainer id(String id) {
         this.id = id;
         return this;
-    }
-
-    AsyncDocumentClient getContextClient() {
-        if (this.database == null || this.database.getClient() == null) {
-            return null;
-        }
-
-        return this.database.getClient().getContextClient();
-    }
-
-    /**
-     * Gets the context client.
-     *
-     * @param cosmosContainer the container client.
-     * @return the context client.
-     */
-    static AsyncDocumentClient getContextClient(CosmosContainer cosmosContainer) {
-        if (cosmosContainer == null) {
-            return null;
-        }
-
-        return cosmosContainer.getContextClient();
-    }
-
-    /**
-     * Gets the self link to the container.
-     *
-     * @param cosmosContainer the container client.
-     * @return the self link.
-     */
-    public static String getSelfLink(CosmosContainer cosmosContainer) {
-        if (cosmosContainer == null) {
-            return null;
-        }
-
-        return cosmosContainer.getLink();
     }
 
     /**
@@ -172,7 +140,23 @@ public class CosmosContainer {
      * the replaced document container. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerSettings the item container settings
+     * @param containerSettings the item container properties
+     * @return an {@link Mono} containing the single cosmos container response with
+     *         the replaced document container or an error.
+     */
+    public Mono<CosmosContainerResponse> replace(CosmosContainerProperties containerSettings) {
+        return replace(containerSettings, null);
+    }
+
+    /**
+     * Replaces a document container.
+     *
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single cosmos container response with
+     * the replaced document container. In case of failure the {@link Mono} will
+     * error.
+     *
+     * @param containerSettings the item container properties
      * @param options           the cosmos container request options.
      * @return an {@link Mono} containing the single cosmos container response with
      *         the replaced document container or an error.
@@ -212,23 +196,6 @@ public class CosmosContainer {
      * successful completion will contain a single resource response with the
      * created cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param item         the cosmos item represented as a POJO or cosmos item
-     *                     object.
-     * @param partitionKey the partition key
-     * @return an {@link Mono} containing the single resource response with the
-     *         created cosmos item or an error.
-     */
-    public Mono<CosmosItemResponse> createItem(Object item, Object partitionKey) {
-        return createItem(item, new CosmosItemRequestOptions(partitionKey));
-    }
-
-    /**
-     * Creates a cosmos item.
-     *
-     * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single resource response with the
-     * created cosmos item. In case of failure the {@link Mono} will error.
-     *
      * @param item    the cosmos item represented as a POJO or cosmos item object.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the
@@ -256,23 +223,7 @@ public class CosmosContainer {
      *         upserted document or an error.
      */
     public Mono<CosmosItemResponse> upsertItem(Object item) {
-        return upsertItem(item, new CosmosItemRequestOptions());
-    }
-
-    /**
-     * Upserts an item.
-     *
-     * After subscription the operation will be performed. The {@link Mono} upon
-     * successful completion will contain a single resource response with the
-     * upserted item. In case of failure the {@link Mono} will error.
-     *
-     * @param item         the item represented as a POJO or Item object to upsert.
-     * @param partitionKey the partitionKey to be used.
-     * @return an {@link Mono} containing the single resource response with the
-     *         upserted document or an error.
-     */
-    public Mono<CosmosItemResponse> upsertItem(Object item, Object partitionKey) {
-        return upsertItem(item, new CosmosItemRequestOptions(partitionKey));
+        return upsertItem(item, null);
     }
 
     /**
@@ -308,8 +259,8 @@ public class CosmosContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      *         read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> listItems() {
-        return listItems(new FeedOptions());
+    public Flux<FeedResponse<CosmosItemProperties>> readAllItems() {
+        return readAllItems(new FeedOptions());
     }
 
     /**
@@ -323,10 +274,25 @@ public class CosmosContainer {
      * @return an {@link Flux} containing one or several feed response pages of the
      *         read cosmos items or an error.
      */
-    public Flux<FeedResponse<CosmosItemProperties>> listItems(FeedOptions options) {
+    public Flux<FeedResponse<CosmosItemProperties>> readAllItems(FeedOptions options) {
         return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> BridgeInternal.createFeedResponse(CosmosItemProperties.getFromV2Results(response.results()),
                         response.responseHeaders()));
+    }
+
+    /**
+     * Query for documents in a items in a container
+     *
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link Flux} will error.
+     *
+     * @param query   the query.
+     * @return an {@link Flux} containing one or several feed response pages of the
+     *         obtained items or an error.
+     */
+    public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query) {
+        return queryItems(new SqlQuerySpec(query), null);
     }
 
     /**
@@ -343,6 +309,21 @@ public class CosmosContainer {
      */
     public Flux<FeedResponse<CosmosItemProperties>> queryItems(String query, FeedOptions options) {
         return queryItems(new SqlQuerySpec(query), options);
+    }
+
+    /**
+     * Query for documents in a items in a container
+     *
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link Flux} will error.
+     *
+     * @param querySpec the SQL query specification.
+     * @return an {@link Flux} containing one or several feed response pages of the
+     *         obtained items or an error.
+     */
+    public Flux<FeedResponse<CosmosItemProperties>> queryItems(SqlQuerySpec querySpec) {
+        return queryItems(querySpec, null);
     }
 
     /**
@@ -406,10 +387,21 @@ public class CosmosContainer {
      * @return a {@link Flux} containing one or several feed response pages of the
      *         obtained conflicts or an error.
      */
-    public Flux<FeedResponse<CosmosConflictProperties>> listConflicts(FeedOptions options) {
+    public Flux<FeedResponse<CosmosConflictProperties>> readAllConflicts(FeedOptions options) {
         return database.getDocClientWrapper().readConflicts(getLink(), options)
                 .map(response -> BridgeInternal.createFeedResponse(
                         CosmosConflictProperties.getFromV2Results(response.results()), response.responseHeaders()));
+    }
+
+    /**
+     * Queries all the conflicts in the container
+     *
+     * @param query   the query
+     * @return a {@link Flux} containing one or several feed response pages of the
+     *         obtained conflicts or an error.
+     */
+    public Flux<FeedResponse<CosmosConflictProperties>> queryConflicts(String query) {
+        return queryConflicts(query, null);
     }
 
     /**
@@ -432,8 +424,8 @@ public class CosmosContainer {
      * @param id id of the cosmos conflict
      * @return a cosmos conflict
      */
-    public CosmosTrigger getConflict(String id) {
-        return new CosmosTrigger(id, this);
+    public CosmosConflict getConflict(String id) {
+        return new CosmosConflict(id, this);
     }
 
     /**
@@ -481,7 +473,7 @@ public class CosmosContainer {
     /**
      * Gets the parent Database
      *
-     * @return the (@link CosmosDatabase)
+     * @return the {@link CosmosDatabase}
      */
     public CosmosDatabase getDatabase() {
         return database;

@@ -26,9 +26,8 @@ import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosClientBuilder;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosContainer;
-import com.azure.data.cosmos.CosmosRequestOptions;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
-import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.FailureValidator;
@@ -151,7 +150,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     public CosmosUserDefinedFunctionProperties createUserDefinedFunction(CosmosContainer cosmosContainer) {
         CosmosUserDefinedFunctionProperties storedProcedure = getUserDefinedFunctionDef();
-        return cosmosContainer.getScripts().createUserDefinedFunction(storedProcedure, new CosmosRequestOptions()).block().settings();
+        return cosmosContainer.getScripts().createUserDefinedFunction(storedProcedure).block().properties();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)

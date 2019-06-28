@@ -63,7 +63,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         options.enableCrossPartitionQuery(true);
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.listItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
@@ -81,7 +81,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
 
-        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.listItems(options);
+        Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosClientException.class)
                 .statusCode(400)
                 .errorMessageContains("Cross partition query is required but disabled." +

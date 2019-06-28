@@ -38,7 +38,7 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
-import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.IndexingMode;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKey;

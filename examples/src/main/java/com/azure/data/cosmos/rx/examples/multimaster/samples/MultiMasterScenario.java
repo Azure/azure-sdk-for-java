@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.rx.examples.multimaster.samples;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.rx.examples.multimaster.ConfigurationManager;

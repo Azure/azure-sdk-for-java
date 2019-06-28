@@ -23,7 +23,6 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.Document;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;

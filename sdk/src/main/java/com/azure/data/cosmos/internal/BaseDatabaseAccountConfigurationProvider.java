@@ -24,7 +24,6 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.DatabaseAccount;
 
 /**
  * Used internally to provides functionality to work with database account configuration in the Azure Cosmos DB database service.
@@ -39,7 +38,7 @@ public class BaseDatabaseAccountConfigurationProvider implements DatabaseAccount
     }
 
     public ConsistencyLevel getStoreConsistencyPolicy() {
-        ConsistencyLevel databaseAccountConsistency = this.databaseAccount.getConsistencyPolicy().getDefaultConsistencyLevel();
+        ConsistencyLevel databaseAccountConsistency = this.databaseAccount.getConsistencyPolicy().defaultConsistencyLevel();
         if (this.desiredConsistencyLevel == null) {
             return databaseAccountConsistency;
         } else if (!Utils.isValidConsistency(databaseAccountConsistency, this.desiredConsistencyLevel)) {

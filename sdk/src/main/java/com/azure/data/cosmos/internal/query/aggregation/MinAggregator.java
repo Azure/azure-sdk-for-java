@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.query.aggregation;
 
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 import com.azure.data.cosmos.internal.query.ItemComparator;
 
 public class MinAggregator implements Aggregator {

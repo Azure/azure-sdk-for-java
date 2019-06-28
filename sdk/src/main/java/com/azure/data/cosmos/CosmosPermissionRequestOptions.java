@@ -22,28 +22,39 @@
  */
 package com.azure.data.cosmos;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.azure.data.cosmos.internal.RequestOptions;
 
-public class CosmosFeedResponse<T extends Resource> {
-    private  List<T> results;
+/**
+ * Contains the request options of CosmosPermission
+ */
+public class CosmosPermissionRequestOptions {
+    //TODO: Need to add respective options
+    private AccessCondition accessCondition;
 
-    //Temporary code. Used for testing conversion(one old resource type to new in feed)
-    CosmosFeedResponse(FeedResponse<T> feedResponse, Class<T> klass) {
-        results = feedResponse.results().stream().map(resource -> {
-            T item = null;
-            try {
-                item = klass.getConstructor(Resource.class).newInstance(resource);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new IllegalStateException(e);
-            }
-            return item;
-        }).collect(Collectors.toList());
+    /**
+     * Gets the conditions associated with the request.
+     *
+     * @return the access condition.
+     */
+    public AccessCondition accessCondition() {
+        return accessCondition;
     }
 
+    /**
+     * Sets the conditions associated with the request.
+     *
+     * @param accessCondition the access condition.
+     * @return the current request options
+     */
+    public CosmosPermissionRequestOptions accessCondition(AccessCondition accessCondition) {
+        this.accessCondition = accessCondition;
+        return this;
+    }
 
-    List<T> getResults() {
-        return results;
+    RequestOptions toRequestOptions() {
+        //TODO: Should we set any default values instead of nulls?
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.setAccessCondition(accessCondition);
+        return requestOptions;
     }
 }

@@ -25,9 +25,8 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.RequestRateTooLargeException;
-import com.azure.data.cosmos.internal.directconnectivity.*;
 import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.NotFoundException;
 import com.google.common.collect.ImmutableList;

@@ -20,9 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.azure.data.cosmos;
-
-import com.azure.data.cosmos.internal.SpyClientUnderTestFactory;
+package com.azure.data.cosmos.internal;
 
 public class SpyClientBuilder extends AsyncDocumentClient.Builder {
 

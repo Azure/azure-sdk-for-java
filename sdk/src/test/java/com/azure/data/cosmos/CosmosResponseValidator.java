@@ -61,7 +61,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             return this;
         }
 
-        private  Resource getResource(T resourceResponse) {
+        private Resource getResource(T resourceResponse) {
             if (resourceResponse instanceof CosmosDatabaseResponse) {
                 return ((CosmosDatabaseResponse)resourceResponse).properties();
             } else if (resourceResponse instanceof CosmosContainerResponse) {
@@ -73,9 +73,9 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             } else if (resourceResponse instanceof CosmosTriggerResponse) {
                 return ((CosmosTriggerResponse)resourceResponse).properties();
             } else if (resourceResponse instanceof CosmosUserDefinedFunctionResponse) {
-                return ((CosmosUserDefinedFunctionResponse)resourceResponse).settings();
+                return ((CosmosUserDefinedFunctionResponse)resourceResponse).properties();
             } else if (resourceResponse instanceof CosmosUserResponse) {
-                return ((CosmosUserResponse)resourceResponse).settings();
+                return ((CosmosUserResponse)resourceResponse).properties();
             } else if (resourceResponse instanceof CosmosPermissionResponse) {
                 return ((CosmosPermissionResponse) resourceResponse).properties();
             }
@@ -249,7 +249,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
                 @Override
                 public void validate(CosmosUserDefinedFunctionResponse resourceResponse) {
-                    assertThat(resourceResponse.settings().body()).isEqualTo(functionBody);
+                    assertThat(resourceResponse.properties().body()).isEqualTo(functionBody);
                 }
             });
             return this;

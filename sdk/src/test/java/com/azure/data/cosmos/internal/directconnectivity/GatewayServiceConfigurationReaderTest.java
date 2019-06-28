@@ -23,15 +23,14 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.AsyncDocumentClient.Builder;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient.Builder;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConnectionPolicy;
-import com.azure.data.cosmos.DatabaseAccount;
+import com.azure.data.cosmos.internal.DatabaseAccount;
 import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
 import com.azure.data.cosmos.internal.SpyClientUnderTestFactory;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-import com.azure.data.cosmos.internal.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 import com.azure.data.cosmos.internal.http.HttpRequest;

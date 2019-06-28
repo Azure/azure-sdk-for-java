@@ -23,7 +23,10 @@
 
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.internal.DatabaseAccount;
+import com.azure.data.cosmos.internal.Document;
 import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.internal.ReplicationPolicy;
@@ -40,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -371,6 +375,32 @@ public class BridgeInternal {
         return cosmosClientException;
     }
 
+    public static Configs extractConfigs(CosmosClientBuilder cosmosClientBuilder) {
+        return cosmosClientBuilder.configs();
+    }
+
+    public static CosmosClientBuilder injectConfigs(CosmosClientBuilder cosmosClientBuilder, Configs configs) {
+        return cosmosClientBuilder.configs(configs);
+    }
+
+    public static String extractContainerSelfLink(CosmosContainer container) {
+        return container.getLink();
+    }
+
+    public static String extractResourceSelfLink(Resource resource) { return resource.selfLink(); }
+
+    public static void setResourceSelfLink(Resource resource, String selfLink) { resource.selfLink(selfLink); }
+
+    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) { jsonSerializable.populatePropertyBag(); }
+
+    public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
+        jsonSerializable.setMapper(om);
+    }
+
+    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+        resource.timestamp(date);
+    }
+    
     public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {
         return new CosmosResponseDiagnostics();
     }

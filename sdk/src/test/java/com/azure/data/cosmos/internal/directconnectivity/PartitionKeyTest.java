@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 import com.azure.data.cosmos.internal.RMResources;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternalHelper;
 import com.google.common.collect.ImmutableList;

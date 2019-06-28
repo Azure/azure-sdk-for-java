@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.query;
 
-import com.azure.data.cosmos.Undefined;
+import com.azure.data.cosmos.internal.Undefined;
 
 public final class ItemTypeHelper {
     public static ItemType getOrderByItemType(Object obj) {

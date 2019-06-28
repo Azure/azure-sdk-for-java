@@ -58,7 +58,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         final FeedOptions options = new FeedOptions();
         options.enableCrossPartitionQuery(true);
         options.maxItemCount(2);
-        final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.listItems(options);
+        final Flux<FeedResponse<CosmosItemProperties>> feedObservable = createdCollection.readAllItems(options);
         final int expectedPageSize = (createdDocuments.size() + options.maxItemCount() - 1) / options.maxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()

@@ -22,10 +22,6 @@
  */
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

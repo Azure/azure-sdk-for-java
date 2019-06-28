@@ -25,7 +25,7 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionContainer;
 import com.azure.data.cosmos.internal.BackoffRetryUtility;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.HttpConstants;

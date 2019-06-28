@@ -22,6 +22,7 @@
  */
 package com.azure.data.cosmos;
 
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.internal.ResourceResponse;
 
 public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
@@ -52,7 +53,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      *
      * @return the progress of lazy indexing.
      */
-    public long lazyIndexingProgress() {
+    long lazyIndexingProgress() {
         return resourceResponseWrapper.getLazyIndexingProgress();
     }
 

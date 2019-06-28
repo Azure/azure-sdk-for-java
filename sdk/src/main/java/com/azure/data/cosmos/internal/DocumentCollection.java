@@ -21,10 +21,18 @@
  * SOFTWARE.
  */
 
-package com.azure.data.cosmos;
+package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.internal.Constants;
+import com.azure.data.cosmos.ConflictResolutionPolicy;
+import com.azure.data.cosmos.IndexingPolicy;
+import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.Resource;
+import com.azure.data.cosmos.UniqueKeyPolicy;
 import org.apache.commons.lang3.StringUtils;
+
+import static com.azure.data.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
+import static com.azure.data.cosmos.BridgeInternal.setProperty;
+import static com.azure.data.cosmos.BridgeInternal.remove;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -160,9 +168,9 @@ public final class DocumentCollection extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            super.set(Constants.Properties.DEFAULT_TTL, timeToLive);
+            setProperty(this, Constants.Properties.DEFAULT_TTL, timeToLive);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
-            super.remove(Constants.Properties.DEFAULT_TTL);
+            remove(this, Constants.Properties.DEFAULT_TTL);
         }
     }
 
@@ -190,7 +198,7 @@ public final class DocumentCollection extends Resource {
         }
 
         this.uniqueKeyPolicy = uniqueKeyPolicy;
-        super.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
+        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
     }
 
     /**
@@ -214,7 +222,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("CONFLICT_RESOLUTION_POLICY cannot be null.");
         }
 
-        super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+        setProperty(this, Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
     }
 
 
@@ -270,7 +278,6 @@ public final class DocumentCollection extends Resource {
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
-    @Override
     void populatePropertyBag() {
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
@@ -280,14 +287,14 @@ public final class DocumentCollection extends Resource {
         }
 
         if (this.partitionKeyDefinition != null) {
-            this.partitionKeyDefinition.populatePropertyBag();
-            super.set(Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
+            populatePropertyBagJsonSerializable(this.partitionKeyDefinition);
+            setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
         }
+        populatePropertyBagJsonSerializable(this.indexingPolicy);
+        populatePropertyBagJsonSerializable(this.uniqueKeyPolicy);
 
-        this.indexingPolicy.populatePropertyBag();
-        this.uniqueKeyPolicy.populatePropertyBag();
-        super.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
-        super.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
+        setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
+        setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
     }
 
     @Override
@@ -303,5 +310,11 @@ public final class DocumentCollection extends Resource {
     @Override
     public int hashCode() {
         return this.resourceId().hashCode();
+    }
+
+    @Override
+    public String toJson() {
+        this.populatePropertyBag();
+        return super.toJson();
     }
 }

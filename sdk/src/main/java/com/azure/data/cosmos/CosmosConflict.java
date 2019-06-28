@@ -95,7 +95,7 @@ public class CosmosConflict {
      * failure the {@link Mono} will error.
      *
      * @param options the feed options.
-     * @return an {@link Mono} containing one or several feed response pages of the
+     * @return a {@link Mono} containing one or several feed response pages of the
      *         read conflicts or an error.
      */
     public Mono<CosmosConflictResponse> delete(CosmosConflictRequestOptions options) {

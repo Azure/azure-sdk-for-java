@@ -22,12 +22,12 @@
  */
 package com.azure.data.cosmos.rx.examples;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
-import com.azure.data.cosmos.Database;
+import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.ResourceResponse;

@@ -140,7 +140,7 @@ public class UserQueryTest extends TestSuiteBase {
         for(int i = 0; i < 5; i++) {
             CosmosUserProperties user = new CosmosUserProperties();
             user.id(UUID.randomUUID().toString());
-            createdUsers.add(createUser(client, databaseId, user).read().block().settings());
+            createdUsers.add(createUser(client, databaseId, user).read().block().properties());
         }
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());

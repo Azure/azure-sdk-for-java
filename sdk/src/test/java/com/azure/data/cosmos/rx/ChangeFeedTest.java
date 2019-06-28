@@ -22,12 +22,12 @@
  */
 package com.azure.data.cosmos.rx;
 
-import com.azure.data.cosmos.AsyncDocumentClient;
+import com.azure.data.cosmos.internal.AsyncDocumentClient;
 import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ChangeFeedOptions;
-import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.Document;
-import com.azure.data.cosmos.DocumentCollection;
+import com.azure.data.cosmos.internal.Database;
+import com.azure.data.cosmos.internal.Document;
+import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
