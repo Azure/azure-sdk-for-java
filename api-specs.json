@@ -7,6 +7,10 @@
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "appconfiguration/resource-manager": {
+    "source": "specification/appconfiguration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "applicationinsights/resource-manager": {
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
