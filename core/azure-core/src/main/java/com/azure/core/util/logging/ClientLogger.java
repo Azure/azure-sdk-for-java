@@ -169,8 +169,20 @@ public class ClientLogger {
             return;
         }
 
-        log(runtimeException.getClass().getName(), false, runtimeException);
+        // The default log level is DISABLED_LEVEL.  User's intention is to log and throw. Thus we are overriding
+        // level with ERROR_LEVEL if was is DISABLED_LEVEL.
+        int currentLevel = level;
+        if (level == DISABLED_LEVEL) {
+            level = ERROR_LEVEL;
+        }
 
+        // it will only log if log level is enabled in configuration
+        if (canLogAtLevel(level)) {
+            performLogging(runtimeException.getClass().getName(), false, runtimeException);
+        }
+        
+        // Change level back to what it was.
+        level = currentLevel;
         throw runtimeException;
     }
 
