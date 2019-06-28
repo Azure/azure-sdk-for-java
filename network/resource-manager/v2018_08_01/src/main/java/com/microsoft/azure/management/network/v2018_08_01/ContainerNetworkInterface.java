@@ -26,7 +26,7 @@ public class ContainerNetworkInterface extends SubResource {
     private ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration;
 
     /**
-     * Reference to the conatinaer to which this container network interface is
+     * Reference to the container to which this container network interface is
      * attached.
      */
     @JsonProperty(value = "properties.container")
@@ -83,7 +83,7 @@ public class ContainerNetworkInterface extends SubResource {
     }
 
     /**
-     * Get reference to the conatinaer to which this container network interface is attached.
+     * Get reference to the container to which this container network interface is attached.
      *
      * @return the container value
      */
@@ -92,7 +92,7 @@ public class ContainerNetworkInterface extends SubResource {
     }
 
     /**
-     * Set reference to the conatinaer to which this container network interface is attached.
+     * Set reference to the container to which this container network interface is attached.
      *
      * @param container the container value to set
      * @return the ContainerNetworkInterface object itself.

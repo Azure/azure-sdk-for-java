@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.TransportType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,13 +33,13 @@ public class EventHubClientBuilderTest {
     @Test(expected = IllegalArgumentException.class)
     public void missingConnectionString() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        builder.build();
+        builder.buildAsyncClient();
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
-        final EventHubClient client = builder.connectionString(CORRECT_CONNECTION_STRING).build();
+        final EventHubClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
 
         Assert.assertNotNull(client);
     }
@@ -46,7 +47,24 @@ public class EventHubClientBuilderTest {
     @Test
     public void customNoneProxyConfigurationBuilder() {
         // Arrange
-        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
+        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
+            null, null);
+
+        // Act
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .proxyConfiguration(proxyConfig)
+            .transportType(TransportType.AMQP_WEB_SOCKETS);
+
+        // Assert
+        Assert.assertNotNull(builder.buildAsyncClient());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsWithProxyWhenTransportTypeNotChanged() {
+        // Arrange
+        final ProxyConfiguration proxyConfig = new ProxyConfiguration(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
+            null, null);
 
         // Act
         final EventHubClientBuilder builder = new EventHubClientBuilder()
@@ -54,7 +72,7 @@ public class EventHubClientBuilderTest {
             .proxyConfiguration(proxyConfig);
 
         // Assert
-        Assert.assertNotNull(builder.build());
+        Assert.assertNotNull(builder.buildAsyncClient());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

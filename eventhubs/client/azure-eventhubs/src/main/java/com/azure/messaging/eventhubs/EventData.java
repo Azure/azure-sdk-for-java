@@ -44,6 +44,8 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  * Serializing a received {@link EventData} with AMQP sections other than ApplicationProperties (with primitive Java
  * types) and Data section is not supported.
  * </p>
+ *
+ * @see EventHubProducer
  */
 public class EventData implements Comparable<EventData> {
     /*
@@ -142,8 +144,19 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Adds an application property associated with this event. If the {@code key} exists in the map, its existing value
-     * is overwritten.
+     * Adds a piece of metadata to the event, allowing publishers to offer additional information to event consumers. If
+     * the {@code key} exists in the map, its existing value is overwritten.
+     *
+     * <p>
+     * A common use case for {@link #properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * to consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * <p>
+     * <strong>Adding serialization hint using {@code addProperty(String, Object)}</strong>
+     * </p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
      *
      * @param key The key for this application property
      * @param value The value for this application property.
@@ -159,9 +172,21 @@ public class EventData implements Comparable<EventData> {
     }
 
     /**
-     * Gets the application property bag
+     * The set of free-form event properties which may be used for passing metadata associated with the event with the
+     * event body during Event Hubs operations.
      *
-     * @return Application properties associated with this EventData.
+     * <p>
+     * A common use case for {@code properties()} is to associate serialization hints for the {@link #body()} as an aid
+     * to consumers who wish to deserialize the binary data.
+     * </p>
+     *
+     * <p>
+     * <strong>Adding serialization hint using {@link #addProperty(String, Object)}</strong>
+     * </p>
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventdata.addProperty#string-object}
+     *
+     * @return Application properties associated with this {@link EventData}.
      */
     public Map<String, Object> properties() {
         return properties;
@@ -180,6 +205,12 @@ public class EventData implements Comparable<EventData> {
 
     /**
      * Gets the actual payload/data wrapped by EventData.
+     *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #properties()} when creating the event, to associate serialization hints as an aid to consumers who wish
+     * to deserialize the binary data.
+     * </p>
      *
      * @return ByteBuffer representing the data.
      */

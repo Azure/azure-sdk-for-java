@@ -53,7 +53,7 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
 
         return credentials.getAuthorizationHeadersAsync(context.httpRequest().url(), context.httpRequest().httpMethod().toString(), contents.defaultIfEmpty(getEmptyBuffer()))
             .flatMapMany(headers -> Flux.fromIterable(headers.entrySet()))
-            .map(header -> context.httpRequest().withHeader(header.getKey(), header.getValue()))
+            .map(header -> context.httpRequest().header(header.getKey(), header.getValue()))
             .last()
             .flatMap(request -> next.process());
     }
