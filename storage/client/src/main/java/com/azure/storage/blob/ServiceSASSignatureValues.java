@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
@@ -75,7 +76,7 @@ final class ServiceSASSignatureValues {
      * The version of the service this SAS will target. If not specified, it will default to the version targeted by the
      * library.
      */
-    public ServiceSASSignatureValues withVersion(String version) {
+    public ServiceSASSignatureValues version(String version) {
         this.version = version;
         return this;
     }
@@ -90,7 +91,7 @@ final class ServiceSASSignatureValues {
     /**
      * {@link SASProtocol}
      */
-    public ServiceSASSignatureValues withProtocol(SASProtocol protocol) {
+    public ServiceSASSignatureValues protocol(SASProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -105,7 +106,7 @@ final class ServiceSASSignatureValues {
     /**
      * When the SAS will take effect.
      */
-    public ServiceSASSignatureValues withStartTime(OffsetDateTime startTime) {
+    public ServiceSASSignatureValues startTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -120,7 +121,7 @@ final class ServiceSASSignatureValues {
     /**
      * The time after which the SAS will no longer work.
      */
-    public ServiceSASSignatureValues withExpiryTime(OffsetDateTime expiryTime) {
+    public ServiceSASSignatureValues expiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -137,7 +138,7 @@ final class ServiceSASSignatureValues {
      * Please refer to either {@link ContainerSASPermission} or {@link BlobSASPermission} depending on the resource
      * being accessed for help constructing the permissions string.
      */
-    public ServiceSASSignatureValues withPermissions(String permissions) {
+    public ServiceSASSignatureValues permissions(String permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -152,7 +153,7 @@ final class ServiceSASSignatureValues {
     /**
      * {@link IPRange}
      */
-    public ServiceSASSignatureValues withIpRange(IPRange ipRange) {
+    public ServiceSASSignatureValues ipRange(IPRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
@@ -167,7 +168,7 @@ final class ServiceSASSignatureValues {
     /**
      * The name of the container the SAS user may access.
      */
-    public ServiceSASSignatureValues withContainerName(String containerName) {
+    public ServiceSASSignatureValues containerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -182,7 +183,7 @@ final class ServiceSASSignatureValues {
     /**
      * The name of the blob the SAS user may access.
      */
-    public ServiceSASSignatureValues withBlobName(String blobName) {
+    public ServiceSASSignatureValues blobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -197,7 +198,7 @@ final class ServiceSASSignatureValues {
     /**
      * The specific snapshot the SAS user may access.
      */
-    public ServiceSASSignatureValues withSnapshotId(String snapshotId) {
+    public ServiceSASSignatureValues snapshotId(String snapshotId) {
         this.snapshotId = snapshotId;
         return this;
     }
@@ -216,7 +217,7 @@ final class ServiceSASSignatureValues {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
-    public ServiceSASSignatureValues withIdentifier(String identifier) {
+    public ServiceSASSignatureValues identifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -231,7 +232,7 @@ final class ServiceSASSignatureValues {
     /**
      * The cache-control header for the SAS.
      */
-    public ServiceSASSignatureValues withCacheControl(String cacheControl) {
+    public ServiceSASSignatureValues cacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -246,7 +247,7 @@ final class ServiceSASSignatureValues {
     /**
      * The content-disposition header for the SAS.
      */
-    public ServiceSASSignatureValues withContentDisposition(String contentDisposition) {
+    public ServiceSASSignatureValues contentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -261,7 +262,7 @@ final class ServiceSASSignatureValues {
     /**
      * The content-encoding header for the SAS.
      */
-    public ServiceSASSignatureValues withContentEncoding(String contentEncoding) {
+    public ServiceSASSignatureValues contentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -276,7 +277,7 @@ final class ServiceSASSignatureValues {
     /**
      * The content-language header for the SAS.
      */
-    public ServiceSASSignatureValues withContentLanguage(String contentLanguage) {
+    public ServiceSASSignatureValues contentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -291,7 +292,7 @@ final class ServiceSASSignatureValues {
     /**
      * The content-type header for the SAS.
      */
-    public ServiceSASSignatureValues withContentType(String contentType) {
+    public ServiceSASSignatureValues contentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -301,11 +302,11 @@ final class ServiceSASSignatureValues {
      * parameters.
      *
      * @param sharedKeyCredentials
-     *         A {@link SharedKeyCredentials} object used to sign the SAS values.
+     *         A {@link SharedKeyCredential} object used to sign the SAS values.
      *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
         assertGenerateOK();
 
@@ -419,12 +420,12 @@ final class ServiceSASSignatureValues {
     }
 
     private String stringToSign(final String verifiedPermissions, final String resource,
-            final SharedKeyCredentials sharedKeyCredentials) {
+            final SharedKeyCredential sharedKeyCredentials) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                getCanonicalName(sharedKeyCredentials.getAccountName()),
+                getCanonicalName(sharedKeyCredentials.accountName()),
                 this.identifier == null ? "" : this.identifier,
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : protocol.toString(),

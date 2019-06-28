@@ -1,28 +1,33 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ContainerItem;
-import org.junit.Test;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class Sample {
 
-    final static String accountEndpoint = "";
-    final static String accountName = "";
-    final static String accountKey = "";
+    private final static String accountEndpoint = "";
+    private final static String accountName = "";
+    private final static String accountKey = "";
 
-    @Test
+    //@Test
     public void sample() throws IOException {
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -70,11 +75,11 @@ public class Sample {
         }
     }
 
-    @Test
+    //@Test
     public void asyncSample() throws IOException {
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
@@ -130,6 +135,7 @@ public class Sample {
             .flatMap(listItem ->
                 finalContainerClient.getBlobAsyncClient(listItem.name())
                     .download()
+                    .flatMapMany(Response::value)
                     .map(buffer -> new String(buffer.array()))
                     .doOnNext(string -> System.out.println(listItem.name() + ": " + string)))
             // cleanup
@@ -140,7 +146,7 @@ public class Sample {
             .blockLast();
     }
 
-    @Test
+    //@Test
     public void uploadDownloadFromFile() throws IOException {
         final String data = "TEST DATA" + UUID.randomUUID();
         final String folderPath = "C:/Users/jaschrep/Desktop/temp";
@@ -153,7 +159,7 @@ public class Sample {
 
         // get service client
         StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -170,7 +176,7 @@ public class Sample {
         blobClient.downloadToFile(endFile.getAbsolutePath());
     }
 
-    @Test
+    //@Test
     public void uploadDownloadFromFileAsync() throws IOException {
         final String data = "TEST DATA" + UUID.randomUUID();
         final String folderPath = "C:/Users/jaschrep/Desktop/temp";
@@ -183,7 +189,7 @@ public class Sample {
 
         // get service client
         StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credentials(new SharedKeyCredentials(accountName, accountKey))
+            .credential(new SharedKeyCredential(accountName, accountKey))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 

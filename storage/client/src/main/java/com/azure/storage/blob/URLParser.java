@@ -66,13 +66,13 @@ final class URLParser {
         SASQueryParameters sasQueryParameters = new SASQueryParameters(queryParamsMap, true);
 
         return new BlobURLParts()
-                .withScheme(scheme)
-                .withHost(host)
-                .withContainerName(containerName)
-                .withBlobName(blobName)
-                .withSnapshot(snapshot)
-                .withSasQueryParameters(sasQueryParameters)
-                .withUnparsedParameters(queryParamsMap);
+                .scheme(scheme)
+                .host(host)
+                .containerName(containerName)
+                .blobName(blobName)
+                .snapshot(snapshot)
+                .sasQueryParameters(sasQueryParameters)
+                .unparsedParameters(queryParamsMap);
     }
 
     /**

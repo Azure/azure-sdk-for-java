@@ -22,12 +22,15 @@ class BlobAsyncRawClient {
 
     protected AzureBlobStorageImpl azureBlobStorage;
 
+    final String snapshot;
+
     /**
      * Creates a {@code BlobAsyncRawClient} object pointing to the account specified by the URL and using the provided pipeline to
      * make HTTP requests..
      */
-    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+    BlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
         this.azureBlobStorage = azureBlobStorage;
+        this.snapshot = snapshot;
     }
 
     /**
@@ -45,7 +48,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
-        return this.startCopyFromURL(sourceURL, null, null, null, null);
+        return this.startCopyFromURL(sourceURL, null, null, null);
     }
 
     /**
@@ -62,12 +65,6 @@ class BlobAsyncRawClient {
      *         satisfied.
      * @param destAccessConditions
      *         {@link BlobAccessConditions} against the destination.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -77,13 +74,11 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL, Metadata metadata,
-                                                                 ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                                                                 Context context) {
+                                                                 ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        context = context == null ? Context.NONE : context;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -94,7 +89,7 @@ class BlobAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().startCopyFromURLWithRestResponseAsync(
             null, null,  sourceURL, null, metadata, null, sourceConditions,
-            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context));
+            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), Context.NONE));
     }
 
     /**
@@ -112,7 +107,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(String copyId) {
-        return this.abortCopyFromURL(copyId, null, null);
+        return this.abortCopyFromURL(copyId, null);
     }
 
     /**
@@ -125,12 +120,6 @@ class BlobAsyncRawClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -139,11 +128,9 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(String copyId,
-                                                                LeaseAccessConditions leaseAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
+                                                                LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
-            null, null, copyId, null, null, leaseAccessConditions, context));
+            null, null, copyId, null, null, leaseAccessConditions, Context.NONE));
     }
 
     /**
@@ -160,7 +147,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource) {
-        return this.syncCopyFromURL(copySource, null, null, null, null);
+        return this.syncCopyFromURL(copySource, null, null, null);
     }
 
     /**
@@ -178,12 +165,6 @@ class BlobAsyncRawClient {
      *         satisfied.
      * @param destAccessConditions
      *         {@link BlobAccessConditions} against the destination.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -192,13 +173,11 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource, Metadata metadata,
-                                                           ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                                                           Context context) {
+                                                           ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         sourceModifiedAccessConditions = sourceModifiedAccessConditions == null
             ? new ModifiedAccessConditions() : sourceModifiedAccessConditions;
         destAccessConditions = destAccessConditions == null ? new BlobAccessConditions() : destAccessConditions;
-        context = context == null ? Context.NONE : context;
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         SourceModifiedAccessConditions sourceConditions = new SourceModifiedAccessConditions()
@@ -209,7 +188,7 @@ class BlobAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
             null, null, copySource, null, metadata, null, sourceConditions,
-            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), context));
+            destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), Context.NONE));
     }
 
     /**
@@ -225,7 +204,7 @@ class BlobAsyncRawClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<DownloadAsyncResponse> download() {
-        return this.download(null, null, false, null);
+        return this.download(null, null, false);
     }
 
     /**
@@ -241,12 +220,6 @@ class BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -255,32 +228,31 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<DownloadAsyncResponse> download(BlobRange range, BlobAccessConditions accessConditions,
-                                             boolean rangeGetContentMD5, Context context) {
-        Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
+                                             boolean rangeGetContentMD5) {
         range = range == null ? new BlobRange(0) : range;
+        Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
         HTTPGetterInfo info = new HTTPGetterInfo()
-            .withOffset(range.offset())
-            .withCount(range.count())
-            .withETag(accessConditions.modifiedAccessConditions().ifMatch());
+            .offset(range.offset())
+            .count(range.count())
+            .eTag(accessConditions.modifiedAccessConditions().ifMatch());
 
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, null, null, null, range.toHeaderValue(), getMD5,
+            null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
             null, null, null, null,
-            accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), context))
+            accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), Context.NONE))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
                 // If there wasn't an etag originally specified, lock on the one returned.
-                info.withETag(response.deserializedHeaders().eTag());
+                info.eTag(response.deserializedHeaders().eTag());
                 return new DownloadAsyncResponse(response, info,
                     // In the event of a stream failure, make a new request to pick up where we left off.
                     newInfo ->
                         this.download(new BlobRange(newInfo.offset(), newInfo.count()),
-                            new BlobAccessConditions().withModifiedAccessConditions(
-                                new ModifiedAccessConditions().ifMatch(info.eTag())), false,
-                            context == null ? Context.NONE : context));
+                            new BlobAccessConditions().modifiedAccessConditions(
+                                new ModifiedAccessConditions().ifMatch(info.eTag())), false));
             });
     }
 
@@ -294,7 +266,7 @@ class BlobAsyncRawClient {
      * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsDeleteResponse> delete() {
-        return this.delete(null, null, null);
+        return this.delete(null, null);
     }
 
     /**
@@ -307,12 +279,6 @@ class BlobAsyncRawClient {
      *         pass null.
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -321,14 +287,13 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsDeleteResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-                                            BlobAccessConditions accessConditions, Context context) {
+                                            BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
-            null, null, null, null, null, deleteBlobSnapshotOptions,
+            null, null, snapshot, null, null, deleteBlobSnapshotOptions,
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
-            context));
+            Context.NONE));
     }
 
     /**
@@ -342,7 +307,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetPropertiesResponse> getProperties() {
-        return this.getProperties(null, null);
+        return this.getProperties(null);
     }
 
     /**
@@ -350,12 +315,6 @@ class BlobAsyncRawClient {
      *
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -363,14 +322,13 @@ class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.getProperties")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlobsGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions, Context context) {
+    public Mono<BlobsGetPropertiesResponse> getProperties(BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, null, null, null, null,
+            null, null, snapshot, null, null, null,
             null, null, null, accessConditions.leaseAccessConditions(),
-            accessConditions.modifiedAccessConditions(), context));
+            accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
     /**
@@ -387,7 +345,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return this.setHTTPHeaders(headers, null, null);
+        return this.setHTTPHeaders(headers, null);
     }
 
     /**
@@ -397,12 +355,6 @@ class BlobAsyncRawClient {
      *         {@link BlobHTTPHeaders}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -411,13 +363,12 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers,
-                                                            BlobAccessConditions accessConditions, Context context) {
+                                                            BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, null, headers,
-            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), context));
+            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
     /**
@@ -433,7 +384,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null);
+        return this.setMetadata(metadata, null);
     }
 
     /**
@@ -443,12 +394,6 @@ class BlobAsyncRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -456,16 +401,14 @@ class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setMetadata")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions,
-                                                      Context context) {
+    public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, null, null,
             null, null, accessConditions.leaseAccessConditions(),
-            accessConditions.modifiedAccessConditions(), context));
+            accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
     /**
@@ -478,7 +421,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsCreateSnapshotResponse> createSnapshot() {
-        return this.createSnapshot(null, null, null);
+        return this.createSnapshot(null, null);
     }
 
     /**
@@ -488,12 +431,6 @@ class BlobAsyncRawClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -501,16 +438,14 @@ class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobAsyncRawClient.createSnapshot")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlobsCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions,
-                                                            Context context) {
+    public Mono<BlobsCreateSnapshotResponse> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, null, null,
             null, null, accessConditions.modifiedAccessConditions(),
-            accessConditions.leaseAccessConditions(), context));
+            accessConditions.leaseAccessConditions(), Context.NONE));
     }
 
     /**
@@ -530,7 +465,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsSetTierResponse> setTier(AccessTier tier) {
-        return this.setTier(tier, null, null);
+        return this.setTier(tier, null);
     }
 
     /**
@@ -545,12 +480,6 @@ class BlobAsyncRawClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -558,13 +487,11 @@ class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobAsyncRawClient.setTier")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlobsSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions,
-                                              Context context) {
+    public Mono<BlobsSetTierResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
         Utility.assertNotNull("tier", tier);
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
-            null, null, tier, null, null, leaseAccessConditions, context));
+            null, null, tier, null, null, leaseAccessConditions, Context.NONE));
     }
 
     /**
@@ -578,31 +505,8 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsUndeleteResponse> undelete() {
-        return this.undelete(null);
-    }
-
-    /**
-     * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=undelete "Sample code for BlobAsyncRawClient.undelete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsUndeleteResponse> undelete(Context context) {
-        context = context == null ? Context.NONE : context;
-
         return postProcessResponse(this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,
-            null, context));
+            null, Context.NONE));
     }
 
     /**
@@ -622,7 +526,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null, null);
+        return this.acquireLease(proposedId, duration, null);
     }
 
     /**
@@ -638,12 +542,6 @@ class BlobAsyncRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -652,17 +550,16 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedID, int duration,
-                                                         ModifiedAccessConditions modifiedAccessConditions, Context context) {
+                                                         ModifiedAccessConditions modifiedAccessConditions) {
         if (!(duration == -1 || (duration >= 15 && duration <= 60))) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("Duration must be -1 or between 15 and 60.");
         }
-        context = context == null ? Context.NONE : context;
 
         return postProcessResponse(this.azureBlobStorage.blobs().acquireLeaseWithRestResponseAsync(
             null, null, null, duration, proposedID, null,
-            modifiedAccessConditions, context));
+            modifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -678,7 +575,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null, null);
+        return this.renewLease(leaseID, null);
     }
 
     /**
@@ -690,12 +587,6 @@ class BlobAsyncRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -703,12 +594,9 @@ class BlobAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.renewLease")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
-                                                     Context context) {
-        context = context == null ? Context.NONE : context;
-
+    public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().renewLeaseWithRestResponseAsync(null,
-            null, leaseID, null, null, modifiedAccessConditions, context));
+            null, leaseID, null, null, modifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -724,7 +612,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null, null);
+        return this.releaseLease(leaseID, null);
     }
 
     /**
@@ -736,12 +624,6 @@ class BlobAsyncRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -750,11 +632,9 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID,
-                                                         ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
+                                                         ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().releaseLeaseWithRestResponseAsync(null,
-            null, leaseID, null, null, modifiedAccessConditions, context));
+            null, leaseID, null, null, modifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -770,7 +650,7 @@ class BlobAsyncRawClient {
      *      Emits the successful response.
      */
     public Mono<BlobsBreakLeaseResponse> breakLease() {
-        return this.breakLease(null, null, null);
+        return this.breakLease(null, null);
     }
 
     /**
@@ -788,12 +668,6 @@ class BlobAsyncRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -802,11 +676,9 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsBreakLeaseResponse> breakLease(Integer breakPeriodInSeconds,
-                                                     ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
+                                                     ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().breakLeaseWithRestResponseAsync(null,
-            null, null, breakPeriodInSeconds, null, modifiedAccessConditions, context));
+            null, null, breakPeriodInSeconds, null, modifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -824,7 +696,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
-        return this.changeLease(leaseId, proposedID, null, null);
+        return this.changeLease(leaseId, proposedID, null);
     }
 
     /**
@@ -838,12 +710,6 @@ class BlobAsyncRawClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return Emits the successful response.
      *
@@ -852,11 +718,9 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID,
-                                                       ModifiedAccessConditions modifiedAccessConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-
+                                                       ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().changeLeaseWithRestResponseAsync(null,
-            null, leaseId, proposedID, null, null, modifiedAccessConditions, context));
+            null, leaseId, proposedID, null, null, modifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -869,29 +733,7 @@ class BlobAsyncRawClient {
      * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<BlobsGetAccountInfoResponse> getAccountInfo() {
-        return this.getAccountInfo(null);
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=account_info "Sample code for BlobAsyncRawClient.getAccountInfo")] \n
-     * For more samples, please see the [Samples file](https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsGetAccountInfoResponse> getAccountInfo(Context context) {
-        context = context == null ? Context.NONE : context;
-
         return postProcessResponse(
-            this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null, context));
+            this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null, Context.NONE));
     }
 }

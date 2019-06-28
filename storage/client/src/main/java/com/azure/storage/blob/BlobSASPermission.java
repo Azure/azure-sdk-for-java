@@ -78,7 +78,7 @@ final class BlobSASPermission {
     /**
      * Specifies Read access granted.
      */
-    public BlobSASPermission withRead(boolean read) {
+    public BlobSASPermission read(boolean read) {
         this.read = read;
         return this;
     }
@@ -93,7 +93,7 @@ final class BlobSASPermission {
     /**
      * Specifies Add access granted.
      */
-    public BlobSASPermission withAdd(boolean add) {
+    public BlobSASPermission add(boolean add) {
         this.add = add;
         return this;
     }
@@ -108,7 +108,7 @@ final class BlobSASPermission {
     /**
      * Specifies Create access granted.
      */
-    public BlobSASPermission withCreate(boolean create) {
+    public BlobSASPermission create(boolean create) {
         this.create = create;
         return this;
     }
@@ -123,7 +123,7 @@ final class BlobSASPermission {
     /**
      * Specifies Write access granted.
      */
-    public BlobSASPermission withWrite(boolean write) {
+    public BlobSASPermission write(boolean write) {
         this.write = write;
         return this;
     }
@@ -138,7 +138,7 @@ final class BlobSASPermission {
     /**
      * Specifies Delete access granted.
      */
-    public BlobSASPermission withDelete(boolean delete) {
+    public BlobSASPermission delete(boolean delete) {
         this.delete = delete;
         return this;
     }

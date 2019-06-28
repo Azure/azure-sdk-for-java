@@ -3,22 +3,30 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.configuration.Configuration;
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.common.credentials.SASTokenCredential;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.RequestRetryPolicy;
+import com.azure.storage.common.policy.SASTokenCredentialPolicy;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +42,7 @@ import java.util.Objects;
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
- *     <li>the credential through {@code .credentials()} or {@code .connectionString()} if the container is not publicly accessible.
+ *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
  *
  * <p>
@@ -42,40 +50,57 @@ import java.util.Objects;
  * {@link AppendBlobClient} or {@code .buildAsyncClient()} to create a {@link AppendBlobAsyncClient}.
  */
 public final class AppendBlobClientBuilder {
-    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
-    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ACCOUNT_NAME = "accountname";
+    private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ENDPOINT_PROTOCOL = "defaultendpointsprotocol";
+    private static final String ENDPOINT_SUFFIX = "endpointsuffix";
 
     private final List<HttpPipelinePolicy> policies;
 
-    private URL endpoint;
-    private ICredentials credentials = new AnonymousCredentials();
+    private String endpoint;
+    private String containerName;
+    private String blobName;
+    private String snapshot;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
-    private RetryPolicy retryPolicy;
+    private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
     public AppendBlobClientBuilder() {
-        retryPolicy = new RetryPolicy();
+        retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
     }
 
-    /**
-     * Constructs an instance of AppendBlobAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
-     */
-    private AzureBlobStorageImpl buildImpl() {
+    private AzureBlobStorageBuilder buildImpl() {
         Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(containerName);
+        Objects.requireNonNull(blobName);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+        if (configuration == null) {
+            configuration = ConfigurationManager.getConfiguration();
+        }
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
-        policies.add(credentials); // This needs to be a different credential type.
 
-        policies.add(retryPolicy);
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
+        } else {
+            policies.add(new AnonymousCredentialPolicy());
+}
+
+        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(logLevel));
@@ -86,67 +111,134 @@ public final class AppendBlobClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(endpoint.toString())
-            .pipeline(pipeline)
-            .build();
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
+            .pipeline(pipeline);
     }
 
     /**
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      */
     public AppendBlobClient buildClient() {
-        return new AppendBlobClient(buildImpl());
+        return new AppendBlobClient(buildAsyncClient());
     }
 
     /**
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      */
     public AppendBlobAsyncClient buildAsyncClient() {
-        return new AppendBlobAsyncClient(buildImpl());
+        return new AppendBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
-     * Sets the service endpoint, additionally parses it for information (SAS token, container name)
+     * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
+        URL url;
         try {
-            this.endpoint = new URL(endpoint);
-        } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            url = new URL(endpoint);
+            BlobURLParts parts = URLParser.parse(url);
+            this.endpoint = parts.scheme() + "://" + parts.host();
+
+            if (parts.containerName() != null) {
+                this.containerName = parts.containerName();
+            }
+
+            if (parts.blobName() != null) {
+                this.blobName = parts.blobName();
+            }
+
+            if (parts.snapshot() != null) {
+                this.snapshot = parts.snapshot();
+            }
+        } catch (MalformedURLException | UnknownHostException ex) {
+            throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
+        }
+
+        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+        if (credential != null) {
+            this.credential(credential);
         }
 
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the name of the container this client is connecting to.
+     * @param containerName the name of the container
      * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobClientBuilder credentials(SharedKeyCredentials credentials) {
-        this.credentials = credentials;
+    public AppendBlobClientBuilder containerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 
     /**
-     * Sets the credentials used to authorize requests sent to the service
-     * @param credentials authorization credentials
+     * Sets the name of the blob this client is connecting to.
+     * @param blobName the name of the blob
      * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobClientBuilder credentials(TokenCredentials credentials) {
-        this.credentials = credentials;
+    public AppendBlobClientBuilder blobName(String blobName) {
+        this.blobName = blobName;
         return this;
     }
 
     /**
-     * Clears the credentials used to authorize requests sent to the service
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
      * @return the updated AppendBlobClientBuilder object
      */
-    public AppendBlobClientBuilder anonymousCredentials() {
-        this.credentials = new AnonymousCredentials();
+    public AppendBlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the credential used to authorize requests sent to the service
+     * @param credential authorization credential
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder credential(SASTokenCredential credential) {
+        this.sasTokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Clears the credential used to authorize requests sent to the service
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder anonymousCredential() {
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -166,15 +258,20 @@ public final class AppendBlobClientBuilder {
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);
         String accountKey = connectionKVPs.get(ACCOUNT_KEY);
+        String endpointProtocol = connectionKVPs.get(ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionKVPs.get(ENDPOINT_SUFFIX);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
-        // Use accountName and accountKey to get the SAS token using the credential class.
-        credentials = new SharedKeyCredentials(accountName, accountKey);
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            String endpoint = String.format("%s://%s.blob.%s", endpointProtocol, accountName, endpointSuffix.replaceFirst("^\\.", ""));
+            endpoint(endpoint);
+        }
 
-        return this;
+        // Use accountName and accountKey to get the SAS token using the credential class.
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**
@@ -215,6 +312,16 @@ public final class AppendBlobClientBuilder {
      */
     public AppendBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     * @param retryOptions the options to configure retry behaviors
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 }

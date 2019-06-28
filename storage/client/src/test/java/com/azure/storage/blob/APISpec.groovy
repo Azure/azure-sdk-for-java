@@ -3,14 +3,16 @@
 
 package com.azure.storage.blob
 
-
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.configuration.ConfigurationManager
+import com.azure.identity.credential.EnvironmentCredential
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
-import com.microsoft.aad.adal4j.AuthenticationContext
-import com.microsoft.aad.adal4j.ClientCredential
+import com.azure.storage.common.credentials.SharedKeyCredential
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
@@ -19,9 +21,9 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
-import java.util.concurrent.Executors
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -83,13 +85,13 @@ class APISpec extends Specification {
     static final String garbageLeaseID = UUID.randomUUID().toString()
 
     /*
-    Credentials for various kinds of accounts.
+    credential for various kinds of accounts.
      */
     @Shared
-    static SharedKeyCredentials primaryCreds
+    static SharedKeyCredential primaryCreds
 
     @Shared
-    static SharedKeyCredentials alternateCreds
+    static SharedKeyCredential alternateCreds
 
     /*
     URLs to various kinds of accounts.
@@ -170,32 +172,16 @@ class APISpec extends Specification {
         return generateResourceName(specificationContext, blobPrefix, iterationNo, entityNo)
     }
 
-    static void setupFeatureRecording(String sceneName) {
-
-    }
-
-    static void scrubAuthHeader(String sceneName) {
-
-    }
-
-    static getEnvironmentVariable(String variable){
-        String envVariable = System.getenv().get(variable)
-        if(envVariable == null){
-            envVariable =  ""
-        }
-        return envVariable
-    }
-
     static getGenericCreds(String accountType) {
-        String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
-        String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
+        String accountName = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_NAME")
+        String accountKey = ConfigurationManager.getConfiguration().get(accountType + "ACCOUNT_KEY")
 
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
-                "these credentials will fail.")
+                "these credential will fail.")
             return null
         }
-        return new SharedKeyCredentials(accountName, accountKey)
+        return new SharedKeyCredential(accountName, accountKey)
     }
 
     static HttpClient getHttpClient() {
@@ -206,44 +192,49 @@ class APISpec extends Specification {
                     return new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
                 }
             })
-        } else return HttpClient.createDefault()
+        } else {
+            return HttpClient.createDefault()
+        }
     }
 
-    static StorageClient getGenericServiceURL(SharedKeyCredentials creds) {
+    static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
         return StorageClient.storageClientBuilder()
-            .endpoint("https://" + creds.getAccountName() + ".blob.core.windows.net")
+            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
-            .httpLogDetailLevel(HttpLogDetailLevel.BASIC)
-            .credentials(primaryCreds)
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .credential(creds)
             .buildClient()
     }
 
     static void cleanupContainers() throws MalformedURLException {
         StorageClient serviceURL = StorageClient.storageClientBuilder()
-            .endpoint("http://" + primaryCreds.accountName + ".blob.core.windows.net")
-            .credentials(primaryCreds)
+            .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
+            .credential(primaryCreds)
             .buildClient()
         // There should not be more than 5000 containers from these tests
-        for (ContainerItem c : serviceURL.listContainersSegment(null,
-            new ListContainersOptions().withPrefix(containerPrefix))) {
+        for (ContainerItem c : serviceURL.listContainers()) {
             ContainerClient containerURL = serviceURL.getContainerClient(c.name())
-            if (c.properties().leaseState().equals(LeaseStateType.LEASED)) {
-                containerURL.breakLease(0, null, null).block()
+            if (c.properties().leaseState() == LeaseStateType.LEASED) {
+                containerURL.breakLease(0, null, null)
             }
             containerURL.delete()
         }
+    }
+
+    static byte[] getRandomByteArray(int size) {
+        Random rand = new Random(getRandomSeed())
+        byte[] data = new byte[size]
+        rand.nextBytes(data)
+        return data
     }
 
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
     static ByteBuffer getRandomData(int size) {
-        Random rand = new Random(getRandomSeed())
-        byte[] data = new byte[size]
-        rand.nextBytes(data)
-        return ByteBuffer.wrap(data)
+        return ByteBuffer.wrap(getRandomByteArray(size))
     }
 
     /*
@@ -264,7 +255,7 @@ class APISpec extends Specification {
 
     def setupSpec() {
         /*
-        We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
+        We'll let primary creds throw and crash if there are no credential specified because everything else will fail.
          */
         primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
 
@@ -325,8 +316,7 @@ class APISpec extends Specification {
      */
     def setupBlobMatchCondition(BlobClient bu, String match) {
         if (match == receivedEtag) {
-            BlobGetPropertiesHeaders headers = bu.getProperties(null, null)
-            return headers.eTag()
+            return bu.getProperties().headers().value("ETag")
         } else {
             return match
         }
@@ -349,7 +339,7 @@ class APISpec extends Specification {
     def setupBlobLeaseCondition(BlobClient bu, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = bu.acquireLease(null, -1, null, null)
+            responseLeaseId = bu.acquireLease(null, -1, null, null).value()
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -360,7 +350,7 @@ class APISpec extends Specification {
 
     def setupContainerMatchCondition(ContainerClient cu, String match) {
         if (match == receivedEtag) {
-            return cu.getProperties().eTag()
+            return cu.getProperties().headers().value("ETag")
         } else {
             return match
         }
@@ -368,7 +358,7 @@ class APISpec extends Specification {
 
     def setupContainerLeaseCondition(ContainerClient cu, String leaseID) {
         if (leaseID == receivedLeaseID) {
-            return cu.acquireLease(null, -1).block().deserializedHeaders().leaseId()
+            return cu.acquireLease(null, -1).value()
         } else {
             return leaseID
         }
@@ -382,17 +372,17 @@ class APISpec extends Specification {
         return request
     }
 
-//    def waitForCopy(ContainerClient bu, CopyStatusType status) {
-//        OffsetDateTime start = OffsetDateTime.now()
-//        while (status != CopyStatusType.SUCCESS) {
-//            status = bu.getProperties().
-//            OffsetDateTime currentTime = OffsetDateTime.now()
-//            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
-//                throw new Exception("Copy failed or took too long")
-//            }
-//            sleep(1000)
-//        }
-//    }
+    def waitForCopy(ContainerClient bu, String status) {
+        OffsetDateTime start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS.toString()) {
+            status = bu.getProperties().headers().value("x-ms-copy-status")
+            OffsetDateTime currentTime = OffsetDateTime.now()
+            if (status == CopyStatusType.FAILED.toString() || currentTime.minusMinutes(1) == start) {
+                throw new Exception("Copy failed or took too long")
+            }
+            sleep(1000)
+        }
+    }
 
     /**
      * Validates the presence of headers that are present on a large number of responses. These headers are generally
@@ -402,25 +392,37 @@ class APISpec extends Specification {
      * @return
      * Whether or not the header values are appropriate.
      */
-    def validateBasicHeaders(Object headers) {
-        return headers.class.getMethod("eTag").invoke(headers) != null &&
+    def validateBasicHeaders(HttpHeaders headers) {
+        return headers.value("etag") != null &&
             // Quotes should be scrubbed from etag header values
-//            !((String)(headers.class.getMethod("eTag").invoke(headers))).contains("\"") &&
-            headers.class.getMethod("lastModified").invoke(headers) != null &&
-            headers.class.getMethod("requestId").invoke(headers) != null &&
-            headers.class.getMethod("version").invoke(headers) != null &&
-            headers.class.getMethod("dateProperty").invoke(headers) != null
+            !headers.value("etag").contains("\"") &&
+            headers.value("last-modified") != null &&
+            headers.value("x-ms-request-id") != null &&
+            headers.value("x-ms-version") != null &&
+            headers.value("date") != null
     }
 
-    def validateBlobHeaders(Object headers, String cacheControl, String contentDisposition, String contentEncoding,
-                            String contentLangauge, byte[] contentMD5, String contentType) {
-        return headers.class.getMethod("cacheControl").invoke(headers) == cacheControl &&
-            headers.class.getMethod("contentDisposition").invoke(headers) == contentDisposition &&
-            headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
-            headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
-            headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
-            headers.class.getMethod("contentType").invoke(headers) == contentType
+    def validateBlobProperties(Response<BlobProperties> response, String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, byte[] contentMD5, String contentType) {
+        return response.value().cacheControl() == cacheControl &&
+            response.value().contentDisposition() == contentDisposition &&
+            response.value().contentEncoding() == contentEncoding &&
+            response.value().contentLanguage() == contentLanguage &&
+            response.value().contentMD5() == contentMD5 &&
+            response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
+    }
 
+    static Metadata getMetadataFromHeaders(HttpHeaders headers) {
+        Metadata metadata = new Metadata()
+
+        for (Map.Entry<String, String> header : headers.toMap()) {
+            if (header.getKey().startsWith("x-ms-meta-")) {
+                String metadataKey = header.getKey().substring(10)
+                metadata.put(metadataKey, header.getValue())
+            }
+        }
+
+        return metadata
     }
 
     def enableSoftDelete() {
@@ -455,146 +457,108 @@ class APISpec extends Specification {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-//    def getStubResponse(int code, Class responseHeadersType) {
-//        return new HttpResponse() {
-//
-//            @Override
-//            int statusCode() {
-//                return code
-//            }
-//
-//            @Override
-//            String headerValue(String s) {
-//                return null
-//            }
-//
-//            @Override
-//            HttpHeaders headers() {
-//                return new HttpHeaders()
-//            }
-//
-//            @Override
-//            Flux<ByteBuffer> body() {
-//                return Flowable.empty()
-//            }
-//
-//            @Override
-//            Mono<byte[]> bodyAsByteArray() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString(Charset charset) {
-//                return null
-//            }
-//
-//            @Override
-//            Object deserializedHeaders() {
-//                def headers = responseHeadersType.getConstructor().newInstance()
-//
-//                // If the headers have an etag method, we need to set it to prevent postProcessResponse from breaking.
-//                try {
-//                    headers.getClass().getMethod("withETag", String.class).invoke(headers, "etag");
-//                }
-//                catch (NoSuchMethodException e) {
-//                    // No op
-//                }
-//                return headers
-//            }
-//
-//            @Override
-//            boolean isDecoded() {
-//                return true
-//            }
-//        }
-//    }
+    def getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> body() {
+                return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> bodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> bodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> bodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }.request(request)
+    }
 
     /*
     This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-//    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
-//        return new HttpResponse() {
-//
-//            @Override
-//            int statusCode() {
-//                return code
-//            }
-//
-//            @Override
-//            String headerValue(String s) {
-//                return null
-//            }
-//
-//            @Override
-//            HttpHeaders headers() {
-//                return new HttpHeaders()
-//            }
-//
-//            @Override
-//            Flux<ByteBuffer> body() {
-//                return body
-//            }
-//
-//            @Override
-//            Mono<byte[]> bodyAsByteArray() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString() {
-//                return null
-//            }
-//
-//            @Override
-//            Mono<String> bodyAsString(Charset charset) {
-//                return null
-//            }
-//
-//            @Override
-//            Object deserializedHeaders() {
-//                def headers = new BlobDownloadHeaders()
-//                headers.withETag(etag)
-//                return headers
-//            }
-//
-//            @Override
-//            boolean isDecoded() {
-//                return true
-//            }
-//        }
-//    }
+    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
+        return new HttpResponse() {
+
+            @Override
+            int statusCode() {
+                return code
+            }
+
+            @Override
+            String headerValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders headers() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> body() {
+                return body
+            }
+
+            @Override
+            Mono<byte[]> bodyAsByteArray() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString() {
+                return null
+            }
+
+            @Override
+            Mono<String> bodyAsString(Charset charset) {
+                return null
+            }
+        }
+    }
 
     def getContextStubPolicy(int successCode, Class responseHeadersType) {
         return Mock(HttpPipelinePolicy) {
-            sendAsync(_) >> { HttpRequest request ->
-                if (!request.context().getData(defaultContextKey).isPresent()) {
-                    return Mono.error(new RuntimeException("Context key not present."))
-                } else {
-                    return Mono.just(getStubResponse(successCode, responseHeadersType))
-                }
+            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
+                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+                    if (!context.getData(defaultContextKey).isPresent()) {
+                        return Mono.error(new RuntimeException("Context key not present."))
+                    } else {
+                        return Mono.just(getStubResponse(successCode, context.httpRequest()))
+                    }
             }
         }
     }
 
     def getOAuthServiceURL() {
-        String tenantId = getEnvironmentVariable("MICROSOFT_AD_TENANT_ID");
-        String servicePrincipalId = getEnvironmentVariable("ARM_CLIENTID");
-        String servicePrincipalKey = getEnvironmentVariable("ARM_CLIENTKEY");
-
-        def authority = String.format("https://login.microsoftonline.com/%s/oauth2/token",tenantId);
-        def credential = new ClientCredential(servicePrincipalId, servicePrincipalKey)
-        def token = new AuthenticationContext(authority, false, Executors.newFixedThreadPool(1)).acquireToken("https://storage.azure.com", credential, null).get().accessToken
-
         return StorageClient.storageClientBuilder()
-            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName))
-            .credentials(new TokenCredentials(token))
+            .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
+            .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()
     }
 

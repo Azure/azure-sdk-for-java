@@ -3,20 +3,33 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.models.BlobFlatListSegment;
+import com.azure.storage.blob.models.BlobHierarchyListSegment;
 import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.ContainerGetAccessPolicyHeaders;
+import com.azure.storage.blob.models.BlobPrefix;
+import com.azure.storage.blob.models.ContainerAccessConditions;
+import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
+import com.azure.storage.blob.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
+import com.azure.storage.blob.models.StorageAccountInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -43,7 +56,7 @@ import java.util.List;
 public final class ContainerAsyncClient {
 
     ContainerAsyncRawClient containerAsyncRawClient;
-    private ContainerClientBuilder builder;
+    private AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -53,11 +66,11 @@ public final class ContainerAsyncClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param builder the container client builder
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
-    ContainerAsyncClient(ContainerClientBuilder builder) {
-        this.builder = builder;
-        this.containerAsyncRawClient = new ContainerAsyncRawClient(builder.buildImpl());
+    ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
+        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
+        this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
@@ -80,11 +93,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
-        try {
-            return new BlockBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return getBlockBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
+     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
+     * NewBlockBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
+        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -100,11 +129,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
-        try {
-            return new PageBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return getPageBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
+     * NewPageBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
+        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -120,11 +165,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
-        try {
-            return new AppendBlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return getAppendBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
+     * NewAppendBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**
@@ -140,14 +201,69 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
+        return getBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
+     * getBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+    }
+
+    /**
+     * Initializes a {@link StorageAsyncClient} object pointing to the storage account this container is in.
+     *
+     * @return
+     *     A {@link StorageAsyncClient} object pointing to the specified storage account
+     */
+    public StorageAsyncClient getStorageAsyncClient() {
+        return new StorageAsyncClient(new AzureBlobStorageBuilder()
+            .url(Utility.stripLastPathSegment(getContainerUrl()).toString())
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+    }
+
+    /**
+     * Gets the URL of the container represented by this client.
+     * @return the URL.
+     */
+    public URL getContainerUrl() {
         try {
-            return new BlobAsyncClient(this.builder.copyBuilder().endpoint(Utility.appendToURLPath(new URL(builder.endpoint()), blobName).toString()).buildImpl());
+            return new URL(containerAsyncRawClient.azureBlobStorage.url());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), containerAsyncRawClient.azureBlobStorage.url()), e);
         }
     }
 
     /**
+     * Gets if the container this client represents exists in the cloud.
+     *
+     * @return
+     *         true if the container exists, false if it doesn't
+     */
+    public Mono<Response<Boolean>> exists() {
+        return this.getProperties(null)
+            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
+            .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
+                HttpResponse response = ((StorageException) t).response();
+                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
+            });
+    }
+
+    /**
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
@@ -155,8 +271,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> create() {
-        return this.create(null, null, null);
+    public Mono<VoidResponse> create() {
+        return this.create(null, null);
     }
 
     /**
@@ -169,20 +285,14 @@ public final class ContainerAsyncClient {
      * @param accessType
      *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> create(Metadata metadata, PublicAccessType accessType, Context context) {
+    public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType) {
         return containerAsyncRawClient
-            .create(metadata, accessType, context)
-            .then();
+            .create(metadata, accessType)
+            .map(VoidResponse::new);
     }
 
     /**
@@ -193,8 +303,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete() {
-        return this.delete(null, null);
+    public Mono<VoidResponse> delete() {
+        return this.delete(null);
     }
 
     /**
@@ -204,20 +314,14 @@ public final class ContainerAsyncClient {
      *
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> delete(ContainerAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> delete(ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .delete(accessConditions, context)
-            .then();
+            .delete(accessConditions)
+            .map(VoidResponse::new);
     }
 
     /**
@@ -227,8 +331,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerProperties> getProperties() {
-        return this.getProperties(null, null);
+    public Mono<Response<ContainerProperties>> getProperties() {
+        return this.getProperties(null);
     }
 
     /**
@@ -238,22 +342,14 @@ public final class ContainerAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the container properties.
      */
-    public Mono<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
+    public Mono<Response<ContainerProperties>> getProperties(LeaseAccessConditions leaseAccessConditions) {
         return containerAsyncRawClient
-            .getProperties(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(ContainerProperties::new);
+            .getProperties(leaseAccessConditions)
+            .map(rb -> new SimpleResponse<>(rb, new ContainerProperties(rb.deserializedHeaders())));
     }
 
     /**
@@ -266,8 +362,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null, null);
+    public Mono<VoidResponse> setMetadata(Metadata metadata) {
+        return this.setMetadata(metadata, null);
     }
 
     /**
@@ -278,21 +374,15 @@ public final class ContainerAsyncClient {
      *         {@link Metadata}
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> setMetadata(Metadata metadata,
+            ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .setMetadata(metadata, accessConditions, context)
-            .then();
+            .setMetadata(metadata, accessConditions)
+            .map(VoidResponse::new);
     }
 
     /**
@@ -303,8 +393,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<PublicAccessType> getAccessPolicy() {
-        return this.getAccessPolicy(null, null);
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy() {
+        return this.getAccessPolicy(null);
     }
 
     /**
@@ -315,22 +405,12 @@ public final class ContainerAsyncClient {
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the container access policy.
      */
-    public Mono<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-            Context context) {
-        return containerAsyncRawClient
-            .getAccessPolicy(leaseAccessConditions, context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(ContainerGetAccessPolicyHeaders::blobPublicAccess);
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
+        return containerAsyncRawClient.getAccessPolicy(leaseAccessConditions);
     }
 
     /**
@@ -350,9 +430,9 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
+    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
-        return this.setAccessPolicy(accessType, identifiers, null, null);
+        return this.setAccessPolicy(accessType, identifiers, null);
     }
 
     /**
@@ -370,21 +450,15 @@ public final class ContainerAsyncClient {
      *         for more information. Passing null will clear all access policies.
      * @param accessConditions
      *         {@link ContainerAccessConditions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions, Context context) {
+    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
+                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         return containerAsyncRawClient
-            .setAccessPolicy(accessType, identifiers, accessConditions, context)
-            .then();
+            .setAccessPolicy(accessType, identifiers, accessConditions)
+            .map(VoidResponse::new);
     }
 
     // TODO: figure out if this is meant to stay private or change to public
@@ -398,53 +472,165 @@ public final class ContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     * The directories are flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return
+     * <p><ul>
+     *     <li>foo/foo1
+     *     <li>foo/foo2
+     *     <li>bar
+     * </ul>
      *
      * @return
      *      A reactive response emitting the flattened blobs.
      */
     public Flux<BlobItem> listBlobsFlat() {
-        return this.listBlobsFlat(new ListBlobsOptions(), null);
+        return this.listBlobsFlat(new ListBlobsOptions());
     }
 
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
+     * The directories are flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return
+     * <p><ul>
+     *     <li>foo/foo1
+     *     <li>foo/foo2
+     *     <li>bar
+     * </ul>
+     *
      * @param options
      *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
      *
      * @return
      *      A reactive response emitting the listed blobs, flattened.
      */
-    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options, Context context) {
+    public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
         return containerAsyncRawClient
-            .listBlobsFlatSegment(null, options, context)
-            .flatMapMany(response -> listBlobsFlatHelper(response.value().marker(), options, context, response));
+            .listBlobsFlatSegment(null, options)
+            .flatMapMany(response -> listBlobsFlatHelper(options, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatHelper(String marker, ListBlobsOptions options,
-                                                      Context context, ContainersListBlobFlatSegmentResponse response){
-        Flux<BlobItem> result = Flux.fromIterable(response.value().segment().blobItems());
+    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response){
+        Flux<BlobItem> result;
+        BlobFlatListSegment segment = response.value().segment();
+        if (segment != null && segment.blobItems() != null) {
+            result = Flux.fromIterable(segment.blobItems());
+        } else {
+            result = Flux.empty();
+        }
 
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(marker, options,
-                context)
-                .flatMapMany((r) ->
-                    listBlobsFlatHelper(response.value().nextMarker(), options, context, r)));
+            result = result.concatWith(containerAsyncRawClient.listBlobsFlatSegment(response.value().nextMarker(), options)
+                .flatMapMany(r -> listBlobsFlatHelper(options, r)));
+        }
+
+        return result;
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
+     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
+     * </ul>
+     *
+     * @param directory
+     *         The directory to list blobs underneath
+     *
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
+     */
+    public Flux<BlobItem> listBlobsHierarchy(String directory) {
+        return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
+     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
+     * true.
+     *
+     * <p>
+     * Blob names are returned in lexicographic order. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
+     *
+     * <p>
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
+     * on the root level 'bar', will return the following results when prefix=null:
+     * <p><ul>
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
+     * </ul>
+     * <p>
+     * will return the following results when prefix="foo/":
+     * <p><ul>
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
+     * </ul>
+     *
+     * @param delimiter
+     *         The delimiter for blob hierarchy, "/" for hierarchy based on directories
+     * @param options
+     *         {@link ListBlobsOptions}
+     *
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
+     */
+    public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
+        return containerAsyncRawClient.listBlobsHierarchySegment(null, delimiter, options)
+            .flatMapMany(response -> listBlobsHierarchyHelper(delimiter, options, Context.NONE, response));
+    }
+
+    private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
+                                               Context context, ContainersListBlobHierarchySegmentResponse response){
+        Flux<BlobItem> blobs;
+        Flux<BlobPrefix> prefixes;
+        BlobHierarchyListSegment segment = response.value().segment();
+        if (segment != null && segment.blobItems() != null) {
+            blobs = Flux.fromIterable(segment.blobItems());
+        } else {
+            blobs = Flux.empty();
+        }
+        if (segment != null && segment.blobItems() != null) {
+            prefixes = Flux.fromIterable(segment.blobPrefixes());
+        } else {
+            prefixes = Flux.empty();
+        }
+        Flux<BlobItem> result = blobs.concatWith(prefixes.map(prefix -> new BlobItem().name(prefix.name()).isPrefix(true)));
+
+        if (response.value().nextMarker() != null) {
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(containerAsyncRawClient.listBlobsHierarchySegment(response.value().nextMarker(), delimiter, options)
+                .flatMapMany(r -> listBlobsHierarchyHelper(delimiter, options, context, r)));
         }
 
         return result;
@@ -512,9 +698,9 @@ public final class ContainerAsyncClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
 //    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options, Context context) {
+//            ListBlobsOptions options) {
 //        return containerAsyncRawClient
-//            .listBlobsHierarchySegment(null, delimiter, options, context)
+//            .listBlobsHierarchySegment(null, delimiter, options)
 //            .flatMapMany();
 //    }
 
@@ -531,8 +717,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null, null);
+    public Mono<Response<String>> acquireLease(String proposedId, int duration) {
+        return this.acquireLease(proposedId, duration, null);
     }
 
     /**
@@ -548,21 +734,14 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the lease ID.
      */
-    public Mono<String> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .acquireLease(proposedID, duration, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .acquireLease(proposedID, duration, modifiedAccessConditions)
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -574,8 +753,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null, null);
+    public Mono<Response<String>> renewLease(String leaseID) {
+        return this.renewLease(leaseID, null);
     }
 
     /**
@@ -587,20 +766,14 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response containing the renewed lease ID.
      */
-    public Mono<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .renewLease(leaseID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .renewLease(leaseID, modifiedAccessConditions)
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -612,8 +785,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null, null);
+    public Mono<VoidResponse> releaseLease(String leaseID) {
+        return this.releaseLease(leaseID, null);
     }
 
     /**
@@ -625,20 +798,14 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
      *      A reactive response signalling completion.
      */
-    public Mono<Void> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .releaseLease(leaseID, modifiedAccessConditions, context)
-            .then();
+            .releaseLease(leaseID, modifiedAccessConditions)
+            .map(VoidResponse::new);
     }
 
     /**
@@ -646,10 +813,10 @@ public final class ContainerAsyncClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease in seconds.
+     *      A reactive response containing the remaining time in the broken lease.
      */
-    public Mono<Integer> breakLease() {
-        return this.breakLease(null, null, null);
+    public Mono<Response<Duration>> breakLease() {
+        return this.breakLease(null, null);
     }
 
     /**
@@ -666,21 +833,14 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return
-     *      A reactive response containing the remaining time in the broken lease in seconds.
+     *      A reactive response containing the remaining time in the broken lease.
      */
-    public Mono<Integer> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<Duration>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .breakLease(breakPeriodInSeconds, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseTime());
+            .breakLease(breakPeriodInSeconds, modifiedAccessConditions)
+            .map(rb -> new SimpleResponse<>(rb, Duration.ofSeconds(rb.deserializedHeaders().leaseTime())));
     }
 
     /**
@@ -694,8 +854,8 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID) {
-        return this.changeLease(leaseId, proposedID, null, null);
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
+        return this.changeLease(leaseId, proposedID, null);
     }
 
     /**
@@ -709,20 +869,13 @@ public final class ContainerAsyncClient {
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to
-     *         its parent, forming a linked list.
      *
      * @return A reactive response containing the new lease ID.
      */
-    public Mono<String> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions,
-        Context context) {
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
         return containerAsyncRawClient
-            .changeLease(leaseId, proposedID, modifiedAccessConditions, context)
-            .map(response -> response.deserializedHeaders().leaseId());
+            .changeLease(leaseId, proposedID, modifiedAccessConditions)
+            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
@@ -732,28 +885,9 @@ public final class ContainerAsyncClient {
      * @return
      *      A reactive response containing the account info.
      */
-    public Mono<StorageAccountInfo> getAccountInfo() {
-        return this.getAccountInfo(null);
-    }
-
-    /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
-     *
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return
-     *      A reactive response containing the account info.
-     */
-    public Mono<StorageAccountInfo> getAccountInfo(Context context) {
+    public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return containerAsyncRawClient
-            .getAccountInfo(context)
-            .map(ResponseBase::deserializedHeaders)
-            .map(StorageAccountInfo::new);
+            .getAccountInfo()
+            .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

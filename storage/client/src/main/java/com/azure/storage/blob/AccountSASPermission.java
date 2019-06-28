@@ -93,7 +93,7 @@ final class AccountSASPermission {
     /**
      * Permission to read resources and list queues and tables granted.
      */
-    public AccountSASPermission withRead(boolean read) {
+    public AccountSASPermission read(boolean read) {
         this.read = read;
         return this;
     }
@@ -108,7 +108,7 @@ final class AccountSASPermission {
     /**
      * Permission to add messages, table entities, and append to blobs granted.
      */
-    public AccountSASPermission withAdd(boolean add) {
+    public AccountSASPermission add(boolean add) {
         this.add = add;
         return this;
     }
@@ -123,7 +123,7 @@ final class AccountSASPermission {
     /**
      * Permission to create blobs and files granted.
      */
-    public AccountSASPermission withCreate(boolean create) {
+    public AccountSASPermission create(boolean create) {
         this.create = create;
         return this;
     }
@@ -138,7 +138,7 @@ final class AccountSASPermission {
     /**
      * Permission to write resources granted.
      */
-    public AccountSASPermission withWrite(boolean write) {
+    public AccountSASPermission write(boolean write) {
         this.write = write;
         return this;
     }
@@ -153,7 +153,7 @@ final class AccountSASPermission {
     /**
      * Permission to delete resources granted.
      */
-    public AccountSASPermission withDelete(boolean delete) {
+    public AccountSASPermission delete(boolean delete) {
         this.delete = delete;
         return this;
     }
@@ -168,7 +168,7 @@ final class AccountSASPermission {
     /**
      * Permission to list blob containers, blobs, shares, directories, and files granted.
      */
-    public AccountSASPermission withList(boolean list) {
+    public AccountSASPermission list(boolean list) {
         this.list = list;
         return this;
     }
@@ -183,7 +183,7 @@ final class AccountSASPermission {
     /**
      * Permissions to update messages and table entities granted.
      */
-    public AccountSASPermission withUpdate(boolean update) {
+    public AccountSASPermission update(boolean update) {
         this.update = update;
         return this;
     }
@@ -198,7 +198,7 @@ final class AccountSASPermission {
     /**
      * Permission to get and delete messages granted.
      */
-    public AccountSASPermission withProcessMessages(boolean processMessages) {
+    public AccountSASPermission processMessages(boolean processMessages) {
         this.processMessages = processMessages;
         return this;
     }

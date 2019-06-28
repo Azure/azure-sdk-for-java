@@ -55,7 +55,7 @@ final class BlobURLParts {
     /**
      * The scheme. Ex: "https://".
      */
-    public BlobURLParts withScheme(String scheme) {
+    public BlobURLParts scheme(String scheme) {
         this.scheme = scheme;
         return this;
     }
@@ -70,7 +70,7 @@ final class BlobURLParts {
     /**
      * The host. Ex: "account.blob.core.windows.net".
      */
-    public BlobURLParts withHost(String host) {
+    public BlobURLParts host(String host) {
         this.host = host;
         return this;
     }
@@ -85,7 +85,7 @@ final class BlobURLParts {
     /**
      * The container name or {@code null} if a {@link StorageAsyncRawClient} was parsed.
      */
-    public BlobURLParts withContainerName(String containerName) {
+    public BlobURLParts containerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -100,7 +100,7 @@ final class BlobURLParts {
     /**
      * The blob name or {@code null} if a {@link StorageAsyncRawClient} or {@link ContainerAsyncClient} was parsed.
      */
-    public BlobURLParts withBlobName(String blobName) {
+    public BlobURLParts blobName(String blobName) {
         this.blobName = blobName;
         return this;
     }
@@ -115,7 +115,7 @@ final class BlobURLParts {
     /**
      * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
-    public BlobURLParts withSnapshot(String snapshot) {
+    public BlobURLParts snapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -132,7 +132,7 @@ final class BlobURLParts {
      * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
      * parameters.
      */
-    public BlobURLParts withSasQueryParameters(SASQueryParameters sasQueryParameters) {
+    public BlobURLParts sasQueryParameters(SASQueryParameters sasQueryParameters) {
         this.sasQueryParameters = sasQueryParameters;
         return this;
     }
@@ -149,7 +149,7 @@ final class BlobURLParts {
      * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
      * no such parameters.
      */
-    public BlobURLParts withUnparsedParameters(Map<String, String[]> unparsedParameters) {
+    public BlobURLParts unparsedParameters(Map<String, String[]> unparsedParameters) {
         this.unparsedParameters = unparsedParameters;
         return this;
     }
@@ -164,7 +164,7 @@ final class BlobURLParts {
      *         ill-formatted.
      */
     public URL toURL() throws MalformedURLException {
-        UrlBuilder url = new UrlBuilder().withScheme(this.scheme).withHost(this.host);
+        UrlBuilder url = new UrlBuilder().scheme(this.scheme).host(this.host);
 
         StringBuilder path = new StringBuilder();
         if (this.containerName != null) {
@@ -174,7 +174,7 @@ final class BlobURLParts {
                 path.append(this.blobName);
             }
         }
-        url.withPath(path.toString());
+        url.path(path.toString());
 
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
@@ -182,7 +182,7 @@ final class BlobURLParts {
         if (this.sasQueryParameters != null) {
             String encodedSAS = this.sasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
-                url.withQuery(encodedSAS);
+                url.query(encodedSAS);
             }
         }
 

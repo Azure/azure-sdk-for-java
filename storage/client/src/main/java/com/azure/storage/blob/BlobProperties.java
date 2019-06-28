@@ -2,6 +2,7 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobType;
+import com.azure.storage.blob.models.Metadata;
 
 public class BlobProperties {
 
@@ -27,7 +28,7 @@ public class BlobProperties {
     BlobProperties(BlobGetPropertiesHeaders generatedHeaders) {
         this.blobType = generatedHeaders.blobType();
         this.metadata = new Metadata(generatedHeaders.metadata());
-        this.blobSize = generatedHeaders.contentLength();
+        this.blobSize = generatedHeaders.contentLength() == null ? 0 : generatedHeaders.contentLength();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.contentEncoding = generatedHeaders.contentEncoding();
         this.contentDisposition = generatedHeaders.contentDisposition();
