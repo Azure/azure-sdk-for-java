@@ -168,13 +168,9 @@ public class ClientLogger {
         if (runtimeException == null) {
             return;
         }
-        // By default we are treating runtime exception as error ?
-        if (level > ERROR_LEVEL) {
-            level = ERROR_LEVEL;
-        }
-        if (canLogAtLevel(level)) {
-            performLogging(runtimeException.getClass().getName(), false, runtimeException);
-        }
+
+        log(runtimeException.getClass().getName(), false, runtimeException);
+
         throw runtimeException;
     }
 
