@@ -74,7 +74,7 @@ platform. First, add the package:
 </dependency>
 ```
 
-All the implemented ways to get a credential can be found under the `com.azure.identity.credential` package. The sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event Hubs.
+All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event Hubs.
 
 #### Authorizing with AAD application client secret
 
@@ -187,6 +187,7 @@ consumer also needs to specify where in the event stream to begin receiving even
 reading new events as they are published.
 
 #### Consumer creation
+
 We are creating a consumer that receives events from `partitionID` and only listens to newest events that get pushed to
 the partition.
 
