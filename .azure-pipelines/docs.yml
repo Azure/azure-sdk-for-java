@@ -14,6 +14,17 @@ jobs:
       vmImage: 'vs2017-win2016'
 
     steps:
+      - powershell: |
+          copy eng/repo-docs/index.html $(Build.ArtifactStagingDirectory)
+        displayName: 'Copy index to artifact staging'
+
+      - task: PublishPipelineArtifact@0
+        condition: succeededOrFailed()
+        displayName: 'Publish index artifact'
+        inputs:
+          artifactName: index
+          targetPath: $(Build.ArtifactStagingDirectory)
+
       # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
       # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
       - task: Maven@3
@@ -53,7 +64,7 @@ jobs:
           goals: 'install'
 
       - powershell: |
-          copy -r target/staging/apidocs $(Build.ArtifactStagingDirectory)
+          copy -r target/staging/apidocs $(Build.ArtifactStagingDirectory)/client
         displayName: 'Copy reports to artifact staging'
 
       - task: PublishPipelineArtifact@0
@@ -61,7 +72,7 @@ jobs:
         displayName: 'Publish reports artifact'
         inputs:
           artifactName: track2reports
-          targetPath: $(Build.ArtifactStagingDirectory)
+          targetPath: $(Build.ArtifactStagingDirectory)/client
 
   - job: 'Generate_Track_1'
     variables:
