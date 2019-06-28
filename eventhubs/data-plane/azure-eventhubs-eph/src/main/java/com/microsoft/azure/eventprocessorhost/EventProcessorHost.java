@@ -11,6 +11,7 @@ import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.impl.StringUtil;
+import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
 
 import org.slf4j.Logger;
@@ -397,19 +398,20 @@ public final class EventProcessorHost {
     		 * 
     		 * @param storageConnectionString  connection string for an Azure Storage account  
     		 * @param storageContainerName     name for the blob container within the Storage account
+    		 * @param storageBlobPrefix        prefix for the names of the blobs within the blob container, can be empty or null
     		 * @return  interface for setting the Event Hub connection info and auth
     		 */
-    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName);
+    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix);
     		
     		/**
     		 * Use the built-in Azure Storage-based lease and checkpoint managers.
     		 * 
-    		 * @param storageConnectionString  connection string for an Azure Storage account  
+    		 * @param storageCredentials  	   credentials for an Azure Storage account, such as an AAD token  
     		 * @param storageContainerName     name for the blob container within the Storage account
-    		 * @param storageBlobPrefix        prefix for the names of the blobs within the blob container
+    		 * @param storageBlobPrefix        prefix for the names of the blobs within the blob container, can be empty or null
     		 * @return  interface for setting the Event Hub connection info and auth
     		 */
-    		AuthStep useAzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix);
+    		AuthStep useAzureStorageCheckpointLeaseManager(StorageCredentials storageCredentials, String storageContainerName, String storageBlobPrefix);
     		
     		/**
     		 * Use user-implemented lease and checkpoint managers.
@@ -632,14 +634,16 @@ public final class EventProcessorHost {
 
 			@Override
 			public AuthStep useAzureStorageCheckpointLeaseManager(final String storageConnectionString,
-					final String storageContainerName) {
-				return useAzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, "");
-			}
-
-			@Override
-			public AuthStep useAzureStorageCheckpointLeaseManager(final String storageConnectionString,
 					final String storageContainerName, final String storageBlobPrefix) {
 				AzureStorageCheckpointLeaseManager mgr = new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix);
+				this.initializeManagers = true;
+				return useUserCheckpointAndLeaseManagers(mgr, mgr);
+			}
+			
+			@Override
+			public AuthStep useAzureStorageCheckpointLeaseManager(final StorageCredentials storageCredentials,
+					final String storageContainerName, final String storageBlobPrefix) {
+				AzureStorageCheckpointLeaseManager mgr = new AzureStorageCheckpointLeaseManager(storageCredentials, storageContainerName, storageBlobPrefix);
 				this.initializeManagers = true;
 				return useUserCheckpointAndLeaseManagers(mgr, mgr);
 			}

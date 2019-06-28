@@ -43,7 +43,7 @@ public class Repros extends TestBase {
         PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory1 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
         EventProcessorHost host1 = EventProcessorHost.EventProcessorHostBuilder.newBuilder(conflictingName, utils.getConsumerGroup())
-        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName)
+        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName, null)
         		.useEventHubConnectionString(utils.getConnectionString(true).toString(), utils.getConnectionString(true).getEventHubName())
         		.build();
         EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
@@ -52,7 +52,7 @@ public class Repros extends TestBase {
         PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory2 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
         EventProcessorHost host2 = EventProcessorHost.EventProcessorHostBuilder.newBuilder(conflictingName, utils.getConsumerGroup())
-        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName)
+        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName, null)
         		.useEventHubConnectionString(utils.getConnectionString(true).toString(), utils.getConnectionString(true).getEventHubName())
         		.build();
         EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
@@ -118,7 +118,7 @@ public class Repros extends TestBase {
         PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory1 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
         EventProcessorHost host1 = EventProcessorHost.EventProcessorHostBuilder.newBuilder("infiniteReceive2Hosts-1", utils.getConsumerGroup())
-        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName)
+        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName, null)
         		.useEventHubConnectionString(utils.getConnectionString(true).toString(), utils.getConnectionString(true).getEventHubName())
         		.build();
         EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
@@ -127,7 +127,7 @@ public class Repros extends TestBase {
         PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
         PrefabProcessorFactory factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
         EventProcessorHost host2 = EventProcessorHost.EventProcessorHostBuilder.newBuilder("infiniteReceive2Hosts-1", utils.getConsumerGroup())
-        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName)
+        		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName, null)
         		.useEventHubConnectionString(utils.getConnectionString(true).toString(), utils.getConnectionString(true).getEventHubName())
         		.build();
         EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
@@ -180,7 +180,7 @@ public class Repros extends TestBase {
                 } else {
                     factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
                     host2 = EventProcessorHost.EventProcessorHostBuilder.newBuilder("infiniteReceive2Hosts-1", utils.getConsumerGroup())
-                    		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName)
+                    		.useAzureStorageCheckpointLeaseManager(TestUtilities.getStorageConnectionString(), storageName, null)
                     		.useEventHubConnectionString(utils.getConnectionString(true).toString(), utils.getConnectionString(true).getEventHubName())
                     		.build();
                     options2 = EventProcessorOptions.getDefaultOptions();
