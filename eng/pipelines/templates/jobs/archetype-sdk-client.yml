@@ -144,7 +144,7 @@ jobs:
           ProfileFlag: ''
         macOS - Java 8:
           OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.14'
           JavaVersion: '1.8'
           ProfileFlag: ''
         Windows - Java 8:
@@ -159,7 +159,7 @@ jobs:
           ProfileFlag: '-Djava-lts'
         macOS - Java LTS:
           OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.14'
           JavaVersion: '1.11'
           ProfileFlag: '-Djava-lts'
         Windows - Java LTS:
