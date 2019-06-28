@@ -381,7 +381,7 @@
               </group>
               <group>
                 <title>Azure Key Vault</title>
-                <packages>com.azure.keyvault*</packages>
+                <packages>com.azure.security.keyvault*</packages>
               </group>
             </groups>
             <links>
