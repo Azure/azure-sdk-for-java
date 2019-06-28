@@ -44,17 +44,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>${azure-core-amqp.version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -84,13 +84,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <!-- Not required for jacoco test coverage report -->
 <!--    <dependency>-->
 <!--      <groupId>com.azure</groupId>-->
 <!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>${version}</version>-->
+<!--      <version>1.0.0-preview.1</version>-->
 <!--    </dependency>-->
   </dependencies>
 
