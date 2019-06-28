@@ -155,7 +155,7 @@ public class ClientLogger {
      */
     public void log(String format, Object... args) {
         if (canLogAtLevel(level)) {
-            performLogging(format, args);
+            performLogging(format, true, args);
         }
     }
 
@@ -170,7 +170,7 @@ public class ClientLogger {
         // By default we are treating runtime exception as error ?
         level = ERROR_LEVEL;
         if (canLogAtLevel(level)) {
-            performLogging(runtimeException.getClass().getName(), runtimeException);
+            performLogging(runtimeException.getClass().getName(), false, runtimeException);
         }
         throw runtimeException;
     }
@@ -180,9 +180,9 @@ public class ClientLogger {
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(String format, Object... args) {
+    private void performLogging(String format, boolean removeThroawable, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
-        if (configurationLevel > VERBOSE_LEVEL) {
+        if (removeThroawable && configurationLevel > VERBOSE_LEVEL) {
             args = attemptToRemoveThrowable(args);
         }
         switch (level) {
