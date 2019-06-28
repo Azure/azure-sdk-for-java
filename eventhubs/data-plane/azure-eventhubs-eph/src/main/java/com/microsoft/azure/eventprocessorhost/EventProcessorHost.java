@@ -78,6 +78,7 @@ public final class EventProcessorHost {
                     this.executorServicePoolSize,
                     new EventProcessorHostThreadPoolFactory(hostName, eventHubPath, consumerGroupName));
         }
+        eventHubClientFactory.setExecutor(this.executorService);
 
         this.hostContext = new HostContext(this.executorService,
                 this, hostName,
@@ -476,7 +477,7 @@ public final class EventProcessorHost {
     	static interface OptionalStep {
     		/**
     		 * Event Processor Host runs tasks on the supplied threadpool, or creates an internal one. 
-    		 * @param executor  threadpool
+    		 * @param executor  threadpool, or null to use an internal one
     		 * @return  interface for setting optional values
     		 */
     		OptionalStep setExecutor(ScheduledExecutorService executor);
@@ -553,8 +554,7 @@ public final class EventProcessorHost {
 
 			@Override
 			public OptionalStep setExecutor(final ScheduledExecutorService executor) {
-				Objects.requireNonNull(executor);
-				
+				// executor is allowed to be null, causes EPH to create and use an internal one
 				this.executor = executor;
 				return this;
 			}
@@ -666,12 +666,12 @@ public final class EventProcessorHost {
 				EventHubClientFactory ehcFactory = null;
 				if (this.eventHubConnectionString != null) {
 					normalizeConnectionStringAndEventHubPath();
-					ehcFactory = new EventHubClientFactory.EHCFWithConnectionString(this.eventHubConnectionString, this.retryPolicy, this.executor);
+					ehcFactory = new EventHubClientFactory.EHCFWithConnectionString(this.eventHubConnectionString, this.retryPolicy);
 				} else if (this.authCallback != null) {
 					ehcFactory = new EventHubClientFactory.EHCFWithAuthCallback(this.endpoint, this.eventHubPath,
-							this.authCallback, this.authority, packOptions(), this.executor);
+							this.authCallback, this.authority, packOptions());
 				} else if (this.tokenProvider != null) {
-					ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, packOptions(), this.executor);
+					ehcFactory = new EventHubClientFactory.EHCFWithTokenProvider(this.endpoint, this.eventHubPath, this.tokenProvider, packOptions());
 				}
 				return new EventProcessorHost(this.hostName,
 						this.eventHubPath,

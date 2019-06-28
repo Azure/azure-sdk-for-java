@@ -16,18 +16,20 @@ import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 
 abstract class EventHubClientFactory {
-	protected final ScheduledExecutorService executor;
+	protected ScheduledExecutorService executor;
 	
 	protected final EventHubClientOptions options;
 	
-	public EventHubClientFactory(final ScheduledExecutorService executor, final RetryPolicy retryPolicy) {
-		this(executor, (new EventHubClientOptions()).setRetryPolicy(retryPolicy));
+	public EventHubClientFactory(final RetryPolicy retryPolicy) {
+		this((new EventHubClientOptions()).setRetryPolicy(retryPolicy));
 	}
 	
-	public EventHubClientFactory(final ScheduledExecutorService executor,
-			final EventHubClientOptions options) {
-		this.executor = executor;
+	public EventHubClientFactory(final EventHubClientOptions options) {
 		this.options = options;
+	}
+	
+	public void setExecutor(ScheduledExecutorService executor) {
+		this.executor = executor;
 	}
 	
 	abstract CompletableFuture<EventHubClient> createEventHubClient() throws EventHubException, IOException;
@@ -36,9 +38,8 @@ abstract class EventHubClientFactory {
 		private final String eventHubConnectionString;
 		
 		public EHCFWithConnectionString(final String eventHubConnectionString,
-				final RetryPolicy retryPolicy,
-				final ScheduledExecutorService executor) {
-			super(executor, retryPolicy);
+				final RetryPolicy retryPolicy) {
+			super(retryPolicy);
 			this.eventHubConnectionString = eventHubConnectionString;
 		}
 		
@@ -57,9 +58,8 @@ abstract class EventHubClientFactory {
 				final String eventHubPath,
 				final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback,
 				final String authority,
-				final EventHubClientOptions options,
-				final ScheduledExecutorService executor) {
-			super(executor, options);
+				final EventHubClientOptions options) {
+			super(options);
 			this.endpoint = endpoint;
 			this.eventHubPath = eventHubPath;
 			this.authCallback = authCallback;
@@ -80,9 +80,8 @@ abstract class EventHubClientFactory {
 		public EHCFWithTokenProvider(final URI endpoint,
 				final String eventHubPath,
 				final ITokenProvider tokenProvider,
-				final EventHubClientOptions options,
-				final ScheduledExecutorService executor) {
-			super(executor, options);
+				final EventHubClientOptions options) {
+			super(options);
 			this.endpoint = endpoint;
 			this.eventHubPath = eventHubPath;
 			this.tokenProvider = tokenProvider;
