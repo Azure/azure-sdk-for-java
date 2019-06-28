@@ -172,6 +172,9 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - scripts: |
+          wget https://oss.sonatype.org/content/repositories/snapshots/com/microsoft/azure/azure-mgmt-resources/1.3.1-SNAPSHOT/maven-metadata.xml
+
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
           -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
