@@ -691,6 +691,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
+    // TODO (alzimmer): This test needs to be restructured to support the Iterable T return
     /*def "Get page ranges diff"() {
         setup:
         bu.create(PageBlobClient.PAGE_BYTES * 2)
