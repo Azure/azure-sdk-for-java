@@ -227,6 +227,10 @@
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "search/resource-manager": {
+    "source": "specification/search/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "servicefabric/resource-manager": {
     "source": "specification/servicefabric/resource-manager/readme.md",
     "args": "--multiapi --fluent"
