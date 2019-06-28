@@ -153,7 +153,7 @@ public class PollerTests {
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         PollResponse<CreateCertificateResponse> pollResponse = createCertPoller.blockUntil(PollResponse.OperationStatus.fromString("OTHER_2"));
-        Assert.assertEquals(pollResponse.getStatus() , PollResponse.OperationStatus.fromString("OTHER_2"));
+        Assert.assertEquals(pollResponse.getStatus(), PollResponse.OperationStatus.fromString("OTHER_2"));
         Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
