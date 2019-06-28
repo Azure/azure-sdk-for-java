@@ -172,9 +172,6 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - script: |
-          echo $HTTP_PROXY
-          echo $HTTPS_PROXY
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
           -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
@@ -203,7 +200,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
+          options: '$(DefaultOptions) $(ProfileFlag) -X'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
