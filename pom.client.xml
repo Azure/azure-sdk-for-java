@@ -398,8 +398,8 @@
               <version>${codesnippet4javadoc.version}</version>
             </docletArtifact>
             <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
-            <failOnError>true</failOnError>
-            <failOnWarnings>true</failOnWarnings>
+            <failOnError>false</failOnError>
+            <failOnWarnings>false</failOnWarnings>
           </configuration>
         </plugin>
 
@@ -420,7 +420,7 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-            <failOnError>true</failOnError>
+            <failOnError>false</failOnError>
           </configuration>
         </plugin>
 
@@ -428,8 +428,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <configuration>
-            <failsOnError>true</failsOnError>
-            <failOnViolation>true</failOnViolation>
+            <failsOnError>false</failsOnError>
+            <failOnViolation>false</failOnViolation>
           </configuration>
         </plugin>
       </plugins>
