@@ -196,7 +196,9 @@
           <transformationSets>
             <transformationSet>
               <dir>${project.build.directory}/spotbugs</dir>
-              <includes><include>spotbugsXml.xml</include></includes>
+              <includes>
+                <include>spotbugsXml.xml</include>
+              </includes>
               <outputDir>${project.build.directory}/spotbugs</outputDir>
               <stylesheet>fancy-hist.xsl</stylesheet>
               <fileMappers>
@@ -331,20 +333,23 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>
               com.microsoft.azure.template:
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
+                <packages>
+                  com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*
+                </packages>
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
@@ -357,6 +362,10 @@
               <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Test</title>
+                <packages>com.azure.core.test*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
