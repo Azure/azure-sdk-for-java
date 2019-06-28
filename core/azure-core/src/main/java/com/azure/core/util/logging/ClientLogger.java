@@ -179,9 +179,9 @@ public class ClientLogger {
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(String format, boolean removeThroawable, Object... args) {
+    private void performLogging(String format, boolean removeThrowable, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
-        if (removeThroawable && configurationLevel > VERBOSE_LEVEL) {
+        if (removeThrowable && configurationLevel > VERBOSE_LEVEL) {
             args = attemptToRemoveThrowable(args);
         }
         switch (level) {
