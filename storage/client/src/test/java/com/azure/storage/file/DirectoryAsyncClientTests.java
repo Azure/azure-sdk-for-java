@@ -55,7 +55,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         }
         FileServiceClient fileServiceClient = FileServiceClient.builder()
                                 .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
-                                .buildSync();
+                                .build();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
     }
@@ -76,7 +76,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         }
         UrlBuilder urlBuilder = UrlBuilder.parse(azureStorageFileEndpoint);
         String endpointURL = new UrlBuilder().scheme(urlBuilder.scheme()).host(urlBuilder.host()).toString();
-        Assert.assertTrue(endpointURL.equals(client.url()));
+        Assert.assertTrue(endpointURL.equals(client.getDirectoryUrl()));
     }
 
     @Override

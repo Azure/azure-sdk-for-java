@@ -30,7 +30,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ShareClient ShareClients}
- * and {@link ShareAsyncClient SahreAsyncClients}, calling {@link ShareClientBuilder#buildSync() buildSync}
+ * and {@link ShareAsyncClient SahreAsyncClients}, calling {@link ShareClientBuilder#build() build}
  * constructs an instance of ShareClient and calling {@link ShareClientBuilder#buildAsync() buildAsync}
  * constructs an instance of SahreAsyncClient.
  *
@@ -38,17 +38,11 @@ import java.util.Objects;
  * {@link ShareClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
  * {@link ShareClientBuilder#shareName(String) shareName} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
- * <pre>
- * ShareClient client = ShareClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .buildSync();
- * </pre>
+ * <p><strong>Instantiating a synchronous Share Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.shareClient.instantiation.sastoken
  *
- * <pre>
- * ShareAsyncClient client = ShareAsyncClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Share Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.shareAsyncClient.instantiation.sastoken
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link ShareClientBuilder#credential(SASTokenCredential) credential}.</p>
@@ -58,7 +52,7 @@ import java.util.Objects;
  *     .endpoint(endpointWithoutSASTokenQueryParams)
  *     .shareName(shareName)
  *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildSync();
+ *     .build();
  * </pre>
  *
  * <pre>
@@ -74,21 +68,11 @@ import java.util.Objects;
  * {@link ShareClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
- * <pre>
- * ShareClient client = ShareClient().builder()
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .connectionString(connectionString)
- *     .buildSync();
- * </pre>
+ * <p><strong>Instantiating a synchronous Share Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.shareClient.instantiation.connectionstring
  *
- * <pre>
- * ShareAsyncClient client = ShareAsyncClient().builder()
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .connectionString(connectionString)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Share Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.shareAsyncClient.instantiation.connectionstring
  *
  * @see ShareClient
  * @see ShareAsyncClient
@@ -132,33 +116,6 @@ public class ShareClientBuilder {
      * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public ShareAsyncClient buildAsync() {
-        return build();
-    }
-
-    /**
-     * Creates a {@link ShareClient} based on options set in the builder. Every time {@code buildSync()} is
-     * called a new instance of {@link ShareClient} is created.
-     *
-     * <p>
-     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link ShareClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link ShareClient client}. All other builder settings are ignored.
-     * </p>
-     *
-     * @return A ShareClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
-     */
-    public ShareClient buildSync() {
-        return new ShareClient(build());
-    }
-
-    /*
-     * @return a new instance of ShareAsyncClient constructed with options stored in the builder
-     * @throws NullPointerException If the endpoint or shareName is null
-     * @throws IllegalArgumentException If the builder doesn't have credential
-     */
-    private ShareAsyncClient build() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(shareName);
 
@@ -200,6 +157,24 @@ public class ShareClientBuilder {
     }
 
     /**
+     * Creates a {@link ShareClient} based on options set in the builder. Every time {@code build()} is
+     * called a new instance of {@link ShareClient} is created.
+     *
+     * <p>
+     * If {@link ShareClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link ShareClientBuilder#endpoint(String) endpoint} are used to create the
+     * {@link ShareClient client}. All other builder settings are ignored.
+     * </p>
+     *
+     * @return A ShareClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     */
+    public ShareClient build() {
+        return new ShareClient(buildAsync());
+    }
+
+    /**
      * Sets the endpoint for the Azure Storage File instance that the client will interact with.
      *
      * <p>The first path segment, if the endpoint contains path segments, will be assumed to be the name of the share
@@ -224,7 +199,7 @@ public class ShareClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
         }
 
         return this;

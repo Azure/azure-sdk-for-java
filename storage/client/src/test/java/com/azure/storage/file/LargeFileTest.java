@@ -1,6 +1,5 @@
 package com.azure.storage.file;
 
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -52,7 +51,7 @@ public class LargeFileTest extends TestBase {
         }
         String shareName = testResourceNamer.randomName("largefileshare", 32);
         shareClient = ShareClient.builder().connectionString(azureStorageConnectionString).shareName(shareName)
-                                    .buildSync();
+                                    .build();
         shareClient.create();
         shareClient.createDirectory("largefiledir");
         largeFileClient = shareClient.getDirectoryClient("largefiledir").getFileClient(fileName);

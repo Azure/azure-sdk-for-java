@@ -22,7 +22,7 @@ public class FileServiceSample {
     public static void main(String[] args) {
         // Create a file service client.
         FileServiceClient fileServiceClient = FileServiceAsyncClient.builder()
-                .connectionString(CONNECTION_STRING).buildSync();
+                .connectionString(CONNECTION_STRING).build();
 
         // Create 3 shares
         for (int i = 0; i < 3; i++) {

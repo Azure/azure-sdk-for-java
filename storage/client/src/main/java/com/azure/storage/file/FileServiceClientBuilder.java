@@ -30,7 +30,7 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link FileServiceClient FileServiceClients}
- * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#buildSync() buildSync}
+ * and {@link FileServiceAsyncClient FileServiceAsyncClients}, calling {@link FileServiceClientBuilder#build() build}
  * constructs an instance of FileServiceClient and calling {@link FileServiceClientBuilder#buildAsync() buildAsync}
  * constructs an instance of FileServiceAsyncClient.
  *
@@ -38,17 +38,11 @@ import java.util.Objects;
  * {@link FileServiceClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder a
  * {@link SASTokenCredential} that authorizes the client.</p>
  *
- * <pre>
- * FileServiceClient client = FileServiceClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .buildSync();
- * </pre>
+ * <p><strong>Instantiating a synchronous FileService Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.fileServiceClient.instantiation.sastoken
  *
- * <pre>
- * FileServiceAsyncClient client = FileServiceAsyncClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous FileService Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.sastoken
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link FileServiceClientBuilder#credential(SASTokenCredential) credential}.</p>
@@ -56,15 +50,13 @@ import java.util.Objects;
  * <pre>
  * FileServiceClient client = FileServiceClient.builder()
  *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .queueName(queueName)
  *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildSync();
+ *     .build();
  * </pre>
  *
  * <pre>
  * FileServiceAsyncClient client = FileServiceAsyncClient.builder()
  *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .queueName(queueName)
  *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
  *     .buildAsync();
  * </pre>
@@ -74,21 +66,11 @@ import java.util.Objects;
  * {@link FileServiceClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
- * <pre>
- * FileServiceClient client = FileServiceClient().builder()
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .connectionString(connectionString)
- *     .buildSync();
- * </pre>
+ * <p><strong>Instantiating a synchronous FileService Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.fileServiceClient.instantiation.connectionstring
  *
- * <pre>
- * FileServiceAsyncClient client = FileServiceAsyncClient().builder()
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .connectionString(connectionString)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous FileService Client with connection string. </strong></p>
+ * @codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.connectionstring
  *
  * @see FileServiceClient
  * @see FileServiceAsyncClient
@@ -130,33 +112,6 @@ public final class FileServiceClientBuilder {
      * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public FileServiceAsyncClient buildAsync() {
-        return build();
-    }
-
-    /**
-     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code buildSync()} is
-     * called a new instance of {@link FileServiceClient} is created.
-     *
-     * <p>
-     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link FileServiceClient client}. All other builder settings are ignored.
-     * </p>
-     *
-     * @return A FileServiceClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
-     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
-     */
-    public FileServiceClient buildSync() {
-        return new FileServiceClient(build());
-    }
-
-    /*
-     * @return a new instance of FileServiceAsyncClient constructed with options stored in the builder
-     * @throws NullPointerException If the endpoint is null
-     * @throws IllegalArgumentException If the builder doesn't have credential
-     */
-    private FileServiceAsyncClient build() {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -193,6 +148,24 @@ public final class FileServiceClientBuilder {
     }
 
     /**
+     * Creates a {@link FileServiceClient} based on options set in the builder. Every time {@code build()} is
+     * called a new instance of {@link FileServiceClient} is created.
+     *
+     * <p>
+     * If {@link FileServiceClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
+     * {@link FileServiceClientBuilder#endpoint(String) endpoint} are used to create the
+     * {@link FileServiceClient client}. All other builder settings are ignored.
+     * </p>
+     *
+     * @return A FileServiceClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @throws IllegalStateException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
+     */
+    public FileServiceClient build() {
+        return new FileServiceClient(buildAsync());
+    }
+
+    /**
      * Sets the endpoint for the Azure Storage File instance that the client will interact with.
      *
      * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
@@ -214,7 +187,7 @@ public final class FileServiceClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
         }
 
         return this;

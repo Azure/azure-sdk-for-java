@@ -125,12 +125,12 @@ public class FileAsyncClient {
     }
 
     /**
-     * Get the url of the storage file client.
+     * Get the getFileUrl of the storage file client.
      * @return the URL of the storage file client
      * @throws MalformedURLException if no protocol is specified, or an
      *         unknown protocol is found, or {@code spec} is {@code null}.
      */
-    public URL url() throws MalformedURLException {
+    public URL getFileUrl() throws MalformedURLException {
         return new URL(azureFileStorageClient.url());
     }
 
@@ -150,10 +150,7 @@ public class FileAsyncClient {
      *
      * <p>Create the file with size 1KB.</p>
      *
-     * <pre>
-     * client.create(1024)
-     *     .subscribe(response -&gt; System.out.printf("Creating the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileClient.create
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing the file info and the status of creating the file.
@@ -195,10 +192,7 @@ public class FileAsyncClient {
      *
      * <p>Copy file from source url to the {@code filePath} </p>
      *
-     * <pre>
-     * client.startCopy("https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile", Collections.singletonMap("file", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Copying the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional. Name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
@@ -257,12 +251,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * <pre>
-     * client.downloadToFile("someFilePath", new Range(1024, 2048))
-     *     .doOnTerminate(() -> if (Files.exist(Paths.get("someFilePath"))) {
-     *          System.out.println("Download the file completed");
-     *     });
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional. Return file data only from the specified byte range.
@@ -325,10 +314,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file with its metadata and properties. </p>
      *
-     * <pre>
-     * client.downloadWithProperties()
-     *     .subscribe(response -&gt; System.out.printf("Downloading the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties
      *
      * @return A response that only contains headers and response status code
      */
@@ -365,10 +351,7 @@ public class FileAsyncClient {
      *
      * <p>Delete the file</p>
      *
-     * <pre>
-     * client.delete()
-     *     .subscribe(response -&gt; System.out.printf("Deleting the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.delete
      *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist.
@@ -470,11 +453,7 @@ public class FileAsyncClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * <pre>
-     * ByteBuf defaultData = Unpooled.wrappedBuffer(defaultText.getBytes(StandardCharsets.UTF_8));
-     * client.upload(defaultData, defaultData.readableBytes())
-     *     .subscribe(response -&gt; System.out.printf("Upload the bytes to file range completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.upload
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
@@ -522,12 +501,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from the source file path. </p>
      *
-     * <pre>
-     * client.uploadFromFile("someFilePath")
-     *     .doOnTerminate(() -> if (client.getProperties() != null) {
-     *          System.out.printf("Upload the file with length of %d completed", client.getProperties().block().value().contentLength());
-     *     });
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile
      *
      * @param uploadFilePath The path where store the source file to upload
      */

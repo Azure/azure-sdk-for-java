@@ -103,9 +103,9 @@ public class ShareAsyncClient {
     }
 
     /**
-     * @return the URL of the storage file service
+     * @return the getShareUrl of the storage file service
      */
-    public String getUrl() {
+    public String getShareUrl() {
         return client.url();
     }
 
@@ -142,10 +142,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the share</p>
      *
-     * <pre>
-     * client.createShare()
-     *     .subscribe(response -&gt; System.out.printf("Creating the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareAsyncClient.create
      *
      * @return A response containing information about the share and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata
@@ -192,10 +189,7 @@ public class ShareAsyncClient {
      *
      * <p>Create a snapshot</p>
      *
-     * <pre>
-     * client.createSnapshot()
-     *     .subscribe(response -&gt; System.out.printf("Snapshot %s was created", response.value().snapshot()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareAsyncClient.createSnapshot
      *
      * @return A response containing information about the snapshot of share.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
@@ -212,10 +206,7 @@ public class ShareAsyncClient {
      *
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
-     * <pre>
-     * client.createShare(Collections.singletonMap("snapshot", "metadata")
-     *     .subscribe(response -&gt; System.out.printf("Snapshot %s was created", response.value().snapshot()));
-     * </pre>
+     * @codesnippt com.azure.storage.file.shareClientAsync.createSnapshot
      *
      * @param metadata Optional. Metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
@@ -235,10 +226,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the share</p>
      *
-     * <pre>
-     * client.deleteShare()
-     *     .subscribe(response -&gt; System.out.printf("Deleting the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareAsyncClient.delete
      *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
@@ -442,13 +430,10 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the directory "documents"</p>
+     * <p>Create the directory "mydirectory"</p>
      *
-     * <pre>
-     * client.createDirectory("documents")
-     *     .subscribe(response -&gt; System.out.printf("Creating the directory completed with status code %d", response.statusCode()));
-     * </pre>
-     *
+     * @codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string
+     *      *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
@@ -490,10 +475,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the directory "empty"</p>
      *
-     * <pre>
-     * client.deleteDirectory("empty")
-     *     .subscribe(response -&gt; System.out.printf("Deleting directory completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareAsyncClient.deleteDirectory#string
      *
      * @param directoryName Name of the directory
      * @return A response that only contains headers and response status code

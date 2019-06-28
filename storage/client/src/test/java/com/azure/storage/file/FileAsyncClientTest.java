@@ -59,7 +59,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
         }
         FileServiceClient fileServiceClient = FileServiceClient.builder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
-                                                  .buildSync();
+                                                  .build();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
         shareClient.createDirectory(dirName);
@@ -91,7 +91,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     @Override
     public void startCopy() throws Exception {
         fileAsyncClient.create(1024).block();
-        String sourceURL = fileAsyncClient.url().toString() + "/" + shareName + "/" + filePath;
+        String sourceURL = fileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         StepVerifier.create(fileAsyncClient.startCopy(sourceURL, null))
             .assertNext(response ->
             {

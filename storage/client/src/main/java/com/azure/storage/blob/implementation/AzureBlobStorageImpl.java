@@ -20,7 +20,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
     /**
      * Gets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @return the url value.
+     * @return the getDirectoryUrl value.
      */
     public String url() {
         return this.url;
@@ -29,7 +29,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
     /**
      * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @param url the url value.
+     * @param url the getDirectoryUrl value.
      * @return the service client itself.
      */
     AzureBlobStorageImpl url(String url) {

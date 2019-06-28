@@ -62,7 +62,7 @@ public class FileClientTest extends FileClientTestBase {
         }
         FileServiceClient fileServiceClient = FileServiceClient.builder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
-                                                  .buildSync();
+                                                  .build();
         shareClient = fileServiceClient.getShareClient(shareName);
         shareClient.create();
         shareClient.createDirectory(dirName);
@@ -92,7 +92,7 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void startCopy() throws Exception {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024, null, null), 201);
-        String sourceURL = fileClient.url().toString() + "/" + shareName + "/" + filePath;
+        String sourceURL = fileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
         FileTestHelpers.assertResponseStatusCode(copyInfoResponse, 202);
         Assert.assertTrue(copyInfoResponse.value().copyId() != null);

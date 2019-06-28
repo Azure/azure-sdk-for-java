@@ -22,7 +22,7 @@ public class ShareSample {
         // Build a share client
         String shareName = generateRandomName();
         ShareClient shareClient = ShareClient.builder().endpoint(ENDPOINT).
-                                        shareName(shareName).buildSync();
+                                        shareName(shareName).build();
 
         // Create first snapshot on share.
         String shareSnapshot1 = null;

@@ -115,7 +115,7 @@ public final class BlockBlobClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint getDirectoryUrl is malformed.");
         }
 
         return this;

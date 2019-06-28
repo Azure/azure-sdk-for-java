@@ -38,17 +38,11 @@ import java.util.Objects;
  * {@link FileClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
  * {@link FileClientBuilder#shareName(String)}, {@link FileClientBuilder#filePath(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
- * <pre>
- * FileClient client = FileClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .build();
- * </pre>
+ * <p><strong>Instantiating a synchronous File Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.fileClient.instantiation.sastoken
  *
- * <pre>
- * FileAsyncClient client = FileAsyncClient.builder()
- *     .endpoint(endpointWithSASTokenQueryParams)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous File Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.sastoken
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link FileClientBuilder#credential(SASTokenCredential) credential}.</p>
@@ -76,23 +70,11 @@ import java.util.Objects;
  * {@link FileClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
- * <pre>
- * FileClient client = FileClient().builder()
- *     .endpoint(endpoint)
- *     .shareName(shareName)
- *     .filePath(filePath)
- *     .connectionString(connectionString)
- *     .build();
- * </pre>
+ * <p><strong>Instantiating a synchronous File Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring
  *
- * <pre>
- * FileAsyncClient client = FileAsyncClient().builder()
- *     .endpoint(endpoint)
- *     .shareName(shareName)
- *     .filePath(filePath)
- *     .connectionString(connectionString)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous File Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
  *
  * @see FileClient
  * @see FileAsyncClient

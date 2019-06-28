@@ -6,7 +6,6 @@ package com.azure.storage.file;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.AccessPolicy;
 import com.azure.storage.file.models.ShareProperties;
@@ -46,7 +45,7 @@ public class ShareClientTests extends ShareClientTestBase {
                 .shareName(shareName)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildSync(), true, shareLogger);
+                .build(), true, shareLogger);
         } else {
             shareClient = setupClient((connectionString, endpoint) -> ShareClient.builder()
                 .connectionString(connectionString)
@@ -55,7 +54,7 @@ public class ShareClientTests extends ShareClientTestBase {
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildSync(), false, shareLogger);
+                .build(), false, shareLogger);
         }
     }
 

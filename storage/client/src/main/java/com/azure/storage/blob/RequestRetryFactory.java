@@ -117,9 +117,9 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //            Flowable<ByteBuffer> bufferedBody = httpRequest.body() == null
 //                    ? null : httpRequest.body().map(ByteBuffer::duplicate);
 //            final HttpRequest requestCopy = new HttpRequest(httpRequest.callerMethod(), httpRequest.httpMethod(),
-//                    httpRequest.url(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
+//                    httpRequest.getDirectoryUrl(), bufferedHeaders, bufferedBody, httpRequest.responseDecoder());
 //            if (!tryingPrimary) {
-//                UrlBuilder builder = UrlBuilder.parse(requestCopy.url());
+//                UrlBuilder builder = UrlBuilder.parse(requestCopy.getDirectoryUrl());
 //                builder.withHost(this.requestRetryOptions.secondaryHost());
 //                try {
 //                    requestCopy.withUrl(builder.toURL());

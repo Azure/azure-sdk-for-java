@@ -532,7 +532,7 @@ final class SASQueryParameters {
      */
     public String encode() {
         /*
-         We should be url-encoding each key and each value, but because we know all the keys and values will encode to
+         We should be getDirectoryUrl-encoding each key and each value, but because we know all the keys and values will encode to
          themselves, we cheat except for the signature value.
          */
         String[] params = {

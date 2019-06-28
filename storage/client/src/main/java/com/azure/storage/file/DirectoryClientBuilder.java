@@ -37,6 +37,12 @@ import java.util.Objects;
  * {@link DirectoryClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
  * {@link DirectoryClientBuilder#shareName(String)}, {@link DirectoryClientBuilder#directoryName(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
+ * <p><strong>Instantiating a synchronous Directory Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.sastoken
+ *
+ * <p><strong>Instantiating an Asynchronous Directory Client with SAS token</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.sastoken
+ *
  * <pre>
  * DirectoryClient client = DirectoryClient.builder()
  *     .endpoint(endpointWithSASTokenQueryParams)
@@ -52,23 +58,11 @@ import java.util.Objects;
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link DirectoryClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
- * <pre>
- * DirectoryClient client = DirectoryClient.builder()
- *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .shareName(shareName)
- *     .directoryName(directoryName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .build();
- * </pre>
+ * <p><strong>Instantiating a synchronous Directory Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring
  *
- * <pre>
- * DirectoryAsyncClient client = DirectoryAsyncClient.builder()
- *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .shareName(shareName)
- *     .directoryName(directoryName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Directory Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage File service must be used. Set the SharedKeyCredential with

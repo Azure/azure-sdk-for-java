@@ -32,14 +32,14 @@ public class BlobPocTests {
             new HttpPipelinePolicy() {
                 @Override
                 public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                    String url = context.httpRequest().url().toString();
+                    String getDirectoryUrl = context.httpRequest().getDirectoryUrl().toString();
                     String sasToken = System.getenv("AZURE_STORAGE_SAS_TOKEN");
-                    if (url.contains("?")) {
+                    if (getDirectoryUrl.contains("?")) {
                         sasToken = sasToken.replaceFirst("\\?", "&");
                     }
-                    url += sasToken;
+                    getDirectoryUrl += sasToken;
                     try {
-                        context.withHttpRequest(context.httpRequest().withUrl(new URL(url)));
+                        context.withHttpRequest(context.httpRequest().withUrl(new URL(getDirectoryUrl)));
                     } catch (MalformedURLException e) {
                         return Mono.error(e);
                     }

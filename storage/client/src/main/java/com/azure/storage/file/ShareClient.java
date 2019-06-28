@@ -29,7 +29,7 @@ import java.util.Map;
  * ShareClient client = ShareClient.builder()
  *     .connectionString(connectionString)
  *     .endpoint(endpoint)
- *     .buildSync();
+ *     .build();
  * </pre>
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the client.</p>
@@ -56,10 +56,10 @@ public class ShareClient {
     }
 
     /**
-     * @return the URL of the storage file service
+     * @return the getShareUrl of the storage file service
      */
-    public String getUrl() {
-        return client.getUrl();
+    public String getShareUrl() {
+        return client.getShareUrl();
     }
 
     /**
@@ -94,10 +94,7 @@ public class ShareClient {
      *
      * <p>Create the share</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.createShare();
-     * System.out.printf("Creating the share completed with status code %d", response.statusCode());
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareClient.createShare
      *
      * @return A response containing information about the share and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata
@@ -143,10 +140,7 @@ public class ShareClient {
      *
      * <p>Create a snapshot</p>
      *
-     * <pre>
-     * Response&lt;ShareSnapshotInfo&gt; response = client.createSnapshot();
-     * System.out.printf("Snapshot %s was created", response.value().snapshot());
-     * </pre>
+     * @codesnippt com.azure.storage.file.shareClient.createSnapshot
      *
      * @return A response containing information about the snapshot of share.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
@@ -185,10 +179,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * <pre>
-     * VoidResponse response = client.deleteShare();
-     * System.out.printf("Deleting the share completed with status code %d", response.statusCode());
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareClient.delete
      *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
@@ -383,13 +374,10 @@ public class ShareClient {
      *
      * <p>Create the directory "documents"</p>
      *
-     * <pre>
-     * Response&lt;DirectoryClient&gt; response = client.createDirectory("documents");
-     * System.out.printf("Creating the directory completed with status code %d", response.statusCode());
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareClient.createDirectory
      *
      * @param directoryName Name of the directory
-     * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
+     * @return A response containing a {@link DirectoryClient} to interact with the created directory and the
      * status of its creation.
      * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of
      * being deleted, or the parent directory for the new directory doesn't exist
@@ -429,10 +417,7 @@ public class ShareClient {
      *
      * <p>Delete the directory "empty"</p>
      *
-     * <pre>
-     * VoidResponse response = client.deleteDirectory("empty");
-     * System.out.printf("Deleting directory completed with status code %d", response.statusCode());
-     * </pre>
+     * @codesnippet com.azure.storage.file.shareClient.deleteDirectory#string
      *
      * @param directoryName Name of the directory
      * @return A response that only contains headers and response status code

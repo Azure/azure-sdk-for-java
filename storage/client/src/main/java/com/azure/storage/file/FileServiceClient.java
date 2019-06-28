@@ -26,7 +26,7 @@ import java.util.Map;
  * FileServiceClient client = FileServiceClient.builder()
  *     .connectionString(connectionString)
  *     .endpoint(endpoint)
- *     .buildSync();
+ *     .build();
  * </pre>
  *
  * <p>View {@link FileServiceClientBuilder this} for additional ways to construct the client.</p>
@@ -58,10 +58,10 @@ public final class FileServiceClient {
     }
 
     /**
-     * @return the URL of the Storage File service
+     * @return the getFileServiceUrl of the Storage File service
      */
-    public String url() {
-        return client.url();
+    public String getFileServiceUrl() {
+        return client.getFileServiceUrl();
     }
 
     /**
@@ -84,11 +84,7 @@ public final class FileServiceClient {
      *
      * <p>List all shares in the account</p>
      *
-     * <pre>
-     * for (ShareItem result : client.listShares()) {
-     *     System.out.printf("Share %s exists in the account", result.name());
-     * }
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileServiceClient.listShares
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
@@ -206,12 +202,8 @@ public final class FileServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Create the share "test"</p>
-     *
-     * <pre>
-     * Response&lt;ShareClient&gt; response = client.createShare("test");
-     * System.out.printf("Creating the share completed with status code %d", response.statusCode());
-     * </pre>
+     * <p>Create the share with share name of "myshare"</p>
+     * @codesnippet com.azure.storage.file.fileServiceClient.createShare#string
      *
      * @param shareName Name of the share
      * @return A response containing the ShareClient and the status of creating the share.
@@ -261,10 +253,7 @@ public final class FileServiceClient {
      *
      * <p>Delete the share "test"</p>
      *
-     * <pre>
-     * VoidResponse response = client.deleteShare("test");
-     * System.out.printf("Deleting the share completed with status code %d", response.statusCode());
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string
      *
      * @param shareName Name of the share
      * @return A response that only contains headers and response status code

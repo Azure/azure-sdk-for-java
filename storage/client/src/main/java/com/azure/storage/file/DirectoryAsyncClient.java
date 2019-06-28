@@ -107,10 +107,10 @@ public class DirectoryAsyncClient {
     }
 
     /**
-     * Get the url of the storage directory client.
+     * Get the getDirectoryUrl of the storage directory client.
      * @return the URL of the storage directory client
      */
-    public String url() {
+    public String getDirectoryUrl() {
         return azureFileStorageClient.url();
     }
 
@@ -148,10 +148,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the directory</p>
      *
-     * <pre>
-     * client.create()
-     *     .subscribe(response -&gt; System.out.printf("Creating the directory completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.create
      *
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
@@ -188,10 +185,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Delete the directory</p>
      *
-     * <pre>
-     * client.delete()
-     *     .subscribe(response -&gt; System.out.printf("Deleting the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryClient.delete
      *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
@@ -279,10 +273,7 @@ public class DirectoryAsyncClient {
      *
      * <p>List all directories with "subdir" prefix and return 10 results in the account</p>
      *
-     * <pre>
-     * client.listFilesAndDirectories("subdir", 10)
-     *     .subscribe(result -&gt; System.out.printf("The file or directory %s exists in the account", result.name()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories
      *
      * @param prefix Optional. Filters the results to return only files and directories whose name begins with the specified prefix.
      * @param maxResults Optional. Specifies the maximum number of files and/or directories to return per page.
@@ -344,10 +335,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the sub directory "subdir" </p>
      *
-     * <pre>
-     * client.createSubDirectory("subdir")
-     *     .subscribe(response -&gt; System.out.printf("Creating the sub directory completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.createSubDirectory#string
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
@@ -391,10 +379,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * <pre>
-     * client.deleteSubDirectory("subdir")
-     *     .subscribe(response -&gt; System.out.printf("Deleting the subdirectory completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.deleteSubDirectory#string
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
@@ -413,10 +398,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create 1k file with named "myFile"</p>
      *
-     * <pre>
-     * client.createFile("myFile", 1024)
-     *     .subscribe(response -&gt; System.out.printf("Creating the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.createFile#string-long
      *
      * @param fileName Name of the file
      * @param maxSize Size of the file
@@ -461,10 +443,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <pre>
-     * client.deleteFile("filetest")
-     *     .subscribe(response -&gt; System.out.printf("Deleting the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.directoryAsyncClient.deleteFile#string
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code

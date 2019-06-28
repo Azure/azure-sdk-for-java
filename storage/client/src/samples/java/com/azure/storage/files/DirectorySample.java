@@ -22,7 +22,7 @@ public class DirectorySample {
 
     public static void main(String[] args) {
         String shareName = generateRandomName();
-        ShareClient shareClient = ShareClient.builder().endpoint(ENDPOINT).shareName(shareName).buildSync();
+        ShareClient shareClient = ShareClient.builder().endpoint(ENDPOINT).shareName(shareName).build();
         shareClient.create();
         // Build up a directory client
         DirectoryClient directoryClient = DirectoryClient.builder().endpoint(ENDPOINT).shareName(generateRandomName())

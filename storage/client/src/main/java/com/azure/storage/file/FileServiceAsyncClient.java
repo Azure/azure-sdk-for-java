@@ -78,9 +78,9 @@ public final class FileServiceAsyncClient {
     }
 
     /**
-     * @return the URL of the Storage File service
+     * @return the getFileServiceUrl of the Storage File service
      */
-    public String url() {
+    public String getFileServiceUrl() {
         return client.url();
     }
 
@@ -104,10 +104,7 @@ public final class FileServiceAsyncClient {
      *
      * <p>List all shares in the account</p>
      *
-     * <pre>
-     * client.listShares()
-     *     .subscribe(result -&gt; System.out.printf("Share %s exists in the account", result.name()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileServiceAsyncClient.listShares
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
@@ -281,10 +278,7 @@ public final class FileServiceAsyncClient {
      *
      * <p>Create the share "test"</p>
      *
-     * <pre>
-     * client.createShare("test")
-     *     .subscribe(response -&gt; System.out.printf("Creating the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string
      *
      * @param shareName Name of the share
      * @return A response containing the ShareAsyncClient and the status of creating the share.
@@ -336,10 +330,7 @@ public final class FileServiceAsyncClient {
      *
      * <p>Delete the share "test"</p>
      *
-     * <pre>
-     * client.deleteShare("test")
-     *     .subscribe(response -&gt; System.out.printf("Deleting the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * @codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string
      *
      * @param shareName Name of the share
      * @return A response that only contains headers and response status code

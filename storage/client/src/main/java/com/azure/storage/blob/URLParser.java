@@ -26,7 +26,7 @@ final class URLParser {
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
      *
      * @throws UnknownHostException
-     *         If the url contains an improperly formatted ipaddress or unknown host address.
+     *         If the getDirectoryUrl contains an improperly formatted ipaddress or unknown host address.
      */
     public static BlobURLParts parse(URL url) throws UnknownHostException {
 

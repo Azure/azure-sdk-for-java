@@ -314,11 +314,11 @@ final class Utility {
      * Appends a string to the end of a URL's path (prefixing the string with a '/' if required).
      *
      * @param baseURL
-     *         The url to which the name should be appended.
+     *         The getDirectoryUrl to which the name should be appended.
      * @param name
      *         The name to be appended.
      *
-     * @return A url with the name appended.
+     * @return A getDirectoryUrl with the name appended.
      *
      * @throws MalformedURLException
      *         Appending the specified name produced an invalid URL.

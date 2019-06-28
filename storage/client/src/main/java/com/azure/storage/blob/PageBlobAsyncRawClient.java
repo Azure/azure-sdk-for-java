@@ -234,7 +234,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *          are 0-511, 512-1023, etc.
      * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can be
      *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *          authentication is required to perform the operation.
@@ -264,7 +264,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *          are 0-511, 512-1023, etc.
      * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can be
      *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *          authentication is required to perform the operation.
@@ -662,7 +662,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         try {
             source = builder.toURL();
         } catch (MalformedURLException e) {
-            // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
+            // We are parsing a valid getDirectoryUrl and adding a query parameter. If this fails, we can't recover.
             throw new Error(e);
         }
         return postProcessResponse(this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(

@@ -32,7 +32,7 @@ public class FileSample {
 
     public static void main(String[] args) {
         String shareName = generateRandomName();
-        ShareClient shareClient = ShareClient.builder().endpoint(ENDPOINT).shareName(shareName).buildSync();
+        ShareClient shareClient = ShareClient.builder().endpoint(ENDPOINT).shareName(shareName).build();
         shareClient.create();
         String parentDirName = generateRandomName();
         shareClient.createDirectory(parentDirName);
@@ -65,7 +65,7 @@ public class FileSample {
         // Copy the file from source file to destination file.
         URL clientURL = null;
         try {
-            clientURL = srcFileClient.url();
+            clientURL = srcFileClient.getFileUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException("This is not the URL format. URL given: " + clientURL.toString());
         }
