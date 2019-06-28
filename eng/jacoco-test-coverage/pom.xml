@@ -3,8 +3,8 @@
 <!-- Licensed under the MIT License. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -44,22 +44,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>${azure-core-amqp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-auth</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -89,14 +84,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <!-- Not required for jacoco test coverage report -->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>${version}</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>azure-core-test</artifactId>-->
+    <!--      <version>1.0.0-preview.1</version>-->
+    <!--    </dependency>-->
   </dependencies>
 
   <build>
