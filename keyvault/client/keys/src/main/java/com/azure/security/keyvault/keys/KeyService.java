@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@ServiceInterface("KeyVault")
+@ServiceInterface(name = "KeyVault")
 interface KeyService {
 
     @Post("keys/{key-name}/create")

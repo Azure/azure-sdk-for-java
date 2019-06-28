@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @see SecretClientBuilder
  */
-@ServiceClient(builder = SecretClientBuilder.class)
+@ServiceClient(builder = SecretClientBuilder.class, service = SecretService.class)
 public final class SecretClient {
     private final SecretAsyncClient client;
 

@@ -44,7 +44,7 @@ import com.azure.core.exception.HttpRequestException;
  *
  * @see SecretAsyncClientBuilder
  */
-@ServiceClient(builder = SecretAsyncClientBuilder.class, isAsync = true)
+@ServiceClient(builder = SecretAsyncClientBuilder.class, isAsync = true, service = SecretService.class)
 public final class SecretAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
