@@ -174,6 +174,7 @@ jobs:
     steps:
       - script: |
           which mvn
+          ls -R /usr/local/bin/
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
           -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
@@ -203,7 +204,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '-Xmx3072m $(LoggingOptions) -X'
+          mavenOptions: '-Xmx3072m $(LoggingOptions) -Dmaven.repo.local=~/.m2/altrepo'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
