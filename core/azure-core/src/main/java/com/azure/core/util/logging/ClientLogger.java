@@ -159,6 +159,22 @@ public class ClientLogger {
         }
     }
 
+    /**
+     * This will log, if error log level is enabled , and throw the runtime exception.
+     * @param runtimeException to be thrown. It will do nothing if {@code null} is provided.
+     */
+    public void logAndThrow(RuntimeException runtimeException) {
+        if(runtimeException == null) {
+            return;
+        }
+        // By default we are treating runtime exception as error ?
+        level = ERROR_LEVEL;
+        if (canLogAtLevel(level)) {
+            performLogging(runtimeException.getClass().getName(), runtimeException);
+        }
+        throw runtimeException;
+    }
+
     /*
      * Performs the logging.
      * @param format Format-able message.
@@ -169,7 +185,6 @@ public class ClientLogger {
         if (configurationLevel > VERBOSE_LEVEL) {
             args = attemptToRemoveThrowable(args);
         }
-
         switch (level) {
             case VERBOSE_LEVEL:
                 logger.debug(format, args);
@@ -213,7 +228,6 @@ public class ClientLogger {
         if (level < configurationLevel) {
             return false;
         }
-
         switch (level) {
             case VERBOSE_LEVEL:
                 return logger != null && logger.isDebugEnabled();
