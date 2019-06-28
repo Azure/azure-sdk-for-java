@@ -84,7 +84,7 @@ public class RestProxyXMLTests {
     }
 
     @Host("http://unused")
-    @ServiceInterface("MyXMLService")
+    @ServiceInterface(name = "MyXMLService")
     interface MyXMLService {
         @Get("GetContainerACLs")
         SignedIdentifiersWrapper getContainerACLs();
@@ -189,7 +189,7 @@ public class RestProxyXMLTests {
     }
 
     @Host("http://unused")
-    @ServiceInterface("MyXMLServiceWithAttributes")
+    @ServiceInterface(name = "MyXMLServiceWithAttributes")
     public interface MyXMLServiceWithAttributes {
         @Get("GetXMLWithAttributes")
         Slideshow getSlideshow();

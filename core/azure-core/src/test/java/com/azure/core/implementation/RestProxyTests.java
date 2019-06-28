@@ -75,7 +75,7 @@ public abstract class RestProxyTests {
     protected abstract HttpClient createHttpClient();
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service1")
+    @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("bytes/100")
         @ExpectedResponses({200})
@@ -116,7 +116,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://{hostName}.org")
-    @ServiceInterface("Service2")
+    @ServiceInterface(name = "Service2")
     private interface Service2 {
         @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
@@ -153,7 +153,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service3")
+    @ServiceInterface(name = "Service3")
     private interface Service3 {
         @Get("bytes/2")
         @ExpectedResponses({200})
@@ -177,7 +177,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service5")
+    @ServiceInterface(name = "Service5")
     private interface Service5 {
         @Get("anything")
         @ExpectedResponses({200})
@@ -274,7 +274,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service6")
+    @ServiceInterface(name = "Service6")
     private interface Service6 {
         @Get("anything")
         @ExpectedResponses({200})
@@ -331,7 +331,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service7")
+    @ServiceInterface(name = "Service7")
     private interface Service7 {
         @Get("anything")
         @ExpectedResponses({200})
@@ -385,7 +385,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service8")
+    @ServiceInterface(name = "Service8")
     private interface Service8 {
         @Post("post")
         @ExpectedResponses({200})
@@ -420,7 +420,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service9")
+    @ServiceInterface(name = "Service9")
     private interface Service9 {
         @Put("put")
         @ExpectedResponses({200})
@@ -654,7 +654,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service10")
+    @ServiceInterface(name = "Service10")
     private interface Service10 {
         @Head("anything")
         @ExpectedResponses({200})
@@ -725,7 +725,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service11")
+    @ServiceInterface(name = "Service11")
     private interface Service11 {
         @Delete("delete")
         @ExpectedResponses({200})
@@ -754,7 +754,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service12")
+    @ServiceInterface(name = "Service12")
     private interface Service12 {
         @Patch("patch")
         @ExpectedResponses({200})
@@ -783,7 +783,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service13")
+    @ServiceInterface(name = "Service13")
     private interface Service13 {
         @Get("anything")
         @ExpectedResponses({200})
@@ -824,7 +824,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @ServiceInterface("Service14")
+    @ServiceInterface(name = "Service14")
     private interface Service14 {
         @Get("anything")
         @ExpectedResponses({200})
@@ -850,7 +850,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @ServiceInterface("Service16")
+    @ServiceInterface(name = "Service16")
     private interface Service16 {
         @Put("put")
         @ExpectedResponses({200})
@@ -889,7 +889,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://{hostPart1}{hostPart2}.org")
-    @ServiceInterface("Service17")
+    @ServiceInterface(name = "Service17")
     private interface Service17 {
         @Get("get")
         @ExpectedResponses({200})
@@ -917,7 +917,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @ServiceInterface("Service18")
+    @ServiceInterface(name = "Service18")
     private interface Service18 {
         @Get("status/200")
         void getStatus200();
@@ -997,7 +997,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service19")
+    @ServiceInterface(name = "Service19")
     private interface Service19 {
         @Put("put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
@@ -1293,7 +1293,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service20")
+    @ServiceInterface(name = "Service20")
     private interface Service20 {
         @Get("bytes/100")
         ResponseBase<HttpBinHeaders, Void> getBytes100OnlyHeaders();
@@ -1438,7 +1438,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("UnexpectedOKService")
+    @ServiceInterface(name = "UnexpectedOKService")
     interface UnexpectedOKService {
         @Get("/bytes/1024")
         @ExpectedResponses({400})
@@ -1456,7 +1456,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://www.example.com")
-    @ServiceInterface("Service21")
+    @ServiceInterface(name = "Service21")
     private interface Service21 {
         @Get("http://httpbin.org/bytes/100")
         @ExpectedResponses({200})
@@ -1472,7 +1472,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("DownloadService")
+    @ServiceInterface(name = "DownloadService")
     interface DownloadService {
         @Get("/bytes/30720")
         StreamResponse getBytes();
@@ -1506,7 +1506,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @ServiceInterface("FlowableUploadService")
+    @ServiceInterface(name = "FlowableUploadService")
     interface FlowableUploadService {
         @Put("/put")
         Response<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuf> content, @HeaderParam("Content-Length") long contentLength);
@@ -1543,7 +1543,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("{url}")
-    @ServiceInterface("Service22")
+    @ServiceInterface(name = "Service22")
     interface Service22 {
         @Get("{container}/{blob}")
         byte[] getBytes(@HostParam("url") String url);
@@ -1557,7 +1557,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @ServiceInterface("Service23")
+    @ServiceInterface(name = "Service23")
     interface Service23 {
         @Get("bytes/28")
         byte[] getBytes();
@@ -1572,7 +1572,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @ServiceInterface("Service24")
+    @ServiceInterface(name = "Service24")
     interface Service24 {
         @Put("put")
         HttpBinJSON put(@HeaderParam("ABC") Map<String, String> headerCollection);
@@ -1592,7 +1592,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service25")
+    @ServiceInterface(name = "Service25")
     interface Service25 {
         @Get("anything")
         HttpBinJSON get();
@@ -1627,7 +1627,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @ServiceInterface("Service26")
+    @ServiceInterface(name = "Service26")
     interface Service26 {
         @Post("post")
         HttpBinFormDataJSON postForm(@FormParam("custname") String name, @FormParam("custtel") String telephone, @FormParam("custemail") String email, @FormParam("size") PizzaSize size, @FormParam("toppings") List<String> toppings);

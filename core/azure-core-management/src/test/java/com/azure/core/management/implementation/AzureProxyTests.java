@@ -55,7 +55,7 @@ public class AzureProxyTests {
     }
 
     @Host("https://mock.azure.com")
-    @ServiceInterface("MockResourceService")
+    @ServiceInterface(name = "MockResourceService")
     private interface MockResourceService {
         @Get("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
         @ExpectedResponses({200})

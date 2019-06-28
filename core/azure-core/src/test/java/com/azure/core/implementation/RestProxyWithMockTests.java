@@ -55,7 +55,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @ServiceInterface("Service1")
+    @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("Base64UrlBytes/10")
         @ReturnValueWireType(Base64Url.class)
@@ -168,7 +168,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
 
     @Host("http://httpbin.org")
-    @ServiceInterface("ServiceErrorWithCharsetService")
+    @ServiceInterface(name = "ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
         @Get("/get")
         @ExpectedResponses({400})
@@ -313,7 +313,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Host("https://www.example.com")
-    @ServiceInterface("ServiceHeaderCollections")
+    @ServiceInterface(name = "ServiceHeaderCollections")
     interface ServiceHeaderCollections {
         @Get("url/path")
         ResponseBase<HeaderCollectionTypePublicFields, Void> publicFields();
@@ -535,7 +535,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     @Host("http://echo.org")
-    @ServiceInterface("Service2")
+    @ServiceInterface(name = "Service2")
     interface Service2 {
         @Post("anything/json")
         @ExpectedResponses({200})
