@@ -53,7 +53,7 @@ jobs:
           goals: 'install'
 
       - powershell: |
-          copy -r target/staging $(Build.ArtifactStagingDirectory)
+          copy -r target/staging/apidocs $(Build.ArtifactStagingDirectory)
         displayName: 'Copy reports to artifact staging'
 
       - task: PublishPipelineArtifact@0
