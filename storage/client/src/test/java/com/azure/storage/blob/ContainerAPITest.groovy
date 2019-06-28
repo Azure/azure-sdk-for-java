@@ -88,20 +88,6 @@ class ContainerAPITest extends APISpec {
         e.message().contains("The specified container already exists.")
     }
 
-    /*def "Create context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerCreateHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.create(null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Get properties null"() {
         when:
         Response<ContainerProperties> response = cu.getProperties()
@@ -148,20 +134,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get properties context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetPropertiesHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.getProperties(null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Set metadata"() {
         setup:
@@ -280,20 +252,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Set metadata context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetMetadataHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.setMetadata(null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Set access policy"() {
@@ -445,20 +403,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Set access policy context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerSetAccessPolicyHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.setAccessPolicy(null, null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Get access policy"() {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
@@ -508,20 +452,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get access policy context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccessPolicyHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.getAccessPolicy(null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Delete"() {
         when:
@@ -609,20 +539,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Delete context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerDeleteHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.delete(null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "List blobs flat"() {
         setup:
@@ -895,21 +811,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "List blobs flat context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobFlatSegmentHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.listBlobsFlat(null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "List blobs hierarchy"() {
         setup:
         String name = generateBlobName()
@@ -1141,21 +1042,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "List blobs hier context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerListBlobHierarchySegmentHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.listBlobsHierarchySegment(null, "/", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     @Unroll
     def "Acquire lease"() {
         setup:
@@ -1242,21 +1128,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Acquire lease context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, ContainerAcquireLeaseHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.acquireLease(null, 20, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Renew lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1340,21 +1211,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Renew lease context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerRenewLeaseHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.renewLease("id", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Release lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1435,21 +1291,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Release lease context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerReleaseLeaseHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.releaseLease("id", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Break lease"() {
@@ -1545,21 +1386,6 @@ class ContainerAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Break lease context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(202, ContainerBreakLeaseHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.breakLease(20, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Change lease"() {
         setup:
         String leaseID = setupContainerLeaseCondition(cu, receivedLeaseID)
@@ -1640,21 +1466,6 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Change lease context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerChangeLeaseHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.changeLease("id", "id", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Create URL special chars"() {
@@ -1750,28 +1561,6 @@ class ContainerAPITest extends APISpec {
         notThrown(StorageException)
     }
 
-    /*def "With pipeline"() {
-        setup:
-        ContainerURL withPipeline = cu.withPipeline(HttpPipeline.build(new RequestPolicyFactory() {
-            @Override
-            RequestPolicy create(RequestPolicy requestPolicy, RequestPolicyOptions requestPolicyOptions) {
-                return new RequestPolicy() {
-                    @Override
-                    Single<HttpResponse> sendAsync(HttpRequest httpRequest) {
-                        return Single.error(new Exception("Expected error"))
-                    }
-                }
-            }
-        }))
-
-        when:
-        withPipeline.create(null, null, null)
-
-        then:
-        def e = thrown(Exception)
-        e.getMessage().contains("Expected error")
-    }*/
-
     def "Get account info"() {
         when:
         Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
@@ -1800,19 +1589,4 @@ class ContainerAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get account info context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ContainerGetAccountInfoHeaders)))
-
-        cu = cu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        cu.getAccountInfo(defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 }

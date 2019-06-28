@@ -58,7 +58,7 @@ class BlockBlobAPITest extends APISpec {
         null         | defaultInputStream   | defaultDataSize     | StorageException
         getBlockID() | null                 | defaultDataSize     | NullPointerException
         getBlockID() | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
-        // TODO (alzimmer): Determine if an exception should be thrown if dataSize is smaller than the stream
+        // This doesn't error as it isn't reading the entire stream which is valid in the new client
         //getBlockID() | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
 
@@ -110,18 +110,6 @@ class BlockBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Stage block context"() {
-        setup:
-        bu = BlockBlobClient.blockBlobClientBuilder().endpoint(bu.getBlobUrl().toString()).addPolicy(getContextStubPolicy(201, BlockBlobStageBlockHeaders)).buildClient()
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.stageBlock("id", defaultInputStream.get(), defaultDataSize, null, null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Stage block from url"() {
         setup:
@@ -251,20 +239,6 @@ class BlockBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-//    def "Stage block from URL context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobStageBlockFromURLHeaders)))
-//
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.stageBlockFromURL("id", bu.toURL(), null, null, null, null, defaultContext)
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
 
     @Unroll
     def "Stage block from URL source AC"() {
@@ -478,20 +452,6 @@ class BlockBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-//    def "Commit block list info context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobCommitBlockListHeaders)))
-//
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.commitBlockList(new ArrayList<String>(), null, null, null, defaultContext)
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
-
     def "Get block list"() {
         setup:
         List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID())
@@ -567,7 +527,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list type null"() {
         when:
-        bu.listBlocks(null) // List blocks will default to all block types
+        bu.listBlocks(null).iterator().hasNext()
 
         then:
         notThrown(IllegalArgumentException)
@@ -578,7 +538,7 @@ class BlockBlobAPITest extends APISpec {
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         when:
-        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null)
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(leaseID), null).iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -601,25 +561,11 @@ class BlockBlobAPITest extends APISpec {
         bu = cu.getBlockBlobClient(generateBlobName())
 
         when:
-        bu.listBlocks(BlockListType.ALL)
+        bu.listBlocks(BlockListType.ALL).iterator().hasNext()
 
         then:
         notThrown(StorageException)
     }
-
-//    def "Get block list context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlockBlobGetBlockListHeaders)))
-//
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.listBlocks(BlockListType.ALL, null, defaultContext)
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
 
     def "Upload"() {
         when:
@@ -654,8 +600,8 @@ class BlockBlobAPITest extends APISpec {
         data            | dataSize            | exceptionType
         null            | defaultDataSize     | NullPointerException
         defaultInputStream.get() | defaultDataSize + 1 | IndexOutOfBoundsException
-        // no exception
-//        defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
+        // This doesn't error as it isn't reading the entire stream which is valid in the new client
+        // defaultInputStream.get() | defaultDataSize - 1 | StorageErrorException
     }
 
     def "Upload empty body"() {
@@ -786,18 +732,4 @@ class BlockBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-//    def "Upload context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlockBlobUploadHeaders)))
-//
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        // No service call is made. Just satisfy the parameters.
-//        bu.upload(defaultInputStream.get(), defaultDataSize, null, null, null, defaultContext)
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
 }
