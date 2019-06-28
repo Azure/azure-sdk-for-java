@@ -22,14 +22,14 @@
  */
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverFactory;
 import com.azure.data.cosmos.ChangeFeedProcessor;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.CosmosContainer;
+import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.internal.changefeed.Bootstrapper;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverFactory;
 import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
 import com.azure.data.cosmos.internal.changefeed.HealthMonitor;
 import com.azure.data.cosmos.internal.changefeed.LeaseStoreManager;

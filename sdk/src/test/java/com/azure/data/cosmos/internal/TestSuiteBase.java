@@ -33,7 +33,6 @@ import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.DataType;
 import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.DatabaseForTest;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentClientTest;
 import com.azure.data.cosmos.DocumentCollection;
@@ -48,12 +47,7 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.azure.data.cosmos.Undefined;
-import com.azure.data.cosmos.directconnectivity.Protocol;
-import com.azure.data.cosmos.rx.FailureValidator;
-import com.azure.data.cosmos.rx.FeedResponseListValidator;
-import com.azure.data.cosmos.rx.ResourceResponseValidator;
-import com.azure.data.cosmos.rx.TestConfigurations;
-import com.azure.data.cosmos.rx.Utils;
+import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -160,7 +154,6 @@ public class TestSuiteBase extends DocumentClientTest {
 
         @Override
         public Flux<ResourceResponse<Database>> deleteDatabase(String id) {
-
             return client.deleteDatabase("dbs/" + id, null);
         }
     }
@@ -443,7 +436,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document, RequestOptions options) {
-        return client.createDocument(Utils.getCollectionNameLink(databaseId, collectionId), document, options, false).single().block().getResource();
+        return client.createDocument(TestUtils.getCollectionNameLink(databaseId, collectionId), document, options, false).single().block().getResource();
     }
 
     public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
@@ -533,7 +526,7 @@ public class TestSuiteBase extends DocumentClientTest {
                                                                String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).single().block()
                 .results();
         if (!res.isEmpty()) {
-            deleteCollection(client, Utils.getCollectionNameLink(databaseId, collectionId));
+            deleteCollection(client, TestUtils.getCollectionNameLink(databaseId, collectionId));
         }
     }
 
@@ -545,10 +538,10 @@ public class TestSuiteBase extends DocumentClientTest {
         FeedOptions options = new FeedOptions();
         options.partitionKey(new PartitionKey(docId));
         List<Document> res = client
-                .queryDocuments(Utils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
+                .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
                 .single().block().results();
         if (!res.isEmpty()) {
-            deleteDocument(client, Utils.getDocumentNameLink(databaseId, collectionId, docId));
+            deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId));
         }
     }
 
@@ -557,7 +550,7 @@ public class TestSuiteBase extends DocumentClientTest {
             try {
                 client.deleteDocument(documentLink, options).single().block();
             } catch (Exception e) {
-                CosmosClientException dce = com.azure.data.cosmos.internal.Utils.as(e, CosmosClientException.class);
+                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
                 if (dce == null || dce.statusCode() != 404) {
                     throw e;
                 }
@@ -574,7 +567,7 @@ public class TestSuiteBase extends DocumentClientTest {
                 .queryUsers("dbs/" + databaseId, String.format("SELECT * FROM root r where r.id = '%s'", userId), null)
                 .single().block().results();
         if (!res.isEmpty()) {
-            deleteUser(client, Utils.getUserNameLink(databaseId, userId));
+            deleteUser(client, TestUtils.getUserNameLink(databaseId, userId));
         }
     }
 
@@ -623,7 +616,7 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
         if (client != null) {
             try {
-                client.deleteDatabase(Utils.getDatabaseNameLink(databaseId), null).single().block();
+                client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).single().block();
             } catch (Exception e) {
             }
         }

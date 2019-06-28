@@ -40,6 +40,7 @@ import com.azure.data.cosmos.Index;
 import com.azure.data.cosmos.IndexingPolicy;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
+import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +76,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private int numberOfPartitions;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {

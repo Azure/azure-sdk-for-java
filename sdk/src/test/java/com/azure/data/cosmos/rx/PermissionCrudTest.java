@@ -33,6 +33,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosUser;
 import com.azure.data.cosmos.CosmosUserProperties;
 import com.azure.data.cosmos.PermissionMode;
+import com.azure.data.cosmos.internal.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

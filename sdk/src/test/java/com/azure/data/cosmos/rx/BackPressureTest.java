@@ -36,6 +36,7 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.Offer;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.internal.RxDocumentClientUnderTest;
+import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -64,7 +65,7 @@ public class BackPressureTest extends TestSuiteBase {
     private CosmosClient client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     private static CosmosContainerProperties getSinglePartitionCollectionDefinition() {

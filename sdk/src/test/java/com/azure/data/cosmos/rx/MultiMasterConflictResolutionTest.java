@@ -35,6 +35,8 @@ import com.azure.data.cosmos.CosmosContainerResponse;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.PartitionKeyDefinition;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.TestUtils;
 import com.azure.data.cosmos.internal.Utils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

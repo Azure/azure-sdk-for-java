@@ -22,10 +22,10 @@
  */
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
+import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
-import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
 
 import java.time.Duration;

@@ -31,6 +31,7 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.CosmosItemResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.internal.TestConfigurations;
 import com.azure.data.cosmos.rx.proxy.HttpProxyServer;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;

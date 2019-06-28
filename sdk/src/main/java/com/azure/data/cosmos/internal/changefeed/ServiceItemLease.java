@@ -24,7 +24,6 @@ package com.azure.data.cosmos.internal.changefeed;
 
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.Document;
-//import com.azure.data.cosmos.internal.changefeed.internal.Constants;
 import com.azure.data.cosmos.internal.Constants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,6 +33,8 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+//import com.azure.data.cosmos.internal.changefeed.internal.Constants;
 
 /**
  * Document service lease.

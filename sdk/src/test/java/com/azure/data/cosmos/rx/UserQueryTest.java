@@ -29,6 +29,9 @@ import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosUserProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
+import com.azure.data.cosmos.internal.FeedResponseValidator;
+import com.azure.data.cosmos.internal.TestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -92,7 +95,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.maxItemCount(2);
-        String databaseLink = Utils.getDatabaseNameLink(databaseId);
+        String databaseLink = TestUtils.getDatabaseNameLink(databaseId);
         Flux<FeedResponse<CosmosUserProperties>> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers;

@@ -32,11 +32,7 @@
   <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
   <url>https://docs.microsoft.com/en-us/azure/cosmos-db</url>
   <modules>
-    <module>commons</module>
-    <module>gateway</module>
-    <module>commons-test-utils</module>
     <module>sdk</module>
-    <module>direct-impl</module>
     <module>benchmark</module>
     <module>examples</module>
   </modules>
@@ -350,34 +346,6 @@
                       tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-javadoc.jar"/>
                 <copy file="sdk/target/azure-cosmos-${sdk-version}.jar"
                       tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.jar"/>
-
-                <copy file="commons/pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}.pom"/>
-                <copy file="commons/target/azure-cosmos-commons-${sdk-version}-sources.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}-sources.jar"/>
-                <copy file="commons/target/azure-cosmos-commons-${sdk-version}-javadoc.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}-javadoc.jar"/>
-                <copy file="commons/target/azure-cosmos-commons-${sdk-version}.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-commons-${sdk-version}.jar"/>
-
-                 <copy file="gateway/pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}.pom"/>
-                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}-sources.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}-sources.jar"/>
-                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}-javadoc.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}-javadoc.jar"/>
-                <copy file="gateway/target/azure-cosmos-gateway-${sdk-version}.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-gateway-${sdk-version}.jar"/>
-
-                 <copy file="direct-impl/pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}.pom"/>
-                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}.jar"/>
-
-                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}-empty-sources.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}-sources.jar"/>
-                <copy file="direct-impl/target/azure-cosmos-direct-${direct-connectivity-version}-empty-javadoc.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-direct-${direct-connectivity-version}-javadoc.jar"/>
               </target>
             </configuration>
             <goals>
@@ -412,26 +380,6 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-cosmos</artifactId>
-        <version>${project.parent.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmos-commons</artifactId>
-        <version>${project.parent.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmos-gateway</artifactId>
-        <version>${project.parent.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmos-direct</artifactId>
-        <version>${cosmosdb-sdk-direct-impl.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmos-commons-test-utils</artifactId>
         <version>${project.parent.version}</version>
       </dependency>
       <dependency>

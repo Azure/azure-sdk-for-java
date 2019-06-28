@@ -34,6 +34,10 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.SqlParameter;
 import com.azure.data.cosmos.SqlParameterList;
 import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
+import com.azure.data.cosmos.internal.FeedResponseValidator;
+import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -57,7 +61,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     private CosmosClient client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")

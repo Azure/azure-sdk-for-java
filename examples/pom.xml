@@ -116,10 +116,6 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmos-commons-test-utils</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>

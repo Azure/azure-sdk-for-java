@@ -31,9 +31,8 @@ import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.internal.RequestOptions;
+import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -68,7 +67,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     static protected DocumentCollection getCollectionDefinition() {

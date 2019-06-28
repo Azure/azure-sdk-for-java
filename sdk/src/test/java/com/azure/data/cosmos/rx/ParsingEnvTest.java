@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.rx;
 
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.azure.data.cosmos.directconnectivity.Protocol;
+import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

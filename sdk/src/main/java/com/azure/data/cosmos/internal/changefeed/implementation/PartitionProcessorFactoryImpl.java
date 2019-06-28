@@ -22,10 +22,10 @@
  */
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.ChangeFeedProcessorOptions;
 import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.LeaseCheckpointer;
 import com.azure.data.cosmos.internal.changefeed.PartitionCheckpointer;

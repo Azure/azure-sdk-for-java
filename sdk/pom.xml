@@ -160,23 +160,6 @@ SOFTWARE.
   </reporting>
   <dependencies>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmos-commons</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmos-gateway</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmos-direct</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-cosmos-commons-test-utils</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
       <version>${jackson-databind.version}</version>
@@ -190,6 +173,11 @@ SOFTWARE.
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>${commons-io.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-validator</groupId>
+      <artifactId>commons-validator</artifactId>
+      <version>${commons-validator.version}</version>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -221,6 +209,16 @@ SOFTWARE.
       <version>${commons-lang3.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>4.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>${commons-text.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>${testng.version}</version>
@@ -248,7 +246,6 @@ SOFTWARE.
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -261,8 +258,23 @@ SOFTWARE.
       <version>${rxjava2.version}</version>
     </dependency>
     <dependency>
+      <groupId>io.projectreactor.netty</groupId>
+      <artifactId>reactor-netty</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.projectreactor.addons</groupId>
       <artifactId>reactor-adapter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>${metrics.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

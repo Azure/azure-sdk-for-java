@@ -26,16 +26,12 @@ import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.DatabaseForTest;
+import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
-import com.azure.data.cosmos.internal.Permission;
 import com.azure.data.cosmos.PermissionMode;
-import com.azure.data.cosmos.internal.RequestOptions;
-import com.azure.data.cosmos.internal.ResourceResponse;
-import com.azure.data.cosmos.internal.User;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -170,7 +166,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         return new Object[][]{
                 //This test will try to read collection from its own permission and validate it, both with request Id and name.
                 {createdCollection.selfLink(), createdCollPermission},
-                {Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id()), createdDocPermissionWithName},
+                {TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id()), createdDocPermissionWithName},
         };
     }
 
@@ -179,29 +175,29 @@ public class ResourceTokenTest extends TestSuiteBase {
         return new Object[][]{
                  //These tests will try to read document from its own permission and validate it, both with request Id and name.
                 {createdDocument.selfLink(), createdDocPermission, createdDocument.id(), null},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollection.id(), createdDocument.id()), createdDocPermissionWithName, createdDocument.id(), null},
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollection.id(), createdDocument.id()), createdDocPermissionWithName, createdDocument.id(), null},
 
                 //These tests will try to read document from its permission having partition key 1 and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey.selfLink(), createdDocPermissionWithPartitionKey, createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdDocPermissionWithPartitionKeyWithName
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdDocPermissionWithPartitionKeyWithName
                         , createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
 
                 //These tests will try to read document from its permission having partition key 2 and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey2.selfLink(), createdDocPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()),
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()),
                         createdDocPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2},
 
                 // These tests will try to read document from its parent collection permission and validate it, both with request Id and name.
                 {createdDocument.selfLink(), createdCollPermission, createdDocument.id(), null},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollection.id(), createdDocument.id()), createdCollPermissionWithName, createdDocument.id(), null},
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollection.id(), createdDocument.id()), createdCollPermissionWithName, createdDocument.id(), null},
 
                 //This test will try to read document from collection permission having partition key 1 and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey.selfLink(), createdColPermissionWithPartitionKey, createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdColPermissionWithPartitionKeyWithName, createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdColPermissionWithPartitionKeyWithName, createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
 
                 //This test will try to read document from collection permission having partition key 2 and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey2.selfLink(), createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()), createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2}
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()), createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2}
 
         };
     }
@@ -212,7 +208,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                 //This test will try to read document from its resource token directly and validate it.
                 {createdDocumentWithPartitionKey2.selfLink(), createdColPermissionWithPartitionKey, PARTITION_KEY_VALUE},
                 //This test will try to read document from its parent collection resource token directly and validate it.
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()),
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()),
                         createdColPermissionWithPartitionKeyWithName, PARTITION_KEY_VALUE}
         };
     }
@@ -223,13 +219,13 @@ public class ResourceTokenTest extends TestSuiteBase {
                 //These tests will try to read document from partition 1 with two collection permissions having different partition keys and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey.selfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey.id(),
                 PARTITION_KEY_VALUE},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdColPermissionWithPartitionKeyWithName
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()), createdColPermissionWithPartitionKeyWithName
                         , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey.id(), PARTITION_KEY_VALUE},
 
                 //These tests will try to read document from partition 1 with two collection permissions having different partition keys and validate it, both with request Id and name.
                 {createdDocumentWithPartitionKey2.selfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.id(),
                         PARTITION_KEY_VALUE_2},
-                {Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()), createdColPermissionWithPartitionKeyWithName
+                {TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey2.id()), createdColPermissionWithPartitionKeyWithName
                         , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.id(), PARTITION_KEY_VALUE_2}
         };
     }
@@ -435,7 +431,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         Permission permission = new Permission();
         permission.id(PERMISSION_FOR_COLL_WITH_NAME);
         permission.setPermissionMode(PermissionMode.READ);
-        permission.setResourceLink(Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id()));
+        permission.setResourceLink(TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id()));
         return permission;
     }
 
@@ -450,7 +446,7 @@ public class ResourceTokenTest extends TestSuiteBase {
         Permission permission = new Permission();
         permission.id(PERMISSION_FOR_DOC_WITH_NAME);
         permission.setPermissionMode(PermissionMode.READ);
-        permission.setResourceLink(Utils.getDocumentNameLink(createdDatabase.id(),createdCollection.id(),createdDocument.id()));
+        permission.setResourceLink(TestUtils.getDocumentNameLink(createdDatabase.id(),createdCollection.id(),createdDocument.id()));
         return permission;
     }
 
@@ -462,7 +458,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     private Permission getDocPermissionWithPartitionKeyWithName() {
-        String permissionStr = String.format(PERMISSION_DEFINITION, Utils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()),
+        String permissionStr = String.format(PERMISSION_DEFINITION, TestUtils.getDocumentNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id(), createdDocumentWithPartitionKey.id()),
                 PARTITION_KEY_VALUE);
         Permission permission = new Permission(permissionStr);
         permission.id("PermissionForDocWithPartitionKeyWithName");
@@ -478,7 +474,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     private Permission getDocPermissionWithPartitionKey2WithName() {
-        String permissionStr = String.format(PERMISSION_DEFINITION, Utils.getDocumentNameLink(createdDatabase.id(),createdCollectionWithPartitionKey.id(),createdDocumentWithPartitionKey2.id()),
+        String permissionStr = String.format(PERMISSION_DEFINITION, TestUtils.getDocumentNameLink(createdDatabase.id(),createdCollectionWithPartitionKey.id(),createdDocumentWithPartitionKey2.id()),
                 PARTITION_KEY_VALUE_2);
         Permission permission = new Permission(permissionStr);
         permission.id("PermissionForDocWithPartitionKey2WithName");
@@ -493,7 +489,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     private Permission getColPermissionWithPartitionKeyWithName() {
-        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, Utils.getCollectionNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id()),
+        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id()),
                 PARTITION_KEY_VALUE);
         Permission permission = new Permission(permissionStr);
         permission.id("PermissionForColWithPartitionKeyWithName");
@@ -509,7 +505,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     private Permission getColPermissionWithPartitionKey2WithName() {
-        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, Utils.getCollectionNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id()),
+        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollectionWithPartitionKey.id()),
                 PARTITION_KEY_VALUE_2);
         Permission permission = new Permission(permissionStr);
         permission.id("PermissionForColWithPartitionKey2WithName");

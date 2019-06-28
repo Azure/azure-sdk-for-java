@@ -35,7 +35,6 @@ import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.SerializationFormattingPolicy;
 import org.apache.commons.lang3.RandomStringUtils;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 

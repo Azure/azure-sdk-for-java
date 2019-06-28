@@ -22,21 +22,11 @@
  */
 package com.azure.data.cosmos;
 
-import com.azure.data.cosmos.internal.BaseAuthorizationTokenProvider;
-import com.azure.data.cosmos.internal.Configs;
-import com.azure.data.cosmos.internal.HttpConstants;
-import com.azure.data.cosmos.internal.OperationType;
-import com.azure.data.cosmos.internal.Paths;
-import com.azure.data.cosmos.internal.RequestOptions;
-import com.azure.data.cosmos.internal.ResourceType;
-import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
-import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpClientConfig;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
 import com.azure.data.cosmos.internal.http.HttpRequest;
-import com.azure.data.cosmos.rx.FeedResponseListValidator;
-import com.azure.data.cosmos.rx.TestConfigurations;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpMethod;
 import org.testng.annotations.AfterClass;

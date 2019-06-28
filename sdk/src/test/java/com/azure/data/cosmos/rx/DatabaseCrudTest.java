@@ -30,6 +30,7 @@ import com.azure.data.cosmos.CosmosDatabaseProperties;
 import com.azure.data.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.data.cosmos.CosmosDatabaseResponse;
 import com.azure.data.cosmos.CosmosResponseValidator;
+import com.azure.data.cosmos.internal.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

@@ -27,13 +27,13 @@ import com.azure.data.cosmos.AsyncDocumentClient;
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.Database;
-import com.azure.data.cosmos.DatabaseForTest;
+import com.azure.data.cosmos.internal.DatabaseForTest;
 import com.azure.data.cosmos.DocumentCollection;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.ResourceResponse;
 import com.azure.data.cosmos.RetryOptions;
 import com.azure.data.cosmos.SqlQuerySpec;
-import com.azure.data.cosmos.rx.TestConfigurations;
+import com.azure.data.cosmos.internal.TestConfigurations;
 import org.testng.annotations.AfterSuite;
 import reactor.core.publisher.Flux;
 

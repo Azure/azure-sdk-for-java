@@ -23,7 +23,6 @@
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
 import com.azure.data.cosmos.internal.changefeed.Lease;
-import com.azure.data.cosmos.internal.changefeed.LeaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

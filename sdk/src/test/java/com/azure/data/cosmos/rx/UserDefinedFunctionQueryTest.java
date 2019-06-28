@@ -31,6 +31,10 @@ import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
+import com.azure.data.cosmos.internal.FeedResponseValidator;
+import com.azure.data.cosmos.internal.TestUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -53,7 +57,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     private CosmosClient client;
 
     public  String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")

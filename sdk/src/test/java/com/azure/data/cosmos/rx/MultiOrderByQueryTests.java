@@ -35,6 +35,8 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.CosmosItemRequestOptions;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.ComparatorUtils;
 import org.testng.annotations.AfterClass;

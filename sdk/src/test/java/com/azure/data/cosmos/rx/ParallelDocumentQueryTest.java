@@ -32,7 +32,7 @@ import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
-import com.azure.data.cosmos.internal.QueryMetrics;
+import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
@@ -63,7 +63,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     private CosmosClient client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdCollection.id());
     }
 
     @Factory(dataProvider = "clientBuildersWithDirect")

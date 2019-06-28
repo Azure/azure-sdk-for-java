@@ -31,6 +31,7 @@ import com.azure.data.cosmos.CosmosStoredProcedure;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosStoredProcedureResponse;
 import com.azure.data.cosmos.CosmosStoredProcedureProperties;
+import com.azure.data.cosmos.internal.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

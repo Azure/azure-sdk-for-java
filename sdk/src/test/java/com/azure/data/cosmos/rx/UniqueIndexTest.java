@@ -44,6 +44,8 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.UniqueKey;
 import com.azure.data.cosmos.UniqueKeyPolicy;
 import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.TestConfigurations;
+import com.azure.data.cosmos.internal.TestUtils;
 import com.azure.data.cosmos.internal.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

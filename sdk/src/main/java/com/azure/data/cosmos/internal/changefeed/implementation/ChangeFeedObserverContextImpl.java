@@ -23,9 +23,9 @@
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
 
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.PartitionCheckpointer;
 import reactor.core.publisher.Mono;
 

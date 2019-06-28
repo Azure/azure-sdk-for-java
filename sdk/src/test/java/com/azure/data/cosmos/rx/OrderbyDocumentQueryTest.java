@@ -34,7 +34,7 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.Resource;
-import com.azure.data.cosmos.RetryAnalyzer;
+import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.CompositeContinuationToken;
 import com.azure.data.cosmos.internal.query.OrderByContinuationToken;
@@ -563,7 +563,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private static String toJson(Object object){
         try {
-            return com.azure.data.cosmos.internal.Utils.getSimpleObjectMapper().writeValueAsString(object);
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
 		}

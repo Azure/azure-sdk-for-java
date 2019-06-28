@@ -22,11 +22,11 @@
  */
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
+import com.azure.data.cosmos.internal.changefeed.CancellationToken;
+import com.azure.data.cosmos.internal.changefeed.CancellationTokenSource;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
-import com.azure.data.cosmos.internal.changefeed.CancellationToken;
-import com.azure.data.cosmos.internal.changefeed.CancellationTokenSource;
 import com.azure.data.cosmos.internal.changefeed.Lease;
 import com.azure.data.cosmos.internal.changefeed.LeaseRenewer;
 import com.azure.data.cosmos.internal.changefeed.PartitionProcessor;

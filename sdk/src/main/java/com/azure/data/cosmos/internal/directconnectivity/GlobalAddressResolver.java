@@ -26,15 +26,9 @@ package com.azure.data.cosmos.internal.directconnectivity;
 
 import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.DocumentCollection;
-import com.azure.data.cosmos.internal.PartitionKeyRange;
-import com.azure.data.cosmos.directconnectivity.AddressInformation;
-import com.azure.data.cosmos.directconnectivity.AddressResolver;
-import com.azure.data.cosmos.directconnectivity.GatewayAddressCache;
-import com.azure.data.cosmos.directconnectivity.GatewayServiceConfigurationReader;
-import com.azure.data.cosmos.directconnectivity.IAddressResolver;
-import com.azure.data.cosmos.directconnectivity.Protocol;
 import com.azure.data.cosmos.internal.GlobalEndpointManager;
 import com.azure.data.cosmos.internal.IAuthorizationTokenProvider;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.UserAgentContainer;
 import com.azure.data.cosmos.internal.caches.RxCollectionCache;

@@ -29,6 +29,8 @@ import com.azure.data.cosmos.CosmosDatabaseForTest;
 import com.azure.data.cosmos.CosmosUserProperties;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
+import com.azure.data.cosmos.internal.FeedResponseValidator;
 import com.azure.data.cosmos.internal.RequestOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

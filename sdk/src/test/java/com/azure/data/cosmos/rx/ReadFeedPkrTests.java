@@ -30,6 +30,7 @@ import com.azure.data.cosmos.CosmosContainerRequestOptions;
 import com.azure.data.cosmos.CosmosDatabase;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.PartitionKeyRange;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

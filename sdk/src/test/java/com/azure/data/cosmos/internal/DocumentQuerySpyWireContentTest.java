@@ -32,7 +32,6 @@ import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.SpyClientBuilder;
 import com.azure.data.cosmos.internal.http.HttpRequest;
-import com.azure.data.cosmos.rx.Utils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -60,11 +59,11 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     private SpyClientUnderTestFactory.ClientUnderTest client;
 
     public String getSinglePartitionCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdSinglePartitionCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdSinglePartitionCollection.id());
     }
 
     public String getMultiPartitionCollectionLink() {
-        return Utils.getCollectionNameLink(createdDatabase.id(), createdMultiPartitionCollection.id());
+        return TestUtils.getCollectionNameLink(createdDatabase.id(), createdMultiPartitionCollection.id());
     }
 
     @Factory(dataProvider = "clientBuilders")

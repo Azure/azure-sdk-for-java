@@ -22,14 +22,14 @@
  */
 package com.azure.data.cosmos.internal.changefeed.implementation;
 
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
-import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.ChangeFeedOptions;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.internal.changefeed.CancellationToken;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedContextClient;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
+import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.PartitionCheckpointer;
 import com.azure.data.cosmos.internal.changefeed.PartitionProcessor;
 import com.azure.data.cosmos.internal.changefeed.ProcessorSettings;

@@ -30,6 +30,7 @@ import com.azure.data.cosmos.CosmosItemProperties;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

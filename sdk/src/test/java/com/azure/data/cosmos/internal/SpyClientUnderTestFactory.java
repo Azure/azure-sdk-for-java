@@ -28,7 +28,7 @@ import com.azure.data.cosmos.ConnectionPolicy;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.SpyClientBuilder;
-import com.azure.data.cosmos.directconnectivity.Protocol;
+import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.azure.data.cosmos.internal.directconnectivity.ReflectionUtils;
 import com.azure.data.cosmos.internal.http.HttpClient;
 import com.azure.data.cosmos.internal.http.HttpHeaders;
