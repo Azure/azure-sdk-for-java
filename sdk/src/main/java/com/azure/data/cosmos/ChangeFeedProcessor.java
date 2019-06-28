@@ -47,8 +47,8 @@ import java.util.function.Consumer;
  * {@code
  * ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.Builder()
  *     .hostName(hostName)
- *     .feedContainerClient(feedContainer)
- *     .leaseContainerClient(leaseContainer)
+ *     .feedContainer(feedContainer)
+ *     .leaseContainer(leaseContainer)
  *     .handleChanges(docs -> {
  *         // Implementation for handling and processing CosmosItemProperties list goes here
  *      })
@@ -79,8 +79,8 @@ public interface ChangeFeedProcessor {
      *
      *  ChangeFeedProcessor.Builder()
      *       .hostName("SampleHost")
-     *       .feedContainerClient(feedContainer)
-     *       .leaseContainerClient(leaseContainer)
+     *       .feedContainer(feedContainer)
+     *       .leaseContainer(leaseContainer)
      *       .handleChanges(docs -> {
      *           // Implementation for handling and processing CosmosItemProperties list goes here
      *        })
@@ -93,6 +93,9 @@ public interface ChangeFeedProcessor {
         return new ChangeFeedProcessorBuilderImpl();
     }
 
+    /**
+     * The {@link ChangeFeedProcessor} builder definitions for setting the properties.
+     */
     interface BuilderDefinition {
         /**
          * Sets the host name.
@@ -105,13 +108,21 @@ public interface ChangeFeedProcessor {
         /**
          * Sets and existing {@link CosmosContainer} to be used to read from the monitored collection.
          *
-         * @param feedContainerClient the instance of {@link CosmosContainer} to be used.
+         * @param feedContainer the instance of {@link CosmosContainer} to be used.
          * @return current Builder.
          */
-        BuilderDefinition feedContainerClient(CosmosContainer feedContainerClient);
+        BuilderDefinition feedContainer(CosmosContainer feedContainer);
 
         /**
          * Sets the {@link ChangeFeedProcessorOptions} to be used.
+         * <p>
+         * Unless specifically set the default values that will be used are:
+         *  - maximum items per page or FeedResponse: 100
+         *  - lease renew interval: 17 seconds
+         *  - lease acquire interval: 13 seconds
+         *  - lease expiration interval: 60 seconds
+         *  - feed poll delay: 5 seconds
+         *  - maximum scale count: unlimited
          *
          * @param changeFeedProcessorOptions the change feed processor options to use.
          * @return current Builder.
@@ -129,10 +140,10 @@ public interface ChangeFeedProcessor {
         /**
          * Sets an existing {@link CosmosContainer} to be used to read from the leases collection.
          *
-         * @param leaseCosmosClient the instance of {@link CosmosContainer} to use.
+         * @param leaseContainer the instance of {@link CosmosContainer} to use.
          * @return current Builder.
          */
-        BuilderDefinition leaseContainerClient(CosmosContainer leaseCosmosClient);
+        BuilderDefinition leaseContainer(CosmosContainer leaseContainer);
 
         /**
          * Builds a new instance of the {@link ChangeFeedProcessor} with the specified configuration asynchronously.

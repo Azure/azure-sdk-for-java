@@ -59,8 +59,8 @@ import java.util.function.Consumer;
  * {@code
  *  ChangeFeedProcessor.Builder()
  *     .hostName(hostName)
- *     .feedContainerClient(feedContainer)
- *     .leaseContainerClient(leaseContainer)
+ *     .feedContainer(feedContainer)
+ *     .leaseContainer(leaseContainer)
  *     .handleChanges(docs -> {
  *         // Implementation for handling and processing CosmosItemProperties list goes here
  *      })
@@ -73,6 +73,11 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
+    private static final int DefaultQueryPartitionsMaxBatchSize = 100;
+
+    private int queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
+    private int degreeOfParallelism = 25; // default
+
 
     private String hostName;
     private ChangeFeedContextClient feedContextClient;
@@ -128,7 +133,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl feedContainerClient(CosmosContainer feedDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl feedContainer(CosmosContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
         }
@@ -217,7 +222,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl leaseContainerClient(CosmosContainer leaseDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosContainer leaseDocumentClient) {
         if (leaseDocumentClient == null) {
             throw new IllegalArgumentException("leaseContextClient");
         }
@@ -319,6 +324,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     public ChangeFeedProcessorBuilderImpl() {
+        this.queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
+        this.degreeOfParallelism = 25; // default
     }
 
     public ChangeFeedProcessorBuilderImpl(PartitionManager partitionManager) {
@@ -411,8 +418,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             this.feedContextClient.getContainerClient(),
             leaseStoreManager,
             leaseStoreManager,
-            this.changeFeedProcessorOptions.degreeOfParallelism(),
-            this.changeFeedProcessorOptions.queryPartitionsMaxBatchSize()
+            this.degreeOfParallelism,
+            this.queryPartitionsMaxBatchSize
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
@@ -431,8 +438,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         if (this.loadBalancingStrategy == null) {
             this.loadBalancingStrategy = new EqualPartitionsBalancingStrategy(
                 this.hostName,
-                this.changeFeedProcessorOptions.minPartitionCount(),
-                this.changeFeedProcessorOptions.maxPartitionCount(),
+                this.changeFeedProcessorOptions.minScaleCount(),
+                this.changeFeedProcessorOptions.maxScaleCount(),
                 this.changeFeedProcessorOptions.leaseExpirationInterval());
         }
 

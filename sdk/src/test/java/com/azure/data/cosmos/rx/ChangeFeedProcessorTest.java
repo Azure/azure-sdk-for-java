@@ -89,8 +89,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
             })
-            .feedContainerClient(createdFeedCollection)
-            .leaseContainerClient(createdLeaseCollection)
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
             .options(new ChangeFeedProcessorOptions()
                 .leaseRenewInterval(Duration.ofSeconds(20))
                 .leaseAcquireInterval(Duration.ofSeconds(10))
@@ -99,11 +99,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .leasePrefix("TEST")
                 .maxItemCount(10)
                 .startFromBeginning(true)
-                .minPartitionCount(1)
-                .maxPartitionCount(3)
+                .maxScaleCount(0) // unlimited
                 .discardExistingLeases(true)
-                .queryPartitionsMaxBatchSize(2)
-                .degreeOfParallelism(1)
             )
             .build();
 
@@ -148,8 +145,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
             })
-            .feedContainerClient(createdFeedCollection)
-            .leaseContainerClient(createdLeaseCollection)
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
             .options(new ChangeFeedProcessorOptions()
                 .leaseRenewInterval(Duration.ofSeconds(20))
                 .leaseAcquireInterval(Duration.ofSeconds(10))
@@ -158,11 +155,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .leasePrefix("TEST")
                 .maxItemCount(10)
                 .startTime(OffsetDateTime.now().minusDays(1))
-                .minPartitionCount(1)
-                .maxPartitionCount(3)
+                .minScaleCount(1)
+                .maxScaleCount(3)
                 .discardExistingLeases(true)
-                .queryPartitionsMaxBatchSize(2)
-                .degreeOfParallelism(2)
             )
             .build();
 

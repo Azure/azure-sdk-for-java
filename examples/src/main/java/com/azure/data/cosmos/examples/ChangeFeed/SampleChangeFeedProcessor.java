@@ -105,8 +105,8 @@ public class SampleChangeFeedProcessor {
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosContainer feedContainer, CosmosContainer leaseContainer) {
         return ChangeFeedProcessor.Builder()
             .hostName(hostName)
-            .feedContainerClient(feedContainer)
-            .leaseContainerClient(leaseContainer)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
             .handleChanges(docs -> {
                 System.out.println("--->handleChanges() START");
 

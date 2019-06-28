@@ -78,8 +78,8 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             workerCount,
             expiredLeases.Count,
             target,
-            this.minPartitionCount,
-            this.maxPartitionCount,
+            this.minScaleCount,
+            this.maxScaleCount,
             myCount,
             Math.Max(partitionsNeededForMe, 0));
             */

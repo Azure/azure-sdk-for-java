@@ -25,8 +25,10 @@ package com.azure.data.cosmos;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
+/**
+ * Specifies the options associated with {@link ChangeFeedProcessor}.
+ */
 public class ChangeFeedProcessorOptions {
-    private static final int DefaultQueryPartitionsMaxBatchSize = 100;
     private static Duration DefaultRenewInterval =  Duration.ofMillis(0).plusSeconds(17);
     private static Duration DefaultAcquireInterval = Duration.ofMillis(0).plusSeconds(13);
     private static Duration DefaultExpirationInterval = Duration.ofMillis(0).plusSeconds(60);
@@ -42,12 +44,9 @@ public class ChangeFeedProcessorOptions {
     private String startContinuation;
     private OffsetDateTime startTime;
     private boolean startFromBeginning;
-    private String sessionToken;
-    private int minPartitionCount;
-    private int maxPartitionCount;
+    private int minScaleCount;
+    private int maxScaleCount;
     private boolean discardExistingLeases;
-    private int queryPartitionsMaxBatchSize;
-    private int degreeOfParallelism;
 
     public ChangeFeedProcessorOptions() {
         this.maxItemCount = 100;
@@ -56,9 +55,7 @@ public class ChangeFeedProcessorOptions {
         this.leaseAcquireInterval = DefaultAcquireInterval;
         this.leaseExpirationInterval = DefaultExpirationInterval;
         this.feedPollDelay = DefaultFeedPollDelay;
-        this.queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-        this.maxPartitionCount = 0; // unlimited
-        this.degreeOfParallelism = 25; // default
+        this.maxScaleCount = 0; // unlimited
     }
 
     /**
@@ -279,50 +276,15 @@ public class ChangeFeedProcessorOptions {
     }
 
     /**
-     * Sets a value indicating whether change feed in the Azure Cosmos DB service should start from beginning.
-     * <p>
-     * This is only used when:
-     *   (1) Lease store is not initialized and is ignored if a lease for partition exists and has continuation token.
-     *   (2) StartContinuation is not specified.
-     *   (3) StartTime is not specified.
-     *
-     * @return the current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions withoutStartFromBeginning() {
-        this.startFromBeginning = false;
-        return this;
-    }
-
-    /**
-     * Gets the session token for use with session consistency in the Azure Cosmos DB service.
-     *
-     * @return the session token for use with session consistency in the Azure Cosmos DB service.
-     */
-    public String sessionToken() {
-        return this.sessionToken;
-    }
-
-    /**
-     * Sets the session token for use with session consistency in the Azure Cosmos DB service.
-     *
-     * @param sessionToken the session token for use with session consistency in the Azure Cosmos DB service.
-     * @return the current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions sessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
-        return this;
-    }
-
-    /**
      * Gets the minimum partition count for the host.
      * <p>
      * This can be used to increase the number of partitions for the host and thus override equal distribution (which
      *   is the default) of leases between hosts.
      *
-     * @return the minimum partition count for the host.
+     * @return the minimum scale count for the host.
      */
-    public int minPartitionCount() {
-        return this.minPartitionCount;
+    public int minScaleCount() {
+        return this.minScaleCount;
     }
 
     /**
@@ -331,11 +293,11 @@ public class ChangeFeedProcessorOptions {
      * This can be used to increase the number of partitions for the host and thus override equal distribution (which
      *   is the default) of leases between hosts.
      *
-     * @param minPartitionCount the minimum partition count for the host.
+     * @param minScaleCount the minimum partition count for the host.
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    public ChangeFeedProcessorOptions minPartitionCount(int minPartitionCount) {
-        this.minPartitionCount = minPartitionCount;
+    public ChangeFeedProcessorOptions minScaleCount(int minScaleCount) {
+        this.minScaleCount = minScaleCount;
         return this;
     }
 
@@ -347,18 +309,18 @@ public class ChangeFeedProcessorOptions {
      *
      * @return the maximum number of partitions the host can serve.
      */
-    public int maxPartitionCount() {
-        return this.maxPartitionCount;
+    public int maxScaleCount() {
+        return this.maxScaleCount;
     }
 
     /**
      * Sets the maximum number of partitions the host can serve.
      *
-     * @param maxPartitionCount the maximum number of partitions the host can serve.
+     * @param maxScaleCount the maximum number of partitions the host can serve.
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    public ChangeFeedProcessorOptions maxPartitionCount(int maxPartitionCount) {
-        this.maxPartitionCount = maxPartitionCount;
+    public ChangeFeedProcessorOptions maxScaleCount(int maxScaleCount) {
+        this.maxScaleCount = maxScaleCount;
         return this;
     }
 
@@ -381,46 +343,6 @@ public class ChangeFeedProcessorOptions {
      */
     public ChangeFeedProcessorOptions discardExistingLeases(boolean discardExistingLeases) {
         this.discardExistingLeases = discardExistingLeases;
-        return this;
-    }
-
-    /**
-     * Gets the Batch size of query partitions API.
-     *
-     * @return the Batch size of query partitions API.
-     */
-    public int queryPartitionsMaxBatchSize() {
-        return this.queryPartitionsMaxBatchSize;
-    }
-
-    /**
-     * Sets the Batch size of query partitions API.
-     *
-     * @param queryPartitionsMaxBatchSize the Batch size of query partitions API.
-     * @return the current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions queryPartitionsMaxBatchSize(int queryPartitionsMaxBatchSize) {
-        this.queryPartitionsMaxBatchSize = queryPartitionsMaxBatchSize;
-        return this;
-    }
-
-    /**
-     * Gets maximum number of tasks to use for auxiliary calls.
-     *
-     * @return maximum number of tasks to use for auxiliary calls.
-     */
-    public int degreeOfParallelism() {
-        return this.degreeOfParallelism;
-    }
-
-    /**
-     * Sets maximum number of tasks to use for auxiliary calls.
-     *
-     * @param defaultQueryPartitionsMaxBatchSize maximum number of tasks to use for auxiliary calls.
-     * @return the current ChangeFeedProcessorOptions instance.
-     */
-    public ChangeFeedProcessorOptions degreeOfParallelism(int defaultQueryPartitionsMaxBatchSize) {
-        this.queryPartitionsMaxBatchSize = queryPartitionsMaxBatchSize;
         return this;
     }
 }
