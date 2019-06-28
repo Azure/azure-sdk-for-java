@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - script: |
-          wget https://oss.sonatype.org/content/repositories/snapshots/com/microsoft/azure/azure-mgmt-resources/1.9.1-SNAPSHOT/maven-metadata.xml --verbose -S
+          wget https://oss.sonatype.org/content/repositories/snapshots/com/microsoft/azure/azure-mgmt-resources/1.9.1-SNAPSHOT/maven-metadata.xml --verbose -S --no-cache
 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
