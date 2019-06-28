@@ -291,13 +291,13 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[amqp_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
+[amqp_exception]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [api_documentation]: https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html
 [app_registration_page]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
-[error_condition]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
-[error_context]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
+[error_condition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
+[error_context]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
 [event_hubs_connection_string]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
 [event_hubs_create]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create
 [event_hubs_features]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-features
@@ -308,7 +308,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [eventhubconsumer]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
 [eventhubproduceroptions]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[log_levels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [maven]: https://maven.apache.org/
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
