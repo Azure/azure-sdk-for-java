@@ -89,7 +89,7 @@ jobs:
         displayName: 'Install Data Packages'
         inputs:
           mavenPomFile: pom.data.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dmaven.javadoc.skip=true -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.8'
