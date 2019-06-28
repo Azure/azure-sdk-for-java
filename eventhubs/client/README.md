@@ -17,7 +17,7 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
   the transformed events to a new stream for consumers to observe.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
-documentation][event_hubs_product_docs]
+documentation][event_hubs_product_docs] | [Samples][event_hubs_samples]
 
 ## Getting started
 
@@ -93,8 +93,8 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ## Examples
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_send_event]
-- [Consume events from an Event Hub partition][sample_receive_event]
+- [Publish an event to an Event Hub][sample_publish_event]
+- [Consume events from an Event Hub partition][sample_consume_event]
 
 ### Publish events to an Event Hub
 
@@ -283,3 +283,4 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [event_hubs_quotas]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas
+[event_hubs_samples]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java
