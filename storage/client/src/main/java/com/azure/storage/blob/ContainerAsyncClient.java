@@ -165,9 +165,27 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
+        return getAppendBlobAsyncClient(blobName, null);
+    }
+
+    /**
+     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of
+     * ContainerAsyncClient's URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
+     * To change the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the
+     * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
+     * NewAppendBlobAsyncClient method.
+     *
+     * @param blobName
+     *         A {@code String} representing the name of the blob.
+     * @param snapshot
+     *         the snapshot identifier for the blob.
+     *
+     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
+     */
+    public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()));
+            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
     }
 
     /**

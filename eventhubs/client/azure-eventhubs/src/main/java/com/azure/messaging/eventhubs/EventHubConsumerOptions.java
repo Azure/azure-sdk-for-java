@@ -12,10 +12,13 @@ import java.util.Locale;
 import java.util.Optional;
 
 /**
- * Options when receiving events from Event Hubs.
+ * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its
+ * behavior.
+ *
+ * @see EventHubConsumer
+ * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumerOptions implements Cloneable {
-
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -50,7 +53,8 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @param identifier The receiver name.
      * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException if {@code identifier} is greater than {@link #MAXIMUM_IDENTIFIER_LENGTH}.
+     * @throws IllegalArgumentException if {@code identifier} is greater than {@link
+     *         #MAXIMUM_IDENTIFIER_LENGTH}.
      */
     public EventHubConsumerOptions identifier(String identifier) {
         if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
@@ -67,8 +71,8 @@ public class EventHubConsumerOptions implements Cloneable {
      * Sets the {@code ownerLevel} value on this consumer. When populated, the level indicates that a consumer is
      * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
      * this consumer will attempt to assert ownership over the partition; in the case where more than one exclusive
-     * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger
-     * {@link EventHubConsumerOptions#ownerLevel()} value will "win".
+     * consumer attempts to assert ownership for the same partition/consumer group pair, the one having a larger {@link
+     * EventHubConsumerOptions#ownerLevel()} value will "win".
      *
      * <p>
      * When an exclusive consumer is used, those consumers which are not exclusive or which have a lower priority will
@@ -76,8 +80,8 @@ public class EventHubConsumerOptions implements Cloneable {
      * operation.
      * </p>
      *
-     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this value
-     *         should be {@code null}.
+     * @param priority The priority associated with an exclusive consumer; for a non-exclusive consumer, this
+     *         value should be {@code null}.
      * @return The updated {@link EventHubConsumerOptions} object.
      * @throws IllegalArgumentException if {@code priority} is not {@code null} and is less than 0.
      */
@@ -108,8 +112,8 @@ public class EventHubConsumerOptions implements Cloneable {
      *
      * @param prefetchCount The amount of events to queue locally.
      * @return The updated {@link EventHubConsumerOptions} object.
-     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link #MINIMUM_PREFETCH_COUNT} or
-     *         greater than {@link #MAXIMUM_PREFETCH_COUNT}.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than the {@link
+     *         #MINIMUM_PREFETCH_COUNT} or greater than {@link #MAXIMUM_PREFETCH_COUNT}.
      */
     public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
@@ -139,9 +143,8 @@ public class EventHubConsumerOptions implements Cloneable {
     }
 
     /**
-     * Gets the optional text-based identifier label to assign to an event receiver.
-     * The identifier is used for informational purposes only.  If not specified, the receiver will have no assigned
-     * identifier label.
+     * Gets the optional text-based identifier label to assign to an event receiver. The identifier is used for
+     * informational purposes only. If not specified, the receiver will have no assigned identifier label.
      *
      * @return The identifier of the receiver.
      */

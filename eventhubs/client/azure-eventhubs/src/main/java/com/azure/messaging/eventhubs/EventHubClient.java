@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
@@ -34,6 +35,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
+ *
+ * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
+ *
+ * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
+ *
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
+ *
+ * @see EventHubClientBuilder
+ * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
 public class EventHubClient implements Closeable {
     /**
@@ -44,6 +56,7 @@ public class EventHubClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
+    private final ClientLogger logger = new ClientLogger(EventHubClient.class);
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
@@ -147,39 +160,41 @@ public class EventHubClient implements Closeable {
             linkName = StringUtil.getRandomString("PS");
         }
 
-        final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath)
-            .flatMap(session -> session.createProducer(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
-                .cast(AmqpSendLink.class)))
-            .publish(x -> x);
+        final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
+            .flatMap(session -> {
+                logger.asInfo().log("Creating producer.");
+                return session.createProducer(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
+                    .cast(AmqpSendLink.class);
+            });
 
         return new EventHubProducer(amqpLinkMono, clonedOptions);
     }
 
     /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition,
-     * as a member of the specified consumer group, and begins reading events from the {@code eventPosition}.
+     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
+     * member of the specified consumer group, and begins reading events from the {@code eventPosition}.
      *
      * The consumer created is non-exclusive, allowing multiple consumers from the same consumer group to be actively
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers".
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
-     *         context of this group. The name of the consumer group that is created by default is
-     *         {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
+     *         the context of this group. The name of the consumer group that is created by default is {@link
+     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @return A new {@link EventHubConsumer} that receives events from the partition at the given position.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
-     *         string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
+     *         empty string.
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition) {
         return createConsumer(consumerGroup, partitionId, eventPosition, defaultConsumerOptions);
     }
 
     /**
-     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition,
-     * as a member of the configured consumer group, and begins reading events from the specified {@code eventPosition}.
+     * Creates an Event Hub consumer responsible for reading {@link EventData} from a specific Event Hub partition, as a
+     * member of the configured consumer group, and begins reading events from the specified {@code eventPosition}.
      *
      * <p>
      * A consumer may be exclusive, which asserts ownership over the partition for the consumer group to ensure that
@@ -190,22 +205,22 @@ public class EventHubClient implements Closeable {
      * reading events from the partition. These non-exclusive consumers are sometimes referred to as "Non-epoch
      * Consumers."
      *
-     * Designating a consumer as exclusive may be specified in the {@code options}, by setting
-     * {@link EventHubConsumerOptions#ownerLevel(Long)} to a non-null value. By default, consumers are
-     * created as non-exclusive.
+     * Designating a consumer as exclusive may be specified in the {@code options}, by setting {@link
+     * EventHubConsumerOptions#ownerLevel(Long)} to a non-null value. By default, consumers are created as
+     * non-exclusive.
      * </p>
      *
-     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in the
-     *         context of this group. The name of the consumer group that is created by default is
-     *         {@link #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
+     * @param consumerGroup The name of the consumer group this consumer is associated with. Events are read in
+     *         the context of this group. The name of the consumer group that is created by default is {@link
+     *         #DEFAULT_CONSUMER_GROUP_NAME "$Default"}.
      * @param partitionId The identifier of the Event Hub partition from which events will be received.
      * @param eventPosition The position within the partition where the consumer should begin reading events.
      * @param options The set of options to apply when creating the consumer.
-     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured
-     *         {@link EventHubConsumerOptions}.
+     * @return An new {@link EventHubConsumer} that receives events from the partition with all configured {@link
+     *         EventHubConsumerOptions}.
      * @throws NullPointerException If {@code eventPosition}, or {@code options} is {@code null}.
-     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an empty
-     *         string.
+     * @throws IllegalArgumentException If {@code consumerGroup} or {@code partitionId} is {@code null} or an
+     *         empty string.
      */
     public EventHubConsumer createConsumer(String consumerGroup, String partitionId, EventPosition eventPosition,
                                            EventHubConsumerOptions options) {
@@ -230,20 +245,20 @@ public class EventHubClient implements Closeable {
         final String linkName = StringUtil.getRandomString("PR");
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT, eventHubPath, consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
-            .cast(EventHubSession.class)
-            .flatMap(session -> {
-                return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
-                    clonedOptions.retry(), options.ownerLevel(), options.identifier());
-            })
-            .cast(AmqpReceiveLink.class);
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
+            return connection.createSession(entityPath).cast(EventHubSession.class);
+        }).flatMap(session -> {
+            logger.asInfo().log("Creating consumer.");
+            return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
+                clonedOptions.retry(), options.ownerLevel(), options.identifier()).cast(AmqpReceiveLink.class);
+        });
 
         return new EventHubConsumer(receiveLinkMono, clonedOptions, connectionOptions.timeout());
     }
 
     /**
-     * Closes and disposes of connection to service. Any {@link EventHubConsumer EventHubConsumers} and
-     * {@link EventHubProducer EventHubProducers} created with this instance will have their connections closed.
+     * Closes and disposes of connection to service. Any {@link EventHubConsumer EventHubConsumers} and {@link
+     * EventHubProducer EventHubProducers} created with this instance will have their connections closed.
      */
     @Override
     public void close() {

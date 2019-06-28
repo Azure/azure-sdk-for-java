@@ -60,7 +60,10 @@ public final class AppendBlobClientBuilder {
     private String endpoint;
     private String containerName;
     private String blobName;
-    private HttpPipelinePolicy credentialPolicy;
+    private String snapshot;
+    private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
+    private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -87,11 +90,15 @@ public final class AppendBlobClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (sharedKeyCredential != null) {
+            policies.add(new SharedKeyCredentialPolicy(sharedKeyCredential));
+        } else if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+        } else if (sasTokenCredential != null) {
+            policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-        }
+}
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -119,7 +126,7 @@ public final class AppendBlobClientBuilder {
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      */
     public AppendBlobAsyncClient buildAsyncClient() {
-        return new AppendBlobAsyncClient(buildImpl());
+        return new AppendBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
@@ -141,6 +148,10 @@ public final class AppendBlobClientBuilder {
 
             if (parts.blobName() != null) {
                 this.blobName = parts.blobName();
+            }
+
+            if (parts.snapshot() != null) {
+                this.snapshot = parts.snapshot();
             }
         } catch (MalformedURLException | UnknownHostException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
@@ -175,12 +186,24 @@ public final class AppendBlobClientBuilder {
     }
 
     /**
+     * Sets the snapshot of the blob this client is connecting to.
+     * @param snapshot the snapshot identifier for the blob
+     * @return the updated AppendBlobClientBuilder object
+     */
+    public AppendBlobClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SharedKeyCredential credential) {
-        this.credentialPolicy = new SharedKeyCredentialPolicy(credential);
+        this.sharedKeyCredential = credential;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -190,7 +213,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(TokenCredential credential) {
-        this.credentialPolicy = new BearerTokenAuthenticationPolicy(credential);
+        this.tokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -200,7 +225,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder credential(SASTokenCredential credential) {
-        this.credentialPolicy = new SASTokenCredentialPolicy(credential);
+        this.sasTokenCredential = credential;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
         return this;
     }
 
@@ -209,7 +236,9 @@ public final class AppendBlobClientBuilder {
      * @return the updated AppendBlobClientBuilder object
      */
     public AppendBlobClientBuilder anonymousCredential() {
-        this.credentialPolicy = null;
+        this.sharedKeyCredential = null;
+        this.tokenCredential = null;
+        this.sasTokenCredential = null;
         return this;
     }
 

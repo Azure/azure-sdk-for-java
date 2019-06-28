@@ -22,6 +22,11 @@
   <description>Package for generating test coverage report for Azure Client Libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <properties>
+    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
+  </properties>
+
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
@@ -64,21 +69,26 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>${version}</version>
+      <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>tracing-opentelemetry</artifactId>
+      <version>${version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
       <version>${version}</version>
     </dependency>
     <!-- Not required for jacoco test coverage report -->

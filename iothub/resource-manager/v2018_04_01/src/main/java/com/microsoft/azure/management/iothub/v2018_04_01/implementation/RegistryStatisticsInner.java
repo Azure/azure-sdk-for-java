@@ -33,7 +33,7 @@ public class RegistryStatisticsInner {
     private Long disabledDeviceCount;
 
     /**
-     * Get the totalDeviceCount value.
+     * Get the total count of devices in the identity registry.
      *
      * @return the totalDeviceCount value
      */
@@ -42,7 +42,7 @@ public class RegistryStatisticsInner {
     }
 
     /**
-     * Get the enabledDeviceCount value.
+     * Get the count of enabled devices in the identity registry.
      *
      * @return the enabledDeviceCount value
      */
@@ -51,7 +51,7 @@ public class RegistryStatisticsInner {
     }
 
     /**
-     * Get the disabledDeviceCount value.
+     * Get the count of disabled devices in the identity registry.
      *
      * @return the disabledDeviceCount value
      */

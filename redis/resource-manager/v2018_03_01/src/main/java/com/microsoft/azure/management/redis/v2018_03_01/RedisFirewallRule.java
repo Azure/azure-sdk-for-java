@@ -69,6 +69,9 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
         interface WithRedis {
            /**
             * Specifies resourceGroupName, cacheName.
+            * @param resourceGroupName The name of the resource group
+            * @param cacheName The name of the Redis cache
+            * @return the next definition stage
             */
             WithEndIP withExistingRedis(String resourceGroupName, String cacheName);
         }
@@ -79,6 +82,8 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
         interface WithEndIP {
            /**
             * Specifies endIP.
+            * @param endIP highest IP address included in the range
+            * @return the next definition stage
             */
             WithStartIP withEndIP(String endIP);
         }
@@ -89,6 +94,8 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
         interface WithStartIP {
            /**
             * Specifies startIP.
+            * @param startIP lowest IP address included in the range
+            * @return the next definition stage
             */
             WithCreate withStartIP(String startIP);
         }

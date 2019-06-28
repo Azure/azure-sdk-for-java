@@ -93,12 +93,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          */
         Flux<ByteBuf> bufferedBody = httpRequest.body() == null
                 ? null : httpRequest.body().map(ByteBuf::duplicate);
-        httpRequest.withBody(bufferedBody);
+        httpRequest.body(bufferedBody);
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(httpRequest.url());
-            builder.withHost(this.requestRetryOptions.secondaryHost());
+            builder.host(this.requestRetryOptions.secondaryHost());
             try {
-                httpRequest.withUrl(builder.toURL());
+                httpRequest.url(builder.toURL());
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

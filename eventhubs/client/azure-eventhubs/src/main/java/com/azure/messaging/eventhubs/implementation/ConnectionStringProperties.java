@@ -15,6 +15,7 @@ import java.util.Locale;
 public class ConnectionStringProperties {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
+    private static final String SCHEME = "sb";
     private static final String ENDPOINT = "Endpoint";
     private static final String SHARED_ACCESS_KEY_NAME = "SharedAccessKeyName";
     private static final String SHARED_ACCESS_KEY = "SharedAccessKey";
@@ -61,16 +62,24 @@ public class ConnectionStringProperties {
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
                 }
+
+                if (!SCHEME.equalsIgnoreCase(endpoint.getScheme())) {
+                    throw new IllegalArgumentException(String.format(Locale.US,
+                        "Endpoint is not the correct scheme. Expected: %s. Actual Endpoint: %s", SCHEME, endpoint.toString()));
+                }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY)) {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
                 eventHubPath = value;
+            } else {
+                throw new IllegalArgumentException(
+                    String.format(Locale.US, "Illegal connection string parameter name: %s", key));
             }
         }
 
-        if (endpoint == null || sharedAccessKeyName == null || sharedAccessKeyValue == null || eventHubPath == null) {
+        if (endpoint == null || sharedAccessKeyName == null || sharedAccessKeyValue == null) {
             throw new IllegalArgumentException(String.format(Locale.US, ERROR_MESSAGE_FORMAT, connectionString));
         }
 

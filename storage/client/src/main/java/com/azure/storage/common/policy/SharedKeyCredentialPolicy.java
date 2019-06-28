@@ -29,7 +29,7 @@ public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
         String authorizationValue = credential.generateAuthorizationHeader(context.httpRequest().url(),
             context.httpRequest().httpMethod().toString(),
             context.httpRequest().headers().toMap());
-        context.httpRequest().withHeader("Authorization", authorizationValue);
+        context.httpRequest().header("Authorization", authorizationValue);
         return next.process();
     }
 }

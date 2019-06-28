@@ -7,18 +7,18 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure.eventhub.v2017_04_01</groupId>
+    <groupId>com.microsoft.azure.eventhubs.v2017_04_01</groupId>
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>1.1.0</version>
-        <relativePath>../../../pom.management.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-eventhub</artifactId>
+    <artifactId>azure-mgmt-eventhubs</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for EventHub Management</name>
-    <description>This package contains Microsoft EventHub Management SDK.</description>
+    <name>Microsoft Azure SDK for EventHubs Management</name>
+    <description>This package contains Microsoft EventHubs Management SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>

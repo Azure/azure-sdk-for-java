@@ -27,6 +27,8 @@ class ReactorExecutor implements Closeable {
 
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
+
     private final Object lock = new Object();
     private final Reactor reactor;
     private final Scheduler scheduler;
@@ -71,17 +73,14 @@ class ReactorExecutor implements Closeable {
         scheduler.schedule(this::run);
     }
 
-    boolean hasStarted() {
-        return hasStarted.get();
-    }
-
     /**
      * Worker loop that tries to process events in the reactor. If there are pending items to process, will reschedule
      * the run() method again.
      */
     private void run() {
-        if (!hasStarted.get()) {
-            logger.asWarning().log("Cannot start ReactorExecutor if ReactorExecutor.start() has not invoked.");
+        // If this hasn't been disposed of, and we're trying to run work items on it, log a warning and return.
+        if (!isDisposed.get() && !hasStarted.get()) {
+            logger.asWarning().log("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
             return;
         }
 
@@ -166,7 +165,9 @@ class ReactorExecutor implements Closeable {
 
     @Override
     public void close() {
-        close(true, "Dispose called.");
+        if (!isDisposed.getAndSet(true)) {
+            close(true, "ReactorExecutor.close() was called.");
+        }
     }
 
     private void close(boolean isUserInitialized, String reason) {
