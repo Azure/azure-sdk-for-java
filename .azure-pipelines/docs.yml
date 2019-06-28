@@ -129,5 +129,5 @@ jobs:
         displayName: 'Publish reports artifact'
         inputs:
           artifactName: track1reports
-          targetPath: $(Build.ArtifactStagingDirectory)
+          targetPath: $(Build.ArtifactStagingDirectory)/data
 
