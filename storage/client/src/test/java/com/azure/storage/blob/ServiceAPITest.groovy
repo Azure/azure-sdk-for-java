@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.*
+import com.azure.storage.common.policy.RequestRetryOptions
 import org.junit.Assume
 
 import java.time.OffsetDateTime
@@ -113,28 +114,13 @@ class ServiceAPITest extends APISpec {
                 .blockingGet().body().containerItems().size() == 10
     }*/
 
-    // TODO (alzimmer): Turn this test back on when listing by page is implemented
+    // TODO (alzimmer): Turn this test back on when listing by page is implemented as this requires being able to set a marker
     /*def "List containers error"() {
         when:
         primaryServiceURL.listContainers("garbage", null, null).blockingGet()
 
         then:
         thrown(StorageException)
-    }*/
-
-    /*def "List containers context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceListContainersSegmentHeaders)))
-
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.listContainersSegment(null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
     }*/
 
     def validatePropsSet(StorageServiceProperties sent, StorageServiceProperties received) {
@@ -257,21 +243,6 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Set props context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceSetPropertiesHeaders)))
-
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.setProperties(new StorageServiceProperties(), defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Get props min"() {
         expect:
         primaryServiceURL.getProperties().statusCode() == 200
@@ -288,21 +259,6 @@ class ServiceAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get props context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetPropertiesHeaders)))
-
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.getProperties(defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Get UserDelegationKey"() {
         setup:
@@ -346,21 +302,6 @@ class ServiceAPITest extends APISpec {
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
     }
 
-    /*def "Get UserDelegationKey context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetUserDelegationKeyHeaders)))
-
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.getUserDelegationKey(null, OffsetDateTime.now(), defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Get stats"() {
         setup:
         Response<StorageServiceStats> response = primaryServiceURL.getStatistics()
@@ -385,21 +326,6 @@ class ServiceAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get stats context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetStatisticsHeaders)))
-
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.getStatistics(defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Get account info"() {
         when:
@@ -429,34 +355,22 @@ class ServiceAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Get account info context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, ServiceGetAccountInfoHeaders)))
 
-        def su = primaryServiceURL.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        su.getAccountInfo(defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
-
-    /*// This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
+    // This test validates a fix for a bug that caused NPE to be thrown when the account did not exist.
     def "Invalid account name"() {
         setup:
-        def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def po = new PipelineOptions().requestRetryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
-        def sURL = new ServiceURL(badURL, StorageURL.createPipeline(primaryCreds, po))
+        URL badURL = new URL("http://fake.blobfake.core.windows.net")
+        StorageClient client = new StorageClientBuilder()
+            .endpoint(badURL.toString())
+            .credential(primaryCreds)
+            .retryOptions(new RequestRetryOptions(null, 2, null, null, null, null))
+            .buildClient()
 
         when:
-        sURL.getProperties().blockingGet()
+        client.getProperties()
 
         then:
         def e = thrown(RuntimeException)
         e.getCause() instanceof UnknownHostException
-    }*/
+    }
 }
