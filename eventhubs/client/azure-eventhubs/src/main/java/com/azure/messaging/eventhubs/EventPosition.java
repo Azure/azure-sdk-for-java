@@ -15,8 +15,10 @@ import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
- * Defines a position of an {@link EventData} in the event hub partition.
- * The position can be an Offset, Sequence Number, or EnqueuedTime.
+ * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
+ * number, or enqueued time.
+ *
+ * @see EventHubConsumer
  */
 public final class EventPosition {
     /**
@@ -25,9 +27,9 @@ public final class EventPosition {
     private static final String START_OF_STREAM = "-1";
 
     /**
-     * This is a constant defined to represent the current end of a partition stream in EventHub.
-     * This can be used as an offset argument in receiver creation to start receiving from the latest
-     * event, instead of a specific offset or point in time.
+     * This is a constant defined to represent the current end of a partition stream in EventHub. This can be used as an
+     * offset argument in receiver creation to start receiving from the latest event, instead of a specific offset or
+     * point in time.
      */
     private static final String END_OF_STREAM = "@latest";
 
@@ -45,10 +47,10 @@ public final class EventPosition {
     }
 
     /**
-     * Returns the position for the start of a stream. Provide this position in receiver creation
-     * to start receiving from the first available (earliest) event in the partition.
+     * Corresponds to the location of the first event present in the partition. Use this position to begin receiving
+     * from the first event that was enqueued in the partition which has not expired due to the retention policy.
      *
-     * @return An {@link EventPosition} set to the start of an Event Hubs stream.
+     * @return An {@link EventPosition} set to the start of an Event Hub stream.
      */
     public static EventPosition earliest() {
         return EARLIEST;
@@ -56,8 +58,8 @@ public final class EventPosition {
 
     /**
      * Corresponds to the end of the partition, where no more events are currently enqueued. Use this position to begin
-     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumer} is created with this
-     * position.
+     * receiving from the next event to be enqueued in the partition after an {@link EventHubConsumer} is created with
+     * this position.
      *
      * @return An {@link EventPosition} set to the end of an Event Hubs stream and listens for new events.
      */
@@ -82,6 +84,12 @@ public final class EventPosition {
     /**
      * Corresponds to the event in the partition at the provided offset, inclusive of that event.
      *
+     * <p>
+     * The offset is the relative position for event in the context of the stream. The offset should not be considered a
+     * stable value, as the same offset may refer to a different event as events reach the age limit for retention and
+     * are no longer visible within the stream.
+     * </p>
+     *
      * @param offset The offset of the event within that partition.
      * @return An {@link EventPosition} object.
      */
@@ -90,12 +98,12 @@ public final class EventPosition {
     }
 
     /**
-     * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the
-     * event with the same offset is returned. Otherwise, the next event is received.
+     * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the event
+     * with the same offset is returned. Otherwise, the next event is received.
      *
      * @param offset The offset of an event with respect to its relative position in the
-     * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will be
-     * received.
+     * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will
+     *         be received.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(String offset, boolean isInclusive) {
@@ -107,8 +115,8 @@ public final class EventPosition {
     }
 
     /**
-     * Creates a position at the given sequence number. The specified event will not be included. Instead, the next
-     * event is returned.
+     * Creates a position to an event in the partition at the provided sequence number. The event with the sequence
+     * number will not be included. Instead, the next event is returned.
      *
      * @param sequenceNumber is the sequence number of the event.
      * @return An {@link EventPosition} object.
@@ -122,8 +130,8 @@ public final class EventPosition {
      * number is returned. Otherwise, the next event in the sequence is received.
      *
      * @param sequenceNumber is the sequence number of the event.
-     * @param isInclusive If true, the event with the {@code sequenceNumber} is included; otherwise, the next event will
-     * be received.
+     * @param isInclusive If true, the event with the {@code sequenceNumber} is included; otherwise, the next
+     *         event will be received.
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {

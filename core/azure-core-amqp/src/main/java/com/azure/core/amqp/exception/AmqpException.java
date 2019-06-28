@@ -12,7 +12,7 @@ import java.util.Locale;
  * General exception for AMQP related failures.
  *
  * @see ErrorCondition
- * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">Azure Messaging Exceptions</a>
+ * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging Exceptions</a>
  */
 public class AmqpException extends AzureException {
     private static final long serialVersionUID = -3654294093967132325L;
