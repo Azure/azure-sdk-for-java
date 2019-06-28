@@ -44,7 +44,7 @@ import java.util.Objects;
  * @see ConfigurationAsyncClientBuilder
  * @see ConfigurationClientCredentials
  */
-@ServiceClient(builder = ConfigurationAsyncClientBuilder.class, isAsync = true)
+@ServiceClient(builder = ConfigurationAsyncClientBuilder.class, isAsync = true, service = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 

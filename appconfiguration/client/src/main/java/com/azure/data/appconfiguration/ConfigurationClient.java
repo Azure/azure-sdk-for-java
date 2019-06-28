@@ -29,7 +29,7 @@ import com.azure.core.util.Context;
  * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class, service = ConfigurationService.class)
 public final class ConfigurationClient {
     private final ConfigurationAsyncClient client;
 

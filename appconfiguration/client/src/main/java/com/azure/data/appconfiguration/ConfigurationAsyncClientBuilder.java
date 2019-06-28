@@ -62,7 +62,7 @@ import java.util.Objects;
  * @see ConfigurationClientCredentials
  */
 @ServiceClientBuilder(canBuild = ConfigurationAsyncClient.class)
-public final class ConfigurationAsyncClientBuilder implements ConfigurationService {
+public final class ConfigurationAsyncClientBuilder {
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";

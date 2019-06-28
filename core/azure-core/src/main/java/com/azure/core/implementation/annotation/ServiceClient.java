@@ -28,4 +28,13 @@ public @interface ServiceClient {
      * synchronously (i.e. blocking).
      */
     boolean isAsync() default false;
+
+    /**
+     * Optional field to indicate all the services this service client interacts with.
+     * All classes mentioned in this list should be annotated with {@link ServiceInterface}.
+     * Typically, there's one service associated with each client there could be zero to N services
+     * associated with a single client.
+     * @return An array of all services this service client interacts with
+     */
+    Class<?>[] service() default {};
 }

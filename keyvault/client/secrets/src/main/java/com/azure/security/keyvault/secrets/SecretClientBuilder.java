@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
@@ -48,7 +49,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
  * </pre>
  *
  * @see SecretClient
- * */
+ */
+@ServiceClientBuilder(canBuild = SecretClient.class)
 public final class SecretClientBuilder {
     private final SecretAsyncClientBuilder builder;
 
