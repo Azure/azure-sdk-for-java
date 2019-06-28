@@ -172,9 +172,6 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - script: |
-          nslookup 52.5.130.71
-          wget -S https://oss.sonatype.org/service/local/repositories/snapshots/content/com/microsoft/azure/azure-mgmt-resources/1.3.1-SNAPSHOT/azure-mgmt-resources-1.3.1-20171117.052154-52.jar?describe=info&isLocal=true&_dc=1561759013606 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
           -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
@@ -203,7 +200,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -X'
+          options: '$(DefaultOptions) $(ProfileFlag) -X -Dhttp.proxyHost=104.221.128.132 -Dhttp.proxyPort=3128 -Dhttps.proxyHost=104.221.128.132 -Dhttps.proxyPort=3128'
           mavenOptions: '-Xmx3072m $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
