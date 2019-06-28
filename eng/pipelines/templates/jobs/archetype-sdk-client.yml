@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - script: |
-          ls -Ral ~/.m2/
+          cat $M2_HOME/conf/settings.xml
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
           -OutFile "sdk-tools.zip" | Wait-Process; Expand-Archive -Path "sdk-tools.zip" -DestinationPath "./sdk-tools/"
@@ -203,7 +203,7 @@ jobs:
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '-Xmx3072m $(LoggingOptions)'
+          mavenOptions: '-Xmx3072m $(LoggingOptions) -X'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
