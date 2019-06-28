@@ -14,7 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
-public class EventHubClientBuilderTest {
+public class EventHubClientServiceClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
 

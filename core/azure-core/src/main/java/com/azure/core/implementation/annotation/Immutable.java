@@ -7,14 +7,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * Annotation given to all service client methods that perform network operations.
- * All methods with this annotation should be contained in class annotated with {@link ServiceClient}
+ * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all
+ * fields in this class are final.
  */
-@Target({METHOD})
+@Target({TYPE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface ServiceMethod {
+public @interface Immutable {
 
 }

@@ -45,7 +45,7 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Creates a {@link HttpPipeline} based on options set in the Builder. Every time {@code build()} is
+     * Creates a {@link HttpPipeline} based on options set in the ServiceClientBuilder. Every time {@code build()} is
      * called, a new instance of {@link HttpPipeline} is created.
      *
      * If HttpClient is not set then the {@link HttpClient#createDefault() default HttpClient} is used.

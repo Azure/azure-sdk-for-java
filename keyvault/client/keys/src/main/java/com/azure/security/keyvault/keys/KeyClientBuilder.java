@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 
 
 /**
@@ -47,7 +48,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
  * </pre>
  *
  * @see KeyClient
- * */
+ */
+@ServiceClientBuilder(canBuild = KeyClient.class)
 public final class KeyClientBuilder {
     private KeyAsyncClientBuilder builder;
 
@@ -77,7 +79,7 @@ public final class KeyClientBuilder {
      * Sets the vault endpoint url to send HTTP requests to.
      *
      * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
-     * @return the updated Builder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public KeyClientBuilder endpoint(String endpoint) {
@@ -89,7 +91,7 @@ public final class KeyClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated Builder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public KeyClientBuilder credential(TokenCredential credential) {
@@ -103,7 +105,7 @@ public final class KeyClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated Builder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public KeyClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -116,7 +118,7 @@ public final class KeyClientBuilder {
      * {@link KeyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated Builder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public KeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -128,7 +130,7 @@ public final class KeyClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated Builder object.
+     * @return the updated ServiceClientBuilder object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public KeyClientBuilder httpClient(HttpClient client) {

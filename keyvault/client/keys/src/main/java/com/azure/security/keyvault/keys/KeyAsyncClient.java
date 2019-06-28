@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -52,6 +53,7 @@ import reactor.core.publisher.Mono;
  *
  * @see KeyAsyncClientBuilder
  */
+@ServiceClient(builder = KeyAsyncClientBuilder.class, isAsync = true)
 public final class KeyAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";

@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+@Fluent
 class KeyRequestParameters {
     /**
      * The type of key to create. For valid values, see KeyType.

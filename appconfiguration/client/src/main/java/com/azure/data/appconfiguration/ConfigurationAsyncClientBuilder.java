@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.implementation.annotation.Builder;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
@@ -61,8 +61,8 @@ import java.util.Objects;
  * @see ConfigurationAsyncClient
  * @see ConfigurationClientCredentials
  */
-@Builder(canBuild = ConfigurationAsyncClient.class)
-public final class ConfigurationAsyncClientBuilder {
+@ServiceClientBuilder(canBuild = ConfigurationAsyncClient.class)
+public final class ConfigurationAsyncClientBuilder implements ConfigurationService {
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
@@ -94,7 +94,7 @@ public final class ConfigurationAsyncClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
+     * Creates a {@link ConfigurationAsyncClient} based on options set in the ServiceClientBuilder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.
      *
      * <p>

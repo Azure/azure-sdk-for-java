@@ -18,6 +18,8 @@ public @interface ServiceClient {
 
     /**
      * The builder class that can construct an instance of this class.
+     * All service clients are instantiated using a builder and this is a required field.
+     * Also, builders should be annotated with {@link ServiceClientBuilder}
      */
     Class<?> builder();
 

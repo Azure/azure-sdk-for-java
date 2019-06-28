@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.implementation.annotation.Builder;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.configuration.Configuration;
@@ -44,7 +44,7 @@ import java.net.MalformedURLException;
  * @see ConfigurationClient
  * @see ConfigurationClientCredentials
  */
-@Builder(canBuild = ConfigurationClient.class)
+@ServiceClientBuilder(canBuild = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
     private final ConfigurationAsyncClientBuilder builder;
 
@@ -53,7 +53,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is
+     * Creates a {@link ConfigurationClient} based on options set in the ServiceClientBuilder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationClient} is created.
      *
      * <p>
