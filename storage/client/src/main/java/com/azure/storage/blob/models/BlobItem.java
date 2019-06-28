@@ -6,6 +6,7 @@ package com.azure.storage.blob.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.util.Map;
 
 /**
  * An Azure Storage blob.
@@ -31,12 +32,6 @@ public final class BlobItem {
     private String snapshot;
 
     /*
-     * The versionId property.
-     */
-    @JsonProperty(value = "VersionId", required = true)
-    private String versionId;
-
-    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
@@ -46,7 +41,7 @@ public final class BlobItem {
      * The metadata property.
      */
     @JsonProperty(value = "Metadata")
-    private BlobMetadata metadata;
+    private Map<String, String> metadata;
 
     private boolean isPrefix = false;
 
@@ -111,26 +106,6 @@ public final class BlobItem {
     }
 
     /**
-     * Get the versionId property: The versionId property.
-     *
-     * @return the versionId value.
-     */
-    public String versionId() {
-        return this.versionId;
-    }
-
-    /**
-     * Set the versionId property: The versionId property.
-     *
-     * @param versionId the versionId value to set.
-     * @return the BlobItem object itself.
-     */
-    public BlobItem versionId(String versionId) {
-        this.versionId = versionId;
-        return this;
-    }
-
-    /**
      * Get the properties property: The properties property.
      *
      * @return the properties value.
@@ -155,7 +130,7 @@ public final class BlobItem {
      *
      * @return the metadata value.
      */
-    public BlobMetadata metadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -165,7 +140,7 @@ public final class BlobItem {
      * @param metadata the metadata value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem metadata(BlobMetadata metadata) {
+    public BlobItem metadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }

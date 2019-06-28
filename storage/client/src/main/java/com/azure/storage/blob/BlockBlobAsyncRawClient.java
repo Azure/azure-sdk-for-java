@@ -125,8 +125,8 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, metadata, null, null,
-            null, null, headers, accessConditions.leaseAccessConditions(),
+            null, data, length, null, metadata, null,
+            headers, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
@@ -190,7 +190,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
                                                          LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
             null, base64BlockID, length, data, null, null, null,
-            null, null, null, leaseAccessConditions, Context.NONE));
+            leaseAccessConditions, Context.NONE));
     }
 
     /**
@@ -257,8 +257,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
         return postProcessResponse(
                 this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
                     base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null,
-                    null, null, null, null,
-                    leaseAccessConditions, sourceModifiedAccessConditions, Context.NONE));
+                    null, leaseAccessConditions, sourceModifiedAccessConditions, Context.NONE));
     }
 
     /**
@@ -299,7 +298,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
     public Mono<BlockBlobsGetBlockListResponse> listBlocks(BlockListType listType,
                                                            LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, snapshot, null, null, null,
+            null, null, listType, snapshot, null, null,
             leaseAccessConditions, Context.NONE));
     }
 
@@ -358,7 +357,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
             null, null, new BlockLookupList().latest(base64BlockIDs), null, metadata,
-            null, null, null, null, headers,
+            null, headers,
             accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 }

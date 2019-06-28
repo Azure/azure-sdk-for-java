@@ -18,14 +18,12 @@ public class BlockBlobItem {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
     }
 
     public BlockBlobItem(BlockBlobCommitBlockListHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
     }
 
     public OffsetDateTime lastModified() {

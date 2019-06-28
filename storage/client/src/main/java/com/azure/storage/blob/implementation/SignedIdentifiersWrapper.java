@@ -25,7 +25,7 @@ public final class SignedIdentifiersWrapper {
      * @param signedIdentifiers the list.
      */
     @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifiers") List<SignedIdentifier> signedIdentifiers) {
+    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 

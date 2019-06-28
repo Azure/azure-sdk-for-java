@@ -22,14 +22,12 @@ public class AppendBlobItem {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
     }
 
     public AppendBlobItem(AppendBlobAppendBlockHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
         this.blobAppendOffset = generatedHeaders.blobAppendOffset();
         this.blobCommittedBlockCount = generatedHeaders.blobCommittedBlockCount();
     }

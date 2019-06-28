@@ -20,14 +20,12 @@ public class PageBlobItem {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
     }
 
     public PageBlobItem(PageBlobUploadPagesHeaders generatedHeaders) {
         this.lastModified = generatedHeaders.lastModified();
         this.contentMD5 = generatedHeaders.contentMD5();
         this.isServerEncrypted = generatedHeaders.isServerEncrypted();
-        this.encryptionKeySha256 = generatedHeaders.encryptionKeySha256();
         this.blobSequenceNumber = generatedHeaders.blobSequenceNumber();
     }
 

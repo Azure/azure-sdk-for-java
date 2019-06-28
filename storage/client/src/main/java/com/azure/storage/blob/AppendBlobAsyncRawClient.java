@@ -80,8 +80,8 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
-            null, 0, null, metadata, null, null,
-            null, null, headers, accessConditions.leaseAccessConditions(),
+            null, 0, null, metadata, null,
+            headers, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
@@ -128,8 +128,7 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
             : appendBlobAccessConditions;
 
         return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
-            null, null, data, length, null, null,
-            null, null, null, null,
+            null, null, data, length, null, null, null,
             appendBlobAccessConditions.leaseAccessConditions(),
             appendBlobAccessConditions.appendPositionAccessConditions(),
             appendBlobAccessConditions.modifiedAccessConditions(), Context.NONE));

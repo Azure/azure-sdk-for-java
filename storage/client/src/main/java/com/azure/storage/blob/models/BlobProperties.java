@@ -193,12 +193,6 @@ public final class BlobProperties {
     private ArchiveStatus archiveStatus;
 
     /*
-     * The customerProvidedKeySha256 property.
-     */
-    @JsonProperty(value = "CustomerProvidedKeySha256")
-    private String customerProvidedKeySha256;
-
-    /*
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
@@ -827,29 +821,6 @@ public final class BlobProperties {
      */
     public BlobProperties archiveStatus(ArchiveStatus archiveStatus) {
         this.archiveStatus = archiveStatus;
-        return this;
-    }
-
-    /**
-     * Get the customerProvidedKeySha256 property: The
-     * customerProvidedKeySha256 property.
-     *
-     * @return the customerProvidedKeySha256 value.
-     */
-    public String customerProvidedKeySha256() {
-        return this.customerProvidedKeySha256;
-    }
-
-    /**
-     * Set the customerProvidedKeySha256 property: The
-     * customerProvidedKeySha256 property.
-     *
-     * @param customerProvidedKeySha256 the customerProvidedKeySha256 value to
-     * set.
-     * @return the BlobProperties object itself.
-     */
-    public BlobProperties customerProvidedKeySha256(String customerProvidedKeySha256) {
-        this.customerProvidedKeySha256 = customerProvidedKeySha256;
         return this;
     }
 

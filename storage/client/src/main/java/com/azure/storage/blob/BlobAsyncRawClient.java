@@ -5,7 +5,33 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.BlobsAbortCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
+import com.azure.storage.blob.models.BlobsBreakLeaseResponse;
+import com.azure.storage.blob.models.BlobsChangeLeaseResponse;
+import com.azure.storage.blob.models.BlobsCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsCreateSnapshotResponse;
+import com.azure.storage.blob.models.BlobsDeleteResponse;
+import com.azure.storage.blob.models.BlobsGetAccountInfoResponse;
+import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
+import com.azure.storage.blob.models.BlobsReleaseLeaseResponse;
+import com.azure.storage.blob.models.BlobsRenewLeaseResponse;
+import com.azure.storage.blob.models.BlobsSetHTTPHeadersResponse;
+import com.azure.storage.blob.models.BlobsSetMetadataResponse;
+import com.azure.storage.blob.models.BlobsSetTierResponse;
+import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsUndeleteResponse;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -240,8 +266,7 @@ class BlobAsyncRawClient {
         // TODO: range is BlobRange but expected as String
         // TODO: figure out correct response
         return postProcessResponse(this.azureBlobStorage.blobs().downloadWithRestResponseAsync(
-            null, null, snapshot, null, null, range.toHeaderValue(), getMD5,
-            null, null, null, null,
+            null, null, snapshot, null, range.toHeaderValue(), getMD5, null,
             accessConditions.leaseAccessConditions(),  accessConditions.modifiedAccessConditions(), Context.NONE))
             // Convert the autorest response to a DownloadAsyncResponse, which enable reliable download.
             .map(response -> {
@@ -291,7 +316,7 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().deleteWithRestResponseAsync(
-            null, null, snapshot, null, null, deleteBlobSnapshotOptions,
+            null, null, snapshot, null, deleteBlobSnapshotOptions,
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE));
     }
@@ -326,8 +351,8 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, null, null,
-            null, null, null, accessConditions.leaseAccessConditions(),
+            null, null, snapshot, null,
+            null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
@@ -406,8 +431,8 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
-            null, null, null, metadata, null, null,
-            null, null, accessConditions.leaseAccessConditions(),
+            null, null, null, metadata, null,
+            accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
@@ -443,8 +468,8 @@ class BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
-            null, null, null, metadata, null, null,
-            null, null, accessConditions.modifiedAccessConditions(),
+            null, null, null, metadata, null,
+            accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), Context.NONE));
     }
 

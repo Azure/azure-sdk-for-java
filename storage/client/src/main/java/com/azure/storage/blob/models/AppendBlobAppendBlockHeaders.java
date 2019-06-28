@@ -84,14 +84,6 @@ public final class AppendBlobAppendBlockHeaders {
     private Boolean isServerEncrypted;
 
     /*
-     * The SHA-256 hash of the encryption key used to encrypt the block. This
-     * header is only returned when the block was encrypted with a
-     * customer-provided key.
-     */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
-    private String encryptionKeySha256;
-
-    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -320,30 +312,6 @@ public final class AppendBlobAppendBlockHeaders {
      */
     public AppendBlobAppendBlockHeaders isServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the block. This header is only returned when the
-     * block was encrypted with a customer-provided key.
-     *
-     * @return the encryptionKeySha256 value.
-     */
-    public String encryptionKeySha256() {
-        return this.encryptionKeySha256;
-    }
-
-    /**
-     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
-     * key used to encrypt the block. This header is only returned when the
-     * block was encrypted with a customer-provided key.
-     *
-     * @param encryptionKeySha256 the encryptionKeySha256 value to set.
-     * @return the AppendBlobAppendBlockHeaders object itself.
-     */
-    public AppendBlobAppendBlockHeaders encryptionKeySha256(String encryptionKeySha256) {
-        this.encryptionKeySha256 = encryptionKeySha256;
         return this;
     }
 

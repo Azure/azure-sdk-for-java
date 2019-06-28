@@ -138,8 +138,8 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         metadata = metadata == null ? new Metadata() : metadata;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null,
-            null, 0, size, null, metadata, null, null,
-            null, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
+            null, 0, size, null, metadata,
+            sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
 
@@ -207,7 +207,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null,
             null, body, pageRange.end() - pageRange.start() + 1, null,
-            null, pageRangeStr, null, null, null, null,
+            null, pageRangeStr, null,
             pageBlobAccessConditions.leaseAccessConditions(), pageBlobAccessConditions.sequenceNumberAccessConditions(),
             pageBlobAccessConditions.modifiedAccessConditions(), Context.NONE));
     }
@@ -394,8 +394,8 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
-            null, null, snapshot, null, null, blobRange.toHeaderValue(),
-            null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
+            null, null, snapshot, null, blobRange.toHeaderValue(), null,
+            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE));
     }
 
@@ -449,7 +449,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         }
 
         return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
-            null, null, snapshot, null, null, prevSnapshot,
+            null, null, snapshot, null, prevSnapshot,
             blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
     }
