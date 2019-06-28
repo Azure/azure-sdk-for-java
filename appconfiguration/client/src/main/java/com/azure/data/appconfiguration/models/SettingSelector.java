@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.implementation.util.ImplUtils;
 
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @see ConfigurationAsyncClient
  */
+@Fluent
 public class SettingSelector {
     private String[] keys;
     private String[] labels;

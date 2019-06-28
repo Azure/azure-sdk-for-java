@@ -3,20 +3,20 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.ReturnValueWireType;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.ReturnValueWireType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -37,10 +37,10 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@Service("KeyVault")
+@ServiceInterface("KeyVault")
 interface KeyService {
 
-    @POST("keys/{key-name}/create")
+    @Post("keys/{key-name}/create")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -51,7 +51,7 @@ interface KeyService {
                                   @BodyParam("body") KeyRequestParameters parameters,
                                   @HeaderParam("Content-Type") String type);
 
-    @GET("keys/{key-name}/{key-version}")
+    @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
@@ -63,7 +63,7 @@ interface KeyService {
                                      @HeaderParam("accept-language") String acceptLanguage,
                                      @HeaderParam("Content-Type") String type);
 
-    @POST("keys/{key-name}")
+    @Post("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<Key>> importKey(@HostParam("url") String url,
@@ -74,7 +74,7 @@ interface KeyService {
                                   @HeaderParam("Content-Type") String type);
 
 
-    @DELETE("keys/{key-name}")
+    @Delete("keys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -84,7 +84,7 @@ interface KeyService {
                                          @HeaderParam("accept-language") String acceptLanguage,
                                          @HeaderParam("Content-Type") String type);
 
-    @PATCH("keys/{key-name}/{key-version}")
+    @Patch("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<Key>> updateKey(@HostParam("url") String url,
@@ -95,7 +95,7 @@ interface KeyService {
                                       @BodyParam("body") KeyRequestParameters parameters,
                                       @HeaderParam("Content-Type") String type);
 
-    @GET("keys/{key-name}/versions")
+    @Get("keys/{key-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(KeyBasePage.class)
@@ -106,7 +106,7 @@ interface KeyService {
                                                     @HeaderParam("accept-language") String acceptLanguage,
                                                     @HeaderParam("Content-Type") String type);
 
-    @POST("keys/{key-name}/backup")
+    @Post("keys/{key-name}/backup")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -117,7 +117,7 @@ interface KeyService {
                                          @HeaderParam("Content-Type") String type);
 
 
-    @POST("keys/restore")
+    @Post("keys/restore")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -128,7 +128,7 @@ interface KeyService {
                                      @HeaderParam("Content-Type") String type);
 
 
-    @GET("keys")
+    @Get("keys")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(KeyBasePage.class)
@@ -139,7 +139,7 @@ interface KeyService {
                                          @HeaderParam("Content-Type") String type);
 
 
-    @GET("{nextUrl}")
+    @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(KeyBasePage.class)
@@ -149,7 +149,7 @@ interface KeyService {
                                          @HeaderParam("Content-Type") String type);
 
 
-    @GET("deletedkeys")
+    @Get("deletedkeys")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedKeyPage.class)
@@ -159,7 +159,7 @@ interface KeyService {
                                                    @HeaderParam("accept-language") String acceptLanguage,
                                                    @HeaderParam("Content-Type") String type);
 
-    @GET("{nextUrl}")
+    @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedKeyPage.class)
@@ -168,7 +168,7 @@ interface KeyService {
                                                    @HeaderParam("accept-language") String acceptLanguage,
                                                    @HeaderParam("Content-Type") String type);
 
-    @GET("deletedkeys/{key-name}")
+    @Get("deletedkeys/{key-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -178,7 +178,7 @@ interface KeyService {
                                              @HeaderParam("accept-language") String acceptLanguage,
                                              @HeaderParam("Content-Type") String type);
 
-    @DELETE("deletedkeys/{key-name}")
+    @Delete("deletedkeys/{key-name}")
     @ExpectedResponses({204})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -189,7 +189,7 @@ interface KeyService {
                                        @HeaderParam("Content-Type") String type);
 
 
-    @POST("deletedkeys/{key-name}/recover")
+    @Post("deletedkeys/{key-name}/recover")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)

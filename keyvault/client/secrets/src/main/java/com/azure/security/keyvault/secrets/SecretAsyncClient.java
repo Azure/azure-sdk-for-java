@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -44,7 +43,7 @@ import com.azure.core.exception.HttpRequestException;
  *
  * @see SecretAsyncClientBuilder
  */
-public final class SecretAsyncClient extends ServiceClient {
+public final class SecretAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
@@ -62,10 +61,9 @@ public final class SecretAsyncClient extends ServiceClient {
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     SecretAsyncClient(URL endpoint, HttpPipeline pipeline) {
-        super(pipeline);
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
-        this.service = RestProxy.create(SecretService.class, this);
+        this.service = RestProxy.create(SecretService.class, pipeline);
     }
 
     /**

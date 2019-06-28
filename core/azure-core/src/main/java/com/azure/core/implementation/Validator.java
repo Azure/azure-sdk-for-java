@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.annotations.SkipParentValidation;
+import com.azure.core.implementation.annotation.SkipParentValidation;
 import com.azure.core.implementation.util.TypeUtil;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
