@@ -29,7 +29,7 @@ public class NotificationListResponseInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get list of all notifications.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class NotificationListResponseInner {
     }
 
     /**
-     * Set the value value.
+     * Set list of all notifications.
      *
      * @param value the value value to set
      * @return the NotificationListResponseInner object itself.
@@ -49,7 +49,7 @@ public class NotificationListResponseInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get link for next set of notifications.
      *
      * @return the nextLink value
      */

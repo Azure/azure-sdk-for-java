@@ -10,12 +10,12 @@ package com.microsoft.azure.management.batchai.v2018_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.batchai.v2018_03_01.implementation.BatchAIManager;
 import org.joda.time.DateTime;
@@ -93,7 +93,9 @@ public interface FileServer extends HasInner<FileServerInner>, Resource, Groupab
         interface WithDataDisks {
            /**
             * Specifies dataDisks.
-            */
+            * @param dataDisks the dataDisks parameter value
+            * @return the next definition stage
+*/
             WithSshConfiguration withDataDisks(DataDisks dataDisks);
         }
 
@@ -103,7 +105,9 @@ public interface FileServer extends HasInner<FileServerInner>, Resource, Groupab
         interface WithSshConfiguration {
            /**
             * Specifies sshConfiguration.
-            */
+            * @param sshConfiguration the sshConfiguration parameter value
+            * @return the next definition stage
+*/
             WithVmSize withSshConfiguration(SshConfiguration sshConfiguration);
         }
 
@@ -113,16 +117,20 @@ public interface FileServer extends HasInner<FileServerInner>, Resource, Groupab
         interface WithVmSize {
            /**
             * Specifies vmSize.
-            */
+            * @param vmSize For information about available VM sizes for fileservers from the Virtual Machines Marketplace, see Sizes for Virtual Machines (Linux)
+            * @return the next definition stage
+*/
             WithCreate withVmSize(String vmSize);
         }
 
         /**
-         * The stage of the fileserver update allowing to specify Subnet.
+         * The stage of the fileserver definition allowing to specify Subnet.
          */
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet the subnet parameter value
+             * @return the next definition stage
              */
             WithCreate withSubnet(ResourceId subnet);
         }
@@ -146,11 +154,13 @@ public interface FileServer extends HasInner<FileServerInner>, Resource, Groupab
      */
     interface UpdateStages {
         /**
-         * The stage of the fileserver {0} allowing to specify Subnet.
+         * The stage of the fileserver update allowing to specify Subnet.
          */
         interface WithSubnet {
             /**
              * Specifies subnet.
+             * @param subnet the subnet parameter value
+             * @return the next update stage
              */
             Update withSubnet(ResourceId subnet);
         }

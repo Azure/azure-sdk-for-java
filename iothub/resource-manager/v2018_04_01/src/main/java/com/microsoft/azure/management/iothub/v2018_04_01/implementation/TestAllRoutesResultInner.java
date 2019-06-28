@@ -23,7 +23,7 @@ public class TestAllRoutesResultInner {
     private List<MatchedRoute> routes;
 
     /**
-     * Get the routes value.
+     * Get jSON-serialized array of matched routes.
      *
      * @return the routes value
      */
@@ -32,7 +32,7 @@ public class TestAllRoutesResultInner {
     }
 
     /**
-     * Set the routes value.
+     * Set jSON-serialized array of matched routes.
      *
      * @param routes the routes value to set
      * @return the TestAllRoutesResultInner object itself.

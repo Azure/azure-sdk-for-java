@@ -97,7 +97,7 @@ class ReactorNettyClient implements HttpClient {
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(final HttpRequest restRequest) {
         return (reactorNettyResponse, reactorNettyConnection) ->
-            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).withRequest(restRequest));
+            Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection).request(restRequest));
     }
 
     @Override

@@ -9,8 +9,6 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import io.reactivex.Completable;
-import io.reactivex.schedulers.Schedulers;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -18,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
@@ -145,8 +144,8 @@ public class ReactorNettyClientTests {
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", "123")
-                .withBody(Flux.error(new RuntimeException("boo")));
+                .header("Content-Length", "123")
+                .body(Flux.error(new RuntimeException("boo")));
 
         StepVerifier.create(client.send(request))
                 .expectErrorMessage("boo")
@@ -159,8 +158,8 @@ public class ReactorNettyClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
-                .withBody(Flux.just(contentChunk)
+                .header("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+                .body(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
@@ -177,7 +176,7 @@ public class ReactorNettyClientTests {
         AtomicReference<Socket> sock = new AtomicReference<>();
         ServerSocket ss = new ServerSocket(0);
         try {
-            Completable.fromCallable(() -> {
+            Mono.fromCallable(() -> {
                 latch.countDown();
                 Socket socket = ss.accept();
                 sock.set(socket);
@@ -199,7 +198,7 @@ public class ReactorNettyClientTests {
                 socket.close();
                 return 1;
             })
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(Schedulers.elastic())
                 .subscribe();
             //
             latch.await();

@@ -3,7 +3,7 @@
 
 package com.azure.tracing.opentelemetry;
 
-import com.azure.core.implementation.logging.ServiceLogger;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import io.opencensus.trace.AttributeValue;
@@ -24,7 +24,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     private static final String OPENTELEMETRY_SPAN_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_KEY;
     private static final String OPENTELEMETRY_SPAN_NAME_KEY = com.azure.core.implementation.tracing.Tracer.OPENTELEMETRY_SPAN_NAME_KEY;
 
-    private final ServiceLogger logger = new ServiceLogger(OpenTelemetryTracer.class);
+    private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
     @Override
     public Context start(String methodName, Context context) {
@@ -56,7 +56,7 @@ public class OpenTelemetryTracer implements com.azure.core.implementation.tracin
     @Override
     public void setAttribute(String key, String value, Context context) {
         if (ImplUtils.isNullOrEmpty(value)) {
-            logger.asInformational().log("Failed to set span attribute since value is null or empty.");
+            logger.asInfo().log("Failed to set span attribute since value is null or empty.");
             return;
         }
 

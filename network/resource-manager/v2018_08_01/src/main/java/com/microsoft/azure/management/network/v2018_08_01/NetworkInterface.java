@@ -254,29 +254,17 @@ public interface NetworkInterface extends HasInner<NetworkInterfaceInner>, Resou
         }
 
         /**
-         * The stage of the networkinterface definition allowing to specify VirtualMachine.
-         */
-        interface WithVirtualMachine {
-            /**
-             * Specifies virtualMachine.
-             * @param virtualMachine The reference of a virtual machine
-             * @return the next definition stage
-             */
-            WithCreate withVirtualMachine(SubResource virtualMachine);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<NetworkInterface>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDnsSettings, DefinitionStages.WithEnableAcceleratedNetworking, DefinitionStages.WithEnableIPForwarding, DefinitionStages.WithEtag, DefinitionStages.WithIpConfigurations, DefinitionStages.WithMacAddress, DefinitionStages.WithNetworkSecurityGroup, DefinitionStages.WithPrimary, DefinitionStages.WithProvisioningState, DefinitionStages.WithResourceGuid, DefinitionStages.WithTapConfigurations, DefinitionStages.WithVirtualMachine {
+        interface WithCreate extends Creatable<NetworkInterface>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDnsSettings, DefinitionStages.WithEnableAcceleratedNetworking, DefinitionStages.WithEnableIPForwarding, DefinitionStages.WithEtag, DefinitionStages.WithIpConfigurations, DefinitionStages.WithMacAddress, DefinitionStages.WithNetworkSecurityGroup, DefinitionStages.WithPrimary, DefinitionStages.WithProvisioningState, DefinitionStages.WithResourceGuid, DefinitionStages.WithTapConfigurations {
         }
     }
     /**
      * The template for a NetworkInterface update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<NetworkInterface>, Resource.UpdateWithTags<Update>, UpdateStages.WithDnsSettings, UpdateStages.WithEnableAcceleratedNetworking, UpdateStages.WithEnableIPForwarding, UpdateStages.WithEtag, UpdateStages.WithIpConfigurations, UpdateStages.WithMacAddress, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithPrimary, UpdateStages.WithProvisioningState, UpdateStages.WithResourceGuid, UpdateStages.WithTapConfigurations, UpdateStages.WithVirtualMachine {
+    interface Update extends Appliable<NetworkInterface>, Resource.UpdateWithTags<Update>, UpdateStages.WithDnsSettings, UpdateStages.WithEnableAcceleratedNetworking, UpdateStages.WithEnableIPForwarding, UpdateStages.WithEtag, UpdateStages.WithIpConfigurations, UpdateStages.WithMacAddress, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithPrimary, UpdateStages.WithProvisioningState, UpdateStages.WithResourceGuid, UpdateStages.WithTapConfigurations {
     }
 
     /**
@@ -413,18 +401,6 @@ public interface NetworkInterface extends HasInner<NetworkInterfaceInner>, Resou
              * @return the next update stage
              */
             Update withTapConfigurations(List<NetworkInterfaceTapConfigurationInner> tapConfigurations);
-        }
-
-        /**
-         * The stage of the networkinterface update allowing to specify VirtualMachine.
-         */
-        interface WithVirtualMachine {
-            /**
-             * Specifies virtualMachine.
-             * @param virtualMachine The reference of a virtual machine
-             * @return the next update stage
-             */
-            Update withVirtualMachine(SubResource virtualMachine);
         }
 
     }

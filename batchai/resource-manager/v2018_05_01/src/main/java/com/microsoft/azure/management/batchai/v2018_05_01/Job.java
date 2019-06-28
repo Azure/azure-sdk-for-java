@@ -25,6 +25,11 @@ import org.joda.time.DateTime;
  */
 public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Updatable<Job.Update>, HasManager<BatchAIManager> {
     /**
+     * @return the caffe2Settings value.
+     */
+    Caffe2Settings caffe2Settings();
+
+    /**
      * @return the caffeSettings value.
      */
     CaffeSettings caffeSettings();
@@ -135,11 +140,6 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
     List<OutputDirectory> outputDirectories();
 
     /**
-     * @return the priority value.
-     */
-    JobPriority priority();
-
-    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -153,6 +153,11 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
      * @return the pyTorchSettings value.
      */
     PyTorchSettings pyTorchSettings();
+
+    /**
+     * @return the schedulingPriority value.
+     */
+    JobPriority schedulingPriority();
 
     /**
      * @return the secrets value.
@@ -201,6 +206,10 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithExperiment {
            /**
             * Specifies resourceGroupName, workspaceName, experimentName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long
+            * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long
+            * @return the next definition stage
             */
             WithCluster withExistingExperiment(String resourceGroupName, String workspaceName, String experimentName);
         }
@@ -211,6 +220,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCluster {
            /**
             * Specifies cluster.
+            * @param cluster Resource ID of the cluster on which this job will run
+            * @return the next definition stage
             */
             WithNodeCount withCluster(ResourceId cluster);
         }
@@ -221,6 +232,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithNodeCount {
            /**
             * Specifies nodeCount.
+            * @param nodeCount Number of compute nodes to run the job on. The job will be gang scheduled on that many compute nodes
+            * @return the next definition stage
             */
             WithStdOutErrPathPrefix withNodeCount(int nodeCount);
         }
@@ -231,6 +244,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithStdOutErrPathPrefix {
            /**
             * Specifies stdOutErrPathPrefix.
+            * @param stdOutErrPathPrefix The path where the Batch AI service will store stdout, stderror and execution log of the job
+            * @return the next definition stage
             */
             WithCreate withStdOutErrPathPrefix(String stdOutErrPathPrefix);
         }
@@ -241,6 +256,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCaffe2Settings {
             /**
              * Specifies caffe2Settings.
+             * @param caffe2Settings Settings for Caffe2 job
+             * @return the next definition stage
              */
             WithCreate withCaffe2Settings(Caffe2Settings caffe2Settings);
         }
@@ -251,6 +268,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCaffeSettings {
             /**
              * Specifies caffeSettings.
+             * @param caffeSettings Settings for Caffe job
+             * @return the next definition stage
              */
             WithCreate withCaffeSettings(CaffeSettings caffeSettings);
         }
@@ -261,6 +280,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithChainerSettings {
             /**
              * Specifies chainerSettings.
+             * @param chainerSettings Settings for Chainer job
+             * @return the next definition stage
              */
             WithCreate withChainerSettings(ChainerSettings chainerSettings);
         }
@@ -271,6 +292,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCntkSettings {
             /**
              * Specifies cntkSettings.
+             * @param cntkSettings Settings for CNTK (aka Microsoft Cognitive Toolkit) job
+             * @return the next definition stage
              */
             WithCreate withCntkSettings(CNTKsettings cntkSettings);
         }
@@ -281,6 +304,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithConstraints {
             /**
              * Specifies constraints.
+             * @param constraints Constraints associated with the Job
+             * @return the next definition stage
              */
             WithCreate withConstraints(JobBasePropertiesConstraints constraints);
         }
@@ -291,6 +316,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithContainerSettings {
             /**
              * Specifies containerSettings.
+             * @param containerSettings Docker container settings for the job. If not provided, the job will run directly on the node
+             * @return the next definition stage
              */
             WithCreate withContainerSettings(ContainerSettings containerSettings);
         }
@@ -301,6 +328,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCustomMpiSettings {
             /**
              * Specifies customMpiSettings.
+             * @param customMpiSettings Settings for custom MPI job
+             * @return the next definition stage
              */
             WithCreate withCustomMpiSettings(CustomMpiSettings customMpiSettings);
         }
@@ -311,6 +340,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCustomToolkitSettings {
             /**
              * Specifies customToolkitSettings.
+             * @param customToolkitSettings Settings for custom tool kit job
+             * @return the next definition stage
              */
             WithCreate withCustomToolkitSettings(CustomToolkitSettings customToolkitSettings);
         }
@@ -321,6 +352,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithEnvironmentVariables {
             /**
              * Specifies environmentVariables.
+             * @param environmentVariables A list of user defined environment variables which will be setup for the job
+             * @return the next definition stage
              */
             WithCreate withEnvironmentVariables(List<EnvironmentVariable> environmentVariables);
         }
@@ -331,6 +364,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithHorovodSettings {
             /**
              * Specifies horovodSettings.
+             * @param horovodSettings Settings for Horovod job
+             * @return the next definition stage
              */
             WithCreate withHorovodSettings(HorovodSettings horovodSettings);
         }
@@ -341,6 +376,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithInputDirectories {
             /**
              * Specifies inputDirectories.
+             * @param inputDirectories A list of input directories for the job
+             * @return the next definition stage
              */
             WithCreate withInputDirectories(List<InputDirectory> inputDirectories);
         }
@@ -351,6 +388,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithJobPreparation {
             /**
              * Specifies jobPreparation.
+             * @param jobPreparation A command line to be executed on each node allocated for the job before tool kit is launched
+             * @return the next definition stage
              */
             WithCreate withJobPreparation(JobPreparation jobPreparation);
         }
@@ -361,6 +400,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithMountVolumes {
             /**
              * Specifies mountVolumes.
+             * @param mountVolumes Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable
+             * @return the next definition stage
              */
             WithCreate withMountVolumes(MountVolumes mountVolumes);
         }
@@ -371,6 +412,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithOutputDirectories {
             /**
              * Specifies outputDirectories.
+             * @param outputDirectories A list of output directories for the job
+             * @return the next definition stage
              */
             WithCreate withOutputDirectories(List<OutputDirectory> outputDirectories);
         }
@@ -381,6 +424,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithPyTorchSettings {
             /**
              * Specifies pyTorchSettings.
+             * @param pyTorchSettings Settings for pyTorch job
+             * @return the next definition stage
              */
             WithCreate withPyTorchSettings(PyTorchSettings pyTorchSettings);
         }
@@ -391,6 +436,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithSchedulingPriority {
             /**
              * Specifies schedulingPriority.
+             * @param schedulingPriority Scheduling priority associated with the job. Possible values: low, normal, high. Possible values include: 'low', 'normal', 'high'
+             * @return the next definition stage
              */
             WithCreate withSchedulingPriority(JobPriority schedulingPriority);
         }
@@ -401,6 +448,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithSecrets {
             /**
              * Specifies secrets.
+             * @param secrets A list of user defined environment variables with secret values which will be setup for the job. Server will never report values of these variables back
+             * @return the next definition stage
              */
             WithCreate withSecrets(List<EnvironmentVariableWithSecretValue> secrets);
         }
@@ -411,6 +460,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithTensorFlowSettings {
             /**
              * Specifies tensorFlowSettings.
+             * @param tensorFlowSettings Settings for Tensor Flow job
+             * @return the next definition stage
              */
             WithCreate withTensorFlowSettings(TensorFlowSettings tensorFlowSettings);
         }
@@ -439,6 +490,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCaffe2Settings {
             /**
              * Specifies caffe2Settings.
+             * @param caffe2Settings Settings for Caffe2 job
+             * @return the next update stage
              */
             Update withCaffe2Settings(Caffe2Settings caffe2Settings);
         }
@@ -449,6 +502,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCaffeSettings {
             /**
              * Specifies caffeSettings.
+             * @param caffeSettings Settings for Caffe job
+             * @return the next update stage
              */
             Update withCaffeSettings(CaffeSettings caffeSettings);
         }
@@ -459,6 +514,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithChainerSettings {
             /**
              * Specifies chainerSettings.
+             * @param chainerSettings Settings for Chainer job
+             * @return the next update stage
              */
             Update withChainerSettings(ChainerSettings chainerSettings);
         }
@@ -469,6 +526,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCntkSettings {
             /**
              * Specifies cntkSettings.
+             * @param cntkSettings Settings for CNTK (aka Microsoft Cognitive Toolkit) job
+             * @return the next update stage
              */
             Update withCntkSettings(CNTKsettings cntkSettings);
         }
@@ -479,6 +538,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithConstraints {
             /**
              * Specifies constraints.
+             * @param constraints Constraints associated with the Job
+             * @return the next update stage
              */
             Update withConstraints(JobBasePropertiesConstraints constraints);
         }
@@ -489,6 +550,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithContainerSettings {
             /**
              * Specifies containerSettings.
+             * @param containerSettings Docker container settings for the job. If not provided, the job will run directly on the node
+             * @return the next update stage
              */
             Update withContainerSettings(ContainerSettings containerSettings);
         }
@@ -499,6 +562,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCustomMpiSettings {
             /**
              * Specifies customMpiSettings.
+             * @param customMpiSettings Settings for custom MPI job
+             * @return the next update stage
              */
             Update withCustomMpiSettings(CustomMpiSettings customMpiSettings);
         }
@@ -509,6 +574,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCustomToolkitSettings {
             /**
              * Specifies customToolkitSettings.
+             * @param customToolkitSettings Settings for custom tool kit job
+             * @return the next update stage
              */
             Update withCustomToolkitSettings(CustomToolkitSettings customToolkitSettings);
         }
@@ -519,6 +586,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithEnvironmentVariables {
             /**
              * Specifies environmentVariables.
+             * @param environmentVariables A list of user defined environment variables which will be setup for the job
+             * @return the next update stage
              */
             Update withEnvironmentVariables(List<EnvironmentVariable> environmentVariables);
         }
@@ -529,6 +598,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithHorovodSettings {
             /**
              * Specifies horovodSettings.
+             * @param horovodSettings Settings for Horovod job
+             * @return the next update stage
              */
             Update withHorovodSettings(HorovodSettings horovodSettings);
         }
@@ -539,6 +610,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithInputDirectories {
             /**
              * Specifies inputDirectories.
+             * @param inputDirectories A list of input directories for the job
+             * @return the next update stage
              */
             Update withInputDirectories(List<InputDirectory> inputDirectories);
         }
@@ -549,6 +622,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithJobPreparation {
             /**
              * Specifies jobPreparation.
+             * @param jobPreparation A command line to be executed on each node allocated for the job before tool kit is launched
+             * @return the next update stage
              */
             Update withJobPreparation(JobPreparation jobPreparation);
         }
@@ -559,6 +634,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithMountVolumes {
             /**
              * Specifies mountVolumes.
+             * @param mountVolumes Information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable
+             * @return the next update stage
              */
             Update withMountVolumes(MountVolumes mountVolumes);
         }
@@ -569,6 +646,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithOutputDirectories {
             /**
              * Specifies outputDirectories.
+             * @param outputDirectories A list of output directories for the job
+             * @return the next update stage
              */
             Update withOutputDirectories(List<OutputDirectory> outputDirectories);
         }
@@ -579,6 +658,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithPyTorchSettings {
             /**
              * Specifies pyTorchSettings.
+             * @param pyTorchSettings Settings for pyTorch job
+             * @return the next update stage
              */
             Update withPyTorchSettings(PyTorchSettings pyTorchSettings);
         }
@@ -589,6 +670,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithSchedulingPriority {
             /**
              * Specifies schedulingPriority.
+             * @param schedulingPriority Scheduling priority associated with the job. Possible values: low, normal, high. Possible values include: 'low', 'normal', 'high'
+             * @return the next update stage
              */
             Update withSchedulingPriority(JobPriority schedulingPriority);
         }
@@ -599,6 +682,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithSecrets {
             /**
              * Specifies secrets.
+             * @param secrets A list of user defined environment variables with secret values which will be setup for the job. Server will never report values of these variables back
+             * @return the next update stage
              */
             Update withSecrets(List<EnvironmentVariableWithSecretValue> secrets);
         }
@@ -609,6 +694,8 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithTensorFlowSettings {
             /**
              * Specifies tensorFlowSettings.
+             * @param tensorFlowSettings Settings for Tensor Flow job
+             * @return the next update stage
              */
             Update withTensorFlowSettings(TensorFlowSettings tensorFlowSettings);
         }

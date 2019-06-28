@@ -40,16 +40,6 @@ public final class Validator {
         }
 
         Class<?> type = parameter.getClass();
-        if (type == Double.class
-                || type == Float.class
-                || type == Long.class
-                || type == Integer.class
-                || type == Short.class
-                || type == Character.class
-                || type == Byte.class
-                || type == Boolean.class) {
-            type = wrapperToPrimitive(type);
-        }
         if (type.isPrimitive()
                 || type.isEnum()
                 || type.isAssignableFrom(Class.class)
@@ -70,34 +60,6 @@ public final class Validator {
         } else {
             validateClass(type, parameter);
         }
-    }
-
-    private static Class<?> wrapperToPrimitive(Class<?> clazz) {
-        if (!clazz.isPrimitive()) {
-            return clazz;
-        }
-
-        if (clazz == Integer.class) {
-            return Integer.TYPE;
-        } else if (clazz == Long.class) {
-            return Long.TYPE;
-        } else if (clazz == Boolean.class) {
-            return Boolean.TYPE;
-        } else if (clazz == Byte.class) {
-            return Byte.TYPE;
-        } else if (clazz == Character.class) {
-            return Character.TYPE;
-        } else if (clazz == Float.class) {
-            return Float.TYPE;
-        } else if (clazz == Double.class) {
-            return Double.TYPE;
-        } else if (clazz == Short.class) {
-            return Short.TYPE;
-        } else if (clazz == Void.class) {
-            return Void.TYPE;
-        }
-
-        return clazz;
     }
 
     private static void validateClass(Class<?> c, Object parameter) {

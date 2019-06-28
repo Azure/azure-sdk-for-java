@@ -257,6 +257,12 @@
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
   </Match>
 
+  <!-- Uninitialized subscription property will be initialized on onSubscribe(). Spotbugs is unaware of reactor execution orders. -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.FluxUtil"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <Match>
     <Class name="~com\.azure\.core\.auth\.credentials\.(MSIConfigurationForAppService|MSIConfigurationForVirtualMachine)"/>
     <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE"/>
@@ -418,7 +424,57 @@
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
-    <Class name="com.azure.core.configuration.Configuration"/>
+    <Class name="com.azure.core.util.configuration.Configuration"/>
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
+
+  <!-- Jackson property setter method is private -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.secrets.models.DeletedSecret"/>
+      <Class name="com.azure.security.keyvault.secrets.models.SecretBase"/>
+      <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
+      <Class name="com.azure.security.keyvault.keys.models.Key"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyBase"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.util.polling.PollResponseJavaDocCodeSnippets"/>
+      <Class name="com.azure.core.util.polling.PollerJavaDocCodeSnippets"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,NP_ALWAYS_NULL,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Field initialized by jackson property annotation -->
+  <Match>
+    <Class name="com.azure.security.keyvault.keys.models.webkey.JsonWebKey"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
+  <!-- Bytes array are designed to return null if it is null -->
+  <Match>
+    <Or>
+      <And>
+        <Class name="com.azure.security.keyvault.keys.models.webkey.Base64UrlJsonDeserializer"/>
+        <Method name="deserialize" />
+      </And>
+      <And>
+        <Class name="com.azure.security.keyvault.keys.models.webkey.ByteExtensions"/>
+        <Method name="clone" />
+      </And>
+    </Or>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- It is fine to have un-used variables, unread fields, anonymous static inner classes in javadoc code samples. -->
+  <Match>
+    <Or>
+      <Class name="~.*JavaDoc(CodeSnippets|CodeSamples)"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
 </FindBugsFilter>

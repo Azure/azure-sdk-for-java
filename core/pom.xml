@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0-preview.1</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Core Libraries for Java</name>
@@ -31,6 +31,9 @@
 
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+    <tag>v1.0.0-preview.1</tag>
   </scm>
 
   <properties>
@@ -52,39 +55,9 @@
     </site>
   </distributionManagement>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <configuration>
-          <failOnError>true</failOnError>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <failOnError>true</failOnError>
-          <failOnWarnings>true</failOnWarnings>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <modules>
     <module>azure-core</module>
-    <module>azure-core-auth</module>
+    <module>azure-core-amqp</module>
     <module>azure-core-management</module>
     <module>azure-core-test</module>
   </modules>
