@@ -71,7 +71,6 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.23.0</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -79,7 +78,6 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.23.0</version>
       <scope>test</scope>
     </dependency>
 
