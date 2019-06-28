@@ -54,12 +54,12 @@ class BlockBlobAPITest extends APISpec {
         exceptionType.isInstance(e)
 
         where:
-        blockID      | data            | dataSize            | exceptionType
-        null         | defaultInputStream | defaultDataSize     | StorageException
-        getBlockID() | null            | defaultDataSize     | NullPointerException
-        // TODO: No exceptions are thrown for the following two, expected?
-//        getBlockID() | defaultInputStream | defaultDataSize + 1 | IllegalArgumentException
-//        getBlockID() | defaultInputStream | defaultDataSize - 1 | IllegalArgumentException
+        blockID      | data                 | dataSize            | exceptionType
+        null         | defaultInputStream   | defaultDataSize     | StorageException
+        getBlockID() | null                 | defaultDataSize     | NullPointerException
+        getBlockID() | defaultInputStream   | defaultDataSize + 1 | IndexOutOfBoundsException
+        // TODO (alzimmer): Determine if an exception should be thrown if dataSize is smaller than the stream
+        //getBlockID() | defaultInputStream   | defaultDataSize - 1 | IllegalArgumentException
     }
 
     def "Stage block empty body"() {
@@ -75,7 +75,7 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(getBlockID(), null, 0)
 
         then:
-        thrown(NullPointerException) // Thrown by Flux.just().
+        thrown(StorageException)
     }
 
     def "Stage block lease"() {
@@ -317,10 +317,10 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        // newDate               | null                    | null          | null TODO (alzimmer): Determine why this returns a 304 when documentation says 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag TODO (alzimmer): Determine why this returns a 304 when documentation says 412
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Commit block list"() {
@@ -589,7 +589,7 @@ class BlockBlobAPITest extends APISpec {
         setupBlobLeaseCondition(bu, garbageLeaseID)
 
         when:
-        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId("notreal"), null).iterator().hasNext()
+        bu.listBlocks(BlockListType.ALL, new LeaseAccessConditions().leaseId(garbageLeaseID), null).iterator().hasNext()
 
         then:
         def e = thrown(StorageException)

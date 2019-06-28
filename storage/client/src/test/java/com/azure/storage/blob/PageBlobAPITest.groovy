@@ -534,10 +534,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        // newDate               | null                    | null          | null TODO (alzimmer): Determine why this returns a 304 when it should return 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag TODO (alzimmer): Determine why this returns a 304 when it should return 412
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Clear page"() {
@@ -732,10 +732,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null This returns a 304
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null This returns a 304
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -854,10 +854,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null This returns a 304
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null This returns a 304
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
