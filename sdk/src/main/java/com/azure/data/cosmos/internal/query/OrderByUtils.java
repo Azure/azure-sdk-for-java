@@ -23,6 +23,7 @@
 package com.azure.data.cosmos.internal.query;
 
 import com.azure.data.cosmos.BadRequestException;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.internal.RequestChargeTracker;
@@ -87,12 +88,12 @@ class OrderByUtils {
         @Override
         public Flux<OrderByRowResult<T>> apply(Flux<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
-                for (String key : documentProducerFeedResponse.pageResult.queryMetrics().keySet()) {
+                for (String key : BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).keySet()) {
                     if (queryMetricsMap.containsKey(key)) {
-                        QueryMetrics qm = documentProducerFeedResponse.pageResult.queryMetrics().get(key);
+                        QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key);
                         queryMetricsMap.get(key).add(qm);
                     } else {
-                        queryMetricsMap.put(key, documentProducerFeedResponse.pageResult.queryMetrics().get(key));
+                        queryMetricsMap.put(key, BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult).get(key));
                     }
                 }
                 List<T> results = documentProducerFeedResponse.pageResult.results();

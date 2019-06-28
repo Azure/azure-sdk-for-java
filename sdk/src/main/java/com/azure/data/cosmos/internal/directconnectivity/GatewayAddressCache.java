@@ -524,8 +524,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private static String logAddressResolutionStart(RxDocumentServiceRequest request, URL targetEndpointUrl) {
         try {
-            if (request.requestContext.clientSideRequestStatistics != null) {
-                return request.requestContext.clientSideRequestStatistics.recordAddressResolutionStart(targetEndpointUrl.toURI());
+            if (request.requestContext.cosmosResponseDiagnostics != null) {
+                return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosResponseDiagnostics, targetEndpointUrl.toURI());
             }
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e);
@@ -534,8 +534,8 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier) {
-        if (request.requestContext.clientSideRequestStatistics != null) {
-            request.requestContext.clientSideRequestStatistics.recordAddressResolutionEnd(identifier);
+        if (request.requestContext.cosmosResponseDiagnostics != null) {
+            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosResponseDiagnostics, identifier);
         }
     }
 }

@@ -121,7 +121,8 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         assertThat(resultList1.size()).isEqualTo(resultList2.size());
         for(int i = 0; i < resultList1.size(); i++){
-            compareQueryMetrics(resultList1.get(i).queryMetrics(), resultList2.get(i).queryMetrics());
+            compareQueryMetrics(BridgeInternal.queryMetricsFromFeedResponse(resultList1.get(i)),
+                BridgeInternal.queryMetricsFromFeedResponse(resultList2.get(i)));
         }
     }
 

@@ -295,7 +295,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse feedPage: feedList) {
                         if (shouldHaveMetrics) {
-                            QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(feedPage.queryMetrics().values());
+                            QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThan(0);
                             assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
@@ -310,7 +310,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(BridgeInternal.getClientSideMetrics(queryMetrics).getRequestCharge()).isGreaterThan(0);
                         } else {
-                            assertThat(feedPage.queryMetrics().isEmpty());
+                            assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedPage).isEmpty());
                         }
                     }
                 }

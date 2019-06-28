@@ -212,7 +212,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     String.valueOf(pageCharge));
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
                     headers,
-                    page.queryMetrics());
+                BridgeInternal.queryMetricsFromFeedResponse(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -226,7 +226,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     compositeContinuationToken);
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
                     headers,
-                    page.queryMetrics());
+                BridgeInternal.queryMetricsFromFeedResponse(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }

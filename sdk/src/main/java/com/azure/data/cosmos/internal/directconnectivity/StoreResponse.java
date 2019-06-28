@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.CosmosResponseDiagnostics;
 import com.azure.data.cosmos.internal.HttpConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -44,7 +44,7 @@ public class StoreResponse {
     final private InputStream httpEntityStream;
     final private String content;
 
-    private ClientSideRequestStatistics clientSideRequestStatistics;
+    private CosmosResponseDiagnostics cosmosResponseDiagnostics;
 
     public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
         this(status, headerEntries, null, inputStream);
@@ -128,12 +128,12 @@ public class StoreResponse {
         return null;
     }
 
-    public ClientSideRequestStatistics getClientSideRequestStatistics() {
-        return clientSideRequestStatistics;
+    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+        return cosmosResponseDiagnostics;
     }
 
-    public void setClientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
-        this.clientSideRequestStatistics = clientSideRequestStatistics;
+    void setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
     }
 
     int getSubStatusCode() {

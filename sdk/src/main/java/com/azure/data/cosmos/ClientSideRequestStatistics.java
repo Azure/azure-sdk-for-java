@@ -44,7 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public class ClientSideRequestStatistics {
+class ClientSideRequestStatistics {
 
     private final static int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
 
@@ -61,7 +61,7 @@ public class ClientSideRequestStatistics {
     private Set<URI> failedReplicas;
     private Set<URI> regionsContacted;
 
-    public ClientSideRequestStatistics() {
+    ClientSideRequestStatistics() {
         this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         this.requestEndTime = ZonedDateTime.now(ZoneOffset.UTC);
         this.responseStatisticsList = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ClientSideRequestStatistics {
         this.regionsContacted = new HashSet<>();
     }
 
-    public Duration getRequestLatency() {
+    Duration getRequestLatency() {
         return Duration.between(requestStartTime, requestEndTime);
     }
 
@@ -81,7 +81,7 @@ public class ClientSideRequestStatistics {
         return false;
     }
 
-    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+    void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
@@ -117,7 +117,7 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    public String recordAddressResolutionStart(URI targetEndpoint) {
+    String recordAddressResolutionStart(URI targetEndpoint) {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
@@ -133,7 +133,7 @@ public class ClientSideRequestStatistics {
         return identifier;
     }
 
-    public void recordAddressResolutionEnd(String identifier) {
+    void recordAddressResolutionEnd(String identifier) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -206,27 +206,27 @@ public class ClientSideRequestStatistics {
         return StringUtils.EMPTY;
     }
 
-    public List<URI> getContactedReplicas() {
+    List<URI> getContactedReplicas() {
         return contactedReplicas;
     }
 
-    public void setContactedReplicas(List<URI> contactedReplicas) {
+    void setContactedReplicas(List<URI> contactedReplicas) {
         this.contactedReplicas = contactedReplicas;
     }
 
-    public Set<URI> getFailedReplicas() {
+    Set<URI> getFailedReplicas() {
         return failedReplicas;
     }
 
-    public void setFailedReplicas(Set<URI> failedReplicas) {
+    void setFailedReplicas(Set<URI> failedReplicas) {
         this.failedReplicas = failedReplicas;
     }
 
-    public Set<URI> getRegionsContacted() {
+    Set<URI> getRegionsContacted() {
         return regionsContacted;
     }
 
-    public void setRegionsContacted(Set<URI> regionsContacted) {
+    void setRegionsContacted(Set<URI> regionsContacted) {
         this.regionsContacted = regionsContacted;
     }
 

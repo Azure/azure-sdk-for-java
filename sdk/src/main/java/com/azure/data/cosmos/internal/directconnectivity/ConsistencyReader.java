@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.GoneException;
@@ -209,8 +209,8 @@ public class ConsistencyReader {
             entity.requestContext.requestChargeTracker = new RequestChargeTracker();
         }
 
-        if(entity.requestContext.clientSideRequestStatistics == null) {
-            entity.requestContext.clientSideRequestStatistics = new ClientSideRequestStatistics();
+        if(entity.requestContext.cosmosResponseDiagnostics == null) {
+            entity.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
         }
 
         entity.requestContext.forceRefreshAddressCache = forceRefresh;

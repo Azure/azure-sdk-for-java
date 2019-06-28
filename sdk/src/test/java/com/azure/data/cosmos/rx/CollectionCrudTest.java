@@ -286,12 +286,12 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             options.partitionKey(new PartitionKey("mypkValue"));
             CosmosItemResponse readDocumentResponse = item.read(options).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.requestDiagnosticsString());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.cosmosResponseDiagnosticsString());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.requestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.requestDiagnosticsString());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.cosmosResponseDiagnosticsString());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.requestLatency());
 
             //  DELETE the existing collection
@@ -306,7 +306,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             createDocument(collection2, newDocument);
 
             readDocumentResponse = client1.getDatabase(dbId).getContainer(collectionId).getItem(newDocument.id(), newDocument.get("mypk")).read().block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.requestDiagnosticsString());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.cosmosResponseDiagnosticsString());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.requestLatency());
 
             CosmosItemProperties readDocument = readDocumentResponse.properties();

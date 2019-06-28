@@ -28,9 +28,11 @@ import com.azure.data.cosmos.internal.HttpConstants;
 import com.azure.data.cosmos.internal.QueryMetrics;
 import com.azure.data.cosmos.internal.ReplicationPolicy;
 import com.azure.data.cosmos.internal.ResourceResponse;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.RxDocumentServiceResponse;
 import com.azure.data.cosmos.internal.StoredProcedureResponse;
 import com.azure.data.cosmos.internal.Strings;
+import com.azure.data.cosmos.internal.directconnectivity.StoreResult;
 import com.azure.data.cosmos.internal.query.metrics.ClientSideMetrics;
 import com.azure.data.cosmos.internal.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -43,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 import static com.azure.data.cosmos.internal.Constants.QueryExecutionContext.INCREMENTAL_FEED_HEADER_VALUE;
@@ -332,8 +335,8 @@ public class BridgeInternal {
         return JsonSerializable.getValue(value);
     }
 
-    public static CosmosClientException setClientSideRequestStatistics(CosmosClientException cosmosClientException, ClientSideRequestStatistics clientSideRequestStatistics) {
-        return cosmosClientException.clientSideRequestStatistics(clientSideRequestStatistics);
+    public static CosmosClientException setCosmosResponseDiagnostics(CosmosClientException cosmosClientException, CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+        return cosmosClientException.cosmosResponseDiagnostics(cosmosResponseDiagnostics);
     }
 
     public static CosmosClientException createCosmosClientException(int statusCode) {
@@ -366,5 +369,40 @@ public class BridgeInternal {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders, exception);
         cosmosClientException.resourceAddress = resourceAddress;
         return cosmosClientException;
+    }
+
+    public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {
+        return new CosmosResponseDiagnostics();
+    }
+
+    public static void recordResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                      RxDocumentServiceRequest request, StoreResult storeResult) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
+    }
+
+    public static String recordAddressResolutionStart(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                                      URI targetEndpoint) {
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(targetEndpoint);
+    }
+
+    public static void recordAddressResolutionEnd(CosmosResponseDiagnostics cosmosResponseDiagnostics,
+                                                  String identifier) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+    }
+
+    public static List<URI> getContactedReplicas(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getContactedReplicas();
+    }
+
+    public static void setContactedReplicas(CosmosResponseDiagnostics cosmosResponseDiagnostics, List<URI> contactedReplicas) {
+        cosmosResponseDiagnostics.clientSideRequestStatistics().setContactedReplicas(contactedReplicas);
+    }
+
+    public static Set<URI> getFailedReplicas(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getFailedReplicas();
+    }
+
+    public static ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse feedResponse) {
+        return feedResponse.queryMetrics();
     }
 }

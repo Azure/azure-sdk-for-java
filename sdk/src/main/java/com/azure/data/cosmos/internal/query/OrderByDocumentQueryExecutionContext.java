@@ -437,7 +437,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     orderByContinuationToken);
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.results(),
                     headers,
-                    page.queryMetrics());
+                    BridgeInternal.queryMetricsFromFeedResponse(page));
         }
 
         @Override
@@ -516,7 +516,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
                         return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                                 feedOfOrderByRowResults.responseHeaders(),
-                                feedOfOrderByRowResults.queryMetrics());
+                                BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults));
                     }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
                         return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),

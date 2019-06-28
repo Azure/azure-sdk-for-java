@@ -25,8 +25,8 @@ package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.Attachment;
 import com.azure.data.cosmos.BridgeInternal;
-import com.azure.data.cosmos.ClientSideRequestStatistics;
 import com.azure.data.cosmos.Conflict;
+import com.azure.data.cosmos.CosmosResponseDiagnostics;
 import com.azure.data.cosmos.Database;
 import com.azure.data.cosmos.Document;
 import com.azure.data.cosmos.DocumentCollection;
@@ -210,10 +210,10 @@ public class RxDocumentServiceResponse {
         return this.storeResponse.getResponseStream();
     }
 
-    public ClientSideRequestStatistics getClientSideRequestStatistics() {
+    CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {
         if (this.storeResponse == null) {
             return null;
         }
-        return this.storeResponse.getClientSideRequestStatistics();
+        return this.storeResponse.getCosmosResponseDiagnostics();
     }
 }

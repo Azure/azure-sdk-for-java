@@ -24,7 +24,7 @@
 package com.azure.data.cosmos.internal;
 
 import com.azure.data.cosmos.Attachment;
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.CosmosResponseDiagnostics;
 import com.azure.data.cosmos.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,11 +155,11 @@ public final class StoredProcedureResponse {
     }
 
     /**
-     * Gets the client side request statics for execution of stored procedure.
+     * Gets the request diagnostic statics for execution of stored procedure.
      *
-     * @return client side request statistics for execution of stored procedure.
+     * @return request diagnostic statistics for execution of stored procedure.
      */
-    public ClientSideRequestStatistics getClientSideRequestStatistics() {
-        return this.response.getClientSideRequestStatistics();
+    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+        return this.response.getCosmosResponseRequestDiagnosticStatistics();
     }
 }

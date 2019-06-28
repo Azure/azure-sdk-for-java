@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.ISessionContainer;
 import com.azure.data.cosmos.internal.BackoffRetryUtility;
@@ -139,8 +139,8 @@ public class ReplicatedResourceClient {
         // 2. enableReadRequestsFallback is set to true. (can only ever be true if
         // direct mode, on client)
         if (request.isReadOnlyRequest() && this.enableReadRequestsFallback) {
-            if (request.requestContext.clientSideRequestStatistics == null) {
-                request.requestContext.clientSideRequestStatistics = new ClientSideRequestStatistics();
+            if (request.requestContext.cosmosResponseDiagnostics == null) {
+                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
             RxDocumentServiceRequest freshRequest = request.clone();
             inBackoffFuncDelegate = (Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {

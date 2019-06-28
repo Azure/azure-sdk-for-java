@@ -45,6 +45,7 @@ public class FeedResponse<T> {
     boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final String DefaultPartition = "0";
+    private final FeedResponseDiagnostics feedResponseDiagnostics;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -73,6 +74,7 @@ public class FeedResponse<T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
+        this.feedResponseDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
     }
 
     /**
@@ -309,11 +311,14 @@ public class FeedResponse<T> {
     }
 
     /**
-     * Gets the QueryMetrics for each partition.
-     *
-     * @return the QueryMetrics for each partition.
+     * Gets the feed response diagnostics
+     * @return Feed response diagnostics
      */
-    public ConcurrentMap<String, QueryMetrics> queryMetrics() {
+    public FeedResponseDiagnostics feedResponseDiagnostics() {
+        return this.feedResponseDiagnostics;
+    }
+
+    ConcurrentMap<String, QueryMetrics> queryMetrics() {
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
             return queryMetricsMap;
         }

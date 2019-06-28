@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.CosmosResponseDiagnostics;
 import com.azure.data.cosmos.Resource;
 import org.apache.commons.lang3.StringUtils;
 
@@ -337,12 +337,12 @@ public final class ResourceResponse<T extends Resource> {
     }
 
     /**
-     * Gets the request statistics for the current request to Azure Cosmos DB service.
+     * Gets the request diagnostic statistics for the current request to Azure Cosmos DB service.
      *
-     * @return request statistics for the current request to Azure Cosmos DB service.
+     * @return request diagnostic statistics for the current request to Azure Cosmos DB service.
      */
-    public ClientSideRequestStatistics getClientSideRequestStatistics() {
-        return this.response.getClientSideRequestStatistics();
+    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+        return this.response.getCosmosResponseRequestDiagnosticStatistics();
     }
 
     /**
@@ -351,12 +351,12 @@ public final class ResourceResponse<T extends Resource> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getRequestLatency() {
-        ClientSideRequestStatistics clientSideRequestStatistics = this.response.getClientSideRequestStatistics();
-        if (clientSideRequestStatistics == null) {
+        CosmosResponseDiagnostics cosmosResponseDiagnostics = this.response.getCosmosResponseRequestDiagnosticStatistics();
+        if (cosmosResponseDiagnostics == null) {
             return Duration.ZERO;
         }
 
-        return clientSideRequestStatistics.getRequestLatency();
+        return cosmosResponseDiagnostics.requestLatency();
     }
 
     /**
@@ -364,12 +364,12 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public String getRequestDiagnosticsString() {
-        ClientSideRequestStatistics clientSideRequestStatistics = this.response.getClientSideRequestStatistics();
-        if (clientSideRequestStatistics == null) {
+    public String getCosmosResponseDiagnosticString() {
+        CosmosResponseDiagnostics cosmosResponseRequestDiagnosticStatistics = this.response.getCosmosResponseRequestDiagnosticStatistics();
+        if (cosmosResponseRequestDiagnosticStatistics == null) {
             return StringUtils.EMPTY;
         }
-        return clientSideRequestStatistics.toString();
+        return cosmosResponseRequestDiagnosticStatistics.toString();
     }
 
     long getCurrentQuotaHeader(String headerName) {

@@ -23,7 +23,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.GoneException;
@@ -141,8 +141,8 @@ public class ConsistencyWriter {
             request.requestContext.requestChargeTracker = new RequestChargeTracker();
         }
 
-        if (request.requestContext.clientSideRequestStatistics == null) {
-            request.requestContext.clientSideRequestStatistics = new ClientSideRequestStatistics();
+        if (request.requestContext.cosmosResponseDiagnostics == null) {
+            request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
         }
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -156,7 +156,7 @@ public class ConsistencyWriter {
                 try {
                     List<URI> contactedReplicas = new ArrayList<>();
                     replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(HttpUtils.toURI(replicaAddress.getPhysicalUri())));
-                    request.requestContext.clientSideRequestStatistics.setContactedReplicas(contactedReplicas);
+                    BridgeInternal.setContactedReplicas(request.requestContext.cosmosResponseDiagnostics, contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
                     // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -186,7 +186,7 @@ public class ConsistencyWriter {
                                                    try {
                                                        CosmosClientException ex = Utils.as(t, CosmosClientException.class);
                                                        try {
-                                                           request.requestContext.clientSideRequestStatistics.recordResponse(request,
+                                                           BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
                                                                storeReader.createStoreResult(null, ex, false, false, primaryUri));
                                                        } catch (CosmosClientException e) {
                                                            logger.error("Error occurred while recording response", e);
@@ -207,7 +207,7 @@ public class ConsistencyWriter {
 
             }).flatMap(response -> {
                 try {
-                    request.requestContext.clientSideRequestStatistics.recordResponse(request,
+                    BridgeInternal.recordResponse(request.requestContext.cosmosResponseDiagnostics, request,
                         storeReader.createStoreResult(response, null, false, false, primaryURI.get()));
                 } catch (CosmosClientException e) {
                     logger.error("Error occurred while recording response", e);

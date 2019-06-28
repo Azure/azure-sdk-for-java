@@ -24,8 +24,8 @@
 
 package com.azure.data.cosmos.internal;
 
-import com.azure.data.cosmos.ClientSideRequestStatistics;
 import com.azure.data.cosmos.ConsistencyLevel;
+import com.azure.data.cosmos.CosmosResponseDiagnostics;
 import com.azure.data.cosmos.internal.directconnectivity.StoreResponse;
 import com.azure.data.cosmos.internal.directconnectivity.StoreResult;
 import com.azure.data.cosmos.internal.directconnectivity.TimeoutHelper;
@@ -55,7 +55,7 @@ public class DocumentServiceRequestContext implements Cloneable{
     public volatile List<String> storeResponses;
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
-    public volatile ClientSideRequestStatistics clientSideRequestStatistics;
+    public volatile CosmosResponseDiagnostics cosmosResponseDiagnostics;
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -112,7 +112,7 @@ public class DocumentServiceRequestContext implements Cloneable{
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
-        context.clientSideRequestStatistics = this.clientSideRequestStatistics;
+        context.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
 
         return context;
     }
