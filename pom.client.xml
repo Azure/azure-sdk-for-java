@@ -523,7 +523,7 @@
                 -snippetpath ${project.basedir}/eventhubs/client/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
-                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java/javadoc
+                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
