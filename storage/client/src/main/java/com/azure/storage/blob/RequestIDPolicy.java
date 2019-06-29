@@ -7,9 +7,8 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import reactor.core.publisher.Mono;
-
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /**
  * This is a factory which creates policies in an {@link com.azure.core.http.HttpPipeline} for setting a unique request ID in the

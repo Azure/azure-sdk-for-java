@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
 import com.azure.storage.blob.models.BlockBlobsUploadResponse;
-
 import java.time.OffsetDateTime;
 
 /**

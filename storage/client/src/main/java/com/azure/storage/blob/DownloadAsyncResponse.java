@@ -6,13 +6,11 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import io.netty.buffer.ByteBuf;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.function.Function;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * {@code DownloadAsyncResponse} wraps the protocol-layer response from {@link BlobAsyncClient#download(BlobRange,

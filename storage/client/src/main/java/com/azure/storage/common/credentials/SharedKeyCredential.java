@@ -5,9 +5,6 @@ package com.azure.storage.common.credentials;
 
 import com.azure.core.implementation.util.ImplUtils;
 import io.netty.handler.codec.http.QueryStringDecoder;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -20,6 +17,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * SharedKey credential policy that is put into a header to authorize requests.

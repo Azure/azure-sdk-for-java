@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
-
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 import java.util.Map;

@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -14,9 +13,9 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;

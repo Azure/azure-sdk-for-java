@@ -3,12 +3,11 @@
 
 package com.azure.storage.blob;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * {@code ProgressReporterImpl} offers a convenient way to add progress tracking to a given Flowable.

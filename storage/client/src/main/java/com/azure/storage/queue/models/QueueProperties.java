@@ -4,29 +4,35 @@ package com.azure.storage.queue.models;
 
 import java.util.Map;
 
+/**
+ * Model class containing properties of a specific queue in the storage Queue service.
+ */
 public final class QueueProperties {
-    /**
-     * The metadata property.
-     */
     private final Map<String, String> metadata;
-
-    /**
-     * The approximate number of messages in the queue. This number is not
-     * lower than the actual number of messages in the queue, but could be
-     * higher.
-     */
     private final int approximateMessagesCount;
 
+    /**
+     * Creates an instance that contains properties of a queue.
+     *
+     * @param metadata Metadata associated with the queue
+     * @param approximateMessagesCount Approximate number of messages contained in the queue
+     */
     public QueueProperties(Map<String, String> metadata, int approximateMessagesCount) {
         this.metadata = metadata;
         this.approximateMessagesCount = approximateMessagesCount;
     }
 
-    public Map<String, String> getMetadata() {
-        return this.metadata; // Clone this?
+    /**
+     * @return the user-defined metadata associated with the queue
+     */
+    public Map<String, String> metadata() {
+        return this.metadata;
     }
 
-    public int getApproximateMessagesCount() {
+    /**
+     * @return the approximate number of messages contained in the queue at the time of properties retrieval
+     */
+    public int approximateMessagesCount() {
         return approximateMessagesCount;
     }
 }

@@ -40,7 +40,7 @@ class TestHelpers {
             queueEndpoint = ConfigurationManager.getConfiguration().get(azureStorageQueueEndpoint);
         }
 
-        if (ImplUtils.isNullOrEmpty(connectionString) || ImplUtils.isNullOrEmpty(queueEndpoint)) {
+        if (ImplUtils.isNullOrEmpty(connectionString) && ImplUtils.isNullOrEmpty(queueEndpoint)) {
             logger.asWarning().log("{} and {} must be set to build the testing client", azureStorageConnectionString, azureStorageQueueEndpoint);
             fail();
             return null;

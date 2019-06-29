@@ -50,7 +50,6 @@ public class QueueClientTests extends QueueClientTestsBase {
                 .build(), true, logger);
         } else {
             client = helper.setupClient((connectionString, endpoint) -> QueueClient.builder()
-                .connectionString(connectionString)
                 .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(HttpClient.createDefault().wiretap(true))
@@ -89,7 +88,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         helper.assertResponseStatusCode(client.create(metadata), 201);
 
         QueueProperties properties = client.getProperties().value();
-        assertEquals(metadata, properties.getMetadata());
+        assertEquals(metadata, properties.metadata());
     }
 
     @Override
@@ -154,8 +153,8 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().getApproximateMessagesCount());
-        assertEquals(metadata, response.value().getMetadata());
+        assertEquals(0, response.value().approximateMessagesCount());
+        assertEquals(metadata, response.value().metadata());
     }
 
     @Override
@@ -180,8 +179,8 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().getApproximateMessagesCount());
-        assertEquals(metadata, response.value().getMetadata());
+        assertEquals(0, response.value().approximateMessagesCount());
+        assertEquals(metadata, response.value().metadata());
     }
 
     @Override
@@ -221,15 +220,15 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().getApproximateMessagesCount());
-        assertEquals(metadata, response.value().getMetadata());
+        assertEquals(0, response.value().approximateMessagesCount());
+        assertEquals(metadata, response.value().metadata());
 
         helper.assertResponseStatusCode(client.setMetadata(null), 204);
 
         response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().getApproximateMessagesCount());
-        assertEquals(Collections.EMPTY_MAP, response.value().getMetadata());
+        assertEquals(0, response.value().approximateMessagesCount());
+        assertEquals(Collections.EMPTY_MAP, response.value().metadata());
     }
 
     @Override
@@ -489,13 +488,13 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(3, response.value().getApproximateMessagesCount());
+        assertEquals(3, response.value().approximateMessagesCount());
 
         helper.assertResponseStatusCode(client.clearMessages(), 204);
 
         response = client.getProperties();
         helper.assertResponseStatusCode(response, 200);
-        assertEquals(0, response.value().getApproximateMessagesCount());
+        assertEquals(0, response.value().approximateMessagesCount());
     }
 
     @Override
@@ -524,7 +523,7 @@ public class QueueClientTests extends QueueClientTestsBase {
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
         helper.assertResponseStatusCode(propertiesResponse, 200);
-        assertEquals(0, propertiesResponse.value().getApproximateMessagesCount());
+        assertEquals(0, propertiesResponse.value().approximateMessagesCount());
     }
 
     @Override

@@ -95,7 +95,7 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
         Response<QueueProperties> propertiesResponse = client.getProperties();
         helper.assertResponseStatusCode(propertiesResponse, 200);
-        assertEquals(metadata, propertiesResponse.value().getMetadata());
+        assertEquals(metadata, propertiesResponse.value().metadata());
     }
 
     @Override
