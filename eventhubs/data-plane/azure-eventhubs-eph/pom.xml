@@ -45,6 +45,12 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
     </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>msal4j</artifactId>
+    	<version>0.4.0-preview</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

@@ -6,6 +6,8 @@ package com.microsoft.azure.eventprocessorhost;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventprocessorhost.EventProcessorHost.EventProcessorHostBuilder.AuthStep;
+import com.microsoft.azure.eventprocessorhost.EventProcessorHost.EventProcessorHostBuilder.OptionalStep;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -180,11 +182,18 @@ public class TestBase {
             String effectiveBlobPrefix = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_BLOB_PREFIX_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getStorageBlobPrefix()
                     : null;
-                    
-            settings.outHost = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
-            		.useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix)
-            		.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath)
-            		.setExecutor(effectiveExecutor).build();
+
+            AuthStep intermediate = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
+            		.useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix);
+            OptionalStep almostDone = null;
+            if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.AUTH_CALLBACK)) {
+            	ConnectionStringBuilder csb = new ConnectionStringBuilder(effectiveConnectionString);
+            	almostDone = intermediate.useAADAuthentication(csb.getEndpoint(), effectiveEntityPath)
+            			.useAuthenticationCallback(settings.inoutEPHConstructorArgs.getAuthCallback(), settings.inoutEPHConstructorArgs.getAuthAuthority());
+            } else {
+            	almostDone = intermediate.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath);
+            }
+            settings.outHost = almostDone.setExecutor(effectiveExecutor).build();
         }
 
         if (!settings.inEventHubDoesNotExist) {
