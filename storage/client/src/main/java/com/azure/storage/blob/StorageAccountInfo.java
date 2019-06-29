@@ -1,13 +1,6 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.storage.blob;
 
-import com.azure.storage.blob.models.AccountKind;
-import com.azure.storage.blob.models.BlobGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ContainerGetAccountInfoHeaders;
-import com.azure.storage.blob.models.ServiceGetAccountInfoHeaders;
-import com.azure.storage.blob.models.SkuName;
+import com.azure.storage.blob.models.*;
 
 public class StorageAccountInfo {
 

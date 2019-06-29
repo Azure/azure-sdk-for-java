@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.storage.blob.models.StorageErrorCode;
 import com.azure.storage.blob.models.StorageErrorException;
+import reactor.core.publisher.Mono;
 
 /**
  * A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level.
