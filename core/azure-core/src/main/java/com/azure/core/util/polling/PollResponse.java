@@ -3,6 +3,8 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.util.ExpandableStringEnum;
+
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
@@ -14,6 +16,9 @@ import java.util.Objects;
  *
  *<p><strong>Code Sample Creating PollResponse Object</strong></p>
  * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+ *
+ * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
+ * {@codesnippet com.azure.core.util.polling.pollresponse.custom.status.value}
  *
  * @param <T> Type of poll response value.
  *
@@ -31,25 +36,34 @@ public final class PollResponse<T> {
      * An enum to represent all possible states that a long-running operation may find itself in.
      * The poll operation is considered complete when the status is one of {@code SUCCESSFULLY_COMPLETED}, {@code USER_CANCELLED} or {@code FAILED}.
      */
-    public enum OperationStatus {
+    public static final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
         /** Represents that polling has not yet started for this long-running operation.*/
-        NOT_STARTED,
+        public static final OperationStatus NOT_STARTED = fromString("NOT_STARTED");
 
         /** Represents that this long-running operation is in progress and not yet complete.*/
-        IN_PROGRESS,
+        public static final OperationStatus IN_PROGRESS = fromString("IN_PROGRESS");
 
         /** Represent that this long-running operation is completed successfully.*/
-        SUCCESSFULLY_COMPLETED,
+        public static final OperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED");
 
         /**
          * Represents that this long-running operation has failed to successfully complete, however this is still
          * considered as complete long-running operation, meaning that the {@link Poller} instance will report that it is complete.
          */
-        FAILED,
+        public static final OperationStatus FAILED = fromString("FAILED");
 
         /** Represents that this long-running operation is cancelled by user, however this is still
          * considered as complete long-running operation.*/
-        USER_CANCELLED
+        public static final OperationStatus USER_CANCELLED = fromString("USER_CANCELLED");
+
+        /**
+         * Creates or finds a {@link OperationStatus} from its string representation.
+         * @param name a name to look for
+         * @return the corresponding {@link OperationStatus}
+         */
+        public static OperationStatus fromString(String name) {
+            return fromString(name, OperationStatus.class);
+        }
     }
 
     /**
@@ -65,7 +79,7 @@ public final class PollResponse<T> {
      * @param properties A map of properties provided by the service that will be made available into the next poll operation.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
-    public PollResponse(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
+    public  PollResponse(OperationStatus status, T value, Duration retryAfter, Map<Object, Object> properties) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
         this.value = value;

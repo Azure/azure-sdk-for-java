@@ -1,40 +1,39 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://servbatch.centralus.batch.azure.com/pools?api-version=2018-12-01.8.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-06-01.9.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:c155a71592633a265521026a09aea85197b0d0ac239c7c7329dba103664da0ff Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 22 Feb 2019 22:18:11 GMT",
-      "content-length" : "853",
+      "date" : "Wed, 19 Jun 2019 17:58:23 GMT",
+      "content-length" : "856",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d3dc9a57-9ceb-4fd9-942e-592da5160215",
+      "client-request-id" : "eac1b7be-4fa6-41f8-9d9d-5a1ed9444078",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "a13c480a-be19-4266-bb03-f8e566c5c1f8",
+      "request-id" : "9e02f5ed-fb5b-460b-8b86-e14f376c52ef",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:a13c480a-be19-4266-bb03-f8e566c5c1f8\\nTime:2019-02-22T22:18:11.6512454Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"virtualMachineImageId\"\r\n    },{\r\n      \"key\":\"PropertyValue\",\"value\":\"/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified virtualMachineImageId is in a different subscription and cannot be used with the current Batch account in subscription faa080af-c1d8-40ad-9cce-e1a450ca5b57\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:9e02f5ed-fb5b-460b-8b86-e14f376c52ef\\nTime:2019-06-19T17:58:23.7460665Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"virtualMachineImageId\"\r\n    },{\r\n      \"key\":\"PropertyValue\",\"value\":\"/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified virtualMachineImageId is in a different subscription and cannot be used with the current Batch account in subscription 677f962b-9abf-4423-a27b-0c2f4094dcec\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://servbatch.centralus.batch.azure.com/pools/BatchUser-customImageExpErr?api-version=2018-12-01.8.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-customImageExpErr?api-version=2019-06-01.9.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:c155a71592633a265521026a09aea85197b0d0ac239c7c7329dba103664da0ff Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-06-01.9.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Fri, 22 Feb 2019 22:18:11 GMT",
+      "date" : "Wed, 19 Jun 2019 17:58:23 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "24e6e5aa-6fa7-41f2-8318-85c9229f3e71",
+      "client-request-id" : "d5d57f8a-1b2a-4e84-9366-03a58b7484f1",
       "retry-after" : "0",
-      "request-id" : "0960583a-dabd-4b9e-a9f1-5372bda4520b",
+      "request-id" : "0f9f6bed-788d-4fbd-8877-779ec9e46682",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

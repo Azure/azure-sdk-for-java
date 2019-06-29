@@ -31,12 +31,12 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        LOGGER.info("Setting host to {0}", host);
+        LOGGER.info("Setting host to {}", host);
 
         Mono<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
         try {
-            context.httpRequest().withUrl(urlBuilder.withHost(host).toURL());
+            context.httpRequest().url(urlBuilder.host(host).toURL());
             result = next.process();
         } catch (MalformedURLException e) {
             result = Mono.error(e);

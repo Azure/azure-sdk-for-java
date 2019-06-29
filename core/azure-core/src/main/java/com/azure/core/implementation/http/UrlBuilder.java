@@ -25,7 +25,7 @@ public final class UrlBuilder {
      * @param scheme The scheme/protocol that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withScheme(String scheme) {
+    public UrlBuilder scheme(String scheme) {
         if (scheme == null || scheme.isEmpty()) {
             this.scheme = null;
         } else {
@@ -47,7 +47,7 @@ public final class UrlBuilder {
      * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withHost(String host) {
+    public UrlBuilder host(String host) {
         if (host == null || host.isEmpty()) {
             this.host = null;
         } else {
@@ -69,7 +69,7 @@ public final class UrlBuilder {
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withPort(String port) {
+    public UrlBuilder port(String port) {
         if (port == null || port.isEmpty()) {
             this.port = null;
         } else {
@@ -83,8 +83,8 @@ public final class UrlBuilder {
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withPort(int port) {
-        return withPort(Integer.toString(port));
+    public UrlBuilder port(int port) {
+        return port(Integer.toString(port));
     }
 
     /**
@@ -100,7 +100,7 @@ public final class UrlBuilder {
      * @param path The path that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withPath(String path) {
+    public UrlBuilder path(String path) {
         if (path == null || path.isEmpty()) {
             this.path = null;
         } else {
@@ -134,7 +134,7 @@ public final class UrlBuilder {
      * @param query The query that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
-    public UrlBuilder withQuery(String query) {
+    public UrlBuilder query(String query) {
         if (query == null || query.isEmpty()) {
             this.query.clear();
         } else {
@@ -286,27 +286,27 @@ public final class UrlBuilder {
         if (url != null) {
             final String protocol = url.getProtocol();
             if (protocol != null && !protocol.isEmpty()) {
-                result.withScheme(protocol);
+                result.scheme(protocol);
             }
 
             final String host = url.getHost();
             if (host != null && !host.isEmpty()) {
-                result.withHost(host);
+                result.host(host);
             }
 
             final int port = url.getPort();
             if (port != -1) {
-                result.withPort(port);
+                result.port(port);
             }
 
             final String path = url.getPath();
             if (path != null && !path.isEmpty()) {
-                result.withPath(path);
+                result.path(path);
             }
 
             final String query = url.getQuery();
             if (query != null && !query.isEmpty()) {
-                result.withQuery(query);
+                result.query(query);
             }
         }
 
