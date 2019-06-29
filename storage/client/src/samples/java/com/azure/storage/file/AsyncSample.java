@@ -1,7 +1,8 @@
-package com.azure.storage.files;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.storage.file;
 
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.storage.file.FileServiceAsyncClient;
 import java.util.UUID;
 
 /**

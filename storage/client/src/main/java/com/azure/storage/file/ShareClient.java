@@ -13,7 +13,6 @@ import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

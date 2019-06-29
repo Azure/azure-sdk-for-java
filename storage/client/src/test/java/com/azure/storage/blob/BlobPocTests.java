@@ -14,14 +14,13 @@ import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
 import com.azure.storage.blob.models.BlockLookupList;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.codec.binary.Base64;
-import reactor.core.publisher.Flux;
-
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import org.apache.commons.codec.binary.Base64;
+import reactor.core.publisher.Flux;
 
 public class BlobPocTests {
 

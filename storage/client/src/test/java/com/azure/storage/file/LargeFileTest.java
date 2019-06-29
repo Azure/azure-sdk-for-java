@@ -1,25 +1,26 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file;
 
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.file.Files;
 import java.security.MessageDigest;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.io.File;
-import java.time.Duration;
-import java.time.OffsetDateTime;
 import org.junit.rules.TestName;
 
 import static org.junit.Assert.fail;

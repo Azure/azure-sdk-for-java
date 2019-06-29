@@ -1,11 +1,11 @@
-package com.azure.storage.files.javadoc;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.storage.file.javadoc;
 
-import com.azure.core.http.rest.Response;
-import com.azure.storage.file.FileServiceClient;
-import com.azure.storage.file.FileServiceAsyncClient;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.azure.storage.file.ShareClient;
+import com.azure.storage.file.FileServiceAsyncClient;
+import com.azure.storage.file.FileServiceClient;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link FileServiceClient} and {@link FileServiceAsyncClient}.

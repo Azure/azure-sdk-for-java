@@ -1,14 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file;
 
 import com.azure.core.test.TestBase;
 import com.azure.core.util.configuration.ConfigurationManager;
+import java.util.Collections;
+import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
-
-import java.util.Collections;
-import java.util.Map;
 
 public abstract class DirectoryClientTestBase extends TestBase {
     protected String dirName;

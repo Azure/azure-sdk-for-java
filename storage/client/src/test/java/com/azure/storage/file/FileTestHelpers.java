@@ -3,12 +3,12 @@
 
 package com.azure.storage.file;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.file.models.CorsRule;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.FileServiceProperties;
@@ -17,7 +17,6 @@ import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;

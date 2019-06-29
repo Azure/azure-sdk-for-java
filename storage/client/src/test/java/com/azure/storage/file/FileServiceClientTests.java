@@ -17,7 +17,6 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.StorageErrorException;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;

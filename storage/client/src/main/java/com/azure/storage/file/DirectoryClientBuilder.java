@@ -3,8 +3,6 @@
 
 package com.azure.storage.file;
 
-import com.azure.core.util.configuration.Configuration;
-import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -15,6 +13,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.util.configuration.Configuration;
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -58,34 +58,17 @@ import java.util.Objects;
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link DirectoryClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
- * <p><strong>Instantiating a synchronous Directory Client with connection string.</strong></p>
- * @codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring
- *
- * <p><strong>Instantiating an Asynchronous Directory Client with connection string.</strong></p>
- * @codesnippet com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage File service must be used. Set the SharedKeyCredential with
  * {@link DirectoryClientBuilder#connectionString(String) connectionString}. If the builder has both a SASTokenCredential and
  * SharedKeyCredential the SharedKeyCredential will be preferred when authorizing requests sent to the service.</p>
  *
- * <pre>
- * DirectoryClient client = DirectoryClient().builder()
- *     .endpoint(endpoint)
- *     .shareName(shareName)
- *     .directoryName(directoryName)
- *     .connectionString(connectionString)
- *     .build();
- * </pre>
+ * <p><strong>Instantiating a synchronous Directory Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryClient.instantiation.connectionstring
  *
- * <pre>
- * DirectoryAsyncClient client = DirectoryAsyncClient().builder()
- *     .endpoint(endpoint)
- *     .shareName(shareName)
- *     .directoryName(directoryName)
- *     .connectionString(connectionString)
- *     .buildAsync();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Directory Client with connection string.</strong></p>
+ * @codesnippet com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
  *
  * @see DirectoryClient
  * @see DirectoryAsyncClient

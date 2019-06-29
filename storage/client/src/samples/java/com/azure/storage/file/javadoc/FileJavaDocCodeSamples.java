@@ -1,15 +1,16 @@
-package com.azure.storage.files.javadoc;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.storage.file.javadoc;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.file.FileAsyncClient;
-import com.azure.storage.file.FileClient;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.file.FileAsyncClient;
+import com.azure.storage.file.FileClient;
 import com.azure.storage.file.models.FileCopyInfo;
 import com.azure.storage.file.models.FileDownloadInfo;
 import com.azure.storage.file.models.FileInfo;
-import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileUploadInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -19,7 +20,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import reactor.core.publisher.Flux;
-
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link FileClient} and {@link FileAsyncClient}.

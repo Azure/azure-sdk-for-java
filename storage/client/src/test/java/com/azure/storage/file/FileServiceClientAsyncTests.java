@@ -14,14 +14,13 @@ import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.ShareProperties;
 import com.azure.storage.file.models.StorageErrorException;
-import reactor.test.StepVerifier;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import reactor.test.StepVerifier;
 
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 import static org.junit.Assert.fail;

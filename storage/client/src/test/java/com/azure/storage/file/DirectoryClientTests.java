@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file;
 
 import com.azure.core.http.HttpClient;
@@ -9,10 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.StorageErrorException;
 import java.time.Duration;
+import java.util.Iterator;
 import org.junit.AfterClass;
 import org.junit.Assert;
-
-import java.util.Iterator;
 import org.junit.BeforeClass;
 
 import static com.azure.storage.file.FileTestHelpers.setupClient;
