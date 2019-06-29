@@ -19,5 +19,5 @@ public @interface ServiceClientBuilder {
     /**
      * An array of classes that this builder can build.
      */
-    Class<?>[] canBuild();
+    Class<?>[] serviceClients();
 }

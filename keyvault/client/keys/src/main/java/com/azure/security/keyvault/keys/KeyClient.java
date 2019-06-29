@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @see KeyClientBuilder
  */
-@ServiceClient(builder = KeyClientBuilder.class, service = KeyService.class)
+@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
 public final class KeyClient {
     private KeyAsyncClient client;
 

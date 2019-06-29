@@ -61,7 +61,7 @@ import java.util.Objects;
  * @see ConfigurationAsyncClient
  * @see ConfigurationClientCredentials
  */
-@ServiceClientBuilder(canBuild = ConfigurationAsyncClient.class)
+@ServiceClientBuilder(serviceClients = ConfigurationAsyncClient.class)
 public final class ConfigurationAsyncClientBuilder {
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.

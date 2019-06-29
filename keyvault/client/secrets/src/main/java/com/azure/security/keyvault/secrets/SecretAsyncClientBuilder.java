@@ -60,7 +60,7 @@ import java.util.Objects;
  *
  * @see SecretAsyncClient
  */
-@ServiceClientBuilder(canBuild = SecretAsyncClient.class)
+@ServiceClientBuilder(serviceClients = SecretAsyncClient.class)
 public final class SecretAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;

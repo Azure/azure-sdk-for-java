@@ -53,7 +53,7 @@ import reactor.core.publisher.Mono;
  *
  * @see KeyAsyncClientBuilder
  */
-@ServiceClient(builder = KeyAsyncClientBuilder.class, isAsync = true, service = KeyService.class)
+@ServiceClient(builder = KeyAsyncClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";

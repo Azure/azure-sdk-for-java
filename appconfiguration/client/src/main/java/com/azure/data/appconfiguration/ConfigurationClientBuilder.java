@@ -44,7 +44,7 @@ import java.net.MalformedURLException;
  * @see ConfigurationClient
  * @see ConfigurationClientCredentials
  */
-@ServiceClientBuilder(canBuild = ConfigurationClient.class)
+@ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
     private final ConfigurationAsyncClientBuilder builder;
 
