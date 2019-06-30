@@ -43,10 +43,6 @@ public class ConfigurationClientCredentials {
     private static final String[] SIGNED_HEADERS = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER };
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private static final String ENDPOINT = "endpoint=";
-    private static final String ID = "id=";
-    private static final String SECRET = "secret=";
-
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
 
