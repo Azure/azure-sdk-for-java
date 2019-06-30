@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+<<<<<<< HEAD:keyvault/client/keys/src/main/java/com/azure/security/keyvault/keys/KeyVaultErrorCodeStrings.java
+package com.azure.security.keyvault.keys;
+=======
 package com.azure.security.keyvault.secrets;
+>>>>>>> 1978d61afc9b62348d25bb011dc0986fb110a867:keyvault/client/secrets/src/main/java/com/azure/security/keyvault/secrets/KeyVaultErrorCodeStrings.java
 
 import java.io.IOException;
 import java.io.InputStream;

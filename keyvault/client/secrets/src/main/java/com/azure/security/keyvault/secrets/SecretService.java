@@ -3,21 +3,21 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.ReturnValueWireType;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnValueWireType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -38,10 +38,10 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@Service("KeyVaultSecrets")
+@ServiceInterface(name = "KeyVaultSecrets")
 interface SecretService {
 
-    @PUT("secrets/{secret-name}")
+    @Put("secrets/{secret-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -52,7 +52,7 @@ interface SecretService {
                                      @BodyParam("body") SecretRequestParameters parameters,
                                      @HeaderParam("Content-Type") String type);
 
-    @GET("secrets/{secret-name}/{secret-version}")
+    @Get("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(code = {403}, value = ResourceModifiedException.class)
@@ -65,7 +65,7 @@ interface SecretService {
                                          @HeaderParam("Content-Type") String type);
 
 
-    @PATCH("secrets/{secret-name}/{secret-version}")
+    @Patch("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     Mono<Response<SecretBase>> updateSecret(@HostParam("url") String url,
@@ -77,7 +77,7 @@ interface SecretService {
                                             @HeaderParam("Content-Type") String type);
 
 
-    @DELETE("secrets/{secret-name}")
+    @Delete("secrets/{secret-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -88,7 +88,7 @@ interface SecretService {
                                                @HeaderParam("Content-Type") String type);
 
 
-    @GET("deletedsecrets/{secret-name}")
+    @Get("deletedsecrets/{secret-name}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -98,7 +98,7 @@ interface SecretService {
                                                        @HeaderParam("accept-language") String acceptLanguage,
                                                        @HeaderParam("Content-Type") String type);
 
-    @DELETE("deletedsecrets/{secret-name}")
+    @Delete("deletedsecrets/{secret-name}")
     @ExpectedResponses({204})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -109,7 +109,7 @@ interface SecretService {
                                           @HeaderParam("Content-Type") String type);
 
 
-    @POST("deletedsecrets/{secret-name}/recover")
+    @Post("deletedsecrets/{secret-name}/recover")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -120,7 +120,7 @@ interface SecretService {
                                                     @HeaderParam("Content-Type") String type);
 
 
-    @POST("secrets/{secret-name}/backup")
+    @Post("secrets/{secret-name}/backup")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -132,7 +132,7 @@ interface SecretService {
 
 
 
-    @POST("secrets/restore")
+    @Post("secrets/restore")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(code = {400}, value = ResourceModifiedException.class)
     @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -143,7 +143,7 @@ interface SecretService {
                                              @HeaderParam("Content-Type") String type);
 
 
-    @GET("secrets")
+    @Get("secrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
@@ -154,7 +154,7 @@ interface SecretService {
                                                @HeaderParam("Content-Type") String type);
 
 
-    @GET("secrets/{secret-name}/versions")
+    @Get("secrets/{secret-name}/versions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
@@ -166,7 +166,7 @@ interface SecretService {
                                                       @HeaderParam("Content-Type") String type);
 
 
-    @GET("{nextUrl}")
+    @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(SecretBasePage.class)
@@ -176,7 +176,7 @@ interface SecretService {
                                                @HeaderParam("Content-Type") String type);
 
 
-    @GET("deletedsecrets")
+    @Get("deletedsecrets")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedSecretPage.class)
@@ -186,7 +186,7 @@ interface SecretService {
                                                               @HeaderParam("accept-language") String acceptLanguage,
                                                               @HeaderParam("Content-Type") String type);
 
-    @GET("{nextUrl}")
+    @Get("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(HttpResponseException.class)
     @ReturnValueWireType(DeletedSecretPage.class)

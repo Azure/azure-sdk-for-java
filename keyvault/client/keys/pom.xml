@@ -36,11 +36,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-auth</artifactId>
+      <version>1.0.0-preview.1</version>
     </dependency>
 
     <dependency>
@@ -63,12 +59,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
+      <version>1.0.0-preview.1</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
+      <version>1.0.0-preview.1</version>
       <scope>test</scope>
     </dependency>
 

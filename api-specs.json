@@ -7,6 +7,10 @@
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "appconfiguration/resource-manager": {
+    "source": "specification/appconfiguration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "applicationinsights/resource-manager": {
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -211,6 +215,10 @@
       "\"knownSingulars\"": ["\"redis\""]
     }
   },
+  "relay/resource-manager": {
+    "source": "specification/relay/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "resourcegraph/resource-manager": {
     "source": "specification/resourcegraph/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -221,6 +229,18 @@
   },
   "resources/resource-manager": {
     "source": "specification/resources/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "search/resource-manager": {
+    "source": "specification/search/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicefabric/resource-manager": {
+    "source": "specification/servicefabric/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicebus/resource-manager": {
+    "source": "specification/servicebus/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "signalr/resource-manager": {

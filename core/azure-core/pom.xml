@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-preview.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -38,7 +38,7 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>v1.0.0-preview.1</tag>
   </scm>
   
   <properties>
@@ -81,6 +81,16 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+    Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+    which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
