@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.authorization.v2018_09_01_preview.ClassicAdministrators;
+import com.microsoft.azure.management.authorization.v2018_09_01_preview.GlobalAdministrators;
 import com.microsoft.azure.management.authorization.v2018_09_01_preview.ProviderOperationsMetadatas;
 import com.microsoft.azure.management.authorization.v2018_09_01_preview.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2018_09_01_preview.Permissions;
@@ -30,6 +31,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class AuthorizationManager extends ManagerCore<AuthorizationManager, AuthorizationManagementClientImpl> {
     private ClassicAdministrators classicAdministrators;
+    private GlobalAdministrators globalAdministrators;
     private ProviderOperationsMetadatas providerOperationsMetadatas;
     private RoleAssignments roleAssignments;
     private Permissions permissions;
@@ -90,6 +92,16 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
             this.classicAdministrators = new ClassicAdministratorsImpl(this);
         }
         return this.classicAdministrators;
+    }
+
+    /**
+     * @return Entry point to manage GlobalAdministrators.
+     */
+    public GlobalAdministrators globalAdministrators() {
+        if (this.globalAdministrators == null) {
+            this.globalAdministrators = new GlobalAdministratorsImpl(this);
+        }
+        return this.globalAdministrators;
     }
 
     /**
