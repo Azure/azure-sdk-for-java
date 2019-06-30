@@ -7,7 +7,7 @@ package com.azure.core.implementation.annotation;
  * Enumeration of return types used with {@link ServiceMethod} annotation to indicate if a
  * method is expected to return a single item or a collection
  */
-public enum ResponseType {
-    SINGLE_ITEM,
-    COLLECTION_OF_ITEMS
+public enum ReturnType {
+    SINGLE,
+    COLLECTION
 }

@@ -94,7 +94,7 @@ public final class ConfigurationAsyncClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationAsyncClient} based on options set in the ServiceClientBuilder. Every time {@code build()} is
+     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.
      *
      * <p>

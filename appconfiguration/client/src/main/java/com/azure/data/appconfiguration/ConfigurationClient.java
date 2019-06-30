@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.implementation.annotation.ResponseType;
+import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
@@ -70,7 +70,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -95,7 +95,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return addSetting(setting, Context.NONE);
     }
@@ -150,7 +150,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -189,7 +189,7 @@ public final class ConfigurationClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
         return setSetting(setting, Context.NONE);
     }
@@ -253,7 +253,7 @@ public final class ConfigurationClient {
      * is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -282,7 +282,7 @@ public final class ConfigurationClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
         return updateSetting(setting, Context.NONE);
     }
@@ -334,7 +334,7 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
@@ -358,7 +358,7 @@ public final class ConfigurationClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
         return getSetting(setting, Context.NONE);
     }
@@ -405,7 +405,7 @@ public final class ConfigurationClient {
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
@@ -436,7 +436,7 @@ public final class ConfigurationClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
         return deleteSetting(setting, Context.NONE);
     }
@@ -489,7 +489,7 @@ public final class ConfigurationClient {
      * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
-    @ServiceMethod(returns = ResponseType.COLLECTION_OF_ITEMS)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Iterable<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
@@ -536,7 +536,7 @@ public final class ConfigurationClient {
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    @ServiceMethod(returns = ResponseType.COLLECTION_OF_ITEMS)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }

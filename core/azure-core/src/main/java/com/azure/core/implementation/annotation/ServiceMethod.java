@@ -17,9 +17,9 @@ import static java.lang.annotation.ElementType.METHOD;
 public @interface ServiceMethod {
 
     /**
-     * This represents the type of response expected from this service method.
-     * @return the type of response of the method annotated with {@link ServiceMethod}
+     * This represents the return type expected from this service method.
+     * @return the return type of the method annotated with {@link ServiceMethod}
      */
-    ResponseType returns();
+    ReturnType returns();
 
 }
