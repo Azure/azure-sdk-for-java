@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.implementation.annotation.ResponseType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
@@ -97,7 +98,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
         return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -125,7 +126,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
         return addSetting(setting, Context.NONE);
     }
@@ -198,7 +199,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceModifiedException If the setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
         return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -242,7 +243,7 @@ public final class ConfigurationAsyncClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
         return setSetting(setting, Context.NONE);
     }
@@ -326,7 +327,7 @@ public final class ConfigurationAsyncClient {
      * is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
         return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
@@ -358,7 +359,7 @@ public final class ConfigurationAsyncClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
         return updateSetting(setting, Context.NONE);
     }
@@ -424,7 +425,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> getSetting(String key) {
         return getSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
@@ -451,7 +452,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
         return getSetting(setting, Context.NONE);
     }
@@ -510,7 +511,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceModifiedException If the ConfigurationSetting is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
         return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
     }
@@ -544,7 +545,7 @@ public final class ConfigurationAsyncClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.SINGLE_ITEM)
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
         return deleteSetting(setting, Context.NONE);
     }
@@ -605,7 +606,7 @@ public final class ConfigurationAsyncClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.COLLECTION_OF_ITEMS)
     public Flux<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
@@ -668,7 +669,7 @@ public final class ConfigurationAsyncClient {
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
-    @ServiceMethod
+    @ServiceMethod(returns = ResponseType.COLLECTION_OF_ITEMS)
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
