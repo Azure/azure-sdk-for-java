@@ -1,4 +1,4 @@
-package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rights reserved.
+//// Copyright (c) Microsoft Corporation. All rights reserved.
 //// Licensed under the MIT License.
 //
 //package com.azure.storage.blob;
@@ -149,7 +149,7 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //
 //            if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
 //                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n",
-//                        sanitizeURL(request.getDirectoryUrl()), this.tryCount);
+//                        sanitizeURL(request.url()), this.tryCount);
 //                this.log(HttpPipelineLogLevel.INFO, logMessage);
 //            }
 //
@@ -224,7 +224,7 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //            StringBuilder stringBuilder = new StringBuilder();
 //            String format = "%s: %s" + System.lineSeparator();
 //            stringBuilder.append(String.format(format, sanitizedRequest.httpMethod().toString(),
-//                    sanitizedRequest.getDirectoryUrl().toString()));
+//                    sanitizedRequest.url().toString()));
 //            sanitizedRequest.headers().forEach((header) -> stringBuilder.append(String.format(format, header.name(),
 //                    header.value())));
 //            return stringBuilder.toString();
@@ -232,13 +232,13 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //
 //        private HttpRequest buildSanitizedRequest(final HttpRequest initialRequest) {
 //            // Build new URL and redact SAS signature, if present
-//            URL getDirectoryUrl = sanitizeURL(initialRequest.getDirectoryUrl());
+//            URL url = sanitizeURL(initialRequest.url());
 //
 //            // Build resultRequest
 //            HttpRequest resultRequest = new HttpRequest(
 //                    initialRequest.callerMethod(),
 //                    initialRequest.httpMethod(),
-//                    getDirectoryUrl,
+//                    url,
 //                    initialRequest.headers(),
 //                    initialRequest.body(),
 //                    initialRequest.responseDecoder());

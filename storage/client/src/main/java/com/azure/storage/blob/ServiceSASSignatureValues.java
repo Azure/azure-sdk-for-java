@@ -312,7 +312,7 @@ final class ServiceSASSignatureValues {
         String resource = getResource();
         String verifiedPermissions = getVerifiedPermissions();
 
-        // Signature is generated on the un-getDirectoryUrl-encoded values.
+        // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(verifiedPermissions, resource, sharedKeyCredentials);
 
         String signature = null;
@@ -347,7 +347,7 @@ final class ServiceSASSignatureValues {
         String resource = getResource();
         String verifiedPermissions = getVerifiedPermissions();
 
-        // Signature is generated on the un-getDirectoryUrl-encoded values.
+        // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(verifiedPermissions, resource, delegationKey, accountName);
 
         String signature = null;

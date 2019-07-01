@@ -194,7 +194,7 @@ final class AccountSASSignatureValues {
         Utility.assertNotNull("permissions", this.permissions);
         Utility.assertNotNull("version", this.version);
 
-        // Signature is generated on the un-getDirectoryUrl-encoded values.
+        // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(sharedKeyCredentials);
 
         String signature;

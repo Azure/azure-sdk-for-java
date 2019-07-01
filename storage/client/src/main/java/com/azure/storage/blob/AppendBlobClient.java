@@ -163,7 +163,7 @@ public final class AppendBlobClient extends BlobClient {
      * Commits a new block of data from another blob to the end of this append blob.
      *
      * @param sourceURL
-     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.
@@ -182,7 +182,7 @@ public final class AppendBlobClient extends BlobClient {
      * Commits a new block of data from another blob to the end of this append blob.
      *
      * @param sourceURL
-     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *          be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *          must either be public or must be authenticated via a shared access signature. If the source blob is
      *          public, no authentication is required to perform the operation.

@@ -23,9 +23,9 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //
 //    protected final GeneratedStorageClient storageClient;
 //
-//    protected StorageURL(URL getDirectoryUrl, HttpPipeline pipeline) {
-//        if (getDirectoryUrl == null) {
-//            throw new IllegalArgumentException("getDirectoryUrl cannot be null.");
+//    protected StorageURL(URL url, HttpPipeline pipeline) {
+//        if (url == null) {
+//            throw new IllegalArgumentException("url cannot be null.");
 //        }
 //        if (pipeline == null) {
 //            throw new IllegalArgumentException("Pipeline cannot be null. Create a pipeline by calling"
@@ -34,7 +34,7 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //
 //        this.storageClient = new GeneratedStorageClient(pipeline)
 //                .withVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-//        this.storageClient.withUrl(getDirectoryUrl.toString());
+//        this.storageClient.withUrl(url.toString());
 //    }
 //
 //
@@ -138,15 +138,15 @@ package com.azure.storage.blob;//// Copyright (c) Microsoft Corporation. All rig
 //
 //    @Override
 //    public String toString() {
-//        return this.storageClient.getDirectoryUrl();
+//        return this.storageClient.url();
 //    }
 //
 //    /**
-//     * @return The underlying getDirectoryUrl to the resource.
+//     * @return The underlying url to the resource.
 //     */
 //    public URL toURL() {
 //        try {
-//            return new URL(this.storageClient.getDirectoryUrl());
+//            return new URL(this.storageClient.url());
 //        } catch (MalformedURLException e) {
 //            throw new RuntimeException(e);
 //        }

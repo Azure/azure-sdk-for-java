@@ -213,7 +213,7 @@ public final class PageBlobClient extends BlobClient {
      *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *          are 0-511, 512-1023, etc.
      * @param sourceURL
-     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
      *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *          authentication is required to perform the operation.
@@ -240,7 +240,7 @@ public final class PageBlobClient extends BlobClient {
      *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *          are 0-511, 512-1023, etc.
      * @param sourceURL
-     *          The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
      *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *          authentication is required to perform the operation.

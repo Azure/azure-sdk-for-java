@@ -19,7 +19,7 @@ public final class AzureBlobStorageBuilder {
     /**
      * Sets The URL of the service account, container, or blob that is the targe of the desired operation.
      *
-     * @param url the getDirectoryUrl value.
+     * @param url the url value.
      * @return the AzureBlobStorageBuilder.
      */
     public AzureBlobStorageBuilder url(String url) {

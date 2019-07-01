@@ -207,7 +207,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param sourceURL
-     *         The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *         The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
      *         authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *         either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *         authentication is required to perform the operation.
@@ -234,7 +234,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param sourceURL
-     *         The getDirectoryUrl to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *         The url to the blob that will be the source of the copy.  A source blob in the same storage account can
      *         be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *         must either be public or must be authenticated via a shared access signature. If the source blob is
      *         public, no authentication is required to perform the operation.

@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.credentials;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.util.ImplUtils;
 import io.netty.handler.codec.http.QueryStringDecoder;
 
