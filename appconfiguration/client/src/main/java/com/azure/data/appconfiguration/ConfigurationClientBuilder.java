@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.util.configuration.Configuration;
@@ -43,6 +44,7 @@ import java.net.MalformedURLException;
  * @see ConfigurationClient
  * @see ConfigurationClientCredentials
  */
+@ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
     private final ConfigurationAsyncClientBuilder builder;
 
