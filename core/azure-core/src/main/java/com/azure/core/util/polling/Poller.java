@@ -247,10 +247,10 @@ public class Poller<T> {
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
-            throw new IllegalArgumentException("Null value for status is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Null value for status is not allowed."));
         }
         if (timeout != null && timeout.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for timeout is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
         }
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);

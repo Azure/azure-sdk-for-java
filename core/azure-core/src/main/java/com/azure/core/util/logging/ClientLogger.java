@@ -160,7 +160,7 @@ public class ClientLogger {
     }
 
     /**
-     * This will log, if error log level is enabled , and throw the runtime exception.
+     * This will log {@link RuntimeException}, if logging is enabled , and throw the runtime exception.
      * @param runtimeException to be thrown. It will do nothing if {@code null} is provided.
      * @throws RuntimeException which is requested by this call.
      */
@@ -171,7 +171,7 @@ public class ClientLogger {
 
         // it will only log if log level is enabled in configuration
         if (canLogAtLevel(level)) {
-            logger.error(runtimeException.getClass().getName(), runtimeException);
+            logger.error("", runtimeException);
         }
         throw runtimeException;
     }
