@@ -1038,8 +1038,10 @@ class ContainerAPITest extends APISpec {
             PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
             bu.create(512)
         }
-
-        Iterable<BlobItem> blobs = cu.listBlobsFlat()
+        // Setting maxResult limits the number of items per page, this way we validate
+        // that blob.size() make multiple calls - one call per page to retrieve all 10 blobs.
+        //
+        Iterable<BlobItem> blobs = cu.listBlobsFlat(new ListBlobsOptions().maxResults(3), null)
         int size = blobs.size()
 
         expect:
