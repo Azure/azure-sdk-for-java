@@ -197,7 +197,7 @@ final class StorageAsyncRawClient {
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link com.azure.core.http.HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.
@@ -212,7 +212,7 @@ final class StorageAsyncRawClient {
 
     /**
      * Gets a user delegation key for use with this account's blob storage.
-     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link com.azure.core.http.HttpPipeline}.
+     * Note: This method call is only valid when using {@link TokenCredentials} in this object's {@link HttpPipeline}.
      *
      * @param start
      *         Start time for the key's validity. Null indicates immediate start.

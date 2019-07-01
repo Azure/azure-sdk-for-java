@@ -30,7 +30,7 @@ class KeyVaultErrorCodeStrings {
     static String getErrorString(String propertyName) {
         loadProperties();
         return errorStrings.getProperty(propertyName);
-    }AccountSASSignatureValues.java
+    }
 
     private static synchronized void loadProperties() {
         if (errorStrings == null) {
