@@ -1031,6 +1031,21 @@ class ContainerAPITest extends APISpec {
         response.iterator().size() == 4
     }*/
 
+    def "List blobs flat simple"() {
+        setup:
+        // Create 10 page blobs in the container
+        for (int i = 0; i < 10; i++) {
+            PageBlobClient bu = cu.getPageBlobClient(generateBlobName())
+            bu.create(512)
+        }
+
+        Iterable<BlobItem> blobs = cu.listBlobsFlat()
+        int size = blobs.size()
+
+        expect:
+        size == 10
+    }
+
     def "List blobs hier error"() {
         setup:
         cu = primaryServiceURL.getContainerClient(generateContainerName())
