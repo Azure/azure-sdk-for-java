@@ -15,7 +15,6 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
-import rx.Completable;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.implementation.ServicesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -31,15 +30,5 @@ public interface Services extends SupportsCreating<ServicesDescription.Definitio
      * @return the observable for the request
      */
     Observable<ServicesNameAvailabilityInfo> checkNameAvailabilityAsync(CheckNameAvailabilityParameters checkNameAvailabilityInputs);
-
-    /**
-     * Moves resources to another subscription and/or resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param moveResourcesInputs Set the move resource structure to the name of the service instance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable moveResourcesAsync(String resourceGroupName, MoveResourcesParameters moveResourcesInputs);
 
 }

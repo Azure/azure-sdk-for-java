@@ -24,7 +24,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.ServicesNameAvailabilityInfo;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.CheckNameAvailabilityParameters;
-import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.MoveResourcesParameters;
 
 class ServicesImpl extends GroupableResourcesCoreImpl<ServicesDescription, ServicesDescriptionImpl, ServicesDescriptionInner, ServicesInner, HealthcareApisManager>  implements Services {
     protected ServicesImpl(HealthcareApisManager manager) {
@@ -138,12 +137,6 @@ class ServicesImpl extends GroupableResourcesCoreImpl<ServicesDescription, Servi
                 return new ServicesNameAvailabilityInfoImpl(inner, manager());
             }
         });
-    }
-
-    @Override
-    public Completable moveResourcesAsync(String resourceGroupName, MoveResourcesParameters moveResourcesInputs) {
-        ServicesInner client = this.inner();
-        return client.moveResourcesAsync(resourceGroupName, moveResourcesInputs).toCompletable();
     }
 
     @Override

@@ -19,7 +19,6 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Operations;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.OperationResults;
-import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.MoveResourcesStatus;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -30,7 +29,6 @@ public final class HealthcareApisManager extends ManagerCore<HealthcareApisManag
     private Services services;
     private Operations operations;
     private OperationResults operationResults;
-    private MoveResourcesStatus moveResourcesStatus;
     /**
     * Get a Configurable instance that can be used to create HealthcareApisManager with optional configuration.
     *
@@ -106,16 +104,6 @@ public final class HealthcareApisManager extends ManagerCore<HealthcareApisManag
             this.operationResults = new OperationResultsImpl(this);
         }
         return this.operationResults;
-    }
-
-    /**
-     * @return Entry point to manage MoveResourcesStatus.
-     */
-    public MoveResourcesStatus moveResourcesStatus() {
-        if (this.moveResourcesStatus == null) {
-            this.moveResourcesStatus = new MoveResourcesStatusImpl(this);
-        }
-        return this.moveResourcesStatus;
     }
 
     /**

@@ -17,7 +17,6 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.CheckNameAvailabilityParameters;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.ErrorDetailsInnerException;
-import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.MoveResourcesParameters;
 import com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.ServicesPatchDescription;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -28,7 +27,6 @@ import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -73,47 +71,43 @@ public class ServicesInner implements InnerSupportsGet<ServicesDescriptionInner>
     interface ServicesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}")
-        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body ServicesDescriptionInner serviceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body ServicesDescriptionInner serviceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body ServicesDescriptionInner serviceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Body ServicesDescriptionInner serviceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ServicesPatchDescription servicePatchDescription, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ServicesPatchDescription servicePatchDescription, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ServicesPatchDescription servicePatchDescription, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ServicesPatchDescription servicePatchDescription, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services beginDelete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/checkNameAvailability")
-        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Body CheckNameAvailabilityParameters checkNameAvailabilityInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services moveResources" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/moveResources")
-        Observable<Response<ResponseBody>> moveResources(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Body MoveResourcesParameters moveResourcesInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> checkNameAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body CheckNameAvailabilityParameters checkNameAvailabilityInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.healthcareapis.v2018_08_20_preview.Services listNext" })
         @GET
@@ -1121,89 +1115,6 @@ public class ServicesInner implements InnerSupportsGet<ServicesDescriptionInner>
     private ServiceResponse<ServicesNameAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ServicesNameAvailabilityInfoInner, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ServicesNameAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsInnerException.class)
-                .build(response);
-    }
-
-    /**
-     * Moves resources to another subscription and/or resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param moveResourcesInputs Set the move resource structure to the name of the service instance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsInnerException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void moveResources(String resourceGroupName, MoveResourcesParameters moveResourcesInputs) {
-        moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourcesInputs).toBlocking().single().body();
-    }
-
-    /**
-     * Moves resources to another subscription and/or resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param moveResourcesInputs Set the move resource structure to the name of the service instance to check.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> moveResourcesAsync(String resourceGroupName, MoveResourcesParameters moveResourcesInputs, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourcesInputs), serviceCallback);
-    }
-
-    /**
-     * Moves resources to another subscription and/or resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param moveResourcesInputs Set the move resource structure to the name of the service instance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> moveResourcesAsync(String resourceGroupName, MoveResourcesParameters moveResourcesInputs) {
-        return moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourcesInputs).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Moves resources to another subscription and/or resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param moveResourcesInputs Set the move resource structure to the name of the service instance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> moveResourcesWithServiceResponseAsync(String resourceGroupName, MoveResourcesParameters moveResourcesInputs) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (moveResourcesInputs == null) {
-            throw new IllegalArgumentException("Parameter moveResourcesInputs is required and cannot be null.");
-        }
-        Validator.validate(moveResourcesInputs);
-        return service.moveResources(this.client.subscriptionId(), resourceGroupName, this.client.apiVersion(), moveResourcesInputs, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = moveResourcesDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> moveResourcesDelegate(Response<ResponseBody> response) throws ErrorDetailsInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsInnerException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorDetailsInnerException.class)
                 .build(response);
     }

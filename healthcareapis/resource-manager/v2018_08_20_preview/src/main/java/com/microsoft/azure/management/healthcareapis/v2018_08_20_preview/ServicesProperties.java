@@ -36,6 +36,18 @@ public class ServicesProperties {
     private ServiceCosmosDbConfigurationInfo cosmosDbConfiguration;
 
     /**
+     * The authentication configuration for the service instance.
+     */
+    @JsonProperty(value = "authenticationConfiguration")
+    private ServiceAuthenticationConfigurationInfo authenticationConfiguration;
+
+    /**
+     * The settings for the CORS configuration of the service instance.
+     */
+    @JsonProperty(value = "corsConfiguration")
+    private ServiceCorsConfigurationInfo corsConfiguration;
+
+    /**
      * Get the provisioning state. Possible values include: 'Deleting', 'Succeeded', 'Creating', 'Accepted', 'Verifying', 'Updating', 'Failed', 'Canceled', 'Deprovisioned'.
      *
      * @return the provisioningState value
@@ -81,6 +93,46 @@ public class ServicesProperties {
      */
     public ServicesProperties withCosmosDbConfiguration(ServiceCosmosDbConfigurationInfo cosmosDbConfiguration) {
         this.cosmosDbConfiguration = cosmosDbConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the authentication configuration for the service instance.
+     *
+     * @return the authenticationConfiguration value
+     */
+    public ServiceAuthenticationConfigurationInfo authenticationConfiguration() {
+        return this.authenticationConfiguration;
+    }
+
+    /**
+     * Set the authentication configuration for the service instance.
+     *
+     * @param authenticationConfiguration the authenticationConfiguration value to set
+     * @return the ServicesProperties object itself.
+     */
+    public ServicesProperties withAuthenticationConfiguration(ServiceAuthenticationConfigurationInfo authenticationConfiguration) {
+        this.authenticationConfiguration = authenticationConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the settings for the CORS configuration of the service instance.
+     *
+     * @return the corsConfiguration value
+     */
+    public ServiceCorsConfigurationInfo corsConfiguration() {
+        return this.corsConfiguration;
+    }
+
+    /**
+     * Set the settings for the CORS configuration of the service instance.
+     *
+     * @param corsConfiguration the corsConfiguration value to set
+     * @return the ServicesProperties object itself.
+     */
+    public ServicesProperties withCorsConfiguration(ServiceCorsConfigurationInfo corsConfiguration) {
+        this.corsConfiguration = corsConfiguration;
         return this;
     }
 
