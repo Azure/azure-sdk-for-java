@@ -72,9 +72,9 @@ public final class SASTokenCredential {
             queryParams.put(key, queryParam);
         }
 
-        // Because ServiceSAS only requires expiry and permissions, both of which could be on the container
-        // acl, the only guaranteed indication of a SAS is the signature. We'll let the service validate
-        // the other query parameters.
+        /* Because ServiceSAS only requires expiry and permissions, both of which could be on the container
+         acl, the only guaranteed indication of a SAS is the signature. We'll let the service validate
+         the other query parameters. */
         if (!queryParams.containsKey(SIGNATURE)) {
             return null;
         }

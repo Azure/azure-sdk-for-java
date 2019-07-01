@@ -292,4 +292,27 @@ final class Constants {
             // Private to prevent construction.
         }
     }
+
+    static final class SASConstants {
+        /**
+         * The SAS blob constant.
+         */
+        public static final String BLOB_CONSTANT = "b";
+
+        /**
+         * The SAS blob snapshot constant.
+         */
+        public static final String BLOB_SNAPSHOT_CONSTANT = "bs";
+
+        /**
+         * The SAS blob snapshot constant.
+         */
+        public static final String CONTAINER_CONSTANT = "c";
+
+        private SASConstants() {
+            // Private to prevent construction.
+        }
+    }
+
+
 }

@@ -4,9 +4,13 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
@@ -33,10 +37,10 @@ import java.util.Locale;
 final class Utility {
 
     static final DateTimeFormatter RFC_1123_GMT_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ROOT).withZone(ZoneId.of("GMT"));
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ROOT).withZone(ZoneId.of("GMT"));
 
     static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
     /**
      * Stores a reference to the UTC time zone.
      */
@@ -110,7 +114,7 @@ final class Utility {
                     if (m > startDex) {
                         try {
                             outBuilder.append(URLDecoder.decode(stringToDecode.substring(startDex, m),
-                                    Constants.UTF8_CHARSET));
+                                Constants.UTF8_CHARSET));
                         } catch (UnsupportedEncodingException e) {
                             throw new Error(e);
                         }
@@ -124,7 +128,7 @@ final class Utility {
             if (startDex != stringToDecode.length()) {
                 try {
                     outBuilder.append(URLDecoder.decode(stringToDecode.substring(startDex, stringToDecode.length()),
-                            Constants.UTF8_CHARSET));
+                        Constants.UTF8_CHARSET));
                 } catch (UnsupportedEncodingException e) {
                     throw new Error(e);
                 }
@@ -223,7 +227,7 @@ final class Utility {
                     if (stringToEncode.charAt(m) == ' ') {
                         if (m > startDex) {
                             outBuilder.append(URLEncoder.encode(stringToEncode.substring(startDex, m),
-                                    Constants.UTF8_CHARSET));
+                                Constants.UTF8_CHARSET));
                         }
 
                         outBuilder.append("%20");
@@ -233,7 +237,7 @@ final class Utility {
 
                 if (startDex != stringToEncode.length()) {
                     outBuilder.append(URLEncoder.encode(stringToEncode.substring(startDex, stringToEncode.length()),
-                            Constants.UTF8_CHARSET));
+                        Constants.UTF8_CHARSET));
                 }
 
                 return outBuilder.toString();
@@ -361,11 +365,30 @@ final class Utility {
         }
     }
 
-     static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
-         if (timeout == null) {
-             return response.block();
-         } else {
-             return response.block(timeout);
-         }
+    static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
+    }
+
+    /**
+     * Gets the SharedKeyCredential from the HttpPipeline
+     *
+     * @param httpPipeline
+     *         The {@code HttpPipeline} httpPipeline from which a sharedKeyCredential will be extracted
+     *
+     * @return The {@code SharedKeyCredential} sharedKeyCredential in the httpPipeline
+     */
+    static SharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
+        for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
+            if (httpPipelinePolicy instanceof SharedKeyCredentialPolicy) {
+                SharedKeyCredentialPolicy sharedKeyCredentialPolicy = (SharedKeyCredentialPolicy) httpPipelinePolicy;
+                return sharedKeyCredentialPolicy.sharedKeyCredential();
+            }
+        }
+        return null;
     }
 }

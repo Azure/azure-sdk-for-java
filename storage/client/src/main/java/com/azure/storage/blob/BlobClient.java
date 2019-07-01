@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.*;
-import com.sun.applet2.preloader.event.UserDeclinedEvent;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -17,14 +16,16 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
- * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
+ * Client to a blob of any type: block, append, or page. It may only be instantiated through a
+ * {@link BlobClientBuilder} or via
  * the method {@link ContainerClient#getBlobClient(String)}. This class does not hold any state about a particular
  * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options. This
- * client can be converted into one of these clients easily through the methods {@link #asBlockBlobClient}, {@link #asPageBlobClient},
+ * client can be converted into one of these clients easily through the methods {@link #asBlockBlobClient},
+ * {@link #asPageBlobClient},
  * and {@link #asAppendBlobClient}.
  *
  * <p>
@@ -32,7 +33,8 @@ import java.time.OffsetDateTime;
  * and operations on the service are available on {@link StorageClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  */
 public class BlobClient {
@@ -41,7 +43,9 @@ public class BlobClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param blobAsyncClient the async blob client
+     *
+     * @param blobAsyncClient
+     *         the async blob client
      */
     BlobClient(BlobAsyncClient blobAsyncClient) {
         this.blobAsyncClient = blobAsyncClient;
@@ -50,8 +54,7 @@ public class BlobClient {
     /**
      * Static method for getting a new builder for this class.
      *
-     * @return
-     *      A new {@link BlobClientBuilder} instance.
+     * @return A new {@link BlobClientBuilder} instance.
      */
     public static BlobClientBuilder blobClientBuilder() {
         return new BlobClientBuilder();
@@ -61,8 +64,7 @@ public class BlobClient {
      * Creates a new {@link BlockBlobClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be block blobs.
      *
-     * @return
-     *      A {@link BlockBlobClient} to this resource.
+     * @return A {@link BlockBlobClient} to this resource.
      */
     public BlockBlobClient asBlockBlobClient() {
         return new BlockBlobClient(blobAsyncClient.asBlockBlobAsyncClient());
@@ -72,8 +74,7 @@ public class BlobClient {
      * Creates a new {@link AppendBlobClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be append blobs.
      *
-     * @return
-     *      A {@link AppendBlobClient} to this resource.
+     * @return A {@link AppendBlobClient} to this resource.
      */
     public AppendBlobClient asAppendBlobClient() {
         return new AppendBlobClient(blobAsyncClient.asAppendBlobAsyncClient());
@@ -83,8 +84,7 @@ public class BlobClient {
      * Creates a new {@link PageBlobClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be page blobs.
      *
-     * @return
-     *      A {@link PageBlobClient} to this resource.
+     * @return A {@link PageBlobClient} to this resource.
      */
     public PageBlobClient asPageBlobClient() {
         return new PageBlobClient(blobAsyncClient.asPageBlobAsyncClient());
@@ -95,8 +95,7 @@ public class BlobClient {
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
-     * @return
-     *     A {@link ContainerClient} object pointing to the container containing the blob
+     * @return A {@link ContainerClient} object pointing to the container containing the blob
      */
     public ContainerClient getContainerClient() {
         return new ContainerClient(blobAsyncClient.getContainerAsyncClient());
@@ -104,6 +103,7 @@ public class BlobClient {
 
     /**
      * Gets the URL of the blob represented by this client.
+     *
      * @return the URL.
      */
     public URL getBlobUrl() {
@@ -117,7 +117,7 @@ public class BlobClient {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
+     *         If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
         return openInputStream(new BlobRange(0), null);
@@ -130,12 +130,12 @@ public class BlobClient {
      * @param range
      *         {@link BlobRange}
      * @param accessConditions
-     *            An {@link BlobAccessConditions} object that represents the access conditions for the blob.
+     *         An {@link BlobAccessConditions} object that represents the access conditions for the blob.
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      *
      * @throws StorageException
-     *             If a storage service error occurred.
+     *         If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobAccessConditions accessConditions) {
         return new BlobInputStream(blobAsyncClient, range.offset(), range.count(), accessConditions);
@@ -155,8 +155,8 @@ public class BlobClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return
-     *         true if the container exists, false if it doesn't
+     *
+     * @return true if the container exists, false if it doesn't
      */
     public Response<Boolean> exists(Duration timeout) {
         Mono<Response<Boolean>> response = blobAsyncClient.exists();
@@ -166,13 +166,12 @@ public class BlobClient {
 
     /**
      * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
-     *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      *
-     * @return
-     *      The copy ID for the long running operation.
+     * @return The copy ID for the long running operation.
      */
     public Response<String> startCopyFromURL(URL sourceURL) {
         return this.startCopyFromURL(sourceURL, null, null, null, null);
@@ -180,7 +179,7 @@ public class BlobClient {
 
     /**
      * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -196,12 +195,11 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The copy ID for the long running operation.
+     * @return The copy ID for the long running operation.
      */
     public Response<String> startCopyFromURL(URL sourceURL, Metadata metadata,
-            ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-            Duration timeout) {
+        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+        Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
@@ -244,8 +242,7 @@ public class BlobClient {
      * @param copySource
      *         The source URL to copy from.
      *
-     * @return
-     *      The copy ID for the long running operation.
+     * @return The copy ID for the long running operation.
      */
     public Response<String> copyFromURL(URL copySource) {
         return this.copyFromURL(copySource, null, null, null, null);
@@ -268,12 +265,11 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The copy ID for the long running operation.
+     * @return The copy ID for the long running operation.
      */
     public Response<String> copyFromURL(URL copySource, Metadata metadata,
-                              ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                              Duration timeout) {
+        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
+        Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .copyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
@@ -285,18 +281,19 @@ public class BlobClient {
      * {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
-     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public VoidResponse download(OutputStream stream) throws IOException {
         return this.download(stream, null, null, null, false, null);
     }
 
     /**
-     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link BlockBlobClient},
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the
+     * {@link BlockBlobClient},
      * {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param stream
-     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range
      *         {@link BlobRange}
      * @param accessConditions
@@ -307,7 +304,7 @@ public class BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public VoidResponse download(OutputStream stream, ReliableDownloadOptions options, BlobRange range,
-                                 BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
         Mono<VoidResponse> download = blobAsyncClient
             .download(range, accessConditions, rangeGetContentMD5, options)
             .flatMapMany(res -> res.value()
@@ -330,10 +327,11 @@ public class BlobClient {
 
     /**
      * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
      *
      * @param filePath
-     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public void downloadToFile(String filePath) throws IOException {
         this.downloadToFile(filePath, null, null, null, null, false, null);
@@ -341,10 +339,11 @@ public class BlobClient {
 
     /**
      * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
+     * {@link AppendBlobClient}.
      *
      * @param filePath
-     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range
      *         {@link BlobRange}
      * @param blockSize
@@ -357,8 +356,9 @@ public class BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range, Integer blockSize,
-            BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
-        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, accessConditions, rangeGetContentMD5, options);
+        BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
+        Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, accessConditions,
+            rangeGetContentMD5, options);
 
         try {
             if (timeout == null) {
@@ -390,11 +390,10 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      A reactive response signalling completion.
+     * @return A reactive response signalling completion.
      */
     public VoidResponse delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
-            BlobAccessConditions accessConditions, Duration timeout) {
+        BlobAccessConditions accessConditions, Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
             .delete(deleteBlobSnapshotOptions, accessConditions);
 
@@ -404,8 +403,7 @@ public class BlobClient {
     /**
      * Returns the blob's metadata and properties.
      *
-     * @return
-     *      The blob properties and metadata.
+     * @return The blob properties and metadata.
      */
     public Response<BlobProperties> getProperties() {
         return this.getProperties(null, null);
@@ -419,8 +417,7 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The blob properties and metadata.
+     * @return The blob properties and metadata.
      */
     public Response<BlobProperties> getProperties(BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Response<BlobProperties>> response = blobAsyncClient
@@ -456,7 +453,7 @@ public class BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public VoidResponse setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
-            Duration timeout) {
+        Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
             .setHTTPHeaders(headers, accessConditions);
 
@@ -466,7 +463,8 @@ public class BlobClient {
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing
      * metadata. If old values must be preserved, they must be downloaded and included in the
-     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * call to this method. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
@@ -478,7 +476,8 @@ public class BlobClient {
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing
      * metadata. If old values must be preserved, they must be downloaded and included in the
-     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * call to this method. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
@@ -497,8 +496,7 @@ public class BlobClient {
     /**
      * Creates a read-only snapshot of a blob.
      *
-     * @return
-     *      The ID of the new snapshot.
+     * @return The ID of the new snapshot.
      */
     public Response<String> createSnapshot() {
         return this.createSnapshot(null, null, null);
@@ -514,8 +512,7 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The ID of the new snapshot.
+     * @return The ID of the new snapshot.
      */
     public Response<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
@@ -581,13 +578,12 @@ public class BlobClient {
      * seconds, or infinite (-1).
      *
      * @param proposedId
-     *      A {@code String} in any valid GUID format. May be null.
+     *         A {@code String} in any valid GUID format. May be null.
      * @param duration
      *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
      *         never expires. A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @return
-     *      The lease ID.
+     * @return The lease ID.
      */
     public Response<String> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
@@ -609,11 +605,10 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The lease ID.
+     * @return The lease ID.
      */
     public Response<String> acquireLease(String proposedID, int duration,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .acquireLease(proposedID, duration, modifiedAccessConditions);
 
@@ -626,8 +621,7 @@ public class BlobClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      *
-     * @return
-     *      The renewed lease ID.
+     * @return The renewed lease ID.
      */
     public Response<String> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
@@ -645,11 +639,10 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The renewed lease ID.
+     * @return The renewed lease ID.
      */
     public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
-            Duration timeout) {
+        Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .renewLease(leaseID, modifiedAccessConditions);
 
@@ -679,7 +672,7 @@ public class BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public VoidResponse releaseLease(String leaseID,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
             .releaseLease(leaseID, modifiedAccessConditions);
 
@@ -690,8 +683,7 @@ public class BlobClient {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
-     * @return
-     *      The remaining time in the broken lease in seconds.
+     * @return The remaining time in the broken lease in seconds.
      */
     public Response<Integer> breakLease() {
         return this.breakLease(null, null, null);
@@ -714,11 +706,10 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      The remaining time in the broken lease in seconds.
+     * @return The remaining time in the broken lease in seconds.
      */
     public Response<Integer> breakLease(Integer breakPeriodInSeconds,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<Integer>> response = blobAsyncClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions);
 
@@ -733,15 +724,15 @@ public class BlobClient {
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      *
-     * @return
-     *      The new lease ID.
+     * @return The new lease ID.
      */
     public Response<String> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
     /**
-     * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     * ChangeLease changes the blob's lease ID.  For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param leaseId
      *         The leaseId of the active lease on the blob.
@@ -757,7 +748,7 @@ public class BlobClient {
      * @return The new lease ID.
      */
     public Response<String> changeLease(String leaseId, String proposedID,
-            ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
+        ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions);
 
@@ -765,7 +756,8 @@ public class BlobClient {
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account. For more information, please see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return The sku name and account kind.
      */
@@ -774,7 +766,8 @@ public class BlobClient {
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account. For more information, please see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -789,60 +782,177 @@ public class BlobClient {
     }
 
     /**
-     * Generates a SAS token with the specified expiryTime, permissions and userDelegationKey
+     * Generates a user delegation SAS token with the specified parameters
+     * @param userDelegationKey
+     *         The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName
+     *         The {@code String} account name for the SAS
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, String permissions, UserDelegationKey userDelegationKey) {
-        return blobAsyncClient.generateSAS(expiryTime, permissions, userDelegationKey);
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+        OffsetDateTime expiryTime, BlobSASPermission permissions) {
+        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, expiryTime, permissions);
     }
 
     /**
-     * Generates a SAS token with the specified expiryTime and permissions
+     * Generates a user delegation SAS token with the specified parameters
+     * @param userDelegationKey
+     *         The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName
+     *         The {@code String} account name for the SAS
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @param version
+     *         An optional {@code String} protocol for the SAS
+     * @param sasProtocol
+     *         An optional {@code SASProtocol} protocol for the SAS
+     * @param startTime
+     *         An optional {@code OffsetDateTime} start time for the SAS
+     * @param ipRange
+     *         An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
      */
-    public String generateSAS(OffsetDateTime expiryTime, String permissions) {
-        return blobAsyncClient.generateSAS(expiryTime, permissions);
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+        OffsetDateTime expiryTime, BlobSASPermission permissions, String version, SASProtocol sasProtocol,
+        OffsetDateTime startTime, IPRange ipRange) {
+        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, expiryTime, startTime, permissions,
+            version, sasProtocol, ipRange);
     }
 
     /**
-     * Generates a SAS token with the specified identifier and userDelegationKey
+     * Generates a user delegation SAS token with the specified parameters
+     * @param userDelegationKey
+     *         The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName
+     *         The {@code String} account name for the SAS
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @param version
+     *         An optional {@code String} protocol for the SAS
+     * @param sasProtocol
+     *         An optional {@code SASProtocol} protocol for the SAS
+     * @param startTime
+     *         An optional {@code OffsetDateTime} start time for the SAS
+     * @param ipRange
+     *         An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl
+     *         An optional {@code String} cache-control header for the SAS.
+     * @param contentDisposition
+     *         An optional {@code String} content-disposition header for the SAS.
+     * @param contentEncoding
+     *         An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage
+     *         An optional {@code String} content-language header for the SAS.
+     * @param contentType
+     *         An optional {@code String} content-type header for the SAS.
+     * @return A string that represents the SAS token
      */
-    public String generateSAS (String identifier, UserDelegationKey userDelegationKey) {
-        return blobAsyncClient.generateSAS(identifier, userDelegationKey);
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+        OffsetDateTime expiryTime, BlobSASPermission permissions, String version, SASProtocol sasProtocol,
+        OffsetDateTime startTime, IPRange ipRange, String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, String contentType) {
+        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, expiryTime, startTime, permissions,
+            version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+            contentLanguage, contentType);
     }
 
     /**
-     * Generates a SAS token with the specified identifier
+     * Generates a SAS token with the specified parameters
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @return A string that represents the SAS token
      */
-    public String generateSAS (String identifier) {
-        return blobAsyncClient.generateSAS(identifier);
+    public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions) {
+        return this.blobAsyncClient.generateSAS(expiryTime, permissions);
     }
 
     /**
-     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, and identifier
+     * Generates a SAS token with the specified parameters
+     * @param identifier
+     *         The {@code String} name of the access policy on the container this SAS references if any
+     * @return A string that represents the SAS token
      */
-    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
-                              String permissions, IPRange ipRange, String identifier) {
-        return blobAsyncClient.generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier);
+    public String generateSAS(String identifier) {
+        return this.blobAsyncClient.generateSAS(identifier);
     }
 
     /**
-     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
-     * cacheControl, contentDisposition, contentEncoding, contentLanguage and contentType
+     * Generates a SAS token with the specified parameters
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @param identifier
+     *         The {@code String} name of the access policy on the container this SAS references if any
+     * @param version
+     *         An optional {@code String} protocol for the SAS
+     * @param sasProtocol
+     *         An optional {@code SASProtocol} protocol for the SAS
+     * @param startTime
+     *         An optional {@code OffsetDateTime} start time for the SAS
+     * @param ipRange
+     *         An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
      */
-    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
-                              String permissions, IPRange ipRange, String identifier, String cacheControl, String contentDisposition,
-                              String contentEncoding, String contentLanguage, String contentType) {
-        return blobAsyncClient.generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions, String identifier, String version, SASProtocol sasProtocol, OffsetDateTime startTime, IPRange ipRange) {
+        return this.blobAsyncClient.generateSAS(expiryTime, startTime, permissions, identifier, version, sasProtocol, ipRange);
     }
 
     /**
-     * Generates a SAS token with the specified version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
-     * cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType and userDelegationKey
+     * Generates a SAS token with the specified parameters
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the SAS
+     * @param permissions
+     *         The {@code ContainerSASPermissions} permission for the SAS
+     * @param identifier
+     *         The {@code String} name of the access policy on the container this SAS references if any
+     * @param version
+     *         An optional {@code String} protocol for the SAS
+     * @param sasProtocol
+     *         An optional {@code SASProtocol} protocol for the SAS
+     * @param startTime
+     *         An optional {@code OffsetDateTime} start time for the SAS
+     * @param ipRange
+     *         An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl
+     *         An optional {@code String} cache-control header for the SAS.
+     * @param contentDisposition
+     *         An optional {@code String} content-disposition header for the SAS.
+     * @param contentEncoding
+     *         An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage
+     *         An optional {@code String} content-language header for the SAS.
+     * @param contentType
+     *         An optional {@code String} content-type header for the SAS.
+     * @return A string that represents the SAS token
      */
-    public String generateSAS(String version, SASProtocol sasProtocol, OffsetDateTime startTime, OffsetDateTime expiryTime,
-                              String permissions, IPRange ipRange, String identifier, String cacheControl, String contentDisposition,
-                              String contentEncoding, String contentLanguage, String contentType, UserDelegationKey userDelegationKey) {
-        return blobAsyncClient.generateSAS(version, sasProtocol, startTime, expiryTime, permissions, ipRange, identifier,
-            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType, userDelegationKey);
+    public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions, String identifier, String version, SASProtocol sasProtocol, OffsetDateTime startTime, IPRange ipRange, String cacheControl, String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        return this.blobAsyncClient.generateSAS(expiryTime, startTime, permissions, identifier, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+    }
+
+    /**
+     * Gets the snapshotId for a blob resource
+     * @return A string that represents the snapshotId of the snapshot blob
+     */
+    public String getSnapshotId() {
+        return this.blobAsyncClient.getSnapshotId();
+    }
+
+    /**
+     * Determines if a blob is a snapshot
+     * @return A boolean that indicates if a blob is a snapshot
+     */
+    public boolean isSnapshot() {
+        return this.blobAsyncClient.isSnapshot();
     }
 }

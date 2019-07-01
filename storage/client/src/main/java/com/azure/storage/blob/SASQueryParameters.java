@@ -516,9 +516,7 @@ final class SASQueryParameters {
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
         if (value != null) {
-            if (sb.length() == 0) {
-                sb.append('?');
-            } else {
+            if (sb.length() != 0) {
                 sb.append('&');
             }
             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
@@ -526,7 +524,7 @@ final class SASQueryParameters {
     }
 
     /**
-     * Encodes all SAS query parameters into a string that can be appended to a URL.
+     * Encodes all SAS query parameters into a SAS token that can be appended to a URL.
      *
      * @return A {@code String} representing all SAS query parameters.
      */

@@ -5,7 +5,10 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -77,6 +80,28 @@ final class ServiceSASSignatureValues {
      */
     public ServiceSASSignatureValues(String identifier) {
         this.identifier = identifier;
+    }
+
+    /**
+     * Creates an object with the specified fields
+     */
+    public ServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+                                     OffsetDateTime expiryTime, String permissions, IPRange ipRange, String identifier,
+                                     String cacheControl, String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        if(version!=null){
+            this.version = version;
+        }
+        this.protocol = sasProtocol;
+        this.startTime = startTime;
+        this.expiryTime = expiryTime;
+        this.permissions = permissions;
+        this.ipRange = ipRange;
+        this.identifier = identifier;
+        this.cacheControl = cacheControl;
+        this.contentDisposition = contentDisposition;
+        this.contentEncoding = contentEncoding;
+        this.contentLanguage = contentLanguage;
+        this.contentType = contentType;
     }
 
 
@@ -181,7 +206,6 @@ final class ServiceSASSignatureValues {
         return resource;
     }
 
-
     /**
      * The specific resource.
      */
@@ -194,7 +218,7 @@ final class ServiceSASSignatureValues {
      * The specific snapshot the SAS user may access.
      */
     public String snapshotId() {
-        return snapshotId;
+        return this.snapshotId;
     }
 
     /**
@@ -224,11 +248,35 @@ final class ServiceSASSignatureValues {
         return this;
     }
 
+    /**
+     * The canonical name of the object the user may access through the SAS.
+     */
     public ServiceSASSignatureValues canonicalName(String canonicalName) {
         this.canonicalName = canonicalName;
         return this;
     }
 
+    /**
+     * The canonical name of the object the user may access through the SAS.
+     */
+    public ServiceSASSignatureValues canonicalName(String urlString, String accountName) {
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuilder canonicalName = new StringBuilder("/blob");
+        canonicalName.append('/').append(accountName).append(url.getPath());
+        this.canonicalName = canonicalName.toString();
+
+        return this;
+    }
+
+    /**
+     * The canonical name of the object the user may access through the SAS.
+     */
     public String canonicalName() {
         return this.canonicalName;
     }
@@ -319,10 +367,10 @@ final class ServiceSASSignatureValues {
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
-        assertGenerateOK();
+        assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(this.permissions, this.resource);
+        final String stringToSign = stringToSign(this.permissions);
 
         String signature = null;
         try {
@@ -343,20 +391,16 @@ final class ServiceSASSignatureValues {
      * @param delegationKey
      *         A {@link UserDelegationKey} object used to sign the SAS values.
      *
-     * @param accountName
-     *         Name of the account holding the resource this SAS is authorizing.
-     *
      * @return {@link SASQueryParameters}
      */
-    public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey, String accountName) {
+    public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
-        Utility.assertNotNull("accountName", accountName);
-        assertGenerateOK();
+        assertGenerateOK(true);
 
         String verifiedPermissions = this.permissions;
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(verifiedPermissions, this.resource, delegationKey);
+        final String stringToSign = stringToSign(verifiedPermissions, delegationKey);
 
         String signature = null;
         try {
@@ -374,25 +418,27 @@ final class ServiceSASSignatureValues {
     /**
      * Common assertions for generateSASQueryParameters overloads.
      */
-    private void assertGenerateOK() {
+    private void assertGenerateOK(boolean usingUserDelegation) {
         Utility.assertNotNull("version", this.version);
         Utility.assertNotNull("canonicalName", this.canonicalName);
 
         // Ensure either (expiryTime and permissions) or (identifier) is set
-        if(this.expiryTime == null && this.permissions == null) {
-            Utility.assertNotNull("identifier", this.identifier);
+        if(this.expiryTime == null || this.permissions == null) {
+            // Identifier is not required if user delegation is being used
+            if(!usingUserDelegation){
+                Utility.assertNotNull("identifier", this.identifier);
+            }
         } else {
             Utility.assertNotNull("expiryTime", this.expiryTime);
             Utility.assertNotNull("permissions", this.permissions);
         }
 
-        // TODO: Figure out how to determine if blob or container from canonicalName
-        if (canonicalName == null && snapshotId != null) {
-            throw new IllegalArgumentException("Cannot set a snapshotId without a blobName.");
+        if (resource == Constants.SASConstants.CONTAINER_CONSTANT && snapshotId != null) {
+            throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
         }
     }
 
-    private String stringToSign(final String verifiedPermissions, final String resource) {
+    private String stringToSign(final String verifiedPermissions) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -402,7 +448,7 @@ final class ServiceSASSignatureValues {
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : protocol.toString(),
                 this.version == null ? "" : this.version,
-                this.resource == null ? "" : resource,
+                this.resource == null ? "" : this.resource,
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
@@ -412,8 +458,7 @@ final class ServiceSASSignatureValues {
         );
     }
 
-    private String stringToSign(final String verifiedPermissions, final String resource,
-            final UserDelegationKey key) {
+    private String stringToSign(final String verifiedPermissions, final UserDelegationKey key) {
         return String.join("\n",
                 verifiedPermissions == null ? "" : verifiedPermissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -428,7 +473,7 @@ final class ServiceSASSignatureValues {
                 this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version == null ? "" : this.version,
-                resource == null ? "" : resource,
+                this.resource == null ? "" : this.resource,
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
