@@ -393,7 +393,7 @@ public final class EventProcessorHost {
     	private EventProcessorHostBuilder() {
     	}
     	
-    	static interface ManagerStep {
+    	public static interface ManagerStep {
     		/**
     		 * Use the built-in Azure Storage-based lease and checkpoint managers.
     		 * 
@@ -424,7 +424,7 @@ public final class EventProcessorHost {
     		AuthStep useUserCheckpointAndLeaseManagers(ICheckpointManager checkpointManager, ILeaseManager leaseManager);
     	}
     	
-    	static interface AuthStep {
+    	public static interface AuthStep {
     		/**
     		 * Azure Portal can provide a connection string with auth information that applies only to one
     		 * individual Event Hub. In that case, the connection string contains the name of the Event Hub.
@@ -455,7 +455,7 @@ public final class EventProcessorHost {
     		AADAuthStep useAADAuthentication(URI endpoint, String eventHubPath);
     	}
     	
-    	static interface AADAuthStep {
+    	public static interface AADAuthStep {
     		/**
     		 * Provide a callback which will be called when a token is needed. See {@link AzureActiveDirectoryTokenProvider}
     		 * 
@@ -474,7 +474,7 @@ public final class EventProcessorHost {
     		OptionalStep useTokenProvider(ITokenProvider tokenProvider);
     	}
     	
-    	static interface OptionalStep {
+    	public static interface OptionalStep {
     		/**
     		 * Event Processor Host runs tasks on the supplied threadpool, or creates an internal one. 
     		 * @param executor  threadpool, or null to use an internal one
