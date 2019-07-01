@@ -155,7 +155,7 @@ public class ClientLogger {
      */
     public void log(String format, Object... args) {
         if (canLogAtLevel(level)) {
-            performLogging(format, true, args);
+            performLogging(format, args);
         }
     }
 
@@ -169,20 +169,10 @@ public class ClientLogger {
             return;
         }
 
-        // The default log level is DISABLED_LEVEL.  User's intention is to log and throw. Thus we are overriding
-        // level with ERROR_LEVEL if was is DISABLED_LEVEL.
-        int currentLevel = level;
-        if (level == DISABLED_LEVEL) {
-            level = ERROR_LEVEL;
-        }
-
         // it will only log if log level is enabled in configuration
         if (canLogAtLevel(level)) {
-            performLogging(runtimeException.getClass().getName(), false, runtimeException);
+            logger.error(runtimeException.getClass().getName(), runtimeException);
         }
-        
-        // Change level back to what it was.
-        level = currentLevel;
         throw runtimeException;
     }
 
@@ -191,11 +181,12 @@ public class ClientLogger {
      * @param format Format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(String format, boolean removeThrowable, Object... args) {
+    private void performLogging(String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
-        if (removeThrowable && configurationLevel > VERBOSE_LEVEL) {
+        if (configurationLevel > VERBOSE_LEVEL) {
             args = attemptToRemoveThrowable(args);
         }
+
         switch (level) {
             case VERBOSE_LEVEL:
                 logger.debug(format, args);
@@ -239,6 +230,7 @@ public class ClientLogger {
         if (level < configurationLevel) {
             return false;
         }
+
         switch (level) {
             case VERBOSE_LEVEL:
                 return logger != null && logger.isDebugEnabled();
