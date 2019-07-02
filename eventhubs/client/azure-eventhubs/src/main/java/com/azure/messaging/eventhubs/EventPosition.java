@@ -158,7 +158,7 @@ public final class EventPosition {
                 ms = Long.toString(this.enqueuedDateTime.toEpochMilli());
             } catch (ArithmeticException ex) {
                 ms = Long.toString(Long.MAX_VALUE);
-                logger.asWarning().log(
+                logger.logAsWarning(
                     "Receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
             }
 

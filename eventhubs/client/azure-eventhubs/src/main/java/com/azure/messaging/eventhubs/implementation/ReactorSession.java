@@ -88,7 +88,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
             try {
                 link.close();
             } catch (IOException e) {
-                logger.asError().log("Error closing send link: " + key, e);
+                logger.logAsError("Error closing send link: " + key, e);
             }
         });
         openReceiveLinks.clear();
@@ -97,7 +97,7 @@ class ReactorSession extends EndpointStateNotifierBase implements EventHubSessio
             try {
                 link.close();
             } catch (IOException e) {
-                logger.asError().log("Error closing receive link: " + key, e);
+                logger.logAsError("Error closing receive link: " + key, e);
             }
         });
         openSendLinks.clear();

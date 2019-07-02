@@ -49,9 +49,9 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
             handler.getEndpointStates().subscribe(
                 this::notifyEndpointState,
-                error -> logger.asError().log("Error encountered getting endpointState", error),
+                error -> logger.logAsError("Error encountered getting endpointState", error),
                 () -> {
-                    logger.asVerbose().log("getEndpointStates completed.");
+                    logger.logAsVerbose("getEndpointStates completed.");
                     notifyEndpointState(EndpointState.CLOSED);
                 }),
 
@@ -59,10 +59,10 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
             tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                    logger.asVerbose().log("Token refreshed: {}", response);
+                    logger.logAsVerbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
                 }, error -> {
-                    logger.asInfo().log("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                    logger.logAsInfo("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false))

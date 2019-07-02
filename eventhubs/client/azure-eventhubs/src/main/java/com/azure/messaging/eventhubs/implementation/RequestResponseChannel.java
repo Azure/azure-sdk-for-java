@@ -76,7 +76,7 @@ class RequestResponseChannel implements Closeable {
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
         this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
-            logger.asVerbose().log("Settling message: {}", message.getCorrelationId());
+            logger.logAsVerbose("Settling message: {}", message.getCorrelationId());
             settleMessage(message);
         }, this::handleException);
     }
@@ -114,7 +114,7 @@ class RequestResponseChannel implements Closeable {
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)).then(
             Mono.create(sink -> {
                 try {
-                    logger.asVerbose().log("Scheduling on dispatcher. Message Id {}", messageId);
+                    logger.logAsVerbose("Scheduling on dispatcher. Message Id {}", messageId);
                     unconfirmedSends.putIfAbsent(messageId, sink);
 
                     dispatcher.invoke(() -> {
@@ -167,7 +167,7 @@ class RequestResponseChannel implements Closeable {
 
         if (sink == null) {
             int size = unconfirmedSends.size();
-            logger.asWarning().log("Received delivery without pending messageId[{}]. Size[{}]", id, size);
+            logger.logAsWarning("Received delivery without pending messageId[{}]. Size[{}]", id, size);
             return;
         }
 
@@ -188,7 +188,7 @@ class RequestResponseChannel implements Closeable {
             AmqpException exception = (AmqpException) error;
 
             if (!exception.isTransient()) {
-                logger.asError().log("Exception encountered. Closing channel and clearing unconfirmed sends.", exception);
+                logger.logAsError("Exception encountered. Closing channel and clearing unconfirmed sends.", exception);
                 close();
 
                 unconfirmedSends.forEach((key, value) -> {

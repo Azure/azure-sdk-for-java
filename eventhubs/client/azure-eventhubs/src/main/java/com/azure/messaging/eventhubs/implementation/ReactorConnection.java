@@ -176,7 +176,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
             try {
                 session.close();
             } catch (IOException e) {
-                logger.asError().log("Could not close session: " + name, e);
+                logger.logAsError("Could not close session: " + name, e);
             }
         });
         super.close();
@@ -184,7 +184,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
     private synchronized CBSNode getOrCreateCBSNode() {
         if (cbsChannel == null) {
-            logger.asInfo().log("Setting CBS channel.");
+            logger.logAsInfo("Setting CBS channel.");
 
             cbsChannel = new CBSChannel(this, connectionOptions.tokenCredential(),
                 connectionOptions.authorizationType(), reactorProvider, handlerProvider,
@@ -196,7 +196,7 @@ public class ReactorConnection extends EndpointStateNotifierBase implements Even
 
     private synchronized Connection getOrCreateConnection() throws IOException {
         if (connection == null) {
-            logger.asInfo().log("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
+            logger.logAsInfo("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
 
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);

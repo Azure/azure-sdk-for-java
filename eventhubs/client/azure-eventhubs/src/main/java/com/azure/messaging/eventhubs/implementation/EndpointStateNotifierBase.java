@@ -55,21 +55,21 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     void notifyError(Throwable error) {
         Objects.requireNonNull(error);
 
-        logger.asInfo().log("Notify error: {}", error);
+        logger.logAsInfo("Notify error: {}", error);
         errorContextProcessor.onNext(error);
     }
 
     void notifyShutdown(AmqpShutdownSignal shutdownSignal) {
         Objects.requireNonNull(shutdownSignal);
 
-        logger.asInfo().log("Notify shutdown signal: {}", shutdownSignal);
+        logger.logAsInfo("Notify shutdown signal: {}", shutdownSignal);
         shutdownSignalProcessor.onNext(shutdownSignal);
     }
 
     void notifyEndpointState(EndpointState endpointState) {
         Objects.requireNonNull(endpointState);
 
-        logger.asVerbose().log("Connection state: {}", endpointState);
+        logger.logAsVerbose("Connection state: {}", endpointState);
         final AmqpEndpointState state = getConnectionState(endpointState);
         connectionStateProcessor.onNext(state);
     }

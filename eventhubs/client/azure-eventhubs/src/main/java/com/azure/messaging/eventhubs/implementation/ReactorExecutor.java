@@ -59,11 +59,11 @@ class ReactorExecutor implements Closeable {
      */
     void start() {
         if (hasStarted.get()) {
-            logger.asWarning().log("ReactorExecutor has already started.");
+            logger.logAsWarning("ReactorExecutor has already started.");
             return;
         }
 
-        logger.asInfo().log(LOG_MESSAGE, connectionId, "Starting reactor.");
+        logger.logAsInfo(LOG_MESSAGE, connectionId, "Starting reactor.");
 
         hasStarted.set(true);
         synchronized (lock) {
@@ -80,7 +80,7 @@ class ReactorExecutor implements Closeable {
     private void run() {
         // If this hasn't been disposed of, and we're trying to run work items on it, log a warning and return.
         if (!isDisposed.get() && !hasStarted.get()) {
-            logger.asWarning().log("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
+            logger.logAsWarning("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
             return;
         }
 
@@ -97,7 +97,7 @@ class ReactorExecutor implements Closeable {
                     scheduler.schedule(this::run);
                     rescheduledReactor = true;
                 } catch (RejectedExecutionException exception) {
-                    logger.asWarning().log(LOG_MESSAGE, connectionId,
+                    logger.logAsWarning(LOG_MESSAGE, connectionId,
                         StringUtil.toStackTraceString(exception, "Scheduling reactor failed because the executor has been shut down"));
 
                     this.reactor.attachments().set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
@@ -108,7 +108,7 @@ class ReactorExecutor implements Closeable {
                 ? handlerException
                 : handlerException.getCause();
 
-            logger.asWarning().log(LOG_MESSAGE, connectionId, StringUtil.toStackTraceString(handlerException,
+            logger.logAsWarning(LOG_MESSAGE, connectionId, StringUtil.toStackTraceString(handlerException,
                 "Unhandled exception while processing events in reactor, report this error."));
 
             final String message = !ImplUtils.isNullOrEmpty(cause.getMessage())
@@ -139,7 +139,7 @@ class ReactorExecutor implements Closeable {
                 } else {
                     final String reason = "Stopping the reactor because thread was interrupted or the reactor has no more events to process.";
 
-                    logger.asInfo().log(LOG_MESSAGE, connectionId, reason);
+                    logger.logAsInfo(LOG_MESSAGE, connectionId, reason);
                     close(false, reason);
                 }
             }
@@ -150,12 +150,12 @@ class ReactorExecutor implements Closeable {
         hasStarted.set(false);
 
         this.scheduler.schedule(() -> {
-            logger.asInfo().log(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
+            logger.logAsInfo(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
                 reactor.stop();
                 reactor.process();
             } catch (HandlerException e) {
-                logger.asWarning().log(LOG_MESSAGE, connectionId,
+                logger.logAsWarning(LOG_MESSAGE, connectionId,
                     StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while processing events."));
             } finally {
                 reactor.free();
@@ -172,7 +172,7 @@ class ReactorExecutor implements Closeable {
 
     private void close(boolean isUserInitialized, String reason) {
         if (hasStarted.getAndSet(false)) {
-            logger.asInfo().log(LOG_MESSAGE, connectionId, "Stopping the reactor.");
+            logger.logAsInfo(LOG_MESSAGE, connectionId, "Stopping the reactor.");
 
             synchronized (lock) {
                 this.reactor.stop();

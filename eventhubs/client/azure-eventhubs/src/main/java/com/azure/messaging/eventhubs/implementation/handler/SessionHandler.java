@@ -40,7 +40,7 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        logger.asVerbose().log("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
+        logger.logAsVerbose("onSessionLocalOpen connectionId[{}], entityName[{}], condition[{}]",
             getConnectionId(), this.entityName,
             e.getSession().getCondition() == null ? ClientConstants.NOT_APPLICABLE : e.getSession().getCondition().toString());
 
@@ -49,7 +49,7 @@ public class SessionHandler extends Handler {
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
         } catch (IOException ioException) {
-            logger.asWarning().log("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
+            logger.logAsWarning("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
                 getConnectionId(), this.entityName,
                 ioException.getMessage());
 
@@ -67,7 +67,7 @@ public class SessionHandler extends Handler {
     public void onSessionRemoteOpen(Event e) {
         final Session session = e.getSession();
 
-        logger.asInfo().log(
+        logger.logAsInfo(
             "onSessionRemoteOpen connectionId[{}], entityName[{}], sessionIncCapacity[{}], sessionOutgoingWindow[{}]",
             getConnectionId(), entityName, session.getIncomingCapacity(), session.getOutgoingWindow());
 
@@ -82,7 +82,7 @@ public class SessionHandler extends Handler {
     public void onSessionLocalClose(Event e) {
         final ErrorCondition condition = e.getSession().getCondition();
 
-        logger.asVerbose().log("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
+        logger.logAsVerbose("onSessionLocalClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, getConnectionId(),
             condition == null ? ClientConstants.NOT_APPLICABLE : condition.toString());
     }
@@ -91,14 +91,14 @@ public class SessionHandler extends Handler {
     public void onSessionRemoteClose(Event e) {
         final Session session = e.getSession();
 
-        logger.asInfo().log("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
+        logger.logAsInfo("onSessionRemoteClose connectionId[{}], entityName[{}], condition[{}]",
             entityName, getConnectionId(),
             session == null || session.getRemoteCondition() == null ? ClientConstants.NOT_APPLICABLE : session.getRemoteCondition().toString());
 
         ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            logger.asInfo().log(
+            logger.logAsInfo(
                 "onSessionRemoteClose closing a local session for connectionId[{}], entityName[{}], condition[{}], description[{}]",
                 getConnectionId(), entityName,
                 condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
@@ -124,7 +124,7 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        logger.asInfo().log("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
+        logger.logAsInfo("onSessionFinal connectionId[{}], entityName[{}], condition[{}], description[{}]",
             getConnectionId(), entityName,
             condition != null ? condition.getCondition() : ClientConstants.NOT_APPLICABLE,
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
@@ -140,7 +140,7 @@ public class SessionHandler extends Handler {
 
         // TODO: handle timeout error once the proton-j bug is fixed.
         // if (!sessionCreated && !sessionOpenErrorDispatched) {
-        //     logger.asWarning().log(
+        //     logger.logAsWarning(
         //     "SessionTimeoutHandler.onEvent - connectionId[{}], entityName[{}], session open timed out.",
         //     this.connectionId, this.entityName);
         // }
