@@ -116,7 +116,7 @@ public class EventData implements Comparable<EventData> {
             addMapEntry(receiveProperties, MessageConstant.CORRELATION_ID, message.getCorrelationId());
             addMapEntry(receiveProperties, MessageConstant.CONTENT_TYPE, message.getContentType());
             addMapEntry(receiveProperties, MessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPRITY_TIME, message.getExpiryTime());
+            addMapEntry(receiveProperties, MessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
             addMapEntry(receiveProperties, MessageConstant.CREATION_TIME, message.getCreationTime());
             addMapEntry(receiveProperties, MessageConstant.GROUP_ID, message.getGroupId());
             addMapEntry(receiveProperties, MessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
