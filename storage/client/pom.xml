@@ -31,6 +31,20 @@
     <tag>HEAD</tag>
   </scm>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>bintray</id>
+      <name>Groovy Bintray</name>
+      <url>https://dl.bintray.com/groovy/maven</url>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -98,7 +112,35 @@
   </dependencies>
 
   <build>
+
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+
     <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerId>groovy-eclipse-compiler</compilerId>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+          <source>1.8</source>
+          <target>1.8</target>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>${groovy-eclipse-compiler.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>${groovy-eclipse-batch.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
       <!-- Now that all checkstyle issues have been resolved, override the
              default behavior to make checkstyle fail on error and violation. -->
       <plugin>
