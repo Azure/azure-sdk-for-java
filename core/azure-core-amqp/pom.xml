@@ -39,7 +39,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.2</tag>
   </scm>
   
   <properties>
