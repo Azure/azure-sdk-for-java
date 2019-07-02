@@ -85,7 +85,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlockBlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
@@ -93,7 +93,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link BlockBlobClientBuilder} instance.
@@ -163,15 +163,42 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, from the contents of a given file.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with this convenience method; the content of the existing blob is overwritten with the new content. To
+     * perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     *
+     * @param filePath
+     *      Path of the file to upload.
+     *
+     * @return
+     *      A reactive response signalling completion.
+     */
     public Mono<Void> uploadFromFile(String filePath) {
-        return this.uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
+        return this.uploadFromFile(filePath, null, null, null);
     }
 
-    public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, from the contents of a given file.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with this convenience method; the content of the existing blob is overwritten with the new
+     * content. To perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     *
+     * @param filePath
+     *      Path of the file to upload.
+     * @param headers
+     *      {@link BlobHTTPHeaders}
+     * @param metadata
+     *      {@link Metadata}
+     * @param accessConditions
+     *      {@link BlobAccessConditions}
+     *
+     * @return
+     *      A reactive response signalling completion.
+     */
+    public Mono<Void> uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
-        if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
-            throw new IllegalArgumentException("Block size should not exceed 100MB");
-        }
         return Mono.using(() -> {
                 try {
                     return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
@@ -180,7 +207,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                 }
             }, channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
-                return Flux.fromIterable(sliceFile(filePath, blockSize))
+                return Flux.fromIterable(sliceFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
                     .flatMap(chunk -> {
                         String blockId = blockIds.get(chunk.offset());
@@ -215,7 +242,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
         File file = new File(path);
         assert file.exists();
         List<BlobRange> ranges = new ArrayList<>();
-        for (long pos = 0; pos < file.length(); pos += blockSize) {
+        for (long pos = 0; pos < file.length(); pos += BLOB_DEFAULT_UPLOAD_BLOCK_SIZE) {
             long count = blockSize;
             if (pos + count > file.length()) {
                 count = file.length() - pos;
@@ -227,7 +254,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
-     * commitBlockList. For more information, see the
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -253,7 +280,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
-     * commitBlockList. For more information, see the
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
@@ -283,14 +310,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     * Specifies a web resource to upload to the block blob's "staging area" to be later committed by a call to
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param sourceURL
-     *         The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
+     *         The url to the web resource that will be the source of the copy.  A source blob in the same storage account can be
      *         authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
      *         either be public or must be authenticated via a shared access signature. If the source blob is public, no
      *         authentication is required to perform the operation.
@@ -307,21 +335,22 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     * Specifies a web resource to upload to the block blob's "staging area" to be later committed by a call to
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
      *         blob must be the same length.
      * @param sourceURL
-     *         The url to the blob that will be the source of the copy.  A source blob in the same storage account can
+     *         The url to the web resource that will be the source of the copy.  A source blob in the same storage account can
      *         be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
      *         must either be public or must be authenticated via a shared access signature. If the source blob is
      *         public, no authentication is required to perform the operation.
      * @param sourceRange
      *         {@link BlobRange}
      * @param sourceContentMD5
-     *         An MD5 hash of the block content from the source blob. If specified, the service will calculate the MD5
+     *         An MD5 hash of the block content from the source. If specified, the service will calculate the MD5
      *         of the received data and fail the request if it does not match the provided MD5.
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
@@ -370,8 +399,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the list of blocks.
      */
-    public Flux<BlockItem> listBlocks(BlockListType listType,
-                                      LeaseAccessConditions leaseAccessConditions) {
+    public Flux<BlockItem> listBlocks(BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
         return blockBlobAsyncRawClient
             .listBlocks(listType, leaseAccessConditions)
             .map(ResponseBase::value)

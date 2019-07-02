@@ -37,8 +37,8 @@ import java.util.Objects;
  * Fluent BlockBlobClientBuilder for instantiating a {@link BlockBlobClient} or {@link BlockBlobAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link BlockBlobClient#blockBlobClientBuilder()}.
- * The following information must be provided on this builder:
+ * An instance of this pageBlobClientBuilder may only be created from static method {@link BlockBlobClient#blockBlobClientBuilder()}.
+ * The following information must be provided on this pageBlobClientBuilder:
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
@@ -46,7 +46,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * Once all the configurations are set on this pageBlobClientBuilder, call {@code .buildClient()} to create a
  * {@link BlockBlobClient} or {@code .buildAsyncClient()} to create a {@link BlockBlobAsyncClient}.
  */
 public final class BlockBlobClientBuilder {
@@ -61,9 +61,12 @@ public final class BlockBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+
+    // only one credential may be present at any time
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
+
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -120,14 +123,14 @@ public final class BlockBlobClientBuilder {
     }
 
     /**
-     * @return a {@link BlockBlobClient} created from the configurations in this builder.
+     * @return a {@link BlockBlobClient} created from the configurations in this pageBlobClientBuilder.
      */
     public BlockBlobClient buildClient() {
         return new BlockBlobClient(buildAsyncClient());
     }
 
     /**
-     * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
+     * @return a {@link BlockBlobAsyncClient} created from the configurations in this pageBlobClientBuilder.
      */
     public BlockBlobAsyncClient buildAsyncClient() {
         return new BlockBlobAsyncClient(buildImpl(), snapshot);

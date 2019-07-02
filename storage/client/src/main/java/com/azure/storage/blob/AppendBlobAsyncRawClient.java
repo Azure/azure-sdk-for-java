@@ -53,19 +53,6 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
      * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<AppendBlobsCreateResponse> create() {
-        return this.create(null, null, null);
-    }
-
-    /**
-     * Creates a 0-length append blob. Call AppendBlock to append data to an append blob. For more information, see
-     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
      * @param headers          {@link BlobHTTPHeaders}
      * @param metadata         {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -83,26 +70,6 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
             null, 0, null, metadata, null, null,
             null, null, headers, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Commits a new block of data to the end of the existing append blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
-     *
-     * @param data   The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     *               (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the data
-     *               emitted by the {@code Flux}.
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_blob "Sample code for AppendBlobAsyncRawClient.appendBlock")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<AppendBlobsAppendBlockResponse> appendBlock(Flux<ByteBuf> data, long length) {
-        return this.appendBlock(data, length, null);
     }
 
     /**
@@ -136,27 +103,7 @@ final class AppendBlobAsyncRawClient extends BlobAsyncRawClient {
     }
 
     /**
-     * Commits a new block of data from another blob to the end of this append blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
-     * <p>
-     *
-     * @param sourceURL   The url to the blob that will be the source of the copy.  A source blob in the same storage account can
-     *                    be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
-     *                    must either be public or must be authenticated via a shared access signature. If the source blob is
-     *                    public, no authentication is required to perform the operation.
-     * @param sourceRange The source {@link BlobRange} to copy.
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=append_from_url "Sample code for AppendBlobAsyncRawClient.appendBlockFromUrl")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<AppendBlobsAppendBlockFromUrlResponse> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange) {
-        return this.appendBlockFromUrl(sourceURL, sourceRange, null, null,
-            null);
-    }
-
-    /**
-     * Commits a new block of data from another blob to the end of this append blob. For more information, see the
+     * Commits a new block of data from another web resource to the end of this append blob. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
      * <p>
      *

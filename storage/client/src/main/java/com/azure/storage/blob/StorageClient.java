@@ -50,7 +50,7 @@ public final class StorageClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link StorageClientBuilder} instance.

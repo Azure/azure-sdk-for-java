@@ -66,21 +66,6 @@ final class ContainerAsyncRawClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersCreateResponse> create() {
-        return this.create(null, null);
-    }
-
-    /**
-     * Creates a new container within a storage account. If a container with the same name already exists, the operation
-     * fails. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
-     *
      * @param metadata
      *         {@link Metadata}
      * @param accessType
@@ -99,21 +84,6 @@ final class ContainerAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.containers().createWithRestResponseAsync(
                 null, null, metadata, accessType, null, Context.NONE));
 
-    }
-
-    /**
-     * Marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersDeleteResponse> delete() {
-        return this.delete(null);
     }
 
     /**
@@ -148,20 +118,6 @@ final class ContainerAsyncRawClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersGetPropertiesResponse> getProperties() {
-        return this.getProperties(null);
-    }
-
-    /**
-     * Returns the container's metadata and system properties. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
-     *
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
@@ -176,23 +132,6 @@ final class ContainerAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.containers()
                 .getPropertiesWithRestResponseAsync(null, null, null,
                     leaseAccessConditions, Context.NONE));
-    }
-
-    /**
-     * Sets the container's metadata. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
-     *
-     * @param metadata
-     *         {@link Metadata}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersSetMetadataResponse> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null);
     }
 
     /**
@@ -232,21 +171,6 @@ final class ContainerAsyncRawClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy() {
-        return this.getAccessPolicy(null);
-    }
-
-    /**
-     * Returns the container's permissions. The permissions indicate whether container's blobs may be accessed publicly.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
-     *
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
@@ -261,31 +185,6 @@ final class ContainerAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
                 null, null, null, leaseAccessConditions, Context.NONE)
             .map(response -> new SimpleResponse<>(response, new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(),response.value()))));
-    }
-
-    /**
-     * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
-     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
-     * ensure the time formatting is compatible with the service. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
-     *
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers
-     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
-     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *         for more information. Passing null will clear all access policies.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(PublicAccessType accessType,
-                                                                   List<SignedIdentifier> identifiers) {
-        return this.setAccessPolicy(accessType, identifiers, null);
     }
 
     /**
@@ -358,32 +257,6 @@ final class ContainerAsyncRawClient {
      * 60 seconds, or infinite (-1). For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
      *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @param proposedId
-     *      A {@code String} in any valid GUID format.
-     * @param duration
-     *         The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
-     *         A non-infinite lease can be between 15 and 60 seconds.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null);
-    }
-
-    /**
-     * Acquires a lease on the container for delete operations. The lease duration must be between 15 to
-     * 60 seconds, or infinite (-1). For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      * @param duration
@@ -411,23 +284,6 @@ final class ContainerAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().acquireLeaseWithRestResponseAsync(
                 null, null, duration, proposedID, null, modifiedAccessConditions, Context.NONE));
-    }
-
-    /**
-     * Renews the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersRenewLeaseResponse> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null);
     }
 
     /**
@@ -466,23 +322,6 @@ final class ContainerAsyncRawClient {
      *
      * @param leaseID
      *         The leaseId of the active lease on the container.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersReleaseLeaseResponse> releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null);
-    }
-
-    /**
-     * Releases the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
      * @param modifiedAccessConditions
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
@@ -505,21 +344,6 @@ final class ContainerAsyncRawClient {
 
         return postProcessResponse(this.azureBlobStorage.containers().releaseLeaseWithRestResponseAsync(
             null, leaseID, null, null, modifiedAccessConditions, Context.NONE));
-    }
-
-    /**
-     * Breaks the container's previously-acquired lease. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @apiNote
-     * ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @return Emits the successful response.
-     */
-    public Mono<ContainersBreakLeaseResponse> breakLease() {
-        return this.breakLease(null, null);
     }
 
     /**
@@ -554,25 +378,6 @@ final class ContainerAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.containers().breakLeaseWithRestResponseAsync(null,
             null, breakPeriodInSeconds, null, modifiedAccessConditions, Context.NONE));
 
-    }
-
-    /**
-     * Changes the container's leaseAccessConditions. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the container.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<ContainersChangeLeaseResponse> changeLease(String leaseID, String proposedID) {
-        return this.changeLease(leaseID, proposedID, null);
     }
 
     /**

@@ -59,7 +59,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link AppendBlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
@@ -67,7 +67,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link AppendBlobClientBuilder} instance.
@@ -152,7 +152,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Commits a new block of data from another blob to the end of this append blob.
+     * Commits a new block of data from another web resource to the end of this append blob.
      *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
@@ -171,7 +171,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Commits a new block of data from another blob to the end of this append blob.
+     * Commits a new block of data from another web resource to the end of this append blob.
      *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can

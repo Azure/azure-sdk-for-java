@@ -63,7 +63,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link PageBlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
@@ -73,7 +73,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     /**
      * @return a new client {@link PageBlobClientBuilder} instance.
      */
-    public static PageBlobClientBuilder builder() {
+    public static PageBlobClientBuilder pageBlobClientBuilder() {
         return new PageBlobClientBuilder();
     }
 
@@ -135,8 +135,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
      *         0-511, 512-1023, etc.
      * @param body
-     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
+     *         The data to upload. Note that this {@link Flux} must be replayable if retries are enabled
+     *         (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      *
      * @return
      *      A reactive response containing the information of the uploaded pages.

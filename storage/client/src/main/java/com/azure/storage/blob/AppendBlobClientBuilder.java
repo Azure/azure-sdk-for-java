@@ -37,8 +37,8 @@ import java.util.Objects;
  * Fluent AppendBlobClientBuilder for instantiating a {@link AppendBlobClient} or {@link AppendBlobAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link AppendBlobClient#appendBlobClientBuilder()}.
- * The following information must be provided on this builder:
+ * An instance of this pageBlobClientBuilder may only be created from static method {@link AppendBlobClient#appendBlobClientBuilder()}.
+ * The following information must be provided on this pageBlobClientBuilder:
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
@@ -46,7 +46,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * Once all the configurations are set on this pageBlobClientBuilder, call {@code .buildClient()} to create a
  * {@link AppendBlobClient} or {@code .buildAsyncClient()} to create a {@link AppendBlobAsyncClient}.
  */
 public final class AppendBlobClientBuilder {
@@ -61,9 +61,12 @@ public final class AppendBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+
+    // only one credential may be present at any time
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
+
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -116,14 +119,14 @@ public final class AppendBlobClientBuilder {
     }
 
     /**
-     * @return a {@link AppendBlobClient} created from the configurations in this builder.
+     * @return a {@link AppendBlobClient} created from the configurations in this pageBlobClientBuilder.
      */
     public AppendBlobClient buildClient() {
         return new AppendBlobClient(buildAsyncClient());
     }
 
     /**
-     * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
+     * @return a {@link AppendBlobAsyncClient} created from the configurations in this pageBlobClientBuilder.
      */
     public AppendBlobAsyncClient buildAsyncClient() {
         return new AppendBlobAsyncClient(buildImpl(), snapshot);

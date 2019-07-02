@@ -118,7 +118,7 @@ public class BlobOutputStream extends OutputStream {
      *             An exception representing any error which occurred during the operation.
      */
     BlobOutputStream(final BlockBlobAsyncClient parentBlob, final BlobAccessConditions accessCondition) throws StorageException {
-        this((BlobAsyncClient) parentBlob);
+        this(parentBlob);
 
         this.accessCondition = accessCondition;
         this.blockList = new TreeMap<>();
@@ -144,7 +144,7 @@ public class BlobOutputStream extends OutputStream {
      */
     BlobOutputStream(final PageBlobAsyncClient parentBlob, final long length, final BlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob);
+        this(parentBlob);
         this.streamType = BlobType.PAGE_BLOB;
         this.accessCondition = accessCondition;
         this.internalWriteThreshold = (int) Math.min(BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, length);
@@ -163,7 +163,7 @@ public class BlobOutputStream extends OutputStream {
      */
     BlobOutputStream(final AppendBlobAsyncClient parentBlob, final AppendBlobAccessConditions accessCondition)
         throws StorageException {
-        this((BlobAsyncClient) parentBlob);
+        this(parentBlob);
         this.streamType = BlobType.APPEND_BLOB;
 
         this.accessCondition = new BlobAccessConditions();

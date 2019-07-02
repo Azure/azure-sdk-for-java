@@ -71,7 +71,7 @@ public final class BlockBlobClient extends BlobClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link BlockBlobClientBuilder} instance.
@@ -181,13 +181,40 @@ public final class BlockBlobClient extends BlobClient {
         }
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, from the contents of a given file.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with this convenience method; the content of the existing blob is overwritten with the new
+     * content. To perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     *
+     * @param filePath
+     *      Path of the file to upload.
+     */
     public void uploadFromFile(String filePath) throws IOException {
         this.uploadFromFile(filePath, null, null, null, null);
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, from the contents of a given file.
+     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
+     * supported with this convenience method; the content of the existing blob is overwritten with the new
+     * content. To perform a partial update of a block blob's, use PutBlock and PutBlockList.
+     *
+     * @param filePath
+     *      Path of the file to upload.
+     * @param headers
+     *      {@link BlobHTTPHeaders}
+     * @param metadata
+     *      {@link Metadata}
+     * @param accessConditions
+     *      {@link BlobAccessConditions}
+     *
+     * @return
+     *      A reactive response signalling completion.
+     */
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
-        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, accessConditions);
+        Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, headers, metadata, accessConditions);
 
         try {
             if (timeout == null) {
@@ -239,7 +266,7 @@ public final class BlockBlobClient extends BlobClient {
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
     public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
-            LeaseAccessConditions leaseAccessConditions, Duration timeout) {
+            LeaseAccessConditions leaseAccessConditions, Duration timeout) throws IOException {
 
         Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE))
             .map(i -> i * BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
@@ -255,12 +282,19 @@ public final class BlockBlobClient extends BlobClient {
 
         Mono<VoidResponse> response = blockBlobAsyncClient.stageBlock(base64BlockID,
             fbb.subscribeOn(Schedulers.elastic()), length, leaseAccessConditions);
-        return Utility.blockWithOptionalTimeout(response, timeout);
+
+        try {
+            return Utility.blockWithOptionalTimeout(response, timeout);
+        }
+        catch (UncheckedIOException e) {
+            throw e.getCause();
+        }
     }
 
     /**
-     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     * Specifies a web resource to upload to the block blob's "staging area" to be later committed by a call to
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given
@@ -273,15 +307,15 @@ public final class BlockBlobClient extends BlobClient {
      * @param sourceRange
      *         {@link BlobRange}
      */
-    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
-            BlobRange sourceRange) {
+    public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL, BlobRange sourceRange) {
         return this.stageBlockFromURL(base64BlockID, sourceURL, sourceRange, null,
                 null, null, null);
     }
 
     /**
-     * Creates a new block to be committed as part of a blob where the contents are read from a URL. For more
-     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
+     * Specifies a web resource to upload to the block blob's "staging area" to be later committed by a call to
+     * {@link BlockBlobAsyncClient#commitBlockList(List)}.For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url">Azure Docs</a>.
      *
      * @param base64BlockID
      *         A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids for a given

@@ -61,7 +61,7 @@ public final class AppendBlobClient extends BlobClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link AppendBlobClientBuilder} instance.
@@ -188,7 +188,7 @@ public final class AppendBlobClient extends BlobClient {
     }
 
     /**
-     * Commits a new block of data from another blob to the end of this append blob.
+     * Commits a new block of data from another web resource to the end of this append blob.
      *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can
@@ -207,7 +207,7 @@ public final class AppendBlobClient extends BlobClient {
     }
 
     /**
-     * Commits a new block of data from another blob to the end of this append blob.
+     * Commits a new block of data from another web resource to the end of this append blob.
      *
      * @param sourceURL
      *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can

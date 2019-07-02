@@ -34,24 +34,6 @@ class BlobAsyncRawClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
-     *
-     * @param sourceURL
-     *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy "Sample code for BlobAsyncRawClient.startCopyFromURL")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=start_copy_helper "Helper for start_copy sample.")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(URL sourceURL) {
-        return this.startCopyFromURL(sourceURL, null, null, null);
-    }
-
-    /**
      * Copies the data at the source URL to a blob. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
@@ -99,24 +81,6 @@ class BlobAsyncRawClient {
      * @param copyId
      *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      *         BlobStartCopyFromURLHeaders} object.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=abort_copy "Sample code for BlobAsyncRawClient.abortCopyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsAbortCopyFromURLResponse> abortCopyFromURL(String copyId) {
-        return this.abortCopyFromURL(copyId, null);
-    }
-
-    /**
-     * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata. For
-     * more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a>.
-     *
-     * @param copyId
-     *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
-     *         BlobStartCopyFromURLHeaders} object.
      * @param leaseAccessConditions
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
@@ -131,23 +95,6 @@ class BlobAsyncRawClient {
                                                                 LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().abortCopyFromURLWithRestResponseAsync(
             null, null, copyId, null, null, leaseAccessConditions, Context.NONE));
-    }
-
-    /**
-     * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
-     *
-     * @param copySource
-     *         The source URL to copy from.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=sync_copy "Sample code for BlobAsyncRawClient.copyFromURL")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsCopyFromURLResponse> syncCopyFromURL(URL copySource) {
-        return this.syncCopyFromURL(copySource, null, null, null);
     }
 
     /**
@@ -189,22 +136,6 @@ class BlobAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.blobs().copyFromURLWithRestResponseAsync(
             null, null, copySource, null, metadata, null, sourceConditions,
             destAccessConditions.modifiedAccessConditions(), destAccessConditions.leaseAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Reads a range of bytes from a blob. The response also includes the blob's properties and metadata. For more
-     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a>.
-     * <p>
-     * Note that the response body has reliable download functionality built in, meaning that a failed download stream
-     * will be automatically retried. This behavior may be configured with {@link ReliableDownloadOptions}.
-     *
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=upload_download
-     * "Sample code for BlobAsyncRawClient.download")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<DownloadAsyncResponse> download() {
-        return this.download(null, null, false);
     }
 
     /**
@@ -260,19 +191,6 @@ class BlobAsyncRawClient {
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a>.
      *
-     * @return Emits the successful response.
-     * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_delete
-     * "Sample code for BlobAsyncRawClient.delete")] \n For more samples, please see the [Samples
-     * file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsDeleteResponse> delete() {
-        return this.delete(null, null);
-    }
-
-    /**
-     * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots. For more
-     * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a>.
-     *
      * @param deleteBlobSnapshotOptions
      *         Specifies the behavior for deleting the snapshots on this blob. {@code Include} will delete the base blob
      *         and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being deleted, you must
@@ -297,20 +215,6 @@ class BlobAsyncRawClient {
     }
 
     /**
-     * Returns the blob's metadata and properties. For more information, see the <a
-     * href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.getProperties")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsGetPropertiesResponse> getProperties() {
-        return this.getProperties(null);
-    }
-
-    /**
      * Returns the blob's metadata and properties. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a>.
      *
      * @param accessConditions
@@ -329,23 +233,6 @@ class BlobAsyncRawClient {
             null, null, snapshot, null, null, null,
             null, null, null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Changes a blob's HTTP header properties. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure
-     * Docs</a>.
-     *
-     * @param headers
-     *         {@link BlobHTTPHeaders}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setHTTPHeaders")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
-        return this.setHTTPHeaders(headers, null);
     }
 
     /**
@@ -376,22 +263,6 @@ class BlobAsyncRawClient {
      *
      * @param metadata
      *         {@link Metadata}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=properties_metadata "Sample code for BlobAsyncRawClient.setMetadata")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsSetMetadataResponse> setMetadata(Metadata metadata) {
-        return this.setMetadata(metadata, null);
-    }
-
-    /**
-     * Changes a blob's metadata. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
-     *
-     * @param metadata
-     *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
@@ -409,19 +280,6 @@ class BlobAsyncRawClient {
             null, null, null, metadata, null, null,
             null, null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Creates a read-only snapshot of a blob. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a>.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=snapshot "Sample code for BlobAsyncRawClient.createSnapshot")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsCreateSnapshotResponse> createSnapshot() {
-        return this.createSnapshot(null, null);
     }
 
     /**
@@ -446,26 +304,6 @@ class BlobAsyncRawClient {
             null, null, null, metadata, null, null,
             null, null, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
-     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
-     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's etag.
-     * <p>
-     * For detailed information about block blob level tiering see the <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.">Azure Docs</a>.
-     *
-     * @param tier
-     *         The new tier for the blob.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=tier "Sample code for BlobAsyncRawClient.setTier")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsSetTierResponse> setTier(AccessTier tier) {
-        return this.setTier(tier, null);
     }
 
     /**
@@ -513,26 +351,6 @@ class BlobAsyncRawClient {
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1). For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
-     * @param proposedId
-     *      A {@code String} in any valid GUID format. May be null.
-     * @param duration
-     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
-     *         never expires. A non-infinite lease can be between 15 and 60 seconds.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.acquireLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsAcquireLeaseResponse> acquireLease(String proposedId, int duration) {
-        return this.acquireLease(proposedId, duration, null);
-    }
-
-    /**
-     * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
-     * seconds, or infinite (-1). For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
-     *
      * @param proposedID
      *         A {@code String} in any valid GUID format. May be null.
      * @param duration
@@ -567,22 +385,6 @@ class BlobAsyncRawClient {
      *
      * @param leaseID
      *         The leaseId of the active lease on the blob.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.renewLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID) {
-        return this.renewLease(leaseID, null);
-    }
-
-    /**
-     * Renews the blob's previously-acquired lease. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions
      *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
      *         to construct conditions related to when the blob was changed relative to the given request. The request
@@ -597,22 +399,6 @@ class BlobAsyncRawClient {
     public Mono<BlobsRenewLeaseResponse> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().renewLeaseWithRestResponseAsync(null,
             null, leaseID, null, null, modifiedAccessConditions, Context.NONE));
-    }
-
-    /**
-     * Releases the blob's previously-acquired lease. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
-     *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.releaseLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsReleaseLeaseResponse> releaseLease(String leaseID) {
-        return this.releaseLease(leaseID, null);
     }
 
     /**
@@ -642,22 +428,6 @@ class BlobAsyncRawClient {
      * to break a fixed-duration lease when it expires or an infinite lease immediately. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.breakLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/New-Storage-SDK-V10-Preview/src/test/java/com/microsoft/azure/storage/Samples.java)
-     *
-     * @return
-     *      Emits the successful response.
-     */
-    public Mono<BlobsBreakLeaseResponse> breakLease() {
-        return this.breakLease(null, null);
-    }
-
-    /**
-     * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
-     * to break a fixed-duration lease when it expires or an infinite lease immediately. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
-     *
      * @param breakPeriodInSeconds
      *         An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
      *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the
@@ -679,24 +449,6 @@ class BlobAsyncRawClient {
                                                      ModifiedAccessConditions modifiedAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.blobs().breakLeaseWithRestResponseAsync(null,
             null, null, breakPeriodInSeconds, null, modifiedAccessConditions, Context.NONE));
-    }
-
-    /**
-     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
-     *
-     * @param leaseId
-     *         The leaseId of the active lease on the blob.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.changeLease")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<BlobsChangeLeaseResponse> changeLease(String leaseId, String proposedID) {
-        return this.changeLease(leaseId, proposedID, null);
     }
 
     /**

@@ -39,8 +39,7 @@ public final class DownloadAsyncResponse {
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    // TODO resolve comment vs code mismatch
-    public DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
+    DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
             HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);

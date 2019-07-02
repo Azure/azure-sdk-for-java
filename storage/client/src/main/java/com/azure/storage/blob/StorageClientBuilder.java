@@ -36,8 +36,8 @@ import java.util.Objects;
  * Fluent StorageClientBuilder for instantiating a {@link StorageClient} or {@link StorageAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link StorageClient#storageClientBuilder()}.
- * The following information must be provided on this builder:
+ * An instance of this pageBlobClientBuilder may only be created from static method {@link StorageClient#storageClientBuilder()}.
+ * The following information must be provided on this pageBlobClientBuilder:
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, in the format of {@code https://{accountName}.blob.core.windows.net}.
@@ -45,7 +45,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * Once all the configurations are set on this pageBlobClientBuilder, call {@code .buildClient()} to create a
  * {@link StorageClient} or {@code .buildAsyncClient()} to create a {@link StorageAsyncClient}.
  */
 public final class StorageClientBuilder {
@@ -110,14 +110,14 @@ public final class StorageClientBuilder {
     }
 
     /**
-     * @return a {@link StorageClient} created from the configurations in this builder.
+     * @return a {@link StorageClient} created from the configurations in this pageBlobClientBuilder.
      */
     public StorageClient buildClient() {
         return new StorageClient(buildAsyncClient());
     }
 
     /**
-     * @return a {@link StorageAsyncClient} created from the configurations in this builder.
+     * @return a {@link StorageAsyncClient} created from the configurations in this pageBlobClientBuilder.
      */
     public StorageAsyncClient buildAsyncClient() {
         return new StorageAsyncClient(buildImpl());

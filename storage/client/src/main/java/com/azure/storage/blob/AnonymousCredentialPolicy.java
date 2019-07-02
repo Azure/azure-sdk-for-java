@@ -10,9 +10,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 /**
- * Anonymous credentials are to be used with with HTTP(S) requests that read blobs from public containers or requests
- * that use a Shared Access Signature (SAS). This is because Anonymous credentials will not set an Authorization header.
- * Pass an instance of this class as the credentials parameter when creating a new pipeline (typically with
+ * Anonymous credentials are to be used with with HTTP(S) requests that read blobs from public containers. This is
+ * because Anonymous credentials will not set an Authorization header. Pass an instance of this class as the credentials
+ * parameter when creating a new pipeline.
  * {@link StorageClient}).
  */
 public final class AnonymousCredentialPolicy implements HttpPipelinePolicy {

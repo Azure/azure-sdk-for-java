@@ -37,8 +37,8 @@ import java.util.Objects;
  * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link ContainerClient#containerClientBuilder()}.
- * The following information must be provided on this builder:
+ * An instance of this pageBlobClientBuilder may only be created from static method {@link ContainerClient#containerClientBuilder()}.
+ * The following information must be provided on this pageBlobClientBuilder:
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}}.
@@ -46,7 +46,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * Once all the configurations are set on this pageBlobClientBuilder, call {@code .buildClient()} to create a
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
 public final class ContainerClientBuilder {
@@ -59,9 +59,12 @@ public final class ContainerClientBuilder {
 
     private String endpoint;
     private String containerName;
+
+    // only one credential may be present at any time
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
+
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -117,14 +120,14 @@ public final class ContainerClientBuilder {
     }
 
     /**
-     * @return a {@link ContainerClient} created from the configurations in this builder.
+     * @return a {@link ContainerClient} created from the configurations in this pageBlobClientBuilder.
      */
     public ContainerClient buildClient() {
         return new ContainerClient(buildAsyncClient());
     }
 
     /**
-     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     * @return a {@link ContainerAsyncClient} created from the configurations in this pageBlobClientBuilder.
      */
     public ContainerAsyncClient buildAsyncClient() {
         return new ContainerAsyncClient(buildImpl());

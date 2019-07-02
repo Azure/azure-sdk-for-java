@@ -47,19 +47,18 @@ import java.time.OffsetDateTime;
  * object through {@link Mono#toFuture()}.
  */
 public final class StorageAsyncClient {
-    AzureBlobStorageBuilder azureBlobStorageBuilder;
     StorageAsyncRawClient storageAsyncRawClient;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
         this.storageAsyncRawClient = new StorageAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link StorageClientBuilder} instance.

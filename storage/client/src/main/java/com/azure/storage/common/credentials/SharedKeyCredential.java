@@ -212,7 +212,7 @@ public final class SharedKeyCredential {
                 .append(queryParamValuesStr);
         }
 
-        // append to main string builder the join of completed params with new line
+        // append to main string pageBlobClientBuilder the join of completed params with new line
         return canonicalizedResource.toString();
     }
 

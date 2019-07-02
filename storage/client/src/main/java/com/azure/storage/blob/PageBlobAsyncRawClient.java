@@ -86,25 +86,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @param size
      *         Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      *         512-byte boundary.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsCreateResponse> create(long size) {
-        return this.create(size, null, null, null, null);
-    }
-
-    /**
-     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
-     *
-     * @param size
-     *         Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
-     *         512-byte boundary.
      * @param sequenceNumber
      *         A user-controlled value that you can use to track requests. The value of the sequence number must be
      *         between 0 and 2^63 - 1.The default value is 0.
@@ -152,32 +133,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * @param pageRange
-     *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
-     *         be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
-     *         0-511, 512-1023, etc.
-     * @param body
-     *         The data to upload. Note that this {@code Flux} must be replayable if retries are enabled
-     *         (the default). In other words, the Flowable must produce the same data each time it is subscribed to.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsUploadPagesResponse> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
-        return this.uploadPages(pageRange, body, null);
-    }
-
-    /**
-     * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
-     *
-     * @param pageRange
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
@@ -210,36 +165,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
             null, pageRangeStr, null, null, null, null,
             pageBlobAccessConditions.leaseAccessConditions(), pageBlobAccessConditions.sequenceNumberAccessConditions(),
             pageBlobAccessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Writes 1 or more pages from the source page blob to this page blob. The start and end offsets must be a multiple
-     * of 512.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     * <p>
-     *
-     * @param range
-     *          A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
-     *          must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
-     *          are 0-511, 512-1023, etc.
-     * @param sourceURL
-     *          The url to the blob that will be the source of the copy.  A source blob in the same storage account can be
-     *          authenticated via Shared Key. However, if the source is a blob in another account, the source blob must
-     *          either be public or must be authenticated via a shared access signature. If the source blob is public, no
-     *          authentication is required to perform the operation.
-     * @param sourceOffset
-     *          The source offset to copy from.  Pass null or 0 to copy from the beginning of source page blob.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsUploadPagesFromURLResponse> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset) {
-        return this.uploadPagesFromURL(range, sourceURL, sourceOffset, null, null,
-                null);
     }
 
     /**
@@ -310,26 +235,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
      *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
      *         are 0-511, 512-1023, etc.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsClearPagesResponse> clearPages(PageRange pageRange) {
-        return this.clearPages(pageRange, null);
-    }
-
-    /**
-     * Frees the specified pages from the page blob.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
-     *
-     * @param pageRange
-     *         A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset
-     *         must be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges
-     *         are 0-511, 512-1023, etc.
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
@@ -362,23 +267,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *
      * @param blobRange
      *         {@link BlobRange}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.getPageRanges")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsGetPageRangesResponse> getPageRanges(BlobRange blobRange) {
-        return this.getPageRanges(blobRange, null);
-    }
-
-    /**
-     * Returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
-     *
-     * @param blobRange
-     *         {@link BlobRange}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
@@ -397,27 +285,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
             null, null, snapshot, null, null, blobRange.toHeaderValue(),
             null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
             Context.NONE));
-    }
-
-    /**
-     * Gets the collection of page ranges that differ between a specified snapshot and this page blob.
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
-     *
-     * @param blobRange
-     *         {@link BlobRange}
-     * @param prevSnapshot
-     *         Specifies that the response will contain only pages that were changed between target blob and previous
-     *         snapshot. Changed pages include both updated and cleared pages. The target
-     *         blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
-        return this.getPageRangesDiff(blobRange, prevSnapshot, null);
     }
 
     /**
@@ -461,24 +328,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * @param size
      *         Resizes a page blob to the specified size. If the specified value is less than the current size of the
      *         blob, then all pages above the specified value are cleared.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsResizeResponse> resize(long size) {
-        return this.resize(size, null);
-    }
-
-    /**
-     * Resizes the page blob to the specified size (which must be a multiple of 512).
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
-     *
-     * @param size
-     *         Resizes a page blob to the specified size. If the specified value is less than the current size of the
-     *         blob, then all pages above the specified value are cleared.
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
@@ -499,27 +348,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
         return postProcessResponse(this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null,
             null, size, null, null, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Sets the page blob's sequence number.
-     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
-     *
-     * @param action
-     *         Indicates how the service should modify the blob's sequence number.
-     * @param sequenceNumber
-     *         The blob's sequence number. The sequence number is a user-controlled property that you can use to track
-     *         requests and manage concurrency issues.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-    public Mono<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber) {
-        return this.updateSequenceNumber(action, sequenceNumber, null);
     }
 
     /**
@@ -554,25 +382,6 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
                 this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null,
                     null, action, null, sequenceNumber, null,
                     accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE));
-    }
-
-    /**
-     * Begins an operation to start an incremental copy from one page blob's snapshot to this page
-     * blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are
-     * transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read
-     * or copied from as usual. For more information, see
-     * the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a> and
-     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
-     *
-     * @param source
-     *         The source page blob.
-     * @param snapshot
-     *         The snapshot on the copy source.
-     *
-     * @return Emits the successful response.
-     */
-    public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot) {
-        return this.copyIncremental(source, snapshot, null);
     }
 
     /**

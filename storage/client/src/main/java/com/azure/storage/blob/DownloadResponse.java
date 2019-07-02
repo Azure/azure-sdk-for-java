@@ -19,16 +19,4 @@ public class DownloadResponse {
             buffer.release();
         }
     }
-
-    //TODO determine signature(s) to use
-    /*public InputStream body(ReliableDownloadOptions options) {
-        return new InputStream() {
-
-            DownloadAsyncResponse response = asyncResponse;
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-        };
-    }*/
 }

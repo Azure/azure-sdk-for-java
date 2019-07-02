@@ -36,10 +36,8 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -75,14 +73,14 @@ public class BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
-     * Static method for getting a new builder for this class.
+     * Static method for getting a new pageBlobClientBuilder for this class.
      *
      * @return
      *      A new {@link BlobClientBuilder} instance.
@@ -175,8 +173,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>.
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -189,8 +187,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>.
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -286,7 +284,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Reads the entire blob. Uploading data is only available through {@link BlockBlobAsyncClient},
+     * {@link PageBlobAsyncClient}, or {@link AppendBlobAsyncClient}.
      *
      * @return
      *      A reactive response containing the blob data.
@@ -326,6 +325,9 @@ public class BlobAsyncClient {
      *
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
@@ -348,6 +350,9 @@ public class BlobAsyncClient {
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
+     *
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, BlobAccessConditions accessConditions,
                                      boolean rangeGetContentMD5, ReliableDownloadOptions options) {
@@ -775,7 +780,7 @@ public class BlobAsyncClient {
     /**
      * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return a reactor response containing the sku name and account kind.
+     * @return a reactive response containing the sku name and account kind.
      */
     // TODO determine this return type
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {

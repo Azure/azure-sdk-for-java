@@ -37,8 +37,8 @@ import java.util.Objects;
  * Fluent PageBlobClientBuilder for instantiating a {@link PageBlobClient} or {@link PageBlobAsyncClient}.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link PageBlobClient#pageBlobClientBuilder()}.
- * The following information must be provided on this builder:
+ * An instance of this pageBlobClientBuilder may only be created from static method {@link PageBlobClient#pageBlobClientBuilder()}.
+ * The following information must be provided on this pageBlobClientBuilder:
  *
  * <p><ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
@@ -46,7 +46,7 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
+ * Once all the configurations are set on this pageBlobClientBuilder, call {@code .buildClient()} to create a
  * {@link PageBlobClient} or {@code .buildAsyncClient()} to create a {@link PageBlobAsyncClient}.
  */
 public final class PageBlobClientBuilder {
@@ -61,9 +61,12 @@ public final class PageBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+
+    // only one credential may be present at any time
     private SharedKeyCredential sharedKeyCredential;
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
+
     private HttpClient httpClient;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
@@ -116,14 +119,14 @@ public final class PageBlobClientBuilder {
     }
 
     /**
-     * @return a {@link PageBlobClient} created from the configurations in this builder.
+     * @return a {@link PageBlobClient} created from the configurations in this pageBlobClientBuilder.
      */
     public PageBlobClient buildClient() {
         return new PageBlobClient(buildAsyncClient());
     }
 
     /**
-     * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
+     * @return a {@link PageBlobAsyncClient} created from the configurations in this pageBlobClientBuilder.
      */
     public PageBlobAsyncClient buildAsyncClient() {
         return new PageBlobAsyncClient(buildImpl(), snapshot);

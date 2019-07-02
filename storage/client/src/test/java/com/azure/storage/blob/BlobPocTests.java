@@ -29,7 +29,7 @@
 //
 //    @Test
 //    public void testCreateBlobautorestclient() {
-//        AzureBlobStorageImpl client = new AzureBlobStorageBuilder().pipeline(HttpPipeline.builder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
+//        AzureBlobStorageImpl client = new AzureBlobStorageBuilder().pipeline(HttpPipeline.pageBlobClientBuilder().httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))/*,
 //            new HttpPipelinePolicy() {
 //                @Override
 //                public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

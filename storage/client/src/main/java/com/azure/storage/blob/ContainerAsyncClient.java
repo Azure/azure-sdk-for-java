@@ -56,7 +56,6 @@ import java.util.List;
 public final class ContainerAsyncClient {
 
     ContainerAsyncRawClient containerAsyncRawClient;
-    private AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -66,10 +65,9 @@ public final class ContainerAsyncClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client pageBlobClientBuilder for blob storage API
      */
     ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
         this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
@@ -111,9 +109,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
-        return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new BlockBlobAsyncClient(
+            new AzureBlobStorageBuilder()
+                .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+                .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()),
+            snapshot);
     }
 
     /**
@@ -147,9 +147,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
-        return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new PageBlobAsyncClient(
+            new AzureBlobStorageBuilder()
+                .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+                .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()),
+            snapshot);
     }
 
     /**
@@ -183,9 +185,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new AppendBlobAsyncClient(
+            new AzureBlobStorageBuilder()
+                .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+                .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()),
+            snapshot);
     }
 
     /**
@@ -219,9 +223,11 @@ public final class ContainerAsyncClient {
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
-        return new BlobAsyncClient(new AzureBlobStorageBuilder()
-            .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
-            .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()), snapshot);
+        return new BlobAsyncClient(
+            new AzureBlobStorageBuilder()
+                .url(Utility.appendToURLPath(getContainerUrl(), blobName).toString())
+                .pipeline(containerAsyncRawClient.azureBlobStorage.httpPipeline()),
+            snapshot);
     }
 
     /**
@@ -471,8 +477,7 @@ public final class ContainerAsyncClient {
 
 
     /**
-     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
-     * The directories are flattened and only actual blobs and no directories are returned.
+     * Gets the blobs in this container. The listing is flattened, and will only return blobs.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -488,15 +493,14 @@ public final class ContainerAsyncClient {
      * </ul>
      *
      * @return
-     *      A reactive response emitting the flattened blobs.
+     *      A reactive response emitting the flattened blobs, lazily fetched from the service.
      */
     public Flux<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions());
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
-     * The directories are flattened and only actual blobs and no directories are returned.
+     * Gets the blobs in this container. The listing is flattened, and will only return blobs.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -515,7 +519,7 @@ public final class ContainerAsyncClient {
      *         {@link ListBlobsOptions}
      *
      * @return
-     *      A reactive response emitting the listed blobs, flattened.
+     *      A reactive response emitting the flattened blobs, lazily fetched from the service.
      */
     public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
         return containerAsyncRawClient
@@ -542,9 +546,8 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
-     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
-     * true.
+     * Gets the blobs with a specific prefix (directory), to simulate listing that directory, using the default delimiter "/".
+     * The listing lists blobs, as well as other prefixes beneath the given one, based on the next occurrence of the delimiter.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -568,16 +571,15 @@ public final class ContainerAsyncClient {
      *         The directory to list blobs underneath
      *
      * @return
-     *      A reactive response emitting the prefixes and blobs.
+     *      A reactive response emitting the prefixes and blobs, lazily fetched from the service.
      */
     public Flux<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
-     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
-     * true.
+     * Gets the blobs with a specific prefix (directory), to simulate listing that directory, given a prefix delimiter.
+     * The listing lists blobs, as well as other prefixes beneath the given one, based on the next occurrence of the delimiter.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
@@ -603,7 +605,7 @@ public final class ContainerAsyncClient {
      *         {@link ListBlobsOptions}
      *
      * @return
-     *      A reactive response emitting the prefixes and blobs.
+     *      A reactive response emitting the prefixes and blobs, lazily fetched from the service.
      */
     public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
         return containerAsyncRawClient.listBlobsHierarchySegment(null, delimiter, options)
@@ -635,74 +637,6 @@ public final class ContainerAsyncClient {
 
         return result;
     }
-
-    /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options) {
-//        return this.listBlobsHierarchySegment(marker, delimiter, options, null);
-//    }
-
-    /**
-     * Returns a single segment of blobs and blob prefixes starting from the specified Marker. Use an empty
-     * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
-     * Marker) to get the next segment. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
-     *
-     * @param marker
-     *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
-     *         ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
-     * @param delimiter
-     *         The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
-     *         whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
-     *         be a single character or a string.
-     * @param options
-     *         {@link ListBlobsOptions}
-     * @param context
-     *         {@code Context} offers a means of passing arbitrary data (key/value pairs) to an
-     *         {@link com.azure.core.http.HttpPipeline}'s policy objects. Most applications do not need to pass
-     *         arbitrary data to the pipeline and can pass {@code Context.NONE} or {@code null}. Each context object is
-     *         immutable. The {@code withContext} with data method creates a new {@code Context} object that refers to its
-     *         parent, forming a linked list.
-     *
-     * @return Emits the successful response.
-     *
-     * @apiNote ## Sample Code \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy_helper "helper code for ContainerAsyncClient.listBlobsHierarchySegment")] \n
-     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
-     */
-//    public Flux<BlobHierarchyListSegment> listBlobsHierarchySegment(String marker, String delimiter,
-//            ListBlobsOptions options) {
-//        return containerAsyncRawClient
-//            .listBlobsHierarchySegment(null, delimiter, options)
-//            .flatMapMany();
-//    }
 
     /**
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
