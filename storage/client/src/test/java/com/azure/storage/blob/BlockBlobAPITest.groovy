@@ -564,7 +564,7 @@ class BlockBlobAPITest extends APISpec {
         bu.listBlocks(BlockListType.ALL).iterator().hasNext()
 
         then:
-        notThrown(StorageException)
+        thrown(StorageException)
     }
 
     def "Upload"() {
