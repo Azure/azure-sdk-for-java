@@ -81,7 +81,7 @@ import com.azure.security.keyvault.keys.KeyClient;
 KeyClient client = KeyClient.builder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildClient);
 ```
 > NOTE: For using Asynchronous client use KeyAsyncClient instead of KeyClient
 
@@ -119,7 +119,7 @@ import com.azure.security.keyvault.keys.KeyClient;
 KeyClient keyClient = KeyClient.builder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildClient();
 
 Key rsaKey = keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .expires(OffsetDateTime.now().plusYears(1))
@@ -193,7 +193,7 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildAsyncClient();
 
 keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
     .expires(OffsetDateTime.now().plusYears(1))

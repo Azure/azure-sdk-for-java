@@ -42,7 +42,7 @@ import com.azure.core.exception.HttpRequestException;
  *   .build()
  * </pre>
  *
- * @see SecretAsyncClientBuilder
+ * @see SecretClientBuilder
  */
 public final class SecretAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -72,8 +72,8 @@ public final class SecretAsyncClient extends ServiceClient {
      * Creates a builder that can configure options for the SecretAsyncClient before creating an instance of it.
      * @return A new builder to create a SecretAsyncClient from.
      */
-    public static SecretAsyncClientBuilder builder() {
-        return new SecretAsyncClientBuilder();
+    public static SecretClientBuilder builder() {
+        return new SecretClientBuilder();
     }
 
     /**

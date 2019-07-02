@@ -34,7 +34,7 @@ public class BackupAndRestoreOperationsAsync {
         KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredential())
-            .build();
+            .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.

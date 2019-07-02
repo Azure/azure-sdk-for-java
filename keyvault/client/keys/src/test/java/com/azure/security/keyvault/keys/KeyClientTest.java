@@ -37,7 +37,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 .endpoint(getEndpoint())
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+                .buildClient());
         } else {
             client = clientSetup(credentials -> KeyClient.builder()
                 .credential(credentials)
@@ -46,7 +46,7 @@ public class KeyClientTest extends KeyClientTestBase {
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .build());
+                .buildClient());
         }
     }
 

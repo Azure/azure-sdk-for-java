@@ -23,7 +23,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = KeyClient.builder()
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredential())
-            .build();
+            .buildClient();
         // END: com.azure.keyvault.keys.keyclient.instantiation
         return keyClient;
     }

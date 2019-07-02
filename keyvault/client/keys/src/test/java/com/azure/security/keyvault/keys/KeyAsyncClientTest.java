@@ -38,7 +38,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     .endpoint(getEndpoint())
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .build());
+                    .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> KeyAsyncClient.builder()
                     .credential(credentials)
@@ -47,7 +47,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
-                    .build());
+                    .buildAsyncClient());
         }
     }
 

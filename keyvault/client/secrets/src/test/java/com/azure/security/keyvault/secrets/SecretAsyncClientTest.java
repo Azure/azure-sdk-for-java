@@ -38,7 +38,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .endpoint(getEndpoint())
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .build());
+                    .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> SecretAsyncClient.builder()
                     .credential(credentials)
@@ -47,7 +47,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
-                    .build());
+                    .buildAsyncClient());
         }
     }
 

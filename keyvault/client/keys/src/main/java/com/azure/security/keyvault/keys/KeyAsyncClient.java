@@ -51,7 +51,7 @@ import reactor.core.publisher.Mono;
  *   .build()
  * </pre>
  *
- * @see KeyAsyncClientBuilder
+ * @see KeyClientBuilder
  */
 public final class KeyAsyncClient extends ServiceClient {
     static final String API_VERSION = "7.0";
@@ -82,8 +82,8 @@ public final class KeyAsyncClient extends ServiceClient {
      * Creates a builder that can configure options for the KeyAsyncClient before creating an instance of it.
      * @return A new builder to create a KeyAsyncClient from.
      */
-    public static KeyAsyncClientBuilder builder() {
-        return new KeyAsyncClientBuilder();
+    public static KeyClientBuilder builder() {
+        return new KeyClientBuilder();
     }
 
     /**

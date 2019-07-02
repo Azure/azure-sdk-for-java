@@ -83,6 +83,9 @@ public final class ConfigurationClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
+    /**
+     * The constructor with defaults.
+     */
     public ConfigurationClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;

@@ -27,7 +27,7 @@ public class HelloWorldAsync {
         SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredential())
-            .build();
+            .buildAsyncClient();
 
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.

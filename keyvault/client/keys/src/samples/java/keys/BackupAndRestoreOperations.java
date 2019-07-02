@@ -35,7 +35,7 @@ public class BackupAndRestoreOperations {
         KeyClient keyClient = KeyClient.builder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredential())
-                .build();
+                .buildClient();
 
         // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
