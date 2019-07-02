@@ -9,7 +9,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.0.0</version>
-    <relativePath>../pom.client.xml</relativePath>
+    <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -53,6 +53,6 @@
   </distributionManagement>
 
   <modules>
-    <module>tracing-opentelemetry</module>
+    <module>azure-tracing-opentelemetry</module>
   </modules>
 </project>
