@@ -9,7 +9,7 @@ package com.azure.messaging.eventhubs;
  *
  * @see EventHubProducer
  */
-public class SendOptions {
+public class SendOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
 
@@ -71,5 +71,24 @@ public class SendOptions {
      */
     public String partitionKey() {
         return partitionKey;
+    }
+
+    /**
+     * Creates a shallow clone of this instance. The parameters are not cloned, but they are immutable.
+     *
+     * @return A shallow clone of this object.
+     */
+    public SendOptions clone() {
+        SendOptions clone;
+        try {
+            clone = (SendOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new SendOptions();
+        }
+
+        clone.maximumSizeInBytes(maximumSizeInBytes);
+        clone.partitionKey(partitionKey);
+
+        return clone;
     }
 }
