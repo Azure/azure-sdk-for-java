@@ -340,7 +340,7 @@ public final class ContainerClient {
      *
      * @return The container access policy.
      */
-    public Response<PublicAccessType> getAccessPolicy() {
+    public Response<ContainerAccessPolicies> getAccessPolicy() {
         return this.getAccessPolicy(null, null);
     }
 
@@ -357,10 +357,10 @@ public final class ContainerClient {
      *
      * @return The container access policy.
      */
-    public Response<PublicAccessType> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
-        Duration timeout) {
-        Mono<Response<PublicAccessType>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
 
+    public Response<ContainerAccessPolicies> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
+                                                             Duration timeout) {
+        Mono<Response<ContainerAccessPolicies>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 

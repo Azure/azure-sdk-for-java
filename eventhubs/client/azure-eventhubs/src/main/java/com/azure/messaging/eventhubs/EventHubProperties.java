@@ -10,6 +10,8 @@ import java.util.Arrays;
  * Holds information about Event Hubs which can come handy while performing data-plane operations like
  * {@link EventHubClient#createConsumer(String, String, EventPosition)} and
  * {@link EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)}.
+ *
+ * @see EventHubClient
  */
 public final class EventHubProperties {
     private final String path;

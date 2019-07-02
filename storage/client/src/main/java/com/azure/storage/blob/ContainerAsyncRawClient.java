@@ -3,15 +3,17 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerAccessConditions;
+import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
 import com.azure.storage.blob.models.ContainersBreakLeaseResponse;
 import com.azure.storage.blob.models.ContainersChangeLeaseResponse;
 import com.azure.storage.blob.models.ContainersCreateResponse;
 import com.azure.storage.blob.models.ContainersDeleteResponse;
-import com.azure.storage.blob.models.ContainersGetAccessPolicyResponse;
 import com.azure.storage.blob.models.ContainersGetAccountInfoResponse;
 import com.azure.storage.blob.models.ContainersGetPropertiesResponse;
 import com.azure.storage.blob.models.ContainersListBlobFlatSegmentResponse;
@@ -236,7 +238,7 @@ final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy() {
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy() {
         return this.getAccessPolicy(null);
     }
 
@@ -255,9 +257,10 @@ final class ContainerAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.getAccessPolicy")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public Mono<ContainersGetAccessPolicyResponse> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
+    public Mono<Response<ContainerAccessPolicies>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
-                null, null, null, leaseAccessConditions, Context.NONE));
+                null, null, null, leaseAccessConditions, Context.NONE)
+            .map(response -> new SimpleResponse<>(response, new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(),response.value()))));
     }
 
     /**

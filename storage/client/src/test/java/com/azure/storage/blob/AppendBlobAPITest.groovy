@@ -144,19 +144,6 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    /*def "Create context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobCreateHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        bu.create(null, null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Append block defaults"() {
         setup:
         Response<AppendBlobItem> appendResponse = bu.appendBlock(defaultInputStream.get(), defaultDataSize)
@@ -191,6 +178,7 @@ class AppendBlobAPITest extends APISpec {
         data                        | dataSize            | exceptionType
         null                        | defaultDataSize     | NullPointerException
         defaultInputStream.get()    | defaultDataSize + 1 | IndexOutOfBoundsException
+        // TODO (alzimmer): This doesn't throw an error as the stream is larger than the stated size
         //defaultInputStream.get()    | defaultDataSize - 1 | StorageException
     }
 
@@ -288,19 +276,6 @@ class AppendBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Append block context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        bu.appendBlock(defaultFlowable, defaultDataSize, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Append block from URL min"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -371,20 +346,6 @@ class AppendBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Append block from URL context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, AppendBlobAppendBlockFromUrlHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.appendBlockFromUrl(bu.toURL(), null, null, null,null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Append block from URL destination AC"() {
@@ -511,9 +472,9 @@ class AppendBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        // newDate               | null                    | null          | null TODO (alzimmer): Figure out why this is returning a 304 instead of the documented 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag TODO (alzimmer): Figure out why this is returning a 304 instead of the documented 412
+        null                  | null                    | null          | receivedEtag
     }
 }

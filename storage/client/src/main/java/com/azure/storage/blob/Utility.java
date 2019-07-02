@@ -339,11 +339,11 @@ final class Utility {
     static URL appendToURLPath(URL baseURL, String name) {
         UrlBuilder url = UrlBuilder.parse(baseURL);
         if (url.path() == null) {
-            url.withPath("/"); // .path() will return null if it is empty, so we have to process separately from below.
+            url.path("/"); // .path() will return null if it is empty, so we have to process separately from below.
         } else if (url.path().charAt(url.path().length() - 1) != '/') {
-            url.withPath(url.path() + '/');
+            url.path(url.path() + '/');
         }
-        url.withPath(url.path() + name);
+        url.path(url.path() + name);
         try {
             return url.toURL();
         } catch (MalformedURLException e) {
@@ -357,7 +357,7 @@ final class Utility {
             throw new IllegalArgumentException(String.format("URL %s does not contain path segments", baseURL));
         }
         String newPath = url.path().substring(0, url.path().lastIndexOf('/'));
-        url.withPath(newPath);
+        url.path(newPath);
         try {
             return url.toURL();
         } catch (MalformedURLException e) {

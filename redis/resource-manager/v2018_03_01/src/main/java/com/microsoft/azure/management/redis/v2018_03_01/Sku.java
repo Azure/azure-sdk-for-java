@@ -37,7 +37,7 @@ public class Sku {
     private int capacity;
 
     /**
-     * Get the name value.
+     * Get the type of Redis cache to deploy. Valid values: (Basic, Standard, Premium). Possible values include: 'Basic', 'Standard', 'Premium'.
      *
      * @return the name value
      */
@@ -46,7 +46,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the type of Redis cache to deploy. Valid values: (Basic, Standard, Premium). Possible values include: 'Basic', 'Standard', 'Premium'.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -57,7 +57,7 @@ public class Sku {
     }
 
     /**
-     * Get the family value.
+     * Get the SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). Possible values include: 'C', 'P'.
      *
      * @return the family value
      */
@@ -66,7 +66,7 @@ public class Sku {
     }
 
     /**
-     * Set the family value.
+     * Set the SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). Possible values include: 'C', 'P'.
      *
      * @param family the family value to set
      * @return the Sku object itself.
@@ -77,7 +77,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get the size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
      *
      * @return the capacity value
      */
@@ -86,7 +86,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set the size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.

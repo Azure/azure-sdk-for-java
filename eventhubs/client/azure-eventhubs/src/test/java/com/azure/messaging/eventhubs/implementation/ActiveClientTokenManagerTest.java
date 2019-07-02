@@ -119,8 +119,9 @@ public class ActiveClientTokenManagerTest {
         final AmqpException error = new AmqpException(true, ErrorCondition.TIMEOUT_ERROR, "Timed out",
             new ErrorContext("Test-context-namespace"));
 
-        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(2), Mono.error(error),
-            getNextExpiration(1), getNextExpiration(1), getNextExpiration(1));
+        when(cbsNode.authorize(any())).thenReturn(getNextExpiration(3), Mono.error(error),
+            getNextExpiration(5), getNextExpiration(10),
+            getNextExpiration(45));
 
         // Act & Assert
         try (ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE)) {

@@ -104,7 +104,7 @@ public class BlobAsyncClient {
      * @return A {@link AppendBlobAsyncClient} to this resource.
      */
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
-        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
+        return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
     }
 
     /**
@@ -144,7 +144,7 @@ public class BlobAsyncClient {
         try {
             UrlBuilder urlBuilder = UrlBuilder.parse(blobAsyncRawClient.azureBlobStorage.url());
             if (blobAsyncRawClient.snapshot != null) {
-                urlBuilder.withQuery("snapshot=" + blobAsyncRawClient.snapshot);
+                urlBuilder.query("snapshot=" + blobAsyncRawClient.snapshot);
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {

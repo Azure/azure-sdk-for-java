@@ -4,10 +4,17 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
+import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -76,46 +83,49 @@ class BlobAPITest extends APISpec {
     This is to test the appropriate integration of DownloadResponse, including setting the correct range values on
     HTTPGetterInfo.
      */
-//    def "Download with retry range"() {
-//        /*
-//        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
-//        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
-//        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
-//        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
-//        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
-//        constructed in BlobClient.download().
-//         */
-//        setup:
-//        def mockPolicy = Mock(HttpPipelinePolicy) {
-//            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
-//                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-//                    HttpRequest request = context.httpRequest()
-//                    if (request.headers().value("x-ms-range") != "bytes=2-6") {
-//                        return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."))
-//                    }
-//                    else {
-//                        // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-//                        // return Mono.just(getStubResponseForBlobDownload(206, Flux.error(new IOException()), "etag"))
-//                    }
-//            }
-//        }
-//
-//        def pipeline = HttpPipeline.builder().policies(mockPolicy).build()
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        def range = new BlobRange(2, 5L)
-//        def options = new ReliableDownloadOptions().maxretryrequests(3)
-//        bu.download(null, options, range, null, false, null)
-//
-//        then:
-//        /*
-//        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
-//        NOT thrown because the types would not match.
-//         */
-//        def e = thrown(RuntimeException)
-//        e.getCause() instanceof IOException
-//    }
+    def "Download with retry range"() {
+        /*
+        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
+        a retry per the ReliableDownloadOptions. The next request should have the same range header, which was generated
+        from the count and offset values in HTTPGetterInfo that was constructed on the initial call to download. We
+        don't need to check the data here, but we want to ensure that the correct range is set each time. This will
+        test the correction of a bug that was found which caused HTTPGetterInfo to have an incorrect offset when it was
+        constructed in BlobClient.download().
+         */
+        setup:
+        HttpPipelinePolicy mockPolicy = Mock(HttpPipelinePolicy) {
+            process(_ as HttpPipelineCallContext, _ as HttpPipelineNextPolicy) >> {
+                HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
+                    HttpRequest request = context.httpRequest()
+                    if (request.headers().value("x-ms-range") != "bytes=2-6") {
+                        return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                    }
+                    else {
+                        // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                        return Mono.just(getStubResponseForBlobDownload(206, Flux.error(new IOException()), "etag"))
+                    }
+            }
+        }
+
+        BlobClient bu2 = new BlobClientBuilder()
+            .endpoint(bu.getBlobUrl().toString())
+            .credential(primaryCreds)
+            .addPolicy(mockPolicy)
+            .buildClient()
+
+        when:
+        def range = new BlobRange(2, 5L)
+        def options = new ReliableDownloadOptions().maxRetryRequests(3)
+        bu2.download(new ByteArrayOutputStream(), options, range, null, false, null)
+
+        then:
+        /*
+        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
+        NOT thrown because the types would not match.
+         */
+        def e = thrown(RuntimeException)
+        e.getCause() instanceof IOException
+    }
 
     def "Download min"() {
         when:
@@ -195,10 +205,10 @@ class BlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null    If-Modified-Since doesn't pass a valid 304 response is returned
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null    If-None-Match doesn't pass a valid 304 response is returned
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -241,19 +251,6 @@ class BlobAPITest extends APISpec {
         bu3.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
     }
-
-    /*def "Download context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(206, BlobDownloadHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        bu.download(null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Get properties default"() {
         when:
@@ -340,10 +337,10 @@ class BlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null    If-Modified-Since doesn't pass a valid 304 response is returned
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        //null     | null       | null        | receivedEtag | null     If-None-Match doesn't pass a valid 304 response is returned
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -357,19 +354,6 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-//    def "Get properties context"() {
-//        setup:
-//        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobProperties)))
-//
-//        bu = bu.pipeline(pipeline)
-//
-//        when:
-//        bu.getProperties()
-//
-//        then:
-//        notThrown(RuntimeException)
-//    }
 
     def "Set HTTP headers null"() {
         setup:
@@ -487,19 +471,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Set HTTP headers context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobSetHTTPHeadersHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        bu.setHTTPHeaders(null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Set metadata all null"() {
         setup:
         VoidResponse response = bu.setMetadata(null, null, null)
@@ -610,19 +581,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Set metadata context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobSetMetadataHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        bu.setMetadata(null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     @Unroll
     def "Acquire lease"() {
         setup:
@@ -706,19 +664,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Acquire lease context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlobAcquireLeaseHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        bu.acquireLease(null, 20)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Renew lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -798,20 +743,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Renew lease context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobRenewLeaseHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.renewLease("id")
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Release lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -889,20 +820,6 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Release lease context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobReleaseLeaseHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.releaseLease("id")
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Break lease"() {
@@ -991,20 +908,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Break lease context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobBreakLeaseHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.breakLease(18, null, null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Change lease"() {
         setup:
         Response<String> acquireLeaseResponse = bu.acquireLease(UUID.randomUUID().toString(), 15)
@@ -1082,35 +985,26 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Change lease context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobChangeLeaseHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
+    def "Snapshot"() {
         when:
-        // No service call is made. Just satisfy the parameters.
-        bu.changeLease("id", "newId")
+        Response<String> snapshotResponse = bu.createSnapshot()
+        BlobClient bu2 = new BlobClientBuilder()
+            .endpoint(bu.getBlobUrl().toString())
+            .credential(primaryCreds)
+            .snapshot(snapshotResponse.value())
+            .buildClient()
 
         then:
-        notThrown(RuntimeException)
-    }*/
-
-    /*def "Snapshot"() {
-        when:
-        String snapshot = bu.createSnapshot(null, null, null)
-
-        then:
-        bu.snapshot(snapshot).getProperties(null, null).statusCode() == 200
-        validateBasicHeaders(headers)
-    }*/
+        bu2.getProperties().statusCode() == 200
+        validateBasicHeaders(snapshotResponse.headers())
+    }
 
     def "Snapshot min"() {
         expect:
         bu.createSnapshot().statusCode() == 201
     }
 
-    /*@Unroll
+    @Unroll
     def "Snapshot metadata"() {
         setup:
         Metadata metadata = new Metadata()
@@ -1122,17 +1016,21 @@ class BlobAPITest extends APISpec {
         }
 
         Response<String> response = bu.createSnapshot(metadata, null, null)
+        BlobClient bu2 = new BlobClientBuilder()
+            .endpoint(bu.getBlobUrl().toString())
+            .credential(primaryCreds)
+            .snapshot(response.value())
+            .buildClient()
 
         expect:
         response.statusCode() == 201
-        bu.snapshot(response.headers().snapshot())
-            .getProperties(null, null).headers().metadata() == metadata
+        bu2.getProperties().value().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2
         null  | null   | null   | null
         "foo" | "bar"  | "fizz" | "buzz"
-    }*/
+    }
 
     @Unroll
     def "Snapshot AC"() {
@@ -1199,20 +1097,6 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Snapshot context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, BlobCreateSnapshotHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.createSnapshot()
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Copy"() {
         setup:
@@ -1407,20 +1291,6 @@ class BlobAPITest extends APISpec {
         cu2.delete()
     }
 
-    /*def "Copy context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobStartCopyFromURLHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.startCopyFromURL(new URL("http://www.example.com"))
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
@@ -1510,20 +1380,6 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Abort copy context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(204, BlobAbortCopyFromURLHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.abortCopyFromURL("id")
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Sync copy"() {
         setup:
@@ -1693,20 +1549,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Sync copy context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobCopyFromURLHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.syncCopyFromURL(new URL("http://www.example.com"))
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Delete"() {
         when:
         VoidResponse response = bu.delete()
@@ -1814,20 +1656,6 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Delete context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobDeleteHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.delete()
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "Set tier block blob"() {
@@ -1994,20 +1822,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Set tier context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(202, BlobSetTierHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.setTier(AccessTier.HOT)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Undelete"() {
         setup:
         enableSoftDelete()
@@ -2045,20 +1859,6 @@ class BlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Undelete context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobUndeleteHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.undelete(null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Get account info"() {
         when:
         Response<StorageAccountInfo> response = primaryServiceURL.getAccountInfo()
@@ -2087,18 +1887,4 @@ class BlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get account info context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(200, BlobGetAccountInfoHeaders)))
-
-        bu = bu.pipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.getAccountInfo(null)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 }

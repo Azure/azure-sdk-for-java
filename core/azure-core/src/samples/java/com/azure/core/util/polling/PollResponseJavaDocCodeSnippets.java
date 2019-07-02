@@ -17,6 +17,33 @@ import java.util.Map;
 public final class PollResponseJavaDocCodeSnippets<T> {
 
     /**
+     *
+     * @param otherStatus v
+     * @param value v
+     */
+    public void initialise(String otherStatus, T value) {
+        // BEGIN: com.azure.core.util.polling.pollresponse.custom.status
+        // Lets say we want to crete poll response with status as IN_PROGRESS
+        PollResponse<String> inProgressPollResponse
+            = new PollResponse<>("CUSTOM_OTHER_STATUS", "my custom response");
+        // END: com.azure.core.util.polling.pollresponse.custom.status
+    }
+
+    /**
+     *
+     * @param otherStatus v
+     * @param value v
+     * @param retryAfterDuration v
+     */
+    public void initialise(String otherStatus, T value, Duration retryAfterDuration) {
+        // BEGIN: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
+        // Lets say we want to crete poll response with status as IN_PROGRESS
+        PollResponse<String> inProgressPollResponse
+            = new PollResponse<>("CUSTOM_OTHER_STATUS", "my custom response", Duration.ofMillis(5000));
+        // END: com.azure.core.util.polling.pollresponse.custom.status.retryAfter
+    }
+
+    /**
      * initialise
      * @param status v
      * @param value v

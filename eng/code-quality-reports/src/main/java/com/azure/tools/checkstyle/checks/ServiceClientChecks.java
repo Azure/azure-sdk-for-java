@@ -96,6 +96,9 @@ public class ServiceClientChecks extends AbstractCheck {
                     this.hasStaticBuilder = true;
                 }
                 break;
+            default:
+                // Checkstyle complains if there's no default block in switch
+                break;
         }
     }
 

@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -36,6 +37,10 @@ public class CBSChannelTest extends ApiTestBase {
     private ConnectionStringProperties credentials;
     private ReactorHandlerProvider handlerProvider;
     private TokenResourceProvider tokenResourceProvider;
+
+    public CBSChannelTest() {
+        super(new ClientLogger(CBSChannelTest.class));
+    }
 
     @Override
     protected String testName() {

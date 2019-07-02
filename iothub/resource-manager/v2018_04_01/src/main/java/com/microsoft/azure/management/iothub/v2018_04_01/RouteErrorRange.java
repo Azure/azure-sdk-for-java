@@ -27,7 +27,7 @@ public class RouteErrorRange {
     private RouteErrorPosition end;
 
     /**
-     * Get the start value.
+     * Get start where the route error happened.
      *
      * @return the start value
      */
@@ -36,7 +36,7 @@ public class RouteErrorRange {
     }
 
     /**
-     * Set the start value.
+     * Set start where the route error happened.
      *
      * @param start the start value to set
      * @return the RouteErrorRange object itself.
@@ -47,7 +47,7 @@ public class RouteErrorRange {
     }
 
     /**
-     * Get the end value.
+     * Get end where the route error happened.
      *
      * @return the end value
      */
@@ -56,7 +56,7 @@ public class RouteErrorRange {
     }
 
     /**
-     * Set the end value.
+     * Set end where the route error happened.
      *
      * @param end the end value to set
      * @return the RouteErrorRange object itself.

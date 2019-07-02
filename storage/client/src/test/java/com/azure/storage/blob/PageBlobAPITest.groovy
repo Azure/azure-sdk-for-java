@@ -156,21 +156,6 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Create context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobCreateHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.create(512, null, null, null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Upload page"() {
         when:
         Response<PageBlobItem> response = bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
@@ -288,21 +273,6 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Upload page context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobUploadPagesHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.uploadPages(new PageRange().start(0).end(511), defaultFlowable, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     def "Upload page from URL min"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -389,21 +359,6 @@ class PageBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Upload page from URL context"() {
-        setup:
-        def pipeline = HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobUploadPagesFromURLHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        def pageRange = new PageRange().start(0).end(511)
-        bu.uploadPagesFromURL(pageRange, bu.getBlobUrl(), null, null, null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def  "Upload page from URL destination AC"() {
@@ -534,10 +489,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         sourceIfModifiedSince | sourceIfUnmodifiedSince | sourceIfMatch | sourceIfNoneMatch
-        // newDate               | null                    | null          | null TODO (alzimmer): Determine why this returns a 304 when it should return 412
+        newDate               | null                    | null          | null
         null                  | oldDate                 | null          | null
         null                  | null                    | garbageEtag   | null
-        // null                  | null                    | null          | receivedEtag TODO (alzimmer): Determine why this returns a 304 when it should return 412
+        null                  | null                    | null          | receivedEtag
     }
 
     def "Clear page"() {
@@ -645,21 +600,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Clear page context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(201, PageBlobClearPagesHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.clearPages(new PageRange().start(0).end(511), null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
+    // TODO (alzimmer): Turn this on once paged responses become available
     /*def "Get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().start(0).end(PageBlobClient.PAGE_BYTES - 1),
@@ -732,10 +673,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null This returns a 304
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null This returns a 304
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -750,21 +691,7 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Get page ranges context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobGetPageRangesHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.getPageRanges(null, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
+    // TODO (alzimmer): This test needs to be restructured to support the Iterable T return
     /*def "Get page ranges diff"() {
         setup:
         bu.create(PageBlobClient.PAGE_BYTES * 2)
@@ -854,10 +781,10 @@ class PageBlobAPITest extends APISpec {
 
         where:
         modified | unmodified | match       | noneMatch    | leaseID
-        // newDate  | null       | null        | null         | null This returns a 304
+        newDate  | null       | null        | null         | null
         null     | oldDate    | null        | null         | null
         null     | null       | garbageEtag | null         | null
-        // null     | null       | null        | receivedEtag | null This returns a 304
+        null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
 
@@ -871,21 +798,6 @@ class PageBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Get page ranges diff context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobGetPageRangesDiffHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.getPageRangesDiff(null, "snapshot", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     @Unroll
     def "PageRange IA"() {
@@ -984,21 +896,6 @@ class PageBlobAPITest extends APISpec {
         thrown(StorageException)
     }
 
-    /*def "Resize context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobResizeHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.resize(512, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
-
     @Unroll
     def "Sequence number"() {
         setup:
@@ -1082,21 +979,6 @@ class PageBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Sequence number context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(200, PageBlobUpdateSequenceNumberHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 3, null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 
     def "Start incremental copy"() {
         setup:
@@ -1215,19 +1097,4 @@ class PageBlobAPITest extends APISpec {
         then:
         thrown(StorageException)
     }
-
-    /*def "Start incremental copy context"() {
-        setup:
-        def pipeline =
-                HttpPipeline.build(getStubFactory(getContextStubPolicy(202, PageBlobCopyIncrementalHeaders)))
-
-        bu = bu.withPipeline(pipeline)
-
-        when:
-        // No service call is made. Just satisfy the parameters.
-        bu.copyIncremental(bu.getBlobUrl(), "snapshot", null, defaultContext)
-
-        then:
-        notThrown(RuntimeException)
-    }*/
 }

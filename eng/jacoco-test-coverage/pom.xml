@@ -3,8 +3,8 @@
 <!-- Licensed under the MIT License. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -21,6 +21,11 @@
   <name>Microsoft Azure Client Library - Test coverage</name>
   <description>Package for generating test coverage report for Azure Client Libraries</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
+  </properties>
 
   <distributionManagement>
     <site>
@@ -39,22 +44,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>${azure-core-amqp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-auth</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>${version}</version>
+      <version>1.0.0-preview.1</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -64,29 +64,34 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-keys</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-keyvault-secrets</artifactId>
-      <version>${version}</version>
+      <version>${azure-keyvault.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>${version}</version>
+      <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>tracing-opentelemetry</artifactId>
       <version>${version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.0-preview.1</version>
+    </dependency>
     <!-- Not required for jacoco test coverage report -->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>${version}</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>azure-core-test</artifactId>-->
+    <!--      <version>1.0.0-preview.1</version>-->
+    <!--    </dependency>-->
   </dependencies>
 
   <build>

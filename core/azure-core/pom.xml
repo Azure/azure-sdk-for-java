@@ -2,13 +2,12 @@
   ~ Copyright (c) Microsoft Corporation. All rights reserved.
   ~ Licensed under the MIT License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-preview.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -36,7 +35,10 @@
   </distributionManagement>
 
   <scm>
-    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+    <tag>v1.0.0-preview.1</tag>
   </scm>
 
   <properties>
