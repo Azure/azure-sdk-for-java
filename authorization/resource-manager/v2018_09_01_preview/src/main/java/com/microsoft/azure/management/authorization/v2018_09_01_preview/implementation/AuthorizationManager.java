@@ -16,13 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.ClassicAdministrators;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.GlobalAdministrators;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.ProviderOperationsMetadatas;
 import com.microsoft.azure.management.authorization.v2018_09_01_preview.RoleAssignments;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.Permissions;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.RoleDefinitions;
-import com.microsoft.azure.management.authorization.v2018_09_01_preview.DenyAssignments;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -30,13 +24,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Authorization resource management.
  */
 public final class AuthorizationManager extends ManagerCore<AuthorizationManager, AuthorizationManagementClientImpl> {
-    private ClassicAdministrators classicAdministrators;
-    private GlobalAdministrators globalAdministrators;
-    private ProviderOperationsMetadatas providerOperationsMetadatas;
     private RoleAssignments roleAssignments;
-    private Permissions permissions;
-    private RoleDefinitions roleDefinitions;
-    private DenyAssignments denyAssignments;
     /**
     * Get a Configurable instance that can be used to create AuthorizationManager with optional configuration.
     *
@@ -85,36 +73,6 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
     }
 
     /**
-     * @return Entry point to manage ClassicAdministrators.
-     */
-    public ClassicAdministrators classicAdministrators() {
-        if (this.classicAdministrators == null) {
-            this.classicAdministrators = new ClassicAdministratorsImpl(this);
-        }
-        return this.classicAdministrators;
-    }
-
-    /**
-     * @return Entry point to manage GlobalAdministrators.
-     */
-    public GlobalAdministrators globalAdministrators() {
-        if (this.globalAdministrators == null) {
-            this.globalAdministrators = new GlobalAdministratorsImpl(this);
-        }
-        return this.globalAdministrators;
-    }
-
-    /**
-     * @return Entry point to manage ProviderOperationsMetadatas.
-     */
-    public ProviderOperationsMetadatas providerOperationsMetadatas() {
-        if (this.providerOperationsMetadatas == null) {
-            this.providerOperationsMetadatas = new ProviderOperationsMetadatasImpl(this);
-        }
-        return this.providerOperationsMetadatas;
-    }
-
-    /**
      * @return Entry point to manage RoleAssignments.
      */
     public RoleAssignments roleAssignments() {
@@ -122,36 +80,6 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
             this.roleAssignments = new RoleAssignmentsImpl(this);
         }
         return this.roleAssignments;
-    }
-
-    /**
-     * @return Entry point to manage Permissions.
-     */
-    public Permissions permissions() {
-        if (this.permissions == null) {
-            this.permissions = new PermissionsImpl(this);
-        }
-        return this.permissions;
-    }
-
-    /**
-     * @return Entry point to manage RoleDefinitions.
-     */
-    public RoleDefinitions roleDefinitions() {
-        if (this.roleDefinitions == null) {
-            this.roleDefinitions = new RoleDefinitionsImpl(this);
-        }
-        return this.roleDefinitions;
-    }
-
-    /**
-     * @return Entry point to manage DenyAssignments.
-     */
-    public DenyAssignments denyAssignments() {
-        if (this.denyAssignments == null) {
-            this.denyAssignments = new DenyAssignmentsImpl(this);
-        }
-        return this.denyAssignments;
     }
 
     /**

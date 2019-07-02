@@ -51,6 +51,18 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
+    /** The API version to use for this operation. */
+    private String apiVersion;
+
+    /**
+     * Gets The API version to use for this operation.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -121,45 +133,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ClassicAdministratorsInner object to access its operations.
-     */
-    private ClassicAdministratorsInner classicAdministrators;
-
-    /**
-     * Gets the ClassicAdministratorsInner object to access its operations.
-     * @return the ClassicAdministratorsInner object.
-     */
-    public ClassicAdministratorsInner classicAdministrators() {
-        return this.classicAdministrators;
-    }
-
-    /**
-     * The GlobalAdministratorsInner object to access its operations.
-     */
-    private GlobalAdministratorsInner globalAdministrators;
-
-    /**
-     * Gets the GlobalAdministratorsInner object to access its operations.
-     * @return the GlobalAdministratorsInner object.
-     */
-    public GlobalAdministratorsInner globalAdministrators() {
-        return this.globalAdministrators;
-    }
-
-    /**
-     * The ProviderOperationsMetadatasInner object to access its operations.
-     */
-    private ProviderOperationsMetadatasInner providerOperationsMetadatas;
-
-    /**
-     * Gets the ProviderOperationsMetadatasInner object to access its operations.
-     * @return the ProviderOperationsMetadatasInner object.
-     */
-    public ProviderOperationsMetadatasInner providerOperationsMetadatas() {
-        return this.providerOperationsMetadatas;
-    }
-
-    /**
      * The RoleAssignmentsInner object to access its operations.
      */
     private RoleAssignmentsInner roleAssignments;
@@ -170,45 +143,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
      */
     public RoleAssignmentsInner roleAssignments() {
         return this.roleAssignments;
-    }
-
-    /**
-     * The PermissionsInner object to access its operations.
-     */
-    private PermissionsInner permissions;
-
-    /**
-     * Gets the PermissionsInner object to access its operations.
-     * @return the PermissionsInner object.
-     */
-    public PermissionsInner permissions() {
-        return this.permissions;
-    }
-
-    /**
-     * The RoleDefinitionsInner object to access its operations.
-     */
-    private RoleDefinitionsInner roleDefinitions;
-
-    /**
-     * Gets the RoleDefinitionsInner object to access its operations.
-     * @return the RoleDefinitionsInner object.
-     */
-    public RoleDefinitionsInner roleDefinitions() {
-        return this.roleDefinitions;
-    }
-
-    /**
-     * The DenyAssignmentsInner object to access its operations.
-     */
-    private DenyAssignmentsInner denyAssignments;
-
-    /**
-     * Gets the DenyAssignmentsInner object to access its operations.
-     * @return the DenyAssignmentsInner object.
-     */
-    public DenyAssignmentsInner denyAssignments() {
-        return this.denyAssignments;
     }
 
     /**
@@ -242,16 +176,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
+        this.apiVersion = "2018-09-01-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
-        this.globalAdministrators = new GlobalAdministratorsInner(restClient().retrofit(), this);
-        this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
         this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
-        this.permissions = new PermissionsInner(restClient().retrofit(), this);
-        this.roleDefinitions = new RoleDefinitionsInner(restClient().retrofit(), this);
-        this.denyAssignments = new DenyAssignmentsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -262,6 +191,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "AuthorizationManagementClient", "2018-09-01-preiew");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "AuthorizationManagementClient", "2018-09-01-preview");
     }
 }

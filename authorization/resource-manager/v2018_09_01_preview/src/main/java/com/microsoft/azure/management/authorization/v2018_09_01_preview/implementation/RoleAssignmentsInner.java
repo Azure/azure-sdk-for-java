@@ -245,9 +245,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String filter = null;
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -389,8 +391,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -502,9 +506,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String filter = null;
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -614,8 +620,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -695,8 +703,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (roleAssignmentName == null) {
             throw new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.delete(scope, roleAssignmentName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(scope, roleAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -783,9 +793,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-09-01-preview";
-        return service.create(scope, roleAssignmentName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.create(scope, roleAssignmentName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -865,8 +877,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (roleAssignmentName == null) {
             throw new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.get(scope, roleAssignmentName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(scope, roleAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -939,8 +953,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.deleteById(roleId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteById(roleId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -1020,9 +1036,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-09-01-preview";
-        return service.createById(roleId, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createById(roleId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -1095,8 +1113,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.getById(roleId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getById(roleId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
@@ -1200,9 +1220,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String filter = null;
-        return service.list(this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -1304,8 +1326,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.list(this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -1414,9 +1438,11 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String filter = null;
-        return service.listForScope(scope, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listForScope(scope, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {
@@ -1523,8 +1549,10 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
-        final String apiVersion = "2018-09-01-preview";
-        return service.listForScope(scope, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listForScope(scope, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RoleAssignmentInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RoleAssignmentInner>>> call(Response<ResponseBody> response) {

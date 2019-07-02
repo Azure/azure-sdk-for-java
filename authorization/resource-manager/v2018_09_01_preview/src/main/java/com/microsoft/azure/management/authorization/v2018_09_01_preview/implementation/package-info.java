@@ -6,5 +6,6 @@
 
 /**
  * This package contains the implementation classes for AuthorizationManagementClient.
+ * Role based access control provides you a way to apply granular level policy administration down to individual resources or resource groups. These operations enable you to manage role assignments. A role assignment grants access to Azure Active Directory users.
  */
 package com.microsoft.azure.management.authorization.v2018_09_01_preview.implementation;
