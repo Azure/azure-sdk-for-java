@@ -809,7 +809,7 @@ public class BlobClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime
@@ -836,7 +836,7 @@ public class BlobClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime
@@ -895,7 +895,7 @@ public class BlobClient {
      * @param identifier
      *         The {@code String} name of the access policy on the container this SAS references if any
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime
@@ -917,7 +917,7 @@ public class BlobClient {
      * @param identifier
      *         The {@code String} name of the access policy on the container this SAS references if any
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime

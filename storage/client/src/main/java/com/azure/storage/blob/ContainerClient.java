@@ -757,7 +757,7 @@ public final class ContainerClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime
@@ -786,7 +786,7 @@ public final class ContainerClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param startTime
@@ -851,7 +851,7 @@ public final class ContainerClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange
@@ -879,7 +879,7 @@ public final class ContainerClient {
      * @param identifier
      *         The {@code String} name of the access policy on the container this SAS references if any
      * @param version
-     *         An optional {@code String} protocol for the SAS
+     *         An optional {@code String} version for the SAS
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      * @param ipRange

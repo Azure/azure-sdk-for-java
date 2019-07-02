@@ -402,13 +402,133 @@ class HelperTest extends APISpec {
 
         def sasWithPermissions = cu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], expiryTime, permissions)
 
-        def builder2 = new ContainerClientBuilder()
-        builder2.endpoint(cu.getContainerUrl().toString())
+        def builder = new ContainerClientBuilder()
+        builder.endpoint(cu.getContainerUrl().toString())
             .credential(new SASTokenCredential(sasWithPermissions))
             .httpClient(getHttpClient())
-        def client2 = builder2.buildClient()
+        def client = builder.buildClient()
 
-        client2.listBlobsFlat()
+        client.listBlobsFlat()
+
+        then:
+        notThrown(StorageException)
+    }
+
+    def "accountSAS network test blob read"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cu.getBlockBlobClient(blobName)
+        bu.upload(new ByteArrayInputStream(data), data.length)
+
+        def service = new AccountSASService()
+            .blob(true)
+        def resourceType = new AccountSASResourceType()
+            .container(true)
+            .service(true)
+            .object(true)
+        def permissions = new AccountSASPermission()
+            .read(true)
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+
+        when:
+        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+
+        def builder = new BlockBlobClientBuilder()
+        builder.endpoint(cu.getContainerUrl().toString())
+            .blobName(blobName)
+            .credential(new SASTokenCredential(sas))
+            .httpClient(getHttpClient())
+        def client = builder.buildClient()
+
+        def os = new ByteArrayOutputStream()
+        client.download(os)
+
+        then:
+        os.toString() == new String(data)
+    }
+
+    def "accountSAS network test blob delete fails"() {
+        setup:
+        def data = "test".getBytes()
+        def blobName = generateBlobName()
+        def bu = cu.getBlockBlobClient(blobName)
+        bu.upload(new ByteArrayInputStream(data), data.length)
+
+        def service = new AccountSASService()
+            .blob(true)
+        def resourceType = new AccountSASResourceType()
+            .container(true)
+            .service(true)
+            .object(true)
+        def permissions = new AccountSASPermission()
+            .read(true)
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+
+        when:
+        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+
+        def builder = new BlockBlobClientBuilder()
+        builder.endpoint(cu.getContainerUrl().toString())
+            .blobName(blobName)
+            .credential(new SASTokenCredential(sas))
+            .httpClient(getHttpClient())
+        def client = builder.buildClient()
+        client.delete()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "accountSAS network create container fails"() {
+        setup:
+        def service = new AccountSASService()
+            .blob(true)
+        def resourceType = new AccountSASResourceType()
+            .container(true)
+            .service(true)
+            .object(true)
+        def permissions = new AccountSASPermission()
+            .read(true)
+            .create(false)
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+
+        when:
+        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+
+        def scBuilder = new StorageClientBuilder()
+        scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
+            .httpClient(getHttpClient())
+            .credential(new SASTokenCredential(sas))
+        def sc = scBuilder.buildClient()
+        sc.createContainer("container")
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "accountSAS network create container succeeds"() {
+        setup:
+        def service = new AccountSASService()
+            .blob(true)
+        def resourceType = new AccountSASResourceType()
+            .container(true)
+            .service(true)
+            .object(true)
+        def permissions = new AccountSASPermission()
+            .read(true)
+            .create(true)
+        def expiryTime = OffsetDateTime.now().plusDays(1)
+
+        when:
+        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+
+        def scBuilder = new StorageClientBuilder()
+        scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
+            .httpClient(getHttpClient())
+            .credential(new SASTokenCredential(sas))
+        def sc = scBuilder.buildClient()
+        sc.createContainer("container")
 
         then:
         notThrown(StorageException)
@@ -556,7 +676,7 @@ class HelperTest extends APISpec {
             .version(version)
 
         when:
-        v.generateSASQueryParameters(creds)
+        v.generateSASQueryParameters((SharedKeyCredential) creds)
 
         then:
         def e = thrown(IllegalArgumentException)
@@ -816,7 +936,7 @@ class HelperTest extends APISpec {
         "c"         | "b"     | null         | OffsetDateTime.now() | "v"     | primaryCreds || "resourceTypes"
         "c"         | "b"     | "c"          | null                 | "v"     | primaryCreds || "expiryTime"
         "c"         | "b"     | "c"          | OffsetDateTime.now() | null    | primaryCreds || "version"
-        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null         || "SharedKeyCredentials"
+        "c"         | "b"     | "c"          | OffsetDateTime.now() | "v"     | null         || "SharedKeyCredential"
     }
 
     @Unroll
