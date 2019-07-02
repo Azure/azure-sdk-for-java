@@ -3,8 +3,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
 
+<!--  <parent>-->
+<!--    <artifactId>azure-client-sdk-parent</artifactId>-->
+<!--    <groupId>com.azure</groupId>-->
+<!--    <version>1.0.0</version>-->
+<!--    <relativePath>../../pom.client.xml</relativePath>-->
+<!--  </parent>-->
+
+  <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>sdk-build-tools</artifactId>
   <name>Maven Build Tools</name>
@@ -23,7 +30,9 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <checkstyle.version>8.18</checkstyle.version>
-    <junit.version>4.12</junit.version>
+
+    <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
   </properties>
 
   <distributionManagement>
@@ -38,25 +47,13 @@
   </scm>
 
   <dependencies>
-    <dependency>
-      <groupId>com.puppycrawl.tools</groupId>
-      <artifactId>checkstyle</artifactId>
-      <version>${checkstyle.version}</version>
-    </dependency>
 
-    <dependency>
-      <groupId>com.puppycrawl.tools</groupId>
-      <artifactId>checkstyle</artifactId>
-      <version>${checkstyle.version}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>junit</groupId>-->
+<!--      <artifactId>junit</artifactId>-->
+<!--      <version>${junit.version}</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
   </dependencies>
 
   <build>
@@ -84,7 +81,95 @@
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>${maven-project-info-reports-plugin.version}</version>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-client-source</id>
+            <phase>${client.phase}</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+<!--                <source>..\..\appconfiguration\client\src\main\java</source>-->
+<!--                <source>..\..\ \client\src\samples\java</source>-->
+<!--                <source>..\..\core\azure-core\src\main\java</source>-->
+<!--                <source>..\..\core\azure-core\src\samples\java</source>-->
+<!--                <source>..\..\core\azure-core-amqp\src\main\java</source>-->
+<!--                <source>..\..\core\azure-core-management\src\main\java</source>-->
+<!--                <source>..\..\core\azure-core-test\src\main\java</source>-->
+                <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
+                <source>..\..\eventhubs\client\azure-eventhubs\src\samples\java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>client-modules</id>
+      <activation>
+        <property>
+          <name>!data-plane</name>
+        </property>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.puppycrawl.tools</groupId>
+          <artifactId>checkstyle</artifactId>
+          <version>${checkstyle.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.puppycrawl.tools</groupId>
+          <artifactId>checkstyle</artifactId>
+          <version>${checkstyle.version}</version>
+          <type>test-jar</type>
+          <scope>test</scope>
+        </dependency>
+<!--        <dependency>-->
+<!--          <groupId>com.azure</groupId>-->
+<!--          <artifactId>azure-core</artifactId>-->
+<!--          <version>1.0.0-preview.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>com.azure</groupId>-->
+<!--          <artifactId>azure-core-amqp</artifactId>-->
+<!--          <version>1.0.0-preview.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>com.azure</groupId>-->
+<!--          <artifactId>azure-core-management</artifactId>-->
+<!--          <version>1.0.0-preview.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>com.azure</groupId>-->
+<!--          <artifactId>azure-core-test</artifactId>-->
+<!--          <version>1.0.0-preview.1</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>com.azure</groupId>-->
+<!--          <artifactId>azure-data-appconfiguration</artifactId>-->
+<!--          <version>${azure-data-appconfiguration.version}</version>-->
+<!--        </dependency>-->
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-messaging-eventhubs</artifactId>
+          <version>${azure-messaging-eventhubs.version}</version>
+        </dependency>
+      </dependencies>
+      <properties>
+        <client.phase>generate-sources</client.phase>
+        <data.phase>none</data.phase>
+      </properties>
+    </profile>
+  </profiles>
 
 </project>
