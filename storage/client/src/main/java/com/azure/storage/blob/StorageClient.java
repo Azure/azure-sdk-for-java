@@ -317,9 +317,9 @@ public final class StorageClient {
      *
      * @return A string that represents the SAS token
      */
-    public String generateSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.storageAsyncClient.generateSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
+        return this.storageAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime);
     }
 
     /**
@@ -344,9 +344,9 @@ public final class StorageClient {
      *
      * @return A string that represents the SAS token
      */
-    public String generateSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
         SASProtocol sasProtocol) {
-        return this.storageAsyncClient.generateSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
+        return this.storageAsyncClient.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime, startTime, version, ipRange, sasProtocol);
     }
 }

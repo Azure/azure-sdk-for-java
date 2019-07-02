@@ -259,9 +259,9 @@ public final class StorageAsyncClient {
      *
      * @return A string that represents the SAS token
      */
-    public String generateSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
-        return this.generateSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
             null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
     }
 
@@ -287,7 +287,7 @@ public final class StorageAsyncClient {
      *
      * @return A string that represents the SAS token
      */
-    public String generateSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
         SASProtocol sasProtocol) {
 

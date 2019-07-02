@@ -76,7 +76,6 @@ class HelperTest extends APISpec {
 
     def "BlobClient getSnapshot"() {
         setup:
-
         def data = "test".getBytes()
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
@@ -85,22 +84,14 @@ class HelperTest extends APISpec {
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
-        def snapshotBlobSnapshot = snapshotBlob.getSnapshotId()
-
 
         then:
-        snapshotBlobSnapshot == snapshotId
-
-        and:
-        def buSnapshot = bu.getSnapshotId()
-
-        then:
-        buSnapshot == null
+        snapshotBlob.getSnapshotId() == snapshotId
+        bu.getSnapshotId() == null
     }
 
     def "BlobClient isSnapshot"() {
         setup:
-
         def data = "test".getBytes()
         def blobName = generateBlobName()
         def bu = cu.getBlockBlobClient(blobName)
@@ -109,16 +100,11 @@ class HelperTest extends APISpec {
 
         when:
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
-        def snapshotBlobSnap = snapshotBlob.isSnapshot()
 
         then:
-        snapshotBlobSnap
+        snapshotBlob.isSnapshot()
+        !bu.isSnapshot()
 
-        and:
-        def buSnap = bu.isSnapshot()
-
-        then:
-        !buSnap
     }
 
     def "serviceSASSignatureValues network test blob"() {
@@ -147,7 +133,7 @@ class HelperTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = bu.generateSAS(expiryTime, permissions, null, null, sasProtocol, startTime, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = bu.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -199,7 +185,7 @@ class HelperTest extends APISpec {
         def contentType = "type"
 
         when:
-        def sas = snapshotBlob.generateSAS(expiryTime, permissions, null, null, sasProtocol, startTime, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -247,7 +233,7 @@ class HelperTest extends APISpec {
 
         client1.listBlobsFlat()
 
-        def sasWithPermissions = cu.generateSAS(expiryTime, permissions)
+        def sasWithPermissions = cu.generateSAS(permissions, expiryTime)
 
         def builder2 = new ContainerClientBuilder()
         builder2.endpoint(cu.getContainerUrl().toString())
@@ -291,7 +277,7 @@ class HelperTest extends APISpec {
 
         when:
 
-        def sas = bu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], expiryTime, permissions, null, sasProtocol, startTime, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = bu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -344,7 +330,7 @@ class HelperTest extends APISpec {
 
         when:
 
-        def sas = snapshotBlob.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], expiryTime, permissions, null, sasProtocol, startTime, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        def sas = snapshotBlob.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
         def builder1 = new BlockBlobClientBuilder()
@@ -400,7 +386,7 @@ class HelperTest extends APISpec {
 
         when:
 
-        def sasWithPermissions = cu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], expiryTime, permissions)
+        def sasWithPermissions = cu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime)
 
         def builder = new ContainerClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -432,7 +418,7 @@ class HelperTest extends APISpec {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         when:
-        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -466,7 +452,7 @@ class HelperTest extends APISpec {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         when:
-        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def builder = new BlockBlobClientBuilder()
         builder.endpoint(cu.getContainerUrl().toString())
@@ -494,7 +480,7 @@ class HelperTest extends APISpec {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         when:
-        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = new StorageClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
@@ -521,7 +507,7 @@ class HelperTest extends APISpec {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         when:
-        def sas = primaryServiceURL.generateSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
+        def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
         def scBuilder = new StorageClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
@@ -655,11 +641,9 @@ class HelperTest extends APISpec {
     @Unroll
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
-        def data = "test".getBytes()
         def blobName = generateBlobName()
         def accountName = "account"
         def bu = cu.getBlockBlobClient(blobName)
-        bu.upload(new ByteArrayInputStream(data), data.length)
 
         when:
         def serviceSASSignatureValues = bu.blockBlobAsyncClient.configureServiceSASSignatureValues(new ServiceSASSignatureValues(), accountName)
