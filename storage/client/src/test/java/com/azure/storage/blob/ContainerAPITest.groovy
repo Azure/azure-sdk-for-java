@@ -677,7 +677,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).name() == copyName
         blobs.get(1).properties().copyCompletionTime() == null
         blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().additionalProperties().get("foo") == "bar"
+        blobs.get(2).metadata().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
@@ -879,7 +879,7 @@ class ContainerAPITest extends APISpec {
         blobs.get(1).name() == copyName
         blobs.get(1).properties().copyCompletionTime() == null
         blobs.get(2).name() == metadataName
-        blobs.get(2).metadata().additionalProperties().get("foo") == "bar"
+        blobs.get(2).metadata().get("foo") == "bar"
         blobs.size() == 3 // Normal, copy, metadata
     }
 
