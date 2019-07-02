@@ -338,7 +338,6 @@
               *.impl*:
               *.implementation*:
               com.azure.tracing*:
-              com.azure.core.test*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
             <groups>
@@ -359,6 +358,10 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - Test</title>
+                <packages>com.azure.core.test*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
@@ -372,7 +375,7 @@
               </group>
               <group>
                 <title>Azure Key Vault</title>
-                <packages>com.azure.keyvault*</packages>
+                <packages>com.azure.security.keyvault*</packages>
               </group>
             </groups>
             <links>
@@ -699,7 +702,7 @@
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
-    <module>./tracing</module>
+    <module>./sdk/tracing</module>
     <module>./identity/client</module>
   </modules>
 </project>
