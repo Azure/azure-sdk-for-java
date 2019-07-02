@@ -133,6 +133,18 @@ class HanaInstancesImpl extends GroupableResourcesCoreImpl<HanaInstance, HanaIns
     }
 
     @Override
+    public Completable startAsync(String resourceGroupName, String hanaInstanceName) {
+        HanaInstancesInner client = this.inner();
+        return client.startAsync(resourceGroupName, hanaInstanceName).toCompletable();
+    }
+
+    @Override
+    public Completable shutdownAsync(String resourceGroupName, String hanaInstanceName) {
+        HanaInstancesInner client = this.inner();
+        return client.shutdownAsync(resourceGroupName, hanaInstanceName).toCompletable();
+    }
+
+    @Override
     public Completable enableMonitoringAsync(String resourceGroupName, String hanaInstanceName, MonitoringDetails monitoringParameter) {
         HanaInstancesInner client = this.inner();
         return client.enableMonitoringAsync(resourceGroupName, hanaInstanceName, monitoringParameter).toCompletable();
