@@ -38,12 +38,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
