@@ -39,7 +39,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .credentials(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .build());
+                    .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> ConfigurationAsyncClient.builder()
                     .credentials(credentials)
@@ -47,7 +47,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
-                    .build());
+                    .buildAsyncClient());
         }
     }
 

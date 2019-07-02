@@ -28,7 +28,7 @@ public class HelloWorld {
         // Instantiate a client that will be used to call the service.
         ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
             .credentials(new ConfigurationClientCredentials(connectionString))
-            .build();
+            .buildAsyncClient();
 
         // Name of the key to add to the configuration service.
         String key = "hello";

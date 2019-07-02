@@ -46,7 +46,7 @@ class PipelineSample {
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
-                .build();
+                .buildAsyncClient();
 
         // Adding a couple of settings and then fetching all the settings in our repository.
         final List<ConfigurationSetting> settings = Flux.concat(client.addSetting(new ConfigurationSetting().key("hello").value("world")),
