@@ -21,7 +21,7 @@ Each service might have a number of libraries available from each of the followi
 * [Management](#Management)
 
 ### Client: July 2019 Preview
-New wave of packages that we are currently releasing in **preview**. These libraries allow you to use and consume existing resources and interact with them, for example: upload a blob. These libraries share a number of core functionalities such as http retries, logging, transport protocols, authentication protocols, etc. that can be found in the [azure-core](core) library. You can learn more about these libraries by reading the guidelines that they follow [here](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html). Library directories start with `azure-`, e.g. `azure-keyvault`.
+New wave of packages that we are currently releasing in **preview**. These libraries allow you to use and consume existing resources and interact with them, for example: upload a blob. These libraries share a number of core functionalities such as HTTP retries, logging, transport protocols, authentication protocols, etc. that can be found in the [azure-core](core) library. You can learn more about these libraries by reading the guidelines that they follow [here](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html). Library directories start with `azure-`, e.g. `azure-keyvault`.
 
 The libraries released in the July 2019 preview:
 - [App Configuration](appconfiguration/client/README.md)
@@ -31,7 +31,6 @@ The libraries released in the July 2019 preview:
 - [Storage Blobs](storage/client/README.md)
 
 >NOTE: If you need to ensure your code is ready for production, use one of the stable libraries.
-
 
 ### Client: Stable
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide you with similar functionalities to the Preview ones as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`.
@@ -48,3 +47,5 @@ Libraries which enable you to provision specific resources. They are responsible
 
 ## Contributing
 For details on contributing to this repository, see the [contributing guide](CONTRIBUTING.md).
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2FREADME.png)
