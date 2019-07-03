@@ -29,12 +29,12 @@ jobs:
       - task: ShellScript@2
         displayName: 'generate mgmt pom file'
         inputs:
-          scriptPath: .\update_mgmt_pom.sh
+          scriptPath: update_mgmt_pom.sh
           
       - task: Maven@3
         displayName: 'compile'
         inputs:
-          mavenPomFile: .\pom.mgmt.xml
+          mavenPomFile: pom.mgmt.xml
           options: '$(DefaultOptions) $(ProfileFlag) -pl javadoc:aggregate -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
