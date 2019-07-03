@@ -35,7 +35,7 @@ jobs:
         displayName: 'compile'
         inputs:
           mavenPomFile: pom.mgmt.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -pl javadoc:aggregate -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          options: '$(DefaultOptions) $(ProfileFlag) -pl -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
