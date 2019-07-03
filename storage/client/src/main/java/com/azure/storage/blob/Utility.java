@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
@@ -272,19 +273,34 @@ final class Utility {
      */
     private static <T> Mono<T> scrubEtagHeaderInResponse(Mono<T> s) {
         return s.map(response -> {
+            String etag = null;
             try {
                 Object headers = response.getClass().getMethod("deserializedHeaders").invoke(response);
                 Method etagGetterMethod = headers.getClass().getMethod("eTag");
-                String etag = (String) etagGetterMethod.invoke(headers);
+                etag = (String) etagGetterMethod.invoke(headers);
                 // CommitBlockListHeaders has an etag property, but it's only set if the blob has committed blocks.
                 if (etag == null) {
                     return response;
                 }
                 etag = etag.replace("\"", ""); // Etag headers without the quotes will be unaffected.
                 headers.getClass().getMethod("eTag", String.class).invoke(headers, etag);
-
+            } catch (NoSuchMethodException e) {
+                // Response did not return an eTag value. No change necessary.
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                //TODO validate this won't throw
+            }
+            try {
                 HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
-                rawHeaders.put("ETag", etag);
+                //
+                if (etag != null) {
+                    rawHeaders.put("ETag", etag);
+                } else {
+                    HttpHeader eTagHeader = rawHeaders.get("etag");
+                    if (eTagHeader != null && eTagHeader.value() != null) {
+                        etag = eTagHeader.value().replace("\"", "");
+                        rawHeaders.put("ETag", etag);
+                    }
+                }
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
             } catch (IllegalAccessException | InvocationTargetException e) {

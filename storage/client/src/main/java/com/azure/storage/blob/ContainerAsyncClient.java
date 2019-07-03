@@ -620,7 +620,7 @@ public final class ContainerAsyncClient {
         } else {
             blobs = Flux.empty();
         }
-        if (segment != null && segment.blobItems() != null) {
+        if (segment != null && segment.blobPrefixes() != null) {
             prefixes = Flux.fromIterable(segment.blobPrefixes());
         } else {
             prefixes = Flux.empty();
