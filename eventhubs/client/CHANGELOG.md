@@ -17,13 +17,17 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
 
 ### Changed
 
+- `EventHubRuntimeInformation` is renamed `EventHubProperties`.
+- `PartitionRuntimeInformation` is renamed `PartitionProperties`.
 - `PartitionReceiver` is renamed `EventHubConsumer`.
-- `PartitionSender` and the "send" methods on `EventHubClient` are consolidated into `EventHubProducer`.
+- Methods for publishing events using `PartitionSender` or `EventHubClient` are consolidated into `EventHubProducer`.
 
 ### Known issues
 
 - AMQP protocol using web sockets is not implemented.
 - Proxy support is not implemented.
 - Event Host Processor is not implemented.
+- Creating an `EventDataBatch` is not exposed.
+- Getting `ReceiverRuntimeInformation` from `EventHubConsumer` is not implemented.
 - `EventHubClient` does not clean up its `EventHubPublishers` and `EventHubConsumers`. These need to be done manually.
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work.
