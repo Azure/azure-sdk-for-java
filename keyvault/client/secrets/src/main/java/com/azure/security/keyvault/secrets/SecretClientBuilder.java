@@ -50,13 +50,10 @@ import java.util.Objects;
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
- * <pre>
- * new SecretClientBuilder()
- *   .pipeline(new HttpPipeline(customPoliciesList))
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .buildAsyncClient()
- * </pre>
+
+ * {@codesnippet com.azure.keyvault.keys.async.secretclient.pipeline.instantiation}
  *
+ * @see SecretClient
  * @see SecretAsyncClient
  */
 public final class SecretClientBuilder {
@@ -189,7 +186,7 @@ public final class SecretClientBuilder {
 
     /**
      * Adds a policy to the set of existing policies that are executed after
-     * {@link SecretAsyncClient} required policies.
+     * {@link SecretAsyncClient} or {@link SecretClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
      * @return the updated Builder object.
@@ -218,7 +215,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link SecretClientBuilder#endpoint(String) endpoint} to build {@link SecretAsyncClient}.
+     * {@link SecretClientBuilder#endpoint(String) endpoint} to build {@link SecretAsyncClient} or {@link SecretClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link SecretClientBuilder} object.

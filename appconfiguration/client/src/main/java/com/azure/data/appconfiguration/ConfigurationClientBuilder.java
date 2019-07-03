@@ -105,8 +105,7 @@ public final class ConfigurationClientBuilder {
      * <p>
      * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} are used to create the
-     * {@link ConfigurationClient client}. All other builder settings are ignored.
-     * </p>
+     * {@link ConfigurationClient client}. All other builder settings are ignored.</p>
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when
@@ -246,7 +245,7 @@ public final class ConfigurationClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationAsyncClient}.
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated ConfigurationClientBuilder object.

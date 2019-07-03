@@ -32,8 +32,8 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for creating a {@link KeyClient}
-     * @return An instance of {@link KeyClient}
+     * Generates code sample for creating a {@link KeyAsyncClient}
+     * @return An instance of {@link KeyAsyncClient}
      */
     public KeyAsyncClient createAsyncClient() {
         // BEGIN: com.azure.keyvault.keys.async.keyclient.instantiation
@@ -46,8 +46,8 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for creating a {@link KeyClient}
-     * @return An instance of {@link KeyClient}
+     * Generates code sample for creating a {@link KeyAsyncClient}
+     * @return An instance of {@link KeyAsyncClient}
      */
     public KeyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.keyvault.keys.async.keyclient.pipeline.instantiation

@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.PortPolicy;
+import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
@@ -30,8 +33,8 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Implementation for async SecretClient
-     * @return sync SecretClient
+     * Implementation for async SecretAsyncClient
+     * @return sync SecretAsyncClient
      */
     private SecretAsyncClient getAsyncSecretClient() {
 
@@ -59,6 +62,23 @@ public final class SecretClientJavaDocCodeSnippets {
             .buildClient();
         // END: com.azure.keyvault.secretclient.sync.construct
         return secretClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link SecretAsyncClient}
+     * @return An instance of {@link SecretAsyncClient}
+     */
+    public SecretAsyncClient createAsyncClientWithPipeline() {
+        // BEGIN: com.azure.keyvault.keys.async.secretclient.pipeline.instantiation
+        RecordedData networkData = new RecordedData();
+        HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        SecretAsyncClient keyClient = new SecretClientBuilder()
+            .pipeline(pipeline)
+            .endpoint("https://myvault.azure.net/")
+            .credential(new DefaultAzureCredential())
+            .buildAsyncClient();
+        // END: com.azure.keyvault.keys.async.secretclient.pipeline.instantiation
+        return keyClient;
     }
 
     /**

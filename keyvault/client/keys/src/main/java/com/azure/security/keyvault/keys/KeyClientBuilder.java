@@ -25,8 +25,8 @@ import java.util.Objects;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link KeyAsyncClient secret async client},
  * calling {@link KeyClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of the client.
- * It also aids instantiation of the {@link KeyClient secret sync client},
- * calling {@link KeyClientBuilder#buildClient() buildClient} constructs an instance of the client.
+ * It also aids instantiation of the {@link KeyClient secret sync client}, calling {@link KeyClientBuilder#buildClient() buildClient}
+ * constructs an instance of the client.
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link KeyAsyncClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
@@ -51,7 +51,13 @@ import java.util.Objects;
  *
  * {@codesnippet com.azure.keyvault.keys.async.keyclient.pipeline.instantiation}
  *
+ * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link KeyClient}
+ * are {@link String endpoint} and {@link TokenCredential credential}. </p>
+ *
+ * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
+ *
  * @see KeyAsyncClient
+ * @see KeyClient
  */
 public final class KeyClientBuilder {
     private final List<HttpPipelinePolicy> policies;
@@ -82,7 +88,7 @@ public final class KeyClientBuilder {
      * then {@link KeyClientBuilder#credential(TokenCredential) key vault credential and
      * {@link KeyClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link KeyClient client}.}</p>
      *
-     * @return A KeyAClient with the options set from the builder.
+     * @return A {@link KeyClient} with the options set from the builder.
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
      * {@link KeyClientBuilder#endpoint(String)} have not been set.
      */
@@ -99,7 +105,7 @@ public final class KeyClientBuilder {
      * then {@link KeyClientBuilder#credential(TokenCredential) key vault credential and
      * {@link KeyClientBuilder#endpoint(String)} key vault endpoint are required to build the {@link KeyAsyncClient client}.}</p>
      *
-     * @return A KeyAsyncClient with the options set from the builder.
+     * @return A {@link KeyAsyncClient} with the options set from the builder.
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
      * {@link KeyClientBuilder#endpoint(String)} have not been set.
      */
@@ -210,7 +216,7 @@ public final class KeyClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link KeyClientBuilder#endpoint(String) endpoint} to build {@link KeyAsyncClient}.
+     * {@link KeyClientBuilder#endpoint(String) endpoint} to build {@link KeyClient} or {@link KeyAsyncClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return the updated {@link KeyClientBuilder} object.
