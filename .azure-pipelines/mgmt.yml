@@ -25,11 +25,16 @@ jobs:
     pool:
       vmImage: 'ubuntu-16.04'
       
-    steps:      
+    steps:
+     - task: ShellScript@2
+       displayName: 'generate mgmt pom file'
+       inputs:
+          scriptPath: .\update_mgmt_pom.sh
+          
       - task: Maven@3
         displayName: 'compile'
         inputs:
-          mavenPomFile: **/**/v20*/pom.xml
+          mavenPomFile: .\pom.mgmt.xml
           options: '$(DefaultOptions) $(ProfileFlag) -pl javadoc:aggregate -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
