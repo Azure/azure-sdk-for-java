@@ -30,12 +30,8 @@ import java.util.Objects;
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link KeyAsyncClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
- * <pre>
- * KeyAsyncClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(new DefaultAzureCredential())
- *   .buildAsyncClient();
- * </pre>
+ *
+ * {@codesnippet com.azure.keyvault.keys.async.keyclient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
@@ -52,12 +48,8 @@ import java.util.Objects;
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link KeyAsyncClient client}</p>
- * <pre>
- * KeyAsyncClient.builder()
- *   .pipeline(new HttpPipeline(customPoliciesList))
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .buildAsyncClient()
- * </pre>
+ *
+ * {@codesnippet com.azure.keyvault.keys.async.keyclient.pipeline.instantiation}
  *
  * @see KeyAsyncClient
  */

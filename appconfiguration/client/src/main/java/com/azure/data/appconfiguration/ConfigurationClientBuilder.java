@@ -40,11 +40,13 @@ import java.util.Objects;
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
  * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
  *
- * <pre>
- * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.applicationconfig.async.configurationclient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.applicationconfig.configurationclient.instantiation}
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -53,10 +55,10 @@ import java.util.Objects;
  * allows for finer control on how the {@link ConfigurationAsyncClient} and {@link ConfigurationClient} it built.</p>
  *
  * <pre>
- * ConfigurationAsyncClient.builder()
+ * new ConfigurationClientBuilder()
  *     .pipeline(new HttpPipeline(policies))
  *     .serviceEndpoint(serviceEndpoint)
- *     .build();
+ *     .buildClient();
  * </pre>
  *
  * @see ConfigurationAsyncClient
@@ -97,8 +99,8 @@ public final class ConfigurationClientBuilder {
             .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
     /**
-     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is
-     * called, a new instance of {@link ConfigurationAsyncClient} is created.
+     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link ConfigurationClient} is created.
      *
      * <p>
      * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
@@ -118,7 +120,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
+     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code buildAsyncClient()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.
      *
      * <p>

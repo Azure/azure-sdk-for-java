@@ -17,11 +17,30 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @return An instance of {@link ConfigurationClient}
      * @throws IllegalStateException If configuration credentials cannot be created
      */
-    public ConfigurationClient createConfigurationClient() {
+    public ConfigurationAsyncClient createAsyncConfigurationClient() {
+        try {
+            String connectionString = getConnectionString();
+            // BEGIN: com.azure.applicationconfig.async.configurationclient.instantiation
+            ConfigurationAsyncClient  configurationAsyncClient = new ConfigurationClientBuilder()
+                .credentials(new ConfigurationClientCredentials(connectionString))
+                .buildAsyncClient();
+            // END: com.azure.applicationconfig.async.configurationclient.instantiation
+            return configurationAsyncClient;
+        } catch (GeneralSecurityException ex) {
+            throw new IllegalStateException("Failed to create configuration client credentials", ex);
+        }
+    }
+
+    /**
+     * Generates code sample for creating a {@link ConfigurationClient}
+     * @return An instance of {@link ConfigurationClient}
+     * @throws IllegalStateException If configuration credentials cannot be created
+     */
+    public ConfigurationClient createSyncConfigurationClient() {
         try {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.applicationconfig.configurationclient.instantiation
-            ConfigurationClient configurationClient = ConfigurationClient.builder()
+            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .buildClient();
             // END: com.azure.applicationconfig.configurationclient.instantiation
@@ -35,7 +54,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * Generates code sample for using {@link ConfigurationClient#addSetting(String, String)}
      */
     public void addSetting() {
-        ConfigurationClient configurationClient = createConfigurationClient();
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.applicationconfig.configurationclient.addSetting#string-string
         ConfigurationSetting configurationSetting = configurationClient
             .addSetting("prodDBConnection", "db_connection").value();

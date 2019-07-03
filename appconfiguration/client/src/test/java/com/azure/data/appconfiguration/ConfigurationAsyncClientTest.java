@@ -35,13 +35,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> ConfigurationAsyncClient.builder()
+            client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credentials(credentials)
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .buildAsyncClient());
         } else {
-            client = clientSetup(credentials -> ConfigurationAsyncClient.builder()
+            client = clientSetup(credentials -> new ConfigurationClientBuilder()
                     .credentials(credentials)
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)

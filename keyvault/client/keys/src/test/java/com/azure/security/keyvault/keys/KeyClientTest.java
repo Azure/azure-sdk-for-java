@@ -32,14 +32,14 @@ public class KeyClientTest extends KeyClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> KeyClient.builder()
+            client = clientSetup(credentials -> new KeyClientBuilder()
                 .credential(credentials)
                 .endpoint(getEndpoint())
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient());
         } else {
-            client = clientSetup(credentials -> KeyClient.builder()
+            client = clientSetup(credentials -> new KeyClientBuilder()
                 .credential(credentials)
                 .endpoint(getEndpoint())
                 .httpClient(HttpClient.createDefault().wiretap(true))

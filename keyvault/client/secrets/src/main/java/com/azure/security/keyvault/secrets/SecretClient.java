@@ -19,13 +19,8 @@ import java.util.List;
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * SecretClient.builder()
- *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
- *   .credential(new DefaultAzureCredential())
- *   .build()
- * </pre>
+ * <p><strong>Samples to construct the sync client</strong></p>
+ * {@codesnippet com.azure.keyvault.secretclient.sync.construct}
  *
  * @see SecretClientBuilder
  */
@@ -40,14 +35,6 @@ public final class SecretClient {
      */
     SecretClient(SecretAsyncClient client) {
         this.client = client;
-    }
-
-    /**
-     * Creates a builder that can configure options for the SecretClient before creating an instance of it.
-     * @return A new builder to create a SecretClient from.
-     */
-    public static SecretClientBuilder builder() {
-        return new SecretClientBuilder();
     }
 
     /**

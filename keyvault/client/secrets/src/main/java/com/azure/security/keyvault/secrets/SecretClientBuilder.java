@@ -29,17 +29,16 @@ import java.util.Objects;
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String endpoint} and {@link TokenCredential credential}. </p>
- * <pre>
- * SecretAsyncClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(new DefaultAzureCredential())
- *   .buildAsyncClient();
- * </pre>
+ *
+ * {@codesnippet com.azure.keyvault.secretclient.async.construct}
+ *
+ * <p><strong>Samples to construct the sync client</strong></p>
+ * {@codesnippet com.azure.keyvault.secretclient.sync.construct}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  * <pre>
- * SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
  *   .endpoint("https://myvault.vault.azure.net/")
  *   .credential(new DefaultAzureCredential())
  *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -52,7 +51,7 @@ import java.util.Objects;
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
  * <pre>
- * SecretAsyncClient.builder()
+ * new SecretClientBuilder()
  *   .pipeline(new HttpPipeline(customPoliciesList))
  *   .endpoint("https://myvault.vault.azure.net/")
  *   .buildAsyncClient()

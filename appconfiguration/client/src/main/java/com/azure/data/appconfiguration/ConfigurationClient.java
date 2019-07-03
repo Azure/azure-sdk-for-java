@@ -41,15 +41,6 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
-     *
-     * @return A new {@link ConfigurationClientBuilder} to create a ConfigurationClient.
-     */
-    public static ConfigurationClientBuilder builder() {
-        return new ConfigurationClientBuilder();
-    }
-
-    /**
      * Adds a configuration value in the service if that key does not exist.
      *
      * <p><strong>Code Samples</strong></p>

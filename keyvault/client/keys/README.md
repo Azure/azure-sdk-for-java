@@ -78,7 +78,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.KeyClient;
 
-KeyClient client = KeyClient.builder()
+KeyClient client = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildClient);
@@ -116,7 +116,7 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyClient;
 
-KeyClient keyClient = KeyClient.builder()
+KeyClient keyClient = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildClient();
@@ -190,7 +190,7 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 
-KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
+KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildAsyncClient();

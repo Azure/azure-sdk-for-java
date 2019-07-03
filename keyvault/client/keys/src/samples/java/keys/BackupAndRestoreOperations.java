@@ -5,6 +5,7 @@ package keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -32,7 +33,7 @@ public class BackupAndRestoreOperations {
         // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        KeyClient keyClient = KeyClient.builder()
+        KeyClient keyClient = new KeyClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredential())
                 .buildClient();

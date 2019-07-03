@@ -79,7 +79,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 
-SecretClient client = SecretClient.builder()
+SecretClient client = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildClient();
@@ -117,7 +117,7 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
-SecretClient secretClient = SecretClient.builder()
+SecretClient secretClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildClient();
@@ -182,7 +182,7 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
         .buildAsyncClient();

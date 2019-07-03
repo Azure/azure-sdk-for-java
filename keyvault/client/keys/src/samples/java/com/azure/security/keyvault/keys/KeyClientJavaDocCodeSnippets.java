@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
@@ -20,13 +23,45 @@ public final class KeyClientJavaDocCodeSnippets {
      */
     public KeyClient createClient() {
         // BEGIN: com.azure.keyvault.keys.keyclient.instantiation
-        KeyClient keyClient = KeyClient.builder()
+        KeyClient keyClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredential())
             .buildClient();
         // END: com.azure.keyvault.keys.keyclient.instantiation
         return keyClient;
     }
+
+    /**
+     * Generates code sample for creating a {@link KeyClient}
+     * @return An instance of {@link KeyClient}
+     */
+    public KeyAsyncClient createAsyncClient() {
+        // BEGIN: com.azure.keyvault.keys.async.keyclient.instantiation
+        KeyAsyncClient keyClient = new KeyClientBuilder()
+            .endpoint("https://myvault.azure.net/")
+            .credential(new DefaultAzureCredential())
+            .buildAsyncClient();
+        // END: com.azure.keyvault.keys.async.keyclient.instantiation
+        return keyClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link KeyClient}
+     * @return An instance of {@link KeyClient}
+     */
+    public KeyAsyncClient createAsyncClientWithPipeline() {
+        // BEGIN: com.azure.keyvault.keys.async.keyclient.pipeline.instantiation
+        RecordedData networkData = new RecordedData();
+        HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        KeyAsyncClient keyClient = new KeyClientBuilder()
+            .pipeline(pipeline)
+            .endpoint("https://myvault.azure.net/")
+            .credential(new DefaultAzureCredential())
+            .buildAsyncClient();
+        // END: com.azure.keyvault.keys.async.keyclient.pipeline.instantiation
+        return keyClient;
+    }
+
 
     /**
      * Generates a code sample for using {@link KeyClient#createKey(String, KeyType)}

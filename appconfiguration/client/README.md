@@ -58,7 +58,7 @@ Alternatively, get the connection string from the Azure Portal.
 Once you have the value of the connection string you can create the configuration client:
 
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 ```
@@ -66,9 +66,9 @@ ConfigurationClient client = ConfigurationClient.builder()
 or
 
 ```Java
-ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+ConfigurationAsyncClient client =new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .buildClient();
+        .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -103,7 +103,7 @@ try {
 An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchonous client, for example all settings with a specific label are periodically updated.
 
 ```Java
-ConfigurationAsyncClient client = new ConfigurationAsyncClient.builder()
+ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildAsyncClient();
         
@@ -125,7 +125,7 @@ Create a Configuration Setting to be stored in the Configuration Store. There ar
 - addSetting creates a setting only if the setting does not already exist in the store.
 - setSetting creates a setting if it doesn't exist or overrides an existing setting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 ConfigurationSetting setting = client.setSetting("some_key", "some_value");
@@ -135,7 +135,7 @@ ConfigurationSetting setting = client.setSetting("some_key", "some_value");
 
 Retrieve a previously stored Configuration Setting by calling getSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");
@@ -146,7 +146,7 @@ ConfigurationSetting setting = client.getSetting("some_key");
 
 Update an existing Configuration Setting by calling updateSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");
@@ -157,7 +157,7 @@ ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
 
 Delete an existing Configuration Setting by calling deleteSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");

@@ -5,6 +5,7 @@ package secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 
@@ -25,7 +26,7 @@ public class ListOperations {
         // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        SecretClient client = SecretClient.builder()
+        SecretClient client = new SecretClientBuilder()
                 .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
                 .credential(new DefaultAzureCredential())
                 .buildClient();
