@@ -703,6 +703,6 @@
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
     <module>./sdk/tracing</module>
-    <module>./sdk/identity</module>
+    <module>./sdk/identity/azure-identity</module>
   </modules>
 </project>
