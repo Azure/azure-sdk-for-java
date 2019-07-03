@@ -254,7 +254,7 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2019-03-01";
+        this.apiVersion = "2018-05-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -275,6 +275,6 @@ public class ResourceManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ResourceManagementClient", "2019-03-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ResourceManagementClient", "2018-05-01");
     }
 }
