@@ -19,14 +19,14 @@ import com.microsoft.azure.management.iothub.v2018_04_01.CertificateWithNonceDes
 import com.microsoft.azure.management.iothub.v2018_04_01.CertificateDescription;
 
 class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certificates {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    CertificatesImpl(IoTHubManager manager) {
+    CertificatesImpl(DevicesManager manager) {
         super(manager.inner().certificates());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

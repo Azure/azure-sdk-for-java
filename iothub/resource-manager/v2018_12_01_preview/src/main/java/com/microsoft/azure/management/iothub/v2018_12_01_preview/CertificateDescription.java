@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.DevicesManager;
 
 /**
  * Type representing CertificateDescription.
  */
-public interface CertificateDescription extends HasInner<CertificateDescriptionInner>, Indexable, Refreshable<CertificateDescription>, Updatable<CertificateDescription.Update>, HasManager<IoTHubManager> {
+public interface CertificateDescription extends HasInner<CertificateDescriptionInner>, Indexable, Refreshable<CertificateDescription>, Updatable<CertificateDescription.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */

@@ -14,10 +14,10 @@ import rx.Observable;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubProperties;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubSkuInfo;
 
-class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, IoTHubManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
+class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, DevicesManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
     private String cifMatch;
     private String uifMatch;
-    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, IoTHubManager manager) {
+    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, DevicesManager manager) {
         super(name, inner, manager);
     }
 

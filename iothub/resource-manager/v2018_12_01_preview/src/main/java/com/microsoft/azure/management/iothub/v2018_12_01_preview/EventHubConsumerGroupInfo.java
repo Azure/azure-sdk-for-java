@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.DevicesManager;
 import java.util.Map;
 
 /**
  * Type representing EventHubConsumerGroupInfo.
  */
-public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGroupInfoInner>, Indexable, Refreshable<EventHubConsumerGroupInfo>, Updatable<EventHubConsumerGroupInfo.Update>, HasManager<IoTHubManager> {
+public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGroupInfoInner>, Indexable, Refreshable<EventHubConsumerGroupInfo>, Updatable<EventHubConsumerGroupInfo.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
