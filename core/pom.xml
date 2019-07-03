@@ -2,19 +2,20 @@
   ~ Copyright (c) Microsoft Corporation. All rights reserved.
   ~ Licensed under the MIT License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>../pom.client.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-parent</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.2</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Core Libraries for Java</name>
@@ -33,12 +34,12 @@
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.1</tag>
   </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
   </properties>
 
   <developers>
