@@ -95,8 +95,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
+          <failsOnError>false</failsOnError>
+          <failOnViolation>false</failOnViolation>
         </configuration>
       </plugin>
     </plugins>
