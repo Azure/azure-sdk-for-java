@@ -703,6 +703,6 @@
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
     <module>./sdk/tracing</module>
-    <module>./identity/client</module>
+    <module>./sdk/identity</module>
   </modules>
 </project>
