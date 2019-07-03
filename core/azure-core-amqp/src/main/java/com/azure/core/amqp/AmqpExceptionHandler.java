@@ -23,7 +23,7 @@ public abstract class AmqpExceptionHandler {
      * @param exception The exception that caused the connection error.
      */
     public void onConnectionError(Throwable exception) {
-        logger.logAsWarning("Connection exception encountered: " + exception.toString(), exception);
+        logger.warning("Connection exception encountered: " + exception.toString(), exception);
     }
 
     /**
@@ -32,6 +32,6 @@ public abstract class AmqpExceptionHandler {
      * @param shutdownSignal The shutdown signal that was received.
      */
     public void onConnectionShutdown(AmqpShutdownSignal shutdownSignal) {
-        logger.logAsInfo("Shutdown received: {}", shutdownSignal);
+        logger.info("Shutdown received: {}", shutdownSignal);
     }
 }

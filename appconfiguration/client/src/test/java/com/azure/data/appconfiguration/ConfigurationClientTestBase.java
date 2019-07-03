@@ -79,7 +79,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         try {
             client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
         } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.logAsError("Could not create an configuration client credentials.", e);
+            logger.error("Could not create an configuration client credentials.", e);
             fail();
             client = null;
         }

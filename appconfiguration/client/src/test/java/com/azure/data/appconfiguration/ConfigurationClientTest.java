@@ -48,14 +48,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @Override
     protected void afterTest() {
-        logger.logAsInfo("Cleaning up created key values.");
+        logger.info("Cleaning up created key values.");
 
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys(keyPrefix + "*"))) {
-            logger.logAsInfo("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }
 
-        logger.logAsInfo("Finished cleaning up values.");
+        logger.info("Finished cleaning up values.");
     }
 
     /**
@@ -557,7 +557,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     public void deleteAllSettings() {
         for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
-            logger.logAsInfo("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+            logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
         }
     }

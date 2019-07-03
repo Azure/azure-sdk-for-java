@@ -332,11 +332,11 @@ public class EventPositionIntegrationTest extends ApiTestBase {
      */
     private void setupEventTestData(EventHubClient client) {
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.logAsInfo("Already pushed events to partition. Skipping.");
+            logger.info("Already pushed events to partition. Skipping.");
             return;
         }
 
-        logger.logAsInfo("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
+        logger.info("Pushing events to partition. Message tracking value: {}", MESSAGE_TRACKING_VALUE);
 
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
         final EventHubProducer producer = client.createProducer(producerOptions);
@@ -351,7 +351,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         }
 
         // Receiving back those events we sent so we have something to compare to.
-        logger.logAsInfo("Receiving the events we sent.");
+        logger.info("Receiving the events we sent.");
         final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.fromEnqueuedTime(MESSAGES_PUSHED_INSTANT.get()));
         final List<EventData> receivedEvents;

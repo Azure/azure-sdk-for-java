@@ -14,8 +14,8 @@ import java.util.Arrays;
 /**
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
  *
- * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ClientLogger#logAsVerbose(String, Object...) verbose} logging the
+ * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
+ * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose} logging the
  * stack trace for the throwable will be included in the log message.</p>
  *
  * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
@@ -23,10 +23,10 @@ import java.util.Arrays;
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- * <li>{@link ClientLogger#logAsError(String, Object...) Error}</li>
- * <li>{@link ClientLogger#logAsWarning(String, Object...) Warning}</li>
- * <li>{@link ClientLogger#logAsInfo(String, Object...) Info}</li>
- * <li>{@link ClientLogger#logAsVerbose(String, Object...) Verbose}</li>
+ * <li>{@link ClientLogger#error(String, Object...) Error}</li>
+ * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
+ * <li>{@link ClientLogger#info(String, Object...) Info}</li>
+ * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
  * @see Configuration
@@ -85,83 +85,67 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code verbose} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
      * Logging a message at verbose log level
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.logAsVerbose("A format-able message. Hello, {}", name);
-     * </pre>
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.verbose}
      *
-     * @param format The format-able message to log
+     * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    public void logAsVerbose(String format, Object... args) {
+    public void verbose(String format, Object... args) {
         log(VERBOSE_LEVEL, format, args);
     }
 
     /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code informational} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
      * Logging a message at informational log level
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.logAsInfo("A format-able message. Hello, {}", name);
-     * </pre>
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.info}
      *
-     * @param format The format-able message to log
+     * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    public void logAsInfo(String format, Object... args) {
+    public void info(String format, Object... args) {
         log(INFORMATIONAL_LEVEL, format, args);
     }
 
     /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code warning} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
      * Logging a message at warning log level
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.logAsWarning("A format-able message. Hello, {}", name);
-     * </pre>
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.warning}
      *
-     * @param format The format-able message to log
+     * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    public void logAsWarning(String format, Object... args) {
+    public void warning(String format, Object... args) {
         log(WARNING_LEVEL, format, args);
     }
 
     /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code error} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
      * Logging an error with stack trace
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * try {
-     *    upload(resource);
-     * } catch (Throwable ex) {
-     *    logger.logAsError("Failed to upload {}", resource.name(), ex);
-     * }
-     * </pre>
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.error}
      *
-     * @param format The format-able message to log
+     * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    public void logAsError(String format, Object... args) {
+    public void error(String format, Object... args) {
         log(ERROR_LEVEL, format, args);
     }
 
     /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code default} log level
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code default} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
@@ -171,7 +155,7 @@ public class ClientLogger {
      * logger.log("A message");
      * </pre>
      *
-     * @param format The format-able message
+     * @param format The formattable message
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     public void log(String format, Object... args) {
@@ -179,10 +163,10 @@ public class ClientLogger {
     }
 
     /**
-     * This method logs the format-able message if the {@code logLevel} is enabled
+     * This method logs the formattable message if the {@code logLevel} is enabled
      *
      * @param logLevel The log level at which this message should be logged
-     * @param format The format-able message
+     * @param format The formattable message
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void log(int logLevel, String format, Object... args) {
@@ -194,7 +178,7 @@ public class ClientLogger {
     /**
      * Performs the logging.
      *
-     * @param format Format-able message.
+     * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(int logLevel, String format, Object... args) {

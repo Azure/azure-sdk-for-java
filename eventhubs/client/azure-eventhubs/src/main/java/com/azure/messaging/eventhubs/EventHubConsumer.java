@@ -66,14 +66,14 @@ public class EventHubConsumer implements Closeable {
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.logAsInfo("Created AMQP receive link. Initialising prefetch credit: {}", options.prefetchCount());
+                logger.info("Created AMQP receive link. Initialising prefetch credit: {}", options.prefetchCount());
                 link.addCredits(options.prefetchCount());
 
                 link.setEmptyCreditListener(() -> {
                     if (emitterProcessor.hasDownstreams()) {
                         return creditsToRequest.get();
                     } else {
-                        logger.logAsVerbose("Emitter has no downstream subscribers. Not adding credits.");
+                        logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
                         return 0;
                     }
                 });
@@ -85,19 +85,19 @@ public class EventHubConsumer implements Closeable {
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
                 if (existingLink == null) {
-                    logger.logAsInfo("AmqpReceiveLink not set yet.");
+                    logger.info("AmqpReceiveLink not set yet.");
                     return;
                 }
 
-                logger.logAsInfo("Subscription received for consumer.");
+                logger.info("Subscription received for consumer.");
                 if (existingLink.getCredits() == 0) {
-                    logger.logAsInfo("Subscription received and there are no remaining credits on the link. Adding more.");
+                    logger.info("Subscription received and there are no remaining credits on the link. Adding more.");
                     existingLink.addCredits(creditsToRequest.get());
                 }
             })
             .doOnRequest(request -> {
                 if (request < MINIMUM_REQUEST) {
-                    logger.logAsWarning("Back pressure request value not valid. It must be between {} and {}.",
+                    logger.warning("Back pressure request value not valid. It must be between {} and {}.",
                         MINIMUM_REQUEST, MAXIMUM_REQUEST);
                     return;
                 }
@@ -106,7 +106,7 @@ public class EventHubConsumer implements Closeable {
                     ? MAXIMUM_REQUEST
                     : (int) request;
 
-                logger.logAsInfo("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                logger.info("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
                 creditsToRequest.set(newRequest);
             });
     }

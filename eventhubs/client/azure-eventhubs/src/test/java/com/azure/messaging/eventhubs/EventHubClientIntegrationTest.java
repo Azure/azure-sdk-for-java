@@ -165,10 +165,10 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
                         && event.properties().containsKey(messageTrackingId)
                         && messageTrackingValue.equals(event.properties().get(messageTrackingId));
                 }).take(numberOfEvents).subscribe(event -> {
-                    logger.logAsInfo("Event[{}] matched.", event.sequenceNumber());
+                    logger.info("Event[{}] matched.", event.sequenceNumber());
                 }, error -> Assert.fail("An error should not have occurred:" + error.toString()), () -> {
                         long count = countDownLatch.getCount();
-                        logger.logAsInfo("Finished consuming events. Counting down: {}", count);
+                        logger.info("Finished consuming events. Counting down: {}", count);
                         countDownLatch.countDown();
                     });
 
@@ -183,9 +183,9 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
             Assert.assertEquals(0, countDownLatch.getCount());
 
-            logger.logAsInfo("Completed successfully.");
+            logger.info("Completed successfully.");
         } finally {
-            logger.logAsInfo("Disposing of subscriptions, consumers and clients.");
+            logger.info("Disposing of subscriptions, consumers and clients.");
             subscriptions.dispose();
 
             dispose(producer);

@@ -162,7 +162,7 @@ public class EventHubClient implements Closeable {
 
         final Mono<AmqpSendLink> amqpLinkMono = connectionMono.flatMap(connection -> connection.createSession(entityPath))
             .flatMap(session -> {
-                logger.logAsInfo("Creating producer.");
+                logger.info("Creating producer.");
                 return session.createProducer(linkName, entityPath, clonedOptions.timeout(), clonedOptions.retry())
                     .cast(AmqpSendLink.class);
             });
@@ -248,7 +248,7 @@ public class EventHubClient implements Closeable {
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionMono.flatMap(connection -> {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
-            logger.logAsInfo("Creating consumer.");
+            logger.info("Creating consumer.");
             return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
                 clonedOptions.retry(), options.ownerLevel(), options.identifier()).cast(AmqpReceiveLink.class);
         });

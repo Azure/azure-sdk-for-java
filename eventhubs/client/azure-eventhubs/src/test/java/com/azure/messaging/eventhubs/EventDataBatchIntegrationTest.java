@@ -77,7 +77,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
             if (count % 100 == 0) {
-                logger.logAsVerbose("Batch size: {}", batch.getSize());
+                logger.verbose("Batch size: {}", batch.getSize());
             }
 
             count++;
@@ -101,7 +101,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
             if (count % 100 == 0) {
-                logger.logAsVerbose("Batch size: {}", batch.getSize());
+                logger.verbose("Batch size: {}", batch.getSize());
             }
             count++;
         }
@@ -152,16 +152,16 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
                     }
 
                     if (isMatchingEvent(event, messageValue)) {
-                        logger.logAsInfo("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
+                        logger.info("Event[{}] matched. Countdown: {}", event.sequenceNumber(), countDownLatch.getCount());
                         countDownLatch.countDown();
                     } else {
-                        logger.logAsWarning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
+                        logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
                             event.sequenceNumber(), messageValue, event.properties().get(MESSAGE_TRACKING_ID)));
                     }
                 }, error -> {
                         Assert.fail("An error should not have occurred:" + error.toString());
                     }, () -> {
-                        logger.logAsInfo("Disposing of consumer now that the receive is complete.");
+                        logger.info("Disposing of consumer now that the receive is complete.");
                         dispose(consumer);
                     });
             }).collectList().block(TIMEOUT);
@@ -178,7 +178,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
             // Wait for all the events we sent to be received.
             countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
         } finally {
-            logger.logAsInfo("Disposing of subscriptions.");
+            logger.info("Disposing of subscriptions.");
             subscriptions.dispose();
         }
 

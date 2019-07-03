@@ -56,7 +56,7 @@ public abstract class ApiTestBase extends TestBase {
     @Override
     @Before
     public void setupTest() {
-        logger.logAsInfo("[{}]: Performing test set-up.", testName());
+        logger.info("[{}]: Performing test set-up.", testName());
 
         final Scheduler scheduler = Schedulers.newElastic("AMQPConnection");
         final String connectionString = getTestMode() == TestMode.RECORD
@@ -95,7 +95,7 @@ public abstract class ApiTestBase extends TestBase {
     @Override
     @After
     public void teardownTest() {
-        logger.logAsInfo("[{}]: Performing test clean-up.", testName());
+        logger.info("[{}]: Performing test clean-up.", testName());
 
         afterTest();
 
@@ -169,7 +169,7 @@ public abstract class ApiTestBase extends TestBase {
             try {
                 closeable.close();
             } catch (IOException error) {
-                logger.logAsError(String.format("[%s]: %s didn't close properly.",
+                logger.error(String.format("[%s]: %s didn't close properly.",
                     testName(), closeable.getClass().getSimpleName()), error);
             }
         }

@@ -95,7 +95,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
             handler.getLinkCredits().subscribe(credit -> {
-                logger.logAsVerbose("Credits on link: {}", credit);
+                logger.verbose("Credits on link: {}", credit);
                 this.scheduleWorkOnDispatcher();
             }),
 
@@ -112,19 +112,19 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
                     notifyEndpointState(endpoint);
                 },
-                error -> logger.logAsError("Error encountered getting endpointState", error),
+                error -> logger.error("Error encountered getting endpointState", error),
                 () -> {
-                    logger.logAsVerbose("getLinkCredits completed.");
+                    logger.verbose("getLinkCredits completed.");
                     hasConnected.set(false);
                 }),
 
             tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                    logger.logAsVerbose("Token refreshed: {}", response);
+                    logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
                 },
                 error -> {
-                    logger.logAsInfo("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                    logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false))
@@ -248,7 +248,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
      */
     private void processSendWork() {
         if (!hasConnected.get()) {
-            logger.logAsWarning("Not connected. Not processing send work.");
+            logger.warning("Not connected. Not processing send work.");
             return;
         }
 
@@ -269,7 +269,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             if (workItem == null) {
                 if (deliveryTag != null) {
-                    logger.logAsVerbose("clientId[{}]. path[{}], linkName[{}], deliveryTag[{}]: sendData not found for this delivery.",
+                    logger.verbose("clientId[{}]. path[{}], linkName[{}], deliveryTag[{}]: sendData not found for this delivery.",
                         handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
                 }
 
@@ -295,12 +295,12 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }
 
             if (linkAdvance) {
-                logger.logAsVerbose("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
+                logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}]: Sent message", entityPath, getLinkName(), deliveryTag);
 
                 workItem.setIsWaitingForAck();
                 sendTimeoutTimer.schedule(new SendTimeout(deliveryTag), timeout.toMillis());
             } else {
-                logger.logAsVerbose(
+                logger.verbose(
                     "clientId[{}]. path[{}], linkName[{}], deliveryTag[{}], sentMessageSize[{}], payloadActualSize[{}]: sendlink advance failed",
                     handler.getConnectionId(), entityPath, getLinkName(), deliveryTag, sentMsgSize, workItem.encodedMessageSize());
 
@@ -322,13 +322,13 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         final DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
-        logger.logAsVerbose("entityPath[{}], clinkName[{}], deliveryTag[{}]: process delivered message",
+        logger.verbose("entityPath[{}], clinkName[{}], deliveryTag[{}]: process delivered message",
             entityPath, getLinkName(), deliveryTag);
 
         final RetriableWorkItem workItem = pendingSendsMap.remove(deliveryTag);
 
         if (workItem == null) {
-            logger.logAsVerbose("clientId[{}]. path[{}], linkName[{}], delivery[{}] - mismatch (or send timed out)",
+            logger.verbose("clientId[{}]. path[{}], linkName[{}], delivery[{}] - mismatch (or send timed out)",
                 handler.getConnectionId(), entityPath, getLinkName(), deliveryTag);
             return;
         }
@@ -384,7 +384,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
-            logger.logAsError("Error scheduling work on reactor.", e);
+            logger.error("Error scheduling work on reactor.", e);
             notifyError(e);
         }
     }

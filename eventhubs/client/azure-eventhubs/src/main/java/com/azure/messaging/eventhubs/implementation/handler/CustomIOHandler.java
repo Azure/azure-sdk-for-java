@@ -22,7 +22,7 @@ public class CustomIOHandler extends IOHandler {
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
 
-        logger.logAsInfo("onTransportClosed name[{}], hostname[{}]",
+        logger.info("onTransportClosed name[{}], hostname[{}]",
             connectionId, (connection != null ? connection.getHostname() : "n/a"));
 
         if (transport != null && connection != null && connection.getTransport() != null) {
@@ -32,7 +32,7 @@ public class CustomIOHandler extends IOHandler {
 
     @Override
     public void onUnhandled(Event event) {
-        // logger.logAsVerbose("Unhandled event: {}, {}", event.getEventType(), event.toString());
+        // logger.verbose("Unhandled event: {}, {}", event.getEventType(), event.toString());
         super.onUnhandled(event);
     }
 }

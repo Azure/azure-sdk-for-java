@@ -102,11 +102,11 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
                 consumers[i] = consumer;
 
                 final Disposable subscription = consumer.receive().take(numberOfEvents).subscribe(event -> {
-                    logger.logAsInfo("Event[{}] received. partition: {}", event.sequenceNumber(), partitionId);
+                    logger.info("Event[{}] received. partition: {}", event.sequenceNumber(), partitionId);
                 }, error -> {
                         Assert.fail("An error should not have occurred:" + error.toString());
                     }, () -> {
-                        logger.logAsInfo("Disposing of consumer now that the receive is complete.");
+                        logger.info("Disposing of consumer now that the receive is complete.");
                         countDownLatch.countDown();
                     });
 
@@ -126,7 +126,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         } catch (InterruptedException e) {
             Assert.fail("Countdown latch was interrupted:" + e.toString());
         } finally {
-            logger.logAsInfo("Disposing of subscriptions, consumers, producers.");
+            logger.info("Disposing of subscriptions, consumers, producers.");
 
             subscriptions.dispose();
             dispose(consumers);
