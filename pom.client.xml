@@ -460,6 +460,8 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -496,6 +498,9 @@
             </reports>
           </reportSet>
         </reportSets>
+        <configuration>
+          <failOnError>true</failOnError>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
