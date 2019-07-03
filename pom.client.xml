@@ -702,7 +702,7 @@
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
-    <module>./tracing</module>
+    <module>./sdk/tracing</module>
     <module>./identity/client</module>
   </modules>
 </project>
