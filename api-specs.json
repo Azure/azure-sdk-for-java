@@ -256,6 +256,10 @@
     "source": "specification/sql/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "sqlvirtualmachine/resource-manager": {
+    "source": "specification/sqlvirtualmachine/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "storage/resource-manager": {
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--multiapi --fluent"
