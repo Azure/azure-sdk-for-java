@@ -12,9 +12,14 @@ import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptHeaders;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptInStreamHeaders;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.ImageUrl;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.KeysResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ModelResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ModelsResult;
@@ -26,11 +31,14 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -214,7 +222,7 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
     interface FormRecognizerClientService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient trainCustomModel" })
         @POST("custom/train")
-        Observable<Response<ResponseBody>> trainCustomModel(@Header("accept-language") String acceptLanguage, @Body TrainRequest trainRequest, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> trainCustomModel(@Body TrainRequest trainRequest, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient getExtractedKeys" })
         @GET("custom/models/{id}/keys")
@@ -236,6 +244,18 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
         @POST("custom/models/{id}/analyze")
         Observable<Response<ResponseBody>> analyzeWithCustomModel(@Path("id") UUID id, @Query("keys") String keys, @Part("form_stream") RequestBody formStream, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient analyzeReceipt" })
+        @POST("prebuilt/receipt/asyncBatchAnalyze")
+        Observable<Response<ResponseBody>> analyzeReceipt(@Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient getReceiptResult" })
+        @GET("prebuilt/receipt/operations/{operationId}")
+        Observable<Response<ResponseBody>> getReceiptResult(@Path("operationId") String operationId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.formrecognizer.FormRecognizerClient analyzeReceiptInStream" })
+        @POST("prebuilt/receipt/asyncBatchAnalyze")
+        Observable<Response<ResponseBody>> analyzeReceiptInStream(@Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -244,14 +264,14 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainResult object if successful.
      */
-    public TrainResult trainCustomModel(String source) {
-        return trainCustomModelWithServiceResponseAsync(source).toBlocking().single().body();
+    public TrainResult trainCustomModel(TrainRequest trainRequest) {
+        return trainCustomModelWithServiceResponseAsync(trainRequest).toBlocking().single().body();
     }
 
     /**
@@ -260,13 +280,13 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TrainResult> trainCustomModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback) {
-        return ServiceFuture.fromResponse(trainCustomModelWithServiceResponseAsync(source), serviceCallback);
+    public ServiceFuture<TrainResult> trainCustomModelAsync(TrainRequest trainRequest, final ServiceCallback<TrainResult> serviceCallback) {
+        return ServiceFuture.fromResponse(trainCustomModelWithServiceResponseAsync(trainRequest), serviceCallback);
     }
 
     /**
@@ -275,12 +295,12 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    public Observable<TrainResult> trainCustomModelAsync(String source) {
-        return trainCustomModelWithServiceResponseAsync(source).map(new Func1<ServiceResponse<TrainResult>, TrainResult>() {
+    public Observable<TrainResult> trainCustomModelAsync(TrainRequest trainRequest) {
+        return trainCustomModelWithServiceResponseAsync(trainRequest).map(new Func1<ServiceResponse<TrainResult>, TrainResult>() {
             @Override
             public TrainResult call(ServiceResponse<TrainResult> response) {
                 return response.body();
@@ -294,21 +314,20 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    public Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(String source) {
+    public Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(TrainRequest trainRequest) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (source == null) {
-            throw new IllegalArgumentException("Parameter source is required and cannot be null.");
+        if (trainRequest == null) {
+            throw new IllegalArgumentException("Parameter trainRequest is required and cannot be null.");
         }
-        TrainRequest trainRequest = new TrainRequest();
-        trainRequest.withSource(source);
+        Validator.validate(trainRequest);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.trainCustomModel(this.acceptLanguage(), trainRequest, parameterizedHost, this.userAgent())
+        return service.trainCustomModel(trainRequest, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainResult>>>() {
                 @Override
                 public Observable<ServiceResponse<TrainResult>> call(Response<ResponseBody> response) {
@@ -824,6 +843,261 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
                 .register(200, new TypeToken<AnalyzeResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void analyzeReceipt(String url) {
+        analyzeReceiptWithServiceResponseAsync(url).toBlocking().single().body();
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> analyzeReceiptAsync(String url, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(analyzeReceiptWithServiceResponseAsync(url), serviceCallback);
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> analyzeReceiptAsync(String url) {
+        return analyzeReceiptWithServiceResponseAsync(url).map(new Func1<ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders>> analyzeReceiptWithServiceResponseAsync(String url) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        return service.analyzeReceipt(this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders> clientResponse = analyzeReceiptDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders> analyzeReceiptDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(400, new TypeToken<Void>() { }.getType())
+                .register(415, new TypeToken<Void>() { }.getType())
+                .register(500, new TypeToken<Void>() { }.getType())
+                .register(503, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .buildWithHeaders(response, AnalyzeReceiptHeaders.class);
+    }
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AnalyzeReceiptResult object if successful.
+     */
+    public AnalyzeReceiptResult getReceiptResult(String operationId) {
+        return getReceiptResultWithServiceResponseAsync(operationId).toBlocking().single().body();
+    }
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<AnalyzeReceiptResult> getReceiptResultAsync(String operationId, final ServiceCallback<AnalyzeReceiptResult> serviceCallback) {
+        return ServiceFuture.fromResponse(getReceiptResultWithServiceResponseAsync(operationId), serviceCallback);
+    }
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AnalyzeReceiptResult object
+     */
+    public Observable<AnalyzeReceiptResult> getReceiptResultAsync(String operationId) {
+        return getReceiptResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<AnalyzeReceiptResult>, AnalyzeReceiptResult>() {
+            @Override
+            public AnalyzeReceiptResult call(ServiceResponse<AnalyzeReceiptResult> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AnalyzeReceiptResult object
+     */
+    public Observable<ServiceResponse<AnalyzeReceiptResult>> getReceiptResultWithServiceResponseAsync(String operationId) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        return service.getReceiptResult(operationId, this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AnalyzeReceiptResult>>>() {
+                @Override
+                public Observable<ServiceResponse<AnalyzeReceiptResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<AnalyzeReceiptResult> clientResponse = getReceiptResultDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<AnalyzeReceiptResult> getReceiptResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<AnalyzeReceiptResult, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<AnalyzeReceiptResult>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .register(500, new TypeToken<Void>() { }.getType())
+                .register(503, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void analyzeReceiptInStream(byte[] image) {
+        analyzeReceiptInStreamWithServiceResponseAsync(image).toBlocking().single().body();
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> analyzeReceiptInStreamAsync(byte[] image, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(analyzeReceiptInStreamWithServiceResponseAsync(image), serviceCallback);
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> analyzeReceiptInStreamAsync(byte[] image) {
+        return analyzeReceiptInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders>> analyzeReceiptInStreamWithServiceResponseAsync(byte[] image) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        return service.analyzeReceiptInStream(imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders> clientResponse = analyzeReceiptInStreamDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders> analyzeReceiptInStreamDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(400, new TypeToken<Void>() { }.getType())
+                .register(415, new TypeToken<Void>() { }.getType())
+                .register(500, new TypeToken<Void>() { }.getType())
+                .register(503, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .buildWithHeaders(response, AnalyzeReceiptInStreamHeaders.class);
     }
 
 }

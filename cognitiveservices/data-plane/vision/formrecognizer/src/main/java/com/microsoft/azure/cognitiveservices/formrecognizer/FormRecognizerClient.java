@@ -9,16 +9,22 @@
 package com.microsoft.azure.cognitiveservices.formrecognizer;
 
 import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptHeaders;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptInStreamHeaders;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeReceiptResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.AnalyzeResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.KeysResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ModelResult;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.ModelsResult;
+import com.microsoft.azure.cognitiveservices.formrecognizer.models.TrainRequest;
 import com.microsoft.azure.cognitiveservices.formrecognizer.models.TrainResult;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -114,13 +120,13 @@ public interface FormRecognizerClient {
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TrainResult object if successful.
      */
-    TrainResult trainCustomModel(String source);
+    TrainResult trainCustomModel(TrainRequest trainRequest);
 
     /**
      * Train Model.
@@ -128,12 +134,12 @@ public interface FormRecognizerClient {
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TrainResult> trainCustomModelAsync(String source, final ServiceCallback<TrainResult> serviceCallback);
+    ServiceFuture<TrainResult> trainCustomModelAsync(TrainRequest trainRequest, final ServiceCallback<TrainResult> serviceCallback);
 
     /**
      * Train Model.
@@ -141,11 +147,11 @@ public interface FormRecognizerClient {
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<TrainResult> trainCustomModelAsync(String source);
+    Observable<TrainResult> trainCustomModelAsync(TrainRequest trainRequest);
 
     /**
      * Train Model.
@@ -153,11 +159,11 @@ public interface FormRecognizerClient {
       setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are not supported. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
       Other type of content is ignored.
      *
-     * @param source Get or set source path.
+     * @param trainRequest Request object for training.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TrainResult object
      */
-    Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(String source);
+    Observable<ServiceResponse<TrainResult>> trainCustomModelWithServiceResponseAsync(TrainRequest trainRequest);
 
     /**
      * Get Keys.
@@ -426,5 +432,132 @@ public interface FormRecognizerClient {
      * @return the observable to the AnalyzeResult object
      */
     Observable<ServiceResponse<AnalyzeResult>> analyzeWithCustomModelWithServiceResponseAsync(UUID id, byte[] formStream, List<String> keys);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void analyzeReceipt(String url);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> analyzeReceiptAsync(String url, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> analyzeReceiptAsync(String url);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders>> analyzeReceiptWithServiceResponseAsync(String url);
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AnalyzeReceiptResult object if successful.
+     */
+    AnalyzeReceiptResult getReceiptResult(String operationId);
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<AnalyzeReceiptResult> getReceiptResultAsync(String operationId, final ServiceCallback<AnalyzeReceiptResult> serviceCallback);
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AnalyzeReceiptResult object
+     */
+    Observable<AnalyzeReceiptResult> getReceiptResultAsync(String operationId);
+
+    /**
+     * Get Receipt Result.
+     * Query the status and retrieve the result of an 'Analyze Receipt' operation. The URL to this interface can be obtained from the 'Operation-Location' header in the 'Analyze Receipt' response.
+     *
+     * @param operationId Id returned by the 'Analyze Receipt' operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AnalyzeReceiptResult object
+     */
+    Observable<ServiceResponse<AnalyzeReceiptResult>> getReceiptResultWithServiceResponseAsync(String operationId);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void analyzeReceiptInStream(byte[] image);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> analyzeReceiptInStreamAsync(byte[] image, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> analyzeReceiptInStreamAsync(byte[] image);
+
+    /**
+     * Analyze Receipt.
+     * Extract field text and semantic values from a given receipt document.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders>> analyzeReceiptInStreamWithServiceResponseAsync(byte[] image);
 
 }

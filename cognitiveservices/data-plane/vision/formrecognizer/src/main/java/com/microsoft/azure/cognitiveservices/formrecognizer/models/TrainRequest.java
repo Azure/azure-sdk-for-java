@@ -21,6 +21,13 @@ public class TrainRequest {
     private String source;
 
     /**
+     * Get or set filter to further search the
+     * source path for content.
+     */
+    @JsonProperty(value = "sourceFilter")
+    private TrainSourceFilter sourceFilter;
+
+    /**
      * Get get or set source path.
      *
      * @return the source value
@@ -37,6 +44,28 @@ public class TrainRequest {
      */
     public TrainRequest withSource(String source) {
         this.source = source;
+        return this;
+    }
+
+    /**
+     * Get get or set filter to further search the
+     source path for content.
+     *
+     * @return the sourceFilter value
+     */
+    public TrainSourceFilter sourceFilter() {
+        return this.sourceFilter;
+    }
+
+    /**
+     * Set get or set filter to further search the
+     source path for content.
+     *
+     * @param sourceFilter the sourceFilter value to set
+     * @return the TrainRequest object itself.
+     */
+    public TrainRequest withSourceFilter(TrainSourceFilter sourceFilter) {
+        this.sourceFilter = sourceFilter;
         return this;
     }
 
