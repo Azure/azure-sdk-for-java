@@ -44,7 +44,7 @@ import java.time.Duration;
  * for more information.
  */
 public class BlobClient {
-
+    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private final BlobAsyncClient blobAsyncClient;
 
     /**
@@ -344,7 +344,7 @@ public class BlobClient {
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public void downloadToFile(String filePath) throws IOException {
-        this.downloadToFile(filePath, null, null, null, null, false, null);
+        this.downloadToFile(filePath, null, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
     }
 
     /**
