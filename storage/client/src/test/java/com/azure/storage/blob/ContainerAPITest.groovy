@@ -1531,6 +1531,32 @@ class ContainerAPITest extends APISpec {
         bu.create().statusCode() == 201
     }
 
+    def "Root explicit in endpoint"() {
+        setup:
+        cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
+        // Create root container if not exist.
+        if (!cu.exists().value()) {
+            cu.create()
+        }
+
+        AppendBlobClient bu = new AppendBlobClientBuilder()
+                .credential(primaryCreds)
+                .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
+                .httpClient(getHttpClient())
+                .buildClient()
+
+        when:
+        Response<AppendBlobItem> createResponse = bu.create()
+
+        Response<BlobProperties> propsResponse = bu.getProperties()
+
+        then:
+        createResponse.statusCode() == 201
+        propsResponse.statusCode() == 200
+        propsResponse.value().blobType() == BlobType.APPEND_BLOB
+    }
+
+    /*
     def "Root implicit"() {
         setup:
         cu = primaryServiceURL.getContainerClient(ContainerClient.ROOT_CONTAINER_NAME)
@@ -1555,6 +1581,7 @@ class ContainerAPITest extends APISpec {
         propsResponse.statusCode() == 200
         propsResponse.value().blobType() == BlobType.APPEND_BLOB
     }
+    */
 
     def "Web container"() {
         setup:
