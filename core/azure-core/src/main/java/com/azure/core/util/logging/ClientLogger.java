@@ -89,7 +89,7 @@ public class ClientLogger {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
-     * Logging a message with the default log level
+     * Logging a message at verbose log level
      * <pre>
      * ClientLogger logger = new ClientLogger(Example.class);
      * logger.logAsVerbose("A format-able message. Hello, {}", name);
