@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/17?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html)
 
-This repository contains official Java libraries for Azure services. For reference documentation go to [Azure SDK for Java documentation](http://aka.ms/java-docs).
+This repository contains official Java libraries for Azure services. For reference documentation go to [Azure SDK for Java documentation](http://aka.ms/java-docs), and tutorials, samples, quick starts and other documentation, go to [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 
 You can find a complete list of all the packages for these libraries [here](packages.md).
 
@@ -40,7 +40,9 @@ Last stable versions of packages that have been provided for usage with Azure an
 Libraries which enable you to provision specific resources. They are responsible for directly mirroring and consuming Azure service's REST endpoints. Library directories contain `-mgmt-`, e.g. `azure-mgmt-keyvault`.
 
 ## Need help?
-* For detailed documentation visit our [Azure SDK for Java documentation](http://aka.ms/java-docs).
+* For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
+* For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
+* For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
 * File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
 * Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
 
