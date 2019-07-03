@@ -1,0 +1,48 @@
+# External variables Settable at queue time:
+# "pomFile" : "pom.xml".   This is the project object model file for Maven.
+
+trigger:
+  - master
+
+variables:
+  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+
+jobs:
+  - job: 'Build'
+
+    strategy:
+      matrix:
+        Java 8:
+          ArtifactName: 'packages'
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+        Java 8:
+          ArtifactName: 'packages'
+          ProfileFlag: ''
+          JavaVersion: '1.7'
+    
+    pool:
+      vmImage: 'ubuntu-16.04'
+      
+    steps:      
+      - task: Maven@3
+        displayName: 'compile'
+        inputs:
+          mavenPomFile: */*/v20*/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag) -pl javadoc:aggregate -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'compile'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: 'On Java $(JavaVersion)'
+          
+
+        
