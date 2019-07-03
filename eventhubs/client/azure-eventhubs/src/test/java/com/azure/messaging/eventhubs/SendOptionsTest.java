@@ -46,4 +46,54 @@ public class SendOptionsTest {
         Assert.assertEquals(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, options.maximumSizeInBytes());
         Assert.assertEquals(partitionKey, options.partitionKey());
     }
+
+    /**
+     * Verifies we can create a clone that is independent of the original.
+     */
+    @Test
+    public void cloneIdentical() {
+        // Arrange
+        String partitionKey = "My partition key";
+        int size = 800;
+        SendOptions options = new SendOptions().partitionKey(partitionKey).maximumSizeInBytes(size);
+
+        // Act
+        SendOptions clone = options.clone();
+
+        // Assert
+        Assert.assertNotSame(clone, options);
+        Assert.assertEquals(size, options.maximumSizeInBytes());
+        Assert.assertEquals(partitionKey, options.partitionKey());
+
+        Assert.assertEquals(partitionKey, clone.partitionKey());
+        Assert.assertEquals(size, clone.maximumSizeInBytes());
+    }
+
+
+    /**
+     * Verifies we can modify contents of the clone without affecting the original.
+     */
+    @Test
+    public void cloneModifyContents() {
+        // Arrange
+        String originalPartitionKey = "Some partition key";
+        int originalSize = 100;
+
+        String partitionKey = "A new partition key";
+        int size = 24;
+
+        SendOptions options = new SendOptions().partitionKey(originalPartitionKey).maximumSizeInBytes(originalSize);
+        SendOptions clone = options.clone();
+
+        // Act
+        clone.partitionKey(partitionKey)
+            .maximumSizeInBytes(size);
+
+        // Assert
+        Assert.assertEquals(partitionKey, clone.partitionKey());
+        Assert.assertEquals(size, clone.maximumSizeInBytes());
+
+        Assert.assertEquals(originalSize, options.maximumSizeInBytes());
+        Assert.assertEquals(originalPartitionKey, options.partitionKey());
+    }
 }
