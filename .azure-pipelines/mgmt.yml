@@ -17,7 +17,7 @@ jobs:
           ArtifactName: 'packages'
           ProfileFlag: ''
           JavaVersion: '1.8'
-        Java 8:
+        Java 7:
           ArtifactName: 'packages'
           ProfileFlag: ''
           JavaVersion: '1.7'
