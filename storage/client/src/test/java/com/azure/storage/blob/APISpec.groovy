@@ -395,7 +395,7 @@ class APISpec extends Specification {
     def validateBasicHeaders(HttpHeaders headers) {
         return headers.value("etag") != null &&
             // Quotes should be scrubbed from etag header values
-            // !headers.value("etag").contains("\"") && TODO: anuchan: https://github.com/Azure/azure-sdk-for-java/issues/4246
+            !headers.value("etag").contains("\"") &&
             headers.value("last-modified") != null &&
             headers.value("x-ms-request-id") != null &&
             headers.value("x-ms-version") != null &&
