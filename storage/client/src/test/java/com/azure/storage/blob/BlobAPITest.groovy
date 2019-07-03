@@ -102,6 +102,7 @@ class BlobAPITest extends APISpec {
                     }
                     else {
                         // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                        //TODO stub responses failing azure.core.implementation checks; too many nulls
                         return Mono.just(getStubResponseForBlobDownload(206, Flux.error(new IOException()), "etag"))
                     }
             }
