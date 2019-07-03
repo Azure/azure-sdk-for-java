@@ -6,7 +6,7 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -19,7 +19,7 @@
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
-    <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>

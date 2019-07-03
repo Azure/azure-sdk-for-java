@@ -6,14 +6,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.2</version>
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -30,14 +30,13 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.1</tag>
   </scm>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
     </dependency>
 
     <dependency>
