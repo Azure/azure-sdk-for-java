@@ -15,6 +15,11 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
 - Publish messages to an Azure Event Hub using `EventHubPublisher`.
 - Receive messages from an Azure Event Hub using `EventHubConsumer`.
 
+### Changed
+
+- `PartitionReceiver` is renamed `EventHubConsumer`.
+- `PartitionSender` and the "send" methods on `EventHubClient` are consolidated into `EventHubProducer`.
+
 ### Known issues
 
 - AMQP protocol using web sockets is not implemented.
