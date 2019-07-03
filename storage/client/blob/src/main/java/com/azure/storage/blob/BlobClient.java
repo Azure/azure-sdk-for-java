@@ -44,7 +44,6 @@ import java.time.Duration;
  * for more information.
  */
 public class BlobClient {
-
     private final BlobAsyncClient blobAsyncClient;
 
     /**
