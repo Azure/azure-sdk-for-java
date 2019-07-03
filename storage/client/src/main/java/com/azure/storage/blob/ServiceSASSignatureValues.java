@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import java.net.MalformedURLException;
 import java.net.URL;
