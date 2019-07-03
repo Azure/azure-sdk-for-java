@@ -26,9 +26,9 @@ jobs:
       vmImage: 'ubuntu-16.04'
       
     steps:
-     - task: ShellScript@2
-       displayName: 'generate mgmt pom file'
-       inputs:
+      - task: ShellScript@2
+        displayName: 'generate mgmt pom file'
+        inputs:
           scriptPath: .\update_mgmt_pom.sh
           
       - task: Maven@3
