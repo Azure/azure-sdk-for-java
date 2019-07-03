@@ -702,7 +702,8 @@
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
-    <module>./sdk/tracing</module>
+    <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
+<!--    <module>./sdk/tracing</module>-->
     <module>./identity/client</module>
   </modules>
 </project>
