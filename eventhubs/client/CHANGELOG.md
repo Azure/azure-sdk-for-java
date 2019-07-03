@@ -8,19 +8,12 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 For release notes and more information please visit https://aka.ms/azure-sdk-preview1-java
 
-### Added
+### Features
 
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Fetch Event Hub and partition metadata using `EventHubClient`.
 - Publish messages to an Azure Event Hub using `EventHubPublisher`.
 - Receive messages from an Azure Event Hub using `EventHubConsumer`.
-
-### Changed
-
-- `EventHubRuntimeInformation` is renamed `EventHubProperties`.
-- `PartitionRuntimeInformation` is renamed `PartitionProperties`.
-- `PartitionReceiver` is renamed `EventHubConsumer`.
-- Methods for publishing events using `PartitionSender` or `EventHubClient` are consolidated into `EventHubProducer`.
 
 ### Known issues
 
@@ -29,5 +22,7 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
 - Event Host Processor is not implemented.
 - Creating an `EventDataBatch` is not exposed.
 - Getting `ReceiverRuntimeInformation` from `EventHubConsumer` is not implemented.
-- `EventHubClient` does not clean up its `EventHubPublishers` and `EventHubConsumers`. These need to be done manually.
-- Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work.
+- `EventHubClient` does not clean up its `EventHubPublishers` and `EventHubConsumers`. These need to be closed manually
+  by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
+- Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
+  clients and consumers to two to avoid failures.
