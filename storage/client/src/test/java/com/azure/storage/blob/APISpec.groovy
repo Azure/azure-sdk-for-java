@@ -201,7 +201,7 @@ class APISpec extends Specification {
         // TODO: logging?
 
         return StorageClient.storageClientBuilder()
-            .endpoint("http://" + creds.accountName() + ".blob.core.windows.net")
+            .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
             .credential(creds)

@@ -5,7 +5,17 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.ContainerAccessConditions;
+import com.azure.storage.blob.models.ContainerAccessPolicies;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.blob.models.SignedIdentifier;
+import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,8 +35,7 @@ import java.util.List;
  * {@link #getBlobClient(String)}, and operations on the service are available on {@link StorageClient}.
  *
  * <p>
- * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
  * for more information on containers.
  */
 public final class ContainerClient {
@@ -41,12 +50,10 @@ public final class ContainerClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
-     *
-     * @param containerAsyncClient
-     *         the async container client
+     * @param containerAsyncClient the async container client
      */
     ContainerClient(ContainerAsyncClient containerAsyncClient) {
-        this.containerAsyncClient = containerAsyncClient;
+        this.containerAsyncClient  = containerAsyncClient;
     }
 
     /**
@@ -58,8 +65,7 @@ public final class ContainerClient {
 
     /**
      * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the
-     * ContainerAsyncClient.
+     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
      * NewBlockBlobAsyncClient method.
@@ -75,8 +81,7 @@ public final class ContainerClient {
 
     /**
      * Creates a new {@link BlockBlobClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the
-     * ContainerAsyncClient.
+     * ContainerAsyncClient's URL. The new BlockBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
      * NewBlockBlobAsyncClient method.
@@ -94,8 +99,7 @@ public final class ContainerClient {
 
     /**
      * Creates creates a new PageBlobClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the
-     * ContainerAsyncClient.
+     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the PageBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
      * NewPageBlobAsyncClient method.
@@ -111,8 +115,7 @@ public final class ContainerClient {
 
     /**
      * Creates creates a new PageBlobClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the
-     * ContainerAsyncClient.
+     * ContainerAsyncClient's URL. The new PageBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the PageBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
      * NewPageBlobAsyncClient method.
@@ -130,8 +133,7 @@ public final class ContainerClient {
 
     /**
      * Creates creates a new AppendBlobClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new AppendBlobClient uses the same request policy pipeline as the
-     * ContainerAsyncClient.
+     * ContainerAsyncClient's URL. The new AppendBlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the AppendBlobClient and then call its WithPipeline method passing in the
      * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
@@ -139,8 +141,7 @@ public final class ContainerClient {
      * @param blobName
      *         A {@code String} representing the name of the blob.
      *
-     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this
-     *         container.
+     * @return A new {@link AppendBlobClient} object which references the blob with the specified name in this container.
      */
     public AppendBlobClient getAppendBlobClient(String blobName) {
         return new AppendBlobClient(containerAsyncClient.getAppendBlobAsyncClient(blobName));
@@ -183,7 +184,8 @@ public final class ContainerClient {
     /**
      * Initializes a {@link StorageClient} object pointing to the storage account this container is in.
      *
-     * @return A {@link StorageClient} object pointing to the specified storage account
+     * @return
+     *     A {@link StorageClient} object pointing to the specified storage account
      */
     public StorageClient getStorageClient() {
         return new StorageClient(containerAsyncClient.getStorageAsyncClient());
@@ -191,7 +193,6 @@ public final class ContainerClient {
 
     /**
      * Gets the URL of the container represented by this client.
-     *
      * @return the URL.
      */
     public URL getContainerUrl() {
@@ -212,8 +213,8 @@ public final class ContainerClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     *
-     * @return true if the container exists, false if it doesn't
+     * @return
+     *         true if the container exists, false if it doesn't
      */
     public Response<Boolean> exists(Duration timeout) {
         Mono<Response<Boolean>> response = containerAsyncClient.exists();
@@ -238,8 +239,7 @@ public final class ContainerClient {
      * @param metadata
      *         {@link Metadata}
      * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access
-     *         header
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -279,7 +279,8 @@ public final class ContainerClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @return The container properties.
+     * @return
+     *      The container properties.
      */
     public Response<ContainerProperties> getProperties() {
         return this.getProperties(null, null);
@@ -295,7 +296,8 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The container properties.
+     * @return
+     *      The container properties.
      */
     public Response<ContainerProperties> getProperties(LeaseAccessConditions leaseAccessConditions,
         Duration timeout) {
@@ -338,7 +340,8 @@ public final class ContainerClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @return The container access policy.
+     * @return
+     *      The container access policy.
      */
     public Response<ContainerAccessPolicies> getAccessPolicy() {
         return this.getAccessPolicy(null, null);
@@ -355,12 +358,13 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The container access policy.
+     * @return
+     *      The container access policy.
      */
-
     public Response<ContainerAccessPolicies> getAccessPolicy(LeaseAccessConditions leaseAccessConditions,
         Duration timeout) {
         Mono<Response<ContainerAccessPolicies>> response = containerAsyncClient.getAccessPolicy(leaseAccessConditions);
+
         return Utility.blockWithOptionalTimeout(response, timeout);
     }
 
@@ -371,8 +375,7 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
      * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access
-     *         header
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers
      *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
@@ -391,8 +394,7 @@ public final class ContainerClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
      * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access
-     *         header
+     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param identifiers
      *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
@@ -423,7 +425,8 @@ public final class ContainerClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
-     * @return The listed blobs, flattened.
+     * @return
+     *      The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions(), null);
@@ -446,13 +449,14 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The listed blobs, flattened.
+     * @return
+     *      The listed blobs, flattened.
      */
     public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
 
         return timeout == null ?
-            response.toIterable() :
+            response.toIterable():
             response.timeout(timeout).toIterable();
     }
 
@@ -469,20 +473,21 @@ public final class ContainerClient {
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
      * <p><ul>
-     * <li>foo/ (isPrefix = true)
-     * <li>bar (isPrefix = false)
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
      * <p><ul>
-     * <li>foo/foo1 (isPrefix = false)
-     * <li>foo/foo2 (isPrefix = false)
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
      * @param directory
      *         The directory to list blobs underneath
      *
-     * @return A reactive response emitting the prefixes and blobs.
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
      */
     public Iterable<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory), null);
@@ -501,14 +506,14 @@ public final class ContainerClient {
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
      * <p><ul>
-     * <li>foo/ (isPrefix = true)
-     * <li>bar (isPrefix = false)
+     *     <li>foo/ (isPrefix = true)
+     *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
      * <p><ul>
-     * <li>foo/foo1 (isPrefix = false)
-     * <li>foo/foo2 (isPrefix = false)
+     *     <li>foo/foo1 (isPrefix = false)
+     *     <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
      * @param delimiter
@@ -518,13 +523,14 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return A reactive response emitting the prefixes and blobs.
+     * @return
+     *      A reactive response emitting the prefixes and blobs.
      */
     public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
 
         return timeout == null ?
-            response.toIterable() :
+            response.toIterable():
             response.timeout(timeout).toIterable();
     }
 
@@ -533,12 +539,13 @@ public final class ContainerClient {
      * seconds, or infinite (-1).
      *
      * @param proposedId
-     *         A {@code String} in any valid GUID format. May be null.
+     *      A {@code String} in any valid GUID format. May be null.
      * @param duration
      *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
      *         never expires. A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @return The lease ID.
+     * @return
+     *      The lease ID.
      */
     public Response<String> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null, null);
@@ -560,7 +567,8 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The lease ID.
+     * @return
+     *      The lease ID.
      */
     public Response<String> acquireLease(String proposedID, int duration,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
@@ -576,7 +584,8 @@ public final class ContainerClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      *
-     * @return The renewed lease ID.
+     * @return
+     *      The renewed lease ID.
      */
     public Response<String> renewLease(String leaseID) {
         return this.renewLease(leaseID, null, null);
@@ -594,7 +603,8 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The renewed lease ID.
+     * @return
+     *      The renewed lease ID.
      */
     public Response<String> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions,
         Duration timeout) {
@@ -638,7 +648,8 @@ public final class ContainerClient {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
-     * @return The remaining time in the broken lease.
+     * @return
+     *      The remaining time in the broken lease.
      */
     public Response<Duration> breakLease() {
         return this.breakLease(null, null, null);
@@ -661,7 +672,8 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The remaining time in the broken lease.
+     * @return
+     *      The remaining time in the broken lease.
      */
     public Response<Duration> breakLease(Integer breakPeriodInSeconds,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
@@ -679,15 +691,15 @@ public final class ContainerClient {
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      *
-     * @return The new lease ID.
+     * @return
+     *      The new lease ID.
      */
     public Response<String> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null, null);
     }
 
     /**
-     * ChangeLease changes the blob's lease ID.  For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param leaseId
      *         The leaseId of the active lease on the blob.
@@ -717,7 +729,8 @@ public final class ContainerClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return The account info.
+     * @return
+     *      The account info.
      */
     public Response<StorageAccountInfo> getAccountInfo(Duration timeout) {
         Mono<Response<StorageAccountInfo>> response = containerAsyncClient.getAccountInfo();

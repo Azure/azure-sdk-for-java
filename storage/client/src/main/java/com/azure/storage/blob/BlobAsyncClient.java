@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -11,8 +10,18 @@ import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.core.implementation.util.FluxUtil;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
-
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
@@ -26,18 +35,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
- * Client to a blob of any type: block, append, or page. It may only be instantiated through a
- * {@link BlobClientBuilder} or via
- * the method {@link ContainerAsyncClient#getBlobAsyncClient(String)}. This class does not hold any state about a
- * particular
+ * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
+ * the method {@link ContainerAsyncClient#getBlobAsyncClient(String)}. This class does not hold any state about a particular
  * blob, but is instead a convenient way of sending appropriate requests to the resource on the service.
  *
  * <p>
@@ -51,8 +60,7 @@ import java.util.List;
  * and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
- * Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
  * for more information.
  *
  * <p>
@@ -70,9 +78,7 @@ public class BlobAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
-     *
-     * @param azureBlobStorageBuilder
-     *         the API client builder for blob storage API
+     * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         this.blobAsyncRawClient = new BlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
@@ -81,7 +87,8 @@ public class BlobAsyncClient {
     /**
      * Static method for getting a new builder for this class.
      *
-     * @return A new {@link BlobClientBuilder} instance.
+     * @return
+     *      A new {@link BlobClientBuilder} instance.
      */
     public static BlobClientBuilder blobClientBuilder() {
         return new BlobClientBuilder();
@@ -91,7 +98,8 @@ public class BlobAsyncClient {
      * Creates a new {@link BlockBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be block blobs.
      *
-     * @return A {@link BlockBlobAsyncClient} to this resource.
+     * @return
+     *      A {@link BlockBlobAsyncClient} to this resource.
      */
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
@@ -101,7 +109,8 @@ public class BlobAsyncClient {
      * Creates a new {@link AppendBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be append blobs.
      *
-     * @return A {@link AppendBlobAsyncClient} to this resource.
+     * @return
+     *      A {@link AppendBlobAsyncClient} to this resource.
      */
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
@@ -111,7 +120,8 @@ public class BlobAsyncClient {
      * Creates a new {@link PageBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be page blobs.
      *
-     * @return A {@link PageBlobAsyncClient} to this resource.
+     * @return
+     *      A {@link PageBlobAsyncClient} to this resource.
      */
     public PageBlobAsyncClient asPageBlobAsyncClient() {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder().url(getBlobUrl().toString()).pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()), blobAsyncRawClient.snapshot);
@@ -122,7 +132,8 @@ public class BlobAsyncClient {
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
-     * @return A {@link ContainerAsyncClient} object pointing to the container containing the blob
+     * @return
+     *     A {@link ContainerAsyncClient} object pointing to the container containing the blob
      */
     public ContainerAsyncClient getContainerAsyncClient() {
         try {
@@ -137,7 +148,6 @@ public class BlobAsyncClient {
 
     /**
      * Gets the URL of the blob represented by this client.
-     *
      * @return the URL.
      */
     public URL getBlobUrl() {
@@ -148,34 +158,34 @@ public class BlobAsyncClient {
             }
             return urlBuilder.toURL();
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
-                blobAsyncRawClient.azureBlobStorage.url()), e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), blobAsyncRawClient.azureBlobStorage.url()), e);
         }
     }
 
     /**
      * Gets if the blob this client represents exists in the cloud.
      *
-     * @return true if the blob exists, false if it doesn't
+     * @return
+     *         true if the blob exists, false if it doesn't
      */
     public Mono<Response<Boolean>> exists() {
         return this.getProperties()
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t -> t instanceof StorageException && ((StorageException) t).statusCode() == 404, t -> {
                 HttpResponse response = ((StorageException) t).response();
-                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(),
-                    false));
+                return Mono.just(new SimpleResponse<>(response.request(), response.statusCode(), response.headers(), false));
             });
     }
 
     /**
      * Copies the data at the source URL to a blob. For more information, see the <a
-     * * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
-     *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      *
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @return
+     *      A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> startCopyFromURL(URL sourceURL) {
         return this.startCopyFromURL(sourceURL, null, null, null);
@@ -183,7 +193,7 @@ public class BlobAsyncClient {
 
     /**
      * Copies the data at the source URL to a blob. For more information, see the <a
-     * * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -197,7 +207,8 @@ public class BlobAsyncClient {
      * @param destAccessConditions
      *         {@link BlobAccessConditions} against the destination.
      *
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @return
+     *      A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> startCopyFromURL(URL sourceURL, Metadata metadata,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
@@ -213,7 +224,8 @@ public class BlobAsyncClient {
      *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      *         BlobStartCopyFromURLHeaders} object.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> abortCopyFromURL(String copyId) {
         return this.abortCopyFromURL(copyId, null);
@@ -229,7 +241,8 @@ public class BlobAsyncClient {
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions) {
         return blobAsyncRawClient
@@ -243,7 +256,8 @@ public class BlobAsyncClient {
      * @param copySource
      *         The source URL to copy from.
      *
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @return
+     *      A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> copyFromURL(URL copySource) {
         return this.copyFromURL(copySource, null, null, null);
@@ -264,7 +278,8 @@ public class BlobAsyncClient {
      * @param destAccessConditions
      *         {@link BlobAccessConditions} against the destination.
      *
-     * @return A reactive response containing the copy ID for the long running operation.
+     * @return
+     *      A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> copyFromURL(URL copySource, Metadata metadata,
         ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions) {
@@ -274,18 +289,17 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient},
-     * or {@link AppendBlobClient}.
+     * Reads the entire blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
-     * @return A reactive response containing the blob data.
+     * @return
+     *      A reactive response containing the blob data.
      */
     public Mono<Response<Flux<ByteBuffer>>> download() {
         return this.download(null, null, false, null);
     }
 
     /**
-     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient},
-     * {@link PageBlobClient}, or {@link AppendBlobClient}.
+     * Reads a range of bytes from a blob. Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      *
      * @param range
      *         {@link BlobRange}
@@ -294,7 +308,8 @@ public class BlobAsyncClient {
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
      *
-     * @return A reactive response containing the blob data.
+     * @return
+     *      A reactive response containing the blob data.
      */
     public Mono<Response<Flux<ByteBuffer>>> download(BlobRange range, BlobAccessConditions accessConditions,
         boolean rangeGetContentMD5, ReliableDownloadOptions options) {
@@ -307,14 +322,13 @@ public class BlobAsyncClient {
 
     /**
      * Downloads the entire blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
-     * {@link AppendBlobClient}.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      * <p>
      * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
      * use the other overload providing the {@link BlobRange} parameter.
      *
      * @param filePath
-     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      */
     public Mono<Void> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
@@ -322,14 +336,13 @@ public class BlobAsyncClient {
 
     /**
      * Downloads a range of bytes  blob into a file specified by the path. The file will be created if it doesn't exist.
-     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or
-     * {@link AppendBlobClient}.
+     * Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
      * <p>
      * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
      * provide the {@link BlobRange} parameter.
      *
      * @param filePath
-     *         A non-null {@link OutputStream} instance where the downloaded data will be written.
+     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range
      *         {@link BlobRange}
      * @param blockSize
@@ -339,16 +352,14 @@ public class BlobAsyncClient {
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
      */
-    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize,
-        BlobAccessConditions accessConditions,
+    public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, BlobAccessConditions accessConditions,
         boolean rangeGetContentMD5, ReliableDownloadOptions options) {
         if (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE) {
             throw new IllegalArgumentException("Block size should not exceed 100MB");
         }
         return Mono.using(() -> {
                 try {
-                    return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ,
-                        StandardOpenOption.WRITE);
+                    return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -359,8 +370,7 @@ public class BlobAsyncClient {
                 .flatMap(chunk -> blobAsyncRawClient
                     .download(chunk, accessConditions, rangeGetContentMD5)
                     .subscribeOn(Schedulers.elastic())
-                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel,
-                        chunk.offset() - (range == null ? 0 : range.offset()))))
+                    .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
                 .then(),
             channel -> {
                 try {
@@ -395,7 +405,8 @@ public class BlobAsyncClient {
     /**
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> delete() {
         return this.delete(null, null);
@@ -411,7 +422,8 @@ public class BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobAccessConditions accessConditions) {
@@ -423,7 +435,8 @@ public class BlobAsyncClient {
     /**
      * Returns the blob's metadata and properties.
      *
-     * @return A reactive response containing the blob properties and metadata.
+     * @return
+     *      A reactive response containing the blob properties and metadata.
      */
     public Mono<Response<BlobProperties>> getProperties() {
         return this.getProperties(null);
@@ -435,7 +448,8 @@ public class BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return A reactive response containing the blob properties and metadata.
+     * @return
+     *      A reactive response containing the blob properties and metadata.
      */
     public Mono<Response<BlobProperties>> getProperties(BlobAccessConditions accessConditions) {
         return blobAsyncRawClient
@@ -452,7 +466,8 @@ public class BlobAsyncClient {
      * @param headers
      *         {@link BlobHTTPHeaders}
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setHTTPHeaders(BlobHTTPHeaders headers) {
         return this.setHTTPHeaders(headers, null);
@@ -469,7 +484,8 @@ public class BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions) {
         return blobAsyncRawClient
@@ -480,13 +496,13 @@ public class BlobAsyncClient {
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing
      * metadata. If old values must be preserved, they must be downloaded and included in the
-     * call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null);
@@ -495,15 +511,15 @@ public class BlobAsyncClient {
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing
      * metadata. If old values must be preserved, they must be downloaded and included in the
-     * call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * call to this method. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
      *
      * @param metadata
      *         {@link Metadata}
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata, BlobAccessConditions accessConditions) {
         return blobAsyncRawClient
@@ -514,7 +530,8 @@ public class BlobAsyncClient {
     /**
      * Creates a read-only snapshot of a blob.
      *
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return
+     *      A reactive response containing the ID of the new snapshot.
      */
     public Mono<Response<String>> createSnapshot() {
         return this.createSnapshot(null, null);
@@ -528,7 +545,8 @@ public class BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return
+     *      A reactive response containing the ID of the new snapshot.
      */
     public Mono<Response<String>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
         return blobAsyncRawClient
@@ -544,7 +562,8 @@ public class BlobAsyncClient {
      * @param tier
      *         The new tier for the blob.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setTier(AccessTier tier) {
         return this.setTier(tier, null);
@@ -561,7 +580,8 @@ public class BlobAsyncClient {
      *         By setting lease access conditions, requests will fail if the provided lease does not match the active
      *         lease on the blob.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions) {
         return blobAsyncRawClient
@@ -572,7 +592,8 @@ public class BlobAsyncClient {
     /**
      * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> undelete() {
         return blobAsyncRawClient
@@ -585,12 +606,13 @@ public class BlobAsyncClient {
      * seconds, or infinite (-1).
      *
      * @param proposedId
-     *         A {@code String} in any valid GUID format. May be null.
+     *      A {@code String} in any valid GUID format. May be null.
      * @param duration
      *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
      *         never expires. A non-infinite lease can be between 15 and 60 seconds.
      *
-     * @return A reactive response containing the lease ID.
+     * @return
+     *      A reactive response containing the lease ID.
      */
     public Mono<Response<String>> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null);
@@ -610,10 +632,10 @@ public class BlobAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return A reactive response containing the lease ID.
+     * @return
+     *      A reactive response containing the lease ID.
      */
-    public Mono<Response<String>> acquireLease(String proposedID, int duration,
-        ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
         return blobAsyncRawClient
             .acquireLease(proposedID, duration, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
@@ -625,7 +647,8 @@ public class BlobAsyncClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      *
-     * @return A reactive response containing the renewed lease ID.
+     * @return
+     *      A reactive response containing the renewed lease ID.
      */
     public Mono<Response<String>> renewLease(String leaseID) {
         return this.renewLease(leaseID, null);
@@ -641,7 +664,8 @@ public class BlobAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return A reactive response containing the renewed lease ID.
+     * @return
+     *      A reactive response containing the renewed lease ID.
      */
     public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return blobAsyncRawClient
@@ -655,7 +679,8 @@ public class BlobAsyncClient {
      * @param leaseID
      *         The leaseId of the active lease on the blob.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null);
@@ -671,7 +696,8 @@ public class BlobAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return A reactive response signalling completion.
+     * @return
+     *      A reactive response signalling completion.
      */
     public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         return blobAsyncRawClient
@@ -683,7 +709,8 @@ public class BlobAsyncClient {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
+     * @return
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Response<Integer>> breakLease() {
         return this.breakLease(null, null);
@@ -704,10 +731,10 @@ public class BlobAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return A reactive response containing the remaining time in the broken lease in seconds.
+     * @return
+     *      A reactive response containing the remaining time in the broken lease in seconds.
      */
-    public Mono<Response<Integer>> breakLease(Integer breakPeriodInSeconds,
-        ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<Response<Integer>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
         return blobAsyncRawClient
             .breakLease(breakPeriodInSeconds, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseTime()));
@@ -721,15 +748,15 @@ public class BlobAsyncClient {
      * @param proposedID
      *         A {@code String} in any valid GUID format.
      *
-     * @return A reactive response containing the new lease ID.
+     * @return
+     *      A reactive response containing the new lease ID.
      */
     public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null);
     }
 
     /**
-     * ChangeLease changes the blob's lease ID. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param leaseId
      *         The leaseId of the active lease on the blob.
@@ -742,16 +769,14 @@ public class BlobAsyncClient {
      *
      * @return A reactive response containing the new lease ID.
      */
-    public Mono<Response<String>> changeLease(String leaseId, String proposedID,
-        ModifiedAccessConditions modifiedAccessConditions) {
+    public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
         return blobAsyncRawClient
             .changeLease(leaseId, proposedID, modifiedAccessConditions)
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().leaseId()));
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account. For more information, please see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
      * @return a reactor response containing the sku name and account kind.
      */
