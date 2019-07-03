@@ -53,7 +53,7 @@ known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
-  - ['authorization/msi-auth-token-provider-jar/readme.md', '#3113']
+  - ['sdk/identity/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['eventgrid/data-plane/README.md', '#3113']
   - ['eventhubs/data-plane/readme.md', '#3113']
