@@ -23,10 +23,10 @@ public class ChangePointDetectOnTimestampResponse {
     private int periodProperty;
 
     /**
-     * Change point property. True means a change point has been detected.
+     * The closest change point's timestamp.
      */
-    @JsonProperty(value = "isChangePoint", required = true)
-    private boolean isChangePoint;
+    @JsonProperty(value = "changePoint", required = true)
+    private DateTime changePoint;
 
     /**
      * The change point confidence score.
@@ -61,22 +61,22 @@ public class ChangePointDetectOnTimestampResponse {
     }
 
     /**
-     * Get change point property. True means a change point has been detected.
+     * Get the closest change point's timestamp.
      *
-     * @return the isChangePoint value
+     * @return the changePoint value
      */
-    public boolean isChangePoint() {
-        return this.isChangePoint;
+    public DateTime changePoint() {
+        return this.changePoint;
     }
 
     /**
-     * Set change point property. True means a change point has been detected.
+     * Set the closest change point's timestamp.
      *
-     * @param isChangePoint the isChangePoint value to set
+     * @param changePoint the changePoint value to set
      * @return the ChangePointDetectOnTimestampResponse object itself.
      */
-    public ChangePointDetectOnTimestampResponse withIsChangePoint(boolean isChangePoint) {
-        this.isChangePoint = isChangePoint;
+    public ChangePointDetectOnTimestampResponse withChangePoint(DateTime changePoint) {
+        this.changePoint = changePoint;
         return this;
     }
 

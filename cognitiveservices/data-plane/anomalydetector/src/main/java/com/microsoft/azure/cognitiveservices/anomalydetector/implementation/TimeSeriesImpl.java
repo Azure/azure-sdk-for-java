@@ -690,8 +690,8 @@ public class TimeSeriesImpl implements com.microsoft.azure.cognitiveservices.ano
     }
 
     /**
-     * Detect change point for the interval series.
-     * Evaluate change point score of every series point between start and end.
+     * Detect the closest change point before the given timestamp.
+     * Evaluate change point score before the given timestamp and give the closest change point.
      *
      * @param timeSeriesId Unique id for time series.
      * @param body Timestamp is needed. Advanced model parameters can also be set in the request if needed.
@@ -705,8 +705,8 @@ public class TimeSeriesImpl implements com.microsoft.azure.cognitiveservices.ano
     }
 
     /**
-     * Detect change point for the interval series.
-     * Evaluate change point score of every series point between start and end.
+     * Detect the closest change point before the given timestamp.
+     * Evaluate change point score before the given timestamp and give the closest change point.
      *
      * @param timeSeriesId Unique id for time series.
      * @param body Timestamp is needed. Advanced model parameters can also be set in the request if needed.
@@ -719,8 +719,8 @@ public class TimeSeriesImpl implements com.microsoft.azure.cognitiveservices.ano
     }
 
     /**
-     * Detect change point for the interval series.
-     * Evaluate change point score of every series point between start and end.
+     * Detect the closest change point before the given timestamp.
+     * Evaluate change point score before the given timestamp and give the closest change point.
      *
      * @param timeSeriesId Unique id for time series.
      * @param body Timestamp is needed. Advanced model parameters can also be set in the request if needed.
@@ -737,8 +737,8 @@ public class TimeSeriesImpl implements com.microsoft.azure.cognitiveservices.ano
     }
 
     /**
-     * Detect change point for the interval series.
-     * Evaluate change point score of every series point between start and end.
+     * Detect the closest change point before the given timestamp.
+     * Evaluate change point score before the given timestamp and give the closest change point.
      *
      * @param timeSeriesId Unique id for time series.
      * @param body Timestamp is needed. Advanced model parameters can also be set in the request if needed.
