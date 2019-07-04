@@ -1,4 +1,4 @@
-# Azure Core shared library for Java
+# Azure Core client library for Java
 
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java/track2reports/index.html)
 
@@ -17,7 +17,7 @@ The main shared concepts of Azure Core (and therefore all Azure client libraries
 
 Below, you will find sections explaining these shared concepts in more detail.
 
-## Usage
+## Getting started
 
 Typically, you will not need to install or specifically depend on Azure Core, instead it will be transitively downloaded by your build tool when you depend on of the client libraries using it. In case you want to depend on it explicitly (to implement your own client library, for example), include the following Maven dependency:
 
@@ -31,7 +31,11 @@ Typically, you will not need to install or specifically depend on Azure Core, in
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
 
-## Usage Scenarios and Samples
+## Key concepts
+
+Coming soon ...
+
+## Examples
 
 ### Accessing HTTP Response Details Using `Response<T>`
 
@@ -53,6 +57,10 @@ Coming soon ...
 ### Long Running Operations with `Poller<T>`
 
 Coming soon ...
+
+## Next steps
+
+Get started with some of the Azure libraries that are [built using Azure Core](https://github.com/Azure/azure-sdk-for-java).
 
 ## Troubleshooting
 
