@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package keys;
+package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -50,17 +49,17 @@ public class ListOperationsAsync {
         // You need to check te type of keys already exist in your key vault. Let's list the keys and print their types.
         // List operations don't return the keys with key material information. So, for each returned key we call getKey to get the key with its key material information.
         keyAsyncClient.listKeys()
-          .subscribe(keyBase ->
-            keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
-                  System.out.printf("Received key with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty())));
+            .subscribe(keyBase ->
+                keyAsyncClient.getKey(keyBase).subscribe(keyResponse ->
+                    System.out.printf("Received key with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty())));
 
         Thread.sleep(15000);
 
         // We need the Cloud Rsa key with bigger key size, so you want to update the key in key vault to ensure it has the required size.
         // Calling createRsaKey on an existing key creates a new version of the key in the key vault with the new specified size.
         keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
-          .keySize(4096)
-          .expires(OffsetDateTime.now().plusYears(1))).subscribe(keyResponse ->
+            .keySize(4096)
+            .expires(OffsetDateTime.now().plusYears(1))).subscribe(keyResponse ->
                 System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
 
         Thread.sleep(2000);

@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package keys;
+package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
@@ -53,7 +52,7 @@ public class ManagingDeletedKeys {
 
         // We accidentally Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-         keyClient.recoverDeletedKey("CloudEcKey");
+        keyClient.recoverDeletedKey("CloudEcKey");
 
         //To ensure key is recovered on server side.
         Thread.sleep(30000);

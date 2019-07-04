@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package secrets;
+package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 import java.time.OffsetDateTime;
 
@@ -17,6 +16,7 @@ public class ListOperationsAsync {
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
+     * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException {
 
@@ -47,16 +47,16 @@ public class ListOperationsAsync {
         // You need to check if any of the secrets are sharing same values. Let's list the secrets and print their values.
         // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
         secretAsyncClient.listSecrets()
-          .subscribe(secretBase ->
-            secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
-                  System.out.printf("Received secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value())));
+            .subscribe(secretBase ->
+                secretAsyncClient.getSecret(secretBase).subscribe(secretResponse ->
+                    System.out.printf("Received secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value())));
 
         Thread.sleep(15000);
 
         // The bank account password got updated, so you want to update the secret in key vault to ensure it reflects the new password.
         // Calling setSecret on an existing secret creates a new version of the secret in the key vault with the new value.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "sskdjfsdasdjsd")
-          .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
+            .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
 
         Thread.sleep(2000);
