@@ -6,17 +6,6 @@ Azure Core provides shared primitives, abstractions, and helpers for modern Java
 
 Azure Core allows client libraries to expose common functionality in a consistent fashion, so that once you learn how to use these APIs in one client library, you will know how to use them in other client libraries.
 
-The main shared concepts of Azure Core (and therefore all Azure client libraries using Azure Core) include:
-
-- Configuring service clients, e.g. configuring retries, logging, etc.
-- Accessing HTTP response details (`Response<T>`).
-- Calling long running operations (`Poller<T>`).
-- Paging and asynchronous streams (`PagedFlux<T>`).
-- Exceptions for reporting errors from service requests in a consistent fashion.
-- Abstractions for representing Azure SDK credentials.
-
-Below, you will find sections explaining these shared concepts in more detail.
-
 ## Getting started
 
 Typically, you will not need to install or specifically depend on Azure Core, instead it will be transitively downloaded by your build tool when you depend on of the client libraries using it. In case you want to depend on it explicitly (to implement your own client library, for example), include the following Maven dependency:
@@ -33,7 +22,16 @@ For details on including this dependency in other build tools (Gradle, SBT, etc)
 
 ## Key concepts
 
-Coming soon ...
+The key concepts of Azure Core (and therefore all Azure client libraries using Azure Core) include:
+
+- Configuring service clients, e.g. configuring retries, logging, etc.
+- Accessing HTTP response details (`Response<T>`).
+- Calling long running operations (`Poller<T>`).
+- Paging and asynchronous streams (`PagedFlux<T>`).
+- Exceptions for reporting errors from service requests in a consistent fashion.
+- Abstractions for representing Azure SDK credentials.
+
+These will be introduced by way of the examples presented below.
 
 ## Examples
 
