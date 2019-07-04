@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package keys;
+package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
 import java.io.File;
@@ -15,11 +15,11 @@ import java.nio.file.Files;
 import java.time.OffsetDateTime;
 
 /**
- * Sample demonstrates how to asynchronously backup and restore keys in the key vault.
+ * Sample demonstrates how to backup and restore keys in the key vault.
  */
-public class BackupAndRestoreOperationsAsync {
+public class BackupAndRestoreOperations {
     /**
-     * Authenticates with the key vault and shows how to asynchronously backup and restore keys in the key vault.
+     * Authenticates with the key vault and shows how to backup and restore keys in the key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
@@ -28,55 +28,41 @@ public class BackupAndRestoreOperationsAsync {
      */
     public static void main(String[] args) throws IOException, InterruptedException, IllegalArgumentException {
 
-        // Instantiate async key client that will be used to call the service. Notice that the client is using default Azure
+        // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
-            .credential(new DefaultAzureCredential())
-            .build();
+        KeyClient keyClient = KeyClient.builder()
+                .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+                .credential(new DefaultAzureCredential())
+                .build();
 
-        // Let's create Cloud Rsa key valid for 1 year. if the key
+        // Let's create a Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
-        keyAsyncClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
+        keyClient.createRsaKey(new RsaKeyCreateOptions("CloudRsaKey")
                 .expires(OffsetDateTime.now().plusYears(1))
-                .keySize(2048))
-                .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
-
-        Thread.sleep(2000);
+                .keySize(2048));
 
         // Backups are good to have, if in case keys get accidentally deleted by you.
         // For long term storage, it is ideal to write the backup to a file.
         String backupFilePath = "YOUR_BACKUP_FILE_PATH";
-        keyAsyncClient.backupKey("CloudRsaKey").subscribe(backupResponse -> {
-            byte[] backupBytes = backupResponse.value();
-            writeBackupToFile(backupBytes, backupFilePath);
-        });
-
-        Thread.sleep(7000);
+        byte[] keyBackup = keyClient.backupKey("CloudRsaKey").value();
+        writeBackupToFile(keyBackup, backupFilePath);
 
         // The Cloud Rsa key is no longer in use, so you delete it.
-        keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-                System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+        keyClient.deleteKey("CloudRsaKey");
 
-        //To ensure file is deleted on server side.
+        //To ensure key is deleted on server side.
         Thread.sleep(30000);
 
         // If the vault is soft-delete enabled, then you need to purge the key as well for permanent deletion.
-        keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
-          System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
+        keyClient.purgeDeletedKey("CloudRsaKey");
 
-        //To ensure file is purged on server side.
+        //To ensure key is purged on server side.
         Thread.sleep(15000);
 
         // After sometime, the key is required again. We can use the backup value to restore it in the key vault.
         byte[] backupFromFile = Files.readAllBytes(new File(backupFilePath).toPath());
-        keyAsyncClient.restoreKey(backupFromFile).subscribe(keyResponse ->
-          System.out.printf("Restored Key with name %s \n", keyResponse.value().name()));
-
-        //To ensure key is restored on server side.
-        Thread.sleep(15000);
+        Key restoredKey = keyClient.restoreKey(backupFromFile).value();
     }
 
     private static void writeBackupToFile(byte[] bytes, String filePath) {

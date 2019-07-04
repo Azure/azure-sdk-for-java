@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package secrets;
+package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 import java.time.OffsetDateTime;
 
@@ -56,8 +55,8 @@ public class ManagingDeletedSecretsAsync {
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-         secretAsyncClient.recoverDeletedSecret("BankAccountPassword").subscribe(recoveredSecretResponse ->
-           System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
+        secretAsyncClient.recoverDeletedSecret("BankAccountPassword").subscribe(recoveredSecretResponse ->
+            System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
 
         //To ensure secret is recovered on server side.
         Thread.sleep(10000);
@@ -80,11 +79,11 @@ public class ManagingDeletedSecretsAsync {
         Thread.sleep(15000);
 
         // If the key vault is soft-delete enabled, then for permanent deletion  deleted secrets need to be purged.
-         secretAsyncClient.purgeDeletedSecret("StorageAccountPassword").subscribe(purgeResponse ->
-           System.out.printf("Storage account secret purge status response %d \n", purgeResponse.statusCode()));
+        secretAsyncClient.purgeDeletedSecret("StorageAccountPassword").subscribe(purgeResponse ->
+            System.out.printf("Storage account secret purge status response %d \n", purgeResponse.statusCode()));
 
-         secretAsyncClient.purgeDeletedSecret("BankAccountPassword").subscribe(purgeResponse ->
-           System.out.printf("Bank account secret purge status response %d \n", purgeResponse.statusCode()));
+        secretAsyncClient.purgeDeletedSecret("BankAccountPassword").subscribe(purgeResponse ->
+            System.out.printf("Bank account secret purge status response %d \n", purgeResponse.statusCode()));
 
         // To ensure secret is purged on server side.
         Thread.sleep(15000);

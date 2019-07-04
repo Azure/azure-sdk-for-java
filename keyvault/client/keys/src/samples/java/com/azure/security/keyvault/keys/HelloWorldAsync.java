@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package keys;
+package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -51,11 +50,11 @@ public class HelloWorldAsync {
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse -> {
-          Key key = keyResponse.value();
-          //Update the expiry time of the key.
-          key.expires(key.expires().plusYears(1));
-          keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse ->
-              System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.value().expires().toString()));
+            Key key = keyResponse.value();
+            //Update the expiry time of the key.
+            key.expires(key.expires().plusYears(1));
+            keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse ->
+                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.value().expires().toString()));
         });
 
         Thread.sleep(2000);
@@ -72,7 +71,7 @@ public class HelloWorldAsync {
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-          System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

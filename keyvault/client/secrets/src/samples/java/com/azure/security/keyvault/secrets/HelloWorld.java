@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package secrets;
+package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 import java.time.OffsetDateTime;

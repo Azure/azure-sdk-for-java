@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package keys;
+package com.azure.security.keyvault.keys;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 
@@ -60,8 +59,8 @@ public class ManagingDeletedKeysAsync {
 
         // We accidentally deleted Cloud Ec key. Let's recover it.
         // A deleted key can only be recovered if the key vault is soft-delete enabled.
-         keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
-           System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
+        keyAsyncClient.recoverDeletedKey("CloudEcKey").subscribe(recoveredKeyResponse ->
+                System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
 
         //To ensure key is recovered on server side.
         Thread.sleep(10000);
@@ -83,11 +82,11 @@ public class ManagingDeletedKeysAsync {
         Thread.sleep(15000);
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted keys need to be purged.
-         keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
-           System.out.printf("Storage account key purge status response %d \n", purgeResponse.statusCode()));
+        keyAsyncClient.purgeDeletedKey("CloudRsaKey").subscribe(purgeResponse ->
+                System.out.printf("Storage account key purge status response %d \n", purgeResponse.statusCode()));
 
-         keyAsyncClient.purgeDeletedKey("CloudEcKey").subscribe(purgeResponse ->
-           System.out.printf("Bank account key purge status response %d \n", purgeResponse.statusCode()));
+        keyAsyncClient.purgeDeletedKey("CloudEcKey").subscribe(purgeResponse ->
+                System.out.printf("Bank account key purge status response %d \n", purgeResponse.statusCode()));
 
         // To ensure key is purged on server side.
         Thread.sleep(15000);
