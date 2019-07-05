@@ -168,7 +168,7 @@ ConfigurationSetting setting = client.deleteSetting("some_key");
 
 ### General
 
-When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azconfig_rest] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
 
@@ -185,13 +185,12 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/applicationconfig/client/src
-[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [api_documentation]: https://aka.ms/java-docs
-[azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
-[maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
 [app_config_store]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
+[azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_subscription]: https://azure.microsoft.com/en-us/free/
+[maven]: https://maven.apache.org/
+[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
-[azconfig_rest]: https://github.com/Azure/AppConfiguration#rest-api-reference
+[source_code]: src
