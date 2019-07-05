@@ -10,10 +10,13 @@ str="${str}${NEWLINE}  </modules>${NEWLINE}</project>"
 cat pom.mgmt.xml.incomplete > pom.mgmt.xml
 echo "${str}" >> pom.mgmt.xml
 
+echo "#################### current directory : "
+pwd
 echo "#################### directory : "
 ls
 
 echo "#################### generated file :"
+ls -al pom*
 cat pom.mgmt.xml
 
 

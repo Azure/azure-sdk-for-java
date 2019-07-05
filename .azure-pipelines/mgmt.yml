@@ -35,7 +35,7 @@ jobs:
         displayName: 'compile'
         inputs:
           mavenPomFile: pom.mgmt.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)"'
+          options: '-Dgpg.skip  -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)"'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
