@@ -7,8 +7,6 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import javax.xml.soap.Detail;
-
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
  * <0l>
@@ -24,7 +22,6 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String CLIENT = "Client";
 
     private static boolean hasServiceClientAnnotation;
-    private static boolean notServiceClass;
 
     @Override
     public int[] getDefaultTokens() {
@@ -49,21 +46,18 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        notServiceClass = false;
+        hasServiceClientAnnotation = true;
     }
 
     @Override
     public void visitToken(DetailAST token) {
-        if (notServiceClass) {
+        if (!hasServiceClientAnnotation) {
             return;
         }
 
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 hasServiceClientAnnotation = hasServiceClientAnnotation(token);
-                if (!hasServiceClientAnnotation) {
-                    notServiceClass = true;
-                }
                 break;
             case TokenTypes.CTOR_DEF:
                 checkNonPublicOrProtectedConstructor(token);
