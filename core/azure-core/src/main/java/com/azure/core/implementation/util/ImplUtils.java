@@ -81,7 +81,7 @@ public final class ImplUtils {
      * @param collection Collection being checked for nullness or emptiness.
      * @return True if the collection is null or empty, false otherwise.
      */
-    public static boolean isNullOrEmpty(Collection collection) {
+    public static boolean isNullOrEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
     }
 
@@ -90,7 +90,7 @@ public final class ImplUtils {
      * @param map Map being checked for nullness or emptiness.
      * @return True if the map is null or empty, false otherwise.
      */
-    public static boolean isNullOrEmpty(Map map) {
+    public static boolean isNullOrEmpty(Map<?, ?> map) {
         return map == null || map.isEmpty();
     }
 

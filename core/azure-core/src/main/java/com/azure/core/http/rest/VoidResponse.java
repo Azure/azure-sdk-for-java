@@ -25,7 +25,7 @@ public final class VoidResponse extends SimpleResponse<Void> {
      *
      * @param response a response used to construct the void response.
      */
-    public VoidResponse(Response response) {
+    public VoidResponse(Response<Void> response) {
         super(response.request(), response.statusCode(), response.headers(), null);
     }
 }
