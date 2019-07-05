@@ -68,7 +68,8 @@ public final class ExponentialRetry extends Retry {
      * @return A clone of the {@link ExponentialRetry} instance.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
-    public ExponentialRetry clone() {
+    @Override
+    public Object clone() {
         return new ExponentialRetry(minBackoff, maxBackoff, getMaxRetryCount());
     }
 }

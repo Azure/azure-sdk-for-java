@@ -132,6 +132,11 @@ public abstract class Retry implements Cloneable {
         return this.calculateNextRetryInterval(lastException, remainingTime, baseWaitTime, this.getRetryCount());
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     /**
      * Allows a concrete retry policy implementation to offer a base retry interval to be used in
      * the calculations performed by 'Retry.GetNextRetryInterval'.

@@ -48,7 +48,7 @@ public class ExponentialRetryTest {
     public void retryClone() {
         // Arrange
         final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
-        final ExponentialRetry clone = retry.clone();
+        final ExponentialRetry clone = (ExponentialRetry) retry.clone();
 
         final Duration remainingTime = Duration.ofSeconds(60);
 
