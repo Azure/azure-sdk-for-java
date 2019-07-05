@@ -22,6 +22,14 @@
   <description>This package contains Microsoft Azure SDK for Media Services.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-data-sdk-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../../pom.data.xml</relativePath>
+    </parent>
+
+
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
