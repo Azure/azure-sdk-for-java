@@ -20,8 +20,8 @@ Use the client library for App Configuration to create and manage application co
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-app-configuration</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>azure-data-appconfiguration</artifactId>
+    <version>1.0.0-preview.1</version>
 </dependency>
 ```
 
