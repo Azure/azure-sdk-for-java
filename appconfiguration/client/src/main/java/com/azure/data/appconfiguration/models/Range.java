@@ -8,7 +8,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 
 /**
  * A configuration for selecting a range of revisions when retrieving configuration setting revisions from the
- * Application Configuration service.
+ * App Configuration service.
  *
  * @see ConfigurationAsyncClient#listSettingRevisions(SettingSelector)
  * @see ConfigurationClient#listSettingRevisions(SettingSelector)

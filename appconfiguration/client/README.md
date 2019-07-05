@@ -106,7 +106,7 @@ An application that has a large set of configurations that it needs to periodica
 ConfigurationAsyncClient client = new ConfigurationAsyncClient.builder()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
         .build();
-        
+
 client.listSettings(new SettingSelection().label(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```

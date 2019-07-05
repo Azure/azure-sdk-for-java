@@ -10,7 +10,7 @@ import com.azure.core.implementation.util.ImplUtils;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 /**
- * A set of options for selecting configuration settings from Application Configuration service.
+ * A set of options for selecting configuration settings from App Configuration service.
  *
  * <ul>
  *     <li>
