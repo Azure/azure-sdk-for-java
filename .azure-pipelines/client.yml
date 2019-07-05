@@ -85,7 +85,7 @@ jobs:
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'

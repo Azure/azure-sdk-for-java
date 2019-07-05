@@ -31,7 +31,7 @@ jobs:
         displayName: 'Install reporting tools'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Djava-lts -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
