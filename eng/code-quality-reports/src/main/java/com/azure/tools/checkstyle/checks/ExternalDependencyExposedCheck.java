@@ -7,6 +7,8 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,8 +95,8 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
             return;
         }
 
-        if (!modifiersToken.branchContains(TokenTypes.LITERAL_PUBLIC)
-            && !modifiersToken.branchContains(TokenTypes.LITERAL_PROTECTED)) {
+        AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        if (!accessModifier.equals(AccessModifier.PUBLIC) && !accessModifier.equals(AccessModifier.PROTECTED)) {
             return;
         }
 
