@@ -66,7 +66,7 @@ public class ConsumeEventsFromKnownSequenceNumberPosition {
         System.out.println("Waiting for partition properties to complete...");
         // Acquiring the semaphore so that this sample does not end before all the partition properties are fetched.
         semaphore.acquire();
-        System.out.printf("Last enqueued sequence number: %s\n", lastEnqueuedSequenceNumber);
+        System.out.printf("Last enqueued sequence number: %s%n", lastEnqueuedSequenceNumber);
 
         // Make sure to have at least one non-empty event hub in order to continue the sample execution
         // if you don't have an non-empty event hub, try with another example 'SendEvent' in the same directory.

@@ -1154,7 +1154,10 @@ public class JsonWebKey {
         } else if (JsonWebKeyType.EC.equals(kty)) {
             hashCode += hashCode(x);
             hashCode += hashCode(y);
-            hashCode += crv.hashCode();
+
+            if (crv != null) {
+                hashCode += crv.hashCode();
+            }
         } else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }

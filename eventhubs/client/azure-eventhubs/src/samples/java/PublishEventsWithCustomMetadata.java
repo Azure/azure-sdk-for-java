@@ -61,7 +61,7 @@ public class PublishEventsWithCustomMetadata {
         EventData secEvent = new EventData("EventData Sample 2".getBytes(UTF_8));
         secEvent.properties().put("EventType", "com.microsoft.samples.goodbye-event");
         secEvent.properties().put("priority", "17");
-        secEvent.properties().put("blob", true);
+        secEvent.properties().put("blob", 10);
 
         final Flux<EventData> data = Flux.just(firstEvent, secEvent);
 
