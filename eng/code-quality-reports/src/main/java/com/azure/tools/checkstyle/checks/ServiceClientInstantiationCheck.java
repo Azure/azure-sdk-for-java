@@ -7,6 +7,8 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import javax.xml.soap.Detail;
+
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
  * <0l>
@@ -58,7 +60,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                hasServiceClientAnnotation = checkServiceClientAnnotation(token);
+                hasServiceClientAnnotation = hasServiceClientAnnotation(token);
                 if (!hasServiceClientAnnotation) {
                     notServiceClass = true;
                 }
@@ -87,14 +89,15 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
      * @param token the CLASS_DEF AST node
      * @return true if the class is annotated with @ServiceClient, false otherwise.
      */
-    private boolean checkServiceClientAnnotation(DetailAST token) {
+    private boolean hasServiceClientAnnotation(DetailAST token) {
         DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
         if (modifiersToken != null) {
-            DetailAST annotationAST = modifiersToken.findFirstToken(TokenTypes.ANNOTATION);
-            if (annotationAST != null) {
-                DetailAST annotationIdent = annotationAST.findFirstToken(TokenTypes.IDENT);
-                if (annotationIdent != null && SERVICE_CLIENT.equals(annotationIdent.getText())) {
-                    return true;
+            for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+                if (ast.getType() == TokenTypes.ANNOTATION) {
+                    DetailAST annotationIdent = ast.findFirstToken(TokenTypes.IDENT);
+                    if (annotationIdent != null && SERVICE_CLIENT.equals(annotationIdent.getText())) {
+                        return true;
+                    }
                 }
             }
         }
