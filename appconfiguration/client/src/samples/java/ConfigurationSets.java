@@ -16,7 +16,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Sample demonstrates how to use Azure Application Configuration to switch between "beta" and "production"
+ * Sample demonstrates how to use Azure App Configuration to switch between "beta" and "production"
  * configuration sets.
  *
  * <p>
