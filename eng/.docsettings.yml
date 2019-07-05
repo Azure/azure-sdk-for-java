@@ -49,6 +49,7 @@ known_presence_issues:
   - ['cosmosdb/data-plane/gateway', '#2847']
   - ['cosmosdb/data-plane/commons', '#2847']
   - ['cosmosdb/data-plane/direct-impl', '#2847']
+  - ['sdk/loganalytics/microsoft-azure-loganalytics/samples', '#2847']
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
