@@ -11,7 +11,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -189,7 +189,6 @@ If you would like to become an active contributor to this project please follow 
 [package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [api_documentation]: https://aka.ms/java-docs
 [azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [azure_subscription]: https://azure.microsoft.com/en-us/free/
 [app_config_store]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
