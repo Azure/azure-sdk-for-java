@@ -106,7 +106,7 @@ An application that has a large set of configurations that it needs to periodica
 ConfigurationAsyncClient client = new ConfigurationAsyncClient.builder()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
         .build();
-        
+
 client.listSettings(new SettingSelection().label(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```
@@ -186,8 +186,8 @@ If you would like to become an active contributor to this project please follow 
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/applicationconfig/client/src
-[package]:not-valid-link
-[api_documentation]: not-valid-link
+[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[api_documentation]: https://aka.ms/java-docs
 [azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
 [jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
