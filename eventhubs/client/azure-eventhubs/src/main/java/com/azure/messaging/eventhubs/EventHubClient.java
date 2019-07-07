@@ -141,7 +141,7 @@ public class EventHubClient implements Closeable {
     public EventHubProducer createProducer(EventHubProducerOptions options) {
         Objects.requireNonNull(options);
 
-        final EventHubProducerOptions clonedOptions = options.clone();
+        final EventHubProducerOptions clonedOptions = (EventHubProducerOptions) options.clone();
         if (clonedOptions.timeout() == null) {
             clonedOptions.timeout(connectionOptions.timeout());
         }
