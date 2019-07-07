@@ -31,6 +31,7 @@ These preview libraries can be easily identified by their folder, package, and n
 The libraries released in the July 2019 preview:
 - [App Configuration](appconfiguration/client/README.md)
 - [Event Hubs](eventhubs/client/README.md)
+- [Identity](sdk/identity/azure-identity)
 - [Key Vault Keys](keyvault/client/keys/README.md)
 - [Key Vault Secrets](keyvault/client/secrets/README.md)
 - [Storage Blobs](storage/client/README.md)
