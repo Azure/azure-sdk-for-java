@@ -45,7 +45,7 @@ public class ExponentialRetryTest {
      * Verifies that we can clone the retry instance and it behaves the same as its original.
      */
     @Test
-    public void retryClone() {
+    public void retryCloneBehavesSame() {
         // Arrange
         final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
         final ExponentialRetry clone = (ExponentialRetry) retry.clone();
@@ -61,13 +61,35 @@ public class ExponentialRetryTest {
         final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
 
         // Assert
-        Assert.assertNotSame(retry, clone);
-
         Assert.assertNotNull(retryInterval);
         Assert.assertNotNull(cloneRetryInterval);
 
         // The retry interval for the clone will be larger because we've incremented the retry count, so it should
         // calculate a longer waiting period.
         Assert.assertTrue(cloneRetryInterval.toNanos() > retryInterval.toNanos());
+    }
+
+    @Test
+    public void retryClone() {
+        // Arrange
+        final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
+        final ExponentialRetry clone = (ExponentialRetry) retry.clone();
+
+        final Duration remainingTime = Duration.ofSeconds(60);
+
+        retry.incrementRetryCount();
+        final Duration retryInterval = retry.getNextRetryInterval(exception, remainingTime);
+
+        clone.incrementRetryCount();
+        final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
+
+        // Assert
+        Assert.assertNotSame(retry, clone);
+        Assert.assertEquals(retry, clone);
+        Assert.assertEquals(retry.hashCode(), clone.hashCode());
+
+        Assert.assertNotNull(retryInterval);
+        Assert.assertNotNull(cloneRetryInterval);
+        Assert.assertEquals(retryInterval, cloneRetryInterval);
     }
 }
