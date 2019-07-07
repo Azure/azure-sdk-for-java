@@ -6,6 +6,8 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -78,7 +80,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     *  Check if the class is annotated with @ServiceClient
+     *  Checks if the class is annotated with @ServiceClient annotation
      *
      * @param token the CLASS_DEF AST node
      * @return true if the class is annotated with @ServiceClient, false otherwise.
@@ -99,23 +101,21 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     *  Check fo public or protected constructor for the service client class.
+     *  Checks for public or protected constructor for the service client class.
      *  Log error if the service client has public or protected constructor.
      *
      * @param token the CTOR_DEF AST node
      */
     private void checkNonPublicOrProtectedConstructor(DetailAST token) {
         DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
-        if (modifiersToken != null) {
-            if (modifiersToken.branchContains(TokenTypes.LITERAL_PUBLIC)
-                || modifiersToken.branchContains(TokenTypes.LITERAL_PROTECTED)) {
-                log(modifiersToken, "Subclass of ServiceClient should not have any public or protected constructor.");
-            }
+        AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        if (accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED)) {
+            log(modifiersToken, "Subclass of ServiceClient should not have any public or protected constructor.");
         }
     }
 
-    /**
-     * Check for public static method named 'builder'. Should avoid to use method name, 'builder'.
+    /**aa
+     * Checks for public static method named 'builder'. Should avoid to use method name, 'builder'.
      *
      * @param token the METHOD_DEF AST node
      */
@@ -123,7 +123,8 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         DetailAST methodNameToken = token.findFirstToken(TokenTypes.IDENT);
         if (methodNameToken != null && BUILDER.equals(methodNameToken.getText())) {
             DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
-            if (modifiersToken.branchContains(TokenTypes.LITERAL_PUBLIC)
+            AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+            if (accessModifier.equals(AccessModifier.PUBLIC)
                 && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
                 log(modifiersToken, "Subclass of ServiceClient should not have a public static method named ''builder''.");
             }
@@ -131,16 +132,16 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     * Check for the variable field of the subclass of ServiceClient.
+     * Checks for the variable field of the subclass of ServiceClient.
      * These fields should be final because these classes supposed to be immutable class.
      *
-     * @param token the MODIFIERS AST node
+     * @param token the OBJBLOCK AST node
      */
     private void checkClassFieldFinal(DetailAST token) {
         for (DetailAST ast = token.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
             if (TokenTypes.VARIABLE_DEF == ast.getType()) {
                 DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
-                if (!modifiersToken.branchContains(TokenTypes.FINAL)) {
+                if (modifiersToken != null && !modifiersToken.branchContains(TokenTypes.FINAL)) {
                     log(modifiersToken, "The variable field of the subclass of ServiceClient should be final. These classes supposed to be immutable.");
                 }
             }
@@ -148,7 +149,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     * Check for the class name of Service Client. It class should be named <ServiceName>AsyncClient or <ServiceName>Client.
+     * Checks for the class name of Service Client. It class should be named <ServiceName>AsyncClient or <ServiceName>Client.
      *
      * @param token the LITERAL_CLASS AST node
      */
