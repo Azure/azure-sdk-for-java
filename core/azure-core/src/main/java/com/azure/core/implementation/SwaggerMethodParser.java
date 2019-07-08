@@ -309,6 +309,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                     final Object methodArgument = swaggerMethodArguments[headerSubstitution.methodParameterIndex()];
                     if (methodArgument instanceof Map) {
+                        @SuppressWarnings("unchecked")
                         final Map<String, ?> headerCollection = (Map<String, ?>) methodArgument;
                         final String headerCollectionPrefix = headerSubstitution.urlParameterName();
                         for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {

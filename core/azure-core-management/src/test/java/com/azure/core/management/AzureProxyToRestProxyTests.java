@@ -407,6 +407,7 @@ public abstract class AzureProxyToRestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }

@@ -307,6 +307,7 @@ public class SecretBase {
      * @param attributes The key value mapping of the Secret attributes
      */
     @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
     private void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));

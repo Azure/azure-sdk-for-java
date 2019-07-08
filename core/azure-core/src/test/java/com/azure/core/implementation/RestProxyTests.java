@@ -510,6 +510,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
@@ -526,6 +527,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
@@ -628,6 +630,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
@@ -646,6 +649,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {

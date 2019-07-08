@@ -132,10 +132,8 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <executions>
           <execution>
@@ -239,7 +237,8 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <additionalOptions></additionalOptions>
+              <failOnError>true</failOnError>
+              <failOnWarnings>true</failOnWarnings>
             </configuration>
           </execution>
         </executions>
@@ -466,6 +465,8 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -592,8 +593,12 @@
               <source>1.8</source>
               <target>1.8</target>
               <showWarnings>true</showWarnings>
-              <showDeprecation>true</showDeprecation>
-              <compilerArgument>-Xlint:all</compilerArgument>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+              </compilerArgs>
             </configuration>
           </plugin>
         </plugins>
@@ -617,8 +622,12 @@
               <source>11</source>
               <target>11</target>
               <showWarnings>true</showWarnings>
-              <showDeprecation>true</showDeprecation>
-              <compilerArgument>-Xlint:all</compilerArgument>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+              </compilerArgs>
             </configuration>
           </plugin>
         </plugins>
@@ -647,6 +656,9 @@
       </build>
     </profile>
 
+    <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
+      javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
+      Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
     <profile>
       <id>javadoc-doclet-compatibility</id>
       <activation>
@@ -658,10 +670,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-
-              <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
-              javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
-              Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
               <failOnWarnings>false</failOnWarnings>
 
               <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
@@ -671,6 +679,18 @@
               </additionalJOptions>
 
             </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <failOnError>false</failOnError>
+                  <failOnWarnings>false</failOnWarnings>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
