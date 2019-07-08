@@ -110,6 +110,22 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/restart")
         Observable<Response<ResponseBody>> beginRestart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances start" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/start")
+        Observable<Response<ResponseBody>> start(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances beginStart" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/start")
+        Observable<Response<ResponseBody>> beginStart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances shutdown" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/shutdown")
+        Observable<Response<ResponseBody>> shutdown(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances beginShutdown" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/shutdown")
+        Observable<Response<ResponseBody>> beginShutdown(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances enableMonitoring" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/monitoring")
         Observable<Response<ResponseBody>> enableMonitoring(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Body MonitoringDetails monitoringParameter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -982,7 +998,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void restart(String resourceGroupName, String hanaInstanceName) {
@@ -1050,7 +1066,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginRestart(String resourceGroupName, String hanaInstanceName) {
@@ -1122,11 +1138,319 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             });
     }
 
-    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void start(String resourceGroupName, String hanaInstanceName) {
+        startWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().last().body();
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> startAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> startAsync(String resourceGroupName, String hanaInstanceName) {
+        return startWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.start(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginStart(String resourceGroupName, String hanaInstanceName) {
+        beginStartWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginStartAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginStartWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginStartAsync(String resourceGroupName, String hanaInstanceName) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to start a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStartWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginStart(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginStartDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void shutdown(String resourceGroupName, String hanaInstanceName) {
+        shutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().last().body();
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> shutdownAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(shutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> shutdownAsync(String resourceGroupName, String hanaInstanceName) {
+        return shutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> shutdownWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.shutdown(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginShutdown(String resourceGroupName, String hanaInstanceName) {
+        beginShutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginShutdownAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginShutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginShutdownAsync(String resourceGroupName, String hanaInstanceName) {
+        return beginShutdownWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The operation to shutdown a SAP HANA instance.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginShutdownWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginShutdown(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginShutdownDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginShutdownDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 

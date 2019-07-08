@@ -2,17 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 
 /**
  * A configuration for selecting a range of revisions when retrieving configuration setting revisions from the
- * Application Configuration service.
+ * App Configuration service.
  *
  * @see ConfigurationAsyncClient#listSettingRevisions(SettingSelector)
  * @see ConfigurationClient#listSettingRevisions(SettingSelector)
  * @see SettingSelector#range(Range)
  */
+@Fluent
 public class Range {
     private final int start;
     private final int end;

@@ -702,7 +702,7 @@
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
-    <module>./tracing</module>
-    <module>./identity/client</module>
+    <module>./sdk/tracing</module>
+    <module>./sdk/identity/azure-identity</module>
   </modules>
 </project>
