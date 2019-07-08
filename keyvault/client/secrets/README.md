@@ -79,10 +79,10 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 
-SecretClient client = SecretClient.builder()
+SecretClient client = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildClient();
 ```
 > NOTE: For using Asynchronous client use SecretAsyncClient instead of SecretClient
 
@@ -117,10 +117,10 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
-SecretClient secretClient = SecretClient.builder()
+SecretClient secretClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildClient();
 
 Secret secret = secretClient.setSecret("secret_name", "secret_value").value();
 System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
@@ -182,10 +182,10 @@ import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.models.Secret;
 
-SecretAsyncClient secretAsyncClient = SecretAsyncClient.builder()
+SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
         .endpoint(<your-vault-url>)
         .credential(new DefaultAzureCredential())
-        .build();
+        .buildAsyncClient();
 
 secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secretResponse ->
   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));

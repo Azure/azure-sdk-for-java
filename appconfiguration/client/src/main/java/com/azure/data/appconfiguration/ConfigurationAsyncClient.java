@@ -33,11 +33,7 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
  *
- * <pre>
- * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -67,15 +63,6 @@ public final class ConfigurationAsyncClient extends ServiceClient {
 
         this.service = RestProxy.create(ConfigurationService.class, this);
         this.serviceEndpoint = serviceEndpoint.toString();
-    }
-
-    /**
-     * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
-     *
-     * @return A new {@link ConfigurationClientBuilder} to create a ConfigurationAsyncClient from.
-     */
-    public static ConfigurationClientBuilder builder() {
-        return new ConfigurationClientBuilder();
     }
 
     /**

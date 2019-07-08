@@ -20,7 +20,7 @@ import com.azure.core.util.Context;
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.applicationconfig.configurationclient.instantiation}
+ * {@codesnippet com.azure.data.applicationconfig.configurationclient.instantiation}
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -41,22 +41,13 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Creates a builder that can configure options for the ConfigurationClient before creating an instance of it.
-     *
-     * @return A new {@link ConfigurationClientBuilder} to create a ConfigurationClient.
-     */
-    public static ConfigurationClientBuilder builder() {
-        return new ConfigurationClientBuilder();
-    }
-
-    /**
      * Adds a configuration value in the service if that key does not exist.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.applicationconfig.configurationclient.addSetting#string-string}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSetting#string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.

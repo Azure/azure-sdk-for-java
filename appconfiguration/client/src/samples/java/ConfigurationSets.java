@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -50,7 +51,7 @@ public class ConfigurationSets {
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a configuration client that will be used to call the configuration service.
-        ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+        ConfigurationAsyncClient client = new ConfigurationClientBuilder()
             .credentials(new ConfigurationClientCredentials(connectionString))
             .buildAsyncClient();
 
