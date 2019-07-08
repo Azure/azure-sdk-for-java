@@ -31,20 +31,21 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient},
- * calling {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of the client.
- * It also help in instantiation of the {@link ConfigurationClient}, calling {@link ConfigurationClientBuilder#buildClient() buildClient}
- * constructs an instance of the client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient} and {@link ConfigurationClient},
+ * by calling {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} and {@link ConfigurationClientBuilder#buildClient() buildClient} respectively
+ * to constructs an instance of the desired client.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
  * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
  *
- * <pre>
- * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
+ *
+ * {@codesnippet com.azure.data.applicationconfig.configurationclient.instantiation}
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -53,10 +54,10 @@ import java.util.Objects;
  * allows for finer control on how the {@link ConfigurationAsyncClient} and {@link ConfigurationClient} it built.</p>
  *
  * <pre>
- * ConfigurationAsyncClient.builder()
+ * new ConfigurationClientBuilder()
  *     .pipeline(new HttpPipeline(policies))
  *     .serviceEndpoint(serviceEndpoint)
- *     .build();
+ *     .buildClient();
  * </pre>
  *
  * @see ConfigurationAsyncClient
@@ -83,6 +84,9 @@ public final class ConfigurationClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
 
+    /**
+     * The constructor with defaults.
+     */
     public ConfigurationClientBuilder() {
         retryPolicy = new RetryPolicy();
         httpLogDetailLevel = HttpLogDetailLevel.NONE;
@@ -94,14 +98,13 @@ public final class ConfigurationClientBuilder {
             .put(ACCEPT_HEADER, ACCEPT_HEADER_VALUE);
     }
     /**
-     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code build()} is
-     * called, a new instance of {@link ConfigurationAsyncClient} is created.
+     * Creates a {@link ConfigurationClient} based on options set in the Builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link ConfigurationClient} is created.
      *
      * <p>
      * If {@link ConfigurationClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} are used to create the
-     * {@link ConfigurationClient client}. All other builder settings are ignored.
-     * </p>
+     * {@link ConfigurationClient client}. All other builder settings are ignored.</p>
      *
      * @return A ConfigurationClient with the options set from the builder.
      * @throws NullPointerException If {@code serviceEndpoint} has not been set. This setting is automatically set when
@@ -115,7 +118,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code build()} is
+     * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code buildAsyncClient()} is
      * called, a new instance of {@link ConfigurationAsyncClient} is created.
      *
      * <p>
@@ -211,8 +214,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after
-     * {@link ConfigurationAsyncClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
      * @return The updated ConfigurationClientBuilder object.
@@ -241,7 +243,7 @@ public final class ConfigurationClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationAsyncClient}.
+     * {@link ConfigurationClientBuilder#serviceEndpoint(String) serviceEndpoint} to build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated ConfigurationClientBuilder object.

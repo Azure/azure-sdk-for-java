@@ -27,13 +27,8 @@ import java.util.List;
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Key keys}. The client
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * KeyClient.builder()
- *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
- *   .credential(new DefaultAzureCredential())
- *   .build()
- * </pre>
+ * <p><strong>Samples to construct the sync client</strong></p>
+ * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
  */
@@ -47,14 +42,6 @@ public final class KeyClient {
      */
     KeyClient(KeyAsyncClient client) {
         this.client = client;
-    }
-
-    /**
-     * Creates a builder that can configure options for the KeyClient before creating an instance of it.
-     * @return A new builder to create a KeyClient from.
-     */
-    public static KeyClientBuilder builder() {
-        return new KeyClientBuilder();
     }
 
     /**

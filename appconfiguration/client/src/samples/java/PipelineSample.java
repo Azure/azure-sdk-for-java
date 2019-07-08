@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -42,7 +43,7 @@ class PipelineSample {
         // Instantiate a client that will be used to call the service.
         // We add in a policy to track the type of HTTP method calls we make.
         // We also want to see the Header information of our HTTP requests, so we specify the detail level.
-        final ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+        final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .addPolicy(new HttpMethodRequestTrackingPolicy(tracker))
                 .httpLogDetailLevel(HttpLogDetailLevel.HEADERS)
