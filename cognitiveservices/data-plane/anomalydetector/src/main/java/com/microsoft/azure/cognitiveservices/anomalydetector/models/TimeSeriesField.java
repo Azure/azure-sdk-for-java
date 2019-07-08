@@ -18,8 +18,8 @@ public enum TimeSeriesField {
     /** Enum value isAnomaly. */
     IS_ANOMALY("isAnomaly"),
 
-    /** Enum value isChangePoint. */
-    IS_CHANGE_POINT("isChangePoint"),
+    /** Enum value changePoint. */
+    CHANGE_POINT("changePoint"),
 
     /** Enum value isPositiveAnomaly. */
     IS_POSITIVE_ANOMALY("isPositiveAnomaly"),
