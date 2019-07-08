@@ -50,7 +50,7 @@ public class MetricValue {
      * number of values that contributed to the average value.
      */
     @JsonProperty(value = "count")
-    private Long count;
+    private Double count;
 
     /**
      * Get the timestamp for the metric value in ISO 8601 format.
@@ -157,7 +157,7 @@ public class MetricValue {
      *
      * @return the count value
      */
-    public Long count() {
+    public Double count() {
         return this.count;
     }
 
@@ -167,7 +167,7 @@ public class MetricValue {
      * @param count the count value to set
      * @return the MetricValue object itself.
      */
-    public MetricValue withCount(Long count) {
+    public MetricValue withCount(Double count) {
         this.count = count;
         return this;
     }
