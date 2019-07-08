@@ -6,13 +6,13 @@
 <suppressions>
   <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
   https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
-  <suppress checks="RedundantModifier" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
+  <suppress checks="RedundantModifier" files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
   <suppress checks="RedundantModifier"
-            files="keyvault[/\\]data-plane[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
+            files="keyvault[/\\]microsoft-azure-.*[/\\].*[/\\](IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
 
   <!-- AutoRest generates with unused imports. Remove this suppression when:
   https://github.com/Azure/autorest.java/issues/330 is fixed. -->
-  <suppress checks="UnusedImports" files="batch[/\\]data-plane[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
+  <suppress checks="UnusedImports" files="batch[/\\]microsoft-azure-batch[/\\].*[/\\]batch[/\\]protocol[/\\].*\.java"/>
 
   <!-- Add Javadoc suppression for any test files (ie. ones that live under src/test/java). -->
   <suppress checks="Javadoc" files="src[/\\]test[/\\]java[/\\].*.java"/>

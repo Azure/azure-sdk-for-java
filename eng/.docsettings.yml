@@ -2,7 +2,7 @@ omitted_paths:
   - archive/*
   - profiles/*
   - loganalytics/data-plane/samples/*
-  - applicationinsights/data-plane/samples/*
+  - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - "*/resource-manager/*"
   - eng/*
 language: java
@@ -34,11 +34,11 @@ known_presence_issues:
   - ['cognitiveservices/data-plane/vision/customvision/prediction', '#2847']
   - ['cognitiveservices/data-plane/vision/customvision/training', '#2847']
   - ['cognitiveservices/data-plane/vision/faceapi', '#2847']
-  - ['keyvault/data-plane/azure-keyvault', '#2847']
-  - ['keyvault/data-plane/azure-keyvault-core', '#2847']
-  - ['keyvault/data-plane/azure-keyvault-cryptography', '#2847']
-  - ['keyvault/data-plane/azure-keyvault-extensions', '#2847']
-  - ['keyvault/data-plane/azure-keyvault-webkey', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-cryptography', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-extensions', '#2847']
+  - ['sdk/keyvault/microsoft-azure-keyvault-webkey', '#2847']
   - ['mediaservices/data-plane', '#2847']
   - ['core/build-tools', '#2847']
   - ['core/azure-core', '#2847']
@@ -52,13 +52,13 @@ known_presence_issues:
 known_content_issues:
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['README.md', '#3113']
-  - ['applicationinsights/data-plane/README.md', '#3113']
+  - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['authorization/msi-auth-token-provider-jar/readme.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['eventgrid/data-plane/README.md', '#3113']
   - ['eventhubs/data-plane/readme.md', '#3113']
   - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
-  - ['keyvault/data-plane/README.md', '#3113']
+  - ['sdk/keyvault/README.md', '#3113']
   - ['loganalytics/data-plane/README.md', '#3113']
   - ['sdk/servicebus/README.md', '#3113']
   - ['storage/data-plane/README.md', '#3113']

@@ -168,7 +168,7 @@ public class ConfigurationSetting {
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration
      * service.
      *
      * @return true if locked; false otherwise.
