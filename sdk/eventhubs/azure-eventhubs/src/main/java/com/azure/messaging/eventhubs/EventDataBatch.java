@@ -26,7 +26,8 @@ import java.util.Objects;
  * A class for aggregating EventData into a single, size-limited, batch that will be treated as a single message when
  * sent to the Azure Event Hubs service.
  */
-final class EventDataBatch {
+public final class EventDataBatch {
+    private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
@@ -43,12 +44,24 @@ final class EventDataBatch {
         this.eventBytes = new byte[maxMessageSize];
     }
 
+    /**
+     * Gets the number of {@link EventData events} in the batch.
+     *
+     * @return The number of {@link EventData events} in the batch.
+     */
     int getSize() {
         return events.size();
     }
 
-    boolean tryAdd(final EventData eventData) {
-
+    /**
+     * Tries to add an {@link EventData eventData} to the batch.
+     *
+     * @param eventData The {@link EventData} to add to the batch.
+     * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
+     *         the batch.
+     * @throws IllegalArgumentException if {@code eventData} is {@code null}.
+     */
+    public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");
         }
@@ -58,16 +71,19 @@ final class EventDataBatch {
             size = getSize(eventData, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
             throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024),
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
                 contextProvider.getErrorContext());
         }
 
-        if (this.currentSize + size > this.maxMessageSize) {
-            return false;
+        synchronized (lock) {
+            if (this.currentSize + size > this.maxMessageSize) {
+                return false;
+            }
+
+            this.currentSize += size;
         }
 
         this.events.add(eventData);
-        this.currentSize += size;
         return true;
     }
 
