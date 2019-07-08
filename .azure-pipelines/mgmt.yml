@@ -35,7 +35,7 @@ jobs:
         displayName: 'compile'
         inputs:
           mavenPomFile: pom.mgmt.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip clean'
+          options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip --debug clean'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
