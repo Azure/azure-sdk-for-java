@@ -6,11 +6,15 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorContext;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
+import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -20,6 +24,9 @@ import com.azure.messaging.eventhubs.implementation.ReactorConnection;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
 import com.azure.messaging.eventhubs.implementation.StringUtil;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,23 +38,28 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
+import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+
 /**
  * The main point of interaction with Azure Event Hubs, the client offers a connection to a specific Event Hub within
  * the Event Hubs namespace and offers operations for sending event data, receiving events, and inspecting the connected
  * Event Hub.
  *
- * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
  *
- * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
  * @see EventHubClientBuilder
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-public class EventHubClient implements Closeable {
+@ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
+public class EventHubAsyncClient implements Closeable {
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -56,7 +68,7 @@ public class EventHubClient implements Closeable {
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s/ConsumerGroups/%s/Partitions/%s";
     private static final String SENDER_ENTITY_PATH_FORMAT = "%s/Partitions/%s";
 
-    private final ClientLogger logger = new ClientLogger(EventHubClient.class);
+    private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final String connectionId;
     private final Mono<EventHubConnection> connectionMono;
     private final AtomicBoolean hasConnection = new AtomicBoolean(false);
@@ -65,7 +77,7 @@ public class EventHubClient implements Closeable {
     private final EventHubProducerOptions defaultProducerOptions;
     private final EventHubConsumerOptions defaultConsumerOptions;
 
-    EventHubClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
+    EventHubAsyncClient(ConnectionOptions connectionOptions, ReactorProvider provider, ReactorHandlerProvider handlerProvider) {
         Objects.requireNonNull(connectionOptions);
         Objects.requireNonNull(provider);
         Objects.requireNonNull(handlerProvider);
@@ -91,6 +103,7 @@ public class EventHubClient implements Closeable {
      *
      * @return The set of information for the Event Hub that this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getProperties() {
         return connectionMono.flatMap(connection -> connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties));
     }
@@ -100,6 +113,7 @@ public class EventHubClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getProperties().flatMapMany(properties -> Flux.fromArray(properties.partitionIds()));
     }
@@ -111,6 +125,7 @@ public class EventHubClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return connectionMono.flatMap(
             connection -> connection.getManagementNode().flatMap(node -> {
@@ -249,7 +264,7 @@ public class EventHubClient implements Closeable {
             return connection.createSession(entityPath).cast(EventHubSession.class);
         }).flatMap(session -> {
             logger.info("Creating consumer.");
-            return session.createConsumer(linkName, entityPath, eventPosition.getExpression(), connectionOptions.timeout(),
+            return session.createConsumer(linkName, entityPath, getExpression(eventPosition), connectionOptions.timeout(),
                 clonedOptions.retry(), options.ownerLevel(), options.identifier()).cast(AmqpReceiveLink.class);
         });
 
@@ -273,6 +288,32 @@ public class EventHubClient implements Closeable {
                     new ErrorContext(connectionOptions.host()));
             }
         }
+    }
+
+    private static String getExpression(EventPosition eventPosition) {
+        final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
+
+        // order of preference
+        if (eventPosition.offset() != null) {
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.offset());
+        }
+
+        if (eventPosition.sequenceNumber() != null) {
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, eventPosition.sequenceNumber());
+        }
+
+        if (eventPosition.enqueuedDateTime() != null) {
+            String ms;
+            try {
+                ms = Long.toString(eventPosition.enqueuedDateTime().toEpochMilli());
+            } catch (ArithmeticException ex) {
+                ms = Long.toString(Long.MAX_VALUE);
+            }
+
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
+        }
+
+        throw new IllegalArgumentException("No starting position was set.");
     }
 
     private static class ResponseMapper implements AmqpResponseMapper {

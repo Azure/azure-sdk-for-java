@@ -1,18 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.AmqpConstants;
+import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventHubConsumer;
 
 import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
-
-import static com.azure.core.amqp.MessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
  * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
@@ -20,6 +18,7 @@ import static com.azure.core.amqp.MessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAM
  *
  * @see EventHubConsumer
  */
+@Immutable
 public final class EventPosition {
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
@@ -140,32 +139,43 @@ public final class EventPosition {
         return position;
     }
 
-    String getExpression() {
-        final String isInclusiveFlag = isInclusive ? "=" : "";
+    /**
+     * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is included;
+     * otherwise, the next event will be received.
+     *
+     * @return The boolean if the event will be received.
+     */
+    public boolean isInclusive() {
+        return isInclusive;
+    }
 
-        // order of preference
-        if (this.offset != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(), isInclusiveFlag, this.offset);
-        }
+    /**
+     * Gets the relative position for event in the context of the stream. The offset should not be considered a stable
+     * value, as the same offset may refer to a different event as events reach the age limit for retention and are no
+     * longer visible within the stream.
+     *
+     * @return The offset of the event within that partition.
+     */
+    public String offset() {
+        return offset;
+    }
 
-        if (this.sequenceNumber != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), isInclusiveFlag, this.sequenceNumber);
-        }
+    /**
+     * Gets the sequence number of the event.
+     *
+     * @return The sequence number of the event.
+     */
+    public Long sequenceNumber() {
+        return sequenceNumber;
+    }
 
-        if (this.enqueuedDateTime != null) {
-            String ms;
-            try {
-                ms = Long.toString(this.enqueuedDateTime.toEpochMilli());
-            } catch (ArithmeticException ex) {
-                ms = Long.toString(Long.MAX_VALUE);
-                logger.warning(
-                    "Receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
-            }
-
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), isInclusiveFlag, ms);
-        }
-
-        throw new IllegalArgumentException("No starting position was set.");
+    /**
+     * Gets the instant, in UTC, from which the next available event should be chosen..
+     *
+     * @return The instant, in UTC, from which the next available event should be chosen..
+     */
+    public Instant enqueuedDateTime() {
+        return this.enqueuedDateTime;
     }
 
     @Override
