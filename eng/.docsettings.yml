@@ -57,7 +57,7 @@ known_content_issues:
   - ['eventgrid/data-plane/README.md', '#3113']
   - ['eventhubs/data-plane/readme.md', '#3113']
   - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
-  - ['sdk/identity/microsoft-azure-authentication-msi-token-provider/readme.md', '#3113']
+  - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/readme.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['loganalytics/data-plane/README.md', '#3113']
   - ['sdk/servicebus/README.md', '#3113']
