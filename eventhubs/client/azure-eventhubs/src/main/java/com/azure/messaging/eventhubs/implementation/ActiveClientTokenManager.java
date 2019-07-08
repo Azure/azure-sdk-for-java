@@ -85,7 +85,7 @@ class ActiveClientTokenManager implements Closeable {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.asInfo().log("Scheduling refresh token task.");
+                    logger.info("Scheduling refresh token task.");
                     scheduleRefreshTokenTask(refreshIntervalMS);
                 }
 
@@ -108,7 +108,7 @@ class ActiveClientTokenManager implements Closeable {
         try {
             timer.schedule(new RefreshAuthorizationToken(), refreshIntervalInMS);
         } catch (IllegalStateException e) {
-            logger.asWarning().log("Unable to schedule RefreshAuthorizationToken task.", e);
+            logger.warning("Unable to schedule RefreshAuthorizationToken task.", e);
             hasScheduled.set(false);
         }
     }
@@ -116,25 +116,25 @@ class ActiveClientTokenManager implements Closeable {
     private class RefreshAuthorizationToken extends TimerTask {
         @Override
         public void run() {
-            logger.asInfo().log("Refreshing authorization token.");
+            logger.info("Refreshing authorization token.");
             authorize().subscribe(
                 (Long refreshIntervalInMS) -> {
 
                     if (hasDisposed.get()) {
-                        logger.asInfo().log("Token manager has been disposed of. Not rescheduling.");
+                        logger.info("Token manager has been disposed of. Not rescheduling.");
                         return;
                     }
 
-                    logger.asInfo().log("Authorization successful. Refreshing token in {} ms.", refreshIntervalInMS);
+                    logger.info("Authorization successful. Refreshing token in {} ms.", refreshIntervalInMS);
                     sink.next(AmqpResponseCode.ACCEPTED);
 
                     scheduleRefreshTokenTask(refreshIntervalInMS);
                 }, error -> {
                     if ((error instanceof AmqpException) && ((AmqpException) error).isTransient()) {
-                        logger.asError().log("Error is transient. Rescheduling authorization task.", error);
+                        logger.error("Error is transient. Rescheduling authorization task.", error);
                         scheduleRefreshTokenTask(lastRefreshInterval.get());
                     } else {
-                        logger.asError().log("Error occurred while refreshing token that is not retriable. Not scheduling"
+                        logger.error("Error occurred while refreshing token that is not retriable. Not scheduling"
                             + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
                         hasScheduled.set(false);
                     }

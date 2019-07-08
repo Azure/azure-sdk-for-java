@@ -76,11 +76,13 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>tracing-opentelemetry</artifactId>
-      <version>${version}</version>
-    </dependency>
+    <!-- Tracing will be built and released separately. Removing tracing dependency
+     until we finalize dependency composition -->
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>tracing-opentelemetry</artifactId>-->
+<!--      <version>${version}</version>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>

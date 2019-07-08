@@ -49,7 +49,7 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.asVerbose().log("onLinkLocalOpen senderName[{}], linkName[{}], localTarget[{}]",
+            logger.verbose("onLinkLocalOpen senderName[{}], linkName[{}], localTarget[{}]",
                 senderName, link.getName(), link.getTarget());
         }
     }
@@ -59,14 +59,14 @@ public class SendLinkHandler extends LinkHandler {
         final Link link = event.getLink();
         if (link instanceof Sender) {
             if (link.getRemoteTarget() != null) {
-                logger.asInfo().log("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[{}]",
+                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[{}]",
                     senderName, link.getName(), link.getRemoteTarget());
 
                 if (isFirstFlow.getAndSet(false)) {
                     onNext(EndpointState.ACTIVE);
                 }
             } else {
-                logger.asInfo().log("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[null], remoteSource[null], action[waitingForError]",
+                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[null], remoteSource[null], action[waitingForError]",
                     senderName, link.getName());
             }
         }
@@ -81,7 +81,7 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         creditSink.next(sender.getRemoteCredit());
 
-        logger.asVerbose().log("onLinkFlow senderName[{}], linkName[{}], unsettled[{}], credit[{}]",
+        logger.verbose("onLinkFlow senderName[{}], linkName[{}], unsettled[{}], credit[{}]",
             senderName, sender.getName(), sender.getUnsettled(), sender.getCredit());
     }
 
@@ -92,7 +92,7 @@ public class SendLinkHandler extends LinkHandler {
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
-            logger.asInfo().log("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], delivery.isBuffered[{}], delivery.id[{}]",
+            logger.info("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], delivery.isBuffered[{}], delivery.id[{}]",
                 senderName, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
                 delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(), StandardCharsets.UTF_8));
 
