@@ -66,7 +66,7 @@ ConfigurationClient client = new ConfigurationClientBuilder()
 or
 
 ```Java
-ConfigurationAsyncClient client =new ConfigurationClientBuilder()
+ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
         .buildAsyncClient();
 ```
@@ -86,7 +86,7 @@ The client performs the interactions with the App Configuration service, getting
 An application that needs to retrieve startup configurations is better suited using the syncrhonous client, for example setting up a SQL connection.
 
 ```Java
-ConfigurationClient client = new ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClient()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildClient();
 

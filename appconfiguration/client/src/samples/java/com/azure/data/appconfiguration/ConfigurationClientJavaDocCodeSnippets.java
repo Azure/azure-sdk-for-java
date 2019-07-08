@@ -20,11 +20,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public ConfigurationAsyncClient createAsyncConfigurationClient() {
         try {
             String connectionString = getConnectionString();
-            // BEGIN: com.azure.applicationconfig.async.configurationclient.instantiation
+            // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
             ConfigurationAsyncClient  configurationAsyncClient = new ConfigurationClientBuilder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .buildAsyncClient();
-            // END: com.azure.applicationconfig.async.configurationclient.instantiation
+            // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
             return configurationAsyncClient;
         } catch (GeneralSecurityException ex) {
             throw new IllegalStateException("Failed to create configuration client credentials", ex);
@@ -39,11 +39,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public ConfigurationClient createSyncConfigurationClient() {
         try {
             String connectionString = getConnectionString();
-            // BEGIN: com.azure.applicationconfig.configurationclient.instantiation
+            // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
             ConfigurationClient configurationClient = new ConfigurationClientBuilder()
                 .credentials(new ConfigurationClientCredentials(connectionString))
                 .buildClient();
-            // END: com.azure.applicationconfig.configurationclient.instantiation
+            // END: com.azure.data.applicationconfig.configurationclient.instantiation
             return configurationClient;
         } catch (GeneralSecurityException ex) {
             throw new IllegalStateException("Failed to create configuration client credentials", ex);
@@ -55,11 +55,11 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void addSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.applicationconfig.configurationclient.addSetting#string-string
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
         ConfigurationSetting configurationSetting = configurationClient
             .addSetting("prodDBConnection", "db_connection").value();
         System.out.printf("Key: %s, Value: %s %n", configurationSetting.key(), configurationSetting.value());
-        // END: com.azure.applicationconfig.configurationclient.addSetting#string-string
+        // END: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
     }
 
     /**

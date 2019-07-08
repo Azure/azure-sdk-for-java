@@ -31,22 +31,21 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient},
- * calling {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of the client.
- * It also help in instantiation of the {@link ConfigurationClient}, calling {@link ConfigurationClientBuilder#buildClient() buildClient}
- * constructs an instance of the client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient} and {@link ConfigurationClient},
+ * by calling {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} and {@link ConfigurationClientBuilder#buildClient() buildClient} respectively
+ * to constructs an instance of the desired client.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
  * construct a client, set the ConfigurationClientCredentials with {@link ConfigurationClientBuilder#credentials(ConfigurationClientCredentials) this}.</p>
  *
- * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
+ * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.applicationconfig.async.configurationclient.instantiation}
+ * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.applicationconfig.configurationclient.instantiation}
+ * {@codesnippet com.azure.data.applicationconfig.configurationclient.instantiation}
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -215,8 +214,7 @@ public final class ConfigurationClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after
-     * {@link ConfigurationAsyncClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
      * @return The updated ConfigurationClientBuilder object.

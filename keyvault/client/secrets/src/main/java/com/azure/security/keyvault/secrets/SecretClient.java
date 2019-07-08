@@ -20,7 +20,7 @@ import java.util.List;
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.keyvault.secretclient.sync.construct}
+ * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
  *
  * @see SecretClientBuilder
  */
@@ -116,7 +116,7 @@ public final class SecretClient {
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
-     * {@codesnippet com.azure.keyvault.secretclient.getSecret#secretBase}
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.

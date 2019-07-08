@@ -35,7 +35,7 @@ import com.azure.core.exception.HttpRequestException;
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the async client</strong></p>
- * {@codesnippet com.azure.keyvault.secretclient.async.construct}
+ * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
  *
  * @see SecretClientBuilder
  */

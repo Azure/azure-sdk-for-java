@@ -33,7 +33,7 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
  *
- * {@codesnippet com.azure.applicationconfig.async.configurationclient.instantiation}
+ * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *

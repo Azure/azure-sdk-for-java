@@ -23,38 +23,29 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link KeyAsyncClient secret async client},
- * calling {@link KeyClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of the client.
- * It also aids instantiation of the {@link KeyClient secret sync client}, calling {@link KeyClientBuilder#buildClient() buildClient}
- * constructs an instance of the client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link KeyAsyncClient secret async client} and {@link KeyClient secret sync client},
+ * by calling {@link KeyClientBuilder#buildAsyncClient() buildAsyncClient} and {@link KeyClientBuilder#buildClient() buildClient} respectively
+ * It constructs an instance of the desired client.
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link KeyAsyncClient}
+ * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
  * {@codesnippet com.azure.keyvault.keys.async.keyclient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
- * <pre>
- * KeyAsyncClient secretAsyncClient = KeyAsyncClient.builder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(new DefaultAzureCredential())
- *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
- *   .addPolicy(customPolicyOne)
- *   .addPolicy(customPolicyTwo)
- *   .httpClient(client)
- *   .buildAsyncClient();
- * </pre>
+
+ * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
- * can be specified. It provides finer control over the construction of {@link KeyAsyncClient client}</p>
+ * can be specified. It provides finer control over the construction of {@link KeyAsyncClient} and {@link KeyClient}</p>
  *
- * {@codesnippet com.azure.keyvault.keys.async.keyclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation}
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link KeyClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyAsyncClient
  * @see KeyClient
@@ -144,13 +135,13 @@ public final class KeyClientBuilder {
     /**
      * Sets the vault endpoint url to send HTTP requests to.
      *
-     * @param endPoint The vault endpoint url is used as destination on Azure to send requests to.
+     * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
      * @return the updated Builder object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public KeyClientBuilder endpoint(String endPoint) {
+    public KeyClientBuilder endpoint(String endpoint) {
         try {
-            this.endpoint = new URL(endPoint);
+            this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
         }
@@ -186,8 +177,7 @@ public final class KeyClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after
-     * {@link KeyAsyncClient} required policies.
+     * Adds a policy to the set of existing policies that are executed after {@link KeyAsyncClient} and {@link KeyClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
      * @return the updated Builder object.

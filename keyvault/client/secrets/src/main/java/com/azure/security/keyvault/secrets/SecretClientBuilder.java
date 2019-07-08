@@ -23,35 +23,27 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretAsyncClient secret async client},
- * calling {@link SecretClientBuilder#buildAsyncClient() buildAsyncClient} constructs an instance of the client.
- * It also help instantiation of the {@link SecretClient secret client}, calling {@link SecretClientBuilder#buildClient() buildClient} constructs an instance of the client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link SecretAsyncClient secret async client} and {@link SecretClient secret client},
+ * by calling {@link SecretClientBuilder#buildAsyncClient() buildAsyncClient} and {@link SecretClientBuilder#buildClient() buildClient} respectively.
+ * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.keyvault.secretclient.async.construct}
+ * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.keyvault.secretclient.sync.construct}
+ * {@codesnippet com.azure.security.keyvault.secretclient.sync.construct}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link SecretClientBuilder}.</p>
- * <pre>
- * SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
- *   .endpoint("https://myvault.vault.azure.net/")
- *   .credential(new DefaultAzureCredential())
- *   .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
- *   .addPolicy(customPolicyOne)
- *   .addPolicy(customPolicyTwo)
- *   .httpClient(client)
- *   .buildAsyncClient();
- * </pre>
+ *
+ * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.withhttpclient.instantiation}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and {@link String endpoint}
  * can be specified. It provides finer control over the construction of {@link SecretAsyncClient client}</p>
 
- * {@codesnippet com.azure.keyvault.keys.async.secretclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
  * @see SecretAsyncClient
