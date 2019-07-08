@@ -145,7 +145,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                         logger.info("Response body:\n{}", bodyStr);
                         logger.info("<-- END HTTP");
                         return bufferedResponse;
-                    });
+                    }).switchIfEmpty(Mono.defer(() -> Mono.just(bufferedResponse)));
                 } else {
                     logger.info("(body content not logged)");
                     logger.info("<-- END HTTP");
