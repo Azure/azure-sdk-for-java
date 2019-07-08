@@ -60,7 +60,7 @@ public final class ConfigurationAsyncClient {
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
      * Each service call goes through the {@code pipeline}.
      *
-     * @param serviceEndpoint URL for the Application configuration service.
+     * @param serviceEndpoint URL for the App Configuration service.
      * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
     ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
