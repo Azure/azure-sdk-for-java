@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.function.Function;
+import com.azure.core.util.polling.PollResponse.OperationStatus;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link Poller}
@@ -48,9 +49,9 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void initialize() {
         PollResponse<String> finalPollResponse =
-            new PollResponse<String>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
+            new PollResponse<String>(OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
         PollResponse<String> inProgressResp =
-            new PollResponse<String>(PollResponse.OperationStatus.IN_PROGRESS, "Operation in progress.");
+            new PollResponse<String>(OperationStatus.IN_PROGRESS, "Operation in progress.");
 
         long totalTimeoutInMillis = 1000 * 2;
         // BEGIN: com.azure.core.util.polling.poller.initialize.interval.polloperation
@@ -85,9 +86,9 @@ public final class PollerJavaDocCodeSnippets {
      */
     public void initializeAndSubscribe() {
         PollResponse<String> finalPollResponse =
-            new PollResponse<String>(PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
+            new PollResponse<String>(OperationStatus.SUCCESSFULLY_COMPLETED, ("Operation Completed."));
         PollResponse<String> inProgressResp =
-            new PollResponse<String>(PollResponse.OperationStatus.IN_PROGRESS, "Operation in progress.");
+            new PollResponse<String>(OperationStatus.IN_PROGRESS, "Operation in progress.");
 
         long totalTimeoutInMillis = 1000 * 2;
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribe
@@ -177,7 +178,7 @@ public final class PollerJavaDocCodeSnippets {
         PollResponse<String> pollResponse = null;
         // We assume that we get SUCCESSFULLY_COMPLETED status from pollOperation when polling is complete.
         while (pollResponse != null
-            && pollResponse.getStatus() != PollResponse.OperationStatus.SUCCESSFULLY_COMPLETED) {
+            && pollResponse.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
             pollResponse = myPoller.poll().block();
             try {
                 // Ensure that you have sufficient wait in each poll() which is suitable for your application.
@@ -202,8 +203,8 @@ public final class PollerJavaDocCodeSnippets {
 
         PollResponse<String> pollResponse = null;
         while (pollResponse == null
-            || pollResponse.getStatus() == PollResponse.OperationStatus.IN_PROGRESS
-            || pollResponse.getStatus() == PollResponse.OperationStatus.NOT_STARTED) {
+            || pollResponse.getStatus() == OperationStatus.IN_PROGRESS
+            || pollResponse.getStatus() == OperationStatus.NOT_STARTED) {
             // get one poll Response at a time..
             pollResponse = myPoller.poll().block();
             System.out.println("Poll response status  " + pollResponse.getStatus().toString());

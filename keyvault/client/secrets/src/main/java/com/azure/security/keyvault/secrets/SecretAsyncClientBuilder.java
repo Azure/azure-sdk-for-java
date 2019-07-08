@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
@@ -59,6 +60,7 @@ import java.util.Objects;
  *
  * @see SecretAsyncClient
  */
+@ServiceClientBuilder(serviceClients = SecretAsyncClient.class)
 public final class SecretAsyncClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
@@ -126,7 +128,7 @@ public final class SecretAsyncClientBuilder {
      * Sets the vault endpoint url to send HTTP requests to.
      *
      * @param endPoint The vault endpoint url is used as destination on Azure to send requests to.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretAsyncClientBuilder} object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
     public SecretAsyncClientBuilder endpoint(String endPoint) {
@@ -142,7 +144,7 @@ public final class SecretAsyncClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretAsyncClientBuilder} object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public SecretAsyncClientBuilder credential(TokenCredential credential) {
@@ -157,7 +159,7 @@ public final class SecretAsyncClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretAsyncClientBuilder} object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public SecretAsyncClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -171,7 +173,7 @@ public final class SecretAsyncClientBuilder {
      * {@link SecretAsyncClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretAsyncClientBuilder} object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public SecretAsyncClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -184,7 +186,7 @@ public final class SecretAsyncClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretAsyncClientBuilder} object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretAsyncClientBuilder httpClient(HttpClient client) {
@@ -215,7 +217,7 @@ public final class SecretAsyncClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated SecretAsyncClientBuilder object.
+     * @return The updated {@link SecretAsyncClientBuilder} object.
      */
     public SecretAsyncClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;

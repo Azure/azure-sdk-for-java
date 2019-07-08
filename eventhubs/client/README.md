@@ -40,24 +40,60 @@ documentation][event_hubs_product_docs]
 </dependency>
 ```
 
-### Obtain a connection string
+### Methods to authorize with Event Hubs
 
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
-with it. The easiest means for doing so is to use a connection string, which is created automatically when creating an
+with it.
+
+### Create an Event Hub client using a connection String
+
+The easiest means for doing so is to use a connection string, which is created automatically when creating an
 Event Hubs namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the
 step-by-step guide to [get an Event Hubs connection string][event_hubs_connection_string].
 
-### Create an Event Hub client
-
-Once the Event Hub and connection string are available, they can be used to create a client for interacting with Azure
-Event Hubs. Create an `EventHubClient` using the `EventHubClientBuilder`:
+Once the connection string is obtained, create an `EventHubClient` using the `EventHubClientBuilder`:
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
-String eventHubName = "<< NAME OF THE EVENT HUB >>";
+String eventHubPath = "<< NAME OF THE EVENT HUB >>";
 EventHubClient client = new EventHubClientBuilder()
-    .connectionString(connectionString, eventHubName)
+    .connectionString(connectionString, eventHubPath)
     .buildAsyncClient();
+```
+
+### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
+
+Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
+platform. First, add the package:
+
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.0.0-preview.1</version>
+</dependency>
+```
+
+All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event Hubs.
+
+#### Authorizing with AAD application client secret
+
+Follow the instructions in [Creating a service principal using Azure Portal][application_client_secret] to create a
+service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principale can be
+obtained from the [App registration page][app_registration_page].
+
+```java
+ClientSecretCredential credential = new ClientSecretCredential()
+    .clientId("<< APPLICATION (CLIENT) ID >>")
+    .tenantId("<< DIRECTORY (TENANT) ID >>");
+
+// The fully qualified host name for the Event Hubs namespace. This is likely to be similar to:
+// {your-namespace}.servicebus.windows.net
+String host = "<< EVENT HUBS HOST >>"
+String eventHubPath = "<< NAME OF THE EVENT HUB >>";
+EventHubClient client = new EventHubClientBuilder()
+    .credential(host, eventHubPath, credential)
+    .build();
 ```
 
 ## Key concepts
@@ -93,8 +129,8 @@ are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version
 ## Examples
 
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-- [Publish an event to an Event Hub][sample_send_event]
-- [Consume events from an Event Hub partition][sample_receive_event]
+- [Publish an event to an Event Hub][sample_publish_event]
+- [Consume events from an Event Hub partition][sample_consume_event]
 
 ### Publish events to an Event Hub
 
@@ -151,6 +187,7 @@ consumer also needs to specify where in the event stream to begin receiving even
 reading new events as they are published.
 
 #### Consumer creation
+
 We are creating a consumer that receives events from `partitionID` and only listens to newest events that get pushed to
 the partition.
 
@@ -242,19 +279,11 @@ Beyond those discussed, the Azure Event Hubs client library offers support for m
 advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
 the following set of sample is available:
 - [Inspect Event Hub and partition properties][sample_get_event_hubs_metadata]
-<<<<<<< HEAD
-- [Publish an event to an Event Hub][sample_send_event]
-- [Publish events to a specific Event Hub partition with producer option][sample_send_producer_option]
-- [Publish events to a specific Event Hub partition with send option][sample_send_send_option]
-- [Publish events with custom metadata][sample_send_custom_event_data]
-- [Consume events from an Event Hub partition][sample_receive_event]
-=======
 - [Publish an event to an Event Hub][sample_publish_event]
 - [Publish events to a specific Event Hub partition with partition identifier][sample_publish_partition_ID]
 - [Publish events to a specific Event Hub partition with partition key][sample_publish_partition_key]
 - [Publish events with custom metadata][sample_publish_custom_meta_data]
 - [Consume events from an Event Hub partition][sample_consume_event]
->>>>>>> upstream/master
 - [Save the last read event and resume from that point][sample_sequence_number]
 
 ## Contributing
@@ -263,41 +292,33 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
+[amqp_exception]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
+[amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [api_documentation]: https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html
+[app_registration_page]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
+[application_client_secret]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
+[error_condition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
+[error_context]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
 [event_hubs_connection_string]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
 [event_hubs_create]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create
-[event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_features]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-features
-[maven]: https://maven.apache.org/
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/eventhubs/client/
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
-[amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
-[oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
-<<<<<<< HEAD
-[sample_receive_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEvent.java
-[sample_send_event]:https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEvent.java
-[sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
-[sample_send_custom_event_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendCustomEventDataList.java
-[sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ReceiveEventsFromKnownSequenceNumberPosition.java
-[sample_send_producer_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventsWithProducerOptions.java
-[sample_send_send_option]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/SendEventDataListWIthSendOption.java
-=======
-[sample_consume_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ConsumeEvent.java
-[sample_publish_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEvent.java
-[sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/GetEventHubMetadata.java
-[sample_publish_custom_meta_data]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsWithCustomMetadata.java
-[sample_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/ConsumeEventsFromKnownSequenceNumberPosition.java
-[sample_publish_partition_ID]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsToSpecificPartition.java
-[sample_publish_partition_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/samples/java/PublishEventsWithPartitionKey.java
->>>>>>> upstream/master
-[qpid_proton_j_apache]: http://qpid.apache.org/proton/
-[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[error_condition]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
-[error_context]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorContext.java
-[eventhubconsumer]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
-[eventhubclient]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
-[amqp_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
-[eventhubproduceroptions]: https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/client/azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
-[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
-[log_levels]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas
+[eventhubclient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
+[eventhubconsumer]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
+[eventhubproduceroptions]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
+[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
+[log_levels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[maven]: https://maven.apache.org/
+[oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
+[oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
+[qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[sample_consume_event]: ./azure-eventhubs/src/samples/java/ConsumeEvent.java
+[sample_get_event_hubs_metadata]: ./azure-eventhubs/src/samples/java/GetEventHubMetadata.java
+[sample_publish_custom_meta_data]: ./azure-eventhubs/src/samples/java/PublishEventsWithCustomMetadata.java
+[sample_publish_event]: ./azure-eventhubs/src/samples/java/PublishEvent.java
+[sample_publish_partition_ID]: ./azure-eventhubs/src/samples/java/PublishEventsToSpecificPartition.java
+[sample_publish_partition_key]: ./azure-eventhubs/src/samples/java/PublishEventsWithPartitionKey.java
+[sample_sequence_number]: ./azure-eventhubs/src/samples/java/ConsumeEventsFromKnownSequenceNumberPosition.java
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/eventhubs/client/

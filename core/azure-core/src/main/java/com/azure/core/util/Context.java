@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.annotation.Immutable;
 import java.util.Optional;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Optional;
  * {@code null}. Each context object is immutable. The {@code addData(Object, Object)} method creates a new
  * {@code Context} object that refers to its parent, forming a linked list.
  */
+@Immutable
 public class Context {
     // All fields must be immutable.
     //
