@@ -146,7 +146,17 @@
           <artifactId>azure-messaging-eventhubs</artifactId>
           <version>${azure-messaging-eventhubs.version}</version>
         </dependency>
+        <!-- Added this dependency to include necessary annotations used by reactor core.
+        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+        which is used in @Nullable annotation in reactor core classes -->
+        <dependency>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>jsr305</artifactId>
+          <version>3.0.2</version>
+          <scope>provided</scope>
+        </dependency>
       </dependencies>
+
       <properties>
         <client.phase>generate-sources</client.phase>
         <data.phase>none</data.phase>
