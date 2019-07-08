@@ -9402,7 +9402,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<KeyInfoInner> createOrUpdateFunctionSecretDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<KeyInfoInner>() { }.getType())
-                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(201, new TypeToken<KeyInfoInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -10081,7 +10081,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<KeyInfoInner> createOrUpdateHostSecretDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<KeyInfoInner>() { }.getType())
-                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(201, new TypeToken<KeyInfoInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -27208,7 +27208,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<KeyInfoInner> createOrUpdateFunctionSecretSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<KeyInfoInner>() { }.getType())
-                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(201, new TypeToken<KeyInfoInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -27936,7 +27936,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<KeyInfoInner> createOrUpdateHostSecretSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<KeyInfoInner>() { }.getType())
-                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(201, new TypeToken<KeyInfoInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
