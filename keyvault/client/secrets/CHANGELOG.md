@@ -30,6 +30,6 @@ only)
   
 ### `azure-keyvault` features not implemented in this library
 - Certificate management APIs
-- Crytographic operations of Keys API
+- Crytographic operations in Key management APIs
 - National cloud support. This release supports public global cloud vaults,
     e.g. https://{vault-name}.vault.azure.net
