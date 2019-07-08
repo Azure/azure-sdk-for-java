@@ -74,7 +74,7 @@ public class ClientLogger {
      *
      * @param clazz Class creating the logger.
      */
-    public ClientLogger(Class clazz) {
+    public ClientLogger(Class<?> clazz) {
         this(clazz.getName());
     }
 

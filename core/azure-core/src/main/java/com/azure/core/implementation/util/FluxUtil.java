@@ -371,7 +371,7 @@ public final class FluxUtil {
                         // use local variable to perform fewer volatile reads
                         long pos = position;
                         //
-                        int bytesWanted = (int) Math.min(bytesRead, maxRequired(pos));
+                        int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         buffer.writerIndex(bytesWanted);
                         long position2 = pos + bytesWanted;
                         //noinspection NonAtomicOperationOnVolatileField

@@ -217,7 +217,7 @@ public final class AzureProxy extends RestProxy {
 
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, createDefaultSerializer(), baseUrl);
         final AzureProxy azureProxy = new AzureProxy(httpPipeline, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, azureProxy);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface}, azureProxy);
     }
 
     @Override
