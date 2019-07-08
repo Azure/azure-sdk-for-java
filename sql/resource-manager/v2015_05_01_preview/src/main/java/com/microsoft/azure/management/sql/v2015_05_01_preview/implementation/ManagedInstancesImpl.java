@@ -126,24 +126,6 @@ class ManagedInstancesImpl extends GroupableResourcesCoreImpl<ManagedInstance, M
     }
 
     @Override
-    public Observable<ManagedInstance> listByInstancePoolAsync(final String resourceGroupName, final String instancePoolName) {
-        ManagedInstancesInner client = this.inner();
-        return client.listByInstancePoolAsync(resourceGroupName, instancePoolName)
-        .flatMapIterable(new Func1<Page<ManagedInstanceInner>, Iterable<ManagedInstanceInner>>() {
-            @Override
-            public Iterable<ManagedInstanceInner> call(Page<ManagedInstanceInner> page) {
-                return page.items();
-            }
-        })
-        .map(new Func1<ManagedInstanceInner, ManagedInstance>() {
-            @Override
-            public ManagedInstance call(ManagedInstanceInner inner) {
-                return new ManagedInstanceImpl(inner.name(), inner, manager());
-            }
-        });
-    }
-
-    @Override
     protected ManagedInstanceImpl wrapModel(ManagedInstanceInner inner) {
         return  new ManagedInstanceImpl(inner.name(), inner, manager());
     }

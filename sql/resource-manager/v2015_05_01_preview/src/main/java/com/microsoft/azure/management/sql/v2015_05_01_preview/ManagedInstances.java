@@ -22,14 +22,4 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing ManagedInstances.
  */
 public interface ManagedInstances extends SupportsCreating<ManagedInstance.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<ManagedInstance>, SupportsListingByResourceGroup<ManagedInstance>, SupportsListing<ManagedInstance>, HasInner<ManagedInstancesInner> {
-    /**
-     * Gets a list of all managed instances in an instance pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param instancePoolName The instance pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<ManagedInstance> listByInstancePoolAsync(final String resourceGroupName, final String instancePoolName);
-
 }
