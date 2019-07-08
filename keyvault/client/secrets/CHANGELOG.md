@@ -10,7 +10,7 @@ This library is not a direct replacement for `azure-keyvault`. Applications usin
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-python/tree/master/keyvault/client/secrets/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java)
 demonstrate the new API.
 
 
