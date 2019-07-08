@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package secrets;
+package com.azure.security.keyvault.secrets;
 
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import java.time.OffsetDateTime;
@@ -50,7 +49,7 @@ public class ManagingDeletedSecrets {
 
         // We accidentally deleted bank account secret. Let's recover it.
         // A deleted secret can only be recovered if the key vault is soft-delete enabled.
-         client.recoverDeletedSecret("BankAccountPassword");
+        client.recoverDeletedSecret("BankAccountPassword");
 
         //To ensure secret is recovered on server side.
         Thread.sleep(30000);

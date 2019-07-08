@@ -5,10 +5,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-identity-service</artifactId>
+  <artifactId>azure-keyvault-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>azure-identity</module>
+    <module>microsoft-azure-keyvault</module>
+    <module>microsoft-azure-keyvault-core</module>
+    <module>microsoft-azure-keyvault-webkey</module>
+    <module>microsoft-azure-keyvault-cryptography</module>
+    <module>microsoft-azure-keyvault-extensions</module>
+    <module>microsoft-azure-keyvault-complete</module>
   </modules>
 </project>

@@ -11,8 +11,8 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.1.0</version>
-    <relativePath>../../pom.client.xml</relativePath>
+    <version>1.0.0</version>
+    <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
   <dependencies>
