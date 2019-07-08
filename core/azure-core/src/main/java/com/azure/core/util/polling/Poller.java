@@ -59,7 +59,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
  */
 public class Poller<T> {
 
-    ClientLogger logger = new ClientLogger(Poller.class);
+    private final ClientLogger logger = new ClientLogger(Poller.class);
     /*
      * poll operation is a function that takes the previous PollResponse, and
      * returns a new Mono of PollResponse to represent the current state

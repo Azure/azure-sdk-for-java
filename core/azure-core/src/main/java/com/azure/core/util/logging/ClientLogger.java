@@ -171,7 +171,7 @@ public class ClientLogger {
 
         // it will only log if log level is enabled in configuration
         if (canLogAtLevel(level)) {
-            logger.error("", runtimeException);
+            logger.error(runtimeException.getMessage(), runtimeException);
         }
         throw runtimeException;
     }
