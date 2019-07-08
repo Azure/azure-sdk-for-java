@@ -1,4 +1,4 @@
-# Azure Storage Blobs client library for JAVA
+# Azure Storage Blobs client library for Java
 
 > Server Version: 2018-11-09
 
