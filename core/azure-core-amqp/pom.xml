@@ -40,7 +40,7 @@
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>

@@ -58,7 +58,7 @@ public abstract class HttpResponse implements Closeable {
      *     .reduce((x,y) -> x + y)
      *     .subscribeOn(Schedulers.io())
      *     .observeOn(Schedulers.io())
-     *     .blockingGet();
+     *     ;
      * }
      * </pre>
      * <p>

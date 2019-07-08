@@ -408,7 +408,7 @@
         <version>${spock-core.version}</version>
       </dependency>
 
-     <dependency>
+      <dependency>
         <groupId>cglib</groupId>
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib-nodep.version}</version>
