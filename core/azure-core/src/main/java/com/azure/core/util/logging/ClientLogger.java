@@ -35,11 +35,6 @@ public class ClientLogger {
     private final Logger logger;
 
     /*
-     * Indicate that log level is at trace level.
-     */
-    private static final int TRACE_LEVEL = 0;
-
-    /*
      * Indicate that log level is at verbose level.
      */
     private static final int VERBOSE_LEVEL = 1;
@@ -63,8 +58,6 @@ public class ClientLogger {
      * Indicate that logging is disabled.
      */
     private static final int DISABLED_LEVEL = 5;
-
-    private static final int DEFAULT_LOG_LEVEL = DISABLED_LEVEL;
 
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
@@ -144,29 +137,11 @@ public class ClientLogger {
         log(ERROR_LEVEL, format, args);
     }
 
-    /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code default} log level
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>
-     * Logging a message at default log level
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.log("A message");
-     * </pre>
-     *
-     * @param format The formattable message
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
-     */
-    public void log(String format, Object... args) {
-        log(DEFAULT_LOG_LEVEL, format, args);
-    }
-
-    /**
+    /*
      * This method logs the formattable message if the {@code logLevel} is enabled
      *
      * @param logLevel The log level at which this message should be logged
-     * @param format The formattable message
+     * @param format The formattable message to log
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void log(int logLevel, String format, Object... args) {
@@ -175,7 +150,7 @@ public class ClientLogger {
         }
     }
 
-    /**
+    /*
      * Performs the logging.
      *
      * @param format formattable message.
@@ -206,7 +181,7 @@ public class ClientLogger {
         }
     }
 
-    /**
+    /*
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
      * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
@@ -232,7 +207,7 @@ public class ClientLogger {
         }
     }
 
-    /**
+    /*
      * Removes the last element from the arguments if it is a throwable.
      *
      * @param args Arguments
