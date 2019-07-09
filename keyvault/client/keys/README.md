@@ -12,7 +12,7 @@ Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key 
 Maven dependency for Azure Key Client library. Add it to your project's pom file.
 ```xml
 <dependency>
-    <groupId>com.azure.security</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-keys</artifactId>
     <version>4.0.0-preview.1</version>
 </dependency>
