@@ -128,10 +128,8 @@ The `ChainedTokenCredential` class provides the ability to link together multipl
 import com.azure.identity.credential.ClientSecretCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 
-ClientSecretcredential firstServicePrincipal = new ClientSecretCredential()
-	    .clientId("<YOUR_CLIENT_ID>")
-	    .clientSecret("<YOUR_CLIENT_SECRET>")
-	    .tenantId("<YOUR_TENANT_ID>");
+ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredential()
+        .clientId("<YOUR_CLIENT_ID>");
 
 ClientSecretcredential secondServicePrincipal = new ClientSecretCredential()
 	    .clientId("<YOUR_CLIENT_ID>")
@@ -142,7 +140,7 @@ ClientSecretcredential secondServicePrincipal = new ClientSecretCredential()
 // credential in order, stopping when one provides a token
 
 ChainedTokenCredential credentialChain = new ChainedTokenCredential()
-		.addLast(firstServicePrincipal)
+		.addLast(managedIdentityCredential)
 		.addLast(secondServicePrincipal);
 
 // the chain can be used anywhere a credential is required
@@ -153,7 +151,7 @@ String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
 EventHubClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credentialChain)
-    .build();
+    .buildAsyncClient();
 ```
 
 ## Troubleshooting
