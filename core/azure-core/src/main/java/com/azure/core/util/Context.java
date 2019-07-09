@@ -4,6 +4,8 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.implementation.util.ImplUtils;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -61,6 +63,22 @@ public class Context {
             throw new IllegalArgumentException("key cannot be null");
         }
         return new Context(this, key, value);
+    }
+
+    public static Context of(Map<Object, Object> keyValues) {
+        if (ImplUtils.isNullOrEmpty(keyValues)) {
+            throw new IllegalArgumentException("Key value map cannot be null or empty");
+        }
+
+        Context context = null;
+        for (Map.Entry<Object, Object> entry : keyValues.entrySet()) {
+            if (context == null) {
+                context = new Context(entry.getKey(), entry.getValue());
+            } else {
+                context = context.addData(entry.getKey(), entry.getValue());
+            }
+        }
+        return context;
     }
 
     /**
