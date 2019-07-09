@@ -173,8 +173,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -187,8 +187,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.

@@ -23,14 +23,15 @@ public final class ListContainersOptions {
     }
 
     /**
-     * {@link ContainerListDetails}
+     * @return the details for listing specific containers
      */
     public ContainerListDetails details() {
         return details;
     }
 
     /**
-     * {@link ContainerListDetails}
+     * @param details The details for listing specific containers
+     * @return the updated ListContainersOptions object
      */
     public ListContainersOptions details(ContainerListDetails details) {
         this.details = details;
@@ -38,14 +39,19 @@ public final class ListContainersOptions {
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     * Filters the results to return only blobs whose names begin with the specified prefix.
+     *
+     * @return the prefix a container must start with to be returned
      */
     public String prefix() {
         return prefix;
     }
 
     /**
-     * Filters the results to return only blobs whose names begin with the specified prefix.     *
+     * Filters the results to return only blobs whose names begin with the specified prefix.
+     *
+     * @param prefix The prefix that a container must match to be returned
+     * @return the updated ListContainersOptions object
      */
     public ListContainersOptions prefix(String prefix) {
         this.prefix = prefix;
@@ -55,6 +61,8 @@ public final class ListContainersOptions {
     /**
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     *
+     * @return the number of containers to be returned in a single response
      */
     public Integer maxResults() {
         return maxResults;
@@ -63,6 +71,9 @@ public final class ListContainersOptions {
     /**
      * Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      * specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
+     *
+     * @param maxResults The number of containers to return in a single response
+     * @return the updated ListContainersOptions object
      */
     public ListContainersOptions maxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {

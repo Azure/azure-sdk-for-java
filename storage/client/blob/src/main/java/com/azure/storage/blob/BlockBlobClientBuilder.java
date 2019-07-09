@@ -40,7 +40,7 @@ import java.util.Objects;
  * An instance of this builder may only be created from static method {@link BlockBlobClient#blockBlobClientBuilder()}.
  * The following information must be provided on this builder:
  *
- * <p><ul>
+ * <ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
  *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>

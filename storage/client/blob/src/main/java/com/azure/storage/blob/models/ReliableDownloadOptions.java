@@ -24,6 +24,8 @@ public final class ReliableDownloadOptions {
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
      * response body.
+     *
+     * @return the maximum number of retries to attempt before the request finally fails
      */
     public int maxRetryRequests() {
         return maxRetryRequests;
@@ -32,6 +34,10 @@ public final class ReliableDownloadOptions {
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a
      * response body.
+     *
+     * @param maxRetryRequests The number of retries to attempt before the request finally fails
+     * @return the updated ReliableDownloadOptions object
+     * @throws IllegalArgumentException If {@code maxRetryRequests} is less than 0
      */
     public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {

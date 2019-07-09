@@ -476,13 +476,15 @@ public final class ContainerClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/ (isPrefix = true)
      *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1 (isPrefix = false)
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
@@ -509,13 +511,15 @@ public final class ContainerClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/ (isPrefix = true)
      *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1 (isPrefix = false)
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
