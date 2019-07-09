@@ -234,7 +234,7 @@ public class PollerTests {
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
 
-        new Thread().sleep(6 * pollInterval.toMillis());
+        Thread.sleep(6 * pollInterval.toMillis());
         debug("Try to disable autopolling..");
         createCertPoller.setAutoPollingEnabled(false);
 
@@ -271,7 +271,7 @@ public class PollerTests {
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
 
         while (createCertPoller.getStatus() != OperationStatus.SUCCESSFULLY_COMPLETED) {
-            new Thread().sleep(pollInterval.toMillis());
+            Thread.sleep(pollInterval.toMillis());
         }
 
         Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);

@@ -205,7 +205,7 @@ public class EventHubConsumerTest {
                     count.set(0);
                 }
 
-                logger.asInfo().log("Event Received. {}", countDownLatch.getCount());
+                logger.info("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -247,7 +247,7 @@ public class EventHubConsumerTest {
                     count.set(0);
                 }
 
-                logger.asInfo().log("Event Received. {}", countDownLatch.getCount());
+                logger.info("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -273,9 +273,9 @@ public class EventHubConsumerTest {
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
         final Disposable subscription = consumer.receive().subscribe(
-            e -> logger.asInfo().log("Event received"),
+            e -> logger.info("Event received"),
             error -> Assert.fail(error.toString()),
-            () -> logger.asInfo().log("Complete"), sub -> {
+            () -> logger.info("Complete"), sub -> {
                 sub.request(backPressure);
             });
 
@@ -304,9 +304,9 @@ public class EventHubConsumerTest {
         when(amqpReceiveLink.getCredits()).thenReturn(PREFETCH);
 
         final Disposable subscription = consumer.receive().subscribe(
-            e -> logger.asInfo().log("Event received"),
+            e -> logger.info("Event received"),
             error -> Assert.fail(error.toString()),
-            () -> logger.asInfo().log("Complete"),
+            () -> logger.info("Complete"),
             sub -> sub.request(backPressure));
 
         // Capturing the credit supplier that we set when the link was received.

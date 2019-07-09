@@ -87,7 +87,7 @@ class CBSChannel extends EndpointStateNotifierBase implements CBSNode {
         }
 
         if (!connection.removeSession(SESSION_NAME)) {
-            logger.asInfo().log("Unable to remove CBSChannel {} from connection", SESSION_NAME);
+            logger.info("Unable to remove CBSChannel {} from connection", SESSION_NAME);
         }
     }
 }

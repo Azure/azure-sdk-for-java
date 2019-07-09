@@ -15,7 +15,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>4.0.0-preview.1</version>
 </dependency>
 ```
 
@@ -299,12 +299,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_create_application_in_portal]:https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal
 [azure_keyvault_cli]:https://docs.microsoft.com/en-us/azure/key-vault/quick-create-cli
 [azure_keyvault_cli_full]:https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest
-[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets
-[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/HelloWorld.java
-[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/HelloWorldAsync.java
-[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ListOperations.java
-[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ListOperationsAsync.java
-[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/secrets/ManagingDeletedSecretsAsync.java
+[secrets_samples]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets
+[sample_helloWorld]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
+[sample_helloWorldAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
+[sample_list]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
+[sample_listAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
+[sample_BackupRestore]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]:https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java

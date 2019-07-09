@@ -32,7 +32,7 @@ public class DispatchHandler extends BaseHandler {
      */
     @Override
     public void onTimerTask(Event e) {
-        logger.asVerbose().log("Running task for event: %s", e);
+        logger.verbose("Running task for event: %s", e);
         this.work.run();
     }
 }

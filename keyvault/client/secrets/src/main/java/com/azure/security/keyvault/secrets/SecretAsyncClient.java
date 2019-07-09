@@ -111,9 +111,9 @@ public final class SecretAsyncClient {
             .secretAttributes(new SecretRequestAttributes(secret));
 
         return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Setting secret - {}", secret.name()))
-                .doOnSuccess(response -> logger.asInfo().log("Set secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to set secret - {}", secret.name(), error));
+                .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.name()))
+                .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to set secret - {}", secret.name(), error));
     }
 
     /**
@@ -137,9 +137,9 @@ public final class SecretAsyncClient {
     public Mono<Response<Secret>> setSecret(String name, String value) {
         SecretRequestParameters parameters = new SecretRequestParameters().value(value);
         return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Setting secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Set secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to set secret - {}", name, error));
+                .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
+                .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
     }
 
     /**
@@ -168,9 +168,9 @@ public final class SecretAsyncClient {
             secretVersion = version;
         }
         return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Retrieved secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to get secret - {}", name, error));
+                .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
+                .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
     }
 
     /**
@@ -198,9 +198,9 @@ public final class SecretAsyncClient {
             secretVersion = secretBase.version();
         }
         return service.getSecret(endpoint, secretBase.name(), secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving secret - {}", secretBase.name()))
-                .doOnSuccess(response -> logger.asInfo().log("Retrieved secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to get secret - {}", secretBase.name(), error));
+                .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", secretBase.name()))
+                .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to get secret - {}", secretBase.name(), error));
     }
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
@@ -257,9 +257,9 @@ public final class SecretAsyncClient {
                 .secretAttributes(new SecretRequestAttributes(secret));
 
         return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Updating secret - {}", secret.name()))
-                .doOnSuccess(response -> logger.asInfo().log("Updated secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to update secret - {}", secret.name(), error));
+                .doOnRequest(ignored -> logger.info("Updating secret - {}", secret.name()))
+                .doOnSuccess(response -> logger.info("Updated secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to update secret - {}", secret.name(), error));
     }
 
     /**
@@ -282,9 +282,9 @@ public final class SecretAsyncClient {
      */
     public Mono<Response<DeletedSecret>> deleteSecret(String name) {
         return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Deleting secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to delete secret - {}", name, error));
+                .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
+                .doOnSuccess(response -> logger.info("Deleted secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
     }
 
     /**
@@ -307,9 +307,9 @@ public final class SecretAsyncClient {
      */
     public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
         return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Retrieving deleted secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Retrieved deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to retrieve deleted secret - {}", name, error));
+                .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
+                .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
     }
 
     /**
@@ -332,9 +332,9 @@ public final class SecretAsyncClient {
      */
     public Mono<VoidResponse> purgeDeletedSecret(String name) {
         return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Purging deleted secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Purged deleted secret - {}", name))
-                .doOnError(error -> logger.asWarning().log("Failed to purge deleted secret - {}", name, error));
+                .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))
+                .doOnSuccess(response -> logger.info("Purged deleted secret - {}", name))
+                .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error));
     }
 
     /**
@@ -357,9 +357,9 @@ public final class SecretAsyncClient {
      */
     public Mono<Response<Secret>> recoverDeletedSecret(String name) {
         return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Recovering deleted secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Recovered deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to recover deleted secret - {}", name, error));
+                .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
+                .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
     }
 
     /**
@@ -381,9 +381,9 @@ public final class SecretAsyncClient {
      */
     public Mono<Response<byte[]>> backupSecret(String name) {
         return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Backing up secret - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Backed up secret - {}", name))
-                .doOnError(error -> logger.asWarning().log("Failed to back up secret - {}", name, error))
+                .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
+                .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
+                .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
                 .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
                 base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
     }
@@ -407,9 +407,9 @@ public final class SecretAsyncClient {
     public Mono<Response<Secret>> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
         return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Attempting to restore secret"))
-                .doOnSuccess(response -> logger.asInfo().log("Restored secret - {}", response.value().name()))
-                .doOnError(error -> logger.asWarning().log("Failed to restore secret", error));
+                .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
+                .doOnSuccess(response -> logger.info("Restored secret - {}", response.value().name()))
+                .doOnError(error -> logger.warning("Failed to restore secret", error));
     }
 
     /**
@@ -429,9 +429,9 @@ public final class SecretAsyncClient {
      */
     public Flux<SecretBase> listSecrets() {
         return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing secrets"))
-                .doOnSuccess(response -> logger.asInfo().log("Listed secrets"))
-                .doOnError(error -> logger.asWarning().log("Failed to list secrets", error))
+                .doOnRequest(ignored -> logger.info("Listing secrets"))
+                .doOnSuccess(response -> logger.info("Listed secrets"))
+                .doOnError(error -> logger.warning("Failed to list secrets", error))
                 .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));
     }
 
@@ -451,9 +451,9 @@ public final class SecretAsyncClient {
      */
     public Flux<DeletedSecret> listDeletedSecrets() {
         return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing deleted secrets"))
-                .doOnSuccess(response -> logger.asInfo().log("Listed deleted secrets"))
-                .doOnError(error -> logger.asWarning().log("Failed to list deleted secrets", error))
+                .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
+                .doOnSuccess(response -> logger.info("Listed deleted secrets"))
+                .doOnError(error -> logger.warning("Failed to list deleted secrets", error))
                 .flatMapMany(r -> extractAndFetchDeletedSecrets(r, Context.NONE));
     }
 
@@ -478,9 +478,9 @@ public final class SecretAsyncClient {
      */
     public Flux<SecretBase> listSecretVersions(String name) {
         return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.asInfo().log("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.asInfo().log("Listed secret versions - {}", name))
-                .doOnError(error -> logger.asWarning().log(String.format("Failed to list secret versions - {}", name), error))
+                .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))
+                .doOnSuccess(response -> logger.info("Listed secret versions - {}", name))
+                .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error))
                 .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));
     }
 
@@ -493,9 +493,9 @@ public final class SecretAsyncClient {
      */
     private Flux<SecretBase> listSecretsNext(String nextPageLink, Context context) {
         return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
-                .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
-                .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
+                .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+                .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
                 .flatMapMany(r -> extractAndFetchSecrets(r, context));
     }
 
@@ -512,9 +512,9 @@ public final class SecretAsyncClient {
      */
     private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink, Context context) {
         return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.asInfo().log("Retrieving the next listing page - Page {}", nextPageLink))
-                .doOnSuccess(response -> logger.asInfo().log("Retrieved the next listing page - Page {}", nextPageLink))
-                .doOnError(error -> logger.asWarning().log("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
+                .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+                .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
                 .flatMapMany(r -> extractAndFetchDeletedSecrets(r, context));
     }
 

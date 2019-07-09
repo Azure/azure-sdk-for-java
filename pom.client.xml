@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <name>Microsoft Azure SDK for Java - Client Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -132,10 +132,8 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
-
-          <!-- TODO soon - enable these failure modes -->
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <executions>
           <execution>
@@ -151,12 +149,17 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
             <version>${sdk-build-tools.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -165,9 +168,7 @@
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-          <!-- TODO soon - enable this failure mode -->
-          <failOnError>false</failOnError>
+          <failOnError>true</failOnError>
         </configuration>
         <executions>
           <execution>
@@ -196,7 +197,9 @@
           <transformationSets>
             <transformationSet>
               <dir>${project.build.directory}/spotbugs</dir>
-              <includes><include>spotbugsXml.xml</include></includes>
+              <includes>
+                <include>spotbugsXml.xml</include>
+              </includes>
               <outputDir>${project.build.directory}/spotbugs</outputDir>
               <stylesheet>fancy-hist.xsl</stylesheet>
               <fileMappers>
@@ -237,7 +240,8 @@
             </goals>
             <configuration>
               <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
-              <additionalOptions></additionalOptions>
+              <failOnError>true</failOnError>
+              <failOnWarnings>true</failOnWarnings>
             </configuration>
           </execution>
         </executions>
@@ -331,7 +335,9 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>
               com.microsoft.azure.template:
@@ -343,7 +349,9 @@
             <groups>
               <group>
                 <title>Azure Core</title>
-                <packages>com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*</packages>
+                <packages>
+                  com.azure.core:com.azure.core.annotations:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*
+                </packages>
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
@@ -392,20 +400,25 @@
               <version>${codesnippet4javadoc.version}</version>
             </docletArtifact>
             <additionalOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java</additionalOptions>
-            <failOnError>true</failOnError>
-            <failOnWarnings>true</failOnWarnings>
+            <failOnError>false</failOnError>
+            <failOnWarnings>false</failOnWarnings>
           </configuration>
         </plugin>
 
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.version}</version>
+          <version>${spotbugs.maven.version}</version>
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
               <artifactId>sdk-build-tools</artifactId>
               <version>${sdk-build-tools.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>${spotbugs.version}</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -460,6 +473,8 @@
           <consoleOutput>true</consoleOutput>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
           <linkXRef>true</linkXRef>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
         <reportSets>
           <reportSet>
@@ -480,7 +495,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -586,8 +601,12 @@
               <source>1.8</source>
               <target>1.8</target>
               <showWarnings>true</showWarnings>
-              <showDeprecation>true</showDeprecation>
-              <compilerArgument>-Xlint:all</compilerArgument>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+              </compilerArgs>
             </configuration>
           </plugin>
         </plugins>
@@ -611,8 +630,12 @@
               <source>11</source>
               <target>11</target>
               <showWarnings>true</showWarnings>
-              <showDeprecation>true</showDeprecation>
-              <compilerArgument>-Xlint:all</compilerArgument>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+              </compilerArgs>
             </configuration>
           </plugin>
         </plugins>
@@ -641,6 +664,9 @@
       </build>
     </profile>
 
+    <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
+      javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
+      Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
     <profile>
       <id>javadoc-doclet-compatibility</id>
       <activation>
@@ -652,10 +678,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-
-              <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
-              javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
-              Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
               <failOnWarnings>false</failOnWarnings>
 
               <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
@@ -665,6 +687,18 @@
               </additionalJOptions>
 
             </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <failOnError>false</failOnError>
+                  <failOnWarnings>false</failOnWarnings>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -702,7 +736,8 @@
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
-    <module>./sdk/tracing</module>
+    <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
+<!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
   </modules>
 </project>

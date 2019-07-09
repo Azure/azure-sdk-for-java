@@ -212,19 +212,25 @@ public final class FluxUtil {
                 }
                 //noinspection NonAtomicOperationOnVolatileField
                 pos += bytesWritten;
-                subscription.request(1);
+                if (subscription != null) {
+                    subscription.request(1);
+                }
             }
 
             @Override
             public void failed(Throwable exc, Object attachment) {
-                subscription.cancel();
+                if (subscription != null) {
+                    subscription.cancel();
+                }
                 emitter.error(exc);
             }
         };
 
         @Override
         public void onError(Throwable throwable) {
-            subscription.cancel();
+            if (subscription != null) {
+                subscription.cancel();
+            }
             emitter.error(throwable);
         }
 
@@ -371,7 +377,7 @@ public final class FluxUtil {
                         // use local variable to perform fewer volatile reads
                         long pos = position;
                         //
-                        int bytesWanted = (int) Math.min(bytesRead, maxRequired(pos));
+                        int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         buffer.writerIndex(bytesWanted);
                         long position2 = pos + bytesWanted;
                         //noinspection NonAtomicOperationOnVolatileField
