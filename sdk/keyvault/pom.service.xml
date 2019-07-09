@@ -17,5 +17,6 @@
     <module>microsoft-azure-keyvault-complete</module>
     <module>azure-keyvault-keys</module>
     <module>azure-keyvault-secrets</module>
+    <module>../../core</module>
   </modules>
 </project>
