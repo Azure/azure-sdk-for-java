@@ -3,14 +3,44 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+
+import java.net.MalformedURLException;
 import java.security.GeneralSecurityException;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
  */
 public final class ConfigurationClientJavaDocCodeSnippets {
+
+    /**
+     * Generates code sample for creating a {@link ConfigurationClient}
+     * @return An instance of {@link ConfigurationClient}
+     * @throws IllegalStateException If configuration credentials cannot be created.
+     * @throws MalformedURLException if service end point is malformed.
+     */
+    public ConfigurationClient createAsyncConfigurationClientWithPipeline() throws MalformedURLException {
+        try {
+            String connectionString = getConnectionString();
+            // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+            RecordedData networkData = new RecordedData();
+            HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+
+            ConfigurationClient configurationClient = new ConfigurationClientBuilder()
+                .pipeline(pipeline)
+                .serviceEndpoint("https://myconfig.azure.net/")
+                .credentials(new ConfigurationClientCredentials(connectionString))
+                .buildClient();
+            // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
+            return configurationClient;
+        } catch (GeneralSecurityException ex) {
+            throw new IllegalStateException("Failed to create configuration client credentials", ex);
+        }
+    }
 
     /**
      * Generates code sample for creating a {@link ConfigurationClient}

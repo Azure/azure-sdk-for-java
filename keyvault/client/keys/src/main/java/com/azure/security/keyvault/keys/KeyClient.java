@@ -29,7 +29,7 @@ import java.util.List;
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.keyvault.keys.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
  *
  * @see KeyClientBuilder
  */

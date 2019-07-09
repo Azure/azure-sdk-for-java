@@ -54,12 +54,7 @@ import java.util.Objects;
  * {@link ConfigurationClientBuilder#serviceEndpoint(String) this}. Using a pipeline requires additional setup but
  * allows for finer control on how the {@link ConfigurationAsyncClient} and {@link ConfigurationClient} it built.</p>
  *
- * <pre>
- * new ConfigurationClientBuilder()
- *     .pipeline(new HttpPipeline(policies))
- *     .serviceEndpoint(serviceEndpoint)
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.data.applicationconfig.configurationclient.pipeline.instantiation}
  *
  * @see ConfigurationAsyncClient
  * @see ConfigurationClient
