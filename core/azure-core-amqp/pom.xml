@@ -7,13 +7,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-preview.2</version>
+    <version>1.0.0-preview.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>1.0.0-preview.2</version>
+  <version>1.0.0-preview.3</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
