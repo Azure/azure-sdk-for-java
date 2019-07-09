@@ -3,11 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
+import org.reactivestreams.Publisher;
+
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
  * to the Event Hubs service.
  *
- * @see EventHubProducer
+ * @see EventHubProducer#send(EventData, SendOptions)
+ * @see EventHubProducer#send(Iterable, SendOptions)
+ * @see EventHubProducer#send(Publisher, SendOptions)
  */
 public class SendOptions implements Cloneable {
     private int maximumSizeInBytes;
