@@ -33,10 +33,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent StorageClientBuilder for instantiating a {@link StorageClient} or {@link StorageAsyncClient}.
+ * Fluent StorageClientBuilder for instantiating a {@link StorageClient} or {@link StorageAsyncClient}  using {@code buildClient} or {@code buildAsyncClient} respectively.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link StorageClient#storageClientBuilder()}.
  * The following information must be provided on this builder:
  *
  * <p><ul>
