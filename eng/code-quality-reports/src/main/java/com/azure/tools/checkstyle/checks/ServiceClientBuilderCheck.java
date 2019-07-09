@@ -6,8 +6,6 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
-    private static final String CLIENT_BUILDER = "ClientBuilder";
-    private static final String SERVICE_CLIENT_PROPERTY_NAME = "serviceClients";
     private static final String BUILD_CLIENT = "buildClient";
     private static final String BUILD_ASYNC_CLIENT = "buildAsyncClient";
 
@@ -60,7 +58,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                DetailAST annotationToken = getServiceClientAnnotation(token);
+                final DetailAST annotationToken = getServiceClientAnnotation(token);
                 if (annotationToken != null) {
                     hasServiceClientBuilderAnnotation = true;
                     checkAnnotationMemberValuePair(annotationToken);
@@ -78,7 +76,6 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         }
     }
 
-
     /**
      *  Checks if the class is annotated with @ServiceClientBuilder
      *
@@ -86,23 +83,21 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
      * @return true if the class is annotated with @ServiceClientBuilder, false otherwise.
      */
     private DetailAST getServiceClientAnnotation(DetailAST classDefToken) {
-        DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        if (modifiersToken != null) {
-            for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-                if (ast.getType() == TokenTypes.ANNOTATION) {
-                    DetailAST annotationIdent = ast.findFirstToken(TokenTypes.IDENT);
-                    if (annotationIdent != null && SERVICE_CLIENT_BUILDER.equals(annotationIdent.getText())) {
-                        return ast;
-                    }
-                }
+        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
+        for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            if (ast.getType() != TokenTypes.ANNOTATION) {
+                continue;
+            }
+            if (SERVICE_CLIENT_BUILDER.equals(ast.findFirstToken(TokenTypes.IDENT).getText())) {
+                return ast;
             }
         }
         return null;
     }
 
     private void checkForClassNamingAndAnnotation(DetailAST classDefToken) {
-        String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
-        if (!className.endsWith(CLIENT_BUILDER)) {
+        final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
+        if (!className.endsWith("ClientBuilder")) {
             log(classDefToken, "Service client builder class should be named <ServiceName>ClientBuilder.");
         } else {
             if (!hasServiceClientBuilderAnnotation) {
@@ -119,16 +114,19 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     private void checkAnnotationMemberValuePair(DetailAST annotationToken) {
         boolean hasServiceClientPropName = false;
 
-        for (DetailAST ast = annotationToken.getNextSibling(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
-                DetailAST identAST = ast.findFirstToken(TokenTypes.IDENT);
-                if (identAST != null) {
-                    String identName = identAST.getText();
-                    if (identName.equals(SERVICE_CLIENT_PROPERTY_NAME)) {
-                        hasServiceClientPropName = true;
-                        break;
-                    }
-                }
+        for (DetailAST ast = annotationToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
+            if (ast.getType() != TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
+                continue;
+            }
+
+            DetailAST identAST = ast.findFirstToken(TokenTypes.IDENT);
+            if (identAST == null) {
+                continue;
+            }
+
+            if ("serviceClients".equals(identAST.getText())) {
+                hasServiceClientPropName = true;
+                break;
             }
         }
 
@@ -146,7 +144,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
      * @param methodDefToken METHOD_DEF AST node
      */
     private void checkBuilderMethods(DetailAST methodDefToken) {
-        String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
+        final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
         if (methodName.equals(BUILD_ASYNC_CLIENT)) {
             hasAsyncClientBuilder = true;
         } else if (methodName.equals(BUILD_CLIENT)) {

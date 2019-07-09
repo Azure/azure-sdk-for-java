@@ -35,23 +35,23 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         }
     }
 
+    /**
+     *
+     * @param interfaceDefToken
+     */
     private void checkServiceInterface(DetailAST interfaceDefToken) {
-        DetailAST modifiersToken = interfaceDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        if (modifiersToken == null) {
-            return;
-        }
-
         DetailAST serviceInterfaceAnnotationNode = null;
         String nameValue = null;
 
+        DetailAST modifiersToken = interfaceDefToken.findFirstToken(TokenTypes.MODIFIERS);
         for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-
+            // we care about only the ANNOTATION type
             if (ast.getType() != TokenTypes.ANNOTATION) {
                 continue;
             }
-
-            for (DetailAST annotationChild = ast.getFirstChild();
-                 annotationChild != null; annotationChild = annotationChild.getNextSibling()) {
+            // find the first
+            for (DetailAST annotationChild = ast.getFirstChild(); annotationChild != null;
+                 annotationChild = annotationChild.getNextSibling()) {
 
                 if (annotationChild.getType() == TokenTypes.IDENT) {
                     if (!"ServiceInterface".equals(annotationChild.getText())) {
@@ -62,15 +62,15 @@ public class ServiceInterfaceCheck extends AbstractCheck {
                 }
 
                 if (annotationChild.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
-                    DetailAST annotationPairIdent = annotationChild.findFirstToken(TokenTypes.IDENT);
+                    final DetailAST annotationPairIdent = annotationChild.findFirstToken(TokenTypes.IDENT);
                     if (annotationPairIdent != null && "name".equals(annotationPairIdent.getText())) {
                         nameValue = getNamePropertyValue(annotationChild.findFirstToken(TokenTypes.EXPR));
                     }
                 }
             }
         }
-
-
+        
+        // if
         if (serviceInterfaceAnnotationNode != null) {
             if(nameValue == null) {
                 log(serviceInterfaceAnnotationNode, "@ServiceInterface annotation missing ''name'' property.");
@@ -85,12 +85,17 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         }
     }
 
+    /**
+     *
+     * @param exprToken
+     * @return
+     */
     private String getNamePropertyValue(DetailAST exprToken) {
         if (exprToken == null) {
             return null;
         }
 
-        DetailAST nameValueToken = exprToken.findFirstToken(TokenTypes.STRING_LITERAL);
+        final DetailAST nameValueToken = exprToken.findFirstToken(TokenTypes.STRING_LITERAL);
         if (nameValueToken == null) {
             return null;
         }
