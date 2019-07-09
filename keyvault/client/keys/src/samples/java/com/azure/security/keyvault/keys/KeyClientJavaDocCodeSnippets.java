@@ -56,12 +56,12 @@ public final class KeyClientJavaDocCodeSnippets {
      * @return An instance of {@link KeyAsyncClient}
      */
     public KeyAsyncClient createAsyncClient() {
-        // BEGIN: com.azure.keyvault.keys.async.keyclient.instantiation
+        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.instantiation
         KeyAsyncClient keyClient = new KeyClientBuilder()
             .endpoint("https://myvault.azure.net/")
             .credential(new DefaultAzureCredential())
             .buildAsyncClient();
-        // END: com.azure.keyvault.keys.async.keyclient.instantiation
+        // END: com.azure.security.keyvault.keys.async.keyclient.instantiation
         return keyClient;
     }
 

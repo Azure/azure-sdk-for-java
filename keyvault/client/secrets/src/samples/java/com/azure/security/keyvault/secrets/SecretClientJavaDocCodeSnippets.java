@@ -6,8 +6,6 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.PortPolicy;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.identity.credential.DefaultAzureCredential;
@@ -44,7 +42,7 @@ public final class SecretClientJavaDocCodeSnippets {
     public void getSecret() {
         SecretClient secretClient = getSecretClient();
         // BEGIN: com.azure.security.keyvault.secretclient.getSecret#secretBase
-        for(SecretBase secret : secretClient.listSecrets()){
+        for(SecretBase secret : secretClient.listSecrets()) {
             Secret secretWithValue  = secretClient.getSecret(secret).value();
             System.out.printf("Secret is returned with name %s and value %s %n", secretWithValue.name(),
                     secretWithValue.value());

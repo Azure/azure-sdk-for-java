@@ -45,7 +45,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Samples to construct the async client</strong></p>
  *
- * {@codesnippet com.azure.keyvault.keys.async.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
  * @see KeyClientBuilder
  */

@@ -31,7 +31,7 @@ import java.util.Objects;
  * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient}
  * are {@link String endpoint} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.keyvault.keys.async.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
