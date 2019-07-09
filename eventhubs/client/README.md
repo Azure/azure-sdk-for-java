@@ -45,7 +45,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
 with it.
 
-### Create an Event Hub client using a connection String
+### Create an Event Hub client using a connection string
 
 The easiest means for doing so is to use a connection string, which is created automatically when creating an
 Event Hubs namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the
@@ -93,7 +93,7 @@ String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
 EventHubClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credential)
-    .build();
+    .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -294,7 +294,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 <!-- Links -->
 [amqp_exception]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
-[api_documentation]: https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html
+[api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
 [error_condition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java

@@ -77,7 +77,7 @@ public class Poller<T> {
     /*
      * This will be called when cancel operation is triggered.
      */
-    private Consumer<Poller> cancelOperation;
+    private Consumer<Poller<T>> cancelOperation;
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -153,7 +153,7 @@ public class Poller<T> {
      * that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
         this(pollInterval, pollOperation);
         this.cancelOperation = cancelOperation;
     }

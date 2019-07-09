@@ -6,7 +6,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <name>Microsoft Azure SDK for Java - Data Plane Libraries</name>
   <description>Parent POM for Microsoft Azure SDK for Java</description>
@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -110,7 +110,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -293,7 +293,7 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.version}</version>
+          <version>${spotbugs.maven.version}</version>
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
@@ -369,7 +369,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
