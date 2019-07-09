@@ -45,7 +45,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 For the Event Hubs client library to interact with an Event Hub, it will need to understand how to connect and authorize
 with it.
 
-### Create an Event Hub client using a connection String
+### Create an Event Hub client using a connection string
 
 The easiest means for doing so is to use a connection string, which is created automatically when creating an
 Event Hubs namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the
@@ -93,7 +93,7 @@ String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
 EventHubClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credential)
-    .build();
+    .buildAsyncClient();
 ```
 
 ## Key concepts
