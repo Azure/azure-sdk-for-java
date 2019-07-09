@@ -78,7 +78,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
      * Max message size can change from its initial value. When the send link is opened, we query for the remote link
      * capacity.
      */
-    private volatile int maxMessageSize;
+    private volatile int maxMessageSize = 0;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
                   ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
@@ -91,6 +91,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         this.retry = retry;
         this.timeout = timeout;
         this.maxMessageSize = maxMessageSize;
+
         this.subscriptions = Disposables.composite(
             handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
@@ -100,18 +101,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }),
 
             handler.getEndpointStates().subscribe(
-                endpoint -> {
-                    final boolean isActive = endpoint == EndpointState.ACTIVE;
-                    if (!hasConnected.getAndSet(isActive)) {
-                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
-
-                        if (remoteMaxMessageSize != null) {
-                            this.maxMessageSize = remoteMaxMessageSize.intValue();
-                        }
-                    }
-
-                    notifyEndpointState(endpoint);
-                },
+                this::notifyEndpointState,
                 error -> logger.error("Error encountered getting endpointState", error),
                 () -> {
                     logger.verbose("getLinkCredits completed.");
@@ -141,7 +131,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         try {
             encodedSize = message.encode(bytes, 0, allocationSize);
         } catch (BufferOverflowException exception) {
-            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded Maximum message size: %s kb", maxMessageSize / 1024);
+            final String errorMessage = String.format(Locale.US, "Error sending. Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024);
             final Throwable error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage,
                 exception, handler.getErrorContext(sender));
 
@@ -183,7 +173,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             try {
                 encodedSize = messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
             } catch (BufferOverflowException exception) {
-                final String message = String.format(Locale.US, "Size of the payload exceeded Maximum message size: %s kb", maxMessageSizeTemp / 1024);
+                final String message = String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSizeTemp / 1024);
                 final AmqpException error = new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                     exception, handler.getErrorContext(sender));
 
@@ -212,11 +202,34 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
     }
 
     @Override
+    public Mono<Integer> getLinkSize() {
+        if (hasConnected.get() && this.maxMessageSize > 0) {
+            return Mono.just(maxMessageSize);
+        }
+
+        return handler.getEndpointStates()
+            .filter(state -> state == EndpointState.ACTIVE)
+            .single()
+            .map(state -> {
+                if (!hasConnected.getAndSet(true)) {
+                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+
+                    if (remoteMaxMessageSize != null) {
+                        this.maxMessageSize = remoteMaxMessageSize.intValue();
+                    }
+                }
+
+                return this.maxMessageSize;
+            });
+    }
+
+    @Override
     public void close() {
         subscriptions.dispose();
         tokenManager.close();
         super.close();
     }
+
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
         Mono<Void> sendWorkItem = Mono.create(sink -> {
