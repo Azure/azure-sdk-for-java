@@ -34,7 +34,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient}  using {@code buildClient} or {@code buildAsyncClient} respectively.
+ * Fluent ContainerClientBuilder for instantiating a {@link ContainerClient} or {@link ContainerAsyncClient}
+ * using {@link ContainerClientBuilder#buildClient()} or {@link ContainerClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
  * The following information must be provided on this builder:

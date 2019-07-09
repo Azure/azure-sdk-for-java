@@ -34,7 +34,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}  using {@code buildClient} or {@code buildAsyncClient} respectively.
+ * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}
+ * using {@link BlobClientBuilder#buildClient()} or {@link BlobClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
  * The following information must be provided on this builder:
