@@ -118,6 +118,7 @@
           <showWarnings>true</showWarnings>
           <showDeprecation>true</showDeprecation>
           <compilerArgument>-Xlint:unchecked</compilerArgument>
+		  <useIncrementalCompilation>false</useIncrementalCompilation>
         </configuration>
       </plugin>
 

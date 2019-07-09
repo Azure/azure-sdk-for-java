@@ -31,17 +31,22 @@ jobs:
         inputs:
           scriptPath: update_mgmt_pom.sh
           
-      - task: Maven@3
-        displayName: 'compile'
+      - task: ShellScript@2
+        displayName: 'call mvn in eacl mgmt sdk individually'
         inputs:
-          mavenPomFile: pom.mgmt.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip --debug clean'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'compile'
+          scriptPath: mgmt_sdk_compiler.sh
+          
+      #- task: Maven@3
+      #  displayName: 'compile'
+      #  inputs:
+      #    mavenPomFile: pom.mgmt.xml
+      #    options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip --debug clean'
+      #    mavenOptions: '$(LoggingOptions)'
+      #    javaHomeOption: 'JDKVersion'
+      #    jdkVersionOption: $(JavaVersion)
+      #    jdkArchitectureOption: 'x64'
+      #    publishJUnitResults: false
+      #    goals: 'compile'
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
