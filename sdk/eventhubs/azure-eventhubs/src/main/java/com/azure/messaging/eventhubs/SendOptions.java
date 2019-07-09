@@ -14,35 +14,6 @@ public class SendOptions implements Cloneable {
     private String partitionKey;
 
     /**
-     * Creates an instance with the maximum message size set to the maximum amount allowed by the protocol.
-     */
-    public SendOptions() {
-        this.maximumSizeInBytes = EventHubProducer.MAX_MESSAGE_LENGTH_BYTES;
-    }
-
-    /**
-     * Sets the maximum size to allow for a single batch of events, in bytes. If this size is exceeded, an exception
-     * will be thrown and the send operation will fail.
-     *
-     * @param maximumSizeInBytes The maximum size to allow for a single batch of events.
-     * @return The updated {@link SendOptions} object.
-     */
-    SendOptions maximumSizeInBytes(int maximumSizeInBytes) {
-        this.maximumSizeInBytes = maximumSizeInBytes;
-        return this;
-    }
-
-    /**
-     * Gets the maximum size to allow for a single batch of events, in bytes. If this size is exceeded, an exception
-     * will be thrown and the send operation will fail.
-     *
-     * @return The maximum size to allow for a single batch of events, in bytes.
-     */
-    int maximumSizeInBytes() {
-        return maximumSizeInBytes;
-    }
-
-    /**
      * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service map this key to
      * a specific partition but allowing the service to choose an arbitrary, partition for this batch of events and any
      * other batches using the same partition hashing key.
