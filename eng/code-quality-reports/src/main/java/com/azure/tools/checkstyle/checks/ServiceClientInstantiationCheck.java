@@ -150,11 +150,11 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
                 continue;
             }
             final DetailAST modifiersToken = ast.findFirstToken(TokenTypes.MODIFIERS);
-            //VARIABLE_DEF token will always MODIFIERS token. If there is no modifier at the variable, no child under
-            // MODIFIERS token
+            // VARIABLE_DEF token will always MODIFIERS token. If there is no modifier at the variable, no child under
+            // MODIFIERS token. Also the previous sibling of OBJBLOCK will always be class name IDENT node.
             if (!modifiersToken.branchContains(TokenTypes.FINAL)) {
-                log(modifiersToken, String.format("The variable field ''%s'' of @ServiceClient should be final. The class annotated with @ServiceClient supposed to be immutable.",
-                    ast.findFirstToken(TokenTypes.IDENT).getText()));
+                log(modifiersToken, String.format("The variable field ''%s'' of class ''%s'' should be final. Classes annotated with @ServiceClient are supposed to be immutable.",
+                    ast.findFirstToken(TokenTypes.IDENT).getText(), objBlockToken.getPreviousSibling().getText()));
             }
         }
     }
@@ -172,11 +172,11 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // Async service client
         if (isAsync && !className.endsWith(ASYNC_CLIENT)) {
-            log(classDefToken, String.format("Async class ''%s'' should named <ServiceName>AsyncClient ", className));
+            log(classDefToken, String.format("Async class ''%s'' must be named <ServiceName>AsyncClient ", className));
         }
         // Sync service client
         if (!isAsync && !className.endsWith(CLIENT)) {
-            log(classDefToken, String.format("Sync class %s should named <ServiceName>Client.", className));
+            log(classDefToken, String.format("Sync class %s must be named <ServiceName>Client.", className));
         }
     }
 
