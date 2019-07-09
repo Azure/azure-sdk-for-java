@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "CWD : "
+pwd
+
 for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`; 
 do 
   echo "building folder $i"
