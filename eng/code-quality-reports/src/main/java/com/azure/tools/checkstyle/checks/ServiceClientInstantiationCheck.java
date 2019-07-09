@@ -11,11 +11,11 @@ import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
- * <0l>
+ * <ol>
  *   <li>No public or protected constructors</li>
  *   <li>No public static method named 'builder'</li>
  *   <li>Since these classes are supposed to be immutable, all fields in the service client classes should be final.</li>
- * </0l>
+ * </ol>
  */
 public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT = "ServiceClient";
@@ -139,8 +139,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     }
 
     /**
-     * Checks for the variable field of the subclass of ServiceClient.
-     * These fields should be final because these classes supposed to be immutable class.
+     * Checks that the field variables in the @ServiceClient are final. ServiceClients should be immutable.
      *
      * @param objBlockToken the OBJBLOCK AST node
      */
