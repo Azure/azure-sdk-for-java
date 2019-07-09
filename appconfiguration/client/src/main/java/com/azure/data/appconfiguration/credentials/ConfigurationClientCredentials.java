@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Credentials that authorizes requests to Azure Application Configuration. It uses content within the HTTP request to
+ * Credentials that authorizes requests to Azure App Configuration. It uses content within the HTTP request to
  * generate the correct "Authorization" header value. {@link ConfigurationCredentialsPolicy} ensures that the content
  * exists in the HTTP request so that a valid authorization value is generated.
  *
@@ -43,15 +43,11 @@ public class ConfigurationClientCredentials {
     private static final String[] SIGNED_HEADERS = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER };
     private static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private static final String ENDPOINT = "endpoint=";
-    private static final String ID = "id=";
-    private static final String SECRET = "secret=";
-
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
 
     /**
-     * Creates an instance that is able to authorize requests to Azure Application Configuration service.
+     * Creates an instance that is able to authorize requests to Azure App Configuration service.
      *
      * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};secret={secret_value}"
      * @throws NoSuchAlgorithmException When the HMAC-SHA256 MAC algorithm cannot be instantiated.

@@ -3,13 +3,14 @@
 
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.core.implementation.util.ImplUtils;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 /**
- * A set of options for selecting configuration settings from Application Configuration service.
+ * A set of options for selecting configuration settings from App Configuration service.
  *
  * <ul>
  *     <li>
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @see ConfigurationAsyncClient
  */
+@Fluent
 public class SettingSelector {
     private String[] keys;
     private String[] labels;

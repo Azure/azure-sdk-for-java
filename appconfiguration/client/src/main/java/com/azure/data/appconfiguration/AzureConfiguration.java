@@ -3,7 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-/*
+/**
  * Gets the SDK information for this library component.
  */
 class AzureConfiguration {

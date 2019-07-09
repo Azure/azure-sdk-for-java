@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
  * {@link ConfigurationSetting#label() label}. By default, the label is {@code null}. To explicitly reference the
  * default label use {@link ConfigurationSetting#NO_LABEL}.
  */
+@Fluent
 public class ConfigurationSetting {
     /**
      * The default label for configuration settings is the label, "\0".
@@ -166,7 +168,7 @@ public class ConfigurationSetting {
      * Gets whether or not the configuration setting is locked. If the setting is locked, then no modifications can be
      * made to this setting.
      *
-     * This is a <b>readonly</b> property. It is populated from responses from the Azure Application Configuration
+     * This is a <b>readonly</b> property. It is populated from responses from the Azure App Configuration
      * service.
      *
      * @return true if locked; false otherwise.

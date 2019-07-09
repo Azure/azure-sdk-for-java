@@ -11,7 +11,7 @@ Use the client library for App Configuration to create and manage application co
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+- Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -20,8 +20,8 @@ Use the client library for App Configuration to create and manage application co
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-app-configuration</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <artifactId>azure-data-appconfiguration</artifactId>
+    <version>1.0.0-preview.1</version>
 </dependency>
 ```
 
@@ -83,7 +83,7 @@ The Label property of a Configuration Setting provides a way to separate Configu
 
 The client performs the interactions with the App Configuration service, getting, setting, updating, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
-An application that needs to retrieve startup configurations is better suited using the syncrhonous client, for example setting up a SQL connection.
+An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
 ```Java
 ConfigurationClient client = new ConfigurationClient()
@@ -100,7 +100,7 @@ try {
 
 ```
 
-An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchonous client, for example all settings with a specific label are periodically updated.
+An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchronous client, for example all settings with a specific label are periodically updated.
 
 ```Java
 ConfigurationAsyncClient client = new ConfigurationClientBuilder()
@@ -168,7 +168,7 @@ ConfigurationSetting setting = client.deleteSetting("some_key");
 
 ### General
 
-When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][azconfig_rest] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
+When you interact with App Configuration using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a Configuration Setting that doesn't exist in your Configuration Store, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
 
@@ -185,14 +185,12 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/applicationconfig/client/src
-[package]:not-valid-link
-[api_documentation]: not-valid-link
-[azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
-[jdk]: https://docs.microsoft.com/en-us/java/azure/java-supported-jdk-runtime?view=azure-java-stable
-[maven]: https://maven.apache.org/
-[azure_subscription]: https://azure.microsoft.com/en-us/free/
+[api_documentation]: https://aka.ms/java-docs
 [app_config_store]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
+[azconfig_docs]: https://docs.microsoft.com/en-us/azure/azure-app-configuration/
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[azure_subscription]: https://azure.microsoft.com/en-us/free/
+[maven]: https://maven.apache.org/
+[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
-[azconfig_rest]: https://github.com/Azure/AppConfiguration#rest-api-reference
+[source_code]: src

@@ -8,6 +8,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -32,6 +33,7 @@ import java.util.List;
  *
  * @see KeyClientBuilder
  */
+@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
 public final class KeyClient {
     private KeyAsyncClient client;
 

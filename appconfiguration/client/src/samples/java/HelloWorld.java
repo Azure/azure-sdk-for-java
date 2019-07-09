@@ -34,7 +34,7 @@ public class HelloWorld {
         // Name of the key to add to the configuration service.
         String key = "hello";
 
-        // setSetting adds or updates a setting to Azure Application Configuration store. Alternatively, you can call
+        // setSetting adds or updates a setting to Azure App Configuration store. Alternatively, you can call
         // addSetting which only succeeds if the setting does not exist in the store. Or, you can call updateSetting to
         // update a setting that is already present in the store.
         // We subscribe and wait for the service call to complete then print out the contents of our newly added setting.

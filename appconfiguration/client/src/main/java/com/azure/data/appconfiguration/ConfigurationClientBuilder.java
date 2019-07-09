@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
@@ -33,7 +34,7 @@ import java.util.Objects;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link ConfigurationAsyncClient} and {@link ConfigurationClient},
  * by calling {@link ConfigurationClientBuilder#buildAsyncClient() buildAsyncClient} and {@link ConfigurationClientBuilder#buildClient() buildClient} respectively
- * to constructs an instance of the desired client.
+ * to construct an instance of the desired client.
  *
  * <p>The client needs the service endpoint of the Azure App Configuration store and access credentials.
  * {@link ConfigurationClientCredentials} gives the builder the service endpoint and access credentials it requires to
@@ -64,6 +65,7 @@ import java.util.Objects;
  * @see ConfigurationClient
  * @see ConfigurationClientCredentials
  */
+@ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.

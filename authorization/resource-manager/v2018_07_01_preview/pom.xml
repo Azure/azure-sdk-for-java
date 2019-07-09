@@ -71,6 +71,8 @@
             <artifactId>azure-arm-client-runtime</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
+            <!--Below version for test jar needs to be removed, this will be done as part of v1-runtime 1.6.7-->
+            <version>1.6.5</version>
         </dependency>
     </dependencies>
     <build>

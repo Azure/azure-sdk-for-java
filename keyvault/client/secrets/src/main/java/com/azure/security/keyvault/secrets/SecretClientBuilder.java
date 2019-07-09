@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
@@ -46,8 +47,10 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
+<<<<<<< HEAD
  * @see SecretAsyncClient
  */
+@ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
@@ -135,13 +138,13 @@ public final class SecretClientBuilder {
     /**
      * Sets the vault endpoint url to send HTTP requests to.
      *
-     * @param endPoint The vault endpoint url is used as destination on Azure to send requests to.
-     * @return the updated Builder object.
+     * @param endpoint The vault endpoint url is used as destination on Azure to send requests to.
+     * @return the updated {@link SecretClientBuilder} object.
      * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
-    public SecretClientBuilder endpoint(String endPoint) {
+    public SecretClientBuilder endpoint(String endpoint) {
         try {
-            this.endpoint = new URL(endPoint);
+            this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
         }
@@ -152,7 +155,7 @@ public final class SecretClientBuilder {
      * Sets the credential to use when authenticating HTTP requests.
      *
      * @param credential The credential to use for authenticating HTTP requests.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretClientBuilder} object.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
     public SecretClientBuilder credential(TokenCredential credential) {
@@ -167,7 +170,7 @@ public final class SecretClientBuilder {
      * <p>logLevel is optional. If not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param logLevel The amount of logging output when sending and receiving HTTP requests/responses.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretClientBuilder} object.
      * @throws NullPointerException if {@code logLevel} is {@code null}.
      */
     public SecretClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
@@ -181,7 +184,7 @@ public final class SecretClientBuilder {
      * {@link SecretAsyncClient} or {@link SecretClient} required policies.
      *
      * @param policy The {@link HttpPipelinePolicy policy} to be added.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretClientBuilder} object.
      * @throws NullPointerException if {@code policy} is {@code null}.
      */
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -194,7 +197,7 @@ public final class SecretClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return the updated Builder object.
+     * @return the updated {@link SecretClientBuilder} object.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     public SecretClientBuilder httpClient(HttpClient client) {
