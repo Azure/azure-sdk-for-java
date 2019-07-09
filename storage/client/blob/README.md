@@ -223,11 +223,11 @@ For example, if you try to retrieve a container or blob that doesn't exist in yo
 
 Get started with our [Blob samples][samples]:
 
-1. [Basic Examples](samples/java/blob/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples](samples/java/blob/FileTranferExample.java): Upload and download a large file through blobs.
-1. [Storage Error Examples](samples/java/blob/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
-1. [List Container Examples](samples/java/blob/ListContainersExample.java): Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples](samples/java/blob/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
+1. [Basic Examples](samples/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
+1. [File Transfer Examples](samples/FileTranferExample.java): Upload and download a large file through blobs.
+1. [Storage Error Examples](samples/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
+1. [List Container Examples](samples/ListContainersExample.java): Create, list and delete containers.
+1. [Set metadata and HTTPHeaders Examples](samples/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
 
 ## Contributing
 
@@ -256,7 +256,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
 [error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-error-codes
-[samples]: samples/
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/storage/client/blob/src/samples/java/blob/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
