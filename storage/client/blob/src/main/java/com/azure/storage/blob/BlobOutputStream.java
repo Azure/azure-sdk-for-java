@@ -213,12 +213,10 @@ public class BlobOutputStream extends OutputStream {
             // try to commit the blob
             try {
                 this.commit();
-            }
-            catch (final StorageException e) {
+            } catch (final StorageException e) {
                 throw new IOException(e);
             }
-        }
-        finally {
+        } finally {
             // if close() is called again, an exception will be thrown
             this.lastError = new IOException(SR.STREAM_CLOSED);
         }
@@ -258,11 +256,9 @@ public class BlobOutputStream extends OutputStream {
             final String blockID = this.getCurrentBlockId();
             this.blockList.put(offset, blockID);
             return BlobOutputStream.this.writeBlock(bufferRef, blockID, writeLength).then(Mono.just(writeLength));
-        }
-        else if (this.streamType == BlobType.PAGE_BLOB) {
+        } else if (this.streamType == BlobType.PAGE_BLOB) {
             return BlobOutputStream.this.writePages(bufferRef, offset, writeLength).then(Mono.just(writeLength));
-        }
-        else if (this.streamType == BlobType.APPEND_BLOB) {
+        } else if (this.streamType == BlobType.APPEND_BLOB) {
             // We cannot differentiate between max size condition failing only in the retry versus failing in the
             // first attempt and retry even for a single writer scenario. So we will eliminate the latter and handle
             // the former in the append block method.
@@ -337,8 +333,7 @@ public class BlobOutputStream extends OutputStream {
      *
      * @return Base64 encoded block ID
      */
-    private String getCurrentBlockId()
-    {
+    private String getCurrentBlockId() {
         String blockIdSuffix = String.format("%06d", this.blockList.size());
 
         byte[] blockIdInBytes;

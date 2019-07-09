@@ -39,8 +39,8 @@ public final class DownloadAsyncResponse {
 
 
     // The constructor is package-private because customers should not be creating their own responses.
-    // TODO resolve comment vs code mismatch
-    public DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
+    // TODO (unknown): resolve comment vs code mismatch
+    DownloadAsyncResponse(ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> response,
             HTTPGetterInfo info, Function<HTTPGetterInfo, Mono<DownloadAsyncResponse>> getter) {
         Utility.assertNotNull("getter", getter);
         Utility.assertNotNull("info", info);
@@ -120,18 +120,30 @@ public final class DownloadAsyncResponse {
                 });
     }
 
+    /**
+     * @return HTTP status of the download
+     */
     public int statusCode() {
         return this.rawResponse.statusCode();
     }
 
+    /**
+     * @return HTTP headers associated to the download
+     */
     public BlobDownloadHeaders headers() {
         return this.rawResponse.deserializedHeaders();
     }
 
+    /**
+     * @return all HTTP headers from the response
+     */
     public Map<String, String> rawHeaders() {
         return this.rawResponse.headers().toMap();
     }
 
+    /**
+     * @return the raw response
+     */
     public ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> rawResponse() {
         return this.rawResponse;
     }

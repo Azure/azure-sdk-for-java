@@ -118,6 +118,7 @@ public final class StorageAsyncClient {
     /**
      * Gets the URL of the storage account represented by this client.
      * @return the URL.
+     * @throws RuntimeException If the account URL is malformed.
      */
     public URL getAccountUrl() {
         try {
@@ -155,7 +156,7 @@ public final class StorageAsyncClient {
     }
 
     private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options,
-            ServicesListContainersSegmentResponse response){
+            ServicesListContainersSegmentResponse response) {
         Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.

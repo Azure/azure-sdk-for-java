@@ -157,7 +157,7 @@ public final class BlockBlobClientBuilder {
             if (parts.snapshot() != null) {
                 this.snapshot = parts.snapshot();
             }
-        } catch (MalformedURLException | UnknownHostException ex) {
+        } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 

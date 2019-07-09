@@ -163,22 +163,36 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified file.
+     *
+     * @param filePath Path to the upload file
+     * @return An empty response
+     */
     public Mono<Void> uploadFromFile(String filePath) {
         return this.uploadFromFile(filePath, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, null, null, null);
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified file.
+     *
+     * @param filePath Path to the upload file
+     * @param blockSize Size of the blocks to upload
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @return An empty response
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
+     * @throws UncheckedIOException If an I/O error occurs
+     */
     public Mono<Void> uploadFromFile(String filePath, Integer blockSize, BlobHTTPHeaders headers, Metadata metadata,
                                      BlobAccessConditions accessConditions) {
         if (blockSize < 0 || blockSize > BLOB_MAX_UPLOAD_BLOCK_SIZE) {
             throw new IllegalArgumentException("Block size should not exceed 100MB");
         }
-        return Mono.using(() -> {
-                try {
-                    return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            }, channel -> {
+
+        return Mono.using(() -> uploadFileResourceSupplier(filePath),
+            channel -> {
                 final SortedMap<Long, String> blockIds = new TreeMap<>();
                 return Flux.fromIterable(sliceFile(filePath, blockSize))
                     .doOnNext(chunk -> blockIds.put(chunk.offset(), getBlockID()))
@@ -195,13 +209,23 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
                             throw new UncheckedIOException(e);
                         }
                     });
-            }, channel -> {
-                try {
-                    channel.close();
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-        });
+            }, this::uploadFileCleanup);
+    }
+
+    private AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void uploadFileCleanup(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private String getBlockID() {

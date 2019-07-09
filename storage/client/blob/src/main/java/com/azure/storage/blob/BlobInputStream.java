@@ -194,8 +194,7 @@ public final class BlobInputStream extends InputStream {
 
             this.bufferSize = readLength;
             this.bufferStartOffset = this.currentAbsoluteReadPosition;
-        }
-        catch (final StorageException e) {
+        } catch (final StorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
             throw this.lastError;
@@ -247,11 +246,9 @@ public final class BlobInputStream extends InputStream {
 
         if (numberOfBytesRead > 0) {
             return tBuff[0] & 0xFF;
-        }
-        else if (numberOfBytesRead == 0) {
+        } else if (numberOfBytesRead == 0) {
             throw new IOException(SR.UNEXPECTED_STREAM_READ_ERROR);
-        }
-        else {
+        } else {
             return -1;
         }
     }

@@ -25,7 +25,7 @@ final class AccountSASService {
     /**
      * Initializes an {@code AccountSASService} object with all fields set to false.
      */
-    public AccountSASService() {
+    private AccountSASService() {
     }
 
     /**
@@ -36,6 +36,7 @@ final class AccountSASService {
      *         A {@code String} which represents the {@code SharedAccessAccountServices}.
      *
      * @return A {@code AccountSASService} generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code servicesString} contains a character other than b, f, q, or t.
      */
     public static AccountSASService parse(String servicesString) {
         AccountSASService services = new AccountSASService();

@@ -4,18 +4,17 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -67,6 +66,10 @@ public final class ContainerClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients}
+     * and {@link ContainerAsyncClient ContainerAsyncClients}.
+     */
     public ContainerClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -99,7 +102,7 @@ public final class ContainerClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -134,6 +137,7 @@ public final class ContainerClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public ContainerClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -227,6 +231,7 @@ public final class ContainerClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated ContainerClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public ContainerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);

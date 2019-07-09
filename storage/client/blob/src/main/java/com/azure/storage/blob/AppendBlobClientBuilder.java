@@ -26,7 +26,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +68,10 @@ public final class AppendBlobClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link AppendBlobClient AppendBlobClients}
+     * and {@link AppendBlobAsyncClient AppendBlobAsyncClients}.
+     */
     public AppendBlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -98,7 +101,7 @@ public final class AppendBlobClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -133,6 +136,7 @@ public final class AppendBlobClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated AppendBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL or is using an unknown host.
      */
     public AppendBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -153,7 +157,7 @@ public final class AppendBlobClientBuilder {
             if (parts.snapshot() != null) {
                 this.snapshot = parts.snapshot();
             }
-        } catch (MalformedURLException | UnknownHostException ex) {
+        } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
@@ -246,6 +250,7 @@ public final class AppendBlobClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated AppendBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public AppendBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);

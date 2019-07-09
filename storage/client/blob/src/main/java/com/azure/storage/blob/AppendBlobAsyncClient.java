@@ -99,11 +99,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata,
-                                                 BlobAccessConditions accessConditions) {
-            return appendBlobAsyncRawClient
-                .create(headers, metadata, accessConditions)
-                .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
+    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        return appendBlobAsyncRawClient
+            .create(headers, metadata, accessConditions)
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
     /**

@@ -99,6 +99,7 @@ public final class SharedKeyCredential {
      * @param stringToSign The UTF-8-encoded string to sign.
      * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
      * @throws InvalidKeyException If the accountKey is not a valid Base64-encoded string.
+     * @throws RuntimeException If the {@code HmacSHA256} algorithm isn't supported.
      */
     public String computeHmac256(final String stringToSign) throws InvalidKeyException {
         try {
@@ -112,7 +113,7 @@ public final class SharedKeyCredential {
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final  NoSuchAlgorithmException e) {
-            throw new Error(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -121,20 +122,20 @@ public final class SharedKeyCredential {
         contentLength = contentLength.equals("0") ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers,"Date");
+        String dateHeader = (headers.containsKey("x-ms-date")) ? "" : getStandardHeaderValue(headers, "Date");
 
         return String.join("\n",
             httpMethod,
-            getStandardHeaderValue(headers,"Content-Encoding"),
-            getStandardHeaderValue(headers,"Content-Language"),
+            getStandardHeaderValue(headers, "Content-Encoding"),
+            getStandardHeaderValue(headers, "Content-Language"),
             contentLength,
-            getStandardHeaderValue(headers,"Content-MD5"),
-            getStandardHeaderValue(headers,"Content-Type"),
+            getStandardHeaderValue(headers, "Content-MD5"),
+            getStandardHeaderValue(headers, "Content-Type"),
             dateHeader,
-            getStandardHeaderValue(headers,"If-Modified-Since"),
-            getStandardHeaderValue(headers,"If-Match"),
+            getStandardHeaderValue(headers, "If-Modified-Since"),
+            getStandardHeaderValue(headers, "If-Match"),
             getStandardHeaderValue(headers, "If-None-Match"),
-            getStandardHeaderValue(headers,"If-Unmodified-Since"),
+            getStandardHeaderValue(headers, "If-Unmodified-Since"),
             getStandardHeaderValue(headers, "Range"),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));

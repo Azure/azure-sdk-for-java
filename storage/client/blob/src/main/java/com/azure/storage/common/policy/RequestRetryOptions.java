@@ -60,6 +60,8 @@ public final class RequestRetryOptions {
      *         {@code null} (the default) then operations are not retried against another host. NOTE: Before setting
      *         this field, make sure you understand the issues around reading stale and potentially-inconsistent data at
      *         <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
+     * @throws IllegalArgumentException If {@code retryDelayInMs} and {@code maxRetryDelayInMs} are not both null or non-null
+     * or {@code retryPolicyType} isn't {@link RetryPolicyType#EXPONENTIAL} or {@link RetryPolicyType#FIXED}.
      *
      * <p><strong>Sample Code</strong></p>
      *

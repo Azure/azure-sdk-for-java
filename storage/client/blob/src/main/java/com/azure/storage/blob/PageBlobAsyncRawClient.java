@@ -57,7 +57,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      * pipeline to make HTTP requests.
      *
      */
-    public PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+    PageBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
         super(azureBlobStorage, snapshot);
     }
 
@@ -116,6 +116,8 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncRawClient#PAGE_BYTES}
+     * or {@code sequenceNumber} isn't null and is less than 0.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.create")] \n
@@ -188,6 +190,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link PageBlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.uploadPages")] \n
@@ -269,6 +272,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *          {@link SourceModifiedAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code range} is {@code null}
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_from_url "Sample code for PageBlobAsyncRawClient.uploadPagesFromURL")]
@@ -334,6 +338,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link PageBlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.clearPages")] \n
@@ -434,6 +439,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_diff "Sample code for PageBlobAsyncRawClient.getPageRangesDiff")] \n
@@ -483,6 +489,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncRawClient#PAGE_BYTES}
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.resize")] \n
@@ -535,6 +542,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         {@link BlobAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code sequenceNumber} isn't null and is less than 0
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=page_blob_basic "Sample code for PageBlobAsyncRawClient.updateSequenceNumber")] \n
@@ -593,6 +601,7 @@ final class PageBlobAsyncRawClient extends BlobAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
      */
     public Mono<PageBlobsCopyIncrementalResponse> copyIncremental(URL source, String snapshot,
             ModifiedAccessConditions modifiedAccessConditions) {

@@ -1,8 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.ProxyOptions.Type;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -11,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

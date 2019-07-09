@@ -65,6 +65,10 @@ public final class StorageClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link StorageClient StorageClients}
+     * and {@link StorageAsyncClient StorageAsyncClients}.
+     */
     public StorageClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -92,7 +96,7 @@ public final class StorageClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -127,6 +131,7 @@ public final class StorageClientBuilder {
      * Sets the blob service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated StorageClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public StorageClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -201,6 +206,7 @@ public final class StorageClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated StorageClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public StorageClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);

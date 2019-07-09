@@ -139,9 +139,7 @@ public final class StorageClient {
     public Iterable<ContainerItem> listContainers(ListContainersOptions options, Duration timeout) {
         Flux<ContainerItem> response = storageAsyncClient.listContainers(options);
 
-        return timeout == null ?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**

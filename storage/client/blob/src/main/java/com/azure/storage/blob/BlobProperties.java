@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
@@ -37,34 +40,58 @@ public class BlobProperties {
     }
 
 
+    /**
+     * @return the blob type
+     */
     public BlobType blobType() {
         return blobType;
     }
 
+    /**
+     * @return the metadata associated with this blob
+     */
     public Metadata metadata() {
         return metadata;
     }
 
+    /**
+     * @return the size of the blob in bytes
+     */
     public long blobSize() {
         return blobSize;
     }
 
+    /**
+     * @return the MD5 of the blob's content
+     */
     public byte[] contentMD5() {
         return contentMD5;
     }
 
+    /**
+     * @return the encoding of the blob's content
+     */
     public String contentEncoding() {
         return contentEncoding;
     }
 
+    /**
+     * @return the disposition of the blob's content
+     */
     public String contentDisposition() {
         return contentDisposition;
     }
 
+    /**
+     * @return the language of the blob's content
+     */
     public String contentLanguage() {
         return contentLanguage;
     }
 
+    /**
+     * @return the caching control for the blob
+     */
     public String cacheControl() {
         return cacheControl;
     }

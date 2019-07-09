@@ -33,7 +33,7 @@ final class AccountSASPermission {
     /**
      * Initializes an {@code AccountSASPermission} object with all fields set to false.
      */
-    public AccountSASPermission() {
+    private AccountSASPermission() {
     }
 
     /**
@@ -44,6 +44,7 @@ final class AccountSASPermission {
      *         A {@code String} which represents the {@code SharedAccessAccountPermissions}.
      *
      * @return An {@code AccountSASPermission} object generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, l, a, c, u, or p.
      */
     public static AccountSASPermission parse(String permString) {
         AccountSASPermission permissions = new AccountSASPermission();

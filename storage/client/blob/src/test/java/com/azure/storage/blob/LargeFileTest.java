@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.storage.common.credentials.SharedKeyCredential;
@@ -9,7 +12,7 @@ import java.util.Random;
 
 public class LargeFileTest {
     private static final Random RANDOM = new Random();
-    private static final String filePath = "C:\\Users\\jianghlu\\10g.dat";
+    private static final String FILE_PATH = "C:\\Users\\jianghlu\\10g.dat";
     private static StorageClient storageClient;
     private static ContainerClient containerClient;
 
@@ -30,7 +33,7 @@ public class LargeFileTest {
     //@Test
     public void uploadLargeBlockBlob() throws Exception {
         BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("testblob" + RANDOM.nextInt(1000));
-        blockBlobClient.uploadFromFile(filePath);
+        blockBlobClient.uploadFromFile(FILE_PATH);
     }
 
     //@Test

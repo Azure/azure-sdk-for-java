@@ -50,7 +50,7 @@ final class AccountSASSignatureValues {
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
      * other values empty.
      */
-    public AccountSASSignatureValues() {
+    AccountSASSignatureValues() {
     }
 
     /**
@@ -187,6 +187,7 @@ final class AccountSASSignatureValues {
      *         Credentials for the storage account and corresponding primary or secondary key.
      *
      * @return {@link SASQueryParameters}
+     * @throws RuntimeException If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredential", sharedKeyCredentials);
@@ -203,7 +204,7 @@ final class AccountSASSignatureValues {
         try {
             signature = sharedKeyCredentials.computeHmac256(stringToSign);
         } catch (InvalidKeyException e) {
-            throw new Error(e); // The key should have been validated by now. If it is no longer valid here, we fail.
+            throw new RuntimeException(e); // The key should have been validated by now. If it is no longer valid here, we fail.
         }
 
         return new SASQueryParameters(this.version, this.services, resourceTypes,
