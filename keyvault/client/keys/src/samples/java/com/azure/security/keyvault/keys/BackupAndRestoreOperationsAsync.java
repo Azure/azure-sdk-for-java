@@ -30,10 +30,10 @@ public class BackupAndRestoreOperationsAsync {
         // Instantiate async key client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        KeyAsyncClient keyAsyncClient = KeyAsyncClient.builder()
+        KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredential())
-            .build();
+            .buildAsyncClient();
 
         // Let's create Cloud Rsa key valid for 1 year. if the key
         // already exists in the key vault, then a new version of the key is created.
