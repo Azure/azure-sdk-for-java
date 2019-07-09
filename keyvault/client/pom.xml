@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-parent</artifactId>
-  <version>4.0.0-preview.1</version>
+  <version>4.0.0-preview.2</version>
   <packaging>pom</packaging>
 
   <name>azure-keyvault</name>
