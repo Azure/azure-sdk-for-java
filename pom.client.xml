@@ -732,7 +732,7 @@
   </profiles>
 
   <modules>
-    <module>./appconfiguration/client</module>
+    <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>./core</module>
     <module>./eventhubs/client</module>
     <module>./keyvault/client</module>
