@@ -23,7 +23,7 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <azure-messaging-eventhubs.version>5.1.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
   </properties>
 
