@@ -29,8 +29,8 @@ public final class SharedKeyCredential {
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT_NAME = "AccountName".toLowerCase();
-    private static final String ACCOUNT_KEY = "AccountKey".toLowerCase();
+    private static final String ACCOUNT_NAME = "accountname";
+    private static final String ACCOUNT_KEY = "accountkey";
 
     private final String accountName;
     private final byte[] accountKey;
@@ -59,7 +59,7 @@ public final class SharedKeyCredential {
         HashMap<String, String> connectionStringPieces = new HashMap<>();
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionStringPieces.get(ACCOUNT_NAME);

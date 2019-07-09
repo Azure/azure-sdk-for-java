@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -115,7 +116,7 @@ public final class ContainerClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s", endpoint.toString(), containerName))
+            .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline);
     }
 
@@ -177,7 +178,7 @@ public final class ContainerClientBuilder {
     }
 
     String endpoint() {
-        return this.endpoint.toString();
+        return this.endpoint;
     }
 
     /**
@@ -239,7 +240,7 @@ public final class ContainerClientBuilder {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
             String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);

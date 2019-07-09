@@ -104,24 +104,6 @@ public final class PageBlobClient extends BlobClient {
         return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
     }
 
-    // TODO: Figure out if this method needs to change to public to access method in wrappers
-    private static String pageRangeToString(PageRange pageRange) {
-        if (pageRange.start() < 0 || pageRange.end() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                    + "0 if specified.");
-        }
-        if (pageRange.start() % PageBlobClient.PAGE_BYTES != 0) {
-            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
-        }
-        if (pageRange.end() % PageBlobClient.PAGE_BYTES != PageBlobClient.PAGE_BYTES - 1) {
-            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
-        }
-        if (pageRange.end() <= pageRange.start()) {
-            throw new IllegalArgumentException("PageRange's End value must be after the start.");
-        }
-        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
-    }
-
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
      * For more information, see the

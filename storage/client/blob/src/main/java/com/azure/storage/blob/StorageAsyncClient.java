@@ -47,7 +47,6 @@ import java.time.OffsetDateTime;
  * object through {@link Mono#toFuture()}.
  */
 public final class StorageAsyncClient {
-    AzureBlobStorageBuilder azureBlobStorageBuilder;
     StorageAsyncRawClient storageAsyncRawClient;
 
     /**

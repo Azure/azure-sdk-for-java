@@ -231,6 +231,7 @@ public class BlobOutputStream extends OutputStream {
     private synchronized void commit() throws StorageException {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             // wait for all blocks to finish
+            assert this.blobClient instanceof BlockBlobAsyncClient;
             final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
             blobRef.commitBlockList(new ArrayList<>(this.blockList.values()), null, null, this.accessCondition).block();
         }
@@ -275,6 +276,7 @@ public class BlobOutputStream extends OutputStream {
     }
 
     private Mono<Void> writeBlock(Flux<ByteBuf> blockData, String blockId, long writeLength) {
+        assert this.blobClient instanceof BlockBlobAsyncClient;
         final BlockBlobAsyncClient blobRef = (BlockBlobAsyncClient) this.blobClient;
 
         LeaseAccessConditions leaseAccessConditions = accessCondition == null ? null : accessCondition.leaseAccessConditions();
@@ -288,6 +290,7 @@ public class BlobOutputStream extends OutputStream {
     }
 
     private Mono<Void> writePages(Flux<ByteBuf> pageData, long offset, long writeLength) {
+        assert this.blobClient instanceof PageBlobAsyncClient;
         final PageBlobAsyncClient blobRef = (PageBlobAsyncClient) this.blobClient;
 
         PageBlobAccessConditions pageBlobAccessConditions = accessCondition == null ? null : new PageBlobAccessConditions().leaseAccessConditions(accessCondition.leaseAccessConditions()).modifiedAccessConditions(accessCondition.modifiedAccessConditions());
@@ -301,6 +304,7 @@ public class BlobOutputStream extends OutputStream {
     }
 
     private Mono<Void> appendBlock(Flux<ByteBuf> blockData, long offset, long writeLength) {
+        assert this.blobClient instanceof AppendBlobAsyncClient;
         final AppendBlobAsyncClient blobRef = (AppendBlobAsyncClient) this.blobClient;
         if (this.appendPositionAccessConditions == null) {
             appendPositionAccessConditions = new AppendPositionAccessConditions();

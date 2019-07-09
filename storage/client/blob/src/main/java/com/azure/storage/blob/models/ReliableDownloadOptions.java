@@ -34,7 +34,7 @@ public final class ReliableDownloadOptions {
      * response body.
      */
     public ReliableDownloadOptions maxRetryRequests(int maxRetryRequests) {
-        if (maxRetryRequests < 0 || maxRetryRequests > Integer.MAX_VALUE) {
+        if (maxRetryRequests < 0) {
             throw new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
                 "options.maxRetryRequests", 0, Integer.MAX_VALUE));
         }

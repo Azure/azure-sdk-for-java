@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.storage.blob.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.Metadata;
@@ -65,7 +66,7 @@ public class BlobProperties {
      * @return the MD5 of the blob's content
      */
     public byte[] contentMD5() {
-        return contentMD5;
+        return ImplUtils.clone(contentMD5);
     }
 
     /**

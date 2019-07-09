@@ -72,7 +72,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
-    private BlobAccessConditions accessCondition = null;
+    private BlobAccessConditions accessCondition;
 
     /**
      * Offset of the source blob this class is configured to stream from.
@@ -120,6 +120,7 @@ public final class BlobInputStream extends InputStream {
         this.streamFaulted = false;
         this.currentAbsoluteReadPosition = blobRangeOffset;
         this.readSize = 4 * Constants.MB;
+        this.accessCondition = accessCondition;
 
         if (blobRangeOffset < 0 || (blobRangeLength != null && blobRangeLength <= 0)) {
             throw new IndexOutOfBoundsException();

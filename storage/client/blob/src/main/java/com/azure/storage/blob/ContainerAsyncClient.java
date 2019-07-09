@@ -54,9 +54,7 @@ import java.util.List;
  * object through {@link Mono#toFuture()}.
  */
 public final class ContainerAsyncClient {
-
     ContainerAsyncRawClient containerAsyncRawClient;
-    private AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -69,7 +67,6 @@ public final class ContainerAsyncClient {
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
         this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
@@ -461,15 +458,6 @@ public final class ContainerAsyncClient {
             .setAccessPolicy(accessType, identifiers, accessConditions)
             .map(VoidResponse::new);
     }
-
-    // TODO: figure out if this is meant to stay private or change to public
-    private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
-        if (modifiedAccessConditions == null) {
-            return true;
-        }
-        return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
-    }
-
 
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
