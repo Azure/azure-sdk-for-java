@@ -43,17 +43,13 @@ import reactor.core.publisher.Mono;
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Key keys}. The client
  * also supports listing {@link DeletedKey deleted keys} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * KeyAsyncClient.builder()
- *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
- *   .credential(new DefaultAzureCredential())
- *   .build()
- * </pre>
+ * <p><strong>Samples to construct the async client</strong></p>
  *
- * @see KeyAsyncClientBuilder
+ * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
+ *
+ * @see KeyClientBuilder
  */
-@ServiceClient(builder = KeyAsyncClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
+@ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
@@ -76,14 +72,6 @@ public final class KeyAsyncClient {
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
         this.service = RestProxy.create(KeyService.class, pipeline);
-    }
-
-    /**
-     * Creates a builder that can configure options for the KeyAsyncClient before creating an instance of it.
-     * @return A new builder to create a KeyAsyncClient from.
-     */
-    public static KeyAsyncClientBuilder builder() {
-        return new KeyAsyncClientBuilder();
     }
 
     /**

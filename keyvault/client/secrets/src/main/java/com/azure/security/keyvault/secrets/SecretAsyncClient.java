@@ -34,17 +34,12 @@ import com.azure.core.exception.HttpRequestException;
  * supports creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link Secret secrets}. The client
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
- * <p><strong>Samples to construct the client</strong></p>
- * <pre>
- * SecretAsyncClient.builder()
- *   .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
- *   .credential(new DefaultAzureCredential())
- *   .build()
- * </pre>
+ * <p><strong>Samples to construct the async client</strong></p>
+ * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
  *
- * @see SecretAsyncClientBuilder
+ * @see SecretClientBuilder
  */
-@ServiceClient(builder = SecretAsyncClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
+@ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
 public final class SecretAsyncClient {
     static final String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
@@ -66,14 +61,6 @@ public final class SecretAsyncClient {
         Objects.requireNonNull(endpoint, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.endpoint = endpoint.toString();
         this.service = RestProxy.create(SecretService.class, pipeline);
-    }
-
-    /**
-     * Creates a builder that can configure options for the SecretAsyncClient before creating an instance of it.
-     * @return A new builder to create a SecretAsyncClient from.
-     */
-    public static SecretAsyncClientBuilder builder() {
-        return new SecretAsyncClientBuilder();
     }
 
     /**
