@@ -4,6 +4,11 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+/**
+ * The @ServiceInterface class should have following rules:
+ *   1) has annotation property 'name' and should be non-empty
+ *   2) length of value of property 'name' should be less than 10 characters and without space
+ */
 public class ServiceInterfaceCheck extends AbstractCheck {
 
     @Override
@@ -36,23 +41,26 @@ public class ServiceInterfaceCheck extends AbstractCheck {
     }
 
     /**
+     * Checks for @ServiceInterface rules that defined at the beginning of class definition.
      *
-     * @param interfaceDefToken
+     * @param interfaceDefToken INTERFACE_DEF AST node
      */
     private void checkServiceInterface(DetailAST interfaceDefToken) {
         DetailAST serviceInterfaceAnnotationNode = null;
         String nameValue = null;
 
         DetailAST modifiersToken = interfaceDefToken.findFirstToken(TokenTypes.MODIFIERS);
+        // Find the @ServiceInterface and the property 'name' and the corresponding value
         for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            // we care about only the ANNOTATION type
+            // We care about only the ANNOTATION type
             if (ast.getType() != TokenTypes.ANNOTATION) {
                 continue;
             }
-            // find the first
+
             for (DetailAST annotationChild = ast.getFirstChild(); annotationChild != null;
                  annotationChild = annotationChild.getNextSibling()) {
 
+                // IDENT
                 if (annotationChild.getType() == TokenTypes.IDENT) {
                     if (!"ServiceInterface".equals(annotationChild.getText())) {
                         break;
@@ -61,34 +69,40 @@ public class ServiceInterfaceCheck extends AbstractCheck {
                     }
                 }
 
+                // ANNOTATION_MEMBER_VALUE_PAIR
                 if (annotationChild.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
-                    final DetailAST annotationPairIdent = annotationChild.findFirstToken(TokenTypes.IDENT);
-                    if (annotationPairIdent != null && "name".equals(annotationPairIdent.getText())) {
+                    if ("name".equals(annotationChild.findFirstToken(TokenTypes.IDENT).getText())) {
                         nameValue = getNamePropertyValue(annotationChild.findFirstToken(TokenTypes.EXPR));
                     }
                 }
             }
         }
         
-        // if
-        if (serviceInterfaceAnnotationNode != null) {
-            if(nameValue == null) {
-                log(serviceInterfaceAnnotationNode, "@ServiceInterface annotation missing ''name'' property.");
-            } else {
-                if (nameValue.contains(" ")) {
-                    log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not contain white space.");
-                }
-                if (nameValue.length() > 10) {
-                    log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not have a length > 10.");
-                }
+        // No @ServiceInterface annotation found
+        if (serviceInterfaceAnnotationNode == null) {
+            return;
+        }
+
+        // Checks the rules:
+        // Missing 'name' property
+        if(nameValue == null) {
+            log(serviceInterfaceAnnotationNode, "@ServiceInterface annotation missing ''name'' property.");
+        } else {
+            //  No Space allowed
+            if (nameValue.contains(" ")) {
+                log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not contain white space.");
+            }
+            // Length should less than or equal to 10 characters
+            if (nameValue.length() > 10) {
+                log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not have a length > 10.");
             }
         }
     }
 
     /**
-     *
-     * @param exprToken
-     * @return
+     * Get the name property value from the EXPR node
+     * @param exprToken EXPR
+     * @return null if EXPR node doesn't exist or no STRING_LITERAL. Otherwise, returns the value of the property.
      */
     private String getNamePropertyValue(DetailAST exprToken) {
         if (exprToken == null) {
