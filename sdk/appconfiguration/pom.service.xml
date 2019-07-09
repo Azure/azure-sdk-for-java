@@ -9,6 +9,6 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <!-- <module>microsoft-azure-applicationinsights-query</module> -->
+    <module>azure-data-appconfiguration</module>
   </modules>
 </project>
