@@ -2,6 +2,11 @@
 
 echo "CWD : "
 pwd
+
+mvn --version
+
+echo "java is at : $JAVA_HOME"
+
 #TODO:
 #for some reason the workingdirectory dos not seem to work...
 #fix the following cd cmd once we figure out how to get it to work
