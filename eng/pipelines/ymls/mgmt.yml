@@ -29,8 +29,8 @@ jobs:
       - task: ShellScript@2
         displayName: 'call mvn for each mgmt sdk individually'
         inputs:
-          scriptPath: eng/pipelines/scripts/mgmt_sdk_compiler.sh
-          workingDirectory: $(System.DefaultWorkingDirectory)
+          scriptPath: "$(System.DefaultWorkingDirectory)/eng/pipelines/scripts/mgmt_sdk_compiler.sh"
+          workingDirectory: "$(System.DefaultWorkingDirectory)"
           failOnStandardError: true
 
       - task: PublishTestResults@2
