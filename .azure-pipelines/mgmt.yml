@@ -29,7 +29,7 @@ jobs:
       - task: ShellScript@2
         displayName: 'call mvn in eacl mgmt sdk individually'
         inputs:
-          scriptPath: eng\pipelines\scripts\mgmt_sdk_compiler.sh
+          scriptPath: eng/pipelines/scripts/mgmt_sdk_compiler.sh
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
