@@ -435,8 +435,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <configuration>
-            <failsOnError>false</failsOnError>
-            <failOnViolation>false</failOnViolation>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
           </configuration>
         </plugin>
       </plugins>
@@ -495,7 +495,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
