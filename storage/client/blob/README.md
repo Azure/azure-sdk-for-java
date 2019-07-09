@@ -13,7 +13,7 @@ definition, such as text or binary data.
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
+-  Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Strorage Account][storage_account]
 
@@ -48,7 +48,7 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
 
 ```Powershell
-az storage queue generate-sas
+az storage blob generate-sas
     --name {queue name}
     --expiry {date/time to expire SAS token}
     --permission {permission to grant}
@@ -58,7 +58,7 @@ az storage queue generate-sas
 ```Powershell
 CONNECTION_STRING=<connection-string>
 
-az storage queue generate-sas
+az storage blob generate-sas
     --name javasdksas
     --expiry 2019-06-05
     --permission rpau
@@ -107,7 +107,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create Storage Client
 
-Create a storage client using the `sasToken`(#get-credentials) generated above.
+Create a storage client using the [`sasToken`](#get-credentials) generated above.
 ```java
 StorageClient storageClient = StorageClient.builder()
         .endpoiont(<your-storage-blob-url>)
@@ -117,14 +117,14 @@ StorageClient storageClient = StorageClient.builder()
 
 ### Create Container Client
 
-Create a container client if storage client exists
+Create a container client if storage client exists.
 ```java
 ContainerClient containerClient = storageClient.getContainerClient("mycontainer");
 ```
 
 or 
 
-Create the container from the builder `sasToken`(#get-credentials) generated above.
+Create the container client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
 ContainerClient containerClient = ContainerClient.builder()
      .endpoiont(<your-storage-blob-url>)
@@ -134,19 +134,17 @@ ContainerClient containerClient = ContainerClient.builder()
 ```
 
 ### Create Blob Client
-
-Create a blob client
-
-Create a container client if container client exists
+]
+Create a blob client if container client exists.
 ```java
 BlobClient blobClient = containerClient.getBlobClient("myblob");
 ```
 
 or 
 
-Create the container from the builder `sasToken`(#get-credentials) generated above.
+Create the blob client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
-ContainerClient containerClient = ContainerClient.builder()
+BlobClient blobClient = BlobClient.builder()
      .endpoiont(<your-storage-blob-url>)
      .credentail(sasToken)
      .containerName("mycontainer")
@@ -159,6 +157,7 @@ ContainerClient containerClient = ContainerClient.builder()
 Create a container from storage client.
 ```java
 storageClient.createContainer("mycontainer");
+```
 
 or 
 
@@ -169,7 +168,7 @@ conatinerClient.create();
 
 ### Uploading a blob from InputStream
 
-Upload a file to a blob using blockBlobClient generated from containerClient.
+Upload data stream to a blob using blockBlobClient generated from containerClient.
 
 ```java
 BlockBlobClient blockBlobClient = containerClient.getBlockBlobClient("myblockblob");
@@ -190,7 +189,7 @@ blobClient.uploadFromFile("local-file.jpg");
 
 ### Downloading a blob to output stream
 
-Download blob file to output stream using blobClient.
+Download blob to output stream using blobClient.
 
 ```java
 try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream("downloaded-file.jpg")) {
@@ -200,7 +199,7 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream("downloaded-f
 
 ### Downloading a blob to local path
 
-Download blob file to local path using blobClient.
+Download blob to local file using blobClient.
 ```java
 blobClient.downloadToFile("downloaded-file.jpg");
 ```
@@ -241,9 +240,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2FAzure.Storage.Blobs%2FREADME.png)
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/storage-proto-2/storage/client/blob/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/storage/client/blob/src
 [package]: https://repo1.maven.org/maven2/com/azure/azure-storage-blob/12.0.0-preview.1/
-[docs]: https://azure.github.io/azure-sdk-for-net/api/Storage/Azure.Storage.Blobs.html
+[docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-overview
 [sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
