@@ -23,6 +23,8 @@ import com.microsoft.azure.management.sql.v2018_06_01_preview.ServerVulnerabilit
 import com.microsoft.azure.management.sql.v2018_06_01_preview.InstancePools;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.Usages;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstances;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.Databases;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ElasticPools;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -37,6 +39,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private InstancePools instancePools;
     private Usages usages;
     private ManagedInstances managedInstances;
+    private Databases databases;
+    private ElasticPools elasticPools;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -152,6 +156,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedInstances = new ManagedInstancesImpl(this);
         }
         return this.managedInstances;
+    }
+
+    /**
+     * @return Entry point to manage Databases.
+     */
+    public Databases databases() {
+        if (this.databases == null) {
+            this.databases = new DatabasesImpl(this);
+        }
+        return this.databases;
+    }
+
+    /**
+     * @return Entry point to manage ElasticPools.
+     */
+    public ElasticPools elasticPools() {
+        if (this.elasticPools == null) {
+            this.elasticPools = new ElasticPoolsImpl(this);
+        }
+        return this.elasticPools;
     }
 
     /**
