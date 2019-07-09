@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-parent</artifactId>
-    <version>4.0.0-preview.2</version>
-    <relativePath>../pom.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <version>4.0.0-preview.1</version>
+    <relativePath>../pom.client.xml</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
-  <artifactId>azure-keyvault-secrets</artifactId>
-  <version>4.0.0-preview.2</version>
+  <modelVersion>4.0.0</modelVersion>
 
-  <name>azure-keyvault-secrets</name>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-keyvault-keys</artifactId>
+  <version>4.0.0-preview.1</version>
+
+  <name>azure-keyvault-keys</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
