@@ -7,10 +7,10 @@ https://aka.ms/azure-sdk-preview1-java.
 
 **Breaking changes: New API design**
 - Operations are now scoped to a particular client:
-    - `StorageClient`: This client handles account-level operations. This includes managing service properties and listing the containers within an account.
-    - `ContainerClient`: The client handles operations for a particular container. This includes creating or deleting that container, as well as listing the blobs within that container and managing properties and metadata.
-    - `BlobClient`: The client handles operations for a particular blob. This includes creating or deleting that blob, as well as upload and download data and managing properties.
-    This BlobClient handles all blob types (block, page and append). Where operations can behave differently according to type (i.e. `upload`) the default behaviour will be block blobs unless otherwise specified.
+    - `StorageClient`: The StorageURL renamed to StorageClient. This client handles account-level operations. This includes managing service properties and listing the containers within an account.
+    - `ContainerClient`: The ContainerURL renamed to ContainerClient. The client handles operations for a particular container. This includes creating or deleting that container, as well as listing the blobs within that container.
+    - `BlobClient`: The BlobURL renamed to BlobClient. The client handles operations for a particular blob. This includes upload and download data.
+    There are subclients (BlockBlobClient, PageBlobClient, AppendBlobClient) available through all blob types (block, page and append), where operations can behave differently according to type (i.e. `upload`).
 
     These clients can be accessed by navigating down the client hierarchy, or instantiated directly using builder to the resource (account, container or blob).
 - New module level operations for simple upload and download using a block or page blob client.
