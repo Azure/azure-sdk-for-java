@@ -212,19 +212,25 @@ public final class FluxUtil {
                 }
                 //noinspection NonAtomicOperationOnVolatileField
                 pos += bytesWritten;
-                subscription.request(1);
+                if (subscription != null) {
+                    subscription.request(1);
+                }
             }
 
             @Override
             public void failed(Throwable exc, Object attachment) {
-                subscription.cancel();
+                if (subscription != null) {
+                    subscription.cancel();
+                }
                 emitter.error(exc);
             }
         };
 
         @Override
         public void onError(Throwable throwable) {
-            subscription.cancel();
+            if (subscription != null) {
+                subscription.cancel();
+            }
             emitter.error(throwable);
         }
 
