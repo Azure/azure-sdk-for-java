@@ -134,7 +134,7 @@ ContainerClient containerClient = ContainerClient.builder()
 ```
 
 ### Create Blob Client
-]
+
 Create a blob client if container client exists.
 ```java
 BlobClient blobClient = containerClient.getBlobClient("myblob");
