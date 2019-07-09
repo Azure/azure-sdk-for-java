@@ -9,14 +9,14 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>microsoft-azure-keyvault</module>
+  <!-- <module>microsoft-azure-keyvault</module>
     <module>microsoft-azure-keyvault-core</module>
     <module>microsoft-azure-keyvault-webkey</module>
     <module>microsoft-azure-keyvault-cryptography</module>
     <module>microsoft-azure-keyvault-extensions</module>
-    <module>microsoft-azure-keyvault-complete</module>
+    <module>microsoft-azure-keyvault-complete</module> -->
+    <module>../../core</module>
     <module>azure-keyvault-keys</module>
     <module>azure-keyvault-secrets</module>
-    <module>../../core</module>
   </modules>
 </project>
