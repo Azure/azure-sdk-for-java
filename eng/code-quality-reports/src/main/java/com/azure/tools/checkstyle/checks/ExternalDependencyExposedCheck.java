@@ -18,19 +18,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  No external dependency exposed in the public API
+ *  No external dependency exposed in public API
  */
 public class ExternalDependencyExposedCheck extends AbstractCheck {
-    private static final String JAVA = "java";
-    private static final String COM_AZURE = "com.azure";
-    private static final String REACTOR = "reactor";
-    private static final String DOT = ".";
-
     private static final String EXTERNAL_DEPENDENCY_ERROR =
-        "Class ''%s'', is a class from external dependency. You should not use it as a return or parameter argument type";
+        "Class ''%s'', is a class from external dependency. You should not use it as a return or method argument type.";
 
     private static final Set<String> VALID_DEPENDENCY_PACKAGE_NAMES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        JAVA, COM_AZURE, REACTOR
+        "java", "com.azure", "reactor"
     )));
 
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
@@ -62,7 +57,10 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.IMPORT:
-                addImportedClassPath(token);
+                // Add all imported classes into a map, key is the name of class and value is the full package path of class.
+                final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
+                final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
+                simpleClassNameToQualifiedNameMap.put(className, importClassPath);
                 break;
             case TokenTypes.METHOD_DEF:
                 checkNoExternalDependencyExposed(token);
@@ -74,39 +72,29 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     }
 
     /**
-     * Add all imported classes into a map, key is the name of class and value is the full package path of class.
-     *
-     * @param token the IMPORT AST node
-     */
-    private void addImportedClassPath(DetailAST token) {
-        final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
-        final String className = importClassPath.substring(importClassPath.lastIndexOf(DOT) + 1);
-        simpleClassNameToQualifiedNameMap.put(className, importClassPath);
-    }
-
-    /**
      * Checks for external dependency, log the error if it is an invalid external dependency.
      *
      * @param methodDefToken METHOD_DEF AST node
      */
     private void checkNoExternalDependencyExposed(DetailAST methodDefToken) {
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        if (modifiersToken == null) {
-            return;
-        }
 
-        AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        // Getting the modifier of the method to determine if it is 'public' or 'protected'.
+        // Ignore the check if it is neither of 'public' nor 'protected',
+        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
         if (!accessModifier.equals(AccessModifier.PUBLIC) && !accessModifier.equals(AccessModifier.PROTECTED)) {
             return;
         }
 
-        DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
+        // Checks for the return type of method
+        final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken != null) {
             getInvalidReturnTypes(typeToken).forEach(
                 (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName)));
         }
 
-        DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
+        // Checks for the parameters of the method
+        final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         if (parametersToken != null) {
             getInvalidParameterTypes(parametersToken).forEach(
                 (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName)));
@@ -120,24 +108,28 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
      * @return a map that maps the invalid TYPE node and the type name.
      */
     private Map<DetailAST, String> getInvalidReturnTypes(DetailAST typeToken) {
-        Map<DetailAST, String> invalidReturnTypeMap = new HashMap<>();
+        final Map<DetailAST, String> invalidReturnTypeMap = new HashMap<>();
 
-        DetailAST identToken = typeToken.findFirstToken(TokenTypes.IDENT);
-        if (identToken != null) {
-            String typeName = identToken.getText();
-            if (!isValidClassDependency(typeName)) {
-                invalidReturnTypeMap.put(typeToken, typeName);
-            }
+        // Add all invalid external return types to the map
+        final DetailAST identToken = typeToken.findFirstToken(TokenTypes.IDENT);
+        if (identToken == null) {
+            return invalidReturnTypeMap;
+        }
+        final String typeName = identToken.getText();
+        if (!isValidClassDependency(typeName)) {
+            invalidReturnTypeMap.put(typeToken, typeName);
         }
 
+        // TYPE_ARGUMENTS, add all invalid external types to the map
         final DetailAST typeArgumentsToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENTS);
         if (typeArgumentsToken != null) {
             invalidReturnTypeMap.putAll(getInvalidTypeFromTypeArguments(typeArgumentsToken));
         }
 
+        // TYPE_ARGUMENT, add the invalid external type to the map
         final DetailAST typeArgumentToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENT);
         if (typeArgumentToken != null) {
-            String invalidTypeName = getInvalidTypeNameFromTypeArgument(typeArgumentToken);
+            final String invalidTypeName = getInvalidTypeNameFromTypeArgument(typeArgumentToken);
             if (invalidTypeName != null) {
                 invalidReturnTypeMap.put(typeArgumentToken, invalidTypeName);
             }
@@ -176,27 +168,25 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         }
         // Checks multiple type arguments
         for (DetailAST ast = typeArgumentsToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() == TokenTypes.TYPE_ARGUMENT) {
-                String invalidTypeName = getInvalidTypeNameFromTypeArgument(ast);
-                if (invalidTypeName != null) {
-                    invalidTypesMap.put(ast, invalidTypeName);
-                }
+            if (ast.getType() != TokenTypes.TYPE_ARGUMENT) {
+                continue;
+            }
+
+            final String invalidTypeName = getInvalidTypeNameFromTypeArgument(ast);
+            if (invalidTypeName != null) {
+                invalidTypesMap.put(ast, invalidTypeName);
             }
         }
         return invalidTypesMap;
     }
 
     /**
-     * Get invalid type name.
+     * Get invalid type name from TYPE_ARGUMENT
      *
      * @param typeArgumentToken TYPE_ARGUMENT AST node
      * @return an invalid type name if it is an invalid library. Otherwise, returns null.
      */
     private String getInvalidTypeNameFromTypeArgument(DetailAST typeArgumentToken) {
-        if (typeArgumentToken == null) {
-            return null;
-        }
-
         final DetailAST identToken = typeArgumentToken.findFirstToken(TokenTypes.IDENT);
         // if there is no IDENT token, implies the token is default java types.
         if (identToken == null) {
@@ -209,7 +199,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     }
 
     /**
-     *  A helper function that checks for whether a class is from a valid internal dependency or is a suppression class
+     * A helper function that checks for whether a class is from a valid internal dependency or is a suppression class
      *
      * @param typeName the type name of class
      * @return true if the class  is a suppression class, otherwise, return false.
@@ -221,7 +211,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
             return true;
         }
 
-        String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
+        final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
         return VALID_DEPENDENCY_PACKAGE_NAMES.stream()
             .anyMatch(validPackageName -> qualifiedName.startsWith(validPackageName));
     }
