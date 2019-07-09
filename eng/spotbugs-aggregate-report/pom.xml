@@ -26,7 +26,7 @@
     <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
     <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
-    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>
     <site>
