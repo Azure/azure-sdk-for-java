@@ -3,7 +3,7 @@
 package com.azure.data.appconfiguration.policy;
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.data.appconfiguration.ConfigurationAsyncClientBuilder;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  *
  * @see ConfigurationClientCredentials
  * @see ConfigurationAsyncClient
- * @see ConfigurationAsyncClientBuilder
+ * @see ConfigurationClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value in

@@ -58,17 +58,17 @@ Alternatively, get the connection string from the Azure Portal.
 Once you have the value of the connection string you can create the configuration client:
 
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildClient();
 ```
 
 or
 
 ```Java
-ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -83,12 +83,12 @@ The Label property of a Configuration Setting provides a way to separate Configu
 
 The client performs the interactions with the App Configuration service, getting, setting, updating, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 
-An application that needs to retrieve startup configurations is better suited using the syncrhonous client, for example setting up a SQL connection.
+An application that needs to retrieve startup configurations is better suited using the synchronous client, for example setting up a SQL connection.
 
 ```Java
-ConfigurationClient client = new ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClient()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
-        .build();
+        .buildClient();
 
 String url = client.getSetting(urlKey).value();
 Connection conn;
@@ -100,13 +100,13 @@ try {
 
 ```
 
-An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchonous client, for example all settings with a specific label are periodically updated.
+An application that has a large set of configurations that it needs to periodically update is be better suited using the asynchronous client, for example all settings with a specific label are periodically updated.
 
 ```Java
-ConfigurationAsyncClient client = new ConfigurationAsyncClient.builder()
+ConfigurationAsyncClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
-        .build();
-
+        .buildAsyncClient();
+        
 client.listSettings(new SettingSelection().label(periodicUpdateLabel))
     .subscribe(setting -> updateConfiguration(setting));
 ```
@@ -125,9 +125,9 @@ Create a Configuration Setting to be stored in the Configuration Store. There ar
 - addSetting creates a setting only if the setting does not already exist in the store.
 - setSetting creates a setting if it doesn't exist or overrides an existing setting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildClient();
 ConfigurationSetting setting = client.setSetting("some_key", "some_value");
 ```
 
@@ -135,9 +135,9 @@ ConfigurationSetting setting = client.setSetting("some_key", "some_value");
 
 Retrieve a previously stored Configuration Setting by calling getSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.getSetting("some_key");
 ```
@@ -146,9 +146,9 @@ ConfigurationSetting setting = client.getSetting("some_key");
 
 Update an existing Configuration Setting by calling updateSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
 ```
@@ -157,9 +157,9 @@ ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
 
 Delete an existing Configuration Setting by calling deleteSetting.
 ```Java
-ConfigurationClient client = ConfigurationClient.builder()
+ConfigurationClient client = new ConfigurationClientBuilder()
         .credentials(new ConfigurationClientCredentials(connectionString))
-        .build();
+        .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.deleteSetting("some_key");
 ```

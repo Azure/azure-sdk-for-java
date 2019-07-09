@@ -30,19 +30,19 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> ConfigurationClient.builder()
+            client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credentials(credentials)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .build());
+                .buildClient());
         } else {
-            client = clientSetup(credentials -> ConfigurationClient.builder()
+            client = clientSetup(credentials -> new ConfigurationClientBuilder()
                 .credentials(credentials)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .addPolicy(new RetryPolicy())
-                .build());
+                .buildClient());
         }
     }
 

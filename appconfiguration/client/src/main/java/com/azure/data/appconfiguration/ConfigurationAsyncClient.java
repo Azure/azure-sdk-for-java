@@ -35,18 +35,14 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an Asynchronous Configuration Client</strong></p>
  *
- * <pre>
- * ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
- *     .credentials(new ConfigurationClientCredentials(connectionString))
- *     .build();
- * </pre>
+ * {@codesnippet com.azure.data.applicationconfig.async.configurationclient.instantiation}
  *
- * <p>View {@link ConfigurationAsyncClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see ConfigurationAsyncClientBuilder
+ * @see ConfigurationClientBuilder
  * @see ConfigurationClientCredentials
  */
-@ServiceClient(builder = ConfigurationAsyncClientBuilder.class, isAsync = true, serviceInterfaces = ConfigurationService.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true, serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
 
@@ -66,15 +62,6 @@ public final class ConfigurationAsyncClient {
     ConfigurationAsyncClient(URL serviceEndpoint, HttpPipeline pipeline) {
         this.service = RestProxy.create(ConfigurationService.class, pipeline);
         this.serviceEndpoint = serviceEndpoint.toString();
-    }
-
-    /**
-     * Creates a builder that can configure options for the ConfigurationAsyncClient before creating an instance of it.
-     *
-     * @return A new {@link ConfigurationAsyncClientBuilder} to create a ConfigurationAsyncClient from.
-     */
-    public static ConfigurationAsyncClientBuilder builder() {
-        return new ConfigurationAsyncClientBuilder();
     }
 
     /**

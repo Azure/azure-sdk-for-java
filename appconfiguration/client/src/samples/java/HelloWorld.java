@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
@@ -26,9 +27,9 @@ public class HelloWorld {
         String connectionString = "endpoint={endpoint_value};id={id_value};name={secret_value}";
 
         // Instantiate a client that will be used to call the service.
-        ConfigurationAsyncClient client = ConfigurationAsyncClient.builder()
+        ConfigurationAsyncClient client = new ConfigurationClientBuilder()
             .credentials(new ConfigurationClientCredentials(connectionString))
-            .build();
+            .buildAsyncClient();
 
         // Name of the key to add to the configuration service.
         String key = "hello";

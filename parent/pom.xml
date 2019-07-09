@@ -101,7 +101,8 @@
     <jackson.version>2.9.9</jackson.version>
     <client-runtime.version>1.6.10</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
-    <spotbugs.version>3.1.11</spotbugs.version>
+    <spotbugs.version>4.0.0-beta3</spotbugs.version>
+    <spotbugs.maven.version>3.1.12</spotbugs.maven.version>
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.2.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
@@ -160,8 +161,8 @@
     <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
     <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
-    <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-    <checkstyle.version>8.18</checkstyle.version>
+    <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
+    <checkstyle.version>8.19</checkstyle.version>
     <mockito-core.version>2.28.2</mockito-core.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
   </properties>

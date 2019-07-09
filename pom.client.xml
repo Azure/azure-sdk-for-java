@@ -149,12 +149,17 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
             <artifactId>sdk-build-tools</artifactId>
             <version>${sdk-build-tools.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.version}</version>
           </dependency>
         </dependencies>
         <configuration>
@@ -163,9 +168,7 @@
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-          <!-- TODO soon - enable this failure mode -->
-          <failOnError>false</failOnError>
+          <failOnError>true</failOnError>
         </configuration>
         <executions>
           <execution>
@@ -405,12 +408,17 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>${spotbugs.version}</version>
+          <version>${spotbugs.maven.version}</version>
           <dependencies>
             <dependency>
               <groupId>com.azure</groupId>
               <artifactId>sdk-build-tools</artifactId>
               <version>${sdk-build-tools.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.github.spotbugs</groupId>
+              <artifactId>spotbugs</artifactId>
+              <version>${spotbugs.version}</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -419,7 +427,7 @@
             <xmlOutput>true</xmlOutput>
             <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-            <failOnError>false</failOnError>
+            <failOnError>true</failOnError>
           </configuration>
         </plugin>
 
@@ -427,8 +435,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <configuration>
-            <failsOnError>false</failsOnError>
-            <failOnViolation>false</failOnViolation>
+            <failsOnError>true</failsOnError>
+            <failOnViolation>true</failOnViolation>
           </configuration>
         </plugin>
       </plugins>
@@ -487,7 +495,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>${spotbugs.version}</version>
+        <version>${spotbugs.maven.version}</version>
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>

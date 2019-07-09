@@ -33,21 +33,21 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> SecretAsyncClient.builder()
+            client = clientSetup(credentials -> new SecretClientBuilder()
                     .credential(credentials)
                     .endpoint(getEndpoint())
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .build());
+                    .buildAsyncClient());
         } else {
-            client = clientSetup(credentials -> SecretAsyncClient.builder()
+            client = clientSetup(credentials -> new SecretClientBuilder()
                     .credential(credentials)
                     .endpoint(getEndpoint())
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy())
-                    .build());
+                    .buildAsyncClient());
         }
     }
 

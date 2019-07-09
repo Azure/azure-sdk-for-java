@@ -29,10 +29,10 @@ public class BackupAndRestoreOperations {
         // Instantiate a client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        SecretClient client = SecretClient.builder()
+        SecretClient client = new SecretClientBuilder()
             .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
             .credential(new DefaultAzureCredential())
-            .build();
+            .buildClient();
 
         // Let's create secrets holding storage account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
