@@ -13,7 +13,7 @@ Use the secret client library to create and manage secrets.
 Maven dependency for Azure Secret Client library. Add it to your project's pom file.
 ```xml
 <dependency>
-    <groupId>com.azure.security</groupId>
+    <groupId>com.azure</groupId>
     <artifactId>azure-keyvault-secrets</artifactId>
     <version>1.0.0-preview.1</version>
 </dependency>
