@@ -150,6 +150,23 @@ public class ClientLogger {
         }
     }
 
+    /**
+     * This will log {@link RuntimeException}, if logging is enabled , and throw the runtime exception.
+     * @param runtimeException to be thrown. It will do nothing if {@code null} is provided.
+     * @throws RuntimeException which is requested by this call.
+     */
+    public void logAndThrow(RuntimeException runtimeException) {
+        if (runtimeException == null) {
+            return;
+        }
+
+        // it will only log if error level is enabled in configuration
+        if (canLogAtLevel(ERROR_LEVEL)) {
+            logger.error(runtimeException.getMessage(), runtimeException);
+        }
+        throw runtimeException;
+    }
+
     /*
      * Performs the logging.
      *

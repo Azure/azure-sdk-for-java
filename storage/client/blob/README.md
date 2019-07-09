@@ -104,6 +104,7 @@ The following sections provide several code snippets covering some of the most c
 - [Download a blob to OutputStream](#download-a-blob-to-outputstream)
 - [Download a blob to File](#download-a-blob-to-file)
 - [Enumerating blobs](#enumerating-blobs)
+- [Authenticate with Azure.Identity](#authenticate-with-azure-identity)
 
 ### Create Storage Client
 
@@ -214,6 +215,16 @@ containerClient.listBlobsFlat()
         );
 ```
 
+### Authenticate with Azure.Identity
+
+The [Azure Identity library](identity) provides Azure Active Directory support for authenticating with Azure Storage.
+```java
+StorageClient storageClient = StorageClient.storageClientBuilder()
+                .endpoint(endpoint)
+                .credential(new DefaultAzureCredential())
+                .buildClient();
+```
+
 ## Troubleshooting
 
 When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][error_codes] requests. 
@@ -228,6 +239,7 @@ Get started with our [Blob samples][samples]:
 1. [Storage Error Examples](src/samples/java/blob/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
 1. [List Container Examples](src/samples/java/blob/ListContainersExample.java): Create, list and delete containers.
 1. [Set metadata and HTTPHeaders Examples](src/samples/java/blob/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
+1. [Azure Identity Examples](src/samples/java/blob/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
 
 ## Contributing
 
@@ -255,6 +267,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [storage_account_create_portal]: https://docs.microsoft.com/en-us/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_sub]: https://azure.microsoft.com/free/
+[identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-error-codes
 [samples]: samples/
 [cla]: https://cla.microsoft.com
