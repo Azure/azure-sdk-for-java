@@ -290,5 +290,20 @@ page at http://checkstyle.sourceforge.net/config.html -->
     We should only return types, and accept argument types, that are from the com.azure namespace.
     All other types should have suppression added if required. -->
     <module name="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- The @ServiceClientBuilder class should have following rules:
+    1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
+    2) A property named 'serviceClients'.
+    3) Has a method 'buildClient()' to build a synchronous client,
+    4) Has a method 'buildAsyncClient()' to build a asynchronous client -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"/>
+
+    <!--CUSTOM CHECKS-->
+    <!-- The @ServiceInterface class should have following rules:
+    1) has annotation property 'name' and should be non-empty
+    2) length of value of property 'name' should be less than 10 characters and without space
+    -->
+    <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
   </module>
 </module>
