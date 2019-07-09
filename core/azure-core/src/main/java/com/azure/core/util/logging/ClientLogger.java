@@ -14,8 +14,8 @@ import java.util.Arrays;
 /**
  * This is a fluent logger helper class that wraps a plug-able {@link Logger}.
  *
- * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a throwable is the last
- * argument of the format varargs and the logger is enabled for {@link ClientLogger#asVerbose() verbose} logging the
+ * <p>This logger logs formattable messages that use {@code {}} as the placeholder. When a throwable is the last
+ * argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String, Object...) verbose} logging the
  * stack trace for the throwable will be included in the log message.</p>
  *
  * <p>A minimum logging level threshold is determined by the {@link BaseConfigurations#AZURE_LOG_LEVEL AZURE_LOG_LEVEL}
@@ -23,21 +23,16 @@ import java.util.Arrays;
  *
  * <p><strong>Log level hierarchy</strong></p>
  * <ol>
- * <li>{@link ClientLogger#asError() Error}</li>
- * <li>{@link ClientLogger#asWarning() Warning}</li>
- * <li>{@link ClientLogger#asInfo() Info}</li>
- * <li>{@link ClientLogger#asVerbose() Verbose}</li>
+ * <li>{@link ClientLogger#error(String, Object...) Error}</li>
+ * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
+ * <li>{@link ClientLogger#info(String, Object...) Info}</li>
+ * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
  * @see Configuration
  */
 public class ClientLogger {
     private final Logger logger;
-
-    /*
-     * Indicate that log level is at trace level.
-     */
-    private static final int TRACE_LEVEL = 0;
 
     /*
      * Indicate that log level is at verbose level.
@@ -64,17 +59,12 @@ public class ClientLogger {
      */
     private static final int DISABLED_LEVEL = 5;
 
-    private static final int DEFAULT_LOG_LEVEL = DISABLED_LEVEL;
-    private int level = DEFAULT_LOG_LEVEL;
-
-    private int configurationLevel;
-
     /**
      * Retrieves a logger for the passed class using the {@link LoggerFactory}.
      *
      * @param clazz Class creating the logger.
      */
-    public ClientLogger(Class clazz) {
+    public ClientLogger(Class<?> clazz) {
         this(clazz.getName());
     }
 
@@ -88,89 +78,91 @@ public class ClientLogger {
     }
 
     /**
-     * Sets the logger to the verbose logging level.
-     *
-     * @return Updated ClientLogger if verbose is enabled.
-     */
-    public ClientLogger asVerbose() {
-        return asLevel(VERBOSE_LEVEL);
-    }
-
-    /**
-     * Sets the logger to the info logging level.
-     *
-     * @return Updated ClientLogger if info is enabled.
-     */
-    public ClientLogger asInfo() {
-        return asLevel(INFORMATIONAL_LEVEL);
-    }
-
-    /**
-     * Sets the logger to the warning logging level.
-     *
-     * @return Updated ClientLogger if warn is enabled.
-     */
-    public ClientLogger asWarning() {
-        return asLevel(WARNING_LEVEL);
-    }
-
-    /**
-     * Sets the logger to the error logging level.
-     *
-     * @return Updated ClientLogger if error is enabled..
-     */
-    public ClientLogger asError() {
-        return asLevel(ERROR_LEVEL);
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder.
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level
      *
      * <p><strong>Code Samples</strong></p>
      * <p>
-     * Logging a message with the default log level
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.log("A message");
-     * </pre>
+     * Logging a message at verbose log level
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.verbose}
+     *
+     * @param format The formattable message to log
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    public void verbose(String format, Object... args) {
+        log(VERBOSE_LEVEL, format, args);
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level
+     *
+     * <p><strong>Code Samples</strong></p>
      * <p>
-     * Logging a format-able warning
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * logger.asWarning().log("A format-able message. Hello, {}", name);
-     * </pre>
+     * Logging a message at informational log level
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.info}
+     *
+     * @param format The formattable message to log
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    public void info(String format, Object... args) {
+        log(INFORMATIONAL_LEVEL, format, args);
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * Logging a message at warning log level
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.warning}
+     *
+     * @param format The formattable message to log
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    public void warning(String format, Object... args) {
+        log(WARNING_LEVEL, format, args);
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level
+     *
+     * <p><strong>Code Samples</strong></p>
      * <p>
      * Logging an error with stack trace
-     * <pre>
-     * ClientLogger logger = new ClientLogger(Example.class);
-     * try {
-     *    upload(resource);
-     * } catch (Throwable ex) {
-     *    logger.asError().log("Failed to upload {}", resource.name(), ex);
-     * }
-     * </pre>
+     * {@codesnippet com.azure.core.implementation.util.clientlogger.error}
      *
-     * @param format Format-able message.
-     * @param args   Arguments for the message, if an exception is being logged last argument is the throwable.
+     * @param format The formattable message to log
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    public void log(String format, Object... args) {
-        if (canLogAtLevel(level)) {
-            performLogging(format, args);
+    public void error(String format, Object... args) {
+        log(ERROR_LEVEL, format, args);
+    }
+
+    /*
+     * This method logs the formattable message if the {@code logLevel} is enabled
+     *
+     * @param logLevel The log level at which this message should be logged
+     * @param format The formattable message to log
+     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
+     */
+    private void log(int logLevel, String format, Object... args) {
+        if (canLogAtLevel(logLevel)) {
+            performLogging(logLevel, format, args);
         }
     }
 
     /*
      * Performs the logging.
-     * @param format Format-able message.
+     *
+     * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(String format, Object... args) {
+    private void performLogging(int logLevel, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
-        if (configurationLevel > VERBOSE_LEVEL) {
+        if (logLevel > VERBOSE_LEVEL) {
             args = attemptToRemoveThrowable(args);
         }
 
-        switch (level) {
+        switch (logLevel) {
             case VERBOSE_LEVEL:
                 logger.debug(format, args);
                 break;
@@ -190,26 +182,13 @@ public class ClientLogger {
     }
 
     /*
-     * Helper method to set the logging level.
-     * @param level Logging level
-     * @return Updated ClientLogger if the level is enabled.
-     */
-    private ClientLogger asLevel(int level) {
-        if (canLogAtLevel(level)) {
-            this.level = level;
-        }
-
-        return this;
-    }
-
-    /*
      * Helper method that determines if logging is enabled at a given level.
      * @param level Logging level
      * @return True if the logging level is higher than the minimum logging level and if logging is enabled at the given level.
      */
     private boolean canLogAtLevel(int level) {
         // Check the configuration level every time the logger is called in case it has changed.
-        configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
+        int configurationLevel = ConfigurationManager.getConfiguration().get(BaseConfigurations.AZURE_LOG_LEVEL, DISABLED_LEVEL);
         if (level < configurationLevel) {
             return false;
         }
@@ -230,6 +209,7 @@ public class ClientLogger {
 
     /*
      * Removes the last element from the arguments if it is a throwable.
+     *
      * @param args Arguments
      * @return The arguments with the last element removed if it was a throwable, otherwise the unmodified arguments.
      */
@@ -242,7 +222,6 @@ public class ClientLogger {
         if (potentialThrowable instanceof Throwable) {
             return Arrays.copyOf(args, args.length - 1);
         }
-
         return args;
     }
 }

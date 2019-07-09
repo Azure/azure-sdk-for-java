@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
@@ -64,6 +65,7 @@ import java.util.Objects;
  * @see ConfigurationClient
  * @see ConfigurationClientCredentials
  */
+@ServiceClientBuilder(serviceClients = ConfigurationClient.class)
 public final class ConfigurationClientBuilder {
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.

@@ -30,7 +30,7 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorInit(Event e) {
-        logger.asInfo().log("name[{}] reactor.onReactorInit", name);
+        logger.info("name[{}] reactor.onReactorInit", name);
 
         final Reactor reactor = e.getReactor();
         reactor.setTimeout(REACTOR_IO_POLL_TIMEOUT);
@@ -38,6 +38,6 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorFinal(Event e) {
-        logger.asInfo().log("name[{}] reactor.onReactorFinal", name);
+        logger.info("name[{}] reactor.onReactorFinal", name);
     }
 }

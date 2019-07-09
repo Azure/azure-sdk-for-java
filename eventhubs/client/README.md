@@ -17,7 +17,7 @@ The Azure Event Hubs client library allows for publishing and consuming of Azure
   the transformed events to a new stream for consumers to observe.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product
-documentation][event_hubs_product_docs]
+documentation][event_hubs_product_docs] | [Samples][sample_examples]
 
 ## Getting started
 
@@ -294,7 +294,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 <!-- Links -->
 [amqp_exception]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
-[api_documentation]: https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html
+[api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
 [error_condition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/ErrorCondition.java
@@ -314,6 +314,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[sample_examples]: ./azure-eventhubs/src/samples/java
 [sample_consume_event]: ./azure-eventhubs/src/samples/java/ConsumeEvent.java
 [sample_get_event_hubs_metadata]: ./azure-eventhubs/src/samples/java/GetEventHubMetadata.java
 [sample_publish_custom_meta_data]: ./azure-eventhubs/src/samples/java/PublishEventsWithCustomMetadata.java

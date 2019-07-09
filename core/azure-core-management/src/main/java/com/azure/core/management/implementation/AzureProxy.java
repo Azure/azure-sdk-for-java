@@ -24,7 +24,6 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedR
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.util.TypeUtil;
-import com.azure.core.management.AzureServiceClient;
 import com.azure.core.management.CloudException;
 import com.azure.core.management.OperationState;
 import com.azure.core.management.annotations.AzureHost;
@@ -198,18 +197,6 @@ public final class AzureProxy extends RestProxy {
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param azureServiceClient The AzureServiceClient that contains the details to use to create
-     *                          the AzureProxy implementation of the swagger interface.
-     * @param <A> The type of the Swagger interface.
-     * @return A proxy implementation of the provided Swagger interface.
-     */
-    public static <A> A create(Class<A> swaggerInterface, AzureServiceClient azureServiceClient) {
-        return AzureProxy.create(swaggerInterface, azureServiceClient.azureEnvironment(), azureServiceClient.httpPipeline());
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
      * @param azureEnvironment The azure environment that the proxy implementation will target.
      * @param httpPipeline The HTTP httpPipeline will be used to make REST calls.
      //* @param serializer The serializer that will be used to convert POJOs to and from request and
@@ -230,7 +217,7 @@ public final class AzureProxy extends RestProxy {
 
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, createDefaultSerializer(), baseUrl);
         final AzureProxy azureProxy = new AzureProxy(httpPipeline, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, azureProxy);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface}, azureProxy);
     }
 
     @Override

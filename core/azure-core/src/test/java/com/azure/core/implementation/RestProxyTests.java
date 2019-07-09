@@ -4,23 +4,23 @@
 package com.azure.core.implementation;
 
 import com.azure.core.MyRestException;
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.FormParam;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HEAD;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Headers;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.PathParam;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.FormParam;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.Head;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Headers;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.PathParam;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.entities.HttpBinFormDataJSON;
 import com.azure.core.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.entities.HttpBinHeaders;
@@ -75,17 +75,17 @@ public abstract class RestProxyTests {
     protected abstract HttpClient createHttpClient();
 
     @Host("http://httpbin.org")
-    @Service("Service1")
+    @ServiceInterface(name = "Service1")
     private interface Service1 {
-        @GET("bytes/100")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         byte[] getByteArray();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         Mono<byte[]> getByteArrayAsync();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         Mono<byte[]> getByteArrayAsyncWithNoExpectedResponses();
     }
 
@@ -116,13 +116,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://{hostName}.org")
-    @Service("Service2")
+    @ServiceInterface(name = "Service2")
     private interface Service2 {
-        @GET("bytes/{numberOfBytes}")
+        @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         byte[] getByteArray(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
 
-        @GET("bytes/{numberOfBytes}")
+        @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         Mono<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
     }
@@ -153,13 +153,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service3")
+    @ServiceInterface(name = "Service3")
     private interface Service3 {
-        @GET("bytes/2")
+        @Get("bytes/2")
         @ExpectedResponses({200})
         void getNothing();
 
-        @GET("bytes/2")
+        @Get("bytes/2")
         @ExpectedResponses({200})
         Mono<Void> getNothingAsync();
     }
@@ -177,25 +177,25 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service5")
+    @ServiceInterface(name = "Service5")
     private interface Service5 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything();
 
-        @GET("anything/with+plus")
+        @Get("anything/with+plus")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPlus();
 
-        @GET("anything/{path}")
+        @Get("anything/{path}")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPathParam(@PathParam("path") String pathParam);
 
-        @GET("anything/{path}")
+        @Get("anything/{path}")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value = "path", encoded = true) String pathParam);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync();
     }
@@ -274,17 +274,17 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service6")
+    @ServiceInterface(name = "Service6")
     private interface Service6 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything(@QueryParam("a") String a, @QueryParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncoded(@QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
     }
@@ -331,13 +331,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service7")
+    @ServiceInterface(name = "Service7")
     private interface Service7 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnything(@HeaderParam("a") String a, @HeaderParam("b") int b);
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAnythingAsync(@HeaderParam("a") String a, @HeaderParam("b") int b);
     }
@@ -385,13 +385,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service8")
+    @ServiceInterface(name = "Service8")
     private interface Service8 {
-        @POST("post")
+        @Post("post")
         @ExpectedResponses({200})
         HttpBinJSON post(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
-        @POST("post")
+        @Post("post")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
@@ -420,64 +420,64 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service9")
+    @ServiceInterface(name = "Service9")
     private interface Service9 {
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         Mono<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<HttpBinJSON> putWithUnexpectedResponseAndDeterminedExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         Mono<HttpBinJSON> putWithUnexpectedResponseAndFallthroughExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
         Mono<HttpBinJSON> putWithUnexpectedResponseAndNoFallthroughExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
@@ -510,6 +510,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
@@ -526,6 +527,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         }
@@ -628,6 +630,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
@@ -646,6 +649,7 @@ public abstract class RestProxyTests {
             assertNotNull(e.value());
             assertTrue(e.value() instanceof LinkedHashMap);
 
+            @SuppressWarnings("unchecked")
             final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.value();
             assertEquals("I'm the body!", expectedBody.get("data"));
         } catch (Throwable e) {
@@ -654,29 +658,29 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service10")
+    @ServiceInterface(name = "Service10")
     private interface Service10 {
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         VoidResponse head();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         boolean headBoolean();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         void voidHead();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         Mono<VoidResponse> headAsync();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         Mono<Boolean> headBooleanAsync();
 
-        @HEAD("anything")
+        @Head("anything")
         @ExpectedResponses({200})
         Mono<Void> completableHeadAsync();
     }
@@ -725,13 +729,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service11")
+    @ServiceInterface(name = "Service11")
     private interface Service11 {
-        @DELETE("delete")
+        @Delete("delete")
         @ExpectedResponses({200})
         HttpBinJSON delete(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
 
-        @DELETE("delete")
+        @Delete("delete")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
@@ -754,13 +758,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service12")
+    @ServiceInterface(name = "Service12")
     private interface Service12 {
-        @PATCH("patch")
+        @Patch("patch")
         @ExpectedResponses({200})
         HttpBinJSON patch(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
 
-        @PATCH("patch")
+        @Patch("patch")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
@@ -783,14 +787,14 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service13")
+    @ServiceInterface(name = "Service13")
     private interface Service13 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get();
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Mono<HttpBinJSON> getAsync();
@@ -824,14 +828,14 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @Service("Service14")
+    @ServiceInterface(name = "Service14")
     private interface Service14 {
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         HttpBinJSON get();
 
-        @GET("anything")
+        @Get("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         Mono<HttpBinJSON> getAsync();
@@ -850,13 +854,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @Service("Service16")
+    @ServiceInterface(name = "Service16")
     private interface Service16 {
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON putByteArray(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
 
-        @PUT("put")
+        @Put("put")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> putByteArrayAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
@@ -889,13 +893,13 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://{hostPart1}{hostPart2}.org")
-    @Service("Service17")
+    @ServiceInterface(name = "Service17")
     private interface Service17 {
-        @GET("get")
+        @Get("get")
         @ExpectedResponses({200})
         HttpBinJSON get(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
 
-        @GET("get")
+        @Get("get")
         @ExpectedResponses({200})
         Mono<HttpBinJSON> getAsync(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
     }
@@ -917,33 +921,33 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @Service("Service18")
+    @ServiceInterface(name = "Service18")
     private interface Service18 {
-        @GET("status/200")
+        @Get("status/200")
         void getStatus200();
 
-        @GET("status/200")
+        @Get("status/200")
         @ExpectedResponses({200})
         void getStatus200WithExpectedResponse200();
 
-        @GET("status/300")
+        @Get("status/300")
         void getStatus300();
 
-        @GET("status/300")
+        @Get("status/300")
         @ExpectedResponses({300})
         void getStatus300WithExpectedResponse300();
 
-        @GET("status/400")
+        @Get("status/400")
         void getStatus400();
 
-        @GET("status/400")
+        @Get("status/400")
         @ExpectedResponses({400})
         void getStatus400WithExpectedResponse400();
 
-        @GET("status/500")
+        @Get("status/500")
         void getStatus500();
 
-        @GET("status/500")
+        @Get("status/500")
         @ExpectedResponses({500})
         void getStatus500WithExpectedResponse500();
     }
@@ -997,46 +1001,46 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service19")
+    @ServiceInterface(name = "Service19")
     private interface Service19 {
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithNoContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
 
-        @PUT("put")
+        @Put("put")
         @Headers({ "Content-Type: application/json" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
-        @PUT("put")
+        @Put("put")
         @Headers({ "Content-Type: application/json; charset=utf-8" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @PUT("put")
+        @Put("put")
         @Headers({ "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @PUT("put")
+        @Put("put")
         @Headers({ "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @PUT("put")
+        @Put("put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
     }
 
@@ -1293,30 +1297,30 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service20")
+    @ServiceInterface(name = "Service20")
     private interface Service20 {
-        @GET("bytes/100")
+        @Get("bytes/100")
         ResponseBase<HttpBinHeaders, Void> getBytes100OnlyHeaders();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         ResponseBase<HttpHeaders, Void> getBytes100OnlyRawHeaders();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         ResponseBase<HttpBinHeaders, byte[]> getBytes100BodyAndHeaders();
 
-        @PUT("put")
+        @Put("put")
         ResponseBase<HttpBinHeaders, Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @PUT("put")
+        @Put("put")
         ResponseBase<HttpBinHeaders, HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         ResponseBase<Void, Void> getBytesOnlyStatus();
 
-        @GET("bytes/100")
+        @Get("bytes/100")
         VoidResponse getVoidResponse();
 
-        @PUT("put")
+        @Put("put")
         Response<HttpBinJSON> putBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
     }
 
@@ -1438,9 +1442,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("UnexpectedOKService")
+    @ServiceInterface(name = "UnexpectedOKService")
     interface UnexpectedOKService {
-        @GET("/bytes/1024")
+        @Get("/bytes/1024")
         @ExpectedResponses({400})
         StreamResponse getBytes();
     }
@@ -1456,9 +1460,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://www.example.com")
-    @Service("Service21")
+    @ServiceInterface(name = "Service21")
     private interface Service21 {
-        @GET("http://httpbin.org/bytes/100")
+        @Get("http://httpbin.org/bytes/100")
         @ExpectedResponses({200})
         byte[] getBytes100();
     }
@@ -1472,12 +1476,12 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("DownloadService")
+    @ServiceInterface(name = "DownloadService")
     interface DownloadService {
-        @GET("/bytes/30720")
+        @Get("/bytes/30720")
         StreamResponse getBytes();
 
-        @GET("/bytes/30720")
+        @Get("/bytes/30720")
         Flux<ByteBuf> getBytesFlowable();
     }
 
@@ -1506,9 +1510,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("https://httpbin.org")
-    @Service("FlowableUploadService")
+    @ServiceInterface(name = "FlowableUploadService")
     interface FlowableUploadService {
-        @PUT("/put")
+        @Put("/put")
         Response<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuf> content, @HeaderParam("Content-Length") long contentLength);
     }
 
@@ -1543,9 +1547,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("{url}")
-    @Service("Service22")
+    @ServiceInterface(name = "Service22")
     interface Service22 {
-        @GET("{container}/{blob}")
+        @Get("{container}/{blob}")
         byte[] getBytes(@HostParam("url") String url);
     }
 
@@ -1557,9 +1561,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @Service("Service23")
+    @ServiceInterface(name = "Service23")
     interface Service23 {
-        @GET("bytes/28")
+        @Get("bytes/28")
         byte[] getBytes();
     }
 
@@ -1572,9 +1576,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @Service("Service24")
+    @ServiceInterface(name = "Service24")
     interface Service24 {
-        @PUT("put")
+        @Put("put")
         HttpBinJSON put(@HeaderParam("ABC") Map<String, String> headerCollection);
     }
 
@@ -1592,15 +1596,15 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org")
-    @Service("Service25")
+    @ServiceInterface(name = "Service25")
     interface Service25 {
-        @GET("anything")
+        @Get("anything")
         HttpBinJSON get();
 
-        @GET("anything")
+        @Get("anything")
         Mono<HttpBinJSON> getAsync();
 
-        @GET("anything")
+        @Get("anything")
         Mono<Response<HttpBinJSON>> getBodyResponseAsync();
     }
 
@@ -1627,9 +1631,9 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://httpbin.org/")
-    @Service("Service26")
+    @ServiceInterface(name = "Service26")
     interface Service26 {
-        @POST("post")
+        @Post("post")
         HttpBinFormDataJSON postForm(@FormParam("custname") String name, @FormParam("custtel") String telephone, @FormParam("custemail") String email, @FormParam("size") PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
 

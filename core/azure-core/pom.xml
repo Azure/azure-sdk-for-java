@@ -7,13 +7,14 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
+  <version>1.0.0-preview.2</version>
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -38,9 +39,8 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.1</tag>
   </scm>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -81,6 +81,16 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+    Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+    which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>

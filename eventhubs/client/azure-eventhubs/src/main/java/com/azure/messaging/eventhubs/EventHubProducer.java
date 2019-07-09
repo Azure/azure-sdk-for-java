@@ -225,17 +225,17 @@ public class EventHubProducer implements Closeable {
             .flatMap(this::send)
             .then()
             .doOnError(error -> {
-                logger.asError().log("Error sending batch.", error);
+                logger.error("Error sending batch.", error);
             });
     }
 
     private Mono<Void> send(EventDataBatch batch) {
         if (batch.getEvents().isEmpty()) {
-            logger.asInfo().log("Cannot send an EventBatch that is empty.");
+            logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
         }
 
-        logger.asInfo().log("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
+        logger.info("Sending batch with partitionKey[{}], size[{}].", batch.getPartitionKey(), batch.getSize());
 
         final List<Message> messages = EventDataUtil.toAmqpMessage(batch.getPartitionKey(), batch.getEvents());
 

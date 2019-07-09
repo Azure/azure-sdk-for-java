@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.annotations.ReturnValueWireType;
+import com.azure.core.implementation.annotation.ReturnValueWireType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
@@ -274,6 +274,7 @@ final class HttpResponseBodyDecoder {
                 if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
                     final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
+                    @SuppressWarnings("unchecked")
                     final List<Object> wireResponseList = (List<Object>) wireResponse;
 
                     final int wireResponseListSize = wireResponseList.size();
@@ -289,6 +290,7 @@ final class HttpResponseBodyDecoder {
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
                     final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
+                    @SuppressWarnings("unchecked")
                     final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
                     final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();

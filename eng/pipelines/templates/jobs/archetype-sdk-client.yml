@@ -19,6 +19,11 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
+      - script: |
+          echo "##vso[build.addbuildtag]Scheduled"
+        displayName: 'Tag scheduled builds'
+        condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
@@ -68,7 +73,7 @@ jobs:
         displayName: 'Install reporting tools'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Djava-lts -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -80,7 +85,7 @@ jobs:
         displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'

@@ -16,7 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * A policy that authenticates requests with Azure Application Configuration service. The content added by this policy
+ * A policy that authenticates requests with Azure App Configuration service. The content added by this policy
  * is leveraged in {@link ConfigurationClientCredentials} to generate the correct "Authorization" header value.
  *
  * @see ConfigurationClientCredentials
@@ -39,7 +39,7 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
     }
 
     /**
-     * Adds the required headers to authenticate a request to Azure Application Configuration service.
+     * Adds the required headers to authenticate a request to Azure App Configuration service.
      *
      * @param context The request context
      * @param next The next HTTP pipeline policy to process the {@code context's} request after this policy completes.

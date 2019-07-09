@@ -8,6 +8,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
@@ -24,6 +25,7 @@ import java.util.List;
  *
  * @see SecretClientBuilder
  */
+@ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretService.class)
 public final class SecretClient {
     private final SecretAsyncClient client;
 

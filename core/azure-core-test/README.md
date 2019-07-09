@@ -1,6 +1,6 @@
-# Azure common test client library for Java
+# Azure core test client library for Java
 
-Library containing common classes used to test Azure SDK client libraries.
+Library containing core classes used to test Azure SDK client libraries.
 
 * Create live or playback JUnit tests using [TestBase][TestBase.java] and
   leveraging [InterceptorManager][InterceptorManager.java] to keep track of
@@ -13,11 +13,11 @@ Library containing common classes used to test Azure SDK client libraries.
 
 To use this package, add the following to your _pom.xml_.
 ```xml
-  <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-common-test</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </dependency>
+<dependency>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-core-test</artifactId>
+  <version>1.0.0-preview.1</version>
+</dependency>
 ```
 
 ## Key concepts
@@ -98,8 +98,7 @@ If you encounter any bugs with these SDKs, please file issues via
 ## Next steps
 
 Other useful packages are:
-* [azure-common](../azure-common): Contains common classes and functionality used by all client libraries.
-* [azure-common-auth](../azure-common-auth): Contains common classes for authenticating with Azure.
+* [azure-core](../azure-core): Contains core classes and functionality used by all client libraries.
 
 ## Contributing
 
@@ -112,8 +111,8 @@ If you would like to become an active contributor to this project please follow 
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-[InterceptorManager.java]: ./src/main/java/com/azure/common/test/InterceptorManager.java
-[PlaybackClient.java]: ./src/main/java/com/azure/common/test/http/PlaybackClient.java
-[RecordedData.java]: ./src/main/java/com/azure/common/test/models/RecordedData.java
-[RecordNetworkCallPolicy.java]: ./src/main/java/com/azure/common/test/policy/RecordNetworkCallPolicy.java
-[TestBase.java]: ./src/main/java/com/azure/common/test/TestBase.java
+[InterceptorManager.java]: ./src/main/java/com/azure/core/test/InterceptorManager.java
+[PlaybackClient.java]: ./src/main/java/com/azure/core/test/http/PlaybackClient.java
+[RecordedData.java]: ./src/main/java/com/azure/core/test/models/RecordedData.java
+[RecordNetworkCallPolicy.java]: ./src/main/java/com/azure/core/test/policy/RecordNetworkCallPolicy.java
+[TestBase.java]: ./src/main/java/com/azure/core/test/TestBase.java
