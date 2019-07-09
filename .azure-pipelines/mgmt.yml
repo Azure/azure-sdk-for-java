@@ -27,26 +27,9 @@ jobs:
       
     steps:
       - task: ShellScript@2
-        displayName: 'generate mgmt pom file'
-        inputs:
-          scriptPath: update_mgmt_pom.sh
-          
-      - task: ShellScript@2
         displayName: 'call mvn in eacl mgmt sdk individually'
         inputs:
           scriptPath: mgmt_sdk_compiler.sh
-          
-      #- task: Maven@3
-      #  displayName: 'compile'
-      #  inputs:
-      #    mavenPomFile: pom.mgmt.xml
-      #    options: '$(DefaultOptions) $(ProfileFlag) -Dgpg.skip --debug clean'
-      #    mavenOptions: '$(LoggingOptions)'
-      #    javaHomeOption: 'JDKVersion'
-      #    jdkVersionOption: $(JavaVersion)
-      #    jdkArchitectureOption: 'x64'
-      #    publishJUnitResults: false
-      #    goals: 'compile'
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
