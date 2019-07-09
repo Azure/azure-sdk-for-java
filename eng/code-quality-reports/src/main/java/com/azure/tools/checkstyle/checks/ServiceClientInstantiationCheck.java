@@ -62,7 +62,9 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 hasServiceClientAnnotation = hasServiceClientAnnotation(token);
-                checkServiceClientNaming(token);
+                if (hasServiceClientAnnotation) {
+                    checkServiceClientNaming(token);
+                }
                 break;
             case TokenTypes.CTOR_DEF:
                 checkConstructor(token);
@@ -164,10 +166,6 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
      * @param classDefToken the CLASS_DEF AST node
      */
     private void checkServiceClientNaming(DetailAST classDefToken) {
-        if (!hasServiceClientAnnotation) {
-            return;
-        }
-
         final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
         // Async service client
         if (isAsync && !className.endsWith(ASYNC_CLIENT)) {

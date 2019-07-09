@@ -126,15 +126,6 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
             invalidReturnTypeMap.putAll(getInvalidTypeFromTypeArguments(typeArgumentsToken));
         }
 
-        // TYPE_ARGUMENT, add the invalid external type to the map
-        final DetailAST typeArgumentToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENT);
-        if (typeArgumentToken != null) {
-            final String invalidTypeName = getInvalidTypeNameFromTypeArgument(typeArgumentToken);
-            if (invalidTypeName != null) {
-                invalidReturnTypeMap.put(typeArgumentToken, invalidTypeName);
-            }
-        }
-
         return invalidReturnTypeMap;
     }
 
