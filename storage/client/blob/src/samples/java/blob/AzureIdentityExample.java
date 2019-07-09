@@ -9,6 +9,11 @@ import java.util.Locale;
 
 import static blob.SampleHelper.getAccountName;
 
+/**
+ * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
+ * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
+ * ClientSecretCredential.
+ */
 public class AzureIdentityExample {
     public static void main(String[] args) {
         String accountName = getAccountName();
