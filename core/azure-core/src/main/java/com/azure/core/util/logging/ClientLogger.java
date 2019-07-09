@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+(canLogAtLevel(level)// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.core.util.logging;
@@ -170,7 +170,7 @@ public class ClientLogger {
         }
 
         // it will only log if log level is enabled in configuration
-        if (canLogAtLevel(level)) {
+        if (canLogAtLevel(ERROR_LEVEL)) {
             logger.error(runtimeException.getMessage(), runtimeException);
         }
         throw runtimeException;
