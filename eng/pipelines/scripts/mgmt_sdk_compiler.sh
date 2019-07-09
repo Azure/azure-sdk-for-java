@@ -2,6 +2,11 @@
 
 echo "CWD : "
 pwd
+#TODO:
+#for some reason the workingdirectory dos not seem to work...
+#fix the following cd cmd once we figure out how to get it to work
+#change to the root of the sources repo
+cd ../../..
 
 for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`; 
 do 
