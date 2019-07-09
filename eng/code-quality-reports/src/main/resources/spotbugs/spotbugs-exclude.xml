@@ -477,4 +477,14 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE,URF_UNREAD_FIELD,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- These methods are called, SpotBugs just can't see through the specific lambda and static class code -->
+  <Match>
+    <Or>
+      <Class name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
+      <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
+      <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
 </FindBugsFilter>
