@@ -1,9 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+/**
+ * The @ServiceClientBuilder class should have following rules:
+ *     1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
+ *     2) A property named 'serviceClients'.
+*      3) Has a method 'buildClient()' to build a synchronous client,
+ *     4) Has a method 'buildAsyncClient()' to build a asynchronous client
+ */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
     private static final String BUILD_CLIENT = "buildClient";
@@ -22,12 +32,13 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     @Override
     public void finishTree(DetailAST root) {
+        // Checks if the @ServiceClientBuilder class has an asynchronous and synchronous method.
         if (hasServiceClientBuilderAnnotation) {
             if (!hasAsyncClientBuilder) {
                 log(root, String.format("ServiceClientBuilder missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
             }
             if (!hasClientBuilder) {
-                log(root, String.format("ServiceClientBuilder missing an synchronous method, ''%s''", BUILD_CLIENT));
+                log(root, String.format("ServiceClientBuilder missing a synchronous method, ''%s''", BUILD_CLIENT));
             }
         }
     }
@@ -45,7 +56,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
-            TokenTypes.IMPORT,
+            TokenTypes.CLASS_DEF,
             TokenTypes.METHOD_DEF
         };
     }
@@ -59,16 +70,38 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
                 final DetailAST annotationToken = getServiceClientAnnotation(token);
-                if (annotationToken != null) {
-                    hasServiceClientBuilderAnnotation = true;
-                    checkAnnotationMemberValuePair(annotationToken);
+                final String className = token.findFirstToken(TokenTypes.IDENT).getText();
+
+                hasServiceClientBuilderAnnotation = annotationToken != null;
+
+                if (hasServiceClientBuilderAnnotation) {
+                    // Checks if the ANNOTATION has property named 'serviceClients'
+                    if (!hasServiceClientsAnnotationProperty(annotationToken)) {
+                        log(annotationToken, String.format(
+                            "Annotation @%s should have ''serviceClients'' as property of annotation and should list all of the service clients it can build.",
+                            SERVICE_CLIENT_BUILDER));
+                    }
+                    // HAS @ServiceClientBuilder annotation but NOT named the class <ServiceName>ClientBuilder
+                    if (!className.endsWith("ClientBuilder")) {
+                        log(token, "Service client builder class should be named <ServiceName>ClientBuilder.");
+                    }
                 } else {
-                    hasServiceClientBuilderAnnotation = false;
+                    // No @ServiceClientBuilder annotation but HAS named the class <ServiceName>ClientBuilder
+                    if (className.endsWith("ClientBuilder")) {
+                        log(token, String.format("Class ''%s'' should be annotated with @ServiceClientBuilder.", className));
+                    }
                 }
-                checkForClassNamingAndAnnotation(token);
                 break;
             case TokenTypes.METHOD_DEF:
-                checkBuilderMethods(token);
+                final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
+
+                if (BUILD_ASYNC_CLIENT.equals(methodName)) {
+                    hasAsyncClientBuilder = true;
+                }
+
+                if (BUILD_CLIENT.equals(methodName)) {
+                    hasClientBuilder = true;
+                }
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -77,78 +110,42 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     }
 
     /**
-     *  Checks if the class is annotated with @ServiceClientBuilder
+     * Checks if the class is annotated with @ServiceClientBuilder.
      *
      * @param classDefToken the CLASS_DEF AST node
-     * @return true if the class is annotated with @ServiceClientBuilder, false otherwise.
+     * @return the annotation node if the class is annotated with @ServiceClientBuilder, null otherwise.
      */
     private DetailAST getServiceClientAnnotation(DetailAST classDefToken) {
         final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-        for (DetailAST ast = modifiersToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() != TokenTypes.ANNOTATION) {
-                continue;
-            }
-            if (SERVICE_CLIENT_BUILDER.equals(ast.findFirstToken(TokenTypes.IDENT).getText())) {
-                return ast;
-            }
-        }
-        return null;
-    }
 
-    private void checkForClassNamingAndAnnotation(DetailAST classDefToken) {
-        final String className = classDefToken.findFirstToken(TokenTypes.IDENT).getText();
-        if (!className.endsWith("ClientBuilder")) {
-            log(classDefToken, "Service client builder class should be named <ServiceName>ClientBuilder.");
-        } else {
-            if (!hasServiceClientBuilderAnnotation) {
-                log(classDefToken, String.format("Class ''%s'' should be annotated with @ServiceClientBuilder.", className));
-            }
+        if (!modifiersToken.branchContains(TokenTypes.ANNOTATION)) {
+            return null;
         }
+
+        DetailAST annotationToken = modifiersToken.findFirstToken(TokenTypes.ANNOTATION);
+        if (!SERVICE_CLIENT_BUILDER.equals(annotationToken.findFirstToken(TokenTypes.IDENT).getText())) {
+            return null;
+        }
+
+        return annotationToken;
     }
 
     /**
      * Checks if the {@code ServiceClientBuilder} annotation has a service client prop named 'serviceClients'.
      *
      * @param annotationToken the ANNOTATION AST node
+     * @return true if the @ServiceClientBuilder has property named 'serviceClients', false if none
      */
-    private void checkAnnotationMemberValuePair(DetailAST annotationToken) {
-        boolean hasServiceClientPropName = false;
-
+    private boolean hasServiceClientsAnnotationProperty(DetailAST annotationToken) {
         for (DetailAST ast = annotationToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
             if (ast.getType() != TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
                 continue;
             }
-
-            DetailAST identAST = ast.findFirstToken(TokenTypes.IDENT);
-            if (identAST == null) {
-                continue;
-            }
-
-            if ("serviceClients".equals(identAST.getText())) {
-                hasServiceClientPropName = true;
-                break;
+            // if there is ANNOTATION_MEMBER_VALUE_PAIR exist, it always has IDENT node
+            if ("serviceClients".equals(ast.findFirstToken(TokenTypes.IDENT).getText())) {
+                return true;
             }
         }
-
-        if (!hasServiceClientPropName) {
-            log(annotationToken, String.format(
-                "Annotation @%s should have ''serviceClients'' as property of annotation and should list all of the service clients it can build.",
-                SERVICE_CLIENT_BUILDER));
-        }
-    }
-
-    /**
-     *  Every service client builder should have a sync client builder and async client builder,
-     *  buildClient() and buildAsyncClient(), respectively.
-     *
-     * @param methodDefToken METHOD_DEF AST node
-     */
-    private void checkBuilderMethods(DetailAST methodDefToken) {
-        final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
-        if (methodName.equals(BUILD_ASYNC_CLIENT)) {
-            hasAsyncClientBuilder = true;
-        } else if (methodName.equals(BUILD_CLIENT)) {
-            hasClientBuilder = true;
-        }
+        return false;
     }
 }
