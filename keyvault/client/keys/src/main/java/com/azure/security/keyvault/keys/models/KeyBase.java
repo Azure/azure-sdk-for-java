@@ -240,6 +240,7 @@ public class KeyBase {
      * @param attributes The key value mapping of the key attributes
      */
     @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
     private void unpackAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
@@ -290,6 +291,7 @@ public class KeyBase {
         return output;
     }
 
+    @SuppressWarnings("unchecked")
     JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
         final Base64 base64 = new Base64(-1, null, true);
         JsonWebKey outputKey = new JsonWebKey()

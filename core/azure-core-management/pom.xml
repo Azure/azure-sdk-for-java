@@ -7,13 +7,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-management</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.2</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Management Java Core Library</name>
@@ -39,7 +39,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.1</tag>
   </scm>
 
   <properties>
@@ -58,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
     </dependency>
 
     <dependency>
@@ -70,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.2</version>
       <scope>test</scope>
     </dependency>
 

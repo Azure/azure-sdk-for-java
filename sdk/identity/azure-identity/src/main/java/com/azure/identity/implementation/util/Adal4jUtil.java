@@ -37,11 +37,11 @@ public final class Adal4jUtil {
      * @param callback the Mono emitter
      * @return the callback to pass into adal4j
      */
-    public static AuthenticationCallback authenticationDelegate(final MonoSink<AuthenticationResult> callback) {
-        return new AuthenticationCallback() {
+    public static AuthenticationCallback<AuthenticationResult> authenticationDelegate(final MonoSink<AuthenticationResult> callback) {
+        return new AuthenticationCallback<AuthenticationResult>() {
             @Override
-            public void onSuccess(Object o) {
-                callback.success((AuthenticationResult) o);
+            public void onSuccess(AuthenticationResult o) {
+                callback.success(o);
             }
 
             @Override

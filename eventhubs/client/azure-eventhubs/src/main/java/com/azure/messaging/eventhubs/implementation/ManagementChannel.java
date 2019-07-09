@@ -156,7 +156,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         }
 
         if (!connection.removeSession(SESSION_NAME)) {
-            logger.asInfo().log("Unable to remove CBSChannel {} from connection", SESSION_NAME);
+            logger.info("Unable to remove CBSChannel {} from connection", SESSION_NAME);
         }
     }
 }
