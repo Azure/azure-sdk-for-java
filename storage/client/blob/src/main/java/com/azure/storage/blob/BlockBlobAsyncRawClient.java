@@ -54,7 +54,7 @@ final class BlockBlobAsyncRawClient extends BlobAsyncRawClient {
     /**
      * Creates a {@code BlockBlobAsyncRawClient} object pointing to the account specified by the URL and using the provided
      */
-    public BlockBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+    BlockBlobAsyncRawClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
         super(azureBlobStorage, snapshot);
     }
 

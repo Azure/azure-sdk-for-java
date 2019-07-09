@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ContainerAccessConditions;
 import com.azure.storage.blob.models.ContainerAccessPolicies;
 import com.azure.storage.blob.models.ContainersAcquireLeaseResponse;
@@ -125,6 +126,8 @@ final class ContainerAsyncRawClient {
      *         {@link ContainerAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
+     * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.delete")] \n
@@ -205,6 +208,8 @@ final class ContainerAsyncRawClient {
      *         {@link ContainerAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has anything
+     * set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_basic "Sample code for ContainerAsyncClient.setMetadata")] \n
@@ -258,9 +263,8 @@ final class ContainerAsyncRawClient {
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
     public Mono<Response<ContainerAccessPolicies>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
-        return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
-                null, null, null, leaseAccessConditions, Context.NONE)
-            .map(response -> new SimpleResponse<>(response, new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(),response.value()))));
+        return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null, null, leaseAccessConditions, Context.NONE)
+            .map(response -> new SimpleResponse<>(response, new ContainerAccessPolicies(response.deserializedHeaders().blobPublicAccess(), response.value()))));
     }
 
     /**
@@ -305,6 +309,8 @@ final class ContainerAsyncRawClient {
      *         {@link ContainerAccessConditions}
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
+     * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_policy "Sample code for ContainerAsyncClient.setAccessPolicy")] \n
@@ -395,6 +401,8 @@ final class ContainerAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
+     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.acquireLease")] \n
@@ -442,6 +450,8 @@ final class ContainerAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
+     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.renewLease")] \n
@@ -489,6 +499,8 @@ final class ContainerAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
+     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.releaseLease")] \n
@@ -537,6 +549,8 @@ final class ContainerAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
+     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.breakLease")] \n
@@ -589,6 +603,8 @@ final class ContainerAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
+     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=container_lease "Sample code for ContainerAsyncClient.changeLease")] \n
@@ -655,6 +671,8 @@ final class ContainerAsyncRawClient {
      *         {@link ListBlobsOptions}
      *
      * @return Emits the successful response.
+     * @throws UnsupportedOperationException If {@link ListBlobsOptions#details()} has {@link BlobListDetails#snapshots()}
+     * set.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=list_blobs_hierarchy "Sample code for ContainerAsyncClient.listBlobsHierarchySegment")] \n

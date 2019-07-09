@@ -26,7 +26,6 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +68,10 @@ public final class BlockBlobClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link BlockBlobClient BlockBlobClients}
+     * and {@link BlockBlobAsyncClient BlockBlobAsyncClients}.
+     */
     public BlockBlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -102,7 +105,7 @@ public final class BlockBlobClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -137,6 +140,7 @@ public final class BlockBlobClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated BlockBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public BlockBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -250,6 +254,7 @@ public final class BlockBlobClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated BlockBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public BlockBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);

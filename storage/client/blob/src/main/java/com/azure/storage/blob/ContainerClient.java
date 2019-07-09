@@ -224,6 +224,7 @@ public final class ContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse create() {
         return this.create(null, null, null);
@@ -241,6 +242,7 @@ public final class ContainerClient {
      *         in the Azure Docs for more information. Pass null for no public access.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse create(Metadata metadata, PublicAccessType accessType, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.create(metadata, accessType);
@@ -252,6 +254,7 @@ public final class ContainerClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later
      * deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse delete() {
         return this.delete(null, null);
@@ -266,6 +269,7 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse delete(ContainerAccessConditions accessConditions, Duration timeout) {
         Mono<VoidResponse> response = containerAsyncClient.delete(accessConditions);
@@ -310,6 +314,7 @@ public final class ContainerClient {
      *
      * @param metadata
      *         {@link Metadata}
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
@@ -325,6 +330,7 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse setMetadata(Metadata metadata,
             ContainerAccessConditions accessConditions, Duration timeout) {
@@ -379,6 +385,7 @@ public final class ContainerClient {
      *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
      *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      *         for more information. Passing null will clear all access policies.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse setAccessPolicy(PublicAccessType accessType,
             List<SignedIdentifier> identifiers) {
@@ -402,6 +409,7 @@ public final class ContainerClient {
      *         {@link ContainerAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse setAccessPolicy(PublicAccessType accessType,
                                       List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions,
@@ -453,9 +461,7 @@ public final class ContainerClient {
     public Iterable<BlobItem> listBlobsFlat(ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsFlat(options);
 
-        return timeout == null ?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**
@@ -527,9 +533,7 @@ public final class ContainerClient {
     public Iterable<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options, Duration timeout) {
         Flux<BlobItem> response = containerAsyncClient.listBlobsHierarchy(delimiter, options);
 
-        return timeout == null ?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**
@@ -617,6 +621,7 @@ public final class ContainerClient {
      *
      * @param leaseID
      *         The leaseId of the active lease on the blob.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null, null);
@@ -633,6 +638,7 @@ public final class ContainerClient {
      *         will fail if the specified condition is not satisfied.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse releaseLease(String leaseID,
         ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {

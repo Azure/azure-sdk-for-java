@@ -352,27 +352,31 @@ public class BlobAsyncClient {
             throw new IllegalArgumentException("Block size should not exceed 100MB");
         }
 
-        return Mono.using(() -> {
-            try {
-                return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-            }, channel -> Mono.justOrEmpty(range)
+        return Mono.using(() -> downloadToFileResourceSupplier(filePath),
+            channel -> Mono.justOrEmpty(range)
                 .switchIfEmpty(getFullBlobRange(accessConditions))
                 .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
                 .flatMap(chunk -> blobAsyncRawClient
                     .download(chunk, accessConditions, rangeGetContentMD5)
                     .subscribeOn(Schedulers.elastic())
                     .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
-                .then(),
-            channel -> {
-            try {
-                channel.close();
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
+                .then(), this::downloadToFileCleanup);
+    }
+
+    private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void downloadToFileCleanup(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {

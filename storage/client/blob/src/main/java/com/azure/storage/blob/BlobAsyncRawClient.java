@@ -570,7 +570,7 @@ class BlobAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
-     * @throws IllegalAccessError If {@code duration} is outside the bounds of 15 to 60 or isn't -1.
+     * @throws IllegalArgumentException If {@code duration} is outside the bounds of 15 to 60 or isn't -1.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.acquireLease")] \n

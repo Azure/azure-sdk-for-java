@@ -239,6 +239,7 @@ public final class ContainerAsyncClient {
     /**
      * Gets the URL of the container represented by this client.
      * @return the URL.
+     * @throws RuntimeException If the container has a malformed URL.
      */
     public URL getContainerUrl() {
         try {
@@ -523,7 +524,7 @@ public final class ContainerAsyncClient {
             .flatMapMany(response -> listBlobsFlatHelper(options, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response){
+    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response) {
         Flux<BlobItem> result;
         BlobFlatListSegment segment = response.value().segment();
         if (segment != null && segment.blobItems() != null) {
@@ -611,7 +612,7 @@ public final class ContainerAsyncClient {
     }
 
     private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
-                                               Context context, ContainersListBlobHierarchySegmentResponse response){
+                                               Context context, ContainersListBlobHierarchySegmentResponse response) {
         Flux<BlobItem> blobs;
         Flux<BlobPrefix> prefixes;
         BlobHierarchyListSegment segment = response.value().segment();

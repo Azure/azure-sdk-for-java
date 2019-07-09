@@ -33,6 +33,7 @@ enum SASProtocol {
      *         The value to try to parse.
      *
      * @return A {@code SASProtocol} value that represents the string if possible.
+     * @throws IllegalArgumentException If {@code str} doesn't equal "https" or "https,http"
      */
     public static SASProtocol parse(String str) {
         if (str.equals(Constants.HTTPS)) {

@@ -309,6 +309,7 @@ public class BlobClient {
      *
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link ReliableDownloadOptions}
      * @param range
      *         {@link BlobRange}
      * @param accessConditions
@@ -345,6 +346,7 @@ public class BlobClient {
      *
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @throws IOException If an I/O error occurs
      */
     public void downloadToFile(String filePath) throws IOException {
         this.downloadToFile(filePath, null, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
@@ -356,6 +358,7 @@ public class BlobClient {
      *
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link ReliableDownloadOptions}
      * @param range
      *         {@link BlobRange}
      * @param blockSize
@@ -366,17 +369,14 @@ public class BlobClient {
      *         Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws IOException If an I/O error occurs
      */
     public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range, Integer blockSize,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
         Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, accessConditions, rangeGetContentMD5, options);
 
         try {
-            if (timeout == null) {
-                download.block();
-            } else {
-                download.block(timeout);
-            }
+            Utility.blockWithOptionalTimeout(download, timeout);
         } catch (UncheckedIOException e) {
             throw e.getCause();
         }
