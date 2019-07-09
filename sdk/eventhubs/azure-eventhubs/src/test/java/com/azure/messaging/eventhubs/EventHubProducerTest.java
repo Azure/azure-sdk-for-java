@@ -73,8 +73,7 @@ public class EventHubProducerTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final int maxMessageSize = 16 * 1024;
-        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
@@ -101,8 +100,7 @@ public class EventHubProducerTest {
 
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
-        final int maxMessageSize = 16 * 1024;
-        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
@@ -154,14 +152,13 @@ public class EventHubProducerTest {
      */
     @Test
     public void sendTooManyMessages() {
-        final Flux<EventData> testData = Flux.range(0, 20).flatMap(number -> {
+        final Flux<EventData> testData = Flux.range(0, 400).flatMap(number -> {
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
             return Flux.just(data);
         });
 
         final AmqpSendLink sendLink = mock(AmqpSendLink.class);
-        final int maxMessageSize = 16 * 1024;
-        final SendOptions options = new SendOptions().maximumSizeInBytes(maxMessageSize);
+        final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
 
