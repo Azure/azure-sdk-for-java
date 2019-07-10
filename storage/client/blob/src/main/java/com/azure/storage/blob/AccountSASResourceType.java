@@ -23,7 +23,7 @@ final class AccountSASResourceType {
     /**
      * Initializes an {@code AccountSASResourceType} object with all fields set to false.
      */
-    public AccountSASResourceType() {
+    private AccountSASResourceType() {
     }
 
     /**
@@ -34,6 +34,7 @@ final class AccountSASResourceType {
      *         A {@code String} which represents the {@code AccountSASResourceTypes}.
      *
      * @return A {@code AccountSASResourceType} generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code resourceTypesString} contains a character other than s, c, or o.
      */
     public static AccountSASResourceType parse(String resourceTypesString) {
         AccountSASResourceType resourceType = new AccountSASResourceType();

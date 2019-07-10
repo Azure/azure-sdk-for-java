@@ -21,6 +21,8 @@ public final class ContainerListDetails {
 
     /**
      * Whether metadata should be returned.
+     *
+     * @return a flag indicating whether metadata should be returned in the listing
      */
     public boolean metadata() {
         return this.metadata;
@@ -28,16 +30,17 @@ public final class ContainerListDetails {
 
     /**
      * Whether metadata should be returned.
+     *
+     * @param metadata Flag indicating whether metadata should be returned
+     * @return the updated ContainerListDetails object
      */
     public ContainerListDetails metadata(boolean metadata) {
         this.metadata = metadata;
         return this;
     }
 
-    /*
-     This is used internally to convert the details structure into the appropriate type to pass to the protocol layer.
-     It is intended to mirror the BlobListDetails.toList() method, but is slightly different since there is only one
-     possible value here currently. The customer should never have need for this.
+    /**
+     * @return the listing flags
      */
     public ListContainersIncludeType toIncludeType() {
         if (this.metadata) {

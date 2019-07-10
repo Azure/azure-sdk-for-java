@@ -54,7 +54,7 @@ final class ContainerRawClient {
      * Creates a {@code ContainerAsyncClient} object pointing to the account specified by the URL and using the provided
      * pipeline to make HTTP requests.
      */
-    public ContainerRawClient(AzureBlobStorageImpl azureBlobStorage) {
+    ContainerRawClient(AzureBlobStorageImpl azureBlobStorage) {
         this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorage);
     }
 

@@ -4,17 +4,11 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
 import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -243,7 +237,7 @@ class BlobAPITest extends APISpec {
         bu2.upload(new ByteArrayInputStream("ABC".getBytes()), 3)
 
         then:
-        BlobClient bu3 = BlobClient.blobClientBuilder()
+        BlobClient bu3 = new BlobClientBuilder()
             .endpoint(bu.getBlobUrl().toString())
             .snapshot(snapshot)
             .credential(primaryCreds)
@@ -1879,7 +1873,7 @@ class BlobAPITest extends APISpec {
 
     def "Get account info error"() {
         when:
-        StorageClient serviceURL = StorageClient.storageClientBuilder()
+        StorageClient serviceURL = new StorageClientBuilder()
             .endpoint(primaryServiceURL.getAccountUrl().toString())
             .buildClient()
         serviceURL.getContainerClient(generateContainerName()).getBlobClient(generateBlobName())

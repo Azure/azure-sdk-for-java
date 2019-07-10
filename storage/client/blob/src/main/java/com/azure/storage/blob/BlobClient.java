@@ -163,8 +163,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -177,8 +177,8 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -212,6 +212,7 @@ public class BlobClient {
      * @param copyId
      *         The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      *         BlobStartCopyFromURLHeaders} object.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse abortCopyFromURL(String copyId) {
         return this.abortCopyFromURL(copyId, null, null);
@@ -228,6 +229,7 @@ public class BlobClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse abortCopyFromURL(String copyId, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
@@ -284,8 +286,10 @@ public class BlobClient {
      *
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
      */
-    public VoidResponse download(OutputStream stream) throws IOException {
+    public VoidResponse download(OutputStream stream) {
         return this.download(stream, null, null, null, false, null);
     }
 
@@ -295,6 +299,7 @@ public class BlobClient {
      *
      * @param stream
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link ReliableDownloadOptions}
      * @param range
      *         {@link BlobRange}
      * @param accessConditions
@@ -303,9 +308,12 @@ public class BlobClient {
      *         Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     *
      */
     public VoidResponse download(OutputStream stream, ReliableDownloadOptions options, BlobRange range,
-                                 BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
+                                 BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) {
         Mono<VoidResponse> download = blobAsyncClient
             .download(range, accessConditions, rangeGetContentMD5, options)
             .flatMapMany(res -> res.value()
@@ -319,11 +327,7 @@ public class BlobClient {
             .last()
             .map(VoidResponse::new);
 
-        try {
-            return Utility.blockWithOptionalTimeout(download, timeout);
-        } catch (UncheckedIOException e) {
-            throw e.getCause();
-        }
+        return Utility.blockWithOptionalTimeout(download, timeout);
     }
 
     /**
@@ -332,6 +336,7 @@ public class BlobClient {
      *
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @throws IOException If an I/O error occurs
      */
     public void downloadToFile(String filePath) throws IOException {
         this.downloadToFile(filePath, null, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
@@ -343,6 +348,7 @@ public class BlobClient {
      *
      * @param filePath
      *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param options {@link ReliableDownloadOptions}
      * @param range
      *         {@link BlobRange}
      * @param blockSize
@@ -353,17 +359,14 @@ public class BlobClient {
      *         Whether the contentMD5 for the specified blob range should be returned.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws IOException If an I/O error occurs
      */
     public void downloadToFile(String filePath, ReliableDownloadOptions options, BlobRange range, Integer blockSize,
             BlobAccessConditions accessConditions, boolean rangeGetContentMD5, Duration timeout) throws IOException {
         Mono<Void> download = blobAsyncClient.downloadToFile(filePath, range, blockSize, accessConditions, rangeGetContentMD5, options);
 
         try {
-            if (timeout == null) {
-                download.block();
-            } else {
-                download.block(timeout);
-            }
+            Utility.blockWithOptionalTimeout(download, timeout);
         } catch (UncheckedIOException e) {
             throw e.getCause();
         }
@@ -371,6 +374,8 @@ public class BlobClient {
 
     /**
      * Deletes the specified blob or snapshot. Note that deleting a blob also deletes all its snapshots.
+     *
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse delete() {
         return this.delete(null, null, null);
@@ -388,8 +393,7 @@ public class BlobClient {
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
      *
-     * @return
-     *      A reactive response signalling completion.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse delete(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
             BlobAccessConditions accessConditions, Duration timeout) {
@@ -435,6 +439,7 @@ public class BlobClient {
      *
      * @param headers
      *         {@link BlobHTTPHeaders}
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setHTTPHeaders(BlobHTTPHeaders headers) {
         return this.setHTTPHeaders(headers, null, null);
@@ -452,6 +457,7 @@ public class BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setHTTPHeaders(BlobHTTPHeaders headers, BlobAccessConditions accessConditions,
             Duration timeout) {
@@ -468,6 +474,7 @@ public class BlobClient {
      *
      * @param metadata
      *         {@link Metadata}
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null, null);
@@ -484,6 +491,7 @@ public class BlobClient {
      *         {@link BlobAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setMetadata(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
@@ -529,6 +537,7 @@ public class BlobClient {
      *
      * @param tier
      *         The new tier for the blob.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setTier(AccessTier tier) {
         return this.setTier(tier, null, null);
@@ -546,6 +555,7 @@ public class BlobClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse setTier(AccessTier tier, LeaseAccessConditions leaseAccessConditions, Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
@@ -556,6 +566,8 @@ public class BlobClient {
 
     /**
      * Undelete restores the content and metadata of a soft-deleted blob and/or any associated soft-deleted snapshots.
+     *
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse undelete() {
         return this.undelete(null);
@@ -566,6 +578,7 @@ public class BlobClient {
      *
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse undelete(Duration timeout) {
         Mono<VoidResponse> response = blobAsyncClient
@@ -659,6 +672,7 @@ public class BlobClient {
      *
      * @param leaseID
      *         The leaseId of the active lease on the blob.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null, null);
@@ -675,6 +689,7 @@ public class BlobClient {
      *         will fail if the specified condition is not satisfied.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers.
      */
     public VoidResponse releaseLease(String leaseID,
             ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {

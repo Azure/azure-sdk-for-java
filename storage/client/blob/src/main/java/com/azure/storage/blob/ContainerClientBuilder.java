@@ -4,18 +4,17 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credentials.TokenCredential;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.configuration.Configuration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -30,6 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ import java.util.Objects;
  * <p>
  * The following information must be provided on this builder:
  *
- * <p><ul>
+ * <ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}}.
  *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
@@ -67,6 +67,10 @@ public final class ContainerClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link ContainerClient ContainerClients}
+     * and {@link ContainerAsyncClient ContainerAsyncClients}.
+     */
     public ContainerClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -99,7 +103,7 @@ public final class ContainerClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -112,7 +116,7 @@ public final class ContainerClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s", endpoint.toString(), containerName))
+            .url(String.format("%s/%s", endpoint, containerName))
             .pipeline(pipeline);
     }
 
@@ -134,6 +138,7 @@ public final class ContainerClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public ContainerClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -173,7 +178,7 @@ public final class ContainerClientBuilder {
     }
 
     String endpoint() {
-        return this.endpoint.toString();
+        return this.endpoint;
     }
 
     /**
@@ -227,6 +232,7 @@ public final class ContainerClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated ContainerClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public ContainerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -234,7 +240,7 @@ public final class ContainerClientBuilder {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
             String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);

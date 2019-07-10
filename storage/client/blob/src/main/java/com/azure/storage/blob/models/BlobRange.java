@@ -51,6 +51,8 @@ public final class BlobRange {
 
     /**
      * The start of the range. Must be greater than or equal to 0.
+     *
+     * @return the offset for the range
      */
     public long offset() {
         return offset;
@@ -58,6 +60,8 @@ public final class BlobRange {
 
     /**
      * How many bytes to include in the range. Must be greater than or equal to 0 if specified.
+     *
+     * @return the number bytes to include in the range
      */
     public Long count() {
         return count;
@@ -76,10 +80,8 @@ public final class BlobRange {
         return String.format(Locale.ROOT, BEGIN_RANGE_HEADER_FORMAT, this.offset);
     }
 
-    /*
-    In the case where the customer passes a null BlobRange, constructing the default of "0-" will fail on an empty blob.
-    By returning null as the header value, we elect not to set the header, which has the same effect, namely downloading
-    the whole blob, but it will not fail in the empty case.
+    /**
+     * @return {@link BlobRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise null.
      */
     public String toHeaderValue() {
         // The default values of a BlobRange

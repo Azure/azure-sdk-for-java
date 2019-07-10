@@ -385,6 +385,10 @@
                 <title>Azure Key Vault</title>
                 <packages>com.azure.security.keyvault*</packages>
               </group>
+              <group>
+                <title>Azure Storage - Blobs</title>
+                <packages>com.azure.storage.blob*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -740,5 +744,6 @@
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
+    <module>./storage/client/blob</module>
   </modules>
 </project>

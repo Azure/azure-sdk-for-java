@@ -149,6 +149,7 @@ final class Utility {
      *         the {@code String} to be interpreted as a <code>Date</code>
      *
      * @return the corresponding <code>Date</code> object
+     * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
      */
     public static OffsetDateTime parseDate(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
@@ -194,6 +195,7 @@ final class Utility {
      *         The minimum value for the specified parameter.
      * @param max
      *         The maximum value for the specified parameter.
+     * @throws IllegalArgumentException If {@code value} is less than {@code min} or greater than {@code max}.
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
@@ -287,7 +289,7 @@ final class Utility {
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
             } catch (IllegalAccessException | InvocationTargetException e) {
-                //TODO validate this won't throw
+                //TODO (unknown): validate this won't throw
             }
             try {
                 HttpHeaders rawHeaders = (HttpHeaders) response.getClass().getMethod("headers").invoke(response);
@@ -304,7 +306,7 @@ final class Utility {
             } catch (NoSuchMethodException e) {
                 // Response did not return an eTag value. No change necessary.
             } catch (IllegalAccessException | InvocationTargetException e) {
-                //TODO validate this won't throw
+                //TODO (unknown): validate this won't throw
             }
             return response;
         });
@@ -368,6 +370,7 @@ final class Utility {
         if (url.path() != null || !url.path().contains("/")) {
             throw new IllegalArgumentException(String.format("URL %s does not contain path segments", baseURL));
         }
+
         String newPath = url.path().substring(0, url.path().lastIndexOf('/'));
         url.path(newPath);
         try {
@@ -377,11 +380,11 @@ final class Utility {
         }
     }
 
-     static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
-         if (timeout == null) {
-             return response.block();
-         } else {
-             return response.block(timeout);
-         }
+    static <T> T blockWithOptionalTimeout(Mono<T> response, @Nullable Duration timeout) {
+        if (timeout == null) {
+            return response.block();
+        } else {
+            return response.block(timeout);
+        }
     }
 }

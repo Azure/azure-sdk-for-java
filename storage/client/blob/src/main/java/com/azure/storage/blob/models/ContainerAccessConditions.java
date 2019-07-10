@@ -27,6 +27,8 @@ public final class ContainerAccessConditions {
      * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
+     *
+     * @return the modified access conditions
      */
     public ModifiedAccessConditions modifiedAccessConditions() {
         return modifiedAccessConditions;
@@ -36,6 +38,9 @@ public final class ContainerAccessConditions {
      * Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used to
      * construct conditions related to when the blob was changed relative to the given request. The request
      * will fail if the specified condition is not satisfied.
+     *
+     * @param modifiedAccessConditions the modified access conditions to set
+     * @return the updated ContainerAccessConditions object
      */
     public ContainerAccessConditions modifiedAccessConditions(ModifiedAccessConditions modifiedAccessConditions) {
         this.modifiedAccessConditions = modifiedAccessConditions;
@@ -45,6 +50,8 @@ public final class ContainerAccessConditions {
     /**
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
+     *
+     * @return the lease access conditions
      */
     public LeaseAccessConditions leaseAccessConditions() {
         return leaseAccessConditions;
@@ -53,6 +60,9 @@ public final class ContainerAccessConditions {
     /**
      * By setting lease access conditions, requests will fail if the provided lease does not match the active lease on
      * the blob.
+     *
+     * @param leaseID the lease access conditions to set
+     * @return the updated ContainerAccessConditions object
      */
     public ContainerAccessConditions leaseAccessConditions(LeaseAccessConditions leaseID) {
         this.leaseAccessConditions = leaseID;

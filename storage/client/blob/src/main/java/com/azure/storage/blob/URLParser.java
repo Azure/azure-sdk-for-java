@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
@@ -24,11 +23,8 @@ final class URLParser {
      *         The {@code URL} to be parsed.
      *
      * @return A {@link BlobURLParts} object containing all the components of a BlobURL.
-     *
-     * @throws UnknownHostException
-     *         If the url contains an improperly formatted ipaddress or unknown host address.
      */
-    public static BlobURLParts parse(URL url) throws UnknownHostException {
+    public static BlobURLParts parse(URL url) {
 
         final String scheme = url.getProtocol();
         final String host = url.getHost();

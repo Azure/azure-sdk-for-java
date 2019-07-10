@@ -29,6 +29,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ import java.util.Objects;
  * <p>
  * The following information must be provided on this builder:
  *
- * <p><ul>
+ * <ul>
  *     <li>the endpoint through {@code .endpoint()}, in the format of {@code https://{accountName}.blob.core.windows.net}.
  *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
@@ -65,6 +66,10 @@ public final class StorageClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link StorageClient StorageClients}
+     * and {@link StorageAsyncClient StorageAsyncClients}.
+     */
     public StorageClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -92,7 +97,7 @@ public final class StorageClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -127,6 +132,7 @@ public final class StorageClientBuilder {
      * Sets the blob service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated StorageClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public StorageClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -201,6 +207,7 @@ public final class StorageClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated StorageClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public StorageClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -208,7 +215,7 @@ public final class StorageClientBuilder {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
             String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);

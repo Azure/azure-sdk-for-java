@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package blob;
-
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.ContainerClient;
+import com.azure.storage.blob.ContainerClientBuilder;
 import com.azure.storage.blob.StorageException;
 import com.azure.storage.blob.models.StorageErrorCode;
 
@@ -17,43 +16,47 @@ import com.azure.storage.blob.models.StorageErrorCode;
  */
 public class StorageErrorHandlingExample {
 
+    /**
+     * Entry point into error handling example for Storage blobs.
+     * @param args Unused. Arguments to the program.
+     */
     public static void main(String[] args) {
-        ContainerClient containerClient = ContainerClient.containerClientBuilder().endpoint("https://account.blob.core.windows.net/mycontainer")
+        ContainerClient containerClient = new ContainerClientBuilder().endpoint("https://account.blob.core.windows.net/mycontainer")
             .buildClient();
 
         try {
 
-            /**
+            /*
              * An error occurred while creating the container.
              */
             containerClient.create();
         } catch (StorageException e) {
 
-            /**
+            /*
              * StorageErrorCode defines constants corresponding to all error codes returned by the service.
              */
-            if (e.errorCode() == StorageErrorCode.RESOURCE_NOT_FOUND){
+            if (e.errorCode() == StorageErrorCode.RESOURCE_NOT_FOUND) {
 
-                /**
+                /*
                  * Log more detailed information.
                  */
                 System.out.println("Extended details: " + e.getMessage());
 
-                /**
+                /*
                  * Examine the raw response.
                  */
                 HttpResponse response = e.response();
                 System.out.println("Error creating the container with status code: " + response.statusCode());
-            } else if(e.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
+            } else if (e.errorCode() == StorageErrorCode.CONTAINER_BEING_DELETED) {
 
-                /**
+                /*
                  * Log more detailed information.
                  */
                 System.out.println("Extended details: " + e.getMessage());
 
             } else if (e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS) {
 
-                /**
+                /*
                  * Process the error.
                  */
                 System.out.println("The container url is " + containerClient.toString());

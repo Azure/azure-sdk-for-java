@@ -115,6 +115,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return
      *      The information of the uploaded block blob.
+     * @throws IOException If an I/O error occurs
      */
     public Response<BlockBlobItem> upload(InputStream data, long length) throws IOException {
         return this.upload(data, length, null, null, null, null);
@@ -144,6 +145,7 @@ public final class BlockBlobClient extends BlobClient {
      *
      * @return
      *      The information of the uploaded block blob.
+     * @throws IOException If an I/O error occurs
      */
     public Response<BlockBlobItem> upload(InputStream data, long length, BlobHTTPHeaders headers,
                                 Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) throws IOException {
@@ -161,32 +163,42 @@ public final class BlockBlobClient extends BlobClient {
 
         Mono<Response<BlockBlobItem>> upload = blockBlobAsyncClient.blockBlobAsyncRawClient
             .upload(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, accessConditions)
-            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));;
+            .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
 
         try {
             return Utility.blockWithOptionalTimeout(upload, timeout);
-        }
-        catch (UncheckedIOException e) {
+        } catch (UncheckedIOException e) {
             throw e.getCause();
         }
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * @param filePath Path of the file to upload
+     * @throws IOException If an I/O error occurs
+     */
     public void uploadFromFile(String filePath) throws IOException {
         this.uploadFromFile(filePath, null, null, null, null);
     }
 
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * @param filePath Path of the file to upload
+     * @param headers {@link BlobHTTPHeaders}
+     * @param metadata {@link Metadata}
+     * @param accessConditions {@link BlobAccessConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws IOException If an I/O error occurs
+     */
     public void uploadFromFile(String filePath, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions, Duration timeout) throws IOException {
         Mono<Void> upload = this.blockBlobAsyncClient.uploadFromFile(filePath, BlockBlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, headers, metadata, accessConditions);
 
         try {
-            if (timeout == null) {
-                upload.block();
-            } else {
-                upload.block(timeout);
-            }
-        }
-        catch (UncheckedIOException e) {
+            Utility.blockWithOptionalTimeout(upload, timeout);
+        } catch (UncheckedIOException e) {
             throw e.getCause();
         }
     }
@@ -204,8 +216,9 @@ public final class BlockBlobClient extends BlobClient {
      * @param length
      *         The exact length of the data. It is important that this value match precisely the length of the data
      *         provided in the {@link InputStream}.
+     * @return A response containing status code and HTTP headers
      */
-    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) throws IOException {
+    public VoidResponse stageBlock(String base64BlockID, InputStream data, long length) {
         return this.stageBlock(base64BlockID, data, length, null, null);
     }
 
@@ -227,6 +240,7 @@ public final class BlockBlobClient extends BlobClient {
      *         lease on the blob.
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlock(String base64BlockID, InputStream data, long length,
             LeaseAccessConditions leaseAccessConditions, Duration timeout) {
@@ -262,6 +276,7 @@ public final class BlockBlobClient extends BlobClient {
      *         authentication is required to perform the operation.
      * @param sourceRange
      *         {@link BlobRange}
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange) {
@@ -293,6 +308,7 @@ public final class BlockBlobClient extends BlobClient {
      *         {@link SourceModifiedAccessConditions}
      * @param timeout
      *         An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return A response containing status code and HTTP headers
      */
     public VoidResponse stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
@@ -337,9 +353,7 @@ public final class BlockBlobClient extends BlobClient {
                                           LeaseAccessConditions leaseAccessConditions, Duration timeout) {
         Flux<BlockItem> response = blockBlobAsyncClient.listBlocks(listType, leaseAccessConditions);
 
-        return timeout == null?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**
