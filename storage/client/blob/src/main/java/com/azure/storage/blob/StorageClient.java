@@ -93,6 +93,17 @@ public final class StorageClient {
     }
 
     /**
+     * Deletes the specified container in the storage account. If the container doesn't exist the operation fails. For
+     * more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * @param containerName Name of the container to delete
+     * @return A response containing status code and HTTP headers
+     */
+    public VoidResponse deleteContainer(String containerName) {
+        return storageAsyncClient.deleteContainer(containerName).block();
+    }
+
+    /**
      * Gets the URL of the storage account represented by this client.
      * @return the URL.
      */
