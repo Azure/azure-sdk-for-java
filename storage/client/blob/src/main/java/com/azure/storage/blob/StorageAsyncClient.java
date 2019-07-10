@@ -8,8 +8,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.models.ContainerItem;
+import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListContainersOptions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -24,6 +27,8 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
+
+import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}.
@@ -47,14 +52,14 @@ import java.time.OffsetDateTime;
  * object through {@link Mono#toFuture()}.
  */
 public final class StorageAsyncClient {
-    StorageAsyncRawClient storageAsyncRawClient;
+    private final AzureBlobStorageImpl azureBlobStorage;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.storageAsyncRawClient = new StorageAsyncRawClient(azureBlobStorageBuilder.build());
+        this.azureBlobStorage = azureBlobStorageBuilder.build();
     }
 
     /**
@@ -69,7 +74,7 @@ public final class StorageAsyncClient {
     public ContainerAsyncClient getContainerAsyncClient(String containerName) {
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(Utility.appendToURLPath(getAccountUrl(), containerName).toString())
-            .pipeline(storageAsyncRawClient.azureBlobStorage.httpPipeline()));
+            .pipeline(azureBlobStorage.httpPipeline()));
     }
 
     /**
@@ -111,9 +116,9 @@ public final class StorageAsyncClient {
      */
     public URL getAccountUrl() {
         try {
-            return new URL(storageAsyncRawClient.azureBlobStorage.url());
+            return new URL(azureBlobStorage.url());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), storageAsyncRawClient.azureBlobStorage.url()), e);
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(), azureBlobStorage.url()), e);
         }
     }
 
@@ -139,9 +144,38 @@ public final class StorageAsyncClient {
      *      A reactive response emitting the list of containers.
      */
     public Flux<ContainerItem> listContainers(ListContainersOptions options) {
-        return storageAsyncRawClient
-            .listContainersSegment(null, options)
+        return listContainersSegment(null, options)
             .flatMapMany(response -> listContainersHelper(response.value().marker(), options, response));
+    }
+
+    /*
+     * Returns a Mono segment of containers starting from the specified Marker.
+     * Use an empty marker to start enumeration from the beginning. Container names are returned in lexicographic order.
+     * After getting a segment, process it, and then call ListContainers again (passing the the previously-returned
+     * Marker) to get the next segment. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
+     *
+     * @param marker
+     *         Identifies the portion of the list to be returned with the next list operation.
+     *         This value is returned in the response of a previous list operation as the
+     *         ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
+     * @param options
+     *         A {@link ListContainersOptions} which specifies what data should be returned by the service.
+     *
+     * @return Emits the successful response.
+     *
+     * @apiNote ## Sample Code \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list "Sample code for ServiceURL.listContainersSegment")] \n
+     * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_list_helper "Helper code for ServiceURL.listContainersSegment")] \n
+     * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+     */
+    private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker, ListContainersOptions options) {
+        options = options == null ? new ListContainersOptions() : options;
+
+        return postProcessResponse(
+            this.azureBlobStorage.services().listContainersSegmentWithRestResponseAsync(
+                options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null,
+                null, Context.NONE));
     }
 
     private Flux<ContainerItem> listContainersHelper(String marker, ListContainersOptions options,
@@ -149,7 +183,7 @@ public final class StorageAsyncClient {
         Flux<ContainerItem> result = Flux.fromIterable(response.value().containerItems());
         if (response.value().nextMarker() != null) {
             // Recursively add the continuation items to the observable.
-            result = result.concatWith(storageAsyncRawClient.listContainersSegment(marker, options)
+            result = result.concatWith(listContainersSegment(marker, options)
                 .flatMapMany((r) ->
                     listContainersHelper(response.value().nextMarker(), options, r)));
         }
@@ -165,8 +199,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account properties.
      */
     public Mono<Response<StorageServiceProperties>> getProperties() {
-        return storageAsyncRawClient
-            .getProperties()
+        return postProcessResponse(
+            this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
@@ -183,8 +217,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account properties.
      */
     public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
-        return storageAsyncRawClient
-            .setProperties(properties)
+        return postProcessResponse(
+            this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, Context.NONE))
             .map(VoidResponse::new);
     }
 
@@ -197,13 +231,22 @@ public final class StorageAsyncClient {
      * @param expiry
      *         Expiration of the key's validity.
      *
-     * @return
-     *      A reactive response containing the user delegation key.
+     * @return A reactive response containing the user delegation key.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      */
     public Mono<Response<UserDelegationKey>> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
-        return storageAsyncRawClient
-            .getUserDelegationKey(start, expiry)
-            .map(rb -> new SimpleResponse<>(rb, rb.value()));
+        Utility.assertNotNull("expiry", expiry);
+        if (start != null && !start.isBefore(expiry)) {
+            throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
+        }
+
+        return postProcessResponse(
+            this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
+                new KeyInfo()
+                    .start(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
+                    .expiry(Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
+                null, null, Context.NONE)
+        ).map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
     /**
@@ -216,8 +259,8 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatistics() {
-        return storageAsyncRawClient
-            .getStatistics()
+        return postProcessResponse(
+            this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
 
@@ -229,8 +272,7 @@ public final class StorageAsyncClient {
      *      A reactive response containing the storage account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
-        return storageAsyncRawClient
-            .getAccountInfo()
+        return postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 }

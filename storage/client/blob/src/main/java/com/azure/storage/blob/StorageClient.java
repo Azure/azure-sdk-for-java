@@ -38,8 +38,7 @@ import java.time.OffsetDateTime;
  * information on containers.
  */
 public final class StorageClient {
-
-    private StorageAsyncClient storageAsyncClient;
+    private final StorageAsyncClient storageAsyncClient;
 
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.

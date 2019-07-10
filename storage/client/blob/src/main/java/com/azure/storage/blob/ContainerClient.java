@@ -37,14 +37,13 @@ import java.util.List;
  * for more information on containers.
  */
 public final class ContainerClient {
-
     private ContainerAsyncClient containerAsyncClient;
 
-    public static final String ROOT_CONTAINER_NAME = "$root";
+    public static final String ROOT_CONTAINER_NAME = ContainerAsyncClient.ROOT_CONTAINER_NAME;
 
-    public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
+    public static final String STATIC_WEBSITE_CONTAINER_NAME = ContainerAsyncClient.STATIC_WEBSITE_CONTAINER_NAME;
 
-    public static final String LOG_CONTAINER_NAME = "$logs";
+    public static final String LOG_CONTAINER_NAME = ContainerAsyncClient.LOG_CONTAINER_NAME;
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
