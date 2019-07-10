@@ -188,18 +188,6 @@ jobs:
           arguments: $(OSName)
 
       - task: Maven@3
-        displayName: 'Start Jetty'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
-
-      - task: Maven@3
         displayName: 'Run tests'
         inputs:
           mavenPomFile: $(pomFile)
