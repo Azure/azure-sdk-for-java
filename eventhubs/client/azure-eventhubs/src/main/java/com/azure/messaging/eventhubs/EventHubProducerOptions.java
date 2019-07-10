@@ -114,7 +114,7 @@ public class EventHubProducerOptions implements Cloneable {
             try {
                 clone.retry((Retry) retry.clone());
             } catch (CloneNotSupportedException e) {
-                logger.asWarning().log("Unable to create clone of retry.", e);
+                logger.error("Unable to create clone of retry.", e);
                 clone.retry(retry);
             }
         }
