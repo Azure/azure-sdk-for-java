@@ -1,8 +1,9 @@
-# External variables Settable at queue time:
-# "mavenGoals" : "clean compile".   This is the project object model file for Maven.
-
 trigger:
   - master
+  - ADO_MGMT_CI
+  
+variables:
+  MavenGoals: 'clean compile'
 
 jobs:
   - job: 'Build'
@@ -26,7 +27,7 @@ jobs:
           scriptPath: "$(System.DefaultWorkingDirectory)/eng/pipelines/scripts/mgmt_sdk_compiler.sh"
           workingDirectory: "$(System.DefaultWorkingDirectory)"
           failOnStandardError: true
-          args: "$(JavaVersion) $(mavenGoals)"
+          args: "$(JavaVersion) $(MavenGoals)"
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
