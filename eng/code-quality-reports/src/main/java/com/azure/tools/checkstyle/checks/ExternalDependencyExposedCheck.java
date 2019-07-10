@@ -24,15 +24,17 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     private static final String EXTERNAL_DEPENDENCY_ERROR =
         "Class ''%s'', is a class from external dependency. You should not use it as a return or method argument type.";
 
-    private static final Set<String> VALID_DEPENDENCY_PACKAGE_NAMES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "java", "com.azure", "reactor"
+    private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+        "java", "com.azure", "reactor", "io.netty.buffer.ByteBuf"
     )));
 
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
+    private static boolean isImplPackage;
 
     @Override
     public void beginTree(DetailAST rootAST) {
         simpleClassNameToQualifiedNameMap.clear();
+        isImplPackage = false;
     }
 
     @Override
@@ -48,6 +50,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
+            TokenTypes.PACKAGE_DEF,
             TokenTypes.IMPORT,
             TokenTypes.METHOD_DEF
         };
@@ -55,7 +58,15 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
+        if (isImplPackage) {
+            return;
+        }
+
         switch (token.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
+                isImplPackage = packageName.contains(".implementation");
+                break;
             case TokenTypes.IMPORT:
                 // Add all imported classes into a map, key is the name of class and value is the full package path of class.
                 final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
@@ -124,15 +135,6 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         final DetailAST typeArgumentsToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENTS);
         if (typeArgumentsToken != null) {
             invalidReturnTypeMap.putAll(getInvalidTypeFromTypeArguments(typeArgumentsToken));
-        }
-
-        // TYPE_ARGUMENT, add the invalid external type to the map
-        final DetailAST typeArgumentToken = typeToken.findFirstToken(TokenTypes.TYPE_ARGUMENT);
-        if (typeArgumentToken != null) {
-            final String invalidTypeName = getInvalidTypeNameFromTypeArgument(typeArgumentToken);
-            if (invalidTypeName != null) {
-                invalidReturnTypeMap.put(typeArgumentToken, invalidTypeName);
-            }
         }
 
         return invalidReturnTypeMap;
@@ -212,7 +214,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         }
 
         final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
-        return VALID_DEPENDENCY_PACKAGE_NAMES.stream()
+        return VALID_DEPENDENCY_SET.stream()
             .anyMatch(validPackageName -> qualifiedName.startsWith(validPackageName));
     }
 }
