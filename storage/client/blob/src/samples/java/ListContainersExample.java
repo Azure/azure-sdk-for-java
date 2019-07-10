@@ -1,23 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package blob;
-
 import com.azure.storage.blob.StorageClient;
 import com.azure.storage.blob.StorageClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
-import java.util.Locale;
 
-import static blob.SampleHelper.getAccountKey;
-import static blob.SampleHelper.getAccountName;
+import java.util.Locale;
 
 /**
  * This example shows how to list all containers with storage client using the Azure Storage Blob SDK for Java.
  */
 public class ListContainersExample {
-    public static void main (String[] args) {
-        String accountName = getAccountName();
-        String accountKey = getAccountKey();
+
+    /**
+     * Entry point into the list containers examples for Storage blobs.
+     * @param args Unused. Arguments to the program.
+     */
+    public static void main(String[] args) {
+        String accountName = SampleHelper.getAccountName();
+        String accountKey = SampleHelper.getAccountKey();
 
         /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
@@ -45,16 +46,13 @@ public class ListContainersExample {
         /*
          * List the containers' name under the Azure storage account.
          */
-        storageClient.listContainers().forEach(
-            containerItem ->
-            {
-                System.out.println("Container name: " + containerItem.name());
+        storageClient.listContainers().forEach(containerItem -> {
+            System.out.println("Container name: " + containerItem.name());
 
-                /*
-                 * Clean up the containers at the same time.
-                 */
-                storageClient.getContainerClient(containerItem.name()).delete();
-            }
-        );
+            /*
+             * Clean up the containers at the same time.
+             */
+            storageClient.getContainerClient(containerItem.name()).delete();
+        });
     }
 }

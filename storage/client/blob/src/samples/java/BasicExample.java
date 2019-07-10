@@ -1,35 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package blob;
-
 import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.StorageClient;
 import com.azure.storage.blob.StorageClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Locale;
-
-import static blob.SampleHelper.getAccountKey;
-import static blob.SampleHelper.getAccountName;
 
 /**
  * This example shows how to start using the Azure Storage Blob SDK for Java.
  */
 public class BasicExample {
 
-    public static void main(String[] args) throws Exception {
+    /**
+     * Entry point into the basic examples for Storage blobs.
+     * @param args Unused. Arguments to the program.
+     * @throws IOException If an I/O error occurs
+     * @throws RuntimeException If the downloaded data doesn't match the uploaded data
+     */
+    public static void main(String[] args) throws IOException {
 
         /*
          * From the Azure portal, get your Storage account's name and account key.
          */
-        String accountName = getAccountName();
-        String accountKey = getAccountKey();
+        String accountName = SampleHelper.getAccountName();
+        String accountKey = SampleHelper.getAccountKey();
 
         /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
@@ -98,7 +101,7 @@ public class BasicExample {
         /*
          * Create more blobs before listing.
          */
-        for(int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             String sampleData = "Samples";
             InputStream dataInBlobs = new ByteArrayInputStream(sampleData.getBytes(Charset.defaultCharset()));
             containerClient.getBlockBlobClient("myblobsforlisting" + System.currentTimeMillis())
@@ -110,9 +113,7 @@ public class BasicExample {
          * List the blob(s) in our container.
          */
         containerClient.listBlobsFlat()
-            .forEach(blobItem -> {
-                System.out.println("Blob name: " + blobItem.name() + ", Snapshot: " + blobItem.snapshot());
-            });;
+            .forEach(blobItem -> System.out.println("Blob name: " + blobItem.name() + ", Snapshot: " + blobItem.snapshot()));
 
         /*
          * Delete the blob we created earlier.

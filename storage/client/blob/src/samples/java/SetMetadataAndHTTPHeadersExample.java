@@ -1,4 +1,5 @@
-package blob;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.ContainerClient;
@@ -7,13 +8,12 @@ import com.azure.storage.blob.StorageClientBuilder;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.common.credentials.SharedKeyCredential;
+
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Locale;
-
-import static blob.SampleHelper.getAccountKey;
-import static blob.SampleHelper.getAccountName;
 
 /**
  * This example shows how to set metadata for containers and blobs and how to set HTTPHeaders for blobs
@@ -21,9 +21,14 @@ import static blob.SampleHelper.getAccountName;
  */
 public class SetMetadataAndHTTPHeadersExample {
 
-    public static void main(String[] args) throws Exception {
-        String accountName = getAccountName();
-        String accountKey = getAccountKey();
+    /**
+     * Entry point into the setting metadata examples for Storage blobs.
+     * @param args Unused. Arguments to the program.
+     * @throws IOException If an I/O error occurs
+     */
+    public static void main(String[] args) throws IOException {
+        String accountName = SampleHelper.getAccountName();
+        String accountKey = SampleHelper.getAccountKey();
 
         /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
