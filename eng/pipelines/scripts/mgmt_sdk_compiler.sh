@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 #args expected
-# $1. Java version : 1.7 or 1,8
+# $1. Java version : 1.7 or 1,8, defaults to "1.8"
+# $2. Goals, defaults to "clean compile"
 
 echo "#### CWD : "
 pwd
@@ -9,13 +10,22 @@ pwd
 echo "#### versions of java available:" 
 ls /usr/lib/jvm
 
+echo "#### Original java home $JAVA_HOME"
+
 JAVA7HOME="/usr/lib/jvm/zulu-7-azure-amd64"
 JAVA8HOME="/usr/lib/jvm/zulu-8-azure-amd64"
 
 JAVAHOME="$JAVA8HOME"
 
-if [ "$1" == "1.7" ];
+MAVENGOALS="clean compile"
+
+if [ -z "$1" ] && [ "$1" == "1.7" ];
   then JAVAHOME="$JAVA7HOME"; echo "runing java 7 build";
+fi
+
+
+if [ -z "$2" ];
+  then MAVENGOALS="$2"; echo "maven goals overriden to $2"
 fi
 
 export JAVA_HOME="$JAVAHOME"
@@ -35,7 +45,7 @@ for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`;
 do 
   echo "######## building folder $i"
   cd $i; 
-  mvn clean compile --batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false; 
+  mvn --batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warns "$MAVENGOALS"; 
   if [ $? != 0 ]; 
     then cd -; exit -1; 
     else cd -; 

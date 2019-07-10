@@ -1,5 +1,5 @@
 # External variables Settable at queue time:
-# "pomFile" : "pom.xml".   This is the project object model file for Maven.
+# "mavenGoals" : "clean compile".   This is the project object model file for Maven.
 
 trigger:
   - master
@@ -26,7 +26,7 @@ jobs:
           scriptPath: "$(System.DefaultWorkingDirectory)/eng/pipelines/scripts/mgmt_sdk_compiler.sh"
           workingDirectory: "$(System.DefaultWorkingDirectory)"
           failOnStandardError: true
-          args: "$(JavaVersion)"
+          args: "$(JavaVersion) ${mavenGoals}"
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
