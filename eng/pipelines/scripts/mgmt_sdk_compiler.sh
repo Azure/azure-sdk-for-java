@@ -45,7 +45,7 @@ for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`;
 do 
   echo "######## building folder $i"
   cd $i; 
-  mvn --batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warns "$MAVENGOALS"; 
+  mvn --batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warns $MAVENGOALS; 
   if [ $? != 0 ]; 
     then cd -; exit -1; 
     else cd -; 
