@@ -27,6 +27,7 @@
     <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
+    <azure-storage-queue.version>12.0.0-preview.1</azure-storage-queue.version>
   </properties>
   <distributionManagement>
     <site>
@@ -58,6 +59,7 @@
                 <source>..\..\core\azure-core-test\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\samples\java</source>
+                <source>..\..\storage\client\queue\src\samples\java</source>
               </sources>
             </configuration>
           </execution>
@@ -141,6 +143,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
           <version>${azure-data-appconfiguration.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-queue</artifactId>
+          <version>${azure-storage-queue.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>

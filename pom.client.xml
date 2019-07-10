@@ -389,6 +389,10 @@
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
               </group>
+              <group>
+                <title>Azure Storage - Queues</title>
+                <packages>com.azure.storage.client.queue*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -542,6 +546,7 @@
                 -snippetpath ${project.basedir}/eventhubs/client/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
+                -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
               </additionalOptions>
             </configuration>
           </reportSet>
@@ -745,5 +750,6 @@
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
     <module>./storage/client/blob</module>
+    <module>./storage/client/queue</module>
   </modules>
 </project>
