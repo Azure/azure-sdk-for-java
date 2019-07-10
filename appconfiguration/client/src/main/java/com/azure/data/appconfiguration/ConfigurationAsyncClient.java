@@ -101,11 +101,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    @SuppressWarnings("unchecked")
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return ServiceHelper.callWithContext(
-            context -> addSetting(new ConfigurationSetting().key(key).value(value), context))
-            .single();
+        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
     }
 
     /**
@@ -133,7 +130,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        return ServiceHelper.withContext().flatMap(context -> addSetting(setting, context));
+        return addSetting(setting, Context.NONE);
     }
 
     /**
@@ -633,8 +630,8 @@ public final class ConfigurationAsyncClient {
      * contains all of the current settings in the service.
      */
     PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return new PagedFlux<>(() -> ServiceHelper.withContext().flatMap(c -> listFirstPageSettings(options, c)),
-            continuationToken -> ServiceHelper.withContext().flatMap(c -> listNextPageSettings(c, continuationToken)));
+        return new PagedFlux<>(() -> listFirstPageSettings(options, context),
+            continuationToken -> listNextPageSettings(context, continuationToken));
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context, String continuationToken) {
@@ -688,10 +685,8 @@ public final class ConfigurationAsyncClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    @SuppressWarnings("unchecked")
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return ServiceHelper
-            .callWithContext(context -> listSettingRevisions(selector, context)).collection();
+        return listSettingRevisions(selector, Context.NONE);
     }
 
     /**

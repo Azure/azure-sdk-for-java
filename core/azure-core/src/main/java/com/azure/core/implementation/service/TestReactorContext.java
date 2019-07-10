@@ -3,11 +3,7 @@
 
 package com.azure.core.implementation.service;
 
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,31 +11,74 @@ public class TestReactorContext {
     public static void main(String[] args) {
         TestReactorContext test = new TestReactorContext();
 
-        String result = test
-            .clientLibraryAPI("Hello, ")
+        System.out.println("------------------------Mono no overloading - Works-------------------------------------");
+        System.out.println(test
+            .clientLibraryAPIWithNoOverloadForMono("Hello, ")
             .subscriberContext(reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
-            .block();
+            .block());
 
-        System.out.println(result);
-
+        System.out.println("------------------------Flux no overloading - Works-------------------------------------");
         test
-            .clientLibraryAPI2("Hello, ")
+            .clientLibraryAPIWithNoOverloadForFlux("Hello, ")
+            .subscriberContext(
+                reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
+            .doOnNext(System.out::println)
+            .subscribe();
+
+        System.out.println("------------------------Mono with block - context is empty-------------------------------------");
+        System.out.println(test
+            .clientLibraryAPIWithBlockForMono("Hello, ")
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
+            .block());
+
+        System.out.println("------------------------Flux with block - context is empty-------------------------------------");
+        test
+            .clientLibraryAPIWithBlockForFlux("Hello, ")
+            .subscriberContext(
+                reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
+            .doOnNext(System.out::println)
+            .subscribe();
+
+        System.out.println("------------------------Mono with response holder - context is empty-------------------------------------");
+        System.out.println(test
+            .clientLibraryAPIForMono("Hello, ")
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
+            .block());
+
+        System.out.println("------------------------Flux with response holder - context is empty-------------------------------------");
+        test
+            .clientLibraryAPIForFlux("Hello, ")
             .subscriberContext(
                 reactor.util.context.Context.of("FirstName", "Jonathan", "LastName", "Giles"))
             .doOnNext(System.out::println)
             .subscribe();
     }
 
-    public Mono<String> clientLibraryAPI(String prefix) {
-        return Mono.subscriberContext().map(this::toAzureContext).flatMap(c -> serviceCall(prefix, c));
+    private Mono<String> clientLibraryAPIWithNoOverloadForMono(String prefix) {
+        return ServiceHelper.callWithContextGetSingle(context -> serviceCallSingle(prefix, context));
     }
 
-    public Flux<String> clientLibraryAPI2(String prefix) {
-        // calling block here will result in context being empty, so, this will not work
-        return ServiceHelper.callWithContext(context -> serviceCall2(prefix, context)).block().collection();
+    private Flux<String> clientLibraryAPIWithNoOverloadForFlux(String prefix) {
+        return ServiceHelper.callWithContextGetCollection(context -> serviceCallCollection(prefix, context));
     }
 
-    private Mono<String> serviceCall(String prefix, Context context) {
+    private Mono<String> clientLibraryAPIWithBlockForMono(String prefix) {
+        return ServiceHelper.callWithContext(context -> serviceCallSingle(prefix, context)).block().single();
+    }
+
+    private Flux<String> clientLibraryAPIWithBlockForFlux(String prefix) {
+        return ServiceHelper.callWithContext(context -> serviceCallCollection(prefix, context)).block().collection();
+    }
+
+    private Mono<String> clientLibraryAPIForMono(String prefix) {
+        return ServiceHelper.callWithContextBlock(context -> serviceCallSingle(prefix, context)).single();
+    }
+
+    private Flux<String> clientLibraryAPIForFlux(String prefix) {
+        return ServiceHelper.callWithContextBlock(context -> serviceCallCollection(prefix, context)).collection();
+    }
+
+    private Mono<String> serviceCallSingle(String prefix, Context context) {
         String msg = prefix
             + context.getData("FirstName").orElse("Stranger")
             + " "
@@ -47,7 +86,7 @@ public class TestReactorContext {
         return Mono.just(msg);
     }
 
-    private Flux<String> serviceCall2(String prefix, Context context) {
+    private Flux<String> serviceCallCollection(String prefix, Context context) {
         String msg = prefix
             + context.getData("FirstName").orElse("Stranger")
             + " "
@@ -55,14 +94,4 @@ public class TestReactorContext {
 
         return Flux.just(msg.split(" "));
     }
-
-    private Context toAzureContext(reactor.util.context.Context context) {
-        Map<Object, Object> keyValues = context.stream()
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-        if (ImplUtils.isNullOrEmpty(keyValues)) {
-            return Context.NONE;
-        }
-        return Context.of(keyValues);
-    }
-
 }
