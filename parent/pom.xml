@@ -163,7 +163,7 @@
     <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
     <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.19</checkstyle.version>
-    <mockito-core.version>2.28.2</mockito-core.version>
+    <mockito-core.version>3.0.0</mockito-core.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
   </properties>
 
