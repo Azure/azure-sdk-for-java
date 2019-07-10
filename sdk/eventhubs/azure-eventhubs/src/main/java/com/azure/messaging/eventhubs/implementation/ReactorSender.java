@@ -78,7 +78,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
      * Max message size can change from its initial value. When the send link is opened, we query for the remote link
      * capacity.
      */
-    private volatile int maxMessageSize = 0;
+    private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
                   ActiveClientTokenManager tokenManager, Duration timeout, Retry retry, int maxMessageSize) {
@@ -101,7 +101,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             }),
 
             handler.getEndpointStates().subscribe(
-                this::notifyEndpointState,
+                state -> {
+                    this.hasConnected.set(state == EndpointState.ACTIVE);
+                    this.notifyEndpointState(state);
+                },
                 error -> logger.error("Error encountered getting endpointState", error),
                 () -> {
                     logger.verbose("getLinkCredits completed.");
@@ -203,7 +206,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
     @Override
     public Mono<Integer> getLinkSize() {
-        if (hasConnected.get() && this.maxMessageSize > 0) {
+        if (this.hasConnected.get() && this.maxMessageSize > 0) {
             return Mono.just(maxMessageSize);
         }
 
@@ -211,12 +214,10 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
             .filter(state -> state == EndpointState.ACTIVE)
             .single()
             .map(state -> {
-                if (!hasConnected.getAndSet(true)) {
-                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+                final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
-                    if (remoteMaxMessageSize != null) {
-                        this.maxMessageSize = remoteMaxMessageSize.intValue();
-                    }
+                if (remoteMaxMessageSize != null) {
+                    this.maxMessageSize = remoteMaxMessageSize.intValue();
                 }
 
                 return this.maxMessageSize;
