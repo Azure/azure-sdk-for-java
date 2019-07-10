@@ -57,7 +57,7 @@ public final class KeyAsyncClient {
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
 
-    private String endpoint;
+    private final String endpoint;
     private final KeyService service;
     private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
 

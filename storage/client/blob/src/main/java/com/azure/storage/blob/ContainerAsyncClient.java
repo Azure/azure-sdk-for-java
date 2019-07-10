@@ -71,13 +71,6 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * @return a new client {@link ContainerClientBuilder} instance.
-     */
-    public static ContainerClientBuilder containerClientBuilder() {
-        return new ContainerClientBuilder();
-    }
-
-    /**
      * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
      * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
      * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the

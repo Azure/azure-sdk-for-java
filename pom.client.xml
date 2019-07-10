@@ -738,11 +738,11 @@
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>./core</module>
-    <module>./eventhubs/client</module>
+    <module>./eventhubs/client/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
-<!--    <module>./sdk/tracing</module>-->
+    <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
     <module>./storage/client</module>
   </modules>

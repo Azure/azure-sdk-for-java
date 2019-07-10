@@ -79,16 +79,6 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link BlobClientBuilder} instance.
-     */
-    public static BlobClientBuilder blobClientBuilder() {
-        return new BlobClientBuilder();
-    }
-
-    /**
      * Creates a new {@link BlockBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be block blobs.
      *

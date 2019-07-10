@@ -35,7 +35,7 @@ import java.util.List;
  */
 @ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
 public final class KeyClient {
-    private KeyAsyncClient client;
+    private final KeyAsyncClient client;
 
     /**
      * Creates a KeyClient that uses {@code pipeline} to service requests

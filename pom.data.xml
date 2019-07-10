@@ -543,7 +543,7 @@
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./eventhubs/data-plane</module>
-    <module>./sdk/keyvault</module>
+    <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus</module>
     <module>./storage/data-plane</module>
   </modules>

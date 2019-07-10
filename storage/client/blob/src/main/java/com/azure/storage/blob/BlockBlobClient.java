@@ -71,16 +71,6 @@ public final class BlockBlobClient extends BlobClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link BlockBlobClientBuilder} instance.
-     */
-    public static BlockBlobClientBuilder blockBlobClientBuilder() {
-        return new BlockBlobClientBuilder();
-    }
-
-    /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service,
      * it will be overwritten.
      *

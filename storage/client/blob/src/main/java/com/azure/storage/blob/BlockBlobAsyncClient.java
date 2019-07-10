@@ -93,16 +93,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link BlockBlobClientBuilder} instance.
-     */
-    public static BlockBlobClientBuilder blockBlobClientBuilder() {
-        return new BlockBlobClientBuilder();
-    }
-
-    /**
      * Creates a new block blob, or updates the content of an existing block blob.
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with PutBlob; the content of the existing blob is overwritten with the new content. To

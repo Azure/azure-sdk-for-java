@@ -62,13 +62,6 @@ public final class PageBlobClient extends BlobClient {
     }
 
     /**
-     * @return a new client {@link PageBlobClientBuilder} instance.
-     */
-    public static PageBlobClientBuilder pageBlobClientBuilder() {
-        return new PageBlobClientBuilder();
-    }
-
-    /**
      * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
      * it will be overwritten.
      *

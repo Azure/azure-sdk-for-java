@@ -58,17 +58,7 @@ public final class AppendBlobClient extends BlobClient {
         super(appendBlobAsyncClient);
         this.appendBlobAsyncClient = appendBlobAsyncClient;
     }
-
-    /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link AppendBlobClientBuilder} instance.
-     */
-    public static AppendBlobClientBuilder appendBlobClientBuilder() {
-        return new AppendBlobClientBuilder();
-    }
-
+    
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
      * it will be overwritten.
