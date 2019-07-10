@@ -386,8 +386,8 @@
                 <packages>com.azure.security.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Storage</title>
-                <packages>com.azure.storage*</packages>
+                <title>Azure Storage - Blobs</title>
+                <packages>com.azure.storage.blob*</packages>
               </group>
             </groups>
             <links>

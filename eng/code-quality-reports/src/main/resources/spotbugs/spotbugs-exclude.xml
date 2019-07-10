@@ -104,11 +104,10 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null.
   https://github.com/Azure/autorest.java/issues/324 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
-  </Match>
-  <Match>
-    <Class name="~com\.azure\.(.+)Impl"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+      <Class name="~com\.azure\.(.+)Impl"/>
+    </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
 
@@ -364,11 +363,10 @@
 
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
-    <Package name="com.microsoft.azure.storage.blob"/>
-    <Bug pattern="NM_CONFUSING"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+    <Or>
+      <Package name="com.microsoft.azure.storage.blob"/>
+      <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+    </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
