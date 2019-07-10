@@ -100,7 +100,7 @@ public final class ReactorDispatcher {
                 oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-            logger.asInfo().log("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+            logger.info("signalWorkQueue failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
         }
     }
 
@@ -115,9 +115,9 @@ public final class ReactorDispatcher {
                     oneKbByteBuffer = ByteBuffer.allocate(1024);
                 }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
-                logger.asInfo().log("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
+                logger.info("WorkScheduler.run() failed with an error: %s", ignorePipeClosedDuringReactorShutdown);
             } catch (IOException ioException) {
-                logger.asError().log("WorkScheduler.run() failed with an error: %s", ioException);
+                logger.error("WorkScheduler.run() failed with an error: %s", ioException);
                 throw new RuntimeException(ioException);
             }
 
@@ -142,7 +142,7 @@ public final class ReactorDispatcher {
                     ioSignal.sink().close();
                 }
             } catch (IOException ioException) {
-                logger.asError().log("CloseHandler.run() sink().close() failed with an error. %s", ioException);
+                logger.error("CloseHandler.run() sink().close() failed with an error. %s", ioException);
             }
 
             workScheduler.run(null);
@@ -152,7 +152,7 @@ public final class ReactorDispatcher {
                     ioSignal.source().close();
                 }
             } catch (IOException ioException) {
-                logger.asError().log("CloseHandler.run() source().close() failed with an error %s", ioException);
+                logger.error("CloseHandler.run() source().close() failed with an error %s", ioException);
             }
         }
     }

@@ -3,6 +3,7 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 
 import reactor.core.publisher.Flux;
@@ -58,6 +59,7 @@ import com.azure.core.util.polling.PollResponse.OperationStatus;
  */
 public class Poller<T> {
 
+    private final ClientLogger logger = new ClientLogger(Poller.class);
     /*
      * poll operation is a function that takes the previous PollResponse, and
      * returns a new Mono of PollResponse to represent the current state
@@ -77,7 +79,7 @@ public class Poller<T> {
     /*
      * This will be called when cancel operation is triggered.
      */
-    private Consumer<Poller> cancelOperation;
+    private Consumer<Poller<T>> cancelOperation;
 
     /*
      * Indicate to poll automatically or not when poller is created.
@@ -117,10 +119,10 @@ public class Poller<T> {
      */
     public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation) {
         if (pollInterval == null || pollInterval.toNanos() <= 0) {
-            throw new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Null, negative or zero value for poll interval is not allowed."));
         }
         if (pollOperation == null) {
-            throw new IllegalArgumentException("Null value for poll operation is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Null value for poll operation is not allowed."));
         }
 
         this.pollInterval = pollInterval;
@@ -153,7 +155,7 @@ public class Poller<T> {
      * that cancel operation is not supported by Azure service.
      * @throws IllegalArgumentException if {@code pollInterval} is less than or equal to zero and if {@code pollInterval} or {@code pollOperation} are {@code null}
      */
-    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller> cancelOperation) {
+    public Poller(Duration pollInterval, Function<PollResponse<T>, Mono<PollResponse<T>>> pollOperation, Consumer<Poller<T>> cancelOperation) {
         this(pollInterval, pollOperation);
         this.cancelOperation = cancelOperation;
     }
@@ -245,10 +247,10 @@ public class Poller<T> {
      */
     public PollResponse<T> blockUntil(OperationStatus statusToBlockFor, Duration timeout) {
         if (statusToBlockFor == null) {
-            throw new IllegalArgumentException("Null value for status is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Null value for status is not allowed."));
         }
         if (timeout != null && timeout.toNanos() <= 0) {
-            throw new IllegalArgumentException("Negative or zero value for timeout is not allowed.");
+            logger.logAndThrow(new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
         }
         if (!isAutoPollingEnabled()) {
             setAutoPollingEnabled(true);

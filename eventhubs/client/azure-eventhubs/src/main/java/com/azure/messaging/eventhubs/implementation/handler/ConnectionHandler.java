@@ -84,7 +84,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.asInfo().log("onConnectionInit hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
+        logger.info("onConnectionInit hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
 
         final Connection connection = event.getConnection();
         final String hostName = getHostname() + ":" + getProtocolPort();
@@ -119,7 +119,7 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionBound(Event event) {
-        logger.asInfo().log("onConnectionBound hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
+        logger.info("onConnectionBound hostname[{}], connectionId[{}]", getHostname(), getConnectionId());
 
         final Transport transport = event.getTransport();
 
@@ -134,7 +134,7 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
-        logger.asInfo().log("onConnectionUnbound hostname[{}], connectionId[{}], state[{}], remoteState[{}]",
+        logger.info("onConnectionUnbound hostname[{}], connectionId[{}], state[{}], remoteState[{}]",
             connection.getHostname(), getConnectionId(), connection.getLocalState(), connection.getRemoteState());
 
         // if failure happened while establishing transport - nothing to free up.
@@ -151,7 +151,7 @@ public class ConnectionHandler extends Handler {
         final Transport transport = event.getTransport();
         final ErrorCondition condition = transport.getCondition();
 
-        logger.asWarning().log("onTransportError hostname[{}], connectionId[{}], error[{}]",
+        logger.warning("onTransportError hostname[{}], connectionId[{}], error[{}]",
             connection != null ? connection.getHostname() : ClientConstants.NOT_APPLICABLE,
             getConnectionId(),
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
@@ -171,7 +171,7 @@ public class ConnectionHandler extends Handler {
         final Transport transport = event.getTransport();
         final ErrorCondition condition = transport.getCondition();
 
-        logger.asInfo().log("onTransportClosed hostname[{}], connectionId[{}], error[{}]",
+        logger.info("onTransportClosed hostname[{}], connectionId[{}], error[{}]",
             connection != null ? connection.getHostname() : ClientConstants.NOT_APPLICABLE,
             getConnectionId(),
             condition != null ? condition.getDescription() : ClientConstants.NOT_APPLICABLE);
@@ -194,7 +194,7 @@ public class ConnectionHandler extends Handler {
     public void onConnectionRemoteOpen(Event event) {
         final Connection connection = event.getConnection();
 
-        logger.asInfo().log("onConnectionRemoteOpen hostname[{}], connectionId[{}], remoteContainer[{}]",
+        logger.info("onConnectionRemoteOpen hostname[{}], connectionId[{}], remoteContainer[{}]",
             connection.getHostname(), getConnectionId(), connection.getRemoteContainer());
 
         onNext(connection.getRemoteState());
@@ -271,7 +271,7 @@ public class ConnectionHandler extends Handler {
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        logger.asInfo().log("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
+        logger.info("{} hostname[{}], connectionId[{}], errorCondition[{}], errorDescription[{}]",
             eventName,
             connection.getHostname(),
             getConnectionId(),

@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
@@ -19,6 +20,8 @@ import java.util.Optional;
  * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
 public class EventHubConsumerOptions implements Cloneable {
+    private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
+
     /**
      * The maximum length, in characters, for the identifier assigned to an {@link EventHubConsumer}.
      */
@@ -37,7 +40,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     private String identifier;
     private Long ownerLevel;
-    private Retry retryPolicy;
+    private Retry retry;
     private Scheduler scheduler;
     private int prefetchCount;
 
@@ -102,7 +105,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return The updated {@link EventHubConsumerOptions} object.
      */
     public EventHubConsumerOptions retry(Retry retry) {
-        this.retryPolicy = retry;
+        this.retry = retry;
         return this;
     }
 
@@ -159,7 +162,7 @@ public class EventHubConsumerOptions implements Cloneable {
      * @return The retry policy when receiving events.
      */
     public Retry retry() {
-        return retryPolicy;
+        return retry;
     }
 
     /**
@@ -211,10 +214,18 @@ public class EventHubConsumerOptions implements Cloneable {
             clone = new EventHubConsumerOptions();
         }
 
+        if (retry != null) {
+            try {
+                clone.retry((Retry) retry.clone());
+            } catch (CloneNotSupportedException e) {
+                logger.error("Unable to create clone of retry.", e);
+                clone.retry(retry);
+            }
+        }
+
         clone.scheduler(this.scheduler());
         clone.identifier(this.identifier());
         clone.prefetchCount(this.prefetchCount());
-        clone.retry(this.retry());
         clone.ownerLevel(this.ownerLevel());
 
         return clone;

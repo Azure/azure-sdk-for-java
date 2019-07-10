@@ -55,6 +55,7 @@ public final class IdentityClient {
 
     /**
      * Creates an IdentityClient with the given options.
+     *
      * @param options the options configuring the client.
      */
     public IdentityClient(IdentityClientOptions options) {
@@ -63,10 +64,11 @@ public final class IdentityClient {
 
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
-     * @param tenantId the tenant ID of the application
-     * @param clientId the client ID of the application
+     *
+     * @param tenantId     the tenant ID of the application
+     * @param clientId     the client ID of the application
      * @param clientSecret the client secret of the application
-     * @param scopes the scopes to authenticate to
+     * @param scopes       the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
@@ -85,11 +87,12 @@ public final class IdentityClient {
 
     /**
      * Asynchronously acquire a token from Active Directory with a PKCS12 certificate.
-     * @param tenantId the tenant ID of the application
-     * @param clientId the client ID of the application
-     * @param pfxCertificatePath the path to the PKCS12 certificate of the application
+     *
+     * @param tenantId               the tenant ID of the application
+     * @param clientId               the client ID of the application
+     * @param pfxCertificatePath     the path to the PKCS12 certificate of the application
      * @param pfxCertificatePassword the password protecting the PFX certificate
-     * @param scopes the scopes to authenticate to
+     * @param scopes                 the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
@@ -112,10 +115,11 @@ public final class IdentityClient {
 
     /**
      * Asynchronously acquire a token from Active Directory with a PEM certificate.
-     * @param tenantId the tenant ID of the application
-     * @param clientId the client ID of the application
+     *
+     * @param tenantId           the tenant ID of the application
+     * @param clientId           the client ID of the application
      * @param pemCertificatePath the path to the PEM certificate of the application
-     * @param scopes the scopes to authenticate to
+     * @param scopes             the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
@@ -149,12 +153,13 @@ public final class IdentityClient {
         return context;
     }
 
-   /**
+    /**
      * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+     *
      * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret the secret to acquire token with
-     * @param clientId the client ID of the application service
-     * @param scopes the scopes to authenticate to
+     * @param msiSecret   the secret to acquire token with
+     * @param clientId    the client ID of the application service
+     * @param scopes      the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
@@ -201,8 +206,9 @@ public final class IdentityClient {
 
     /**
      * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
+     *
      * @param clientId the client ID of the virtual machine
-     * @param scopes the scopes to authenticate to
+     * @param scopes   the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToIMDSEndpoint(String clientId, String[] scopes) {

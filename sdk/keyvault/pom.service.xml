@@ -9,11 +9,21 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+
+    <!-- Track 1 -->
     <module>microsoft-azure-keyvault</module>
     <module>microsoft-azure-keyvault-core</module>
     <module>microsoft-azure-keyvault-webkey</module>
     <module>microsoft-azure-keyvault-cryptography</module>
     <module>microsoft-azure-keyvault-extensions</module>
     <module>microsoft-azure-keyvault-complete</module>
+    
+    <!-- Track 2 -->
+    <module>../../core</module> <!-- NOTE: We need to build core so we can build against the version in the repo. -->
+    <module>../identity/azure-identity</module> <!-- NOTE: We need to build identity so we can build against the version in the repo. -->
+    <module>azure-keyvault-keys</module>
+    <module>azure-keyvault-secrets</module>
+    
   </modules>
+
 </project>
