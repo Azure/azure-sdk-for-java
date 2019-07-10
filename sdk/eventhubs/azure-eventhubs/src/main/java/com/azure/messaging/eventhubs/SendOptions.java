@@ -14,7 +14,6 @@ import org.reactivestreams.Publisher;
  * @see EventHubProducer#send(Publisher, SendOptions)
  */
 public class SendOptions implements Cloneable {
-    private int maximumSizeInBytes;
     private String partitionKey;
 
     /**
@@ -53,7 +52,8 @@ public class SendOptions implements Cloneable {
      *
      * @return A shallow clone of this object.
      */
-    public SendOptions clone() {
+    @Override
+    public Object clone() {
         SendOptions clone;
         try {
             clone = (SendOptions) super.clone();
@@ -61,7 +61,6 @@ public class SendOptions implements Cloneable {
             clone = new SendOptions();
         }
 
-        clone.maximumSizeInBytes(maximumSizeInBytes);
         clone.partitionKey(partitionKey);
 
         return clone;
