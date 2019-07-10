@@ -3,10 +3,10 @@
 #args expected
 # $1. Java version : 1.7 or 1,8
 
-echo "CWD : "
+echo "#### CWD : "
 pwd
 
-echo "versions of java available:" 
+echo "#### versions of java available:" 
 ls /usr/lib/jvm
 
 JAVA7HOME="/usr/lib/jvm/zulu-7-azure-amd64"
@@ -20,9 +20,9 @@ fi
 
 export JAVA_HOME="$JAVAHOME"
 
-echo "Using java at : $JAVA_HOME"
+echo "#### Using java at : $JAVA_HOME"
 
-echo "Maven properties:"
+echo "#### Maven properties:"
 mvn --version
 
 #TODO:
@@ -35,7 +35,7 @@ for i in `ls -d */*/v20* | grep -v "node_modules/*/*"`;
 do 
   echo "######## building folder $i"
   cd $i; 
-  mvn clean compile --batch-mode -Dgpg.skip; 
+  mvn clean compile --batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false; 
   if [ $? != 0 ]; 
     then cd -; exit -1; 
     else cd -; 

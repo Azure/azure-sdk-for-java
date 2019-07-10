@@ -4,10 +4,6 @@
 trigger:
   - master
 
-variables:
-  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-
 jobs:
   - job: 'Build'
 
@@ -15,11 +11,9 @@ jobs:
       matrix:
         Java 8:
           ArtifactName: 'packages'
-          ProfileFlag: ''
           JavaVersion: '1.8'
         Java 7:
           ArtifactName: 'packages'
-          ProfileFlag: ''
           JavaVersion: '1.7'
     
     pool:
