@@ -50,7 +50,7 @@ public class ServiceUtilJavaDocCodeSnippets {
         // BEGIN: com.azure.core.implementation.service.serviceutil.callwithcontextgetsingle
         String prefix = "Hello, ";
         Mono<String> response = ServiceUtil
-            .callWithContextGetSingle(context -> serviceCall(prefix, context));
+            .callWithContextGetSingle(context -> serviceCallReturnsSingle(prefix, context));
         // END: com.azure.core.implementation.service.serviceutil.callwithcontextgetsingle
     }
 
@@ -61,7 +61,7 @@ public class ServiceUtilJavaDocCodeSnippets {
         // BEGIN: com.azure.core.implementation.service.serviceutil.callwithcontextgetcollection
         String prefix = "Hello, ";
         Flux<String> response = ServiceUtil
-            .callWithContextGetCollection(context -> serviceCall2(prefix, context));
+            .callWithContextGetCollection(context -> serviceCallReturnsCollection(prefix, context));
         // END: com.azure.core.implementation.service.serviceutil.callwithcontextgetcollection
     }
 
@@ -71,7 +71,7 @@ public class ServiceUtilJavaDocCodeSnippets {
      * @param context Azure context
      * @return {@link Flux#empty() empty} response
      */
-    private Flux<String> serviceCall2(String prefix, Context context) {
+    private Flux<String> serviceCallReturnsCollection(String prefix, Context context) {
         return Flux.empty();
     }
 
@@ -81,7 +81,7 @@ public class ServiceUtilJavaDocCodeSnippets {
      * @param context Azure context
      * @return {@link Mono#empty() empty} response
      */
-    private Mono<String> serviceCall(String prefix, Context context) {
+    private Mono<String> serviceCallReturnsSingle(String prefix, Context context) {
         return Mono.empty();
     }
 
