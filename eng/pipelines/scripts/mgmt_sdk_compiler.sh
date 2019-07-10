@@ -19,12 +19,12 @@ JAVAHOME="$JAVA8HOME"
 
 MAVENGOALS="clean compile"
 
-if [ -z "$1" ] && [ "$1" == "1.7" ];
+if [ -n "$1" ] && [ "$1" == "1.7" ];
   then JAVAHOME="$JAVA7HOME"; echo "runing java 7 build";
 fi
 
 
-if [ -z "$2" ];
+if [ -n "$2" ];
   then MAVENGOALS="$2"; echo "maven goals overriden to $2"
 fi
 
