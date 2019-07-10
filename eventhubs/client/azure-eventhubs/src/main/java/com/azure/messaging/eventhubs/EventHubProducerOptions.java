@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.Retry;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
@@ -14,6 +15,8 @@ import java.time.Duration;
  * @see EventHubClient#createProducer(EventHubProducerOptions)
  */
 public class EventHubProducerOptions implements Cloneable {
+    private final ClientLogger logger = new ClientLogger(EventHubProducerOptions.class);
+
     private String partitionId;
     private Retry retry;
     private Duration timeout;
@@ -25,9 +28,9 @@ public class EventHubProducerOptions implements Cloneable {
      * If the identifier is not specified, the Event Hubs service will be responsible for routing events that are sent
      * to an available partition.
      *
-     * @param partitionId The identifier of the Event Hub partition that the {@link EventHubProducer} will be bound to.
-     *         If the producer wishes the events to be automatically to partitions, {@code null}; otherwise, the
-     *         identifier of the desired partition.
+     * @param partitionId The identifier of the Event Hub partition that the {@link EventHubProducer} will be
+     *         bound to. If the producer wishes the events to be automatically to partitions, {@code null}; otherwise,
+     *         the identifier of the desired partition.
      * @return The updated {@link EventHubProducerOptions} object.
      */
     public EventHubProducerOptions partitionId(String partitionId) {
@@ -61,8 +64,8 @@ public class EventHubProducerOptions implements Cloneable {
     /**
      * Gets the retry policy used to govern retry attempts when an issue is encountered while sending.
      *
-     * @return the retry policy used to govern retry attempts when an issue is encountered while sending. If
-     *         {@code null}, then the retry policy configured on the associated {@link EventHubClient} is used.
+     * @return the retry policy used to govern retry attempts when an issue is encountered while sending. If {@code
+     *         null}, then the retry policy configured on the associated {@link EventHubClient} is used.
      */
     public Retry retry() {
         return retry;
@@ -91,15 +94,15 @@ public class EventHubProducerOptions implements Cloneable {
     }
 
     /**
-     * Creates a shallow clone of this instance.
+     * Creates a clone of this instance.
      *
-     * The object is cloned, but the objects {@link #retry()}, {@link #timeout()} and {@link #partitionId()} are not
-     * cloned. {@link Duration} and {@link String} are immutable objects and are not an issue. However, the
-     * implementation of {@link Retry} could be mutable.
+     * The object and {@link #retry()} is cloned, but the objects {@link #timeout()} and {@link #partitionId()} are not
+     * cloned. {@link Duration} and {@link String} are immutable objects and are not an issue.
      *
      * @return A shallow clone of this object.
      */
-    public EventHubProducerOptions clone() {
+    @Override
+    public Object clone() {
         EventHubProducerOptions clone;
         try {
             clone = (EventHubProducerOptions) super.clone();
@@ -107,9 +110,17 @@ public class EventHubProducerOptions implements Cloneable {
             clone = new EventHubProducerOptions();
         }
 
-        clone.partitionId(this.partitionId);
-        clone.retry(this.retry);
-        clone.timeout(this.timeout);
+        if (retry != null) {
+            try {
+                clone.retry((Retry) retry.clone());
+            } catch (CloneNotSupportedException e) {
+                logger.error("Unable to create clone of retry.", e);
+                clone.retry(retry);
+            }
+        }
+
+        clone.partitionId(partitionId);
+        clone.timeout(timeout);
 
         return clone;
     }

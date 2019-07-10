@@ -57,7 +57,7 @@ public enum MessageConstant {
     /**
      * An absolute time when this message is considered to be expired.
      */
-    ABSOLUTE_EXPRITY_TIME("absolute-expiry-time"),
+    ABSOLUTE_EXPIRY_TIME("absolute-expiry-time"),
     /**
      * An absolute time when this message was created.
      */

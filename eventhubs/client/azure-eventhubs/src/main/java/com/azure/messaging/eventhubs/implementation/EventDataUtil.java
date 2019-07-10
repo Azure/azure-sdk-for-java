@@ -141,7 +141,7 @@ public class EventDataUtil {
                     case CONTENT_ENCODING:
                         message.setContentEncoding((String) value);
                         break;
-                    case ABSOLUTE_EXPRITY_TIME:
+                    case ABSOLUTE_EXPIRY_TIME:
                         message.setExpiryTime((long) value);
                         break;
                     case CREATION_TIME:

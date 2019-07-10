@@ -4,10 +4,11 @@
 package com.azure.core.amqp;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
- * A policy to govern retrying of messaging operations in which the delay between retries
- * will grow in an exponential manner, allowing more time to recover as the number of retries increases.
+ * A policy to govern retrying of messaging operations in which the delay between retries will grow in an exponential
+ * manner, allowing more time to recover as the number of retries increases.
  */
 public final class ExponentialRetry extends Retry {
     private static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
@@ -22,9 +23,13 @@ public final class ExponentialRetry extends Retry {
      * @param minBackoff The minimum time period permissible for backing off between retries.
      * @param maxBackoff The maximum time period permissible for backing off between retries.
      * @param maxRetryCount The maximum number of retries allowed.
+     * @throws NullPointerException if {@code minBackoff} or {@code maxBackoff} is {@code null}.
      */
     public ExponentialRetry(Duration minBackoff, Duration maxBackoff, int maxRetryCount) {
         super(maxRetryCount);
+        Objects.requireNonNull(minBackoff);
+        Objects.requireNonNull(maxBackoff);
+
         this.minBackoff = minBackoff;
         this.maxBackoff = maxBackoff;
 
@@ -57,5 +62,42 @@ public final class ExponentialRetry extends Retry {
             return 0;
         }
         return Math.log(deltaBackoff) / Math.log(super.getMaxRetryCount());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxBackoff, minBackoff, getMaxRetryCount(), getRetryCount());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ExponentialRetry)) {
+            return false;
+        }
+
+        ExponentialRetry other = (ExponentialRetry) obj;
+
+        return this.maxBackoff.equals(other.maxBackoff)
+            && this.minBackoff.equals(other.minBackoff)
+            && this.getMaxRetryCount() == other.getMaxRetryCount()
+            && this.getRetryCount() == other.getRetryCount();
+    }
+
+    /**
+     * Creates a clone of this instance.
+     *
+     * The {@code minBackoff}, {@code maxBackoff}, and {@code maxRetryCount} are not cloned, but these objects are
+     * immutable and not subject to change.
+     *
+     * @return A clone of the {@link ExponentialRetry} instance.
+     */
+    @SuppressWarnings("CloneDoesntCallSuperClone")
+    @Override
+    public Object clone() {
+        return new ExponentialRetry(minBackoff, maxBackoff, getMaxRetryCount());
     }
 }

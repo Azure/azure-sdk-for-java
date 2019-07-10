@@ -160,8 +160,8 @@ public class InteropAmqpPropertiesTest extends ApiTestBase {
         Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.REPLY_TO.getValue()));
         Assert.assertEquals(message.getReplyTo(), actual.systemProperties().get(MessageConstant.REPLY_TO.getValue()));
 
-        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
-        Assert.assertEquals(message.getExpiryTime(), actual.systemProperties().get(MessageConstant.ABSOLUTE_EXPRITY_TIME.getValue()));
+        Assert.assertTrue(actual.systemProperties().containsKey(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
+        Assert.assertEquals(message.getExpiryTime(), actual.systemProperties().get(MessageConstant.ABSOLUTE_EXPIRY_TIME.getValue()));
 
         Assert.assertEquals(PAYLOAD, UTF_8.decode(actual.body()).toString());
 
