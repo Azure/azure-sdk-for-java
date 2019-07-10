@@ -9,8 +9,8 @@ https://aka.ms/azure-sdk-preview1-java.
 - Operations are now scoped to a particular client:
     - `StorageClient`: The StorageURL renamed to StorageClient. This client handles account-level operations. This includes managing service properties and listing the containers within an account.
     - `ContainerClient`: The ContainerURL renamed to ContainerClient. The client handles operations for a particular container. This includes creating or deleting that container, as well as listing the blobs within that container.
-    - `BlobClient`: The BlobURL renamed to BlobClient. The client handles operations for a particular blob. This includes upload and download data.
-    There are subclients (BlockBlobClient, PageBlobClient, AppendBlobClient) available through all blob types (block, page and append), where operations can behave differently according to type (i.e. `upload`).
+    - `BlobClient`: The BlobURL renamed to BlobClient. The client handles most operations, excluding upload, for an individual blob. This includes downloading data and working with blob properties.
+    There are subclients (BlockBlobClient, PageBlobClient, AppendBlobClient) available for their respective blob types on the service.
 
     These clients can be accessed by navigating down the client hierarchy, or instantiated directly using builder to the resource (account, container or blob).
 - New module level operations for simple upload and download using a block or page blob client.
