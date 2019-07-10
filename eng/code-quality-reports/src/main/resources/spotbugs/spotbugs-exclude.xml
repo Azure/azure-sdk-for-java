@@ -61,7 +61,10 @@
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
-    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+    <Or>
+      <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -434,14 +437,8 @@
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
     <Or>
-      <And>
-        <Class name="com.azure.storage.blob.BlobInputStream"/>
-        <Method name="BlobInputStream"/>
-      </And>
-      <And>
-        <Class name="com.azure.storage.blob.BlobOutputStream"/>
-        <Method name="BlobOutputStream"/>
-      </And>
+      <Class name="com.azure.storage.blob.BlobInputStream"/>
+      <Class name="com.azure.storage.blob.BlobOutputStream"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
