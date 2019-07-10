@@ -9,9 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-
-    <!-- Put modules here -->
-    
+    <module>../../core</module>
+    <module>azure-eventhubs</module>
   </modules>
-
 </project>
