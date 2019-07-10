@@ -14,22 +14,6 @@ public class SendOptionsTest {
     @Test
     public void createDefault() {
         SendOptions options = new SendOptions();
-
-        Assert.assertEquals(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, options.maximumSizeInBytes());
-        Assert.assertNull(options.partitionKey());
-    }
-
-    /**
-     * Verifies we can set maximumSizeInBytes on the send options.
-     */
-    @Test
-    public void setMaximumSize() {
-        int size = 1024;
-        SendOptions options = new SendOptions();
-
-        options.maximumSizeInBytes(size);
-
-        Assert.assertEquals(size, options.maximumSizeInBytes());
         Assert.assertNull(options.partitionKey());
     }
 
@@ -42,8 +26,6 @@ public class SendOptionsTest {
         SendOptions options = new SendOptions();
 
         options.partitionKey(partitionKey);
-
-        Assert.assertEquals(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES, options.maximumSizeInBytes());
         Assert.assertEquals(partitionKey, options.partitionKey());
     }
 
@@ -54,19 +36,16 @@ public class SendOptionsTest {
     public void cloneIdentical() {
         // Arrange
         String partitionKey = "My partition key";
-        int size = 800;
-        SendOptions options = new SendOptions().partitionKey(partitionKey).maximumSizeInBytes(size);
+        SendOptions options = new SendOptions().partitionKey(partitionKey);
 
         // Act
-        SendOptions clone = options.clone();
+        SendOptions clone = (SendOptions) options.clone();
 
         // Assert
         Assert.assertNotSame(clone, options);
-        Assert.assertEquals(size, options.maximumSizeInBytes());
-        Assert.assertEquals(partitionKey, options.partitionKey());
 
+        Assert.assertEquals(partitionKey, options.partitionKey());
         Assert.assertEquals(partitionKey, clone.partitionKey());
-        Assert.assertEquals(size, clone.maximumSizeInBytes());
     }
 
 
@@ -77,23 +56,16 @@ public class SendOptionsTest {
     public void cloneModifyContents() {
         // Arrange
         String originalPartitionKey = "Some partition key";
-        int originalSize = 100;
-
         String partitionKey = "A new partition key";
-        int size = 24;
 
-        SendOptions options = new SendOptions().partitionKey(originalPartitionKey).maximumSizeInBytes(originalSize);
-        SendOptions clone = options.clone();
+        SendOptions options = new SendOptions().partitionKey(originalPartitionKey);
+        SendOptions clone = (SendOptions) options.clone();
 
         // Act
-        clone.partitionKey(partitionKey)
-            .maximumSizeInBytes(size);
+        clone.partitionKey(partitionKey);
 
         // Assert
         Assert.assertEquals(partitionKey, clone.partitionKey());
-        Assert.assertEquals(size, clone.maximumSizeInBytes());
-
-        Assert.assertEquals(originalSize, options.maximumSizeInBytes());
         Assert.assertEquals(originalPartitionKey, options.partitionKey());
     }
 }
