@@ -5,6 +5,8 @@ package blob;
 
 import com.azure.identity.credential.DefaultAzureCredential;
 import com.azure.storage.blob.StorageClient;
+import com.azure.storage.blob.StorageClientBuilder;
+
 import java.util.Locale;
 
 import static blob.SampleHelper.getAccountName;
@@ -18,16 +20,16 @@ public class AzureIdentityExample {
     public static void main(String[] args) {
         String accountName = getAccountName();
 
-        /**
+        /*
          * From the Azure portal, get your Storage account blob service URL endpoint.
          * The URL typically looks like this:
          */
         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
-        /**
+        /*
          * Create a storage client using the Azure Identity credentials.
          */
-        StorageClient storageClient = StorageClient.storageClientBuilder()
+        StorageClient storageClient = new StorageClientBuilder()
                 .endpoint(endpoint)
                 .credential(new DefaultAzureCredential())
                 .buildClient();

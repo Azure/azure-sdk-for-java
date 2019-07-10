@@ -6,6 +6,7 @@ package blob;
 import com.azure.storage.blob.BlockBlobClient;
 import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.StorageClient;
+import com.azure.storage.blob.StorageClientBuilder;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,77 +28,77 @@ public class FileTransferExample {
     private static final String LARGE_TEST_FOLDER = "test-large-files/";
     public static void main(String[] args) throws Exception {
 
-        /**
+        /*
          * From the Azure portal, get your Storage account's name and account key.
          */
         String accountName = getAccountName();
         String accountKey = getAccountKey();
 
-        /**
+        /*
          * Use your Storage account's name and key to create a credential object; this is used to access your account.
          */
         SharedKeyCredential credential = new SharedKeyCredential(accountName, accountKey);
 
-        /**
+        /*
          * From the Azure portal, get your Storage account blob service URL endpoint.
          * The URL typically looks like this:
          */
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
-        /**
+        /*
          * Create a StorageClient object that wraps the service endpoint, credential and a request pipeline.
          * Now you can use the storageClient to perform various container and blob operations.
          */
-        StorageClient storageClient = StorageClient.storageClientBuilder().endpoint(endPoint).credential(credential).buildClient();
+        StorageClient storageClient = new StorageClientBuilder().endpoint(endPoint).credential(credential).buildClient();
 
 
-        /**
+        /*
          * This example shows several common operations just to get you started.
          */
 
 
-        /**
+        /*
          * Create a client that references a to-be-created container in your Azure Storage account. This returns a
          * ContainerClient uses the same endpoint, credential and pipeline from storageClient.
          * Note that container names require lowercase.
          */
         ContainerClient containerClient = storageClient.getContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
 
-        /**
+        /*
          * Create a container in Storage blob account.
          */
         containerClient.create();
 
-        /**
+        /*
          * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
          */
         String filename = "BigFile.bin";
         BlockBlobClient blobClient = containerClient.getBlockBlobClient(filename);
 
-        /**
+        /*
          * Create the empty uploadFile and downloadFile.
          */
         File largeFile = createTempEmptyFile(filename);
 
         File downloadFile = createTempEmptyFile("downloadFile.bin");
 
-        /**
+        /*
          * Generate random things to uploadFile, which makes the file with size of 100MB.
          */
         long fileSize = 100 * 1024 * 1024L;
         createTempFileWithFileSize(largeFile, fileSize);
 
-        /**
+        /*
          * Upload the large file to storage blob.
          */
         blobClient.uploadFromFile(largeFile.getPath());
 
-        /**
+        /*
          * Download the large file from storage blob to the local downloadFile path.
          */
         blobClient.downloadToFile(downloadFile.getPath());
 
-        /**
+        /*
          * Check the files are same after the round-trip.
          */
         if (Files.exists(downloadFile.toPath()) && Files.exists(largeFile.toPath())) {
@@ -107,7 +108,7 @@ public class FileTransferExample {
             throw new RuntimeException("Did not find the upload or download file.");
         }
 
-        /**
+        /*
          * Clean up the local files and storage container.
          */
         containerClient.delete();
