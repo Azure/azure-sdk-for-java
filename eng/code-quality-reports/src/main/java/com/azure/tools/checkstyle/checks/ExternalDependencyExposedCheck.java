@@ -24,7 +24,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     private static final String EXTERNAL_DEPENDENCY_ERROR =
         "Class ''%s'', is a class from external dependency. You should not use it as a return or method argument type.";
 
-    private static final Set<String> VALID_DEPENDENCY_PACKAGE_NAMES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "java", "com.azure", "reactor", "io.netty.buffer.ByteBuf"
     )));
 
@@ -214,7 +214,7 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         }
 
         final String qualifiedName = simpleClassNameToQualifiedNameMap.get(typeName);
-        return VALID_DEPENDENCY_PACKAGE_NAMES.stream()
+        return VALID_DEPENDENCY_SET.stream()
             .anyMatch(validPackageName -> qualifiedName.startsWith(validPackageName));
     }
 }
