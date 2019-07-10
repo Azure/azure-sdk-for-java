@@ -7,13 +7,6 @@
   <artifactId>azure-sdk-all</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>
-  <dependencies>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.2</version>
-    </dependency>
-  </dependencies>
 
   <name>Microsoft Azure SDK for Java - All Modules</name>
   <description>Aggregated POM for Microsoft Azure SDK for Java</description>

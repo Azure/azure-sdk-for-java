@@ -406,12 +406,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION"/>
   </Match>
 
-<!--  &lt;!&ndash; Sample codes  &ndash;&gt;-->
-<!--  <Match>-->
-<!--    <Class name="~com\.azure\.storage\.queue\.(.)+Samples"/>-->
-<!--    <Bug pattern="NP_NULL_ON_SOME_PATH_EXCEPTION"/>-->
-<!--  </Match>-->
-
   <!-- The casting is correct, it is beyond the SpotBugs's ability to determine the correctness -->
   <Match>
     <Class name="com.microsoft.azure.servicebus.primitives.RequestResponseUtils"/>

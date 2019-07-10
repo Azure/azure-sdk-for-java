@@ -245,7 +245,7 @@ public class QueueClientTests extends QueueClientTestsBase {
             client.getAccessPolicy().iterator().hasNext();
             fail("Attempting to get access policies on a queue that doesn't exist should throw an exception");
         } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 403);
+            helper.assertExceptionStatusCode(exception, 404);
         }
     }
 
