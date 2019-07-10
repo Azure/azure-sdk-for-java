@@ -9,6 +9,10 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <module>microsoft-azure-eventhubs</module>
+    <module>microsoft-azure-eventhubs-eph</module>
+    <module>microsoft-azure-eventhubs-extensions</module>
+
     <module>../../core</module>
     <module>azure-eventhubs</module>
   </modules>
