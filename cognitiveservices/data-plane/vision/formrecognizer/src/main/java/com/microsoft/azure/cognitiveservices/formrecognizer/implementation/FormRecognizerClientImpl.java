@@ -923,10 +923,6 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
     private ServiceResponseWithHeaders<Void, AnalyzeReceiptHeaders> analyzeReceiptDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .register(400, new TypeToken<Void>() { }.getType())
-                .register(415, new TypeToken<Void>() { }.getType())
-                .register(500, new TypeToken<Void>() { }.getType())
-                .register(503, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .buildWithHeaders(response, AnalyzeReceiptHeaders.class);
     }
@@ -1008,9 +1004,6 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
     private ServiceResponse<AnalyzeReceiptResult> getReceiptResultDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<AnalyzeReceiptResult, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<AnalyzeReceiptResult>() { }.getType())
-                .register(404, new TypeToken<Void>() { }.getType())
-                .register(500, new TypeToken<Void>() { }.getType())
-                .register(503, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1092,10 +1085,6 @@ public class FormRecognizerClientImpl extends AzureServiceClient implements Form
     private ServiceResponseWithHeaders<Void, AnalyzeReceiptInStreamHeaders> analyzeReceiptInStreamDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .register(400, new TypeToken<Void>() { }.getType())
-                .register(415, new TypeToken<Void>() { }.getType())
-                .register(500, new TypeToken<Void>() { }.getType())
-                .register(503, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .buildWithHeaders(response, AnalyzeReceiptInStreamHeaders.class);
     }
