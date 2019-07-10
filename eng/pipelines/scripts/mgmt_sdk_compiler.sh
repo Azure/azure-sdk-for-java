@@ -12,10 +12,10 @@ ls /usr/lib/jvm
 JAVA7HOME="/usr/lib/jvm/zulu-7-azure-amd64"
 JAVA8HOME="/usr/lib/jvm/zulu-8-azure-amd64"
 
-JAVAHOME = "$JAVA8HOME"
+JAVAHOME="$JAVA8HOME"
 
-if [$1 -eq "1.7" ];
-  then JAVAHOME = "$JAVA7HOME"; echo "runing java 7 build";
+if [ "$1" == "1.7" ];
+  then JAVAHOME="$JAVA7HOME"; echo "runing java 7 build";
 fi
 
 export JAVA_HOME="$JAVAHOME"
