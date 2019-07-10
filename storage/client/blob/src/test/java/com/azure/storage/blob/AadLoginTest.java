@@ -15,7 +15,7 @@ public class AadLoginTest {
 
     @BeforeClass
     public static void setup() {
-        storageClient = StorageClient.storageClientBuilder()
+        storageClient = new StorageClientBuilder()
             .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
             .credential(new EnvironmentCredential())
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))

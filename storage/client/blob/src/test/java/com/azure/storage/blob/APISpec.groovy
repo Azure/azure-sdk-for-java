@@ -200,7 +200,7 @@ class APISpec extends Specification {
     static StorageClient getGenericServiceURL(SharedKeyCredential creds) {
         // TODO: logging?
 
-        return StorageClient.storageClientBuilder()
+        return new StorageClientBuilder()
             .endpoint("https://" + creds.accountName() + ".blob.core.windows.net")
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -209,7 +209,7 @@ class APISpec extends Specification {
     }
 
     static void cleanupContainers() throws MalformedURLException {
-        StorageClient serviceURL = StorageClient.storageClientBuilder()
+        StorageClient serviceURL = new StorageClientBuilder()
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net")
             .credential(primaryCreds)
             .buildClient()
@@ -556,7 +556,7 @@ class APISpec extends Specification {
     }
 
     def getOAuthServiceURL() {
-        return StorageClient.storageClientBuilder()
+        return new StorageClientBuilder()
             .endpoint(String.format("https://%s.blob.core.windows.net/", primaryCreds.accountName()))
             .credential(new EnvironmentCredential()) // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             .buildClient()
