@@ -9,7 +9,7 @@ package com.azure.messaging.eventhubs;
  * @see EventHubProducer#createBatch()
  * @see EventHubProducer#createBatch(BatchOptions)
  */
-public class BatchOptions {
+public class BatchOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
 
@@ -62,5 +62,25 @@ public class BatchOptions {
      */
     public String partitionKey() {
         return partitionKey;
+    }
+
+    /**
+     * Creates a shallow clone of this instance. The parameters are not cloned, but they are immutable.
+     *
+     * @return A shallow clone of this object.
+     */
+    @Override
+    public Object clone() {
+        BatchOptions clone;
+        try {
+            clone = (BatchOptions) super.clone();
+        } catch (CloneNotSupportedException e) {
+            clone = new BatchOptions();
+        }
+
+        clone.partitionKey(partitionKey);
+        clone.maximumSizeInBytes(maximumSizeInBytes);
+
+        return clone;
     }
 }
