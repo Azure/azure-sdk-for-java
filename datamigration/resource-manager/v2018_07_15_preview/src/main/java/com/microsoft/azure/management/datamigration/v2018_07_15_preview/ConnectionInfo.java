@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "MySqlConnectionInfo", value = MySqlConnectionInfo.class),
     @JsonSubTypes.Type(name = "MongoDbConnectionInfo", value = MongoDbConnectionInfo.class),
     @JsonSubTypes.Type(name = "SqlConnectionInfo", value = SqlConnectionInfo.class),
+    @JsonSubTypes.Type(name = "Migrate.Ssis", value = MigrateSsisTaskProperties.class),
     @JsonSubTypes.Type(name = "GetTDECertificates.Sql", value = GetTdeCertificatesSqlTaskProperties.class),
     @JsonSubTypes.Type(name = "Validate.Oracle.AzureDbPostgreSql.Sync", value = ValidateOracleAzureDbForPostgreSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "Validate.MongoDb", value = ValidateMongoDbTaskProperties.class),
