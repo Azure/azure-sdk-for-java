@@ -24,10 +24,11 @@ public class DynamicsCrmLinkedService extends LinkedServiceInner {
     /**
      * The deployment type of the Dynamics CRM instance. 'Online' for Dynamics
      * CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with
-     * Ifd. Type: string (or Expression with resultType string).
+     * Ifd. Type: string (or Expression with resultType string). Possible
+     * values include: 'Online', 'OnPremisesWithIfd'.
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private Object deploymentType;
+    private DynamicsDeploymentType deploymentType;
 
     /**
      * The host name of the on-premises Dynamics CRM server. The property is
@@ -65,10 +66,11 @@ public class DynamicsCrmLinkedService extends LinkedServiceInner {
     /**
      * The authentication type to connect to Dynamics CRM server. 'Office365'
      * for online scenario, 'Ifd' for on-premises with Ifd scenario. Type:
-     * string (or Expression with resultType string).
+     * string (or Expression with resultType string). Possible values include:
+     * 'Office365', 'Ifd'.
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private Object authenticationType;
+    private DynamicsAuthenticationType authenticationType;
 
     /**
      * User name to access the Dynamics CRM instance. Type: string (or
@@ -92,21 +94,21 @@ public class DynamicsCrmLinkedService extends LinkedServiceInner {
     private Object encryptedCredential;
 
     /**
-     * Get the deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
+     * Get the deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string). Possible values include: 'Online', 'OnPremisesWithIfd'.
      *
      * @return the deploymentType value
      */
-    public Object deploymentType() {
+    public DynamicsDeploymentType deploymentType() {
         return this.deploymentType;
     }
 
     /**
-     * Set the deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
+     * Set the deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string). Possible values include: 'Online', 'OnPremisesWithIfd'.
      *
      * @param deploymentType the deploymentType value to set
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withDeploymentType(Object deploymentType) {
+    public DynamicsCrmLinkedService withDeploymentType(DynamicsDeploymentType deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -192,21 +194,21 @@ public class DynamicsCrmLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get the authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string).
+     * Get the authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string). Possible values include: 'Office365', 'Ifd'.
      *
      * @return the authenticationType value
      */
-    public Object authenticationType() {
+    public DynamicsAuthenticationType authenticationType() {
         return this.authenticationType;
     }
 
     /**
-     * Set the authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string).
+     * Set the authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string). Possible values include: 'Office365', 'Ifd'.
      *
      * @param authenticationType the authenticationType value to set
      * @return the DynamicsCrmLinkedService object itself.
      */
-    public DynamicsCrmLinkedService withAuthenticationType(Object authenticationType) {
+    public DynamicsCrmLinkedService withAuthenticationType(DynamicsAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }

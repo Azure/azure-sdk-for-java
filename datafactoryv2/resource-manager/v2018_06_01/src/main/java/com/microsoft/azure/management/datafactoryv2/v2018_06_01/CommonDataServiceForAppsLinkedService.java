@@ -25,10 +25,11 @@ public class CommonDataServiceForAppsLinkedService extends LinkedServiceInner {
      * The deployment type of the Common Data Service for Apps instance.
      * 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd'
      * for Common Data Service for Apps on-premises with Ifd. Type: string (or
-     * Expression with resultType string).
+     * Expression with resultType string). Possible values include: 'Online',
+     * 'OnPremisesWithIfd'.
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private Object deploymentType;
+    private DynamicsDeploymentType deploymentType;
 
     /**
      * The host name of the on-premises Common Data Service for Apps server.
@@ -66,10 +67,11 @@ public class CommonDataServiceForAppsLinkedService extends LinkedServiceInner {
     /**
      * The authentication type to connect to Common Data Service for Apps
      * server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd
-     * scenario. Type: string (or Expression with resultType string).
+     * scenario. Type: string (or Expression with resultType string). Possible
+     * values include: 'Office365', 'Ifd'.
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private Object authenticationType;
+    private DynamicsAuthenticationType authenticationType;
 
     /**
      * User name to access the Common Data Service for Apps instance. Type:
@@ -93,21 +95,21 @@ public class CommonDataServiceForAppsLinkedService extends LinkedServiceInner {
     private Object encryptedCredential;
 
     /**
-     * Get the deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type: string (or Expression with resultType string).
+     * Get the deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type: string (or Expression with resultType string). Possible values include: 'Online', 'OnPremisesWithIfd'.
      *
      * @return the deploymentType value
      */
-    public Object deploymentType() {
+    public DynamicsDeploymentType deploymentType() {
         return this.deploymentType;
     }
 
     /**
-     * Set the deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type: string (or Expression with resultType string).
+     * Set the deployment type of the Common Data Service for Apps instance. 'Online' for Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with Ifd. Type: string (or Expression with resultType string). Possible values include: 'Online', 'OnPremisesWithIfd'.
      *
      * @param deploymentType the deploymentType value to set
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService withDeploymentType(Object deploymentType) {
+    public CommonDataServiceForAppsLinkedService withDeploymentType(DynamicsDeploymentType deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -193,21 +195,21 @@ public class CommonDataServiceForAppsLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get the authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string).
+     * Get the authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string). Possible values include: 'Office365', 'Ifd'.
      *
      * @return the authenticationType value
      */
-    public Object authenticationType() {
+    public DynamicsAuthenticationType authenticationType() {
         return this.authenticationType;
     }
 
     /**
-     * Set the authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string).
+     * Set the authentication type to connect to Common Data Service for Apps server. 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. Type: string (or Expression with resultType string). Possible values include: 'Office365', 'Ifd'.
      *
      * @param authenticationType the authenticationType value to set
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService withAuthenticationType(Object authenticationType) {
+    public CommonDataServiceForAppsLinkedService withAuthenticationType(DynamicsAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
