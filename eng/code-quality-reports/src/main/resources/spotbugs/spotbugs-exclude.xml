@@ -437,12 +437,12 @@
   <Match>
     <Or>
       <And>
-        <Class>com.azure.storage.blob.BlobInputStream</Class>
-        <Method>BlobInputStream</Method>
+        <Class name="com.azure.storage.blob.BlobInputStream"/>
+        <Method name="BlobInputStream"/>
       </And>
       <And>
-        <Class>com.azure.storage.blob.BlobOutputStream</Class>
-        <Method>BlobOutputStream</Method>
+        <Class name="com.azure.storage.blob.BlobOutputStream"/>
+        <Method name="BlobOutputStream"/>
       </And>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>

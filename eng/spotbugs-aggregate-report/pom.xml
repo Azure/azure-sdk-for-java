@@ -21,6 +21,7 @@
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
     <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+    <azure-storage-blob.version>12.0.0-preview.1</azure-storage-blob.version>
   </properties>
   <distributionManagement>
     <site>
@@ -52,6 +53,7 @@
                 <source>..\..\core\azure-core-test\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\samples\java</source>
+                <source>..\..\storage\client\blob\src\main\java</source>
               </sources>
             </configuration>
           </execution>
@@ -114,27 +116,22 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>1.0.0-preview.3</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>1.0.0-preview.3</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>1.0.0-preview.3</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>1.0.0-preview.3</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -145,6 +142,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs</artifactId>
           <version>${azure-messaging-eventhubs.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-blob</artifactId>
+          <version>${azure-storage-blob.version}</version>
         </dependency>
         <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
