@@ -246,8 +246,6 @@ public class EventHubProducer implements Closeable {
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.partitionKey();
-        final BatchOptions batchOptions = new BatchOptions()
-            .partitionKey(options.partitionKey());
 
         if (!ImplUtils.isNullOrEmpty(partitionKey)) {
             if (isPartitionSender) {
@@ -261,9 +259,18 @@ public class EventHubProducer implements Closeable {
             }
         }
 
-        //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
         return sendLinkMono.flatMap(link -> {
-            return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext))
+
+            //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
+            return link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final BatchOptions batchOptions = new BatchOptions()
+                        .partitionKey(options.partitionKey())
+                        .maximumSizeInBytes(batchSize);
+
+                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
+                })
                 .flatMap(list -> send(Flux.fromIterable(list)));
         });
     }
