@@ -25,21 +25,22 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        hasServiceClientBuilderAnnotation = true;
+        hasServiceClientBuilderAnnotation = false;
         hasAsyncClientBuilder = false;
         hasClientBuilder = false;
     }
 
     @Override
     public void finishTree(DetailAST root) {
-        // Checks if the @ServiceClientBuilder class has an asynchronous and synchronous method.
-        if (hasServiceClientBuilderAnnotation) {
-            if (!hasAsyncClientBuilder) {
-                log(root, String.format("ServiceClientBuilder missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
-            }
-            if (!hasClientBuilder) {
-                log(root, String.format("ServiceClientBuilder missing a synchronous method, ''%s''", BUILD_CLIENT));
-            }
+        if (!hasServiceClientBuilderAnnotation) {
+            return;
+        }
+
+        if (!hasAsyncClientBuilder) {
+            log(root, String.format("Every Missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
+        }
+        if (!hasClientBuilder) {
+            log(root, String.format("Missing a synchronous method, ''%s''", BUILD_CLIENT));
         }
     }
 
@@ -63,27 +64,23 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        if (!hasServiceClientBuilderAnnotation) {
-            return;
-        }
-
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                final DetailAST annotationToken = getServiceClientAnnotation(token);
+                final DetailAST serviceClientAnnotationToken = getServiceClientAnnotation(token);
                 final String className = token.findFirstToken(TokenTypes.IDENT).getText();
 
-                hasServiceClientBuilderAnnotation = annotationToken != null;
+                hasServiceClientBuilderAnnotation = serviceClientAnnotationToken != null;
 
                 if (hasServiceClientBuilderAnnotation) {
                     // Checks if the ANNOTATION has property named 'serviceClients'
-                    if (!hasServiceClientsAnnotationProperty(annotationToken)) {
-                        log(annotationToken, String.format(
+                    if (!hasServiceClientsAnnotationProperty(serviceClientAnnotationToken)) {
+                        log(serviceClientAnnotationToken, String.format(
                             "Annotation @%s should have ''serviceClients'' as property of annotation and should list all of the service clients it can build.",
                             SERVICE_CLIENT_BUILDER));
                     }
                     // HAS @ServiceClientBuilder annotation but NOT named the class <ServiceName>ClientBuilder
                     if (!className.endsWith("ClientBuilder")) {
-                        log(token, "Service client builder class should be named <ServiceName>ClientBuilder.");
+                        log(token, String.format("@ServiceClientBuilder class ''%s''should be named <ServiceName>ClientBuilder.", className));
                     }
                 } else {
                     // No @ServiceClientBuilder annotation but HAS named the class <ServiceName>ClientBuilder
@@ -93,12 +90,19 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                 }
                 break;
             case TokenTypes.METHOD_DEF:
-                final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
+                if (!hasServiceClientBuilderAnnotation) {
+                    return;
+                }
 
+                // if buildAsyncClient() and buildClient() methods already exist, skip rest of METHOD_DEF checks
+                if (hasAsyncClientBuilder && hasClientBuilder) {
+                    return;
+                }
+
+                final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
                 if (BUILD_ASYNC_CLIENT.equals(methodName)) {
                     hasAsyncClientBuilder = true;
                 }
-
                 if (BUILD_CLIENT.equals(methodName)) {
                     hasClientBuilder = true;
                 }

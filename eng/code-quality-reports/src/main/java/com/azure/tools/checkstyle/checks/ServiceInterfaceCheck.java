@@ -41,7 +41,9 @@ public class ServiceInterfaceCheck extends AbstractCheck {
     }
 
     /**
-     * Checks for @ServiceInterface rules that defined at the beginning of class definition.
+     * The @ServiceInterface class should have following rules:
+     *   1) has annotation property 'name' and should be non-empty
+     *   2) length of value of property 'name' should be less than 10 characters and without space
      *
      * @param interfaceDefToken INTERFACE_DEF AST node
      */
@@ -56,12 +58,13 @@ public class ServiceInterfaceCheck extends AbstractCheck {
             if (ast.getType() != TokenTypes.ANNOTATION) {
                 continue;
             }
-
+            // ANNOTATION
             for (DetailAST annotationChild = ast.getFirstChild(); annotationChild != null;
                  annotationChild = annotationChild.getNextSibling()) {
 
                 // IDENT
                 if (annotationChild.getType() == TokenTypes.IDENT) {
+                    // Skip this annotation if it is not @ServiceInterface,
                     if (!"ServiceInterface".equals(annotationChild.getText())) {
                         break;
                     } else {
@@ -77,18 +80,18 @@ public class ServiceInterfaceCheck extends AbstractCheck {
                 }
             }
         }
-        
-        // No @ServiceInterface annotation found
+
+        // Checks the rules:
+        // Skip the check if no @ServiceInterface annotation found
         if (serviceInterfaceAnnotationNode == null) {
             return;
         }
 
-        // Checks the rules:
         // Missing 'name' property
         if(nameValue == null) {
             log(serviceInterfaceAnnotationNode, "@ServiceInterface annotation missing ''name'' property.");
         } else {
-            //  No Space allowed
+            // No Space allowed
             if (nameValue.contains(" ")) {
                 log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not contain white space.");
             }
@@ -101,6 +104,7 @@ public class ServiceInterfaceCheck extends AbstractCheck {
 
     /**
      * Get the name property value from the EXPR node
+     *
      * @param exprToken EXPR
      * @return null if EXPR node doesn't exist or no STRING_LITERAL. Otherwise, returns the value of the property.
      */
