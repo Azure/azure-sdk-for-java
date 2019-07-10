@@ -90,19 +90,22 @@ public class ServiceInterfaceCheck extends AbstractCheck {
             return;
         }
 
-        // Missing 'name' property
-        if(nameValue == null) {
-            log(serviceInterfaceAnnotationNode, "@ServiceInterface annotation missing ''name'' property.");
-        } else {
-            // No Space allowed
-            if (nameValue.contains(" ")) {
-                log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not contain white space.");
-            }
-            // Length should less than or equal to 10 characters
-            if (nameValue.length() > 10) {
-                log(serviceInterfaceAnnotationNode, "The ''name'' property of @ServiceInterface should not have a length > 10.");
-            }
+        // 'name' is required at @ServiceInterface
+        // 'name' should not be empty
+        if (nameValue.isEmpty()) {
+            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface, ''%s'' should not be empty.", nameValue));
         }
+
+        // No Space allowed
+        if (nameValue.contains(" ")) {
+            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface, ''%s'' should not contain white space.", nameValue));
+        }
+        // Length should less than or equal to 10 characters
+        if (nameValue.length() > 10) {
+            log(serviceInterfaceAnnotationNode, "[DEBUG] length = " + nameValue.length() + ",  name = " + nameValue);
+            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface ''%s'' should not have a length > 10.", nameValue));
+        }
+
     }
 
     /**
@@ -121,6 +124,9 @@ public class ServiceInterfaceCheck extends AbstractCheck {
             return null;
         }
 
-        return nameValueToken.getText();
+        String nameValue = nameValueToken.getText();
+
+        // remove the beginning and ending double quote
+        return nameValue.replaceAll("^\"|\"$", "");
     }
 }
