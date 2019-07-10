@@ -32,6 +32,7 @@ jobs:
           scriptPath: "$(System.DefaultWorkingDirectory)/eng/pipelines/scripts/mgmt_sdk_compiler.sh"
           workingDirectory: "$(System.DefaultWorkingDirectory)"
           failOnStandardError: true
+          args: "$(JavaVersion)"
 
       - task: PublishTestResults@2
         condition: succeededOrFailed()
