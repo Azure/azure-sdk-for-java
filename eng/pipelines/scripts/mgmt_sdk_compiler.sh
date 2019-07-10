@@ -28,7 +28,7 @@ fi
 
 if [ -n "$2" ];
 then
-  TEMP_VAL=TEMP_VAL=$(echo "$2" | sed -r 's/,/ /g') 
+  TEMP_VAL=$(echo "$2" | sed -r 's/,/ /g') 
   MAVENGOALS="$TEMP_VAL"; 
   echo "maven goals overriden to $MAVENGOALS"
 fi
