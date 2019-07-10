@@ -34,10 +34,10 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}.
+ * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}
+ * using {@link BlobClientBuilder#buildClient()} or {@link BlobClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link BlobClient#blobClientBuilder()}.
  * The following information must be provided on this builder:
  *
  * <p><ul>

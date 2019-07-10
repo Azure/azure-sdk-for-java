@@ -71,14 +71,6 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * @return a new client {@link PageBlobClientBuilder} instance.
-     */
-    public static PageBlobClientBuilder builder() {
-        return new PageBlobClientBuilder();
-    }
-
-
-    /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.

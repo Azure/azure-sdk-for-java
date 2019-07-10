@@ -59,16 +59,6 @@ public final class StorageAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link StorageClientBuilder} instance.
-     */
-    public static StorageClientBuilder storageClientBuilder() {
-        return new StorageClientBuilder();
-    }
-
-    /**
      * Initializes a {@link ContainerAsyncClient} object pointing to the specified container. This method does not create a
      * container. It simply constructs the URL to the container and offers access to methods relevant to containers.
      *
