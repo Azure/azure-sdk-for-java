@@ -77,7 +77,7 @@ import java.util.stream.Collector;
  * @see EventHubClient#createProducer()
  */
 public class EventHubProducer implements Closeable {
-    static final int MAX_PARTITION_KEY_LENGTH = 128;
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
 
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
@@ -112,20 +112,25 @@ public class EventHubProducer implements Closeable {
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
         Objects.requireNonNull(options);
 
-        int batchSize = options.maximumSizeInBytes();
+        final BatchOptions clone = (BatchOptions) options.clone();
+
         return sendLinkMono.flatMap(link -> link.getLinkSize()
             .flatMap(size -> {
-                final int linkMaxSize = size > 0
+                final int maximumLinkSize = size > 0
                     ? size
                     : MAX_MESSAGE_LENGTH_BYTES;
 
-                if (batchSize > linkMaxSize) {
+                if (clone.maximumSizeInBytes() > maximumLinkSize) {
                     return Mono.error(new IllegalArgumentException(String.format(Locale.US,
-                        "SendOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                        batchSize, linkMaxSize)));
+                        "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                        clone.maximumSizeInBytes(), maximumLinkSize)));
                 }
 
-                return Mono.just(new EventDataBatch(linkMaxSize, options.partitionKey(), link::getErrorContext));
+                final int batchSize = clone.maximumSizeInBytes() > 0
+                    ? clone.maximumSizeInBytes()
+                    : maximumLinkSize;
+
+                return Mono.just(new EventDataBatch(batchSize, clone.partitionKey(), link::getErrorContext));
             }));
     }
 
