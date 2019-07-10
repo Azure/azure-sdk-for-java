@@ -1,9 +1,8 @@
 trigger:
   - master
-  - ADO_MGMT_CI
   
 variables:
-  MavenGoals: 'clean compile'
+  MavenGoals: 'clean,compile'
 
 jobs:
   - job: 'Build'

@@ -2,7 +2,7 @@
 
 #args expected
 # $1. Java version : 1.7 or 1,8, defaults to "1.8"
-# $2. Goals, defaults to "clean compile"
+# $2. Goals, defaults to "clean compile", value expected is a comma delemited string eg : "clean,compile"
 
 echo "#### CWD : "
 pwd
@@ -20,12 +20,17 @@ JAVAHOME="$JAVA8HOME"
 MAVENGOALS="clean compile"
 
 if [ -n "$1" ] && [ "$1" == "1.7" ];
-  then JAVAHOME="$JAVA7HOME"; echo "runing java 7 build";
+then 
+  JAVAHOME="$JAVA7HOME";
+  echo "runing java 7 build";
 fi
 
 
 if [ -n "$2" ];
-  then MAVENGOALS="$2"; echo "maven goals overriden to $2"
+then
+  TEMP_VAL=TEMP_VAL=$(echo "$2" | sed -r 's/,/ /g') 
+  MAVENGOALS="$TEMP_VAL"; 
+  echo "maven goals overriden to $MAVENGOALS"
 fi
 
 export JAVA_HOME="$JAVAHOME"
