@@ -65,6 +65,14 @@ public class Context {
         return new Context(this, key, value);
     }
 
+    /**
+     * Creates a new immutable {@link Context} object with all the keys and values provided by
+     * the input {@link Map}
+     *
+     * @param keyValues The input key value pairs that will be added to this context
+     * @return {@link Context} object containing all the key-value pairs in the input map
+     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
+     */
     public static Context of(Map<Object, Object> keyValues) {
         if (ImplUtils.isNullOrEmpty(keyValues)) {
             throw new IllegalArgumentException("Key value map cannot be null or empty");
