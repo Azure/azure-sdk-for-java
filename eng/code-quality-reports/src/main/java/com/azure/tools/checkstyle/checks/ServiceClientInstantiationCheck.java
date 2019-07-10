@@ -5,6 +5,7 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
@@ -26,6 +27,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
     private static boolean hasServiceClientAnnotation;
     private static boolean isAsync;
+    private static boolean isImplPackage;
 
     @Override
     public int[] getDefaultTokens() {
@@ -40,6 +42,7 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
+            TokenTypes.PACKAGE_DEF,
             TokenTypes.CLASS_DEF,
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
@@ -49,17 +52,22 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        hasServiceClientAnnotation = true;
+        hasServiceClientAnnotation = false;
         isAsync = false;
+        isImplPackage = false;
     }
 
     @Override
     public void visitToken(DetailAST token) {
-        if (!hasServiceClientAnnotation) {
+        if (isImplPackage) {
             return;
         }
 
         switch (token.getType()) {
+            case TokenTypes.PACKAGE_DEF:
+                String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
+                isImplPackage = packageName.contains(".implementation");
+                break;
             case TokenTypes.CLASS_DEF:
                 hasServiceClientAnnotation = hasServiceClientAnnotation(token);
                 if (hasServiceClientAnnotation) {
@@ -67,13 +75,19 @@ public class ServiceClientInstantiationCheck extends AbstractCheck {
                 }
                 break;
             case TokenTypes.CTOR_DEF:
-                checkConstructor(token);
+                if (hasServiceClientAnnotation) {
+                    checkConstructor(token);
+                }
                 break;
             case TokenTypes.METHOD_DEF:
-                checkMethodName(token);
+                if (hasServiceClientAnnotation) {
+                    checkMethodName(token);
+                }
                 break;
             case TokenTypes.OBJBLOCK:
-                checkClassField(token);
+                if (hasServiceClientAnnotation) {
+                    checkClassField(token);
+                }
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
