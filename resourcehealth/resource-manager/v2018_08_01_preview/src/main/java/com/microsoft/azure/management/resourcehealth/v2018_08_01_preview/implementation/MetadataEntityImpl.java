@@ -11,6 +11,7 @@ package com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.implem
 import com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.MetadataEntity;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
+import com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.Scenario;
 import com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.MetadataSupportedValueDetail;
 
 class MetadataEntityImpl extends WrapperImpl<MetadataEntityInner> implements MetadataEntity {
@@ -23,6 +24,11 @@ class MetadataEntityImpl extends WrapperImpl<MetadataEntityInner> implements Met
     @Override
     public ResourceHealthManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public List<Scenario> applicableScenarios() {
+        return this.inner().applicableScenarios();
     }
 
     @Override

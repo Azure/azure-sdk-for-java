@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.Scenario;
 import com.microsoft.azure.management.resourcehealth.v2018_08_01_preview.MetadataSupportedValueDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -30,6 +31,12 @@ public class MetadataEntityInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.dependsOn")
     private List<String> dependsOn;
+
+    /**
+     * The list of scenarios applicable to this metadata entity.
+     */
+    @JsonProperty(value = "properties.applicableScenarios")
+    private List<Scenario> applicableScenarios;
 
     /**
      * The list of supported values.
@@ -74,6 +81,26 @@ public class MetadataEntityInner extends ProxyResource {
      */
     public MetadataEntityInner withDependsOn(List<String> dependsOn) {
         this.dependsOn = dependsOn;
+        return this;
+    }
+
+    /**
+     * Get the list of scenarios applicable to this metadata entity.
+     *
+     * @return the applicableScenarios value
+     */
+    public List<Scenario> applicableScenarios() {
+        return this.applicableScenarios;
+    }
+
+    /**
+     * Set the list of scenarios applicable to this metadata entity.
+     *
+     * @param applicableScenarios the applicableScenarios value to set
+     * @return the MetadataEntityInner object itself.
+     */
+    public MetadataEntityInner withApplicableScenarios(List<Scenario> applicableScenarios) {
+        this.applicableScenarios = applicableScenarios;
         return this;
     }
 

@@ -19,6 +19,11 @@ import java.util.List;
  */
 public interface MetadataEntity extends HasInner<MetadataEntityInner>, HasManager<ResourceHealthManager> {
     /**
+     * @return the applicableScenarios value.
+     */
+    List<Scenario> applicableScenarios();
+
+    /**
      * @return the dependsOn value.
      */
     List<String> dependsOn();
