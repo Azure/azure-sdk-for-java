@@ -23,8 +23,11 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
+    <azure-core.version>1.0.0-preview.3</azure-core.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
   </properties>
 
   <distributionManagement>
@@ -44,22 +47,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-core.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>${azure-data-appconfiguration.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>${azure-identity.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -76,18 +84,15 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
+
     <!-- Tracing will be built and released separately. Removing tracing dependency
      until we finalize dependency composition -->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>tracing-opentelemetry</artifactId>-->
-<!--      <version>${version}</version>-->
-<!--    </dependency>-->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.0.0-preview.1</version>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>com.azure</groupId>-->
+    <!--      <artifactId>tracing-opentelemetry</artifactId>-->
+    <!--      <version>${version}</version>-->
+    <!--    </dependency>-->
+
     <!-- Not required for jacoco test coverage report -->
     <!--    <dependency>-->
     <!--      <groupId>com.azure</groupId>-->

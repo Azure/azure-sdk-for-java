@@ -13,13 +13,19 @@
   <artifactId>spotbugs-reporting</artifactId>
   <version>1.0.0</version>
   <properties>
+    <!-- Track 1 client library versions -->
     <azure-batch.version>5.0.1</azure-batch.version>
     <azure-eventhubs.version>2.3.1</azure-eventhubs.version>
     <azure-eventhubs-eph.version>2.5.1</azure-eventhubs-eph.version>
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
+
+    <!-- Track 2 client library versions -->
+    <azure-core.version>1.0.0-preview.3</azure-core.version>
     <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.1</azure-identity.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>
@@ -114,27 +120,22 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
