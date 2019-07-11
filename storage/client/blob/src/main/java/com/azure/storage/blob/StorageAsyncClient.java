@@ -247,7 +247,8 @@ public final class StorageAsyncClient {
      * @param expiryTime
      *         The {@code OffsetDateTime} expiry time for the account SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
@@ -275,7 +276,8 @@ public final class StorageAsyncClient {
      * @param sasProtocol
      *         An optional {@code SASProtocol} protocol for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
         AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,

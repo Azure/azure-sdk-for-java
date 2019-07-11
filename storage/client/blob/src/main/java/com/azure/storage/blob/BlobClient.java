@@ -815,7 +815,8 @@ public class BlobClient {
      * @param expiryTime
      *         The {@code OffsetDateTime} expiry time for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime) {
@@ -842,7 +843,8 @@ public class BlobClient {
      * @param ipRange
      *         An optional {@code IPRange} ip address range for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
@@ -881,7 +883,8 @@ public class BlobClient {
      * @param contentType
      *         An optional {@code String} content-type header for the SAS.
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
@@ -900,7 +903,8 @@ public class BlobClient {
      * @param permissions
      *         The {@code ContainerSASPermissions} permission for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(OffsetDateTime expiryTime, BlobSASPermission permissions) {
         return this.blobAsyncClient.generateSAS(permissions, expiryTime);
@@ -912,7 +916,8 @@ public class BlobClient {
      * @param identifier
      *         The {@code String} name of the access policy on the container this SAS references if any
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier) {
         return this.blobAsyncClient.generateSAS(identifier);
@@ -936,7 +941,8 @@ public class BlobClient {
      * @param ipRange
      *         An optional {@code IPRange} ip address range for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange) {
@@ -972,7 +978,8 @@ public class BlobClient {
      * @param contentType
      *         An optional {@code String} content-type header for the SAS.
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier, BlobSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
@@ -984,7 +991,8 @@ public class BlobClient {
     /**
      * Gets the snapshotId for a blob resource
      *
-     * @return A string that represents the snapshotId of the snapshot blob
+     * @return
+     *      A string that represents the snapshotId of the snapshot blob
      */
     public String getSnapshotId() {
         return this.blobAsyncClient.getSnapshotId();
@@ -993,7 +1001,8 @@ public class BlobClient {
     /**
      * Determines if a blob is a snapshot
      *
-     * @return A boolean that indicates if a blob is a snapshot
+     * @return
+     *      A boolean that indicates if a blob is a snapshot
      */
     public boolean isSnapshot() {
         return this.blobAsyncClient.isSnapshot();

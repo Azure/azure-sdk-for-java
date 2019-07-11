@@ -893,6 +893,9 @@ public final class ContainerAsyncClient {
      *         The {@code ContainerSASPermissions} permission for the SAS
      * @param expiryTime
      *         The {@code OffsetDateTime} expiry time for the SAS
+     *
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime) {
@@ -921,7 +924,8 @@ public final class ContainerAsyncClient {
      * @param ipRange
      *         An optional {@code IPRange} ip address range for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
@@ -961,7 +965,8 @@ public final class ContainerAsyncClient {
      * @param contentType
      *         An optional {@code String} content-type header for the SAS.
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
@@ -986,7 +991,8 @@ public final class ContainerAsyncClient {
      * @param expiryTime
      *         The {@code OffsetDateTime} expiry time for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(ContainerSASPermission permissions, OffsetDateTime expiryTime) {
         return this.generateSAS(null, permissions,  /* identifier */  expiryTime, null /* startTime */, null /* version
@@ -1000,7 +1006,8 @@ public final class ContainerAsyncClient {
      * @param identifier
      *         The {@code String} name of the access policy on the container this SAS references if any
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier) {
         return this.generateSAS(identifier, null /* permissions*/, null /* expiryTime */, null /* startTime */, null
@@ -1026,7 +1033,8 @@ public final class ContainerAsyncClient {
      * @param ipRange
      *         An optional {@code IPRange} ip address range for the SAS
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime,
@@ -1064,7 +1072,8 @@ public final class ContainerAsyncClient {
      * @param contentType
      *         An optional {@code String} content-type header for the SAS.
      *
-     * @return A string that represents the SAS token
+     * @return
+     *      A string that represents the SAS token
      */
     public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
         OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
