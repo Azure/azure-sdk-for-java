@@ -211,9 +211,9 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         }
 
         return handler.getEndpointStates()
-            .filter(state -> state == EndpointState.ACTIVE)
-            .single()
-            .map(state -> {
+            .takeUntil(state -> state == EndpointState.ACTIVE)
+            .timeout(timeout)
+            .then(Mono.fromCallable(() -> {
                 final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
                 if (remoteMaxMessageSize != null) {
@@ -221,7 +221,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
                 }
 
                 return this.maxMessageSize;
-            });
+            }));
     }
 
     @Override
