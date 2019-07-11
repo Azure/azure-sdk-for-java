@@ -13,12 +13,6 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  *   2) The length of value of property 'name' should be less than 10 characters and without space
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
-
-    @Override
-    public void init() {
-        log(0, "99999999999999999999999999999999999999");
-    }
-
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
