@@ -29,12 +29,12 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     )));
 
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
-    private static boolean isImplPackage;
+
+    private boolean isPublicClass;
 
     @Override
     public void beginTree(DetailAST rootAST) {
         simpleClassNameToQualifiedNameMap.clear();
-        isImplPackage = false;
     }
 
     @Override
@@ -50,7 +50,6 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
-            TokenTypes.PACKAGE_DEF,
             TokenTypes.IMPORT,
             TokenTypes.METHOD_DEF
         };
@@ -58,22 +57,21 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        if (isImplPackage) {
-            return;
-        }
-
         switch (token.getType()) {
-            case TokenTypes.PACKAGE_DEF:
-                String packageName = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
-                isImplPackage = packageName.contains(".implementation");
-                break;
             case TokenTypes.IMPORT:
                 // Add all imported classes into a map, key is the name of class and value is the full package path of class.
                 final String importClassPath = FullIdent.createFullIdentBelow(token).getText();
                 final String className = importClassPath.substring(importClassPath.lastIndexOf(".") + 1);
                 simpleClassNameToQualifiedNameMap.put(className, importClassPath);
                 break;
+            case TokenTypes.CLASS_DEF:
+                final DetailAST modifiersToken = token.findFirstToken(TokenTypes.MODIFIERS);
+                isPublicClass = modifiersToken.branchContains(TokenTypes.LITERAL_PUBLIC);
+                break;
             case TokenTypes.METHOD_DEF:
+                if (!isPublicClass) {
+                    return;
+                }
                 checkNoExternalDependencyExposed(token);
                 break;
             default:
