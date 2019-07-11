@@ -22,6 +22,7 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <checkstyle.version>8.22</checkstyle.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
   <distributionManagement>
@@ -47,6 +48,12 @@
       <artifactId>checkstyle</artifactId>
       <version>${checkstyle.version}</version>
       <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
