@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DateAfterModification {
     /**
-     * Integer value indicating the age in days after last modification.
+     * Value indicating the age in days after last modification.
      */
     @JsonProperty(value = "daysAfterModificationGreaterThan", required = true)
     private double daysAfterModificationGreaterThan;
 
     /**
-     * Get integer value indicating the age in days after last modification.
+     * Get value indicating the age in days after last modification.
      *
      * @return the daysAfterModificationGreaterThan value
      */
@@ -30,7 +30,7 @@ public class DateAfterModification {
     }
 
     /**
-     * Set integer value indicating the age in days after last modification.
+     * Set value indicating the age in days after last modification.
      *
      * @param daysAfterModificationGreaterThan the daysAfterModificationGreaterThan value to set
      * @return the DateAfterModification object itself.
