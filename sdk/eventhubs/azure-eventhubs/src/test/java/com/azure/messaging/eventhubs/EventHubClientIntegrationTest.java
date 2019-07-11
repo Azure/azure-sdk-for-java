@@ -16,9 +16,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -61,48 +59,6 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
         new EventHubClient(null, null, null);
-    }
-
-    /**
-     * Verifies that we can create and send a message to an Event Hub partition.
-     */
-    @Test
-    public void sendMessageToPartition() throws IOException {
-        skipIfNotRecordMode();
-
-        // Arrange
-        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().partitionId(PARTITION_ID);
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
-
-        // Act & Assert
-        try (EventHubProducer producer = client.createProducer(producerOptions)) {
-            StepVerifier.create(producer.send(events))
-                .verifyComplete();
-        }
-    }
-
-    /**
-     * Verifies that we can create an {@link EventHubProducer} that does not care about partitions and lets the service
-     * distribute the events.
-     */
-    @Test
-    public void sendMessage() throws IOException {
-        skipIfNotRecordMode();
-
-        // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
-
-        // Act & Assert
-        try (EventHubProducer producer = client.createProducer()) {
-            StepVerifier.create(producer.send(events))
-                .verifyComplete();
-        }
     }
 
     /**
