@@ -157,7 +157,7 @@ public class EventHubProducer implements Closeable {
                     ? clone.maximumSizeInBytes()
                     : maximumLinkSize;
 
-                return Mono.just(new EventDataBatch(batchSize, clone.partitionKey(), link::getErrorContext));
+                return Mono.just(new EventDataBatch(batchSize, clone.partitionKey(), () -> link.getErrorContext()));
             }));
     }
 
@@ -296,7 +296,7 @@ public class EventHubProducer implements Closeable {
                         .partitionKey(partitionKey)
                         .maximumSizeInBytes(batchSize);
 
-                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
+                    return events.collect(new EventDataCollector(batchOptions, 1, () -> link.getErrorContext()));
                 })
                 .flatMap(list -> send(Flux.fromIterable(list)));
         });

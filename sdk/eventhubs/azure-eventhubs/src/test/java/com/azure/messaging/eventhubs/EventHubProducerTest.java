@@ -270,7 +270,6 @@ public class EventHubProducerTest {
             .verify();
     }
 
-
     /**
      * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
      * BatchOptions#maximumSizeInBytes()}.
