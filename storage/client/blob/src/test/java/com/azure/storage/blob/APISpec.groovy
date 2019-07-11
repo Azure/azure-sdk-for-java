@@ -7,7 +7,6 @@ import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.util.Context
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.blob.BlobProperties
@@ -41,8 +40,6 @@ class APISpec extends Specification {
     static final String defaultText = "default"
 
     static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
-
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData)
 
     static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
         @Override
@@ -111,10 +108,6 @@ class APISpec extends Specification {
     Constants for testing that the context parameter is properly passed to the pipeline.
      */
     static final String defaultContextKey = "Key"
-
-    static final String defaultContextValue = "Value"
-
-    static final Context defaultContext = new Context(defaultContextKey, defaultContextValue)
 
     static String getTestName(ISpecificationContext ctx) {
         return ctx.getCurrentFeature().name.replace(' ', '').toLowerCase()
@@ -409,7 +402,7 @@ class APISpec extends Specification {
             response.value().contentEncoding() == contentEncoding &&
             response.value().contentLanguage() == contentLanguage &&
             response.value().contentMD5() == contentMD5 &&
-            response.headers().value("Content-Type") == (contentType == null ? "application/octet-stream" : contentType)
+            response.headers().value("Content-Type") == contentType
     }
 
     static Metadata getMetadataFromHeaders(HttpHeaders headers) {

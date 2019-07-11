@@ -61,6 +61,9 @@ class PageBlobAPITest extends APISpec {
 
         Response<BlobProperties> response = bu.getProperties(null, null)
 
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
         then:
         validateBlobProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
 

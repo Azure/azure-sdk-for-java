@@ -359,8 +359,7 @@ class BlobAPITest extends APISpec {
         validateBasicHeaders(response.headers())
     }
 
-    // TODO (alzimmer): Figure out why getProperties returns null after setHTTPHeaders
-    /*def "Set HTTP headers min"() {
+    def "Set HTTP headers min"() {
         when:
         BlobProperties properties = bu.getProperties().value()
         BlobHTTPHeaders headers = new BlobHTTPHeaders()
@@ -369,15 +368,15 @@ class BlobAPITest extends APISpec {
             .blobContentType("type")
             .blobCacheControl(properties.cacheControl())
             .blobContentLanguage(properties.contentLanguage())
-            .blobContentMD5(Base64.getDecoder().decode(properties.contentMD5()))
+            .blobContentMD5(Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())))
 
         bu.setHTTPHeaders(headers)
 
         then:
-        bu.getProperties().headers().value("x-ms-blob-content-type") == "type"
-    }*/
+        bu.getProperties().headers().value("Content-Type") == "type"
+    }
 
-    /*@Unroll
+    @Unroll
     def "Set HTTP headers headers"() {
         setup:
         BlobHTTPHeaders putHeaders = new BlobHTTPHeaders().blobCacheControl(cacheControl)
@@ -398,7 +397,7 @@ class BlobAPITest extends APISpec {
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType
         null         | null               | null            | null            | null                                                                                     | null
         "control"    | "disposition"      | "encoding"      | "language"      | Base64.getEncoder().encode(MessageDigest.getInstance("MD5").digest(defaultData.array())) | "type"
-    }*/
+    }
 
 
     @Unroll
