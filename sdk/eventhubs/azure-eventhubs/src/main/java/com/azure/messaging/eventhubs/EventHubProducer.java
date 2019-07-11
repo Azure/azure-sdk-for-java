@@ -117,6 +117,7 @@ public class EventHubProducer implements Closeable {
     /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
+     * @param options A set of options used to configure the {@link EventDataBatch}.
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
