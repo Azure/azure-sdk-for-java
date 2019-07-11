@@ -12,18 +12,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
-
-    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <checkstyle.version>8.18</checkstyle.version>
-    <junit.version>4.12</junit.version>
+    <checkstyle.version>8.22</checkstyle.version>
   </properties>
 
   <distributionManagement>
@@ -51,40 +46,6 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <!-- Adding this plugin to ensure jetty plugin runs without errors on pom.client.xml. -->
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>${jetty-maven-plugin.version}</version>
-        <configuration>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
-          <waitForChild>false</waitForChild>
-          <jettyXml>./jetty.xml</jettyXml>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${maven-site-plugin.version}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${maven-project-info-reports-plugin.version}</version>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
