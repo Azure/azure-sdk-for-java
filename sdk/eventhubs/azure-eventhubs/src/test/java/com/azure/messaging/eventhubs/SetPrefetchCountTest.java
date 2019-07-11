@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -22,6 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumer}.
  */
+@Ignore("Set prefetch tests do not work because they try to send very large number of events at once.")
 public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
