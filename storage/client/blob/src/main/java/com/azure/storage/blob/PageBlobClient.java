@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageBlobItem;
+import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
@@ -325,7 +326,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      The information of the cleared pages.
      */
-    public Iterable<PageRange> getPageRanges(BlobRange blobRange) {
+    public Response<PageList> getPageRanges(BlobRange blobRange) {
         return this.getPageRanges(blobRange, null, null);
     }
 
@@ -343,10 +344,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the page ranges.
      */
-    public Iterable<PageRange> getPageRanges(BlobRange blobRange,
-            BlobAccessConditions accessConditions, Duration timeout) {
-        Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions);
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public Response<PageList> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions, Duration timeout) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRanges(blobRange, accessConditions), timeout);
     }
 
     /**
@@ -363,7 +362,7 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the different page ranges.
      */
-    public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
+    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot) {
         return this.getPageRangesDiff(blobRange, prevSnapshot, null, null);
     }
 
@@ -385,10 +384,8 @@ public final class PageBlobClient extends BlobClient {
      * @return
      *      All the different page ranges.
      */
-    public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions, Duration timeout) {
-        Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
-        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
+    public Response<PageList> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions, Duration timeout) {
+        return Utility.blockWithOptionalTimeout(pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions), timeout);
     }
 
     /**

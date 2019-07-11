@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.identity.credential.EnvironmentCredential;
 import com.azure.storage.blob.models.ContainerItem;
 import org.junit.BeforeClass;
@@ -15,8 +16,9 @@ public class AadLoginTest {
 
     @BeforeClass
     public static void setup() {
+        String endpoint = String.format("https://%s.blob.core.windows.net", ConfigurationManager.getConfiguration().get("PRIMARY_STORAGE_ACCOUNT_KEY"));
         storageClient = new StorageClientBuilder()
-            .endpoint("https://" + System.getenv("ACCOUNT_NAME") + ".blob.core.windows.net")
+            .endpoint(endpoint)
             .credential(new EnvironmentCredential())
 //            .httpClient(HttpClient.createDefault().proxy(() -> new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))))
             .buildClient();
