@@ -36,10 +36,10 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         }
 
         if (!hasAsyncClientBuilder) {
-            log(root, String.format("Missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
+            log(root, String.format("The class annotated with @ServiceClientBuilder requires an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
         }
         if (!hasClientBuilder) {
-            log(root, String.format("Missing a synchronous method, ''%s''", BUILD_CLIENT));
+            log(root, String.format("The class annotated with @ServiceClientBuilder requires a synchronous method, ''%s''", BUILD_CLIENT));
         }
     }
 
@@ -75,7 +75,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
                     // HAS @ServiceClientBuilder annotation but NOT named the class <ServiceName>ClientBuilder
                     if (!className.endsWith("ClientBuilder")) {
-                        log(token, String.format("@ServiceClientBuilder class ''%s'' should be named <ServiceName>ClientBuilder.", className));
+                        log(token, String.format("Class annotated with @ServiceClientBuilder ''%s'' should be named <ServiceName>ClientBuilder.", className));
                     }
                 } else {
                     // No @ServiceClientBuilder annotation but HAS named the class <ServiceName>ClientBuilder

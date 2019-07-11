@@ -15,6 +15,11 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 public class ServiceInterfaceCheck extends AbstractCheck {
 
     @Override
+    public void init() {
+        log(0, "99999999999999999999999999999999999999");
+    }
+
+    @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
     }
