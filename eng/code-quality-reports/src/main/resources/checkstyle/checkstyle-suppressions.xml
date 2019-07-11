@@ -96,4 +96,6 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
 
+  <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
 </suppressions>
