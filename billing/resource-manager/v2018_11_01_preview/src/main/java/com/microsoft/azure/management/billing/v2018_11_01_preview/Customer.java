@@ -41,9 +41,9 @@ public interface Customer extends HasInner<CustomerInner>, Indexable, Refreshabl
     String name();
 
     /**
-     * @return the serviceProviders value.
+     * @return the resellers value.
      */
-    List<ServiceProvider> serviceProviders();
+    List<Reseller> resellers();
 
     /**
      * @return the type value.

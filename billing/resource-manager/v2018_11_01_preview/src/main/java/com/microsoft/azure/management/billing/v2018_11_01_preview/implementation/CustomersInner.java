@@ -382,7 +382,7 @@ public class CustomersInner {
      *
      * @param billingAccountName Billing Account Id.
      * @param customerName Customer Id.
-     * @param expand May be used to expand enabledAzureSkus, serviceProviders.
+     * @param expand May be used to expand enabledAzureSkus, resellers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -397,7 +397,7 @@ public class CustomersInner {
      *
      * @param billingAccountName Billing Account Id.
      * @param customerName Customer Id.
-     * @param expand May be used to expand enabledAzureSkus, serviceProviders.
+     * @param expand May be used to expand enabledAzureSkus, resellers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -411,7 +411,7 @@ public class CustomersInner {
      *
      * @param billingAccountName Billing Account Id.
      * @param customerName Customer Id.
-     * @param expand May be used to expand enabledAzureSkus, serviceProviders.
+     * @param expand May be used to expand enabledAzureSkus, resellers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomerInner object
      */
@@ -429,7 +429,7 @@ public class CustomersInner {
      *
      * @param billingAccountName Billing Account Id.
      * @param customerName Customer Id.
-     * @param expand May be used to expand enabledAzureSkus, serviceProviders.
+     * @param expand May be used to expand enabledAzureSkus, resellers.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CustomerInner object
      */

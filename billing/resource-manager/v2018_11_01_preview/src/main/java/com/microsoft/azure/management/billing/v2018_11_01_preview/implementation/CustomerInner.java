@@ -10,7 +10,7 @@ package com.microsoft.azure.management.billing.v2018_11_01_preview.implementatio
 
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnabledAzureSKUs;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ServiceProvider;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Reseller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -33,11 +33,10 @@ public class CustomerInner extends ProxyResource {
     private List<EnabledAzureSKUs> enabledAzureSKUs;
 
     /**
-     * The service providers which are allowed to provide service to this
-     * customer.
+     * The resellers which are allowed to provide service to this customer.
      */
-    @JsonProperty(value = "properties.serviceProviders")
-    private List<ServiceProvider> serviceProviders;
+    @JsonProperty(value = "properties.resellers")
+    private List<Reseller> resellers;
 
     /**
      * Get the name of the customer.
@@ -80,22 +79,22 @@ public class CustomerInner extends ProxyResource {
     }
 
     /**
-     * Get the service providers which are allowed to provide service to this customer.
+     * Get the resellers which are allowed to provide service to this customer.
      *
-     * @return the serviceProviders value
+     * @return the resellers value
      */
-    public List<ServiceProvider> serviceProviders() {
-        return this.serviceProviders;
+    public List<Reseller> resellers() {
+        return this.resellers;
     }
 
     /**
-     * Set the service providers which are allowed to provide service to this customer.
+     * Set the resellers which are allowed to provide service to this customer.
      *
-     * @param serviceProviders the serviceProviders value to set
+     * @param resellers the resellers value to set
      * @return the CustomerInner object itself.
      */
-    public CustomerInner withServiceProviders(List<ServiceProvider> serviceProviders) {
-        this.serviceProviders = serviceProviders;
+    public CustomerInner withResellers(List<Reseller> resellers) {
+        this.resellers = resellers;
         return this;
     }
 

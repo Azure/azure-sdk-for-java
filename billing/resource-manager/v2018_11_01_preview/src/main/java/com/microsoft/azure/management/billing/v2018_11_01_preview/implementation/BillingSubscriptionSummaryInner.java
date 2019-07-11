@@ -100,16 +100,16 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     private String skuDescription;
 
     /**
-     * The service provider id.
+     * The reseller id.
      */
-    @JsonProperty(value = "properties.serviceProviderId")
-    private String serviceProviderId;
+    @JsonProperty(value = "properties.resellerId")
+    private String resellerId;
 
     /**
-     * The service provider description.
+     * The name of the reseller.
      */
-    @JsonProperty(value = "properties.serviceProviderDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceProviderDescription;
+    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
 
     /**
      * Get display name.
@@ -251,32 +251,32 @@ public class BillingSubscriptionSummaryInner extends ProxyResource {
     }
 
     /**
-     * Get the service provider id.
+     * Get the reseller id.
      *
-     * @return the serviceProviderId value
+     * @return the resellerId value
      */
-    public String serviceProviderId() {
-        return this.serviceProviderId;
+    public String resellerId() {
+        return this.resellerId;
     }
 
     /**
-     * Set the service provider id.
+     * Set the reseller id.
      *
-     * @param serviceProviderId the serviceProviderId value to set
+     * @param resellerId the resellerId value to set
      * @return the BillingSubscriptionSummaryInner object itself.
      */
-    public BillingSubscriptionSummaryInner withServiceProviderId(String serviceProviderId) {
-        this.serviceProviderId = serviceProviderId;
+    public BillingSubscriptionSummaryInner withResellerId(String resellerId) {
+        this.resellerId = resellerId;
         return this;
     }
 
     /**
-     * Get the service provider description.
+     * Get the name of the reseller.
      *
-     * @return the serviceProviderDescription value
+     * @return the description value
      */
-    public String serviceProviderDescription() {
-        return this.serviceProviderDescription;
+    public String description() {
+        return this.description;
     }
 
 }

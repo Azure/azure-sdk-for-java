@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnabledAzureSKUs;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.ServiceProvider;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.Reseller;
 
 class CustomerImpl extends IndexableRefreshableWrapperImpl<Customer, CustomerInner> implements Customer {
     private final BillingManager manager;
@@ -62,8 +62,8 @@ class CustomerImpl extends IndexableRefreshableWrapperImpl<Customer, CustomerInn
     }
 
     @Override
-    public List<ServiceProvider> serviceProviders() {
-        return this.inner().serviceProviders();
+    public List<Reseller> resellers() {
+        return this.inner().resellers();
     }
 
     @Override

@@ -51,6 +51,11 @@ class BillingSubscriptionSummaryImpl extends WrapperImpl<BillingSubscriptionSumm
     }
 
     @Override
+    public String description() {
+        return this.inner().description();
+    }
+
+    @Override
     public String displayName() {
         return this.inner().displayName();
     }
@@ -86,13 +91,8 @@ class BillingSubscriptionSummaryImpl extends WrapperImpl<BillingSubscriptionSumm
     }
 
     @Override
-    public String serviceProviderDescription() {
-        return this.inner().serviceProviderDescription();
-    }
-
-    @Override
-    public String serviceProviderId() {
-        return this.inner().serviceProviderId();
+    public String resellerId() {
+        return this.inner().resellerId();
     }
 
     @Override
