@@ -72,7 +72,7 @@ public final class BlobInputStream extends InputStream {
     /**
      * Holds the {@link BlobAccessConditions} object that represents the access conditions for the blob.
      */
-    private BlobAccessConditions accessCondition = null;
+    private BlobAccessConditions accessCondition;
 
     /**
      * Offset of the source blob this class is configured to stream from.
@@ -120,6 +120,7 @@ public final class BlobInputStream extends InputStream {
         this.streamFaulted = false;
         this.currentAbsoluteReadPosition = blobRangeOffset;
         this.readSize = 4 * Constants.MB;
+        this.accessCondition = accessCondition;
 
         if (blobRangeOffset < 0 || (blobRangeLength != null && blobRangeLength <= 0)) {
             throw new IndexOutOfBoundsException();
@@ -194,8 +195,7 @@ public final class BlobInputStream extends InputStream {
 
             this.bufferSize = readLength;
             this.bufferStartOffset = this.currentAbsoluteReadPosition;
-        }
-        catch (final StorageException e) {
+        } catch (final StorageException e) {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
             throw this.lastError;
@@ -247,11 +247,9 @@ public final class BlobInputStream extends InputStream {
 
         if (numberOfBytesRead > 0) {
             return tBuff[0] & 0xFF;
-        }
-        else if (numberOfBytesRead == 0) {
+        } else if (numberOfBytesRead == 0) {
             throw new IOException(SR.UNEXPECTED_STREAM_READ_ERROR);
-        }
-        else {
+        } else {
             return -1;
         }
     }

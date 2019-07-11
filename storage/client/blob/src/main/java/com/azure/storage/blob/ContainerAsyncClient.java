@@ -54,9 +54,7 @@ import java.util.List;
  * object through {@link Mono#toFuture()}.
  */
 public final class ContainerAsyncClient {
-
     ContainerAsyncRawClient containerAsyncRawClient;
-    private AzureBlobStorageBuilder azureBlobStorageBuilder;
 
     public static final String ROOT_CONTAINER_NAME = "$root";
 
@@ -69,15 +67,7 @@ public final class ContainerAsyncClient {
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorageBuilder = azureBlobStorageBuilder;
         this.containerAsyncRawClient = new ContainerAsyncRawClient(azureBlobStorageBuilder.build());
-    }
-
-    /**
-     * @return a new client {@link ContainerClientBuilder} instance.
-     */
-    public static ContainerClientBuilder containerClientBuilder() {
-        return new ContainerClientBuilder();
     }
 
     /**
@@ -239,6 +229,7 @@ public final class ContainerAsyncClient {
     /**
      * Gets the URL of the container represented by this client.
      * @return the URL.
+     * @throws RuntimeException If the container has a malformed URL.
      */
     public URL getContainerUrl() {
         try {
@@ -461,15 +452,6 @@ public final class ContainerAsyncClient {
             .map(VoidResponse::new);
     }
 
-    // TODO: figure out if this is meant to stay private or change to public
-    private boolean validateNoEtag(ModifiedAccessConditions modifiedAccessConditions) {
-        if (modifiedAccessConditions == null) {
-            return true;
-        }
-        return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
-    }
-
-
     /**
      * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
      * The directories are flattened and only actual blobs and no directories are returned.
@@ -481,7 +463,8 @@ public final class ContainerAsyncClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1
      *     <li>foo/foo2
      *     <li>bar
@@ -505,7 +488,8 @@ public final class ContainerAsyncClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1
      *     <li>foo/foo2
      *     <li>bar
@@ -523,7 +507,7 @@ public final class ContainerAsyncClient {
             .flatMapMany(response -> listBlobsFlatHelper(options, response));
     }
 
-    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response){
+    private Flux<BlobItem> listBlobsFlatHelper(ListBlobsOptions options, ContainersListBlobFlatSegmentResponse response) {
         Flux<BlobItem> result;
         BlobFlatListSegment segment = response.value().segment();
         if (segment != null && segment.blobItems() != null) {
@@ -553,13 +537,15 @@ public final class ContainerAsyncClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/ (isPrefix = true)
      *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1 (isPrefix = false)
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
@@ -586,13 +572,15 @@ public final class ContainerAsyncClient {
      * <p>
      * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
      * on the root level 'bar', will return the following results when prefix=null:
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/ (isPrefix = true)
      *     <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
-     * <p><ul>
+     *
+     * <ul>
      *     <li>foo/foo1 (isPrefix = false)
      *     <li>foo/foo2 (isPrefix = false)
      * </ul>
@@ -611,7 +599,7 @@ public final class ContainerAsyncClient {
     }
 
     private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
-                                               Context context, ContainersListBlobHierarchySegmentResponse response){
+                                               Context context, ContainersListBlobHierarchySegmentResponse response) {
         Flux<BlobItem> blobs;
         Flux<BlobPrefix> prefixes;
         BlobHierarchyListSegment segment = response.value().segment();

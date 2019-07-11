@@ -61,7 +61,10 @@
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
-    <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+    <Or>
+      <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
@@ -104,7 +107,10 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null.
   https://github.com/Azure/autorest.java/issues/324 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+      <Class name="~com\.azure\.(.+)Impl"/>
+    </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
 
@@ -238,7 +244,10 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
   https://github.com/Azure/autorest.java/issues/328 -->
   <Match>
-    <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+    <Or>
+      <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
+      <Class name="com.azure.storage.blob.implementation.AzureBlobStorageBuilder"/>
+    </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -357,7 +366,10 @@
 
   <!-- Exclude the confusing name bugs as it is designed to name the same as autorest. -->
   <Match>
-    <Package name="com.microsoft.azure.storage.blob"/>
+    <Or>
+      <Package name="com.microsoft.azure.storage.blob"/>
+      <Class name="com.azure.storage.blob.HTTPGetterInfo"/>
+    </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
 
@@ -419,6 +431,15 @@
   <Match>
     <Class name="com.azure.core.implementation.RestProxy"/>
     <Method name="endTracingSpan"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.blob.BlobInputStream"/>
+      <Class name="com.azure.storage.blob.BlobOutputStream"/>
+    </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 

@@ -26,21 +26,21 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlockBlobClientBuilder for instantiating a {@link BlockBlobClient} or {@link BlockBlobAsyncClient}.
+ * Fluent BlockBlobClientBuilder for instantiating a {@link BlockBlobClient} or {@link BlockBlobAsyncClient}
+ * using {@link BlockBlobClientBuilder#buildClient()} or {@link BlockBlobClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link BlockBlobClient#blockBlobClientBuilder()}.
  * The following information must be provided on this builder:
  *
- * <p><ul>
+ * <ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
  *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
@@ -69,6 +69,10 @@ public final class BlockBlobClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link BlockBlobClient BlockBlobClients}
+     * and {@link BlockBlobAsyncClient BlockBlobAsyncClients}.
+     */
     public BlockBlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -102,7 +106,7 @@ public final class BlockBlobClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -137,6 +141,7 @@ public final class BlockBlobClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated BlockBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public BlockBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -157,7 +162,7 @@ public final class BlockBlobClientBuilder {
             if (parts.snapshot() != null) {
                 this.snapshot = parts.snapshot();
             }
-        } catch (MalformedURLException | UnknownHostException ex) {
+        } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
@@ -250,6 +255,7 @@ public final class BlockBlobClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated BlockBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public BlockBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -257,7 +263,7 @@ public final class BlockBlobClientBuilder {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
             String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);

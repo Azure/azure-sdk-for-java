@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.ServiceClient
+
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.rest.Response
 import com.azure.storage.blob.models.*
@@ -306,7 +306,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        StorageClient serviceClient = StorageClient.storageClientBuilder().endpoint(secondaryEndpoint)
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(secondaryEndpoint)
                                         .credential(primaryCreds).buildClient()
         Response<StorageServiceStats> response = serviceClient.getStatistics()
 
@@ -321,7 +321,7 @@ class ServiceAPITest extends APISpec {
     def "Get stats min"() {
         setup:
         String secondaryEndpoint = String.format("https://%s-secondary.blob.core.windows.net", primaryCreds.accountName())
-        StorageClient serviceClient = StorageClient.storageClientBuilder().endpoint(secondaryEndpoint)
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(secondaryEndpoint)
             .credential(primaryCreds).buildClient()
         expect:
         serviceClient.getStatistics().statusCode() == 200

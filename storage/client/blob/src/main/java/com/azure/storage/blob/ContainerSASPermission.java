@@ -29,7 +29,7 @@ final class ContainerSASPermission {
     /**
      * Initializes an {@code ContainerSASPermssion} object with all fields set to false.
      */
-    public ContainerSASPermission() {
+    private ContainerSASPermission() {
     }
 
     /**
@@ -40,6 +40,7 @@ final class ContainerSASPermission {
      *         A {@code String} which represents the {@code ContainerSASPermission}.
      *
      * @return A {@code ContainerSASPermission} generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
      */
     public static ContainerSASPermission parse(String permString) {
         ContainerSASPermission permissions = new ContainerSASPermission();

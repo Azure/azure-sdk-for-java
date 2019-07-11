@@ -15,8 +15,6 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -64,13 +62,6 @@ public final class PageBlobClient extends BlobClient {
     }
 
     /**
-     * @return a new client {@link PageBlobClientBuilder} instance.
-     */
-    public static PageBlobClientBuilder pageBlobClientBuilder() {
-        return new PageBlobClientBuilder();
-    }
-
-    /**
      * Creates and opens an output stream to write data to the page blob. If the blob already exists on the service,
      * it will be overwritten.
      *
@@ -104,24 +95,6 @@ public final class PageBlobClient extends BlobClient {
      */
     public BlobOutputStream getBlobOutputStream(long length, BlobAccessConditions accessConditions) {
         return new BlobOutputStream(pageBlobAsyncClient, length, accessConditions);
-    }
-
-    // TODO: Figure out if this method needs to change to public to access method in wrappers
-    private static String pageRangeToString(PageRange pageRange) {
-        if (pageRange.start() < 0 || pageRange.end() <= 0) {
-            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
-                    + "0 if specified.");
-        }
-        if (pageRange.start() % PageBlobClient.PAGE_BYTES != 0) {
-            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
-        }
-        if (pageRange.end() % PageBlobClient.PAGE_BYTES != PageBlobClient.PAGE_BYTES - 1) {
-            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
-        }
-        if (pageRange.end() <= pageRange.start()) {
-            throw new IllegalArgumentException("PageRange's End value must be after the start.");
-        }
-        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
     }
 
     /**
@@ -215,7 +188,7 @@ public final class PageBlobClient extends BlobClient {
      */
     public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
-        long length = pageRange.end()- pageRange.start();
+        long length = pageRange.end() - pageRange.start();
         Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
             .map(i -> i * PAGE_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
@@ -371,9 +344,7 @@ public final class PageBlobClient extends BlobClient {
     public Iterable<PageRange> getPageRanges(BlobRange blobRange,
             BlobAccessConditions accessConditions, Duration timeout) {
         Flux<PageRange> response = pageBlobAsyncClient.getPageRanges(blobRange, accessConditions);
-        return timeout == null?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**
@@ -415,9 +386,7 @@ public final class PageBlobClient extends BlobClient {
     public Iterable<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
             BlobAccessConditions accessConditions, Duration timeout) {
         Flux<PageRange> response = pageBlobAsyncClient.getPageRangesDiff(blobRange, prevSnapshot, accessConditions);
-        return timeout == null?
-            response.toIterable():
-            response.timeout(timeout).toIterable();
+        return timeout == null ? response.toIterable() : response.timeout(timeout).toIterable();
     }
 
     /**

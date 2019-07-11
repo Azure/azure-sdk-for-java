@@ -31,6 +31,8 @@ public final class BlobListDetails {
     /**
      * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
      * response.
+     *
+     * @return a flag indicating if copy information will be returned in the listing
      */
     public boolean copy() {
         return copy;
@@ -39,6 +41,9 @@ public final class BlobListDetails {
     /**
      * Whether blob metadata related to any current or previous Copy Blob operation should be included in the
      * response.
+     *
+     * @param copy Flag indicating whether copy information should be returned
+     * @return the updated BlobListDetails object
      */
     public BlobListDetails copy(boolean copy) {
         this.copy = copy;
@@ -47,6 +52,8 @@ public final class BlobListDetails {
 
     /**
      * Whether blob metadata should be returned.
+     *
+     * @return a flag indicating if metadata will be returned in the listing
      */
     public boolean metadata() {
         return metadata;
@@ -54,6 +61,9 @@ public final class BlobListDetails {
 
     /**
      * Whether blob metadata should be returned.
+     *
+     * @param metadata Flag indicating whether metadata should be returned
+     * @return the updated BlobListDetails object
      */
     public BlobListDetails metadata(boolean metadata) {
         this.metadata = metadata;
@@ -62,6 +72,8 @@ public final class BlobListDetails {
 
     /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
+     *
+     * @return a flag indicating if snapshots will be returned in the listing
      */
     public boolean snapshots() {
         return snapshots;
@@ -69,6 +81,9 @@ public final class BlobListDetails {
 
     /**
      * Whether snapshots should be returned. Snapshots are listed from oldest to newest.
+     *
+     * @param snapshots Flag indicating whether snapshots should be returned
+     * @return the updated BlobListDetails object
      */
     public BlobListDetails snapshots(boolean snapshots) {
         this.snapshots = snapshots;
@@ -78,6 +93,8 @@ public final class BlobListDetails {
     /**
      * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
      * should be included in the response.
+     *
+     * @return a flag indicating if uncommitted blobs will be returned in the listing
      */
     public boolean uncommittedBlobs() {
         return uncommittedBlobs;
@@ -86,6 +103,9 @@ public final class BlobListDetails {
     /**
      * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List,
      * should be included in the response.
+     *
+     * @param uncommittedBlobs Flag indicating whether uncommitted blobs should be returned
+     * @return the updated BlobListDetails object
      */
     public BlobListDetails uncommittedBlobs(boolean uncommittedBlobs) {
         this.uncommittedBlobs = uncommittedBlobs;
@@ -94,6 +114,8 @@ public final class BlobListDetails {
 
     /**
      * Whether blobs which have been soft deleted should be returned.
+     *
+     * @return a flag indicating if deleted blobs will be returned in the listing
      */
     public boolean deletedBlobs() {
         return deletedBlobs;
@@ -101,15 +123,17 @@ public final class BlobListDetails {
 
     /**
      * Whether blobs which have been soft deleted should be returned.
+     *
+     * @param deletedBlobs Flag indicating whether deleted blobs should be returned
+     * @return the updated BlobListDetails object
      */
     public BlobListDetails deletedBlobs(boolean deletedBlobs) {
         this.deletedBlobs = deletedBlobs;
         return this;
     }
 
-    /*
-    This is used internally to convert the details structure into a list to pass to the protocol layer. The customer
-    should never have need for this.
+    /**
+     * @return a list of the flag set to true
      */
     public ArrayList<ListBlobsIncludeItem> toList() {
         ArrayList<ListBlobsIncludeItem> details = new ArrayList<ListBlobsIncludeItem>();

@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder}, via
+ * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder#buildAsyncClient()}, via
  * the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -67,16 +67,6 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link AppendBlobClientBuilder} instance.
-     */
-    public static AppendBlobClientBuilder appendBlobClientBuilder() {
-        return new AppendBlobClientBuilder();
-    }
-
-    /**
      * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
      *
      * @return
@@ -99,11 +89,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the created appended blob.
      */
-    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata,
-                                                 BlobAccessConditions accessConditions) {
-            return appendBlobAsyncRawClient
-                .create(headers, metadata, accessConditions)
-                .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
+    public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
+        return appendBlobAsyncRawClient
+            .create(headers, metadata, accessConditions)
+            .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
     /**

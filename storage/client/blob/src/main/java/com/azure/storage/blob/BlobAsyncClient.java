@@ -31,15 +31,12 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Client to a blob of any type: block, append, or page. It may only be instantiated through a {@link BlobClientBuilder} or via
@@ -82,16 +79,6 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Static method for getting a new builder for this class.
-     *
-     * @return
-     *      A new {@link BlobClientBuilder} instance.
-     */
-    public static BlobClientBuilder blobClientBuilder() {
-        return new BlobClientBuilder();
-    }
-
-    /**
      * Creates a new {@link BlockBlobAsyncClient} to this resource, maintaining configurations. Only do this for blobs
      * that are known to be block blobs.
      *
@@ -129,23 +116,19 @@ public class BlobAsyncClient {
      * not create a container. It simply constructs the URL to the container and offers access to methods relevant to
      * containers.
      *
-     * @return
-     *     A {@link ContainerAsyncClient} object pointing to the container containing the blob
+     * @return A {@link ContainerAsyncClient} object pointing to the container containing the blob
      */
     public ContainerAsyncClient getContainerAsyncClient() {
-        try {
-            BlobURLParts parts = URLParser.parse(getBlobUrl());
-            return new ContainerAsyncClient(new AzureBlobStorageBuilder()
-                .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
-                .pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
+        BlobURLParts parts = URLParser.parse(getBlobUrl());
+        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
+            .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
+            .pipeline(blobAsyncRawClient.azureBlobStorage.httpPipeline()));
     }
 
     /**
      * Gets the URL of the blob represented by this client.
      * @return the URL.
+     * @throws RuntimeException If the blob is using a malformed URL.
      */
     public URL getBlobUrl() {
         try {
@@ -175,8 +158,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *      The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -189,8 +172,8 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the <a
-     *      * href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
      *
      * @param sourceURL
      *         The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -304,9 +287,9 @@ public class BlobAsyncClient {
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
+     * @param options {@link ReliableDownloadOptions}
      *
-     * @return
-     *      A reactive response containing the blob data.
+     * @return A reactive response containing the blob data.
      */
     public Mono<Response<Flux<ByteBuffer>>> download(BlobRange range, BlobAccessConditions accessConditions,
             boolean rangeGetContentMD5, ReliableDownloadOptions options) {
@@ -324,8 +307,8 @@ public class BlobAsyncClient {
      * This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra call,
      * use the other overload providing the {@link BlobRange} parameter.
      *
-     * @param filePath
-     *          A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @return An empty response
      */
     public Mono<Void> downloadToFile(String filePath) {
         return this.downloadToFile(filePath, null, BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE, null, false, null);
@@ -348,19 +331,18 @@ public class BlobAsyncClient {
      *         {@link BlobAccessConditions}
      * @param rangeGetContentMD5
      *         Whether the contentMD5 for the specified blob range should be returned.
+     * @param options {@link ReliableDownloadOptions}
+     * @return An empty response
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Void> downloadToFile(String filePath, BlobRange range, Integer blockSize, BlobAccessConditions accessConditions,
                                      boolean rangeGetContentMD5, ReliableDownloadOptions options) {
         if (blockSize < 0 || blockSize > BLOB_MAX_DOWNLOAD_BLOCK_SIZE) {
             throw new IllegalArgumentException("Block size should not exceed 100MB");
         }
-        return Mono.using(() -> {
-                try {
-                    return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            },
+
+        return Mono.using(() -> downloadToFileResourceSupplier(filePath),
             channel -> Mono.justOrEmpty(range)
                 .switchIfEmpty(getFullBlobRange(accessConditions))
                 .flatMapMany(rg -> Flux.fromIterable(sliceBlobRange(rg, blockSize)))
@@ -368,14 +350,23 @@ public class BlobAsyncClient {
                     .download(chunk, accessConditions, rangeGetContentMD5)
                     .subscribeOn(Schedulers.elastic())
                     .flatMap(dar -> FluxUtil.bytebufStreamToFile(dar.body(options), channel, chunk.offset() - (range == null ? 0 : range.offset()))))
-                .then(),
-            channel -> {
-                try {
-                    channel.close();
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            });
+                .then(), this::downloadToFileCleanup);
+    }
+
+    private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void downloadToFileCleanup(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     private Mono<BlobRange> getFullBlobRange(BlobAccessConditions accessConditions) {
@@ -777,7 +768,7 @@ public class BlobAsyncClient {
      *
      * @return a reactor response containing the sku name and account kind.
      */
-    // TODO determine this return type
+    // TODO (unknown): determine this return type
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return blobAsyncRawClient
             .getAccountInfo()

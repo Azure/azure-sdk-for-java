@@ -14,7 +14,7 @@ final class IPRange {
 
     private String ipMax;
 
-    public IPRange() {
+    IPRange() {
     }
 
     /**

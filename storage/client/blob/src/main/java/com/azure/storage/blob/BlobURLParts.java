@@ -41,7 +41,7 @@ final class BlobURLParts {
      * This may be useful for constructing a URL to a blob storage resource from scratch when the constituent parts are
      * already known.
      */
-    public BlobURLParts() {
+    BlobURLParts() {
         unparsedParameters = new HashMap<>();
     }
 

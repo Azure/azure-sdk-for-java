@@ -27,7 +27,7 @@ final class BlobSASPermission {
     /**
      * Initializes a {@code BlobSASPermission} object with all fields set to false.
      */
-    public BlobSASPermission() {
+    private BlobSASPermission() {
     }
 
     /**
@@ -38,6 +38,7 @@ final class BlobSASPermission {
      *         A {@code String} which represents the {@code BlobSASPermission}.
      *
      * @return A {@code BlobSASPermission} generated from the given {@code String}.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
      */
     public static BlobSASPermission parse(String permString) {
         BlobSASPermission permissions = new BlobSASPermission();

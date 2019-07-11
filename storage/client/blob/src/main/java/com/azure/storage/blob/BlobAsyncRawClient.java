@@ -5,7 +5,33 @@ package com.azure.storage.blob;
 
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobAccessConditions;
+import com.azure.storage.blob.models.BlobHTTPHeaders;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.models.BlobsAbortCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsAcquireLeaseResponse;
+import com.azure.storage.blob.models.BlobsBreakLeaseResponse;
+import com.azure.storage.blob.models.BlobsChangeLeaseResponse;
+import com.azure.storage.blob.models.BlobsCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsCreateSnapshotResponse;
+import com.azure.storage.blob.models.BlobsDeleteResponse;
+import com.azure.storage.blob.models.BlobsGetAccountInfoResponse;
+import com.azure.storage.blob.models.BlobsGetPropertiesResponse;
+import com.azure.storage.blob.models.BlobsReleaseLeaseResponse;
+import com.azure.storage.blob.models.BlobsRenewLeaseResponse;
+import com.azure.storage.blob.models.BlobsSetHTTPHeadersResponse;
+import com.azure.storage.blob.models.BlobsSetMetadataResponse;
+import com.azure.storage.blob.models.BlobsSetTierResponse;
+import com.azure.storage.blob.models.BlobsStartCopyFromURLResponse;
+import com.azure.storage.blob.models.BlobsUndeleteResponse;
+import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
+import com.azure.storage.blob.models.LeaseAccessConditions;
+import com.azure.storage.blob.models.Metadata;
+import com.azure.storage.blob.models.ModifiedAccessConditions;
+import com.azure.storage.blob.models.ReliableDownloadOptions;
+import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -544,6 +570,7 @@ class BlobAsyncRawClient {
      *         will fail if the specified condition is not satisfied.
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code duration} is outside the bounds of 15 to 60 or isn't -1.
      *
      * @apiNote ## Sample Code \n
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=blob_lease "Sample code for BlobAsyncRawClient.acquireLease")] \n

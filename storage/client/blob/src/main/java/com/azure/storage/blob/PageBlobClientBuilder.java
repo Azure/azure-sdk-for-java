@@ -26,21 +26,21 @@ import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent PageBlobClientBuilder for instantiating a {@link PageBlobClient} or {@link PageBlobAsyncClient}.
+ * Fluent PageBlobClientBuilder for instantiating a {@link PageBlobClient} or {@link PageBlobAsyncClient}
+ * using {@link PageBlobClientBuilder#buildClient()} or {@link PageBlobClientBuilder#buildAsyncClient()} respectively.
  *
  * <p>
- * An instance of this builder may only be created from static method {@link PageBlobClient#pageBlobClientBuilder()}.
  * The following information must be provided on this builder:
  *
- * <p><ul>
+ * <ul>
  *     <li>the endpoint through {@code .endpoint()}, including the container name and blob name, in the format of {@code https://{accountName}.blob.core.windows.net/{containerName}/{blobName}}.
  *     <li>the credential through {@code .credential()} or {@code .connectionString()} if the container is not publicly accessible.
  * </ul>
@@ -69,6 +69,10 @@ public final class PageBlobClientBuilder {
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
 
+    /**
+     * Creates a builder instance that is able to configure and construct {@link PageBlobClient PageBlobClients}
+     * and {@link PageBlobAsyncClient PageBlobAsyncClients}.
+     */
     public PageBlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
         logLevel = HttpLogDetailLevel.NONE;
@@ -98,7 +102,7 @@ public final class PageBlobClientBuilder {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
         } else {
             policies.add(new AnonymousCredentialPolicy());
-}
+        }
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
@@ -111,7 +115,7 @@ public final class PageBlobClientBuilder {
             .build();
 
         return new AzureBlobStorageBuilder()
-            .url(String.format("%s/%s/%s", endpoint.toString(), containerName, blobName))
+            .url(String.format("%s/%s/%s", endpoint, containerName, blobName))
             .pipeline(pipeline);
     }
 
@@ -133,6 +137,7 @@ public final class PageBlobClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated PageBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
     public PageBlobClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint);
@@ -153,7 +158,7 @@ public final class PageBlobClientBuilder {
             if (parts.snapshot() != null) {
                 this.snapshot = parts.snapshot();
             }
-        } catch (MalformedURLException | UnknownHostException ex) {
+        } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
         }
 
@@ -246,6 +251,7 @@ public final class PageBlobClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated PageBlobClientBuilder object
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey
      */
     public PageBlobClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
@@ -253,7 +259,7 @@ public final class PageBlobClientBuilder {
         Map<String, String> connectionKVPs = new HashMap<>();
         for (String s : connectionString.split(";")) {
             String[] kvp = s.split("=", 2);
-            connectionKVPs.put(kvp[0].toLowerCase(), kvp[1]);
+            connectionKVPs.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
         String accountName = connectionKVPs.get(ACCOUNT_NAME);

@@ -41,7 +41,7 @@ final class StorageAsyncRawClient {
      * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_url "Sample code for ServiceURL constructor")] \n
      * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
      */
-    public StorageAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
+    StorageAsyncRawClient(AzureBlobStorageImpl azureBlobStorage) {
         this.azureBlobStorage = azureBlobStorage;
     }
 
@@ -121,6 +121,7 @@ final class StorageAsyncRawClient {
      *         Expiration of the key's validity.
      *
      * @return Emits the successful response.
+     * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      */
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         Utility.assertNotNull("expiry", expiry);

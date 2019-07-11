@@ -61,7 +61,7 @@ final class ServiceSASSignatureValues {
     /**
      * Creates an object with empty values for all fields.
      */
-    public ServiceSASSignatureValues() {
+    ServiceSASSignatureValues() {
     }
 
     /**
@@ -305,6 +305,7 @@ final class ServiceSASSignatureValues {
      *         A {@link SharedKeyCredential} object used to sign the SAS values.
      *
      * @return {@link SASQueryParameters}
+     * @throws Error If the accountKey is not a valid Base64-encoded string.
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
@@ -339,6 +340,7 @@ final class ServiceSASSignatureValues {
      *         Name of the account holding the resource this SAS is authorizing.
      *
      * @return {@link SASQueryParameters}
+     * @throws Error If the accountKey is not a valid Base64-encoded string.
      */
     public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey, String accountName) {
         Utility.assertNotNull("delegationKey", delegationKey);

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpClient;
@@ -19,15 +22,15 @@ import java.util.UUID;
 
 public class Sample {
 
-    private final static String accountEndpoint = "";
-    private final static String accountName = "";
-    private final static String accountKey = "";
+    private static final String ACCOUNT_ENDPOINT = "";
+    private static final String ACCOUNT_NAME = "";
+    private static final String ACCOUNT_KEY = "";
 
     //@Test
     public void sample() throws IOException {
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credential(new SharedKeyCredential(accountName, accountKey))
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -78,8 +81,8 @@ public class Sample {
     //@Test
     public void asyncSample() throws IOException {
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credential(new SharedKeyCredential(accountName, accountKey))
+        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
@@ -158,8 +161,8 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credential(new SharedKeyCredential(accountName, accountKey))
+        StorageClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildClient();
 
@@ -188,8 +191,8 @@ public class Sample {
         fstream.close();
 
         // get service client
-        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(accountEndpoint)
-            .credential(new SharedKeyCredential(accountName, accountKey))
+        StorageAsyncClient serviceClient = new StorageClientBuilder().endpoint(ACCOUNT_ENDPOINT)
+            .credential(new SharedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY))
             .httpClient(HttpClient.createDefault()/*.proxy(() -> new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)))*/)
             .buildAsyncClient();
 
