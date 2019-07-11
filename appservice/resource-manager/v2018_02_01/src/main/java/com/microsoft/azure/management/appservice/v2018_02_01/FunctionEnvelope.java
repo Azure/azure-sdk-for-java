@@ -215,7 +215,7 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithIsDisabled {
             /**
              * Specifies isDisabled.
-             * @param isDisabled Gets or sets a value indicating whether the function is disabled
+             * @param isDisabled Gets a value indicating whether the function is disabled
              * @return the next definition stage
              */
             WithCreate withIsDisabled(Boolean isDisabled);
@@ -401,7 +401,7 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithIsDisabled {
             /**
              * Specifies isDisabled.
-             * @param isDisabled Gets or sets a value indicating whether the function is disabled
+             * @param isDisabled Gets a value indicating whether the function is disabled
              * @return the next update stage
              */
             Update withIsDisabled(Boolean isDisabled);

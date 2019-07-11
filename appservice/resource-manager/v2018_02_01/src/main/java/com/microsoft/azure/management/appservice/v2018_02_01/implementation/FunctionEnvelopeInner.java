@@ -91,7 +91,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     private String language;
 
     /**
-     * Gets or sets a value indicating whether the function is disabled.
+     * Gets a value indicating whether the function is disabled.
      */
     @JsonProperty(value = "properties.isDisabled")
     private Boolean isDisabled;
@@ -337,7 +337,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get gets or sets a value indicating whether the function is disabled.
+     * Get gets a value indicating whether the function is disabled.
      *
      * @return the isDisabled value
      */
@@ -346,7 +346,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set gets or sets a value indicating whether the function is disabled.
+     * Set gets a value indicating whether the function is disabled.
      *
      * @param isDisabled the isDisabled value to set
      * @return the FunctionEnvelopeInner object itself.
