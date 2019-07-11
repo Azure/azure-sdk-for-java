@@ -217,7 +217,7 @@ public class KeyClientTest extends KeyClientTestBase {
             pollOnKeyDeletion(keyToBackupAndRestore.name());
             client.purgeDeletedKey(keyToBackupAndRestore.name());
             pollOnKeyPurge(keyToBackupAndRestore.name());
-            sleep(60000);
+            sleepInRecordMode(60000);
             Key restoredKey = client.restoreKey(backupBytes).value();
             assertEquals(keyToBackupAndRestore.name(), restoredKey.name());
             assertEquals(keyToBackupAndRestore.expires(), restoredKey.expires());
@@ -240,7 +240,7 @@ public class KeyClientTest extends KeyClientTestBase {
             HashMap<String, KeyCreateOptions> keysToList = keys;
             for (KeyCreateOptions key :  keysToList.values()) {
                 assertKeyEquals(key, client.createKey(key));
-                sleep(5000);
+                sleepInRecordMode(5000);
             }
 
             for (KeyBase actualKey : client.listKeys()) {
