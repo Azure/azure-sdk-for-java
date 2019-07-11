@@ -28,7 +28,7 @@ public class CacheKeyQueryStringActionParameters {
     private QueryStringBehavior queryStringBehavior;
 
     /**
-     * query parameters to include or exlude. (comma separated).
+     * query parameters to include or exclude (comma separated).
      */
     @JsonProperty(value = "queryParameters")
     private String queryParameters;
@@ -82,7 +82,7 @@ public class CacheKeyQueryStringActionParameters {
     }
 
     /**
-     * Get query parameters to include or exlude. (comma separated).
+     * Get query parameters to include or exclude (comma separated).
      *
      * @return the queryParameters value
      */
@@ -91,7 +91,7 @@ public class CacheKeyQueryStringActionParameters {
     }
 
     /**
-     * Set query parameters to include or exlude. (comma separated).
+     * Set query parameters to include or exclude (comma separated).
      *
      * @param queryParameters the queryParameters value to set
      * @return the CacheKeyQueryStringActionParameters object itself.
