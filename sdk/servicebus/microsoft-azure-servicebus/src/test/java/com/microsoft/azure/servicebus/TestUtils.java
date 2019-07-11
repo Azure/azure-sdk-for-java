@@ -101,26 +101,26 @@ public class TestUtils extends TestBase {
     public static boolean shouldCreateEntityForEveryTest() {
         return true;
     }
-    
+
     /** Execute the given runnable and verify that it throws the expected throwable. **/
-	@SuppressWarnings("unchecked")
-	public static <T extends Throwable> T assertThrows(Class<T> expectedType, ThrowingRunnable throwingRunnable) {
-		try {
-			throwingRunnable.run();
-		}
-		catch (Throwable actualException) {
-			if (expectedType.isInstance(actualException)) {
-				return (T) actualException;
-			}
-			else {
-				throw new AssertionFailedError("Expected exception of type '" + expectedType + "' but found exception of type '" + actualException.getClass() + "' instead.");
-			}
-		}
-		throw new AssertionFailedError("Expected exception of type '" + expectedType + "' to be thrown.");
-	}
-	
-	@FunctionalInterface
-	public interface ThrowingRunnable {
-		void run() throws Throwable;
-	}
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T assertThrows(Class<T> expectedType, ThrowingRunnable throwingRunnable) {
+        try {
+            throwingRunnable.run();
+        }
+        catch (Throwable actualException) {
+            if (expectedType.isInstance(actualException)) {
+                return (T) actualException;
+            }
+            else {
+                throw new AssertionFailedError("Expected exception of type '" + expectedType + "' but found exception of type '" + actualException.getClass() + "' instead.");
+            }
+        }
+        throw new AssertionFailedError("Expected exception of type '" + expectedType + "' to be thrown.");
+    }
+
+    @FunctionalInterface
+    public interface ThrowingRunnable {
+        void run() throws Throwable;
+    }
 }
