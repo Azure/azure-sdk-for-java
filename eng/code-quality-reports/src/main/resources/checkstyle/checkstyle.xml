@@ -282,7 +282,17 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Verify the classes with annotation @ServiceClient should have following rules:
     1) No public or protected constructors
     2) No public static method named 'builder'
-    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final -->
+    3) Since these classes are supposed to be immutable, all fields in the service client classes should be final.
+
+    Also, verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
+    follow below rules:
+    1) Follows method naming pattern. Refer to Java Spec.
+    2) Methods should not have "Async" added to the method name
+    3) The return type of async and sync clients should be as per guidelines:
+      3.1) The return type for async collection should be of type? extends Flux
+      3.2) The return type for async single value should be of type? extends Mono
+      3.3) The return type for sync collection should be of type? extends Stream
+      3.4) The return type for sync single value should be of type? extends Response -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
 
     <!--CUSTOM CHECKS-->
