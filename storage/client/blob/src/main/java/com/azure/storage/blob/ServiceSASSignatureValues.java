@@ -6,6 +6,8 @@ package com.azure.storage.blob;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -40,9 +42,9 @@ final class ServiceSASSignatureValues {
 
     private IPRange ipRange;
 
-    private String containerName;
+    private String canonicalName;
 
-    private String blobName;
+    private String resource;
 
     private String snapshotId;
 
@@ -62,6 +64,43 @@ final class ServiceSASSignatureValues {
      * Creates an object with empty values for all fields.
      */
     ServiceSASSignatureValues() {
+    }
+
+    /**
+     * Creates an object with the specified expiry time and permissions
+     * @param expiryTime
+     * @param permissions
+     */
+    public ServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
+        this.expiryTime = expiryTime;
+        this.permissions = permissions;
+    }
+
+    /**
+     * Creates an object with the specified identifier
+     * @param identifier
+     */
+    public ServiceSASSignatureValues(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public ServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
+        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        if(version != null) {
+          this.version = version;
+        }
+        this.protocol = sasProtocol;
+        this.startTime = startTime;
+        this.expiryTime = expiryTime;
+        this.permissions = permission;
+        this.ipRange = ipRange;
+        this.identifier = identifier;
+        this.cacheControl = cacheControl;
+        this.contentDisposition = contentDisposition;
+        this.contentEncoding = contentEncoding;
+        this.contentLanguage = contentLanguage;
+        this.contentType = contentType;
     }
 
     /**
@@ -159,32 +198,50 @@ final class ServiceSASSignatureValues {
     }
 
     /**
-     * The name of the container the SAS user may access.
+     * The resource the SAS user may access.
      */
-    public String containerName() {
-        return containerName;
+    public String resource() {
+        return resource;
     }
 
     /**
-     * The name of the container the SAS user may access.
+     * The resource the SAS user may access.
      */
-    public ServiceSASSignatureValues containerName(String containerName) {
-        this.containerName = containerName;
+    public ServiceSASSignatureValues resource(String resource) {
+        this.resource = resource;
         return this;
     }
 
     /**
-     * The name of the blob the SAS user may access.
+     * The canonical name of the object the SAS user may access.
      */
-    public String blobName() {
-        return blobName;
+    public String canonicalName() {
+        return canonicalName;
     }
 
     /**
-     * The name of the blob the SAS user may access.
+     * The canonical name of the object the SAS user may access.
      */
-    public ServiceSASSignatureValues blobName(String blobName) {
-        this.blobName = blobName;
+    public ServiceSASSignatureValues canonicalName(String canonicalName) {
+        this.canonicalName = canonicalName;
+        return this;
+    }
+
+    /**
+     * The canonical name of the object the SAS user may access.
+     */
+    public ServiceSASSignatureValues canonicalName(String urlString, String accountName) {
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        StringBuilder canonicalName = new StringBuilder("/blob");
+        canonicalName.append('/').append(accountName).append(url.getPath());
+        this.canonicalName = canonicalName.toString();
+
         return this;
     }
 
@@ -192,7 +249,7 @@ final class ServiceSASSignatureValues {
      * The specific snapshot the SAS user may access.
      */
     public String snapshotId() {
-        return snapshotId;
+        return this.snapshotId;
     }
 
     /**
@@ -309,13 +366,10 @@ final class ServiceSASSignatureValues {
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredential sharedKeyCredentials) {
         Utility.assertNotNull("sharedKeyCredentials", sharedKeyCredentials);
-        assertGenerateOK();
-
-        String resource = getResource();
-        String verifiedPermissions = getVerifiedPermissions();
+        assertGenerateOK(false);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(verifiedPermissions, resource, sharedKeyCredentials);
+        final String stringToSign = stringToSign();
 
         String signature = null;
         try {
@@ -336,22 +390,15 @@ final class ServiceSASSignatureValues {
      * @param delegationKey
      *         A {@link UserDelegationKey} object used to sign the SAS values.
      *
-     * @param accountName
-     *         Name of the account holding the resource this SAS is authorizing.
-     *
      * @return {@link SASQueryParameters}
      * @throws Error If the accountKey is not a valid Base64-encoded string.
      */
-    public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey, String accountName) {
+    public SASQueryParameters generateSASQueryParameters(UserDelegationKey delegationKey) {
         Utility.assertNotNull("delegationKey", delegationKey);
-        Utility.assertNotNull("accountName", accountName);
-        assertGenerateOK();
-
-        String resource = getResource();
-        String verifiedPermissions = getVerifiedPermissions();
+        assertGenerateOK(true);
 
         // Signature is generated on the un-url-encoded values.
-        final String stringToSign = stringToSign(verifiedPermissions, resource, delegationKey, accountName);
+        final String stringToSign = stringToSign(delegationKey);
 
         String signature = null;
         try {
@@ -369,70 +416,37 @@ final class ServiceSASSignatureValues {
     /**
      * Common assertions for generateSASQueryParameters overloads.
      */
-    private void assertGenerateOK() {
+    private void assertGenerateOK(boolean usingUserDelegation) {
         Utility.assertNotNull("version", this.version);
-        Utility.assertNotNull("containerName", this.containerName);
-        if (blobName == null && snapshotId != null) {
-            throw new IllegalArgumentException("Cannot set a snapshotId without a blobName.");
-        }
-    }
+        Utility.assertNotNull("canonicalName", this.canonicalName);
 
-    /**
-     * Gets the resource string for SAS tokens based on object state.
-     */
-    private String getResource() {
-        String resource = "c";
-        if (!Utility.isNullOrEmpty(this.blobName)) {
-            resource = snapshotId != null && !snapshotId.isEmpty() ? "bs" : "b";
-        }
-
-        return resource;
-    }
-
-    /**
-     * Gets the verified permissions string for SAS tokens based on object state.
-     */
-    private String getVerifiedPermissions() {
-        String verifiedPermissions = null;
-        // Calling parse and toString guarantees the proper ordering and throws on invalid characters.
-        if (Utility.isNullOrEmpty(this.blobName)) {
-            if (this.permissions != null) {
-                verifiedPermissions = ContainerSASPermission.parse(this.permissions).toString();
+        // Ensure either (expiryTime and permissions) or (identifier) is set
+        if(this.expiryTime == null || this.permissions == null) {
+            // Identifier is not required if user delegation is being used
+            if(!usingUserDelegation){
+                Utility.assertNotNull("identifier", this.identifier);
             }
         } else {
-            if (this.permissions != null) {
-                verifiedPermissions = BlobSASPermission.parse(this.permissions).toString();
-            }
+            Utility.assertNotNull("expiryTime", this.expiryTime);
+            Utility.assertNotNull("permissions", this.permissions);
         }
 
-        return verifiedPermissions;
-    }
-
-    private String getCanonicalName(String accountName) {
-        // Container: "/blob/account/containername"
-        // Blob:      "/blob/account/containername/blobname"
-        StringBuilder canonicalName = new StringBuilder("/blob");
-        canonicalName.append('/').append(accountName).append('/').append(this.containerName);
-
-        if (!Utility.isNullOrEmpty(this.blobName)) {
-            canonicalName.append("/").append(this.blobName);
+        if (resource == Constants.UrlConstants.SAS_CONTAINER_CONSTANT && snapshotId != null) {
+            throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
         }
-
-        return canonicalName.toString();
     }
 
-    private String stringToSign(final String verifiedPermissions, final String resource,
-            final SharedKeyCredential sharedKeyCredentials) {
+    private String stringToSign() {
         return String.join("\n",
-                verifiedPermissions == null ? "" : verifiedPermissions,
+                this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                getCanonicalName(sharedKeyCredentials.accountName()),
+                this.canonicalName == null ? "" : this.canonicalName,
                 this.identifier == null ? "" : this.identifier,
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : protocol.toString(),
                 this.version == null ? "" : this.version,
-                resource == null ? "" : resource,
+                this.resource == null ? "" : this.resource,
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
@@ -442,13 +456,12 @@ final class ServiceSASSignatureValues {
         );
     }
 
-    private String stringToSign(final String verifiedPermissions, final String resource,
-            final UserDelegationKey key, final String accountName) {
+    private String stringToSign(final UserDelegationKey key) {
         return String.join("\n",
-                verifiedPermissions == null ? "" : verifiedPermissions,
+                this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                getCanonicalName(accountName),
+                this.canonicalName == null ? "" : this.canonicalName,
                 key.signedOid() == null ? "" : key.signedOid(),
                 key.signedTid() == null ? "" : key.signedTid(),
                 key.signedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedStart()),
@@ -458,7 +471,7 @@ final class ServiceSASSignatureValues {
                 this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version == null ? "" : this.version,
-                resource == null ? "" : resource,
+                this.resource == null ? "" : this.resource,
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,

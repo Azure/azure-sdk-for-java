@@ -333,9 +333,7 @@ final class SASQueryParameters {
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
         if (value != null) {
-            if (sb.length() == 0) {
-                sb.append('?');
-            } else {
+            if (sb.length() != 0) {
                 sb.append('&');
             }
             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
