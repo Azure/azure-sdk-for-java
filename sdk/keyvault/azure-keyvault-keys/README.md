@@ -303,7 +303,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-keyvault-keys/src
-[api_documentation]: not-valid-link
+[api_documentation]: https://azure.github.io/azure-sdk-for-java/track2reports/index.html
 [azkeyvault_docs]: https://docs.microsoft.com/en-us/azure/key-vault/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/identity/client
 [maven]: https://maven.apache.org/
