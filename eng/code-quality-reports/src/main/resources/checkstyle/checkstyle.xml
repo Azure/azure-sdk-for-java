@@ -284,15 +284,15 @@ page at http://checkstyle.sourceforge.net/config.html -->
     2) No public static method named 'builder'
     3) Since these classes are supposed to be immutable, all fields in the service client classes should be final
 
-    Also, verify all methods that has a @ServiceMethod annotation in a class annotated with @ServiceClient should
+    Also, verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
     follow below rules:
     1) Follows method naming pattern. Refer to Java Spec.
     2) Methods should not have "Async" added to the method name
-    3) Return type of async and sync clients should be as per guidelines:
-      3.1) Return type for async collection should be of type? extends Flux
-      3.2) Return type for async single value should be of type? extends Mono
-      3.3) Return type for sync collection should be of type? extends Stream
-      3.4) Return type for sync single value should be of type? extends Response -->
+    3) The return type of async and sync clients should be as per guidelines:
+      3.1) The return type for async collection should be of type? extends Flux
+      3.2) The return type for async single value should be of type? extends Mono
+      3.3) The return type for sync collection should be of type? extends Stream
+      3.4) The return type for sync single value should be of type? extends Response -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck"/>
 
     <!--CUSTOM CHECKS-->
@@ -302,17 +302,16 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"/>
 
     <!--CUSTOM CHECKS-->
-    <!-- The @ServiceClientBuilder class should have following rules:
+    <!-- The @ServiceClientBuilder class should have the following rules:
     1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
     2) Has a method 'buildClient()' to build a synchronous client,
-    3) Has a method 'buildAsyncClient()' to build a asynchronous client -->
+    3) Has a method 'buildAsyncClient()' to build an asynchronous client -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"/>
 
     <!--CUSTOM CHECKS-->
-    <!-- The @ServiceInterface class should have following rules:
-    1) has annotation property 'name' and should be non-empty
-    2) length of value of property 'name' should be less than 10 characters and without space
-    -->
+    <!-- The @ServiceInterface class should have the following rules:
+    1) The annotation property 'name' should be non-empty
+    2) length of value of property 'name' should be less than 10 characters and without space -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
   </module>
 </module>

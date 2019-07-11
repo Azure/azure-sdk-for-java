@@ -8,9 +8,9 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
- * The @ServiceInterface class should have following rules:
- *   1) has annotation property 'name' and should be non-empty
- *   2) length of value of property 'name' should be less than 10 characters and without space
+ * The @ServiceInterface class should have the following rules:
+ *   1) The annotation property 'name' should be non-empty
+ *   2) The length of value of property 'name' should be less than 10 characters and without space
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
 
@@ -44,9 +44,9 @@ public class ServiceInterfaceCheck extends AbstractCheck {
     }
 
     /**
-     * The @ServiceInterface class should have following rules:
-     *   1) has annotation property 'name' and should be non-empty
-     *   2) length of value of property 'name' should be less than 10 characters and without space
+     *  The @ServiceInterface class should have the following rules:
+     *   1) The annotation property 'name' should be non-empty
+     *   2) The length of value of property 'name' should be less than 10 characters and without space
      *
      * @param interfaceDefToken INTERFACE_DEF AST node
      */

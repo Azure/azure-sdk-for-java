@@ -8,10 +8,10 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
- * The @ServiceClientBuilder class should have following rules:
+ * The @ServiceClientBuilder class should have the following rules:
  *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
  *  2) Has a method 'buildClient()' to build a synchronous client,
- *  3) Has a method 'buildAsyncClient()' to build a asynchronous client
+ *  3) Has a method 'buildAsyncClient()' to build an asynchronous client
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
