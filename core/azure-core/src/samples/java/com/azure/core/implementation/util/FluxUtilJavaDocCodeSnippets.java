@@ -54,22 +54,4 @@ public class FluxUtilJavaDocCodeSnippets {
         return Mono.empty();
     }
 
-    /**
-     * Implementation not provided
-     * @param input The input string
-     * @return {@link Flux#empty() empty} response
-     */
-    private Flux<String> clientLibraryApiReturnsCollection(String input) {
-        return Flux.empty();
-    }
-
-    /**
-     * Implementation not provided
-     * @param input The input string
-     * @return {@link Mono#empty() empty} response
-     */
-    private Mono<String> clientLibraryApiReturnsSingleItem(String input) {
-        return Mono.empty();
-    }
-
 }
