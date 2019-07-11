@@ -12,6 +12,7 @@ import com.azure.identity.credential.EnvironmentCredential
 import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
+import io.netty.buffer.ByteBuf
 import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import reactor.core.publisher.Flux
@@ -490,48 +491,75 @@ class APISpec extends Specification {
         }.request(request)
     }
 
+    static class MockDownloadWithRetryPolicy implements HttpPipelinePolicy {
+        MockDownloadWithRetryPolicy() {
+        }
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            return httpPipelineNextPolicy.process()
+                .flatMap {
+                    if (it.request().headers().value("x-ms-range") != "bytes=2-6") {
+                        return Mono.<HttpResponse>error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                    } else {
+                        // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                        return Mono.just(new MockDownloadHttpResponse(it, 206, Flux.error(new IOException())))
+                    }
+                }
+        }
+    }
+
     /*
     This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
      */
-    def getStubResponseForBlobDownload(int code, Flux<ByteBuffer> body, String etag) {
-        return new HttpResponse() {
+    static class MockDownloadHttpResponse extends HttpResponse {
+        private final int statusCode
+        private final HttpHeaders headers
+        private final Flux<ByteBuf> body
 
-            @Override
-            int statusCode() {
-                return code
-            }
 
-            @Override
-            String headerValue(String s) {
-                return null
-            }
+        MockDownloadHttpResponse(HttpResponse response, int code, Flux<ByteBuf> body) {
+            this.request(response.request())
+            this.statusCode = code
+            this.headers = response.headers()
+            this.body = body
+        }
 
-            @Override
-            HttpHeaders headers() {
-                return new HttpHeaders()
-            }
+        @Override
+        int statusCode() {
+            return statusCode
+        }
 
-            @Override
-            Flux<ByteBuffer> body() {
-                return body
-            }
+        @Override
+        String headerValue(String s) {
+            return null
+        }
 
-            @Override
-            Mono<byte[]> bodyAsByteArray() {
-                return null
-            }
+        @Override
+        HttpHeaders headers() {
+            return headers
+        }
 
-            @Override
-            Mono<String> bodyAsString() {
-                return null
-            }
+        @Override
+        Flux<ByteBuf> body() {
+            return body
+        }
 
-            @Override
-            Mono<String> bodyAsString(Charset charset) {
-                return null
-            }
+        @Override
+        Mono<byte[]> bodyAsByteArray() {
+            return Mono.just(new byte[0])
+        }
+
+        @Override
+        Mono<String> bodyAsString() {
+            return Mono.just("")
+        }
+
+        @Override
+        Mono<String> bodyAsString(Charset charset) {
+            return Mono.just("")
         }
     }
 
