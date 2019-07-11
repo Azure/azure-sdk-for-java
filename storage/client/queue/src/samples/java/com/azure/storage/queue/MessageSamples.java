@@ -7,9 +7,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.queue.models.DequeuedMessage;
 
 import java.time.Duration;
-import java.util.UUID;
 
-public class MessageSample {
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
+
+public class MessageSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
 
@@ -68,10 +69,5 @@ public class MessageSample {
 
         // Finally, we delete the queue.
         queueClient.delete();
-    }
-
-    private static String generateRandomName(String prefix, int length) {
-        int len = length > prefix.length() ? length - prefix.length() : 0;
-        return prefix + UUID.randomUUID().toString().substring(0, len);
     }
 }

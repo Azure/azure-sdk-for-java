@@ -3,9 +3,9 @@
 
 package com.azure.storage.queue;
 
-import java.util.UUID;
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
-public class QueueServiceSample {
+public class QueueServiceSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String SAS_TOKEN = System.getenv("PRIMARY_SAS_TOKEN");
 
@@ -28,10 +28,4 @@ public class QueueServiceSample {
             }
         );
     }
-
-    private static String generateRandomName(String prefix, int length) {
-        int len = length > prefix.length() ? length - prefix.length() : 0;
-        return prefix + UUID.randomUUID().toString().substring(0, len);
-    }
-
 }

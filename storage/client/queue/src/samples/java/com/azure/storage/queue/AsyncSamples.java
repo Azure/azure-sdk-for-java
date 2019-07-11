@@ -3,7 +3,7 @@
 
 package com.azure.storage.queue;
 
-import java.util.UUID;
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
 /*
  *  This example mimics some arbitrary number of clients continuously sending messages up to a queue in a parallel and
@@ -25,8 +25,8 @@ public class AsyncSamples {
 
         // Create a queue, enqueue two messages.
         queueAsyncClient.create()
-            .flatMap(response -> queueAsyncClient.enqueueMessage("This is message 1"))
-            .flatMap(response -> queueAsyncClient.enqueueMessage("This is message 2"))
+            .doOnSuccess(response -> queueAsyncClient.enqueueMessage("This is message 1"))
+            .then(queueAsyncClient.enqueueMessage("This is message 2"))
             .subscribe(
                 response -> {
                     System.out.println("Message successfully equeueed by queueAsyncClient. Message id:" + response.value().messageId());
@@ -38,10 +38,5 @@ public class AsyncSamples {
                     System.out.println("The enqueue has been completed.");
                 }
             );
-    }
-
-    private static String generateRandomName(String prefix, int length) {
-        int len = length > prefix.length() ? length - prefix.length() : 0;
-        return prefix + UUID.randomUUID().toString().substring(0, len);
     }
 }

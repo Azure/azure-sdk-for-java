@@ -92,8 +92,6 @@ public final class QueueServiceClientBuilder {
         logLevel = HttpLogDetailLevel.NONE;
         policies = new ArrayList<>();
         configuration = ConfigurationManager.getConfiguration();
-        retryPolicy = new RetryPolicy();
-        logLevel = HttpLogDetailLevel.NONE;
     }
 
     /**
@@ -207,6 +205,19 @@ public final class QueueServiceClientBuilder {
         this.sasTokenCredential = credential;
         return this;
     }
+
+    /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the Queue service.
+     *
+     * @param credential Shared key credential can retrieve from the Storage account that authorizes requests
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
+        return this;
+    }
+
 
     /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the

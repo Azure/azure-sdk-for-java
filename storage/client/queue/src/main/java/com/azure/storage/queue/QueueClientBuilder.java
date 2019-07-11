@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.AddDatePolicy;
@@ -86,6 +87,7 @@ public final class QueueClientBuilder {
     private String queueName;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
+    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
@@ -142,14 +144,13 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(queueName);
 
-        if (pipeline != null) {
-            return new QueueAsyncClient(endpoint, pipeline, queueName);
-        }
-
         if (sasTokenCredential == null && sharedKeyCredential == null) {
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
+        if (pipeline != null) {
+            return new QueueAsyncClient(endpoint, pipeline, queueName);
+        }
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -229,7 +230,7 @@ public final class QueueClientBuilder {
     }
 
     /**
-     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the Queue service.
+     * Sets the {@link SASTokenCredential} used to authenticate requests sent to the Queue.
      *
      * @param credential SAS token credential generated from the Storage account that authorizes requests
      * @return the updated QueueClientBuilder object
@@ -237,6 +238,18 @@ public final class QueueClientBuilder {
      */
     public QueueClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
+        return this;
+    }
+
+    /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the Queue.
+     *
+     * @param credential Shared key credential can retrieve from the Storage account that authorizes requests
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public QueueClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = credential;
         return this;
     }
 
@@ -249,8 +262,6 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public QueueClientBuilder connectionString(String connectionString) {
-        Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
         Objects.requireNonNull(connectionString);
         this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
         getEndPointFromConnectionString(connectionString);

@@ -53,7 +53,8 @@ public final class QueueClient {
     }
 
     /**
-     * @return the URL of the storage queue
+     * @return the URL of the storage queue.
+     * @throws RuntimeException If the queue is using a malformed URL.
      */
     public URL getQueueUrl() {
         return client.getQueueUrl();

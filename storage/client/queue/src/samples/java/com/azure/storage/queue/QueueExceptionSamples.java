@@ -7,7 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.queue.models.StorageErrorCode;
 import com.azure.storage.queue.models.StorageErrorException;
 
-import java.util.UUID;
+import static com.azure.storage.queue.SampleHelper.generateRandomName;
 
 public class QueueExceptionSamples {
     private static final String ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
@@ -65,10 +65,5 @@ public class QueueExceptionSamples {
                 System.out.println("This is not the error we expect!");
             }
         }
-    }
-
-    private static String generateRandomName(String prefix, int length) {
-        int len = length > prefix.length() ? length - prefix.length() : 0;
-        return prefix + UUID.randomUUID().toString().substring(0, len);
     }
 }
