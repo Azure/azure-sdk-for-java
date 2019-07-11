@@ -87,7 +87,6 @@ public final class QueueClientBuilder {
     private String queueName;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
-    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
