@@ -9,10 +9,9 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
  * The @ServiceClientBuilder class should have following rules:
- *     1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
- *     2) A property named 'serviceClients'.
-*      3) Has a method 'buildClient()' to build a synchronous client,
- *     4) Has a method 'buildAsyncClient()' to build a asynchronous client
+ *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
+ *  2) Has a method 'buildClient()' to build a synchronous client,
+ *  3) Has a method 'buildAsyncClient()' to build a asynchronous client
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
@@ -37,7 +36,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         }
 
         if (!hasAsyncClientBuilder) {
-            log(root, String.format("Every Missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
+            log(root, String.format("Missing an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
         }
         if (!hasClientBuilder) {
             log(root, String.format("Missing a synchronous method, ''%s''", BUILD_CLIENT));
@@ -72,15 +71,11 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                 hasServiceClientBuilderAnnotation = serviceClientAnnotationToken != null;
 
                 if (hasServiceClientBuilderAnnotation) {
-                    // Checks if the ANNOTATION has property named 'serviceClients'
-                    if (!hasServiceClientsAnnotationProperty(serviceClientAnnotationToken)) {
-                        log(serviceClientAnnotationToken, String.format(
-                            "Annotation @%s should have ''serviceClients'' as property of annotation and should list all of the service clients it can build.",
-                            SERVICE_CLIENT_BUILDER));
-                    }
+                    // Don't need to check if the 'serviceClients' exist. It is required when using @ServiceClientBuilder
+
                     // HAS @ServiceClientBuilder annotation but NOT named the class <ServiceName>ClientBuilder
                     if (!className.endsWith("ClientBuilder")) {
-                        log(token, String.format("@ServiceClientBuilder class ''%s''should be named <ServiceName>ClientBuilder.", className));
+                        log(token, String.format("@ServiceClientBuilder class ''%s'' should be named <ServiceName>ClientBuilder.", className));
                     }
                 } else {
                     // No @ServiceClientBuilder annotation but HAS named the class <ServiceName>ClientBuilder
@@ -132,24 +127,5 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
         }
 
         return annotationToken;
-    }
-
-    /**
-     * Checks if the {@code ServiceClientBuilder} annotation has a service client prop named 'serviceClients'.
-     *
-     * @param annotationToken the ANNOTATION AST node
-     * @return true if the @ServiceClientBuilder has property named 'serviceClients', false if none
-     */
-    private boolean hasServiceClientsAnnotationProperty(DetailAST annotationToken) {
-        for (DetailAST ast = annotationToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-            if (ast.getType() != TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
-                continue;
-            }
-            // if there is ANNOTATION_MEMBER_VALUE_PAIR exist, it always has IDENT node
-            if ("serviceClients".equals(ast.findFirstToken(TokenTypes.IDENT).getText())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
