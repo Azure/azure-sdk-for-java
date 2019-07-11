@@ -7,10 +7,11 @@ import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.util.ImplUtils;
@@ -48,6 +49,7 @@ import reactor.core.publisher.Mono;
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
  * @see KeyClientBuilder
+ * @see PagedFlux
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
@@ -629,14 +631,25 @@ public final class KeyAsyncClient {
      *   .map(Response::value);
      * </pre>
      *
-     * @return A {@link Flux} containing {@link KeyBase key} of all the keys in the vault.
+     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
      */
-    public Flux<KeyBase> listKeys() {
+    public PagedFlux<KeyBase> listKeys() {
+        return new PagedFlux<>(() -> listKeysFirstPage(),
+            continuationToken -> listKeysNextPage(continuationToken));
+    }
+
+    private Mono<PagedResponse<KeyBase>> listKeysNextPage(String continuationTokenNextPageLink) {
+        return service.getKeys(endpoint, continuationTokenNextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationTokenNextPageLink))
+            .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationTokenNextPageLink))
+            .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationTokenNextPageLink, error));
+    }
+
+    private Mono<PagedResponse<KeyBase>> listKeysFirstPage() {
         return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing keys"))
-                .doOnSuccess(response -> logger.info("Listed keys"))
-                .doOnError(error -> logger.warning("Failed to list keys", error))
-                .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing keys"))
+            .doOnSuccess(response -> logger.info("Listed keys"))
+            .doOnError(error -> logger.warning("Failed to list keys", error));
     }
 
     /**
