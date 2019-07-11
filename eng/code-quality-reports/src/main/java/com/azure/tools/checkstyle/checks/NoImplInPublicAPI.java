@@ -109,10 +109,5 @@ public class NoImplInPublicAPI extends AbstractCheck {
                 // Checkstyle complains if there's no default block in switch
                 break;
         }
-
     }
-
-
 }
-
-

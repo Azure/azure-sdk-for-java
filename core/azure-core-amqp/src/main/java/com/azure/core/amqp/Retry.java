@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * An abstract representation of a policy to govern retrying of messaging operations.
  */
-public abstract class Retry {
+public abstract class Retry implements Cloneable {
     /**
      * Default for the minimum time between retry attempts.
      */
@@ -130,6 +130,11 @@ public abstract class Retry {
         }
 
         return this.calculateNextRetryInterval(lastException, remainingTime, baseWaitTime, this.getRetryCount());
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     /**

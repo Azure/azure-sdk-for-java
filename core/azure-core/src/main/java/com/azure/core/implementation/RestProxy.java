@@ -3,8 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.ServiceClient;
-import com.azure.core.annotations.ResumeOperation;
+import com.azure.core.implementation.annotation.ResumeOperation;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeader;
@@ -66,8 +65,6 @@ import java.util.stream.Collectors;
  * deserialized Java object.
  */
 public class RestProxy implements InvocationHandler {
-    private static final String DEFAULT_SPAN_NAME_TEMPLATE = "Azure.%s/%s";
-
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -172,7 +169,9 @@ public class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        return TracerProxy.start(String.format(DEFAULT_SPAN_NAME_TEMPLATE, interfaceParser.service(), method.getName()), context);
+        String spanName = String.format("Azure.%s/%s", interfaceParser.serviceName(), method.getName());
+        context = TracerProxy.setSpanName(spanName, context);
+        return TracerProxy.start(spanName, context);
     }
 
     /**
@@ -441,7 +440,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         // try to create an instance using our list of potential candidates
-        for (Constructor constructor : constructors) {
+        for (Constructor<?> constructor : constructors) {
             final Constructor<? extends Response<?>> ctor = (Constructor<? extends Response<?>>) constructor;
 
             try {
@@ -645,27 +644,12 @@ public class RestProxy implements InvocationHandler {
      * Create a proxy implementation of the provided Swagger interface.
      *
      * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipline that will be used to send Http
-     *                 requests
+     * @param httpPipeline the HttpPipelinePolicy and HttpClient pipeline that will be used to send Http requests
      * @param <A> the type of the Swagger interface
      * @return a proxy implementation of the provided Swagger interface
      */
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
         return create(swaggerInterface, httpPipeline, createDefaultSerializer());
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     *
-     * @param swaggerInterface the Swagger interface to provide a proxy implementation for
-     * @param serviceClient the ServiceClient that contains the details to use to create the
-     *                      RestProxy implementation of the swagger interface
-     * @param <A> the type of the Swagger interface
-     * @return a proxy implementation of the provided Swagger interface
-     */
-    public static <A> A create(Class<A> swaggerInterface, ServiceClient serviceClient) {
-        return create(swaggerInterface, serviceClient.httpPipeline(), createDefaultSerializer());
     }
 
     /**
@@ -683,6 +667,6 @@ public class RestProxy implements InvocationHandler {
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, serializer);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface}, restProxy);
     }
 }

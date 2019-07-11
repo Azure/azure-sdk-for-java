@@ -5,9 +5,9 @@ package com.azure.core.implementation;
 
 import com.azure.core.MyOtherRestException;
 import com.azure.core.MyRestException;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.PATCH;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Patch;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
@@ -35,7 +35,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface2 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @ExpectedResponses({200})
         void testMethod2();
     }
@@ -57,7 +57,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface3 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
         void testMethod3();
@@ -80,7 +80,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface4 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
@@ -106,7 +106,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface5 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
         void testMethod5();
@@ -131,7 +131,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface6 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(code = {400, 401}, value = MyRestException.class)
         @UnexpectedResponseExceptionType(code = {404, 409}, value = HttpResponseException.class)
@@ -164,7 +164,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface7 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @UnexpectedResponseExceptionType(MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         void testMethod7();
@@ -185,7 +185,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface8 {
-        @PATCH("my/rest/api/path")
+        @Patch("my/rest/api/path")
         @UnexpectedResponseExceptionType(code = {404}, value = MyRestException.class)
         @UnexpectedResponseExceptionType(code = {404}, value = HttpResponseException.class)
         void testMethod8();

@@ -6,21 +6,27 @@
   <parent>
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>spotbugs-reporting</artifactId>
   <version>1.0.0</version>
   <properties>
+    <!-- Track 1 client library versions -->
     <azure-batch.version>5.0.1</azure-batch.version>
     <azure-eventhubs.version>2.3.1</azure-eventhubs.version>
     <azure-eventhubs-eph.version>2.5.1</azure-eventhubs-eph.version>
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
     <azure-servicebus.version>2.0.0</azure-servicebus.version>
     <azure-storage-blob.version>10.5.0</azure-storage-blob.version>
-    <azure-data-appconfiguration.version>1.0.0-SNAPSHOT</azure-data-appconfiguration.version>
-    <azure-messaging-eventhubs.version>5.0.0-preview.1</azure-messaging-eventhubs.version>
+
+    <!-- Track 2 client library versions -->
+    <azure-core.version>1.0.0-preview.3</azure-core.version>
+    <azure-data-appconfiguration.version>1.0.0-preview.1</azure-data-appconfiguration.version>
+    <azure-identity.version>1.0.0-preview.1</azure-identity.version>
+    <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
+    <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
   </properties>
   <distributionManagement>
     <site>
@@ -114,27 +120,22 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-amqp</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-management</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-test</artifactId>
-          <version>1.0.0-preview.1</version>
+          <version>${azure-core.version}</version>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -146,7 +147,17 @@
           <artifactId>azure-messaging-eventhubs</artifactId>
           <version>${azure-messaging-eventhubs.version}</version>
         </dependency>
+        <!-- Added this dependency to include necessary annotations used by reactor core.
+        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+        which is used in @Nullable annotation in reactor core classes -->
+        <dependency>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>jsr305</artifactId>
+          <version>3.0.2</version>
+          <scope>provided</scope>
+        </dependency>
       </dependencies>
+
       <properties>
         <client.phase>generate-sources</client.phase>
         <data.phase>none</data.phase>

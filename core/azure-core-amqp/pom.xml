@@ -7,13 +7,13 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-parent</artifactId>
-    <version>1.0.0-preview.1</version>
+    <version>1.0.0-preview.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>1.0.0-preview.1</version>
+  <version>1.0.0-preview.3</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
@@ -39,9 +39,8 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
-    <tag>v1.0.0-preview.1</tag>
   </scm>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -58,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-preview.3</version>
     </dependency>
 
     <dependency>

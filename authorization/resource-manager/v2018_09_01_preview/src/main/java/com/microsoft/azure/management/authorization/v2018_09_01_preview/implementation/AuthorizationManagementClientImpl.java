@@ -134,6 +134,19 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The GlobalAdministratorsInner object to access its operations.
+     */
+    private GlobalAdministratorsInner globalAdministrators;
+
+    /**
+     * Gets the GlobalAdministratorsInner object to access its operations.
+     * @return the GlobalAdministratorsInner object.
+     */
+    public GlobalAdministratorsInner globalAdministrators() {
+        return this.globalAdministrators;
+    }
+
+    /**
      * The ProviderOperationsMetadatasInner object to access its operations.
      */
     private ProviderOperationsMetadatasInner providerOperationsMetadatas;
@@ -233,6 +246,7 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
+        this.globalAdministrators = new GlobalAdministratorsInner(restClient().retrofit(), this);
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
         this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.permissions = new PermissionsInner(restClient().retrofit(), this);

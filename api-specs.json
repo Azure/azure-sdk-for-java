@@ -7,6 +7,10 @@
     "source": "specification/apimanagement/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "appconfiguration/resource-manager": {
+    "source": "specification/appconfiguration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "applicationinsights/resource-manager": {
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -202,6 +206,10 @@
     "source": "specification/recoveryservicesbackup/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "recoveryservicessiterecovery/resource-manager": {
+    "source": "specification/recoveryservicessiterecovery/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "redis/resource-manager": {
     "source": "specification/redis/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -210,6 +218,10 @@
       "\"knownPlurals\"": ["\"redis\""],
       "\"knownSingulars\"": ["\"redis\""]
     }
+  },
+  "relay/resource-manager": {
+    "source": "specification/relay/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "resourcegraph/resource-manager": {
     "source": "specification/resourcegraph/resource-manager/readme.md",
@@ -223,6 +235,18 @@
     "source": "specification/resources/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "search/resource-manager": {
+    "source": "specification/search/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicefabric/resource-manager": {
+    "source": "specification/servicefabric/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "servicebus/resource-manager": {
+    "source": "specification/servicebus/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "signalr/resource-manager": {
     "source": "specification/signalr/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -234,6 +258,10 @@
   },
   "sql/resource-manager": {
     "source": "specification/sql/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "sqlvirtualmachine/resource-manager": {
+    "source": "specification/sqlvirtualmachine/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "storage/resource-manager": {
