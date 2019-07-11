@@ -105,14 +105,26 @@ public class EventHubProducer implements Closeable {
         this.isPartitionSender = !ImplUtils.isNullOrEmpty(options.partitionId());
     }
 
+    /**
+     * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
+     * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     */
     public Mono<EventDataBatch> createBatch() {
         return createBatch(DEFAULT_BATCH_OPTIONS);
     }
 
+    /**
+     * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
+     *
+     * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
+     */
     public Mono<EventDataBatch> createBatch(BatchOptions options) {
         Objects.requireNonNull(options);
 
         final BatchOptions clone = (BatchOptions) options.clone();
+
+        verifyPartitionKey(clone.partitionKey());
 
         return sendLinkMono.flatMap(link -> link.getLinkSize()
             .flatMap(size -> {
@@ -229,7 +241,18 @@ public class EventHubProducer implements Closeable {
         return sendInternal(Flux.from(events), options);
     }
 
+    /**
+     * Sends the batch to the associated Event Hub.
+     *
+     * @param batch The batch to send to the service.
+     * @return A {@link Mono} that completes when the batch is pushed to the service.
+     * @throws NullPointerException if {@code batch} is {@code null}.
+     * @see EventHubProducer#createBatch()
+     * @see EventHubProducer#createBatch(BatchOptions)
+     */
     public Mono<Void> send(EventDataBatch batch) {
+        Objects.requireNonNull(batch);
+
         if (batch.getEvents().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
@@ -247,26 +270,15 @@ public class EventHubProducer implements Closeable {
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.partitionKey();
 
-        if (!ImplUtils.isNullOrEmpty(partitionKey)) {
-            if (isPartitionSender) {
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "SendOptions.partitionKey() cannot be set when an EventHubProducer is created with"
-                        + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
-                    senderOptions.partitionId()));
-            } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
-            }
-        }
+        verifyPartitionKey(partitionKey);
 
         return sendLinkMono.flatMap(link -> {
-
             //TODO (conniey): When we implement partial success, update the maximum number of batches or remove it completely.
             return link.getLinkSize()
                 .flatMap(size -> {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                     final BatchOptions batchOptions = new BatchOptions()
-                        .partitionKey(options.partitionKey())
+                        .partitionKey(partitionKey)
                         .maximumSizeInBytes(batchSize);
 
                     return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext));
@@ -282,6 +294,22 @@ public class EventHubProducer implements Closeable {
             .doOnError(error -> {
                 logger.error("Error sending batch.", error);
             });
+    }
+
+    private void verifyPartitionKey(String partitionKey) {
+        if (ImplUtils.isNullOrEmpty(partitionKey)) {
+            return;
+        }
+
+        if (isPartitionSender) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
+                    + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
+                senderOptions.partitionId()));
+        } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
+        }
     }
 
     /**
