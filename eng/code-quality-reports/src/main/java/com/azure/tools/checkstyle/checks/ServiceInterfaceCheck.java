@@ -7,6 +7,8 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import java.util.regex.Pattern;
+
 /**
  * The @ServiceInterface class should have the following rules:
  *   1) The annotation property 'name' should be non-empty
@@ -60,26 +62,20 @@ public class ServiceInterfaceCheck extends AbstractCheck {
             if (ast.getType() != TokenTypes.ANNOTATION) {
                 continue;
             }
-            // ANNOTATION
-            for (DetailAST annotationChild = ast.getFirstChild(); annotationChild != null;
-                 annotationChild = annotationChild.getNextSibling()) {
+            // Skip if not @ServiceInterface annotation
+            if (!"ServiceInterface".equals(ast.findFirstToken(TokenTypes.IDENT).getText())) {
+                continue;
+            }
 
-                // IDENT
-                if (annotationChild.getType() == TokenTypes.IDENT) {
-                    // Skip this annotation if it is not @ServiceInterface,
-                    if (!"ServiceInterface".equals(annotationChild.getText())) {
-                        break;
-                    } else {
-                        serviceInterfaceAnnotationNode = ast;
-                    }
-                }
+            // Get the @ServiceInterface annotation node
+            serviceInterfaceAnnotationNode = ast;
 
-                // ANNOTATION_MEMBER_VALUE_PAIR
-                if (annotationChild.getType() == TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR) {
-                    if ("name".equals(annotationChild.findFirstToken(TokenTypes.IDENT).getText())) {
-                        nameValue = getNamePropertyValue(annotationChild.findFirstToken(TokenTypes.EXPR));
-                    }
-                }
+            // Get the 'name' property value of @ServiceInterface
+            // @ServiceInterface requires 'name' property
+            DetailAST annotationMemberValuePairToken = ast.findFirstToken(TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR);
+            if ("name".equals(annotationMemberValuePairToken.findFirstToken(TokenTypes.IDENT).getText())) {
+                nameValue = getNamePropertyValue(annotationMemberValuePairToken.findFirstToken(TokenTypes.EXPR));
+                break;
             }
         }
 
@@ -90,21 +86,13 @@ public class ServiceInterfaceCheck extends AbstractCheck {
         }
 
         // 'name' is required at @ServiceInterface
-        // 'name' should not be empty
-        if (nameValue.isEmpty()) {
-            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface, ''%s'' should not be empty.", nameValue));
+        // 'name' should not be empty, no Space allowed and the length should less than or equal to 10 characters
+        Pattern serviceNamePattern = Pattern.compile("^[a-zA-Z0-9]{1,10}$");
+        if (!serviceNamePattern.matcher(nameValue).find()) {
+            log(serviceInterfaceAnnotationNode, String.format(
+                "The ''name'' property of @ServiceInterface, ''%s'' should be non-empty, alphanumeric and not more than 10 characters",
+                nameValue));
         }
-
-        // No Space allowed
-        if (nameValue.contains(" ")) {
-            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface, ''%s'' should not contain white space.", nameValue));
-        }
-        // Length should less than or equal to 10 characters
-        if (nameValue.length() > 10) {
-            log(serviceInterfaceAnnotationNode, "[DEBUG] length = " + nameValue.length() + ",  name = " + nameValue);
-            log(serviceInterfaceAnnotationNode, String.format("The ''name'' property of @ServiceInterface ''%s'' should not have a length > 10.", nameValue));
-        }
-
     }
 
     /**

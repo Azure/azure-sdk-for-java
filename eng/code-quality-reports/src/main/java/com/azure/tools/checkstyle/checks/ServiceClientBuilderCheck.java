@@ -7,6 +7,8 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import java.util.Stack;
+
 /**
  * The @ServiceClientBuilder class should have the following rules:
  *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
@@ -18,30 +20,10 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String BUILD_CLIENT = "buildClient";
     private static final String BUILD_ASYNC_CLIENT = "buildAsyncClient";
 
-    private static boolean hasServiceClientBuilderAnnotation;
-    private static boolean hasAsyncClientBuilder;
-    private static boolean hasClientBuilder;
-
-    @Override
-    public void beginTree(DetailAST root) {
-        hasServiceClientBuilderAnnotation = false;
-        hasAsyncClientBuilder = false;
-        hasClientBuilder = false;
-    }
-
-    @Override
-    public void finishTree(DetailAST root) {
-        if (!hasServiceClientBuilderAnnotation) {
-            return;
-        }
-
-        if (!hasAsyncClientBuilder) {
-            log(root, String.format("The class annotated with @ServiceClientBuilder requires an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
-        }
-        if (!hasClientBuilder) {
-            log(root, String.format("The class annotated with @ServiceClientBuilder requires a synchronous method, ''%s''", BUILD_CLIENT));
-        }
-    }
+    private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack();
+    private boolean hasServiceClientBuilderAnnotation;
+    private boolean hasAsyncClientBuilder;
+    private boolean hasClientBuilder;
 
     @Override
     public int[] getDefaultTokens() {
@@ -62,14 +44,45 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     }
 
     @Override
+    public void leaveToken(DetailAST token) {
+        switch (token.getType()) {
+            case TokenTypes.CLASS_DEF:
+                final boolean previousState = hasServiceClientBuilderAnnotationStack.pop();
+
+                if (!hasServiceClientBuilderAnnotation) {
+                    return;
+                }
+
+                if (!hasAsyncClientBuilder) {
+                    log(token, String.format("The class annotated with @ServiceClientBuilder requires an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
+                }
+                if (!hasClientBuilder) {
+                    log(token, String.format("The class annotated with @ServiceClientBuilder requires a synchronous method, ''%s''", BUILD_CLIENT));
+                }
+                // end of CLASS_DEF node, reset the value back to previous state
+                hasServiceClientBuilderAnnotation = previousState;
+                break;
+            default:
+                // Checkstyle complains if there's no default block in switch
+                break;
+        }
+    }
+
+    @Override
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                final DetailAST serviceClientAnnotationToken = getServiceClientAnnotation(token);
+                // for the starting root of every class, reset to false
+                hasAsyncClientBuilder = false;
+                hasClientBuilder = false;
+
+                // Save the state of variable 'hasServiceClientBuilderAnnotation' to limit the scope of accessibility
+                hasServiceClientBuilderAnnotationStack.push(hasServiceClientBuilderAnnotation);
+
+                final DetailAST serviceClientAnnotationBuilderToken = getServiceClientBuilderAnnotation(token);
                 final String className = token.findFirstToken(TokenTypes.IDENT).getText();
 
-                hasServiceClientBuilderAnnotation = serviceClientAnnotationToken != null;
-
+                hasServiceClientBuilderAnnotation = serviceClientAnnotationBuilderToken != null;
                 if (hasServiceClientBuilderAnnotation) {
                     // Don't need to check if the 'serviceClients' exist. It is required when using @ServiceClientBuilder
 
@@ -114,7 +127,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
      * @param classDefToken the CLASS_DEF AST node
      * @return the annotation node if the class is annotated with @ServiceClientBuilder, null otherwise.
      */
-    private DetailAST getServiceClientAnnotation(DetailAST classDefToken) {
+    private DetailAST getServiceClientBuilderAnnotation(DetailAST classDefToken) {
         final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
 
         if (!modifiersToken.branchContains(TokenTypes.ANNOTATION)) {
