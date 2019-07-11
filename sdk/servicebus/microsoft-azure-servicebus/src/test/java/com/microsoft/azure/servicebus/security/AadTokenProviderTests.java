@@ -21,15 +21,15 @@ public class AadTokenProviderTests {
         AuthenticationCallback callback = (String audience, String authority, Object state) -> CompletableFuture.completedFuture(TEST_TOKEN);
         TokenProvider tokenProvider = TokenProvider.createAzureActiveDirectoryTokenProvider(callback, "https://login.microsoftonline.com/common", null);
         assertEquals(TEST_TOKEN, tokenProvider.getSecurityTokenAsync("testAudience").join());
-        
+
         // Should throw when null calback is provided
         TestUtils.assertThrows(IllegalArgumentException.class, () -> {
-        	TokenProvider.createAzureActiveDirectoryTokenProvider(null, "https://login.microsoftonline.com/common", null);
+            TokenProvider.createAzureActiveDirectoryTokenProvider(null, "https://login.microsoftonline.com/common", null);
         });
 
         // Should throw when null authority is provided
         TestUtils.assertThrows(IllegalArgumentException.class, () -> {
-        	TokenProvider.createAzureActiveDirectoryTokenProvider(callback, null, null);
+            TokenProvider.createAzureActiveDirectoryTokenProvider(callback, null, null);
         });
     }
 }
