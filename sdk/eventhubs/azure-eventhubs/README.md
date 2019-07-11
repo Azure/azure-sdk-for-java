@@ -143,7 +143,7 @@ you can also use the send method to send multiple events using a single call.
 
 #### Producer creation
 
-With an existing [EventHubAsyncClient][EventHubAsyncClient], developers can create a producer by calling `createProducer()` or
+With an existing [EventHubAsyncClient][eventhubasyncclient], developers can create a producer by calling `createProducer()` or
 `createProducer(EventHubProducerOptions)`.
 
 Creates a producer sends events to any partition, allowing Event Hubs service to route the event to an available
@@ -305,7 +305,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
 [event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas
-[EventHubAsyncClient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubAsyncClient.java
+[eventhubasyncclient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubAsyncClient.java
 [eventhubconsumer]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
 [eventhubproduceroptions]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
