@@ -48,6 +48,7 @@ public class EventHubProducerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES));
     }
 
     @After
@@ -157,7 +158,6 @@ public class EventHubProducerTest {
             return Flux.just(data);
         });
 
-        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
