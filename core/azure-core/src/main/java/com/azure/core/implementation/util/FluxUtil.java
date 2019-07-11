@@ -3,11 +3,22 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -15,13 +26,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.CompletionHandler;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
  * Utility type exposing methods to deal with {@link Flux}.
@@ -172,6 +176,64 @@ public final class FluxUtil {
      */
     public static Mono<Void> bytebufStreamToFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile, long position) {
         return Mono.create(emitter -> content.subscribe(new ByteBufToFileSubscriber(outFile, position, emitter)));
+    }
+
+    /**
+     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
+     * single entity of type {@code T}
+     * <p>
+     *  If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * </p>
+     *
+     * <p><strong>Code samples</strong></p>
+     * {@codesnippet com.azure.core.implementation.util.fluxutil.callwithcontextgetsingle}
+     *
+     * @param serviceCall The lambda function that makes the service call into which azure context will be passed
+     * @param <T> The type of response returned from the service call
+     * @return The response from service call
+     */
+    public static <T> Mono<T> callWithContextGetSingle(Function<Context, Mono<T>> serviceCall) {
+        return Mono.subscriberContext()
+            .map(FluxUtil::toAzureContext)
+            .flatMap(serviceCall);
+    }
+
+    /**
+     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
+     * collection of type {@code T}
+     * <p>
+     *  If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * </p>
+     *
+     *  <p><strong>Code samples</strong></p>
+     *  {@codesnippet com.azure.core.implementation.util.fluxutil.callwithcontextgetcollection}
+     *
+     * @param serviceCall The lambda function that makes the service call into which the context will be passed
+     * @param <T> The type of response returned from the service call
+     * @return The response from service call
+     */
+    public static <T> Flux<T> callWithContextGetCollection(Function<Context, Flux<T>> serviceCall) {
+        return Mono.subscriberContext()
+            .map(FluxUtil::toAzureContext)
+            .flatMapMany(serviceCall);
+    }
+
+    /**
+     * Converts a reactor context to azure context. If the reactor context is {@code null} or empty,
+     * {@link Context#NONE} will be returned.
+     *
+     * @param context The reactor context
+     * @return The azure context
+     */
+    private static Context toAzureContext(reactor.util.context.Context context) {
+        Map<Object, Object> keyValues = context.stream()
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        if (ImplUtils.isNullOrEmpty(keyValues)) {
+            return Context.NONE;
+        }
+        return Context.of(keyValues);
     }
 
     private static class ByteBufToFileSubscriber implements Subscriber<ByteBuf> {

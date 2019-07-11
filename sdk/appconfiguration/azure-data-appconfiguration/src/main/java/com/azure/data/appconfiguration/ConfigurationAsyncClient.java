@@ -28,8 +28,8 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.core.implementation.service.ServiceUtil.callWithContextGetCollection;
-import static com.azure.core.implementation.service.ServiceUtil.callWithContextGetSingle;
+import static com.azure.core.implementation.util.FluxUtil.callWithContextGetCollection;
+import static com.azure.core.implementation.util.FluxUtil.callWithContextGetSingle;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}

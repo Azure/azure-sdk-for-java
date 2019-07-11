@@ -30,7 +30,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Key: %s, Value: %s", result.key(), result.value());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.addsetting#String-String
-
     }
 
     /**
@@ -49,9 +48,12 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions
-
     }
 
+    /**
+     * Implementation not provided
+     * @return {@code null}
+     */
     private ConfigurationAsyncClient getAsyncClient() {
         return null;
     }
