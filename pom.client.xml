@@ -386,12 +386,12 @@
                 <packages>com.azure.security.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Storage - Blobs</title>
-                <packages>com.azure.storage.blob*</packages>
-              </group>
-              <group>
                 <title>Azure Storage - Common</title>
                 <packages>com.azure.storage.common*</packages>
+              </group>
+              <group>
+                <title>Azure Storage - Blobs</title>
+                <packages>com.azure.storage.blob*</packages>
               </group>
             </groups>
             <links>
