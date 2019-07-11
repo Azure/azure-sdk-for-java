@@ -98,4 +98,7 @@
 
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+
+  <!-- Any code in any package, it should never be a 'throw' keyword in the client library codebase except for in the client logger -->
+  <suppress checks="ThrownClientLoggerCheck" files=".*[/\\]com[/\\]azure[/\\]core[/\\]util[/\\]logging[/\\]*"/>
 </suppressions>
