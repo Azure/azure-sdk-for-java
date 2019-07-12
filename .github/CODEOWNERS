@@ -16,7 +16,7 @@
 # /sdk/eventhubs/
 # /sdk/identity/
 # /sdk/keyvault/
-# /storage/
+# /sdk/storage/
 
 ###########
 # Eng Sys
