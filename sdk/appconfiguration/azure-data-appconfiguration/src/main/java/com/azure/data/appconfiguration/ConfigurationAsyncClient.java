@@ -761,7 +761,9 @@ public final class ConfigurationAsyncClient {
      * Remaps the exception returned from the service if it is a PRECONDITION_FAILED response. This is performed since
      * add setting returns PRECONDITION_FAILED when the configuration already exists, all other uses of setKey return
      * this status when the configuration doesn't exist.
+     *
      * @param throwable Error response from the service.
+     *
      * @return Exception remapped to a ResourceModifiedException if the throwable was a ResourceNotFoundException,
      * otherwise the throwable is returned unmodified.
      */
