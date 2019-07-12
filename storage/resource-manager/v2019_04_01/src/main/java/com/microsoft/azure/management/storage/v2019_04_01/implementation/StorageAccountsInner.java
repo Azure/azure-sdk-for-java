@@ -226,9 +226,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the StorageAccountInner object if successful.
+     * @return the Object object if successful.
      */
-    public StorageAccountInner create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+    public Object create(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().last().body();
     }
 
@@ -242,7 +242,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StorageAccountInner> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<StorageAccountInner> serviceCallback) {
+    public ServiceFuture<Object> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
@@ -255,10 +255,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<StorageAccountInner> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+    public Observable<Object> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -273,7 +273,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<StorageAccountInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+    public Observable<ServiceResponse<Object>> createWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -291,7 +291,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<StorageAccountInner>() { }.getType());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<Object>() { }.getType());
     }
 
     /**
@@ -303,9 +303,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the StorageAccountInner object if successful.
+     * @return the Object object if successful.
      */
-    public StorageAccountInner beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+    public Object beginCreate(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).toBlocking().single().body();
     }
 
@@ -319,7 +319,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<StorageAccountInner> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<StorageAccountInner> serviceCallback) {
+    public ServiceFuture<Object> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters), serviceCallback);
     }
 
@@ -330,12 +330,12 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the StorageAccountInner object
+     * @return the observable to the Object object
      */
-    public Observable<StorageAccountInner> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+    public Observable<Object> beginCreateAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, accountName, parameters).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -348,9 +348,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The parameters to provide for the created account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the StorageAccountInner object
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<StorageAccountInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+    public Observable<ServiceResponse<Object>> beginCreateWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -368,11 +368,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         }
         Validator.validate(parameters);
         return service.beginCreate(resourceGroupName, accountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<StorageAccountInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<StorageAccountInner> clientResponse = beginCreateDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginCreateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -381,10 +381,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<StorageAccountInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<StorageAccountInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

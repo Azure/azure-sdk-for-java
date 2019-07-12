@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.storage.v2019_04_01;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
 import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
@@ -22,7 +21,18 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing StorageAccounts.
  */
-public interface StorageAccounts extends SupportsCreating<StorageAccount.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StorageAccount>, SupportsListingByResourceGroup<StorageAccount>, SupportsListing<StorageAccount>, HasInner<StorageAccountsInner> {
+public interface StorageAccounts extends SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StorageAccount>, SupportsListingByResourceGroup<StorageAccount>, SupportsListing<StorageAccount>, HasInner<StorageAccountsInner> {
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters to provide for the created account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Object> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters);
+
     /**
      * Lists the access keys for the specified storage account.
      *

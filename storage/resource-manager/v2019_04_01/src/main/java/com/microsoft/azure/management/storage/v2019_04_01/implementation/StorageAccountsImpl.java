@@ -26,6 +26,7 @@ import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountListKeys
 import com.microsoft.azure.management.storage.v2019_04_01.ListAccountSasResponse;
 import com.microsoft.azure.management.storage.v2019_04_01.ListServiceSasResponse;
 import com.microsoft.azure.management.storage.v2019_04_01.CheckNameAvailabilityResult;
+import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.AccountSasParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.ServiceSasParameters;
 
@@ -127,9 +128,10 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
     }
 
     @Override
-    public StorageAccountImpl define(String name) {
-        return wrapModel(name);
-    }
+    public Observable<Object> createAsync(String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+        StorageAccountsInner client = this.inner();
+        return client.createAsync(resourceGroupName, accountName, parameters)
+    ;}
 
     @Override
     public Observable<StorageAccountListKeysResult> listKeysAsync(String resourceGroupName, String accountName) {
@@ -210,7 +212,7 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
+        return null; // Model is not creatable
     }
 
 }

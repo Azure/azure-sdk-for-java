@@ -12,8 +12,8 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccount;
 import rx.Observable;
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountUpdateParameters;
-import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.AccessTier;
+import com.microsoft.azure.management.storage.v2019_04_01.AzureFilesIdentityBasedAuthentication;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_04_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2019_04_01.Encryption;
@@ -27,29 +27,17 @@ import com.microsoft.azure.management.storage.v2019_04_01.Sku;
 import com.microsoft.azure.management.storage.v2019_04_01.AccountStatus;
 import rx.functions.Func1;
 
-class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager> implements StorageAccount, StorageAccount.Definition, StorageAccount.Update {
-    private StorageAccountCreateParameters createParameter;
+class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager> implements StorageAccount, StorageAccount.Update {
     private StorageAccountUpdateParameters updateParameter;
     StorageAccountImpl(String name, StorageAccountInner inner, StorageManager manager) {
         super(name, inner, manager);
-        this.createParameter = new StorageAccountCreateParameters();
         this.updateParameter = new StorageAccountUpdateParameters();
     }
 
     @Override
     public Observable<StorageAccount> createResourceAsync() {
         StorageAccountsInner client = this.manager().inner().storageAccounts();
-        this.createParameter.withLocation(inner().location());
-        this.createParameter.withTags(inner().getTags());
-        return client.createAsync(this.resourceGroupName(), this.name(), this.createParameter)
-            .map(new Func1<StorageAccountInner, StorageAccountInner>() {
-               @Override
-               public StorageAccountInner call(StorageAccountInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
-            .map(innerToFluentMap(this));
+        return null; // NOP createResourceAsync implementation as create is not supported
     }
 
     @Override
@@ -78,13 +66,17 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     private void resetCreateUpdateParameters() {
-        this.createParameter = new StorageAccountCreateParameters();
         this.updateParameter = new StorageAccountUpdateParameters();
     }
 
     @Override
     public AccessTier accessTier() {
         return this.inner().accessTier();
+    }
+
+    @Override
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
+        return this.inner().azureFilesIdentityBasedAuthentication();
     }
 
     @Override
@@ -95,11 +87,6 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public CustomDomain customDomain() {
         return this.inner().customDomain();
-    }
-
-    @Override
-    public Boolean enableAzureFilesAadIntegration() {
-        return this.inner().enableAzureFilesAadIntegration();
     }
 
     @Override
@@ -193,98 +180,56 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
-    public StorageAccountImpl withIsHnsEnabled(Boolean isHnsEnabled) {
-        this.createParameter.withIsHnsEnabled(isHnsEnabled);
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withKind(Kind kind) {
-        if (isInCreateMode()) {
-            this.createParameter.withKind(kind);
-        } else {
-            this.updateParameter.withKind(kind);
-        }
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withSku(SkuInner sku) {
-        if (isInCreateMode()) {
-            this.createParameter.withSku(sku);
-        } else {
-            this.updateParameter.withSku(sku);
-        }
-        return this;
-    }
-
-    @Override
     public StorageAccountImpl withAccessTier(AccessTier accessTier) {
-        if (isInCreateMode()) {
-            this.createParameter.withAccessTier(accessTier);
-        } else {
-            this.updateParameter.withAccessTier(accessTier);
-        }
+        this.updateParameter.withAccessTier(accessTier);
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+        this.updateParameter.withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
         return this;
     }
 
     @Override
     public StorageAccountImpl withCustomDomain(CustomDomain customDomain) {
-        if (isInCreateMode()) {
-            this.createParameter.withCustomDomain(customDomain);
-        } else {
-            this.updateParameter.withCustomDomain(customDomain);
-        }
-        return this;
-    }
-
-    @Override
-    public StorageAccountImpl withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableAzureFilesAadIntegration(enableAzureFilesAadIntegration);
-        } else {
-            this.updateParameter.withEnableAzureFilesAadIntegration(enableAzureFilesAadIntegration);
-        }
+        this.updateParameter.withCustomDomain(customDomain);
         return this;
     }
 
     @Override
     public StorageAccountImpl withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
-        } else {
-            this.updateParameter.withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
-        }
+        this.updateParameter.withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
         return this;
     }
 
     @Override
     public StorageAccountImpl withEncryption(Encryption encryption) {
-        if (isInCreateMode()) {
-            this.createParameter.withEncryption(encryption);
-        } else {
-            this.updateParameter.withEncryption(encryption);
-        }
+        this.updateParameter.withEncryption(encryption);
         return this;
     }
 
     @Override
     public StorageAccountImpl withIdentity(Identity identity) {
-        if (isInCreateMode()) {
-            this.createParameter.withIdentity(identity);
-        } else {
-            this.updateParameter.withIdentity(identity);
-        }
+        this.updateParameter.withIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withKind(Kind kind) {
+        this.updateParameter.withKind(kind);
         return this;
     }
 
     @Override
     public StorageAccountImpl withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        if (isInCreateMode()) {
-            this.createParameter.withNetworkRuleSet(networkRuleSet);
-        } else {
-            this.updateParameter.withNetworkRuleSet(networkRuleSet);
-        }
+        this.updateParameter.withNetworkRuleSet(networkRuleSet);
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withSku(SkuInner sku) {
+        this.updateParameter.withSku(sku);
         return this;
     }
 

@@ -15,7 +15,6 @@ import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_04_01.implementation.StorageManager;
 import com.microsoft.azure.management.storage.v2019_04_01.implementation.SkuInner;
@@ -32,6 +31,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     AccessTier accessTier();
 
     /**
+     * @return the azureFilesIdentityBasedAuthentication value.
+     */
+    AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication();
+
+    /**
      * @return the creationTime value.
      */
     DateTime creationTime();
@@ -40,11 +44,6 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
      * @return the customDomain value.
      */
     CustomDomain customDomain();
-
-    /**
-     * @return the enableAzureFilesAadIntegration value.
-     */
-    Boolean enableAzureFilesAadIntegration();
 
     /**
      * @return the enableHttpsTrafficOnly value.
@@ -132,159 +131,9 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     AccountStatus statusOfSecondary();
 
     /**
-     * The entirety of the StorageAccount definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithKind, DefinitionStages.WithSku, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * Grouping of StorageAccount definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of a StorageAccount definition.
-         */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the StorageAccount definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithKind> {
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify Kind.
-         */
-        interface WithKind {
-           /**
-            * Specifies kind.
-            * @param kind Required. Indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
-            * @return the next definition stage
-*/
-            WithSku withKind(Kind kind);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify Sku.
-         */
-        interface WithSku {
-           /**
-            * Specifies sku.
-            * @param sku Required. Gets or sets the SKU name
-            * @return the next definition stage
-*/
-            WithCreate withSku(SkuInner sku);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify AccessTier.
-         */
-        interface WithAccessTier {
-            /**
-             * Specifies accessTier.
-             * @param accessTier Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
-             * @return the next definition stage
-             */
-            WithCreate withAccessTier(AccessTier accessTier);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify CustomDomain.
-         */
-        interface WithCustomDomain {
-            /**
-             * Specifies customDomain.
-             * @param customDomain User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property
-             * @return the next definition stage
-             */
-            WithCreate withCustomDomain(CustomDomain customDomain);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify EnableAzureFilesAadIntegration.
-         */
-        interface WithEnableAzureFilesAadIntegration {
-            /**
-             * Specifies enableAzureFilesAadIntegration.
-             * @param enableAzureFilesAadIntegration Enables Azure Files AAD Integration for SMB if sets to true
-             * @return the next definition stage
-             */
-            WithCreate withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify EnableHttpsTrafficOnly.
-         */
-        interface WithEnableHttpsTrafficOnly {
-            /**
-             * Specifies enableHttpsTrafficOnly.
-             * @param enableHttpsTrafficOnly Allows https traffic only to storage service if sets to true
-             * @return the next definition stage
-             */
-            WithCreate withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify Encryption.
-         */
-        interface WithEncryption {
-            /**
-             * Specifies encryption.
-             * @param encryption Provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted
-             * @return the next definition stage
-             */
-            WithCreate withEncryption(Encryption encryption);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity The identity of the resource
-             * @return the next definition stage
-             */
-            WithCreate withIdentity(Identity identity);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify IsHnsEnabled.
-         */
-        interface WithIsHnsEnabled {
-            /**
-             * Specifies isHnsEnabled.
-             * @param isHnsEnabled Account HierarchicalNamespace enabled if sets to true
-             * @return the next definition stage
-             */
-            WithCreate withIsHnsEnabled(Boolean isHnsEnabled);
-        }
-
-        /**
-         * The stage of the storageaccount definition allowing to specify NetworkRuleSet.
-         */
-        interface WithNetworkRuleSet {
-            /**
-             * Specifies networkRuleSet.
-             * @param networkRuleSet Network rule set
-             * @return the next definition stage
-             */
-            WithCreate withNetworkRuleSet(NetworkRuleSet networkRuleSet);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<StorageAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAccessTier, DefinitionStages.WithCustomDomain, DefinitionStages.WithEnableAzureFilesAadIntegration, DefinitionStages.WithEnableHttpsTrafficOnly, DefinitionStages.WithEncryption, DefinitionStages.WithIdentity, DefinitionStages.WithIsHnsEnabled, DefinitionStages.WithNetworkRuleSet {
-        }
-    }
-    /**
      * The template for a StorageAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithCustomDomain, UpdateStages.WithEnableAzureFilesAadIntegration, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
+    interface Update extends Appliable<StorageAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithAccessTier, UpdateStages.WithAzureFilesIdentityBasedAuthentication, UpdateStages.WithCustomDomain, UpdateStages.WithEnableHttpsTrafficOnly, UpdateStages.WithEncryption, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithNetworkRuleSet, UpdateStages.WithSku {
     }
 
     /**
@@ -304,6 +153,18 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
         }
 
         /**
+         * The stage of the storageaccount update allowing to specify AzureFilesIdentityBasedAuthentication.
+         */
+        interface WithAzureFilesIdentityBasedAuthentication {
+            /**
+             * Specifies azureFilesIdentityBasedAuthentication.
+             * @param azureFilesIdentityBasedAuthentication Provides the identity based authentication settings for Azure Files
+             * @return the next update stage
+             */
+            Update withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication);
+        }
+
+        /**
          * The stage of the storageaccount update allowing to specify CustomDomain.
          */
         interface WithCustomDomain {
@@ -313,18 +174,6 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
              * @return the next update stage
              */
             Update withCustomDomain(CustomDomain customDomain);
-        }
-
-        /**
-         * The stage of the storageaccount update allowing to specify EnableAzureFilesAadIntegration.
-         */
-        interface WithEnableAzureFilesAadIntegration {
-            /**
-             * Specifies enableAzureFilesAadIntegration.
-             * @param enableAzureFilesAadIntegration Enables Azure Files AAD Integration for SMB if sets to true
-             * @return the next update stage
-             */
-            Update withEnableAzureFilesAadIntegration(Boolean enableAzureFilesAadIntegration);
         }
 
         /**
