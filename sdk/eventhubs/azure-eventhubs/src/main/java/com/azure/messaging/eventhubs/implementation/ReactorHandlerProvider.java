@@ -8,6 +8,7 @@ import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
+import com.azure.messaging.eventhubs.implementation.handler.WebSocketConnectionHandler;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import java.time.Duration;
@@ -42,8 +43,9 @@ public class ReactorHandlerProvider {
             case AMQP:
                 return new ConnectionHandler(connectionId, hostname);
             case AMQP_WEB_SOCKETS:
+                return new WebSocketConnectionHandler(connectionId, hostname);
             default:
-                throw new IllegalArgumentException(String.format(Locale.US, "This transport type '%s' is not supported yet.", transportType));
+                throw new IllegalArgumentException(String.format(Locale.US, "This transport type '%s' is not supported.", transportType));
         }
     }
 
