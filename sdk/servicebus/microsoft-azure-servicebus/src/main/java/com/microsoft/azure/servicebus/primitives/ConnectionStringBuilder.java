@@ -95,6 +95,7 @@ public class ConnectionStringBuilder {
      * Connection string value used for the Authentication field which indicates that 
      * Managed Identity TokenProvider will be used for authentication purposes.
      */
+    public static final String MANAGEDIDENTITY_AUTHENTICATION = "ManagedIdentity";
     public static final String MANAGED_IDENTITY_AUTHENTICATION = "Managed Identity";
     
     private ConnectionStringBuilder(

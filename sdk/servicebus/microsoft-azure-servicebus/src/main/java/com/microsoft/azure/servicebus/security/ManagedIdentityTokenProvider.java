@@ -47,7 +47,7 @@ public class ManagedIdentityTokenProvider extends TokenProvider {
         return tokenGeneratingFuture;
     }
 
-    static Date getExpirationDateTimeUtcFromToken(String token) throws ParseException {
+    private static Date getExpirationDateTimeUtcFromToken(String token) throws ParseException {
         JWT jwt = JWTParser.parse(token);
         JWTClaimsSet claims = jwt.getJWTClaimsSet();
         return claims.getExpirationTime();

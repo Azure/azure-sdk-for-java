@@ -372,8 +372,10 @@ public class Util {
 
     public static ClientSettings getClientSettingsFromConnectionStringBuilder(ConnectionStringBuilder builder) {
         TokenProvider tokenProvider = null;
-        if (builder.getAuthentication() != null) {
-            if (builder.getAuthentication().replace(" ", "").equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION.replace(" ", ""))) {
+        String authentication = builder.getAuthentication();
+        if (authentication != null) {
+            if (authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGEDIDENTITY_AUTHENTICATION) || 
+                    authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
                 tokenProvider = new ManagedIdentityTokenProvider();
             }
         } else if (builder.getSharedAccessSignatureToken() == null) {
