@@ -28,8 +28,8 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.callWithContextGetCollection;
-import static com.azure.core.implementation.util.FluxUtil.callWithContextGetSingle;
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
+import static com.azure.core.implementation.util.FluxUtil.monoContext;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -86,7 +86,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return callWithContextGetSingle(
+        return monoContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
@@ -669,7 +669,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return callWithContextGetCollection(context -> listSettingRevisions(selector, context));
+        return fluxContext(context -> listSettingRevisions(selector, context));
     }
 
     /**

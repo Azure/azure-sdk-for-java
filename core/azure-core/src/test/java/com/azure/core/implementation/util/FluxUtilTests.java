@@ -287,12 +287,12 @@ public class FluxUtilTests {
     }
 
     private Mono<String> getSingle(String prefix) {
-        return FluxUtil.callWithContextGetSingle(context -> serviceCallSingle(prefix, context));
+        return FluxUtil.monoContext(context -> serviceCallSingle(prefix, context));
     }
 
     private Flux<String> getCollection(String prefix) {
         return FluxUtil
-            .callWithContextGetCollection(context -> serviceCallCollection(prefix, context));
+            .fluxContext(context -> serviceCallCollection(prefix, context));
     }
 
     private Mono<String> serviceCallSingle(String prefix, Context context) {

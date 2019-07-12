@@ -16,22 +16,22 @@ public class FluxUtilJavaDocCodeSnippets {
      * Code snippet for using {@link FluxUtil} with single item response
      */
     public void codeSnippetForCallWithSingleResponse() {
-        // BEGIN: com.azure.core.implementation.util.fluxutil.callwithcontextgetsingle
+        // BEGIN: com.azure.core.implementation.util.fluxutil.monocontext
         String prefix = "Hello, ";
         Mono<String> response = FluxUtil
-            .callWithContextGetSingle(context -> serviceCallReturnsSingle(prefix, context));
-        // END: com.azure.core.implementation.util.fluxutil.callwithcontextgetsingle
+            .monoContext(context -> serviceCallReturnsSingle(prefix, context));
+        // END: com.azure.core.implementation.util.fluxutil.monocontext
     }
 
     /**
      * Code snippet for using {@link FluxUtil} with collection response
      */
     public void codeSnippetForCallWithCollectionResponse() {
-        // BEGIN: com.azure.core.implementation.util.fluxutil.callwithcontextgetcollection
+        // BEGIN: com.azure.core.implementation.util.fluxutil.fluxcontext
         String prefix = "Hello, ";
         Flux<String> response = FluxUtil
-            .callWithContextGetCollection(context -> serviceCallReturnsCollection(prefix, context));
-        // END: com.azure.core.implementation.util.fluxutil.callwithcontextgetcollection
+            .fluxContext(context -> serviceCallReturnsCollection(prefix, context));
+        // END: com.azure.core.implementation.util.fluxutil.fluxcontext
     }
 
     /**

@@ -187,13 +187,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.callwithcontextgetsingle}
+     * {@codesnippet com.azure.core.implementation.util.fluxutil.monocontext}
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
      * @return The response from service call
      */
-    public static <T> Mono<T> callWithContextGetSingle(Function<Context, Mono<T>> serviceCall) {
+    public static <T> Mono<T> monoContext(Function<Context, Mono<T>> serviceCall) {
         return Mono.subscriberContext()
             .map(FluxUtil::toAzureContext)
             .flatMap(serviceCall);
@@ -208,13 +208,13 @@ public final class FluxUtil {
      * </p>
      *
      *  <p><strong>Code samples</strong></p>
-     *  {@codesnippet com.azure.core.implementation.util.fluxutil.callwithcontextgetcollection}
+     *  {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call
      * @return The response from service call
      */
-    public static <T> Flux<T> callWithContextGetCollection(Function<Context, Flux<T>> serviceCall) {
+    public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
         return Mono.subscriberContext()
             .map(FluxUtil::toAzureContext)
             .flatMapMany(serviceCall);
