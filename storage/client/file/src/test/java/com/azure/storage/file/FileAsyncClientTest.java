@@ -122,9 +122,12 @@ public class FileAsyncClientTest extends FileClientTestBase {
     @Override
     public void uploadToStorageAndDownloadToFile() throws Exception {
         fileAsyncClient.create(1024).block();
-        URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
+        URL fileFolder = FileClientTestBase.class.getClassLoader().getResource(".");
+        String folderPath = fileFolder.getPath() + "testfiles";
+        if (new File(folderPath).mkdir()) {
+
+        }
         String localFilePath = fileFolder.getPath() + "/helloworld";
-        System.out.println("-----------------------Sima: " + localFilePath);
         String downloadFilePath = fileFolder.getPath() + "/testDownload";
         File downloadFile = new File(downloadFilePath.substring(1));
         if (!Files.exists(downloadFile.toPath())) {
