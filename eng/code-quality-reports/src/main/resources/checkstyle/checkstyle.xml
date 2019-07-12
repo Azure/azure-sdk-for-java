@@ -305,7 +305,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!--CUSTOM CHECKS-->
-    <!-- Must use 'clientLogger.logAndThrow' but not directly calling 'throw exception' -->
+    <!-- Must use 'logger.logAndThrow' but not directly calling 'throw exception' -->
     <module name="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck"/>
   </module>
 </module>
