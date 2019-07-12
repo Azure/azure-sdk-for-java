@@ -182,10 +182,10 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
     }
 
     @Override
-    public Completable failoverAsync(String resourceGroupName, String accountName) {
+    public Observable<Object> failoverAsync(String resourceGroupName, String accountName) {
         StorageAccountsInner client = this.inner();
-        return client.failoverAsync(resourceGroupName, accountName).toCompletable();
-    }
+        return client.failoverAsync(resourceGroupName, accountName)
+    ;}
 
     @Override
     public Completable revokeUserDelegationKeysAsync(String resourceGroupName, String accountName) {

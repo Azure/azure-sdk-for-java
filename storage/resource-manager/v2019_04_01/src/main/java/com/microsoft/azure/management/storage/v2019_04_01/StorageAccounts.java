@@ -84,7 +84,7 @@ public interface StorageAccounts extends SupportsDeletingByResourceGroup, Suppor
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable failoverAsync(String resourceGroupName, String accountName);
+    Observable<Object> failoverAsync(String resourceGroupName, String accountName);
 
     /**
      * Revoke user delegation keys.

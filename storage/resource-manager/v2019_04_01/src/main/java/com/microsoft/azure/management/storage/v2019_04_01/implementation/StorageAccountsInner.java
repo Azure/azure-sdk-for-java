@@ -52,7 +52,7 @@ import com.microsoft.azure.LongRunningOperationOptions;
  * An instance of this class provides access to all the operations defined
  * in StorageAccounts.
  */
-public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInner>, InnerSupportsDelete<Void>, InnerSupportsListing<StorageAccountInner> {
+public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInner>, InnerSupportsDelete<Object>, InnerSupportsListing<StorageAccountInner> {
     /** The Retrofit service to perform REST calls. */
     private StorageAccountsService service;
     /** The service client containing this operation class. */
@@ -397,9 +397,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
      */
-    public void delete(String resourceGroupName, String accountName) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public Object delete(String resourceGroupName, String accountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -411,7 +412,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Object> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
@@ -421,12 +422,12 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the Object object
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Object> deleteAsync(String resourceGroupName, String accountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -438,9 +439,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<Object>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -454,11 +455,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.delete(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Object> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -467,10 +468,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<Object> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .register(204, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1285,9 +1286,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
      */
-    public void failover(String resourceGroupName, String accountName) {
-        failoverWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
+    public Object failover(String resourceGroupName, String accountName) {
+        return failoverWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().last().body();
     }
 
     /**
@@ -1299,7 +1301,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> failoverAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Object> failoverAsync(String resourceGroupName, String accountName, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(failoverWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
@@ -1311,10 +1313,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> failoverAsync(String resourceGroupName, String accountName) {
-        return failoverWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Object> failoverAsync(String resourceGroupName, String accountName) {
+        return failoverWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -1328,7 +1330,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> failoverWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<Object>> failoverWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1342,7 +1344,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.failover(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Object>() { }.getType());
     }
 
     /**
@@ -1353,9 +1355,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Object object if successful.
      */
-    public void beginFailover(String resourceGroupName, String accountName) {
-        beginFailoverWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    public Object beginFailover(String resourceGroupName, String accountName) {
+        return beginFailoverWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
     }
 
     /**
@@ -1367,7 +1370,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginFailoverAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Object> beginFailoverAsync(String resourceGroupName, String accountName, final ServiceCallback<Object> serviceCallback) {
         return ServiceFuture.fromResponse(beginFailoverWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
     }
 
@@ -1377,12 +1380,12 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the Object object
      */
-    public Observable<Void> beginFailoverAsync(String resourceGroupName, String accountName) {
-        return beginFailoverWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Object> beginFailoverAsync(String resourceGroupName, String accountName) {
+        return beginFailoverWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Object>, Object>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public Object call(ServiceResponse<Object> response) {
                 return response.body();
             }
         });
@@ -1394,9 +1397,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the Object object
      */
-    public Observable<ServiceResponse<Void>> beginFailoverWithServiceResponseAsync(String resourceGroupName, String accountName) {
+    public Observable<ServiceResponse<Object>> beginFailoverWithServiceResponseAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1410,11 +1413,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginFailover(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginFailoverDelegate(response);
+                        ServiceResponse<Object> clientResponse = beginFailoverDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1423,10 +1426,10 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             });
     }
 
-    private ServiceResponse<Void> beginFailoverDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<Object> beginFailoverDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
+                .register(202, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
