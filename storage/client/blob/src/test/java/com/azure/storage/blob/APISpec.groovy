@@ -491,24 +491,6 @@ class APISpec extends Specification {
         }.request(request)
     }
 
-    static class MockDownloadWithRetryPolicy implements HttpPipelinePolicy {
-        MockDownloadWithRetryPolicy() {
-        }
-
-        @Override
-        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
-            return httpPipelineNextPolicy.process()
-                .flatMap {
-                    if (it.request().headers().value("x-ms-range") != "bytes=2-6") {
-                        return Mono.<HttpResponse>error(new IllegalArgumentException("The range header was not set correctly on retry."))
-                    } else {
-                        // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
-                        return Mono.just(new MockDownloadHttpResponse(it, 206, Flux.error(new IOException())))
-                    }
-                }
-        }
-    }
-
     /*
     This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
@@ -519,10 +501,9 @@ class APISpec extends Specification {
         private final HttpHeaders headers
         private final Flux<ByteBuf> body
 
-
-        MockDownloadHttpResponse(HttpResponse response, int code, Flux<ByteBuf> body) {
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuf> body) {
             this.request(response.request())
-            this.statusCode = code
+            this.statusCode = statusCode
             this.headers = response.headers()
             this.body = body
         }
@@ -534,7 +515,7 @@ class APISpec extends Specification {
 
         @Override
         String headerValue(String s) {
-            return null
+            return headers.value(s)
         }
 
         @Override
@@ -549,17 +530,17 @@ class APISpec extends Specification {
 
         @Override
         Mono<byte[]> bodyAsByteArray() {
-            return Mono.just(new byte[0])
+            return Mono.error(new IOException())
         }
 
         @Override
         Mono<String> bodyAsString() {
-            return Mono.just("")
+            return Mono.error(new IOException())
         }
 
         @Override
         Mono<String> bodyAsString(Charset charset) {
-            return Mono.just("")
+            return Mono.error(new IOException())
         }
     }
 
