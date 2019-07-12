@@ -124,6 +124,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
         fileAsyncClient.create(1024).block();
         URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
         String localFilePath = fileFolder.getPath() + "/helloworld";
+        System.out.println("-----------------------Sima: " + localFilePath);
         String downloadFilePath = fileFolder.getPath() + "/testDownload";
         File downloadFile = new File(downloadFilePath.substring(1));
         if (!Files.exists(downloadFile.toPath())) {
