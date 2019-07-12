@@ -389,6 +389,10 @@
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
               </group>
+              <group>
+                <title>Azure Storage - Files</title>
+                <packages>com.azure.storage.file*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -745,5 +749,6 @@
     <!--    <module>./sdk/tracing</module>-->
     <module>./sdk/identity/azure-identity</module>
     <module>./storage/client/blob</module>
+    <module>./storage/client/file</module>
   </modules>
 </project>

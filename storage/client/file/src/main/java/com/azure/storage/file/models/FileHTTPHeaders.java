@@ -4,6 +4,7 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Arrays;
@@ -146,7 +147,7 @@ public final class FileHTTPHeaders {
      * @return the fileContentMD5 value.
      */
     public byte[] fileContentMD5() {
-        return Arrays.copyOf(this.fileContentMD5, this.fileContentMD5.length);
+        return ImplUtils.clone(this.fileContentMD5);
     }
 
     /**
@@ -156,7 +157,7 @@ public final class FileHTTPHeaders {
      * @return the FileHTTPHeaders object itself.
      */
     public FileHTTPHeaders fileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = Arrays.copyOf(fileContentMD5, fileContentMD5.length);
+        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
 

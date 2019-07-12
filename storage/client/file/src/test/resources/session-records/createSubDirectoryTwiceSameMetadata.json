@@ -1,0 +1,61 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory08750a?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D706EC775E76ED\"",
+      "Last-Modified" : "Fri, 12 Jul 2019 17:14:58 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fa21a6a6-d01a-0062-64d5-38884a000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 12 Jul 2019 17:14:58 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory08750a%2fdir83472cc0e?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "\"0x8D706EC7773FEB5\"",
+      "Last-Modified" : "Fri, 12 Jul 2019 17:14:58 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fa21a6a8-d01a-0062-65d5-38884a000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 12 Jul 2019 17:14:58 GMT"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory08750a%2fdir83472cc0e?restype=directory",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ResourceAlreadyExists",
+      "retry-after" : "0",
+      "Content-Length" : "228",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "fa21a6a9-d01a-0062-66d5-38884a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceAlreadyExists</Code><Message>The specified resource already exists.\nRequestId:fa21a6a9-d01a-0062-66d5-38884a000000\nTime:2019-07-12T17:14:58.3915589Z</Message></Error>",
+      "Date" : "Fri, 12 Jul 2019 17:14:58 GMT",
+      "Content-Type" : "application/xml"
+    }
+  } ],
+  "variables" : [ "directory08750a", "dir83472cc0e" ]
+}

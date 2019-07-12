@@ -58,6 +58,7 @@
                 <source>..\..\core\azure-core-test\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\main\java</source>
                 <source>..\..\eventhubs\client\azure-eventhubs\src\samples\java</source>
+                <source>..\..\storage\client\file\src\samples\java</source>
               </sources>
             </configuration>
           </execution>
