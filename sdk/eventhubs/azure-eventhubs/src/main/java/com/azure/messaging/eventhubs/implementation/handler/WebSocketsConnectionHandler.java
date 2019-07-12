@@ -14,6 +14,10 @@ import org.apache.qpid.proton.engine.impl.TransportInternal;
 public class WebSocketsConnectionHandler extends ConnectionHandler {
     static final int HTTPS_PORT = 443;
 
+    // This is the current limitation of https://github.com/Azure/qpid-proton-j-extensions
+    // once, this library enables larger frames - this property can be removed.
+    static final int MAX_FRAME_SIZE =  4 * 1024;
+
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
 
@@ -56,8 +60,6 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     @Override
     public int getMaxFrameSize() {
-        // This is the current limitation of https://github.com/Azure/qpid-proton-j-extensions
-        // once, this library enables larger frames - this property can be removed.
-        return 4 * 1024;
+        return MAX_FRAME_SIZE;
     }
 }
