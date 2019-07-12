@@ -24,8 +24,8 @@ import static com.azure.storage.blob.Utility.postProcessResponse;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder#buildAsyncClient()}, via
- * the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
+ * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder#buildAppendBlobAsyncClient()},
+ * via the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
@@ -58,7 +58,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Package-private constructor for use by {@link AppendBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {

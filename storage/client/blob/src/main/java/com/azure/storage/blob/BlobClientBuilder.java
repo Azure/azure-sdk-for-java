@@ -34,8 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Fluent BlobClientBuilder for instantiating a {@link BlobClient} or {@link BlobAsyncClient}
- * using {@link BlobClientBuilder#buildClient()} or {@link BlobClientBuilder#buildAsyncClient()} respectively.
+ * This class provides a fluent builder API to help aid the configuration and instantiation Storage Blob clients.
  *
  * <p>
  * The following information must be provided on this builder:
@@ -46,8 +45,17 @@ import java.util.Objects;
  * </ul>
  *
  * <p>
- * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
- * {@link BlobClient} or {@code .buildAsyncClient()} to create a {@link BlobAsyncClient}.
+ * Once all the configurations are set on this builder use the following mapping to construct the given client:
+ * <ul>
+ *     <li>{@link BlobClientBuilder#buildBlobClient()} - {@link BlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildBlobAsyncClient()} - {@link BlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildAppendBlobClient()} ()} - {@link AppendBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient()} ()} - {@link AppendBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildBlockBlobClient()} ()} - {@link BlockBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildBlockBlobAsyncClient()} ()} - {@link BlockBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildPageBlobClient()} ()} - {@link PageBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} ()} - {@link PageBlobAsyncClient}</li>
+ * </ul>
  */
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
@@ -70,8 +78,7 @@ public final class BlobClientBuilder {
     private Configuration configuration;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients}
-     * and {@link BlobAsyncClient BlobAsyncClients}.
+     * Creates a builder instance that is able to configure and construct Storage Blob clients.
      */
     public BlobClientBuilder() {
         retryOptions = new RequestRetryOptions();
@@ -121,16 +128,74 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link BlobClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
      */
-    public BlobClient buildClient() {
-        return new BlobClient(buildAsyncClient());
+    public BlobClient buildBlobClient() {
+        return new BlobClient(buildBlobAsyncClient());
     }
 
     /**
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
      */
-    public BlobAsyncClient buildAsyncClient() {
+    public BlobAsyncClient buildBlobAsyncClient() {
         return new BlobAsyncClient(buildImpl(), snapshot);
+    }
+
+    /**
+     * @return a {@link AppendBlobClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public AppendBlobClient buildAppendBlobClient() {
+        return new AppendBlobClient(buildAppendBlobAsyncClient());
+    }
+
+    /**
+     * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
+        return new AppendBlobAsyncClient(buildImpl(), snapshot);
+    }
+
+    /**
+     * @return a {@link BlockBlobClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public BlockBlobClient buildBlockBlobClient() {
+        return new BlockBlobClient(buildBlockBlobAsyncClient());
+    }
+
+    /**
+     * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
+        return new BlockBlobAsyncClient(buildImpl(), snapshot);
+    }
+
+    /**
+     * @return a {@link PageBlobClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public PageBlobClient buildPageBlobClient() {
+        return new PageBlobClient(buildPageBlobAsyncClient());
+    }
+
+    /**
+     * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
+     * {@code blobName} is {@code null}.
+     */
+    public PageBlobAsyncClient buildPageBlobAsyncClient() {
+        return new PageBlobAsyncClient(buildImpl(), snapshot);
     }
 
     /**
