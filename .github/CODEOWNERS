@@ -10,9 +10,15 @@
 # Catch all
 # /sdk/ @joshfree
 
+# Core
+# /sdk/core/
+
 # Service teams
+# /sdk/appconfiguration/
 # /sdk/eventhubs/
+# /sdk/identity/
 # /sdk/keyvault/
+# /storage/
 
 ###########
 # Eng Sys
