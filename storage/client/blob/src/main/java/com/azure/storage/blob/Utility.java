@@ -5,9 +5,13 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.UrlBuilder;
 import com.azure.storage.blob.models.StorageErrorException;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
+import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
@@ -386,5 +390,24 @@ final class Utility {
         } else {
             return response.block(timeout);
         }
+    }
+
+    /**
+     * Gets the SharedKeyCredential from the HttpPipeline
+     *
+     * @param httpPipeline
+     *         The {@code HttpPipeline} httpPipeline from which a sharedKeyCredential will be extracted
+     *
+     * @return The {@code SharedKeyCredential} sharedKeyCredential in the httpPipeline
+     */
+    static SharedKeyCredential getSharedKeyCredential(HttpPipeline httpPipeline) {
+        for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
+            if (httpPipelinePolicy instanceof SharedKeyCredentialPolicy) {
+                SharedKeyCredentialPolicy sharedKeyCredentialPolicy = (SharedKeyCredentialPolicy) httpPipelinePolicy;
+                return sharedKeyCredentialPolicy.sharedKeyCredential();
+            }
+        }
+        return null;
     }
 }

@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -232,5 +233,74 @@ public final class StorageAsyncClient {
         return storageAsyncRawClient
             .getAccountInfo()
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService
+     *         The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType
+     *         An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission
+     *         The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the account SAS
+     *
+     * @return
+     *      A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime) {
+        return this.generateAccountSAS(accountSASService, accountSASResourceType, accountSASPermission, expiryTime,
+            null /* startTime */, null /* version */, null /* ipRange */, null /* sasProtocol */);
+    }
+
+    /**
+     * Generates an account SAS token with the specified parameters
+     *
+     * @param accountSASService
+     *         The {@code AccountSASService} services for the account SAS
+     * @param accountSASResourceType
+     *         An optional {@code AccountSASResourceType} resources for the account SAS
+     * @param accountSASPermission
+     *         The {@code AccountSASPermission} permission for the account SAS
+     * @param expiryTime
+     *         The {@code OffsetDateTime} expiry time for the account SAS
+     * @param startTime
+     *         The {@code OffsetDateTime} start time for the account SAS
+     * @param version
+     *         The {@code String} version for the account SAS
+     * @param ipRange
+     *         An optional {@code IPRange} ip address range for the SAS
+     * @param sasProtocol
+     *         An optional {@code SASProtocol} protocol for the SAS
+     *
+     * @return
+     *      A string that represents the SAS token
+     */
+    public String generateAccountSAS(AccountSASService accountSASService, AccountSASResourceType accountSASResourceType,
+        AccountSASPermission accountSASPermission, OffsetDateTime expiryTime, OffsetDateTime startTime, String version, IPRange ipRange,
+        SASProtocol sasProtocol) {
+
+        AccountSASSignatureValues accountSASSignatureValues = new AccountSASSignatureValues();
+        accountSASSignatureValues.services(accountSASService == null ? null : accountSASService.toString());
+        accountSASSignatureValues.resourceTypes(accountSASResourceType == null ? null : accountSASResourceType.toString());
+        accountSASSignatureValues.permissions(accountSASPermission == null ? null : accountSASPermission.toString());
+        accountSASSignatureValues.expiryTime(expiryTime);
+        accountSASSignatureValues.startTime(startTime);
+
+        if (version != null) {
+            accountSASSignatureValues.version(version);
+        }
+
+        accountSASSignatureValues.ipRange(ipRange);
+        accountSASSignatureValues.protocol(sasProtocol);
+
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.storageAsyncRawClient.azureBlobStorage.httpPipeline());
+
+        SASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
+
+        return sasQueryParameters.encode();
     }
 }

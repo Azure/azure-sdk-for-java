@@ -24,6 +24,15 @@ public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
         this.credential = credential;
     }
 
+    /**
+     * Gets the shared key credential linked to the policy.
+     * @return
+     *      The {@link SharedKeyCredential} linked to the policy.
+     */
+    public SharedKeyCredential sharedKeyCredential() {
+        return this.credential;
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String authorizationValue = credential.generateAuthorizationHeader(context.httpRequest().url(),
