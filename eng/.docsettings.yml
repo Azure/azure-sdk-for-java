@@ -65,7 +65,7 @@ known_content_issues:
   - ['sdk/servicebus/README.md', '#3113']
   - ['storage/data-plane/README.md', '#3113']
   - ['storage/data-plane/swagger/README.md', '#3113']
-  - ['core/README.md', '#3113']
+  - ['sdk/core/README.md', '#3113']
   - ['cosmosdb/data-plane/README.md', '#3113']
   - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
   - ['cosmosdb/data-plane/changelog/README.md', '#3113']
