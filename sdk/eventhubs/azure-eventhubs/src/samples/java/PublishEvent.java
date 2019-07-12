@@ -3,7 +3,7 @@
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
 
@@ -29,7 +29,7 @@ public class PublishEvent {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubClient client = new EventHubClientBuilder()
+        EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
 

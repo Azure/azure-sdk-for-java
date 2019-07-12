@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.messaging.eventhubs.ProxyConfiguration;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;

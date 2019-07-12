@@ -13,7 +13,7 @@ import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
 
 /**
- * This class contains code samples for generating javadocs through doclets for {@link SecretClient]
+ * This class contains code samples for generating javadocs through doclets for {@link SecretClient}
  */
 public final class SecretClientJavaDocCodeSnippets {
 

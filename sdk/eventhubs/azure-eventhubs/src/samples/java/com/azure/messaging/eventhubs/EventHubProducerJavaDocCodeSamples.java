@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -15,7 +17,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link EventHubProducer}.
  */
 public class EventHubProducerJavaDocCodeSamples {
-    private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
+    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
      * Code snippet demonstrating how to create an EventHubProducer that automatically routes events to any partition.
@@ -24,7 +26,7 @@ public class EventHubProducerJavaDocCodeSamples {
      */
     public void instantiate() throws IOException {
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducer.instantiate
-        EventHubClient client = new EventHubClientBuilder()
+        EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString("event-hubs-namespace-connection-string", "event-hub-name")
             .buildAsyncClient();
 

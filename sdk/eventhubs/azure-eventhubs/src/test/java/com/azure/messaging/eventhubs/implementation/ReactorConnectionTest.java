@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
-import com.azure.messaging.eventhubs.ProxyConfiguration;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SessionHandler;
 import org.apache.qpid.proton.amqp.Symbol;
