@@ -303,23 +303,23 @@
     </pluginManagement>
   </build>
   <modules>
-    <module>microsoft-azure-cognitiveservices-spellcheck</module>
-    <module>microsoft-azure-cognitiveservices-luis-authoring</module>
-    <module>microsoft-azure-cognitiveservices-luis-runtime</module>
-    <module>microsoft-azure-cognitiveservices-textanalytics</module>
-    <module>microsoft-azure-cognitiveservices-autosuggest</module>
-    <module>microsoft-azure-cognitiveservices-customimagesearch</module>
-    <module>microsoft-azure-cognitiveservices-customsearch</module>
-    <module>microsoft-azure-cognitiveservices-entitysearch</module>
-    <module>microsoft-azure-cognitiveservices-imagesearch</module>
-    <module>microsoft-azure-cognitiveservices-newssearch</module>
-    <module>microsoft-azure-cognitiveservices-videosearch</module>
-    <module>microsoft-azure-cognitiveservices-visualsearch</module>
-    <module>microsoft-azure-cognitiveservices-websearch</module>
-    <module>microsoft-azure-cognitiveservices-computervision</module>
-    <module>microsoft-azure-cognitiveservices-contentmoderator</module>
-    <module>microsoft-azure-cognitiveservices-customvision-prediction</module>
-    <module>microsoft-azure-cognitiveservices-customvision-training</module>
-    <module>microsoft-azure-cognitiveservices-faceapi</module>
+    <module>ms-azure-cs-spellcheck</module>
+    <module>ms-azure-cs-luis-authoring</module>
+    <module>ms-azure-cs-luis-runtime</module>
+    <module>ms-azure-cs-textanalytics</module>
+    <module>ms-azure-cs-autosuggest</module>
+    <module>ms-azure-cs-customimagesearch</module>
+    <module>ms-azure-cs-customsearch</module>
+    <module>ms-azure-cs-entitysearch</module>
+    <module>ms-azure-cs-imagesearch</module>
+    <module>ms-azure-cs-newssearch</module>
+    <module>ms-azure-cs-videosearch</module>
+    <module>ms-azure-cs-visualsearch</module>
+    <module>ms-azure-cs-websearch</module>
+    <module>ms-azure-cs-computervision</module>
+    <module>ms-azure-cs-contentmoderator</module>
+    <module>ms-azure-cs-customvision-prediction</module>
+    <module>ms-azure-cs-customvision-training</module>
+    <module>ms-azure-cs-faceapi</module>
   </modules>
 </project>
