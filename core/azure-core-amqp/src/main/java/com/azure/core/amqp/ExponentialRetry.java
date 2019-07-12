@@ -40,10 +40,7 @@ public final class ExponentialRetry extends Retry {
      * {@inheritDoc}
      */
     @Override
-    protected Duration calculateNextRetryInterval(final Exception lastException,
-                                                  final Duration remainingTime,
-                                                  final int baseWaitSeconds,
-                                                  final int retryCount) {
+    protected Duration getNextRetryInterval(Duration baseWaitTime, Duration remainingTime, int retryCount) {
         final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
         final long nextRetryIntervalSeconds = (long) nextRetryInterval;
         final long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
@@ -53,7 +50,7 @@ public final class ExponentialRetry extends Retry {
         }
 
         final Duration retryAfter = minBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
-        return retryAfter.plus(Duration.ofSeconds(baseWaitSeconds));
+        return retryAfter.plus(baseWaitTime);
     }
 
     private double computeRetryFactor() {

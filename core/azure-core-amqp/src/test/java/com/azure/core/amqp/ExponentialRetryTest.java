@@ -3,17 +3,12 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Duration;
 
 public class ExponentialRetryTest {
-    private final ErrorContext errorContext = new ErrorContext("test-namespace");
-    private final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(45);
     private final int retryAttempts = 4;
@@ -25,16 +20,17 @@ public class ExponentialRetryTest {
     public void retryDurationIncreases() {
         // Arrange
         final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
+        final Duration baseWaitTime = Duration.ofSeconds(5);
         final Duration remainingTime = Duration.ofSeconds(60);
 
         // Act
         retry.incrementRetryCount();
-        final Duration firstRetryInterval = retry.getNextRetryInterval(exception, remainingTime);
+        final Duration firstRetryInterval = retry.getNextRetryInterval(baseWaitTime, remainingTime);
         Assert.assertNotNull(firstRetryInterval);
 
         retry.incrementRetryCount();
         final Duration leftoverTime = remainingTime.minus(firstRetryInterval);
-        final Duration secondRetryInterval = retry.getNextRetryInterval(exception, leftoverTime);
+        final Duration secondRetryInterval = retry.getNextRetryInterval(baseWaitTime, leftoverTime);
 
         // Assert
         Assert.assertNotNull(secondRetryInterval);
@@ -49,16 +45,17 @@ public class ExponentialRetryTest {
         // Arrange
         final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
         final ExponentialRetry clone = (ExponentialRetry) retry.clone();
+        final Duration baseWaitTime = Duration.ofSeconds(5);
 
         final Duration remainingTime = Duration.ofSeconds(60);
 
         retry.incrementRetryCount();
-        final Duration retryInterval = retry.getNextRetryInterval(exception, remainingTime);
+        final Duration retryInterval = retry.getNextRetryInterval(baseWaitTime, remainingTime);
 
         clone.incrementRetryCount();
         clone.incrementRetryCount();
         clone.incrementRetryCount();
-        final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
+        final Duration cloneRetryInterval = clone.getNextRetryInterval(baseWaitTime, remainingTime);
 
         // Assert
         Assert.assertNotNull(retryInterval);
@@ -75,13 +72,14 @@ public class ExponentialRetryTest {
         final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
         final ExponentialRetry clone = (ExponentialRetry) retry.clone();
 
+        final Duration baseWaitTime = Duration.ofSeconds(5);
         final Duration remainingTime = Duration.ofSeconds(60);
 
         retry.incrementRetryCount();
-        final Duration retryInterval = retry.getNextRetryInterval(exception, remainingTime);
+        final Duration retryInterval = retry.getNextRetryInterval(baseWaitTime, remainingTime);
 
         clone.incrementRetryCount();
-        final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
+        final Duration cloneRetryInterval = clone.getNextRetryInterval(baseWaitTime, remainingTime);
 
         // Assert
         Assert.assertNotSame(retry, clone);

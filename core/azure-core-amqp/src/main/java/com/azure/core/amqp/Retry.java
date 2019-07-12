@@ -91,6 +91,8 @@ public abstract class Retry implements Cloneable {
     /**
      * Calculates the amount of time to delay before the next retry attempt.
      *
+     * @param baseWaitTime The amount of time to base the suggested retry interval on. This should be used as
+     *         the minimum interval returned under normal circumstances.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
      *         is no longer eligible to be retried.
@@ -100,12 +102,7 @@ public abstract class Retry implements Cloneable {
             return null;
         }
 
-        return calculateNextRetryInterval(remainingTime, baseWaitTime, getRetryCount());
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        return getNextRetryInterval(baseWaitTime, remainingTime, getRetryCount());
     }
 
     /**
@@ -119,5 +116,10 @@ public abstract class Retry implements Cloneable {
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
      *         is no longer eligible to be retried.
      */
-    protected abstract Duration calculateNextRetryInterval(Duration remainingTime, Duration baseWaitTime, int retryCount);
+    protected abstract Duration getNextRetryInterval(Duration remainingTime, Duration baseWaitTime, int retryCount);
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
