@@ -355,7 +355,7 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
 
             Duration retryInterval = null;
 
-            if (AmqpExceptionUtil.isRetriableException(exception)) {
+            if (exception instanceof AmqpException && AmqpExceptionUtil.isRetriableException(exception)) {
                 final AmqpException amqpException = (AmqpException) exception;
                 final Duration baseWaitTime = AmqpExceptionUtil.getBaseWait(amqpException, Duration.ZERO);
 
