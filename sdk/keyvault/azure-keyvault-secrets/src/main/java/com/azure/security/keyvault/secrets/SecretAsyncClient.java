@@ -4,16 +4,16 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.secrets.implementation.SecretBasePage;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
@@ -412,14 +412,26 @@ public final class SecretAsyncClient {
      *   .map(Response::value);
      * </pre>
      *
-     * @return A {@link Flux} containing {@link SecretBase secret} of all the secrets in the vault.
+     * @return A {@link PagedFlux} containing {@link SecretBase secret} of all the secrets in the vault.
      */
-    public Flux<SecretBase> listSecrets() {
+    public PagedFlux<SecretBase> listSecrets() {
+        return new PagedFlux<>(() ->
+            listSecretsFirstPage(),
+            continuationToken -> listSecretsNextPage(continuationToken));
+    }
+
+    private Mono<PagedResponse<SecretBase>> listSecretsNextPage(String continuationToken) {
+        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken, error));
+    }
+
+    private Mono<PagedResponse<SecretBase>> listSecretsFirstPage() {
         return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing secrets"))
-                .doOnSuccess(response -> logger.info("Listed secrets"))
-                .doOnError(error -> logger.warning("Failed to list secrets", error))
-                .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing secrets"))
+            .doOnSuccess(response -> logger.info("Listed secrets"))
+            .doOnError(error -> logger.warning("Failed to list secrets", error));
     }
 
     /**
@@ -436,12 +448,24 @@ public final class SecretAsyncClient {
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
-    public Flux<DeletedSecret> listDeletedSecrets() {
+    public PagedFlux<DeletedSecret> listDeletedSecrets() {
+        return new PagedFlux<>(() ->
+            listDeletedSecretsFirstPage(),
+            continuationToken -> listDeletedSecretsNextPage(continuationToken, Context.NONE));
+    }
+
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
+        return service.getDeletedSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken, error));
+    }
+
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage() {
         return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
-                .doOnSuccess(response -> logger.info("Listed deleted secrets"))
-                .doOnError(error -> logger.warning("Failed to list deleted secrets", error))
-                .flatMapMany(r -> extractAndFetchDeletedSecrets(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
+            .doOnSuccess(response -> logger.info("Listed deleted secrets"))
+            .doOnError(error -> logger.warning("Failed to list deleted secrets", error));
     }
 
     /**
@@ -461,51 +485,18 @@ public final class SecretAsyncClient {
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
-     * @return A {@link Flux} containing {@link SecretBase secret} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
+     * @return A {@link PagedFlux} containing {@link SecretBase secret} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
-    public Flux<SecretBase> listSecretVersions(String name) {
+    public PagedFlux<SecretBase> listSecretVersions(String name) {
+        return new PagedFlux<>(() ->
+            listSecretVersionsFirstPage(name),
+            continuationToken -> listSecretsNextPage(continuationToken));
+    }
+
+    private Mono<PagedResponse<SecretBase>> listSecretVersionsFirstPage(String name) {
         return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.info("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error))
-                .flatMapMany(r -> extractAndFetchSecrets(r, Context.NONE));
-    }
-
-    /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listSecrets()}.
-     *
-     * @param nextPageLink The {@link SecretBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase secret} from the next page of results.
-     */
-    private Flux<SecretBase> listSecretsNext(String nextPageLink, Context context) {
-        return service.getSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-                .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
-                .flatMapMany(r -> extractAndFetchSecrets(r, context));
-    }
-
-    private Publisher<SecretBase> extractAndFetchSecrets(PagedResponse<SecretBase> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listSecretsNext);
-    }
-
-    /**
-     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link SecretAsyncClient#listDeletedSecrets()}.
-     *
-     * @param nextPageLink The {@link DeletedSecretPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link SecretBase secret} from the next page of results.
-     */
-    private Flux<DeletedSecret> listDeletedSecretsNext(String nextPageLink, Context context) {
-        return service.getDeletedSecrets(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-                .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
-                .flatMapMany(r -> extractAndFetchDeletedSecrets(r, context));
-    }
-
-    private Publisher<DeletedSecret> extractAndFetchDeletedSecrets(PagedResponse<DeletedSecret> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listDeletedSecretsNext);
+            .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))
+            .doOnSuccess(response -> logger.info("Listed secret versions - {}", name))
+            .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error));
     }
 }
