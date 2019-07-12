@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
+
+import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.EventHubProducer;
 
 /**
  * The set of options that can be specified when sending a set of events to influence the way in which events are sent
@@ -9,6 +12,7 @@ package com.azure.messaging.eventhubs;
  *
  * @see EventHubProducer
  */
+@Fluent
 public class SendOptions implements Cloneable {
     private int maximumSizeInBytes;
     private String partitionKey;
@@ -30,16 +34,6 @@ public class SendOptions implements Cloneable {
     SendOptions maximumSizeInBytes(int maximumSizeInBytes) {
         this.maximumSizeInBytes = maximumSizeInBytes;
         return this;
-    }
-
-    /**
-     * Gets the maximum size to allow for a single batch of events, in bytes. If this size is exceeded, an exception
-     * will be thrown and the send operation will fail.
-     *
-     * @return The maximum size to allow for a single batch of events, in bytes.
-     */
-    int maximumSizeInBytes() {
-        return maximumSizeInBytes;
     }
 
     /**

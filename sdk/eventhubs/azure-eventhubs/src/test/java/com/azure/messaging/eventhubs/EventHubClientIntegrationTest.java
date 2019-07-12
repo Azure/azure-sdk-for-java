@@ -6,6 +6,9 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -24,16 +27,16 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Tests scenarios on {@link EventHubClient}.
+ * Tests scenarios on {@link EventHubAsyncClient}.
  */
 public class EventHubClientIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
 
     @Rule
     public TestName testName = new TestName();
@@ -50,7 +53,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
     @Override
     protected void beforeTest() {
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }
 
     @Override
@@ -60,7 +63,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
 
     @Test(expected = NullPointerException.class)
     public void nullConstructor() throws NullPointerException {
-        new EventHubClient(null, null, null);
+        new EventHubAsyncClient(null, null, null);
     }
 
     /**
@@ -146,9 +149,9 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         });
 
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
-        final EventHubClient[] clients = new EventHubClient[numberOfClients];
+        final EventHubAsyncClient[] clients = new EventHubAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
-            clients[i] = new EventHubClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
+            clients[i] = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), new ReactorHandlerProvider(getReactorProvider()));
         }
 
         final EventHubProducer producer = clients[0].createProducer(new EventHubProducerOptions().partitionId(PARTITION_ID));
@@ -156,7 +159,7 @@ public class EventHubClientIntegrationTest extends ApiTestBase {
         final Disposable.Composite subscriptions = Disposables.composite();
 
         try {
-            for (final EventHubClient hubClient : clients) {
+            for (final EventHubAsyncClient hubClient : clients) {
                 final EventHubConsumer consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.latest());
                 consumers.add(consumer);
 

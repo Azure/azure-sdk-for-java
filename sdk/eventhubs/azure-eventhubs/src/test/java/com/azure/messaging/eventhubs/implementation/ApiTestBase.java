@@ -11,7 +11,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import com.azure.messaging.eventhubs.ProxyConfiguration;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.After;
