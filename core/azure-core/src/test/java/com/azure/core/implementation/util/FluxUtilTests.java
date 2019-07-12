@@ -7,16 +7,25 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.ReferenceCountUtil;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
@@ -25,6 +34,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -285,6 +296,69 @@ public class FluxUtilTests {
             .subscribe();
         Assert.assertEquals(expectedLines, actualLines);
     }
+
+    @Test
+    public void testCallWithContextGetPagedCollection() throws Exception {
+        // Simulates the customer code that includes context
+        getPagedCollection()
+            .subscriberContext(
+                reactor.util.context.Context.of("Key1", "Val1", "Key2", "Val2"))
+            .doOnNext(System.out::println)
+            .subscribe();
+    }
+
+    private PagedFlux<Integer> getPagedCollection()
+        throws Exception {
+        // Simulates the client library API
+        List<PagedResponse<Integer>> pagedResponses = getPagedResponses(4);
+        return new PagedFlux<>(
+            () -> FluxUtil.monoContext(context -> getFirstPage(pagedResponses, context)),
+            continuationToken -> FluxUtil
+                .monoContext(context -> getNextPage(continuationToken, pagedResponses, context)));
+    }
+
+    private List<PagedResponse<Integer>> getPagedResponses(int noOfPages)
+        throws MalformedURLException {
+        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
+            .put("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        String deserializedHeaders = "header1,value1,header2,value2";
+        return IntStream.range(0, noOfPages)
+            .boxed()
+            .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
+            .collect(Collectors.toList());
+    }
+
+    private Mono<PagedResponse<Integer>> getFirstPage(List<PagedResponse<Integer>> pagedResponses,
+        Context context) {
+        // Simulates the service side code which should get the context provided by customer code
+        Assert.assertEquals("Val1", context.getData("Key1").get());
+        return pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0));
+    }
+
+    private Mono<PagedResponse<Integer>> getNextPage(String continuationToken,
+        List<PagedResponse<Integer>> pagedResponses, Context context) {
+        // Simulates the service side code which should get the context provided by customer code
+        Assert.assertEquals("Val2", context.getData("Key2").get());
+        if (continuationToken == null || continuationToken.isEmpty()) {
+            return Mono.empty();
+        }
+        return Mono.just(pagedResponses.get(Integer.valueOf(continuationToken)));
+    }
+
+    private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
+        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
+        return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
+            httpHeaders,
+            getItems(i),
+            i < noOfPages - 1 ? String.valueOf(i + 1) : null,
+            deserializedHeaders);
+    }
+
+    private List<Integer> getItems(Integer i) {
+        return IntStream.range(i * 3, i * 3 + 3).boxed().collect(Collectors.toList());
+    }
+
 
     private Mono<String> getSingle(String prefix) {
         return FluxUtil.monoContext(context -> serviceCallSingle(prefix, context));
