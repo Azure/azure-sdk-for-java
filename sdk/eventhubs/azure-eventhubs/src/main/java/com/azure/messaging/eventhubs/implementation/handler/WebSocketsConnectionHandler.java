@@ -11,7 +11,7 @@ import org.apache.qpid.proton.engine.impl.TransportInternal;
 /**
  * Creates an AMQP connection using web sockets (port 443).
  */
-public class WebSocketConnectionHandler extends ConnectionHandler {
+public class WebSocketsConnectionHandler extends ConnectionHandler {
     static final int HTTPS_PORT = 443;
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
@@ -24,8 +24,8 @@ public class WebSocketConnectionHandler extends ConnectionHandler {
      * @param hostname Hostname to use for socket creation. If there is a proxy configured, this could be a
      *         proxy's IP address.
      */
-    public WebSocketConnectionHandler(final String connectionId, final String hostname) {
-        super(connectionId, hostname, new ClientLogger(WebSocketConnectionHandler.class));
+    public WebSocketsConnectionHandler(final String connectionId, final String hostname) {
+        super(connectionId, hostname, new ClientLogger(WebSocketsConnectionHandler.class));
     }
 
     @Override
