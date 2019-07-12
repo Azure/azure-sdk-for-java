@@ -7,6 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +33,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 public class EventDataBatchIntegrationTest extends ApiTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
     private EventHubProducer producer;
 
     @Mock
@@ -55,7 +57,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
 
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         producer = client.createProducer();
     }
 
@@ -143,7 +145,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
 
             // Creating consumers on all the partitions and subscribing to the receive event.
             consumers = client.getPartitionIds()
-                .map(id -> client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
+                .map(id -> client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, id, EventPosition.latest()));
 
             final List<Disposable> consumerSubscriptions = consumers.map(consumer -> {
                 return consumer.receive().subscribe(event -> {

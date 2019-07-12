@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import com.azure.messaging.eventhubs.EventHubProducer;
-import com.azure.messaging.eventhubs.EventHubProducerOptions;
-import com.azure.messaging.eventhubs.EventPosition;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
@@ -31,7 +31,7 @@ public class ConsumeEvent {
      * @param args Unused arguments to the program.
      * @throws InterruptedException The countdown latch was interrupted while waiting for this sample to
      *         complete.
-     * @throws IOException If we were unable to dispose of the {@link EventHubClient}, {@link EventHubConsumer},
+     * @throws IOException If we were unable to dispose of the {@link EventHubAsyncClient}, {@link EventHubConsumer},
      *         or the {@link EventHubProducer}
      */
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -45,7 +45,7 @@ public class ConsumeEvent {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubClient client = new EventHubClientBuilder()
+        EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
 
@@ -59,7 +59,7 @@ public class ConsumeEvent {
         // The "$Default" consumer group is created by default. This value can be found by going to the Event Hub
         // instance you are connecting to, and selecting the "Consumer groups" page. EventPosition.latest() tells the
         // service we only want events that are sent to the partition after we begin listening.
-        EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
+        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME,
             firstPartition, EventPosition.latest());
 
         // We start receiving any events that come from `firstPartition`, print out the contents, and decrement the

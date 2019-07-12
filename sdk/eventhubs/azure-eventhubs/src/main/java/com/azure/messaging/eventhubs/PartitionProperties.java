@@ -3,11 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.implementation.annotation.Immutable;
+
 import java.time.Instant;
 
 /**
  * A set of information for a single partition of an Event Hub.
  */
+@Immutable
 public final class PartitionProperties {
     private final String eventHubPath;
     private final String id;
