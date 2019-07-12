@@ -7,6 +7,8 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,8 +26,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
+    // Default number of events to fetch when creating the consumer.
+    private static final int DEFAULT_PREFETCH_COUNT = 500;
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
     private EventHubProducer producer;
     private EventHubConsumer consumer;
 
@@ -46,7 +50,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
         producer = client.createProducer();
     }
 
@@ -63,13 +67,13 @@ public class SetPrefetchCountTest extends ApiTestBase {
         // Arrange
         // Since we cannot test receiving very large prefetch like 10000 in a unit test, DefaultPrefetchCount * 3 was
         // chosen
-        final int eventCount = EventHubConsumerOptions.DEFAULT_PREFETCH_COUNT * 3;
+        final int eventCount = DEFAULT_PREFETCH_COUNT * 3;
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions()
             .retry(Retry.getDefaultRetry())
             .prefetchCount(2000);
 
-        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.latest(), options);
 
         final Disposable subscription = consumer.receive()
@@ -99,7 +103,7 @@ public class SetPrefetchCountTest extends ApiTestBase {
         final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
         final EventHubConsumerOptions options = new EventHubConsumerOptions().prefetchCount(11);
 
-        consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
+        consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID,
             EventPosition.latest(), options);
 
         final Disposable subscription = consumer.receive()

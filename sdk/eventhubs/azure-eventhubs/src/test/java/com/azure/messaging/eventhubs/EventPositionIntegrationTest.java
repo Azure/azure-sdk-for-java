@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -25,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -45,7 +47,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
     private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
     private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
 
     public EventPositionIntegrationTest() {
         super(new ClientLogger(EventPositionIntegrationTest.class));
@@ -64,7 +66,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
         skipIfNotRecordMode();
 
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
 
         setupEventTestData(client);
     }
@@ -330,7 +332,7 @@ public class EventPositionIntegrationTest extends ApiTestBase {
      * When we run this test, we check if there have been events already pushed to the partition, if not, we push some
      * events there.
      */
-    private void setupEventTestData(EventHubClient client) {
+    private void setupEventTestData(EventHubAsyncClient client) {
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
             return;

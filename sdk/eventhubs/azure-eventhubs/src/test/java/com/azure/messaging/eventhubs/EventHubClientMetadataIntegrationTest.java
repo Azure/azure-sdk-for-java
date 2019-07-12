@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,7 +32,7 @@ import java.util.Locale;
  */
 public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
     private final String[] expectedPartitionIds = new String[]{"0", "1"};
-    private EventHubClient client;
+    private EventHubAsyncClient client;
     private ReactorHandlerProvider handlerProvider;
     private String eventHubPath;
 
@@ -53,7 +54,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
 
         eventHubPath = getConnectionOptions().eventHubPath();
         handlerProvider = new ReactorHandlerProvider(getReactorProvider());
-        client = new EventHubClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(getConnectionOptions(), getReactorProvider(), handlerProvider);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
             original.eventHubPath(), badTokenProvider, getAuthorizationType(), TIMEOUT,
             TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
-        final EventHubClient client = new EventHubClient(connectionOptions, getReactorProvider(), handlerProvider);
+        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getProperties())
@@ -159,7 +160,7 @@ public class EventHubClientMetadataIntegrationTest extends ApiTestBase {
         final ConnectionOptions connectionOptions = new ConnectionOptions(original.endpoint().getHost(),
             "invalid-event-hub", getTokenCredential(), getAuthorizationType(), TIMEOUT,
             TransportType.AMQP, Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, getConnectionOptions().scheduler());
-        final EventHubClient client = new EventHubClient(connectionOptions, getReactorProvider(), handlerProvider);
+        final EventHubAsyncClient client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
 
         // Act & Assert
         StepVerifier.create(client.getPartitionIds())

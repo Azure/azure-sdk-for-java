@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
-import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 
@@ -14,7 +14,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
  * @see ConfigurationClient#listSettingRevisions(SettingSelector)
  * @see SettingSelector#range(Range)
  */
-@Fluent
+@Immutable
 public class Range {
     private final int start;
     private final int end;
