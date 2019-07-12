@@ -21,7 +21,7 @@ import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 public class ServiceClientInstantiationCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT = "ServiceClient";
     private static final String BUILDER = "builder";
-    private static final String ASYNC_CLIENT ="AsyncClient";
+    private static final String ASYNC_CLIENT = "AsyncClient";
     private static final String CLIENT = "Client";
     private static final String IS_ASYNC = "isAsync";
 
