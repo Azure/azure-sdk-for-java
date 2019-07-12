@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
@@ -70,6 +71,7 @@ public final class ConfigurationClientBuilder {
     private static final String ACCEPT_HEADER = "Accept";
     private static final String ACCEPT_HEADER_VALUE = "application/vnd.microsoft.azconfig.kv+json";
 
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
 
@@ -144,7 +146,7 @@ public final class ConfigurationClientBuilder {
 
         ConfigurationClientCredentials buildCredential = (credential == null) ? configurationCredentials : credential;
         if (buildCredential == null) {
-            throw new IllegalStateException("'credential' is required.");
+            logger.logAndThrow(new IllegalStateException("'credential' is required."));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -183,7 +185,7 @@ public final class ConfigurationClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("'endpoint' must be a valid URL");
+            logger.logAndThrow(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
 
         return this;
