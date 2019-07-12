@@ -12,8 +12,7 @@ import java.util.Stack;
 /**
  * The @ServiceClientBuilder class should have the following rules:
  *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
- *  2) Has a method 'buildClient()' to build a synchronous client,
- *  3) Has a method 'buildAsyncClient()' to build an asynchronous client
+ *  2) No other method have prefix 'build' other than 'buildClient' or 'buildAsyncClient'.
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
@@ -22,8 +21,6 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack();
     private boolean hasServiceClientBuilderAnnotation;
-    private boolean hasAsyncClientBuilder;
-    private boolean hasClientBuilder;
 
     @Override
     public int[] getDefaultTokens() {
@@ -47,20 +44,8 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     public void leaveToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                final boolean previousState = hasServiceClientBuilderAnnotationStack.pop();
-
-                if (!hasServiceClientBuilderAnnotation) {
-                    return;
-                }
-
-                if (!hasAsyncClientBuilder) {
-                    log(token, String.format("The class annotated with @ServiceClientBuilder requires an asynchronous method, ''%s''", BUILD_ASYNC_CLIENT));
-                }
-                if (!hasClientBuilder) {
-                    log(token, String.format("The class annotated with @ServiceClientBuilder requires a synchronous method, ''%s''", BUILD_CLIENT));
-                }
                 // end of CLASS_DEF node, reset the value back to previous state
-                hasServiceClientBuilderAnnotation = previousState;
+                hasServiceClientBuilderAnnotation = hasServiceClientBuilderAnnotationStack.pop();
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -72,10 +57,6 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
     public void visitToken(DetailAST token) {
         switch (token.getType()) {
             case TokenTypes.CLASS_DEF:
-                // for the starting root of every class, reset to false
-                hasAsyncClientBuilder = false;
-                hasClientBuilder = false;
-
                 // Save the state of variable 'hasServiceClientBuilderAnnotation' to limit the scope of accessibility
                 hasServiceClientBuilderAnnotationStack.push(hasServiceClientBuilderAnnotation);
 
@@ -102,18 +83,14 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                     return;
                 }
 
-                // if buildAsyncClient() and buildClient() methods already exist, skip rest of METHOD_DEF checks
-                if (hasAsyncClientBuilder && hasClientBuilder) {
-                    return;
+                final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
+                // method name has prefix 'build' but not 'buildClient' or 'buildAsyncClient'
+                if (methodName.startsWith("build") && !BUILD_ASYNC_CLIENT.equals(methodName) && !BUILD_CLIENT.equals(methodName)) {
+                    log(token, String.format(
+                        "@ServiceClientBuilder class should not have a method name, '''' starting with ''build'' " +
+                            "other than ''buildClient'' or ''buildAsyncClient''." , methodName));
                 }
 
-                final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
-                if (BUILD_ASYNC_CLIENT.equals(methodName)) {
-                    hasAsyncClientBuilder = true;
-                }
-                if (BUILD_CLIENT.equals(methodName)) {
-                    hasClientBuilder = true;
-                }
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch

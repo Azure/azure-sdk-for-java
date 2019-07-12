@@ -7,6 +7,7 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
@@ -53,6 +54,7 @@ import java.util.Objects;
  *
  * @see EventHubClient
  */
+@ServiceClientBuilder(serviceClients = EventHubClientBuilder.class)
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";

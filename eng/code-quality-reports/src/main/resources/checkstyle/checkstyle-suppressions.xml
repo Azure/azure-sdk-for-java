@@ -105,4 +105,7 @@
 
   <!-- Suppression for throws IOException Class, Will remove these classes after be able to define the error is IOException -->
 <!--  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]core[/\\]implementation[/\\](.*RestProxyStressTests[/\\].*)|(.*util[/\\]FluxUtilTests[/\\].*)\.java"/>-->
+
+<!--  Storage still depends on 1.0.0-preview.2 azure core. suppress this rule for now until storage has upgraded to preview-3 azure core-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]storage[/\\].*\.java"/>
 </suppressions>
