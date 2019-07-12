@@ -70,7 +70,7 @@ public class Context {
      * the input {@link Map}
      *
      * @param keyValues The input key value pairs that will be added to this context
-     * @return {@link Context} object containing all the key-value pairs in the input map
+     * @return Context object containing all the key-value pairs in the input map
      * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
      */
     public static Context of(Map<Object, Object> keyValues) {

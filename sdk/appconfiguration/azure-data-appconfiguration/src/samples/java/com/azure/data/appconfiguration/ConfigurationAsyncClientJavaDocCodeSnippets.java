@@ -12,15 +12,14 @@ import reactor.util.context.Context;
  */
 public class ConfigurationAsyncClientJavaDocCodeSnippets {
 
+    private String key1 = null;
+    private String key2 = null;
+    private String value1 = null;
+    private String value2 = null;
     /**
      * Code snippets for {@link ConfigurationAsyncClient#addSetting(String, String)}
      */
     public void addSettingsCodeSnippet() {
-        String key1 = null;
-        String key2 = null;
-        String value1 = null;
-        String value2 = null;
-
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.addsetting#String-String
         client.addSetting("prodDBConnection", "db_connection")
@@ -36,11 +35,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      * Code snippets for {@link ConfigurationAsyncClient#listSettingRevisions(SettingSelector)}
      */
     public void listSettingRevisionsCodeSnippet() {
-        String key1 = null;
-        String key2 = null;
-        String value1 = null;
-        String value2 = null;
-
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions
         client.listSettingRevisions(new SettingSelector().keys("prodDBConnection"))
@@ -55,6 +49,6 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        return null;
+        return new ConfigurationClientBuilder().buildAsyncClient();
     }
 }
