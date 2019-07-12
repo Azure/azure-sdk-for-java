@@ -5,11 +5,14 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import com.azure.messaging.eventhubs.implementation.EventDataUtil;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -74,8 +77,9 @@ import java.util.stream.Collector;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducer.send#publisher-sendOptions}
  *
- * @see EventHubClient#createProducer()
+ * @see EventHubAsyncClient#createProducer()
  */
+@Immutable
 public class EventHubProducer implements Closeable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
@@ -276,11 +280,11 @@ public class EventHubProducer implements Closeable {
 
         EventDataCollector(SendOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider) {
             this.maxNumberOfBatches = maxNumberOfBatches;
-            this.maxMessageSize = options.maximumSizeInBytes();
+            this.maxMessageSize = MAX_MESSAGE_LENGTH_BYTES;
             this.partitionKey = options.partitionKey();
             this.contextProvider = contextProvider;
 
-            currentBatch = new EventDataBatch(options.maximumSizeInBytes(), options.partitionKey(), contextProvider);
+            currentBatch = new EventDataBatch(MAX_MESSAGE_LENGTH_BYTES, options.partitionKey(), contextProvider);
         }
 
         @Override
