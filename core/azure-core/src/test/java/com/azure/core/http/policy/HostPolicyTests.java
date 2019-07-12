@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +48,7 @@ public class HostPolicyTests {
     }
 
     private static class MockHttpClient implements HttpClient {
+        private final ClientLogger logger = new ClientLogger(MockHttpClient.class);
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -55,17 +57,20 @@ public class HostPolicyTests {
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-            throw new IllegalStateException("MockHttpClient.proxy");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy"));
+            return null;
         }
 
         @Override
         public HttpClient wiretap(boolean enableWiretap) {
-            throw new IllegalStateException("MockHttpClient.wiretap");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap"));
+            return null;
         }
 
         @Override
         public HttpClient port(int port) {
-            throw new IllegalStateException("MockHttpClient.port");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.port"));
+            return null;
         }
     }
 }
