@@ -973,8 +973,8 @@ public final class ContainerAsyncClient {
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
         ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
-            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier
-         */, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
         ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
 
@@ -1040,8 +1040,8 @@ public final class ContainerAsyncClient {
         OffsetDateTime startTime,
         String version, SASProtocol sasProtocol, IPRange ipRange) {
         return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
-            /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */
-            , null /*contentType*/);
+            /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */,
+            null /*contentType*/);
     }
 
     /**

@@ -71,7 +71,7 @@ final class ServiceSASSignatureValues {
      * @param expiryTime
      * @param permissions
      */
-    public ServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
+    ServiceSASSignatureValues(OffsetDateTime expiryTime, String permissions) {
         this.expiryTime = expiryTime;
         this.permissions = permissions;
     }
@@ -80,15 +80,15 @@ final class ServiceSASSignatureValues {
      * Creates an object with the specified identifier
      * @param identifier
      */
-    public ServiceSASSignatureValues(String identifier) {
+    ServiceSASSignatureValues(String identifier) {
         this.identifier = identifier;
     }
 
-    public ServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
+    ServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
         String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
-        if(version != null) {
-          this.version = version;
+        if (version != null) {
+            this.version = version;
         }
         this.protocol = sasProtocol;
         this.startTime = startTime;
@@ -229,6 +229,7 @@ final class ServiceSASSignatureValues {
 
     /**
      * The canonical name of the object the SAS user may access.
+     * @throws RuntimeException If urlString is a malformed URL.
      */
     public ServiceSASSignatureValues canonicalName(String urlString, String accountName) {
         URL url = null;
@@ -421,9 +422,9 @@ final class ServiceSASSignatureValues {
         Utility.assertNotNull("canonicalName", this.canonicalName);
 
         // Ensure either (expiryTime and permissions) or (identifier) is set
-        if(this.expiryTime == null || this.permissions == null) {
+        if (this.expiryTime == null || this.permissions == null) {
             // Identifier is not required if user delegation is being used
-            if(!usingUserDelegation){
+            if (!usingUserDelegation) {
                 Utility.assertNotNull("identifier", this.identifier);
             }
         } else {
@@ -431,8 +432,10 @@ final class ServiceSASSignatureValues {
             Utility.assertNotNull("permissions", this.permissions);
         }
 
-        if (resource == Constants.UrlConstants.SAS_CONTAINER_CONSTANT && snapshotId != null) {
-            throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
+        if (this.resource != null && this.resource.equals(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)) {
+            if (this.snapshotId != null) {
+                throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
+            }
         }
     }
 

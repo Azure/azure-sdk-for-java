@@ -32,8 +32,8 @@ public final class SASTokenCredential {
     private static final String CONTENT_TYPE = "rsct";
 
     // Possible User Delegation Key pieces
-    private static final String SIGNED_KEY_O_ID_ = "skoid";
-    private static final String SIGNED_KEY_T_ID_ = "sktid";
+    private static final String SIGNED_KEY_O_ID = "skoid";
+    private static final String SIGNED_KEY_T_ID = "sktid";
     private static final String SIGNED_KEY_START = "skt";
     private static final String SIGNED_KEY_EXPIRY = "ske";
     private static final String SIGNED_KEY_SERVICE = "sks";
@@ -139,12 +139,12 @@ public final class SASTokenCredential {
         }
 
         // User Delegation Key Parameters
-        if (queryParams.containsKey(SIGNED_KEY_O_ID_)) {
-            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_KEY_O_ID_));
+        if (queryParams.containsKey(SIGNED_KEY_O_ID)) {
+            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_KEY_O_ID));
         }
 
-        if (queryParams.containsKey(SIGNED_KEY_T_ID_)) {
-            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_KEY_T_ID_));
+        if (queryParams.containsKey(SIGNED_KEY_T_ID)) {
+            sasTokenBuilder.append("&").append(queryParams.get(SIGNED_KEY_T_ID));
         }
 
         if (queryParams.containsKey(SIGNED_KEY_START)) {

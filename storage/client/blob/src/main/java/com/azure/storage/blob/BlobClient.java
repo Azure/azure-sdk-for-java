@@ -849,8 +849,8 @@ public class BlobClient {
     public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange) {
-        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime
-            , startTime, version, sasProtocol, ipRange);
+        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange);
     }
 
     /**
@@ -890,8 +890,8 @@ public class BlobClient {
         BlobSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
         SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
         String contentEncoding, String contentLanguage, String contentType) {
-        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime
-            , startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
+        return this.blobAsyncClient.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime,
+            startTime, version, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding,
             contentLanguage, contentType);
     }
 
