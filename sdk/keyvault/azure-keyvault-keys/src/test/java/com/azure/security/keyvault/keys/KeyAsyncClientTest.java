@@ -337,7 +337,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                         assertNotNull(deletedKey);
                     }).verifyComplete();
             pollOnKeyDeletion(keyToDeleteAndGet.name());
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             StepVerifier.create(client.getDeletedKey(keyToDeleteAndGet.name()))
                     .assertNext(deletedKeyResponse -> {
@@ -353,7 +353,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                         assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
                     }).verifyComplete();
             pollOnKeyPurge(keyToDeleteAndGet.name());
-            sleep(15000);
+            sleepInRecordMode(15000);
         });
     }
 //
@@ -421,9 +421,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse.value()));
                 sleepInRecordMode(1000);
             }
-            sleep(30000);
+            sleepInRecordMode(30000);
             client.listKeyVersions(keyName).subscribe(output::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             assertEquals(keyVersions.size(), output.size());
 
@@ -455,9 +455,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse.value()));
                 sleepInRecordMode(1000);
             }
-            sleep(30000);
+            sleepInRecordMode(30000);
             client.listKeys().subscribe(output::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             for (KeyBase actualKey : output) {
                 if (keys.containsKey(actualKey.name())) {

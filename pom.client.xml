@@ -386,6 +386,10 @@
                 <packages>com.azure.security.keyvault*</packages>
               </group>
               <group>
+                <title>Azure Storage - Common</title>
+                <packages>com.azure.storage.common*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
               </group>
@@ -541,12 +545,13 @@
               <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
                   So, path for aggregate reports have to be defined relative to parent pom -->
               <additionalOptions>-maxLineLength 120
-                -snippetpath ${project.basedir}/applicationconfig/client/src/samples/java
+                -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                 -snippetpath ${project.basedir}/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/eventhubs/client/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/keys/src/samples/java
                 -snippetpath ${project.basedir}/keyvault/client/secrets/src/samples/java
                 -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
+<!--                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java-->
               </additionalOptions>
             </configuration>
           </reportSet>
@@ -574,10 +579,8 @@
               <report>dependencies</report>
               <report>issue-management</report>
               <report>licenses</report>
-              <report>scm</report>
               <report>plugins</report>
               <report>plugin-management</report>
-              <report>team</report>
             </reports>
           </reportSet>
         </reportSets>
@@ -742,8 +745,8 @@
 
   <modules>
     <module>./sdk/appconfiguration/azure-data-appconfiguration</module>
-    <module>./core</module>
-    <module>./eventhubs/client/azure-eventhubs</module>
+    <module>./sdk/core</module>
+    <module>./sdk/eventhubs/azure-eventhubs</module>
     <module>./sdk/keyvault/azure-keyvault-secrets</module>
     <module>./sdk/keyvault/azure-keyvault-keys</module>
     <!-- As recommended by Eng Sys team, removing tracing as it is built and released separately -->
