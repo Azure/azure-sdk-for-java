@@ -27,7 +27,6 @@ import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHan
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PLATFORM;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PRODUCT;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.USER_AGENT;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.VERSION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
