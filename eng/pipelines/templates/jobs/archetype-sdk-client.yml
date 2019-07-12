@@ -24,6 +24,7 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
