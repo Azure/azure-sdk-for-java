@@ -87,7 +87,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
         ConfigurationSetting configurationSetting = configurationClient
-            .addSetting("prodDBConnection", "db_connection").value();
+            .addSetting("prodDBConnection", "db_connection");
         System.out.printf("Key: %s, Value: %s %n", configurationSetting.key(), configurationSetting.value());
         // END: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
     }
