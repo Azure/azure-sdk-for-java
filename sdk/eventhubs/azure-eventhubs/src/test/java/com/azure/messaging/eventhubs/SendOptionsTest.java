@@ -14,7 +14,10 @@ public class SendOptionsTest {
      */
     @Test
     public void createDefault() {
+        // Arrange
         SendOptions options = new SendOptions();
+
+        // Act & Assert
         Assert.assertNull(options.partitionKey());
     }
 
@@ -23,10 +26,14 @@ public class SendOptionsTest {
      */
     @Test
     public void setPartitionKey() {
+        // Arrange
         String partitionKey = "My partition key";
         SendOptions options = new SendOptions();
 
+        // Act
         options.partitionKey(partitionKey);
+
+        // Assert
         Assert.assertEquals(partitionKey, options.partitionKey());
     }
 
