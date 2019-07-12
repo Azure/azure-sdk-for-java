@@ -28,6 +28,9 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
+import static com.azure.core.implementation.util.FluxUtil.monoContext;
+
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
@@ -71,12 +74,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * client.addSetting("prodDBConnection", "db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addsetting#String-String}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -88,7 +86,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return monoContext(
+            context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -663,16 +662,14 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.listSettingRevisions(new SettingSelector().key("prodDBConnection"))
-     *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return listSettingRevisions(selector, Context.NONE);
+        return fluxContext(context -> listSettingRevisions(selector, context));
     }
 
     /**
