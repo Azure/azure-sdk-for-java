@@ -41,7 +41,7 @@ public class ManagedIdentityTokenProvider extends TokenProvider {
             } catch (ParseException e) {
                 TRACE_LOGGER.error("Could not parse the expiry time from the Managed Identity token string.", e);
                 tokenGeneratingFuture.completeExceptionally(e);
-			}
+            }
         });
         
         return tokenGeneratingFuture;
