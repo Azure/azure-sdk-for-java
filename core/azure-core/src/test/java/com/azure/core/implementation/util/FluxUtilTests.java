@@ -3,17 +3,15 @@
 
 package com.azure.core.implementation.util;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import org.junit.Ignore;
-import org.junit.Test;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,10 +22,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 public class FluxUtilTests {
 
@@ -261,6 +265,51 @@ public class FluxUtilTests {
             0, 0, 0, 1,
             0, 0, 0, (byte) 255,
             0, 0, 1, 0}, bytes);
+    }
+
+    @Test
+    public void testCallWithContextGetSingle() {
+        String response = getSingle("Hello, ")
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .block();
+        Assert.assertEquals("Hello, Foo Bar", response);
+    }
+
+    @Test
+    public void testCallWithContextGetCollection() {
+        List<String> expectedLines = Arrays.asList("Hello,", "Foo", "Bar");
+        List<String> actualLines = new ArrayList<>();
+        getCollection("Hello, ")
+            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .doOnNext(line -> actualLines.add(line))
+            .subscribe();
+        Assert.assertEquals(expectedLines, actualLines);
+    }
+
+    private Mono<String> getSingle(String prefix) {
+        return FluxUtil.monoContext(context -> serviceCallSingle(prefix, context));
+    }
+
+    private Flux<String> getCollection(String prefix) {
+        return FluxUtil
+            .fluxContext(context -> serviceCallCollection(prefix, context));
+    }
+
+    private Mono<String> serviceCallSingle(String prefix, Context context) {
+        String msg = prefix
+            + context.getData("FirstName").orElse("Stranger")
+            + " "
+            + context.getData("LastName").orElse("");
+        return Mono.just(msg);
+    }
+
+    private Flux<String> serviceCallCollection(String prefix, Context context) {
+        String msg = prefix
+            + context.getData("FirstName").orElse("Stranger")
+            + " "
+            + context.getData("LastName").orElse("");
+
+        return Flux.just(msg.split(" "));
     }
 //
     private static byte[] toBytes(ByteBuf bb) {

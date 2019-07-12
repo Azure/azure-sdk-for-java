@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.credentials.AccessToken;
 import com.azure.core.credentials.TokenCredential;
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.implementation.util.ImplUtils;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Authorizes with Azure Event Hubs service using a shared access key from either an Event Hubs namespace or a specific
  * Event Hub.
  */
+@Immutable
 public class EventHubSharedAccessKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";

@@ -11,6 +11,10 @@ import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -31,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
-import static com.azure.messaging.eventhubs.EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -46,7 +50,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
 
     public EventHubConsumerIntegrationTest() {
         super(new ClientLogger(EventHubConsumerIntegrationTest.class));
@@ -68,7 +72,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
             properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TIMEOUT, TransportType.AMQP,
             Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
 
-        client = new EventHubClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }
 
     @Override
@@ -77,7 +81,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
     }
 
     /**
-     * Tests that the same EventHubClient can create multiple EventHubConsumers listening to different partitions.
+     * Tests that the same EventHubAsyncClient can create multiple EventHubConsumers listening to different partitions.
      */
     @Test
     public void parallelCreationOfReceivers() {
