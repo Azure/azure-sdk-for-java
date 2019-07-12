@@ -3,10 +3,10 @@
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducer;
-import com.azure.messaging.eventhubs.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class PublishEventsToSpecificPartition {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubClient client = new EventHubClientBuilder()
+        EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
 

@@ -1,24 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Optional;
 
+import com.azure.core.implementation.annotation.Fluent;
+
 /**
  * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its
  * behavior.
  *
  * @see EventHubConsumer
- * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
+@Fluent
 public class EventHubConsumerOptions implements Cloneable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerOptions.class);
 
@@ -99,7 +104,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Sets the retry policy used to govern retry attempts for receiving events. If not specified, the retry policy
-     * configured on the associated {@link EventHubClient} is used.
+     * configured on the associated {@link EventHubAsyncClient} is used.
      *
      * @param retry The retry policy to use when receiving events.
      * @return The updated {@link EventHubConsumerOptions} object.
@@ -135,7 +140,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Sets the scheduler for receiving events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubClient} is used.
+     * associated {@link EventHubAsyncClient} is used.
      *
      * @param scheduler The scheduler for receiving events.
      * @return The updated EventHubClientBuilder object.
@@ -157,7 +162,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Gets the retry policy when receiving events. If not specified, the retry policy configured on the associated
-     * {@link EventHubClient} is used.
+     * {@link EventHubAsyncClient} is used.
      *
      * @return The retry policy when receiving events.
      */
@@ -178,7 +183,7 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Gets the scheduler for reading events from Event Hubs. If not specified, the scheduler configured with the
-     * associated {@link EventHubClient} is used.
+     * associated {@link EventHubAsyncClient} is used.
      *
      * @return The scheduler for reading events.
      */

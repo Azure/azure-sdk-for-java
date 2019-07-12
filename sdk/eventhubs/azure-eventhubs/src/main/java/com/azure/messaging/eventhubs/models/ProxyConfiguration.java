@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.implementation.annotation.Immutable;
 
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
@@ -13,6 +14,7 @@ import java.util.Objects;
 /**
  * Properties for configuring proxies with Event Hubs.
  */
+@Immutable
 public class ProxyConfiguration implements AutoCloseable {
     /**
      * The configuration key for containing the username who authenticates with the proxy.

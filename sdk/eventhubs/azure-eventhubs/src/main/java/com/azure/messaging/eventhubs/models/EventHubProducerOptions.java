@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.implementation.annotation.Fluent;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
+import com.azure.messaging.eventhubs.EventHubProducer;
 
 import java.time.Duration;
 
@@ -12,8 +15,9 @@ import java.time.Duration;
  * The set of options that can be specified when creating an {@link EventHubProducer} to configure its behavior.
  *
  * @see EventHubProducer
- * @see EventHubClient#createProducer(EventHubProducerOptions)
+ * @see EventHubAsyncClient#createProducer(EventHubProducerOptions)
  */
+@Fluent
 public class EventHubProducerOptions implements Cloneable {
     private final ClientLogger logger = new ClientLogger(EventHubProducerOptions.class);
 
@@ -65,7 +69,7 @@ public class EventHubProducerOptions implements Cloneable {
      * Gets the retry policy used to govern retry attempts when an issue is encountered while sending.
      *
      * @return the retry policy used to govern retry attempts when an issue is encountered while sending. If {@code
-     *         null}, then the retry policy configured on the associated {@link EventHubClient} is used.
+     *         null}, then the retry policy configured on the associated {@link EventHubAsyncClient} is used.
      */
     public Retry retry() {
         return retry;
