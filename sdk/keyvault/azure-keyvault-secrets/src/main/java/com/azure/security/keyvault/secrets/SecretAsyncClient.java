@@ -418,7 +418,7 @@ public final class SecretAsyncClient {
             continuationToken -> listSecretsNextPage(continuationToken));
     }
 
-    /**
+    /*
      * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
      * {@link SecretAsyncClient#listSecrets()}.
      *
@@ -432,6 +432,9 @@ public final class SecretAsyncClient {
             .doOnError(error -> logger.warning("Failed to retrieve the next secrets page - Page {}", continuationToken, error));
     }
 
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
     private Mono<PagedResponse<SecretBase>> listSecretsFirstPage() {
         return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing secrets"))
@@ -473,6 +476,9 @@ public final class SecretAsyncClient {
             .doOnError(error -> logger.warning("Failed to retrieve the next deleted secrets page - Page {}", continuationToken, error));
     }
 
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage() {
         return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
@@ -502,9 +508,26 @@ public final class SecretAsyncClient {
     public PagedFlux<SecretBase> listSecretVersions(String name) {
         return new PagedFlux<>(() ->
             listSecretVersionsFirstPage(name),
-            continuationToken -> listSecretsNextPage(continuationToken));
+            continuationToken -> listSecretVersionsNextPage(continuationToken));
     }
 
+    /*
+     * Gets attributes of all the secrets versions given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretAsyncClient#listSecretVersions()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<SecretBase>} from the next page of results.
+     */
+    private Mono<PagedResponse<SecretBase>> listSecretVersionsNextPage(String continuationToken) {
+        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next secrets versions page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.info("Retrieved the next secrets versions page - Page {}", continuationToken))
+            .doOnError(error -> logger.warning("Failed to retrieve the next secrets versions page - Page {}", continuationToken, error));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
     private Mono<PagedResponse<SecretBase>> listSecretVersionsFirstPage(String name) {
         return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))

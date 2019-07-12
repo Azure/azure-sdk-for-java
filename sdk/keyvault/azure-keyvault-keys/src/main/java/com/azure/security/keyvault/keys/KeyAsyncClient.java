@@ -634,7 +634,7 @@ public final class KeyAsyncClient {
             continuationToken -> listKeysNextPage(continuationToken));
     }
 
-    /**
+    /*
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
      * {@link KeyAsyncClient#listKeys()}.
      *
@@ -648,6 +648,9 @@ public final class KeyAsyncClient {
             .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
     }
 
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
     private Mono<PagedResponse<KeyBase>> listKeysFirstPage() {
         return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing keys"))
@@ -676,7 +679,7 @@ public final class KeyAsyncClient {
             continuationToken -> listDeletedKeysNextPage(continuationToken));
     }
 
-    /**
+    /*
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
      * {@link KeyAsyncClient#listDeletedKeys()}.
      *
@@ -690,6 +693,9 @@ public final class KeyAsyncClient {
             .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken, error));
     }
 
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage() {
         return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing deleted keys"))
@@ -719,7 +725,7 @@ public final class KeyAsyncClient {
     public PagedFlux<KeyBase> listKeyVersions(String name) {
         return new PagedFlux<>(() ->
             listKeyVersionsFirstPage(name),
-            continuationToken -> listKeysNextPage(continuationToken));
+            continuationToken -> listKeyVersionsNextPage(continuationToken));
     }
 
     private Mono<PagedResponse<KeyBase>> listKeyVersionsFirstPage(String name) {
@@ -727,6 +733,20 @@ public final class KeyAsyncClient {
             .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
             .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
             .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
+    }
+
+    /*
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listKeyVersions()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     */
+    private Mono<PagedResponse<KeyBase>> listKeyVersionsNextPage(String continuationToken) {
+        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next key versions page - Page {} ", continuationToken, error));
     }
 }
 
