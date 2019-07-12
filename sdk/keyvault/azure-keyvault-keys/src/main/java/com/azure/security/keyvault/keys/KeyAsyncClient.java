@@ -14,11 +14,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
-import com.azure.security.keyvault.keys.implementation.KeyBasePage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
@@ -35,7 +31,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -639,6 +634,13 @@ public final class KeyAsyncClient {
             continuationToken -> listKeysNextPage(continuationToken));
     }
 
+    /**
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     */
     private Mono<PagedResponse<KeyBase>> listKeysNextPage(String continuationToken) {
         return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
             .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
@@ -674,11 +676,18 @@ public final class KeyAsyncClient {
             continuationToken -> listDeletedKeysNextPage(continuationToken));
     }
 
+    /**
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listDeletedKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<DeletedKey>} from the next page of results.
+     */
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken) {
         return service.getDeletedKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
-            .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
-            .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
+            .doOnRequest(ignored -> logger.info("Listing next deleted keys page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next deleted keys page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken, error));
     }
 
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage() {

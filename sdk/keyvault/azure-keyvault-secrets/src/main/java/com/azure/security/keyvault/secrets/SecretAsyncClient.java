@@ -11,14 +11,11 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
-import com.azure.security.keyvault.secrets.implementation.DeletedSecretPage;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +35,7 @@ import com.azure.core.exception.HttpRequestException;
  * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
  *
  * @see SecretClientBuilder
+ * @see PagedFlux
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
 public final class SecretAsyncClient {
@@ -420,11 +418,18 @@ public final class SecretAsyncClient {
             continuationToken -> listSecretsNextPage(continuationToken));
     }
 
+    /**
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretAsyncClient#listSecrets()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<SecretBase>} from the next page of results.
+     */
     private Mono<PagedResponse<SecretBase>> listSecretsNextPage(String continuationToken) {
         return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken, error));
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next secret page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.info("Retrieved the next secret page - Page {}", continuationToken))
+            .doOnError(error -> logger.warning("Failed to retrieve the next secret page - Page {}", continuationToken, error));
     }
 
     private Mono<PagedResponse<SecretBase>> listSecretsFirstPage() {
@@ -454,11 +459,18 @@ public final class SecretAsyncClient {
             continuationToken -> listDeletedSecretsNextPage(continuationToken, Context.NONE));
     }
 
+    /**
+     * Gets attributes of all the secrets given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link SecretAsyncClient#listDeletedSecrets()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<DeletedSecret>} from the next page of results.
+     */
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
         return service.getDeletedSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken, error));
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next deleted secret page - Page {}", continuationToken))
+            .doOnSuccess(response -> logger.info("Retrieved the next deleted secret page - Page {}", continuationToken))
+            .doOnError(error -> logger.warning("Failed to retrieve the next deleted secret page - Page {}", continuationToken, error));
     }
 
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage() {
