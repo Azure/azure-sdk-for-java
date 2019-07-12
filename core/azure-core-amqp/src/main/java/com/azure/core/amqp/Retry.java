@@ -3,9 +3,6 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,11 +23,6 @@ public abstract class Retry implements Cloneable {
      */
     public static final int DEFAULT_MAX_RETRY_COUNT = 10;
 
-    /**
-     * Base sleep wait time.
-     */
-    private static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
-
     private final AtomicInteger retryCount = new AtomicInteger();
     private final int maxRetryCount;
 
@@ -41,16 +33,6 @@ public abstract class Retry implements Cloneable {
      */
     public Retry(int maxRetryCount) {
         this.maxRetryCount = maxRetryCount;
-    }
-
-    /**
-     * Check if the existing exception is a retriable exception.
-     *
-     * @param exception An exception that was observed for the operation to be retried.
-     * @return true if the exception is a retriable exception, otherwise false.
-     */
-    public static boolean isRetriableException(Exception exception) {
-        return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 
     /**
@@ -109,27 +91,16 @@ public abstract class Retry implements Cloneable {
     /**
      * Calculates the amount of time to delay before the next retry attempt.
      *
-     * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
-     * @return The amount of time to delay before retrying the associated operation; if {@code null},
-     * then the operation is no longer eligible to be retried.
+     * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
+     *         is no longer eligible to be retried.
      */
-    public Duration getNextRetryInterval(Exception lastException, Duration remainingTime) {
-        int baseWaitTime = 0;
-
-        if (!isRetriableException(lastException) || retryCount.get() >= maxRetryCount) {
+    public Duration getNextRetryInterval(Duration baseWaitTime, Duration remainingTime) {
+        if (retryCount.get() >= maxRetryCount) {
             return null;
         }
 
-        if (!(lastException instanceof AmqpException)) {
-            return null;
-        }
-
-        if (((AmqpException) lastException).getErrorCondition() == ErrorCondition.SERVER_BUSY_ERROR) {
-            baseWaitTime += SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
-        }
-
-        return this.calculateNextRetryInterval(lastException, remainingTime, baseWaitTime, this.getRetryCount());
+        return calculateNextRetryInterval(remainingTime, baseWaitTime, getRetryCount());
     }
 
     @Override
@@ -138,17 +109,15 @@ public abstract class Retry implements Cloneable {
     }
 
     /**
-     * Allows a concrete retry policy implementation to offer a base retry interval to be used in
-     * the calculations performed by 'Retry.GetNextRetryInterval'.
+     * Allows a concrete retry policy implementation to offer a retry interval to be used in the calculations
+     * performed by {@link Retry#getNextRetryInterval(Duration, Duration)}.
      *
-     * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
-     * @param baseWaitSeconds The number of seconds to base the suggested retry interval on;
-     * this should be used as the minimum interval returned under normal circumstances.
+     * @param baseWaitTime The amount of time to base the suggested retry interval on. This should be used as
+     *         the minimum interval returned under normal circumstances.
      * @param retryCount The number of retries that have already been attempted.
-     * @return The amount of time to delay before retrying the associated operation; if {@code null},
-     * then the operation is no longer eligible to be retried.
+     * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
+     *         is no longer eligible to be retried.
      */
-    protected abstract Duration calculateNextRetryInterval(Exception lastException, Duration remainingTime,
-                                                           int baseWaitSeconds, int retryCount);
+    protected abstract Duration calculateNextRetryInterval(Duration remainingTime, Duration baseWaitTime, int retryCount);
 }
