@@ -118,7 +118,7 @@ public class FileClientTest extends FileClientTestBase {
         URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
         String localFilePath = fileFolder.getPath() + "\\helloworld";
         String downloadFilePath = fileFolder.getPath() + "\\testDownload";
-        File downloadFile = new File(downloadFilePath.substring(1));
+        File downloadFile = new File(downloadFilePath);
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile();
         }
