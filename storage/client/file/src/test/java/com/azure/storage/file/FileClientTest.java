@@ -127,9 +127,6 @@ public class FileClientTest extends FileClientTestBase {
         byte[] f1 = Files.readAllBytes(new File(localFilePath).toPath());
         byte[] f2 = Files.readAllBytes(new File(localFilePath).toPath());
         Assert.assertTrue("Uploaded file should have same content as the file downloaded from storage.", Arrays.equals(f1, f2));
-        if (Files.exists(downloadFile.toPath())) {
-            downloadFile.delete();
-        }
     }
 
     @Override
