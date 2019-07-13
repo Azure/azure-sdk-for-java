@@ -168,6 +168,7 @@
           <artifactId>azure-storage-queue</artifactId>
           <version>${azure-storage-queue.version}</version>
         </dependency>
+        <dependency>
           <artifactId>azure-identity</artifactId>
           <version>${azure-identity.version}</version>
         </dependency>
