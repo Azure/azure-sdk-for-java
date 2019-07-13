@@ -374,8 +374,8 @@ public class Util {
         TokenProvider tokenProvider = null;
         String authentication = builder.getAuthentication();
         if (authentication != null) {
-            if (authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGEDIDENTITY_AUTHENTICATION)
-                    || authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
+            if (authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION_WITH_SPACE)
+                    || authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION_WITHOUT_SPACE)) {
                 tokenProvider = new ManagedIdentityTokenProvider();
             }
         } else if (builder.getSharedAccessSignatureToken() == null) {
