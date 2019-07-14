@@ -36,23 +36,23 @@ jobs:
 
     strategy:
       matrix:
-       # MultiMaster_Multi_Region_Long:
-       #   OSVmImage: 'vs2017-win2016'
-       #   CosmosAccountHost: $(ACCOUNT_HOST)
-       #   CosmosAccountKey: $(ACCOUNT_KEY)
-       #   Consistency: 'Session'
-       #   TestDisplayName: 'Long Integration Tests'
-       #   ProfileFlag: '-Plong'
-       #   PreferredLocations: '["East US 2"]'
+        MultiMaster_Multi_Region_Long:
+         OSVmImage: 'vs2017-win2016'
+         CosmosAccountHost: $(ACCOUNT_HOST)
+         CosmosAccountKey: $(ACCOUNT_KEY)
+         Consistency: 'Session'
+         TestDisplayName: 'Long Integration Tests'
+         ProfileFlag: '-Plong'
+         PreferredLocations: '["East US 2"]'
 
-       # Session_Single_Region_Long:
-       #   OSVmImage: 'vs2017-win2016'
-       #   CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
-       #   CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
-       #   Consistency: 'Session'
-       #   TestDisplayName: 'Long Integration Tests'
-       #   ProfileFlag: '-Plong'
-       #   PreferredLocations: null
+        Session_Single_Region_Long:
+         OSVmImage: 'vs2017-win2016'
+         CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
+         CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+         Consistency: 'Session'
+         TestDisplayName: 'Long Integration Tests'
+         ProfileFlag: '-Plong'
+         PreferredLocations: null
 
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
@@ -115,16 +115,16 @@ jobs:
     strategy:
       matrix:
         Multi_Region:
-          OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(ACCOUNT_HOST)
-          CosmosAccountKey: $(ACCOUNT_KEY)
-          PreferredLocations: '["East US 2"]'
+        #   OSVmImage: 'vs2017-win2016'
+        #   CosmosAccountHost: $(ACCOUNT_HOST)
+        #   CosmosAccountKey: $(ACCOUNT_KEY)
+        #   PreferredLocations: '["East US 2"]'
 
-      #  Single_Region:
-      #    OSVmImage: 'vs2017-win2016'
-      #    CosmosAccountHost: $(MULTIMASTER_SINGLE_ACCOUNT_HOST)
-      #    CosmosAccountKey: $(MULTIMASTER_SINGLE_ACCOUNT_KEY)
-      #    PreferredLocations: null
+        # Single_Region:
+        #  OSVmImage: 'vs2017-win2016'
+        #  CosmosAccountHost: $(MULTIMASTER_SINGLE_ACCOUNT_HOST)
+        #  CosmosAccountKey: $(MULTIMASTER_SINGLE_ACCOUNT_KEY)
+        #  PreferredLocations: null
 
     pool:
       vmImage: $(OSVmImage)
@@ -214,33 +214,33 @@ jobs:
 
     strategy:
       matrix:
-        Session_Tcp:
-          OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
-          ProtocolFlag: '["Tcp"]'
-          Consistency: 'Session'
+        # Session_Tcp:
+        #   OSVmImage: 'vs2017-win2016'
+        #   CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
+        #   CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+        #   ProtocolFlag: '["Tcp"]'
+        #   Consistency: 'Session'
 
-      #  Session_Https:
-      #    OSVmImage: 'vs2017-win2016'
-      #    CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
-      #    CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
-      #    ProtocolFlag: '["Https"]'
-      #    Consistency: 'Session'
+        # Session_Https:
+        #  OSVmImage: 'vs2017-win2016'
+        #  CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
+        #  CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+        #  ProtocolFlag: '["Https"]'
+        #  Consistency: 'Session'
 
-        Strong_Tcp:
-          OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_STRONG_ONE_ACCOUNT_KEY)
-          ProtocolFlag: '["Tcp"]'
-          Consistency: 'Strong'
+        # Strong_Tcp:
+        #   OSVmImage: 'vs2017-win2016'
+        #   CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
+        #   CosmosAccountKey: $(SINGLE_STRONG_ONE_ACCOUNT_KEY)
+        #   ProtocolFlag: '["Tcp"]'
+        #   Consistency: 'Strong'
 
-      #  Strong_Https:
-      #    OSVmImage: 'vs2017-win2016'
-      #    CosmosAccountHost: $(SINGLE_STRONG_TWO_ACCOUNT_HOST)
-      #    CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
-      #    ProtocolFlag: '["Https"]'
-      #    Consistency: 'Strong'
+        # Strong_Https:
+        #  OSVmImage: 'vs2017-win2016'
+        #  CosmosAccountHost: $(SINGLE_STRONG_TWO_ACCOUNT_HOST)
+        #  CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
+        #  ProtocolFlag: '["Https"]'
+        #  Consistency: 'Strong'
     pool:
       vmImage: $(OSVmImage)
 
