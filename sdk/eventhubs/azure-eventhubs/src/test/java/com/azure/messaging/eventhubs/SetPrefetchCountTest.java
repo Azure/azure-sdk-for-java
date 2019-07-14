@@ -24,6 +24,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumer}.
  */
+@Ignore("This test creates too many resources. We need to fix this test.")
 public class SetPrefetchCountTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     // Default number of events to fetch when creating the consumer.
