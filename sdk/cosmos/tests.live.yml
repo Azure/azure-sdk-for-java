@@ -114,7 +114,7 @@ jobs:
 
     strategy:
       matrix:
-        Multi_Region:
+        # Multi_Region:
         #   OSVmImage: 'vs2017-win2016'
         #   CosmosAccountHost: $(ACCOUNT_HOST)
         #   CosmosAccountKey: $(ACCOUNT_KEY)
