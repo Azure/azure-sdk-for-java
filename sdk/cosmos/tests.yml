@@ -114,8 +114,7 @@ jobs:
         inputs:
           mavenPomFile: $(pomFile)
           goals: 'clean package'
-          options: '-DskipTests -Dgpg.skip'
-          testResultsFiles: '**/junitreports/TEST-*.xml'
+          options: '-DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true'
           mavenAuthenticateFeed: true
         condition: succeededOrFailed()
 
