@@ -1,0 +1,312 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - sdk/cosmos
+
+variables:
+  pomFile: './sdk/cosmos/pom.xml'
+  DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+
+jobs:
+  - job: 'Build'
+
+    pool:
+      vmImage: 'vs2017-win2016'
+
+    steps:
+    - task: Maven@1
+      displayName: Build
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: 'package package'
+        options: '-DskipTests -Dgpg.skip'
+        publishJUnitResults: false
+        checkStyleRunAnalysis: true
+        pmdRunAnalysis: true
+        findBugsRunAnalysis: true
+      condition: succeededOrFailed()
+
+  - job: 'Test'
+
+    timeoutInMinutes: 120
+
+    strategy:
+      matrix:
+       # MultiMaster_Multi_Region_Long:
+       #   OSVmImage: 'vs2017-win2016'
+       #   CosmosAccountHost: $(ACCOUNT_HOST)
+       #   CosmosAccountKey: $(ACCOUNT_KEY)
+       #   Consistency: 'Session'
+       #   TestDisplayName: 'Long Integration Tests'
+       #   ProfileFlag: '-Plong'
+       #   PreferredLocations: '["East US 2"]'
+
+       # Session_Single_Region_Long:
+       #   OSVmImage: 'vs2017-win2016'
+       #   CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
+       #   CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+       #   Consistency: 'Session'
+       #   TestDisplayName: 'Long Integration Tests'
+       #   ProfileFlag: '-Plong'
+       #   PreferredLocations: null
+
+        Session_Single_Region_ReadMyWrites:
+          OSVmImage: 'vs2017-win2016'
+          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
+          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+          Consistency: 'Session'
+          TestDisplayName: 'ReadMyWrites Integration Tests'
+          ProfileFlag: '-Pe2e'
+          PreferredLocations: null
+
+        Strong_Single_Region_ReadMyWrites:
+          OSVmImage: 'vs2017-win2016'
+          CosmosAccountHost: $(SINGLE_STRONG_ACCOUNT_HOST)
+          CosmosAccountKey: $(SINGLE_STRONG_ACCOUNT_KEY)
+          Consistency: 'Strong'
+          TestDisplayName: 'ReadMyWrites Integration Tests'
+          ProfileFlag: '-Pe2e'
+          PreferredLocations: null
+
+    pool:
+      vmImage: $(OSVmImage)
+        
+    #Your build pipeline references a secret variable named ‘ACCOUNT_HOST’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+    #Your build pipeline references a secret variable named ‘ACCOUNT_KEY’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+    steps:
+    - task: Maven@1
+      displayName: $(TestDisplayName)
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Dgpg.skip -e $(ProfileFlag) -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: $(Consistency)
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)'
+        Contents: |
+         **/target/**
+         **/collectedArtifactsForRelease/**
+        TargetFolder: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
+
+  - job: 'MultiMaster'
+
+    timeoutInMinutes: 120
+
+    strategy:
+      matrix:
+        Multi_Region:
+          OSVmImage: 'vs2017-win2016'
+          CosmosAccountHost: $(ACCOUNT_HOST)
+          CosmosAccountKey: $(ACCOUNT_KEY)
+          PreferredLocations: '["East US 2"]'
+
+      #  Single_Region:
+      #    OSVmImage: 'vs2017-win2016'
+      #    CosmosAccountHost: $(MULTIMASTER_SINGLE_ACCOUNT_HOST)
+      #    CosmosAccountKey: $(MULTIMASTER_SINGLE_ACCOUNT_KEY)
+      #    PreferredLocations: null
+
+    pool:
+      vmImage: $(OSVmImage)
+
+    steps:
+    - task: Maven@1
+      displayName: 'Multi-Master Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pmulti-master -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: 'Session'
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'Fast Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pfast -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: 'Session'
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'DirectHttps Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pdirect -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: 'Session'
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'Examples Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pexamples -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: 'Session'
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'Non Emulator Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pnon-emulator -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: 'Session'
+        PREFERRED_LOCATIONS: $(PreferredLocations)
+      condition: succeededOrFailed()
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)'
+        Contents: |
+         **/target/**
+         **/collectedArtifactsForRelease/**
+        TargetFolder: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
+
+  - job: 'Single_Region'
+
+    timeoutInMinutes: 120
+
+    strategy:
+      matrix:
+        Session_Tcp:
+          OSVmImage: 'vs2017-win2016'
+          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
+          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+          ProtocolFlag: '["Tcp"]'
+          Consistency: 'Session'
+
+      #  Session_Https:
+      #    OSVmImage: 'vs2017-win2016'
+      #    CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
+      #    CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+      #    ProtocolFlag: '["Https"]'
+      #    Consistency: 'Session'
+
+        Strong_Tcp:
+          OSVmImage: 'vs2017-win2016'
+          CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
+          CosmosAccountKey: $(SINGLE_STRONG_ONE_ACCOUNT_KEY)
+          ProtocolFlag: '["Tcp"]'
+          Consistency: 'Strong'
+
+      #  Strong_Https:
+      #    OSVmImage: 'vs2017-win2016'
+      #    CosmosAccountHost: $(SINGLE_STRONG_TWO_ACCOUNT_HOST)
+      #    CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
+      #    ProtocolFlag: '["Https"]'
+      #    Consistency: 'Strong'
+    pool:
+      vmImage: $(OSVmImage)
+
+    steps:
+    - task: Maven@1
+      displayName: 'Fast Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pfast -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: $(Consistency)
+        PROTOCOLS: $(ProtocolFlag)
+      condition: succeededOrFailed()
+    
+    - task: Maven@1
+      displayName: 'DirectHttps Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pdirect -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: $(Consistency)
+        PROTOCOLS: $(ProtocolFlag)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'Examples Integration Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pexamples -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: $(Consistency)
+        PROTOCOLS: $(ProtocolFlag)
+      condition: succeededOrFailed()
+
+    - task: Maven@1
+      displayName: 'Non Emulator Tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        goals: verify
+        options: '-Pnon-emulator -DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+      env:
+        ACCOUNT_CONSISTENCY: $(Consistency)
+        PROTOCOLS: $(ProtocolFlag)
+      condition: succeededOrFailed()
+
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      inputs:
+        SourceFolder: '$(build.sourcesdirectory)'
+        Contents: |
+         **/target/**
+         **/collectedArtifactsForRelease/**
+        TargetFolder: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: drop'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+      continueOnError: true
+      condition: succeededOrFailed()
