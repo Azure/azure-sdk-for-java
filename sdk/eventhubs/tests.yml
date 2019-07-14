@@ -1,0 +1,10 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: eventhubs
+      EnvVars:
+        AZURE_EVENTHUBS_CONNECTION_STRING: $(java-event-hubs-test-connection-string)
+        AZURE_TEST_MODE: RECORD
+        AZURE_LOG_LEVEL: 4
