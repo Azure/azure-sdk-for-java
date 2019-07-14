@@ -126,13 +126,13 @@ public class FileAsyncClientTest extends FileClientTestBase {
 
         String localFilePath = fileFolder.getPath() + "/helloworld";
         String downloadFilePath = fileFolder.getPath() + "/testDownload";
-        File downloadFile = new File(downloadFilePath.substring(1));
+        File downloadFile = new File(downloadFilePath);
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile();
         }
-        StepVerifier.create(fileAsyncClient.uploadFromFile(localFilePath.substring(1)))
+        StepVerifier.create(fileAsyncClient.uploadFromFile(localFilePath))
                     .verifyComplete();
-        StepVerifier.create(fileAsyncClient.downloadToFile(downloadFilePath.substring(1)))
+        StepVerifier.create(fileAsyncClient.downloadToFile(downloadFilePath))
                     .verifyComplete();
 
         byte[] f1 = Files.readAllBytes(new File(localFilePath).toPath());

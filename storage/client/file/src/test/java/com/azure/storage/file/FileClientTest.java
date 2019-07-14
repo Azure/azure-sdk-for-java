@@ -116,14 +116,14 @@ public class FileClientTest extends FileClientTestBase {
     public void uploadToStorageAndDownloadToFile() throws Exception {
         fileClient.create(1024);
         URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
-        String localFilePath = fileFolder.getPath() + "\\helloworld";
-        String downloadFilePath = fileFolder.getPath() + "\\testDownload";
+        String localFilePath = fileFolder.getPath() + "/helloworld";
+        String downloadFilePath = fileFolder.getPath() + "/helloworld";
         File downloadFile = new File(downloadFilePath);
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile();
         }
-        fileClient.uploadFromFile(localFilePath.substring(1));
-        fileClient.downloadToFile(downloadFilePath.substring(1));
+        fileClient.uploadFromFile(localFilePath);
+        fileClient.downloadToFile(downloadFilePath);
         byte[] f1 = Files.readAllBytes(new File(localFilePath).toPath());
         byte[] f2 = Files.readAllBytes(new File(localFilePath).toPath());
         Assert.assertTrue("Uploaded file should have same content as the file downloaded from storage.", Arrays.equals(f1, f2));
