@@ -112,6 +112,7 @@ jobs:
       - task: Maven@3
         displayName: Build
         inputs:
+          mavenPomFile: $(pomFile)
           goals: 'clean package'
           options: '-DskipTests -Dgpg.skip'
           testResultsFiles: '**/junitreports/TEST-*.xml'
