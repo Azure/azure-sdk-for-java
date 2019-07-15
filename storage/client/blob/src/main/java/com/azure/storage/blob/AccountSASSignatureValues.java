@@ -50,7 +50,7 @@ final class AccountSASSignatureValues {
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
      * other values empty.
      */
-    AccountSASSignatureValues() {
+    public AccountSASSignatureValues() {
     }
 
     /**

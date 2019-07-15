@@ -29,7 +29,7 @@ final class ContainerSASPermission {
     /**
      * Initializes an {@code ContainerSASPermssion} object with all fields set to false.
      */
-    private ContainerSASPermission() {
+    ContainerSASPermission() {
     }
 
     /**

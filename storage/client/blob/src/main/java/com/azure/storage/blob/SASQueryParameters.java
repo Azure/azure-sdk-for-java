@@ -71,7 +71,7 @@ final class SASQueryParameters {
      * @param queryParamsMap All query parameters for the request as key-value pairs
      * @param removeSASParametersFromMap When {@code true}, the SAS query parameters will be removed from queryParamsMap
      */
-    SASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
+    public SASQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
         this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSASParametersFromMap);
         this.services = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICES, removeSASParametersFromMap);
         this.resourceTypes = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_RESOURCES_TYPES, removeSASParametersFromMap);
@@ -333,9 +333,7 @@ final class SASQueryParameters {
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
         if (value != null) {
-            if (sb.length() == 0) {
-                sb.append('?');
-            } else {
+            if (sb.length() != 0) {
                 sb.append('&');
             }
             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));

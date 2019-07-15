@@ -27,7 +27,7 @@ final class BlobSASPermission {
     /**
      * Initializes a {@code BlobSASPermission} object with all fields set to false.
      */
-    private BlobSASPermission() {
+    BlobSASPermission() {
     }
 
     /**
