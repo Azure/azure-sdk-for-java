@@ -37,7 +37,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.implementation.util.FluxUtil.monoContext;
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -648,8 +647,8 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyBase> listKeys() {
-        return new PagedFlux<>(() ->
-            monoContext(context -> listKeysFirstPage()),
+        return new PagedFlux<>(
+            () -> monoContext(context -> listKeysFirstPage()),
             continuationToken -> monoContext(context -> listKeysNextPage(continuationToken)));
     }
 
@@ -692,10 +691,11 @@ public final class KeyAsyncClient {
      *
      * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedKey> listDeletedKeys() {
-        return new PagedFlux<>(() ->
-            listDeletedKeysFirstPage(),
-            continuationToken -> listDeletedKeysNextPage(continuationToken));
+        return new PagedFlux<>(
+            () -> monoContext(context -> listDeletedKeysFirstPage()),
+            continuationToken -> monoContext(context -> listDeletedKeysNextPage(continuationToken)));
     }
 
     /*
@@ -741,10 +741,11 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link PagedFlux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyBase> listKeyVersions(String name) {
-        return new PagedFlux<>(() ->
-            listKeyVersionsFirstPage(name),
-            continuationToken -> listKeyVersionsNextPage(continuationToken));
+        return new PagedFlux<>(
+            () -> monoContext(context -> listKeyVersionsFirstPage(name)),
+            continuationToken -> monoContext(context -> listKeyVersionsNextPage(continuationToken)));
     }
 
     private Mono<PagedResponse<KeyBase>> listKeyVersionsFirstPage(String name) {
