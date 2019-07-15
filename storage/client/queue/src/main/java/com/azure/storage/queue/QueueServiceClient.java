@@ -93,10 +93,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * <pre>
-     * Response&lt;QueueClient&gt; = client.createQueue("test", Collections.singletonMap("queue", "metadata"));
-     * System.out.printf("Creating the queue completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueue#string-map}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
@@ -149,21 +146,9 @@ public final class QueueServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>List all queues and their metadata in the account</p>
-     *
-     * <pre>
-     * for (QueueItem queue : client.listQueues(new QueuesSegmentOptions().includeMetadata(true))) {
-     *     System.out.printf("Queue %s exists in the account and has metadata %s", queue.name(), queue.metadata());
-     * }
-     * </pre>
-     *
      * <p>List all queues that begin with "azure"</p>
      *
-     * <pre>
-     * for (QueueItem queue : client.listQueues(new QueuesSegmentOptions().prefix("azure"))) {
-     *     System.out.printf("Queue %s exists in the account", queue.name());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -194,10 +179,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * <pre>
-     * StorageServiceProperties properties = client.getProperties().value();
-     * System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
      *
      * @return Storage account Queue service properties
      */
@@ -216,24 +198,11 @@ public final class QueueServiceClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * <pre>
-     * StorageServiceProperties properties = client.getProperties().value();
-     * properties.cors(Collections.emptyList());
-     *
-     * VoidResponse response = client.setProperties(properties);
-     * System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setProperties#storageServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * <pre>
-     * StorageServiceProperties properties = client.getProperties().value();
-     * properties.minuteMetrics().enabled(true);
-     * properties.hourMetrics().enabled(true);
-     *
-     * VoidResponse response = client.setProperties(properties);
-     * System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties}
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -260,10 +229,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * <pre>
-     * StorageServiceStats stats = client.getStatistics().value();
-     * System.out.printf("Geo replication status: %s, Last synced: %s", stats.geoReplication.status(), stats.geoReplication().lastSyncTime());
-     * </pre>
+     * {@codesnipeet com.azure.storage.queue.queueServiceClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

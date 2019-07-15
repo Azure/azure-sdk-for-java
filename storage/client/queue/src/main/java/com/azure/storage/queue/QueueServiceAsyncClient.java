@@ -116,10 +116,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * <pre>
-     * client.createQueue("test", Collections.singletonMap("queue", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the queue completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
@@ -173,19 +170,9 @@ public final class QueueServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>List all queues and their metadata in the account</p>
-     *
-     * <pre>
-     * client.listQueues(new QueuesSegmentOptions().includeMetadata(true))
-     *     .subscribe(result -&gt; System.out.printf("Queue %s exists in the account and has metadata %s", result.name(), result.metadata()));
-     * </pre>
-     *
      * <p>List all queues that begin with "azure"</p>
      *
-     * <pre>
-     * client.listQueues(new QueuesSegmentOptions().prefix("azure"))
-     *     .subscribe(result -&gt; System.out.printf("Queue %s exists in the account", result.name()));
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -254,13 +241,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * <pre>
-     * client.getProperties()
-     *     .subscribe(response -&gt; {
-     *         StorageServiceProperties properties = response.value();
-     *         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
-     *     });
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
      *
      * @return Storage account Queue service properties
      */
@@ -280,24 +261,11 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * <pre>
-     * StorageServiceProperties properties = client.getProperties().block().value();
-     * properties.cors(Collections.emptyList());
-     *
-     * client.setProperties(properties)
-     *     .subscribe(response -&gt; System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * <pre>
-     * StorageServiceProperties properties = client.getProperties().block().value();
-     * properties.minuteMetrics().enabled(true);
-     * properties.hourMetrics().enabled(true);
-     *
-     * client.setProperties(properties)
-     *     .subscribe(response -&gt; System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties}
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -325,13 +293,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * <pre>
-     * client.getStatistics()
-     *     .subscribe(response -&gt; {
-     *         StorageServiceStats stats = response.value();
-     *         System.out.printf("Geo replication status: %s, Last synced: %s", stats.geoReplication.status(), stats.geoReplication().lastSyncTime());
-     *     });
-     * </pre>
+     * {@codesnipeet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

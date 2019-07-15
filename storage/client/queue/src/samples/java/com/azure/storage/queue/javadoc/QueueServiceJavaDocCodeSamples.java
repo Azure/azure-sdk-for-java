@@ -10,6 +10,11 @@ import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.StorageServiceProperties;
+import com.azure.storage.queue.models.StorageServiceStats;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
@@ -96,6 +101,32 @@ public class QueueServiceJavaDocCodeSamples {
         // END: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string
     }
 
+    /**
+     * Generates a code sample for using {@link QueueServiceClient#createQueue(String, Map)}
+     */
+    public void createQueueMaxOverload() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.createQueue#string-map
+        Response<QueueClient> response = queueServiceClient.createQueue("myqueue",
+            Collections.singletonMap("queue", "metadata"));
+        System.out.println("Complete creating queue with status code: " + response.statusCode());
+        // END: com.azure.storage.queue.queueServiceClient.createQueue#string-map
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#createQueue(String, Map)}
+     */
+    public void createQueueAsyncMaxOverload() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map
+        queueServiceAsyncClient.createQueue("myqueue", Collections.singletonMap("queue", "metadata"))
+            .subscribe(
+            response -> System.out.printf("Creating the queue with status code %d", response.statusCode()),
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete creating the queue!")
+        );
+        // END: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map
+    }
 
     /**
      * Generates a code sample for using {@link QueueServiceClient#listQueues()}
@@ -124,6 +155,34 @@ public class QueueServiceJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link QueueServiceClient#listQueues(QueuesSegmentOptions)} )}
+     */
+    public void listQueuesWithOverload() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions
+        queueServiceClient.listQueues(new QueuesSegmentOptions().prefix("azure")).forEach(
+            queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
+                queueItem.name(), queueItem.metadata())
+        );
+        // END: com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#listQueues(QueuesSegmentOptions)}
+     */
+    public void listQueuesAsyncWithOverload() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions
+        queueServiceAsyncClient.listQueues(new QueuesSegmentOptions().prefix("azure")).subscribe(
+            queueItem -> System.out.printf("Queue %s exists in the account and has metadata %s",
+                queueItem.name(), queueItem.metadata()),
+            error -> System.err.print(error.toString()),
+            () -> System.out.println("Complete listing the queues!")
+        );
+        // END: com.azure.storage.queue.queueServiceAsyncClient.listQueues#queueSergmentOptions
+    }
+
+    /**
      * Generates a code sample for using {@link QueueServiceClient#deleteQueue(String)}
      */
     public void deleteQueue() {
@@ -133,7 +192,6 @@ public class QueueServiceJavaDocCodeSamples {
         System.out.println("Complete deleting the queue with status code: " + response.statusCode());
         // END: com.azure.storage.queue.queueServiceClient.deleteQueue#string
     }
-
 
     /**
      * Generates a code sample for using {@link QueueServiceAsyncClient#deleteQueue(String)}
@@ -145,5 +203,115 @@ public class QueueServiceJavaDocCodeSamples {
             response -> System.out.println("Deleting the queue completed with status code: " + response.statusCode())
         );
         // END: com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceClient#getProperties()}
+     */
+    public void getProperties() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.getProperties
+        StorageServiceProperties properties = queueServiceClient.getProperties().value();
+        System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
+            properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
+        // END: com.azure.storage.queue.queueServiceClient.getProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#getProperties()}
+     */
+    public void getPropertiesAsync() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getProperties
+        queueServiceAsyncClient.getProperties()
+            .subscribe(response -> {
+                StorageServiceProperties properties = response.value();
+                System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
+                    properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
+            });
+        // END: com.azure.storage.queue.queueServiceAsyncClient.getProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceClient#setProperties(StorageServiceProperties)}
+     */
+    public void setProperties() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.setProperties#storageServiceProperties
+        StorageServiceProperties properties = queueServiceClient.getProperties().value();
+        properties.cors(Collections.emptyList());
+
+        VoidResponse response = queueServiceClient.setProperties(properties);
+        System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
+        // END: com.azure.storage.queue.queueServiceClient.setProperties#storageServiceProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)}
+     */
+    public void setPropertiesAsync() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
+        StorageServiceProperties properties = queueServiceAsyncClient.getProperties().block().value();
+        queueServiceAsyncClient.setProperties(properties)
+            .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
+                response.statusCode()));
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceClient#setProperties(StorageServiceProperties)} with metrics enabled.
+     */
+    public void setPropertiesEnableMetrics() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties
+        StorageServiceProperties properties = queueServiceClient.getProperties().value();
+        properties.minuteMetrics().enabled(true);
+        properties.hourMetrics().enabled(true);
+        VoidResponse response = queueServiceClient.setProperties(properties);
+        System.out.printf("Setting Queue service properties completed with status code %d", response.statusCode());
+        // END: com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#setProperties(StorageServiceProperties)} with metrics enabled.
+     */
+    public void setPropertiesAsyncEnableMetrics() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
+        StorageServiceProperties properties = queueServiceAsyncClient.getProperties().block().value();
+        properties.minuteMetrics().enabled(true);
+        properties.hourMetrics().enabled(true);
+        queueServiceAsyncClient.setProperties(properties)
+            .subscribe(response -> System.out.printf("Setting Queue service properties completed with status code %d",
+                response.statusCode()));
+        // END: com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceClient#getStatistics()}
+     */
+    public void getStatistics() {
+        QueueServiceClient queueServiceClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceClient.getStatistics
+        StorageServiceStats stats = queueServiceClient.getStatistics().value();
+        System.out.printf("Geo replication status: %s, Last synced: %s",
+            stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
+        // END: com.azure.storage.queue.queueServiceClient.getStatistics
+    }
+
+    /**
+     * Generates a code sample for using {@link QueueServiceAsyncClient#getStatistics()}
+     */
+    public void getStatisticsAsync() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.getStatistics
+        queueServiceAsyncClient.getStatistics()
+            .subscribe(response -> {
+                StorageServiceStats stats = response.value();
+                System.out.printf("Geo replication status: %s, Last synced: %s",
+                    stats.geoReplication().status(), stats.geoReplication().lastSyncTime());
+            });
+        // END: com.azure.storage.queue.queueServiceAsyncClient.getStatistics
     }
 }
