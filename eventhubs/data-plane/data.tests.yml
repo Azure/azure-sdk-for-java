@@ -1,10 +1,8 @@
 trigger: none
 
 jobs:
-    # When migrating change path to ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-pre-sdk.yml
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      # When migrating use ServiceDirectory
-      PomFilePath: '../../sdk/eventhubs/microsoft-azure-eventhubs/pom.xml'
+      ServiceDirectory: eventhubs
       EnvVars:
         AZURE_EVENTHUBS_CONNECTION_STRING: $(java-event-hubs-test-connection-string)
