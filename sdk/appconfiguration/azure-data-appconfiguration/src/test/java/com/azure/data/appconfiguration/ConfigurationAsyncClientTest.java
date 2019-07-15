@@ -136,7 +136,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
                     .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
-            final String etag = client.addSetting(initial).block().value().etag();
+            final String etag = client.addSetting(initial).block().etag();
 
             StepVerifier.create(client.setSetting(update.etag(etag)))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -238,8 +238,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting update = settings.get(1);
             final ConfigurationSetting last = settings.get(2);
 
-            final String initialEtag = client.addSetting(initial).block().value().etag();
-            final String updateEtag = client.updateSetting(update).block().value().etag();
+            final String initialEtag = client.addSetting(initial).block().etag();
+            final String updateEtag = client.updateSetting(update).block().etag();
 
             // The setting does not exist in the service yet, so we cannot update it.
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)))
@@ -324,11 +324,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
         StepVerifier.create(client.deleteSetting("myNonExistentKey"))
-                .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertConfigurationEquals(null, response))
                 .verifyComplete();
 
         StepVerifier.create(client.deleteSetting(new ConfigurationSetting().key(neverDeletedConfiguation.key()).label("myNonExistentLabel")))
-                .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+                .assertNext(response -> assertConfigurationEquals(null, response))
                 .verifyComplete();
 
         StepVerifier.create(client.getSetting(neverDeletedConfiguation.key()))
@@ -342,8 +342,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingWithETag() {
         deleteSettingWithETagRunner((initial, update) -> {
-            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block().value();
-            final ConfigurationSetting updatedConfig = client.updateSetting(update).block().value();
+            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block();
+            final ConfigurationSetting updatedConfig = client.updateSetting(update).block();
 
             StepVerifier.create(client.getSetting(initial))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -454,7 +454,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void listSettingsSelectFields() {
         listSettingsSelectFieldsRunner((settings, selector) -> {
-            final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
+            final List<Mono<ConfigurationSetting>> settingsBeingAdded = new ArrayList<>();
             for (ConfigurationSetting setting : settings) {
                 settingsBeingAdded.add(client.setSetting(setting));
             }
@@ -626,7 +626,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
 
         StepVerifier.create(client.addSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response.value()))
+            .assertNext(response -> assertConfigurationEquals(original, response))
             .verifyComplete();
 
         StepVerifier.create(client.updateSetting(updated))
@@ -704,7 +704,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        List<Mono<ConfigurationSetting>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
             results.add(client.setSetting(setting));
         }
@@ -728,7 +728,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().key(keyPrefix + "-" + value).value("myValue").label(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        List<Mono<ConfigurationSetting>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
             results.add(client.setSetting(setting));
         }
@@ -749,7 +749,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final String key = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
-        final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();
+        final ConfigurationSetting block = client.addSetting(expected).single().block();
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);
