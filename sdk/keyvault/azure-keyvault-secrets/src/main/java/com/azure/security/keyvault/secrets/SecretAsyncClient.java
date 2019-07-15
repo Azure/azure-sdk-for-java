@@ -427,8 +427,8 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretBase> listSecrets() {
-        return new PagedFlux<>(() ->
-            monoContext(context -> listSecretsFirstPage()),
+        return new PagedFlux<>(
+            () -> monoContext(context -> listSecretsFirstPage()),
             continuationToken -> monoContext(context -> listSecretsNextPage(continuationToken)));
     }
 
@@ -472,8 +472,8 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
-        return new PagedFlux<>(() ->
-            monoContext(context -> listDeletedSecretsFirstPage()),
+        return new PagedFlux<>(
+            () -> monoContext(context -> listDeletedSecretsFirstPage()),
             continuationToken -> monoContext(context -> listDeletedSecretsNextPage(continuationToken, Context.NONE)));
     }
 
