@@ -7,17 +7,14 @@ import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.util.ImplUtils;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
-import com.azure.security.keyvault.keys.implementation.KeyBasePage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
@@ -34,7 +31,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,6 +44,7 @@ import reactor.core.publisher.Mono;
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
  * @see KeyClientBuilder
+ * @see PagedFlux
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
@@ -629,14 +626,36 @@ public final class KeyAsyncClient {
      *   .map(Response::value);
      * </pre>
      *
-     * @return A {@link Flux} containing {@link KeyBase key} of all the keys in the vault.
+     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
      */
-    public Flux<KeyBase> listKeys() {
+    public PagedFlux<KeyBase> listKeys() {
+        return new PagedFlux<>(() ->
+            listKeysFirstPage(),
+            continuationToken -> listKeysNextPage(continuationToken));
+    }
+
+    /*
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     */
+    private Mono<PagedResponse<KeyBase>> listKeysNextPage(String continuationToken) {
+        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
+    private Mono<PagedResponse<KeyBase>> listKeysFirstPage() {
         return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing keys"))
-                .doOnSuccess(response -> logger.info("Listed keys"))
-                .doOnError(error -> logger.warning("Failed to list keys", error))
-                .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing keys"))
+            .doOnSuccess(response -> logger.info("Listed keys"))
+            .doOnError(error -> logger.warning("Failed to list keys", error));
     }
 
     /**
@@ -652,14 +671,36 @@ public final class KeyAsyncClient {
      *   System.out.printf("Deleted key's recovery Id %s \n", deletedKey.recoveryId()));
      * </pre>
      *
-     * @return A {@link Flux} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Flux<DeletedKey> listDeletedKeys() {
+    public PagedFlux<DeletedKey> listDeletedKeys() {
+        return new PagedFlux<>(() ->
+            listDeletedKeysFirstPage(),
+            continuationToken -> listDeletedKeysNextPage(continuationToken));
+    }
+
+    /*
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listDeletedKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<DeletedKey>} from the next page of results.
+     */
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken) {
+        return service.getDeletedKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.info("Listing next deleted keys page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next deleted keys page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken, error));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage() {
         return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing deleted keys"))
-                .doOnSuccess(response -> logger.info("Listed deleted keys"))
-                .doOnError(error -> logger.warning("Failed to list deleted keys", error))
-                .flatMapMany(r -> extractAndFetchDeletedKeys(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing deleted keys"))
+            .doOnSuccess(response -> logger.info("Listed deleted keys"))
+            .doOnError(error -> logger.warning("Failed to list deleted keys", error));
     }
 
     /**
@@ -679,44 +720,33 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Flux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
+     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
      */
-    public Flux<KeyBase> listKeyVersions(String name) {
+    public PagedFlux<KeyBase> listKeyVersions(String name) {
+        return new PagedFlux<>(() ->
+            listKeyVersionsFirstPage(name),
+            continuationToken -> listKeyVersionsNextPage(continuationToken));
+    }
+
+    private Mono<PagedResponse<KeyBase>> listKeyVersionsFirstPage(String name) {
         return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
-                .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error))
-                .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
+            .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
+            .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
+            .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
     }
 
-    /**
+    /*
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listKeys()}.
+     * {@link KeyAsyncClient#listKeyVersions()}.
      *
-     * @param nextPageLink The {@link KeyBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
      */
-    private Flux<KeyBase> listKeysNext(String nextPageLink, Context context) {
-        return service.getKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, context));
-    }
-
-    private Publisher<KeyBase> extractAndFetchKeys(PagedResponse<KeyBase> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listKeysNext);
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listDeletedKeys()}.
-     *
-     * @param nextPageLink The {@link DeletedKeyPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
-     */
-    private Flux<DeletedKey> listDeletedKeysNext(String nextPageLink, Context context) {
-        return service.getDeletedKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, context));
-    }
-
-    private Publisher<DeletedKey> extractAndFetchDeletedKeys(PagedResponse<DeletedKey> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listDeletedKeysNext);
+    private Mono<PagedResponse<KeyBase>> listKeyVersionsNextPage(String continuationToken) {
+        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+            .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next key versions page - Page {} ", continuationToken, error));
     }
 }
 
