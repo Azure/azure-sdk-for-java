@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.resources.v2018_06_01.implementation;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,6 +29,18 @@ public class TenantIdDescriptionInner {
     private String tenantId;
 
     /**
+     * The display name of the tenant.
+     */
+    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String displayName;
+
+    /**
+     * The list of domains for the tenant.
+     */
+    @JsonProperty(value = "domains", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> domains;
+
+    /**
      * Get the fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
      *
      * @return the id value
@@ -43,6 +56,24 @@ public class TenantIdDescriptionInner {
      */
     public String tenantId() {
         return this.tenantId;
+    }
+
+    /**
+     * Get the display name of the tenant.
+     *
+     * @return the displayName value
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the list of domains for the tenant.
+     *
+     * @return the domains value
+     */
+    public List<String> domains() {
+        return this.domains;
     }
 
 }
