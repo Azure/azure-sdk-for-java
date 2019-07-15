@@ -12,11 +12,22 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.resources.v2018_06_01.implementation.ResourcesManager;
 import com.microsoft.azure.management.resources.v2018_06_01.implementation.TenantIdDescriptionInner;
+import java.util.List;
 
 /**
  * Type representing TenantIdDescription.
  */
 public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<ResourcesManager> {
+    /**
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * @return the domains value.
+     */
+    List<String> domains();
+
     /**
      * @return the id value.
      */

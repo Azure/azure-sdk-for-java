@@ -179,7 +179,7 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-06-01";
+        this.apiVersion = "2018-06-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -196,6 +196,6 @@ public class SubscriptionClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "SubscriptionClient", "2016-06-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "SubscriptionClient", "2018-06-01");
     }
 }
