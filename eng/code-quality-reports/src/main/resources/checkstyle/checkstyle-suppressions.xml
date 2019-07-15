@@ -85,4 +85,12 @@
 
   <!-- Add JavadocThrowsChecks suppression for any test or implementation files (ie. ones that live under src/test/java or implementation). -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
+
+  <!-- Custom checkstyle rules only check track 2 libraries -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
+
+  <!-- Custom checkstyle rules that don't apply to files under test or implementation package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
 </suppressions>
