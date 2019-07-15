@@ -29,7 +29,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
 
 import static com.azure.core.implementation.util.FluxUtil.monoContext;
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
