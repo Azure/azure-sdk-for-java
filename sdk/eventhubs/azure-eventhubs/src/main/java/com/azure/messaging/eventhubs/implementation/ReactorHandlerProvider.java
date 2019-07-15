@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.TransportType;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import com.azure.messaging.eventhubs.implementation.handler.SendLinkHandler;
@@ -18,6 +19,7 @@ import java.util.Locale;
  * Provides handlers for the various types of links.
  */
 public class ReactorHandlerProvider {
+    private final ClientLogger logger = new ClientLogger(ReactorHandlerProvider.class);
     private final ReactorProvider provider;
 
     /**
@@ -45,7 +47,8 @@ public class ReactorHandlerProvider {
             case AMQP_WEB_SOCKETS:
                 return new WebSocketsConnectionHandler(connectionId, hostname);
             default:
-                throw new IllegalArgumentException(String.format(Locale.US, "This transport type '%s' is not supported.", transportType));
+                logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US, "This transport type '%s' is not supported.", transportType)));
+                return null;
         }
     }
 
@@ -61,7 +64,6 @@ public class ReactorHandlerProvider {
     SessionHandler createSessionHandler(String connectionId, String host, String sessionName, Duration openTimeout) {
         return new SessionHandler(connectionId, host, sessionName, provider.getReactorDispatcher(), openTimeout);
     }
-
 
     /**
      * Creates a new link handler for sending messages.
