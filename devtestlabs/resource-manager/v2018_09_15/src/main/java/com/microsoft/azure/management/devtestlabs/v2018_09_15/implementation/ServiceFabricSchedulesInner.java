@@ -104,7 +104,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -126,7 +126,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -149,7 +149,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ScheduleInner&gt; object
      */
@@ -169,7 +169,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ScheduleInner&gt; object
      */
@@ -193,7 +193,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ScheduleInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -240,7 +240,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName')
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'
@@ -266,7 +266,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName')
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'
@@ -293,7 +293,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName')
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'
@@ -317,7 +317,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName')
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'
@@ -345,7 +345,7 @@ public class ServiceFabricSchedulesInner {
     ServiceResponse<PageImpl<ScheduleInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ScheduleInner>> * @param labName The name of the lab.
     ServiceResponse<PageImpl<ScheduleInner>> * @param userName The name of the user profile.
-    ServiceResponse<PageImpl<ScheduleInner>> * @param serviceFabricName The name of the service Fabric.
+    ServiceResponse<PageImpl<ScheduleInner>> * @param serviceFabricName The name of the service fabric.
     ServiceResponse<PageImpl<ScheduleInner>> * @param expand Specify the $expand query. Example: 'properties($select=status)'
     ServiceResponse<PageImpl<ScheduleInner>> * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName')
     ServiceResponse<PageImpl<ScheduleInner>> * @param top The maximum number of resources to return from the operation. Example: '$top=10'
@@ -399,7 +399,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -416,7 +416,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -432,7 +432,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ScheduleInner object
@@ -452,7 +452,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ScheduleInner object
@@ -500,7 +500,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -518,7 +518,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -535,7 +535,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -556,7 +556,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -611,7 +611,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -629,7 +629,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -646,7 +646,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -667,7 +667,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -727,7 +727,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -743,7 +743,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -759,7 +759,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -779,7 +779,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -829,12 +829,12 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -847,12 +847,12 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -864,12 +864,12 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -885,12 +885,12 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param schedule A schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -949,7 +949,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -965,7 +965,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -981,7 +981,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -1001,7 +1001,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -1038,7 +1038,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1054,7 +1054,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1070,7 +1070,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -1090,7 +1090,7 @@ public class ServiceFabricSchedulesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.

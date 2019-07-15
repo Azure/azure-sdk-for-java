@@ -21,7 +21,8 @@ public class DataDiskStorageTypeInfo {
     private String lun;
 
     /**
-     * Disk Storage Type. Possible values include: 'Standard', 'Premium'.
+     * Disk Storage Type. Possible values include: 'Standard', 'Premium',
+     * 'StandardSSD'.
      */
     @JsonProperty(value = "storageType")
     private StorageType storageType;
@@ -47,7 +48,7 @@ public class DataDiskStorageTypeInfo {
     }
 
     /**
-     * Get disk Storage Type. Possible values include: 'Standard', 'Premium'.
+     * Get disk Storage Type. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @return the storageType value
      */
@@ -56,7 +57,7 @@ public class DataDiskStorageTypeInfo {
     }
 
     /**
-     * Set disk Storage Type. Possible values include: 'Standard', 'Premium'.
+     * Set disk Storage Type. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @param storageType the storageType value to set
      * @return the DataDiskStorageTypeInfo object itself.

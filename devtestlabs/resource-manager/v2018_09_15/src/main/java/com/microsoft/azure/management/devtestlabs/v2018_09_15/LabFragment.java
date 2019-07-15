@@ -20,7 +20,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 public class LabFragment extends UpdateResource {
     /**
      * Type of storage used by the lab. It can be either Premium or Standard.
-     * Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Default is Premium. Possible values include: 'Standard', 'Premium',
+     * 'StandardSSD'.
      */
     @JsonProperty(value = "properties.labStorageType")
     private StorageType labStorageType;
@@ -77,7 +78,7 @@ public class LabFragment extends UpdateResource {
     private Map<String, String> extendedProperties;
 
     /**
-     * Get type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Get type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @return the labStorageType value
      */
@@ -86,7 +87,7 @@ public class LabFragment extends UpdateResource {
     }
 
     /**
-     * Set type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Set type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @param labStorageType the labStorageType value to set
      * @return the LabFragment object itself.

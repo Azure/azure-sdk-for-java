@@ -1133,7 +1133,7 @@ public class LabsInner implements InnerSupportsGet<LabInner>, InnerSupportsDelet
     }
 
     /**
-     * Modify properties of labs.
+     * Allows modifying tags of labs. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
@@ -1148,7 +1148,7 @@ public class LabsInner implements InnerSupportsGet<LabInner>, InnerSupportsDelet
     }
 
     /**
-     * Modify properties of labs.
+     * Allows modifying tags of labs. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
@@ -1162,7 +1162,7 @@ public class LabsInner implements InnerSupportsGet<LabInner>, InnerSupportsDelet
     }
 
     /**
-     * Modify properties of labs.
+     * Allows modifying tags of labs. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
@@ -1180,7 +1180,7 @@ public class LabsInner implements InnerSupportsGet<LabInner>, InnerSupportsDelet
     }
 
     /**
-     * Modify properties of labs.
+     * Allows modifying tags of labs. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.

@@ -948,7 +948,7 @@ public class GlobalSchedulesInner implements InnerSupportsGet<ScheduleInner>, In
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
@@ -963,7 +963,7 @@ public class GlobalSchedulesInner implements InnerSupportsGet<ScheduleInner>, In
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
@@ -977,7 +977,7 @@ public class GlobalSchedulesInner implements InnerSupportsGet<ScheduleInner>, In
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
@@ -995,7 +995,7 @@ public class GlobalSchedulesInner implements InnerSupportsGet<ScheduleInner>, In
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.

@@ -24,7 +24,7 @@ public interface ServiceFabrics extends SupportsCreating<ServiceFabric.Definitio
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -36,7 +36,7 @@ public interface ServiceFabrics extends SupportsCreating<ServiceFabric.Definitio
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -48,7 +48,7 @@ public interface ServiceFabrics extends SupportsCreating<ServiceFabric.Definitio
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -60,7 +60,7 @@ public interface ServiceFabrics extends SupportsCreating<ServiceFabric.Definitio
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -83,7 +83,7 @@ public interface ServiceFabrics extends SupportsCreating<ServiceFabric.Definitio
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

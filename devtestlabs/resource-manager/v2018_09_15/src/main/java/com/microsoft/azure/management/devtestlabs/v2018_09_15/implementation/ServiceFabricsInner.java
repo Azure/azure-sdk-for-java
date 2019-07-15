@@ -403,7 +403,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -419,7 +419,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -434,7 +434,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
      */
@@ -453,7 +453,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
      */
@@ -497,7 +497,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -514,7 +514,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -530,7 +530,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -550,7 +550,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param expand Specify the $expand query. Example: 'properties($expand=applicableSchedule)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -596,12 +596,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -613,12 +613,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -629,12 +629,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -649,12 +649,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -687,12 +687,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -704,12 +704,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -720,12 +720,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -740,12 +740,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Create or replace an existing Service Fabric. This operation can take a while to complete.
+     * Create or replace an existing service fabric. This operation can take a while to complete.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -801,7 +801,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -816,7 +816,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -831,7 +831,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -850,7 +850,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -883,7 +883,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -898,7 +898,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -913,7 +913,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -932,7 +932,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -979,12 +979,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -996,12 +996,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1012,12 +1012,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -1032,12 +1032,12 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceFabric A Service Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServiceFabricInner object
@@ -1092,7 +1092,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1108,7 +1108,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1123,7 +1123,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicableScheduleInner object
      */
@@ -1142,7 +1142,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicableScheduleInner object
      */
@@ -1192,7 +1192,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1207,7 +1207,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1222,7 +1222,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1241,7 +1241,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1274,7 +1274,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1289,7 +1289,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1304,7 +1304,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1323,7 +1323,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1374,7 +1374,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1389,7 +1389,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1404,7 +1404,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1423,7 +1423,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -1456,7 +1456,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1471,7 +1471,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1486,7 +1486,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1505,7 +1505,7 @@ public class ServiceFabricsInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param name The name of the service Fabric.
+     * @param name The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */

@@ -644,7 +644,7 @@ public interface LabVirtualMachine extends HasInner<LabVirtualMachineInner>, Ind
         interface WithVirtualMachineCreationSource {
             /**
              * Specifies virtualMachineCreationSource.
-             * @param virtualMachineCreationSource Tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'
+             * @param virtualMachineCreationSource Tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'
              * @return the next definition stage
              */
             WithCreate withVirtualMachineCreationSource(VirtualMachineCreationSource virtualMachineCreationSource);
@@ -1046,7 +1046,7 @@ public interface LabVirtualMachine extends HasInner<LabVirtualMachineInner>, Ind
         interface WithVirtualMachineCreationSource {
             /**
              * Specifies virtualMachineCreationSource.
-             * @param virtualMachineCreationSource Tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'
+             * @param virtualMachineCreationSource Tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'
              * @return the next update stage
              */
             Update withVirtualMachineCreationSource(VirtualMachineCreationSource virtualMachineCreationSource);

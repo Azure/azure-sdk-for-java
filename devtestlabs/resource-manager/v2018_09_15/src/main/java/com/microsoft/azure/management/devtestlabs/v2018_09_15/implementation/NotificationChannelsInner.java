@@ -363,7 +363,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -378,7 +378,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -392,7 +392,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
      */
@@ -410,7 +410,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
      */
@@ -450,7 +450,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -466,7 +466,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -481,7 +481,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -500,7 +500,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param expand Specify the $expand query. Example: 'properties($select=webHookUrl)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -543,11 +543,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Create or replace an existing notificationChannel.
+     * Create or replace an existing notification channel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -559,11 +559,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Create or replace an existing notificationChannel.
+     * Create or replace an existing notification channel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -574,11 +574,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Create or replace an existing notificationChannel.
+     * Create or replace an existing notification channel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -593,11 +593,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Create or replace an existing notificationChannel.
+     * Create or replace an existing notification channel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -649,7 +649,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -663,7 +663,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -677,7 +677,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -695,7 +695,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -738,11 +738,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notification channels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -754,11 +754,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notification channels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -769,11 +769,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notification channels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -788,11 +788,11 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notification channels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notificationChannel A notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationChannelInner object
@@ -843,7 +843,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notifyParameters Properties for generating a Notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -858,7 +858,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notifyParameters Properties for generating a Notification.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -873,7 +873,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notifyParameters Properties for generating a Notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -892,7 +892,7 @@ public class NotificationChannelsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notifyParameters Properties for generating a Notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.

@@ -30,16 +30,6 @@ public interface ServiceRunners extends SupportsCreating<ServiceRunner.Definitio
     Observable<ServiceRunner> getAsync(String resourceGroupName, String labName, String name);
 
     /**
-     * List service runners in a given lab.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<ServiceRunner> listAsync(final String resourceGroupName, final String labName);
-
-    /**
      * Delete service runner.
      *
      * @param resourceGroupName The name of the resource group.

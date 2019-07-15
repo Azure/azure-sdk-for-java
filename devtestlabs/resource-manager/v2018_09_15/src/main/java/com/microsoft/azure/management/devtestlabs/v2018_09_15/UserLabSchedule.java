@@ -129,7 +129,7 @@ public interface UserLabSchedule extends HasInner<ScheduleInner>, Indexable, Ref
             * @param resourceGroupName The name of the resource group
             * @param labName The name of the lab
             * @param userName The name of the user profile
-            * @param serviceFabricName The name of the service Fabric
+            * @param serviceFabricName The name of the service fabric
             * @return the next definition stage
             */
             WithCreate withExistingServicefabric(String resourceGroupName, String labName, String userName, String serviceFabricName);

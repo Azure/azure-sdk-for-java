@@ -11,7 +11,7 @@ package com.microsoft.azure.management.devtestlabs.v2018_09_15.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response body for generating an upload URI.
+ * Reponse body for generating an upload URI.
  */
 public class GenerateUploadUriResponseInner {
     /**

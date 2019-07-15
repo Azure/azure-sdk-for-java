@@ -191,7 +191,7 @@ public interface Lab extends HasInner<LabInner>, Resource, GroupableResourceCore
         interface WithLabStorageType {
             /**
              * Specifies labStorageType.
-             * @param labStorageType Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'
+             * @param labStorageType Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'
              * @return the next definition stage
              */
             WithCreate withLabStorageType(StorageType labStorageType);
@@ -307,7 +307,7 @@ public interface Lab extends HasInner<LabInner>, Resource, GroupableResourceCore
         interface WithLabStorageType {
             /**
              * Specifies labStorageType.
-             * @param labStorageType Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'
+             * @param labStorageType Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'
              * @return the next update stage
              */
             Update withLabStorageType(StorageType labStorageType);

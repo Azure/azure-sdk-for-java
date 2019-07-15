@@ -958,7 +958,7 @@ public class EnvironmentsInner {
     }
 
     /**
-     * Modify properties of environments.
+     * Allows modifying tags of environments. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -975,7 +975,7 @@ public class EnvironmentsInner {
     }
 
     /**
-     * Modify properties of environments.
+     * Allows modifying tags of environments. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -991,7 +991,7 @@ public class EnvironmentsInner {
     }
 
     /**
-     * Modify properties of environments.
+     * Allows modifying tags of environments. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -1011,7 +1011,7 @@ public class EnvironmentsInner {
     }
 
     /**
-     * Modify properties of environments.
+     * Allows modifying tags of environments. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
