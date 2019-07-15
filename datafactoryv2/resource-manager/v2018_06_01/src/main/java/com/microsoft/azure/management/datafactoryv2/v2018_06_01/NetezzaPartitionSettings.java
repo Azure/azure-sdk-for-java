@@ -11,12 +11,12 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The settings that will be leveraged for SAP table source partitioning.
+ * The settings that will be leveraged for Netezza source partitioning.
  */
-public class SapTablePartitionSettings {
+public class NetezzaPartitionSettings {
     /**
-     * The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding
+     * range partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
@@ -38,14 +38,7 @@ public class SapTablePartitionSettings {
     private Object partitionLowerBound;
 
     /**
-     * The maximum value of partitions the table will be splitted into. Type:
-     * integer (or Expression with resultType string).
-     */
-    @JsonProperty(value = "maxPartitionsNumber")
-    private Object maxPartitionsNumber;
-
-    /**
-     * Get the name of the column that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionColumnName value
      */
@@ -54,12 +47,12 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Set the name of the column that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionColumnName the partitionColumnName value to set
-     * @return the SapTablePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public SapTablePartitionSettings withPartitionColumnName(Object partitionColumnName) {
+    public NetezzaPartitionSettings withPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
     }
@@ -77,9 +70,9 @@ public class SapTablePartitionSettings {
      * Set the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionUpperBound the partitionUpperBound value to set
-     * @return the SapTablePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public SapTablePartitionSettings withPartitionUpperBound(Object partitionUpperBound) {
+    public NetezzaPartitionSettings withPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
     }
@@ -97,30 +90,10 @@ public class SapTablePartitionSettings {
      * Set the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionLowerBound the partitionLowerBound value to set
-     * @return the SapTablePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public SapTablePartitionSettings withPartitionLowerBound(Object partitionLowerBound) {
+    public NetezzaPartitionSettings withPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
-        return this;
-    }
-
-    /**
-     * Get the maximum value of partitions the table will be splitted into. Type: integer (or Expression with resultType string).
-     *
-     * @return the maxPartitionsNumber value
-     */
-    public Object maxPartitionsNumber() {
-        return this.maxPartitionsNumber;
-    }
-
-    /**
-     * Set the maximum value of partitions the table will be splitted into. Type: integer (or Expression with resultType string).
-     *
-     * @param maxPartitionsNumber the maxPartitionsNumber value to set
-     * @return the SapTablePartitionSettings object itself.
-     */
-    public SapTablePartitionSettings withMaxPartitionsNumber(Object maxPartitionsNumber) {
-        this.maxPartitionsNumber = maxPartitionsNumber;
         return this;
     }
 

@@ -26,6 +26,19 @@ public class NetezzaSource extends CopySource {
     private Object query;
 
     /**
+     * The partition mechanism that will be used for Netezza read in parallel.
+     * Possible values include: 'None', 'DataSlice', 'DynamicRange'.
+     */
+    @JsonProperty(value = "partitionOption")
+    private NetezzaPartitionOption partitionOption;
+
+    /**
+     * The settings that will be leveraged for Netezza source partitioning.
+     */
+    @JsonProperty(value = "partitionSettings")
+    private NetezzaPartitionSettings partitionSettings;
+
+    /**
      * Get a query to retrieve data from source. Type: string (or Expression with resultType string).
      *
      * @return the query value
@@ -42,6 +55,46 @@ public class NetezzaSource extends CopySource {
      */
     public NetezzaSource withQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /**
+     * Get the partition mechanism that will be used for Netezza read in parallel. Possible values include: 'None', 'DataSlice', 'DynamicRange'.
+     *
+     * @return the partitionOption value
+     */
+    public NetezzaPartitionOption partitionOption() {
+        return this.partitionOption;
+    }
+
+    /**
+     * Set the partition mechanism that will be used for Netezza read in parallel. Possible values include: 'None', 'DataSlice', 'DynamicRange'.
+     *
+     * @param partitionOption the partitionOption value to set
+     * @return the NetezzaSource object itself.
+     */
+    public NetezzaSource withPartitionOption(NetezzaPartitionOption partitionOption) {
+        this.partitionOption = partitionOption;
+        return this;
+    }
+
+    /**
+     * Get the settings that will be leveraged for Netezza source partitioning.
+     *
+     * @return the partitionSettings value
+     */
+    public NetezzaPartitionSettings partitionSettings() {
+        return this.partitionSettings;
+    }
+
+    /**
+     * Set the settings that will be leveraged for Netezza source partitioning.
+     *
+     * @param partitionSettings the partitionSettings value to set
+     * @return the NetezzaSource object itself.
+     */
+    public NetezzaSource withPartitionSettings(NetezzaPartitionSettings partitionSettings) {
+        this.partitionSettings = partitionSettings;
         return this;
     }
 
