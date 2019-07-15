@@ -77,6 +77,7 @@ public final class ConfigurationClient {
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
+     * @param context Additional context that is passed through the Http pipeline during the service call. 
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -101,7 +102,6 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param setting The setting to add to the configuration service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -187,6 +187,7 @@ public final class ConfigurationClient {
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
+     * @param context Additional context that is passed through the Http pipeline during the service call. 
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -313,6 +314,7 @@ public final class ConfigurationClient {
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
+     * @param context Additional context that is passed through the Http pipeline during the service call. 
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -418,6 +420,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the setting to retrieve.
+     * @param context Additional context that is passed through the Http pipeline during the service call. 
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -512,6 +515,7 @@ public final class ConfigurationClient {
      * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
      *
      * @param key The key of the setting to delete.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
