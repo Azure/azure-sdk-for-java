@@ -20,6 +20,62 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
     /**
      * Lists the long term retention backups for a given location.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LongTermRetentionBackup> listByResourceGroupLocationAsync(final String resourceGroupName, final String locationName);
+
+    /**
+     * Lists the long term retention backups for a given server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LongTermRetentionBackup> listByResourceGroupServerAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName);
+
+    /**
+     * Gets a long term retention backup.
+     *
+     * @param locationName The location of the database.
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LongTermRetentionBackup> getAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Deletes a long term retention backup.
+     *
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @param backupName The backup name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+
+    /**
+     * Lists all long term retention backups for a database.
+     *
+     * @param locationName The location of the database
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LongTermRetentionBackup> listByDatabaseAsync(final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName);
+
+    /**
+     * Lists the long term retention backups for a given location.
+     *
      * @param locationName The location of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -39,6 +95,7 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
     /**
      * Gets a long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database.
      * @param longTermRetentionServerName The name of the server
      * @param longTermRetentionDatabaseName The name of the database
@@ -46,22 +103,24 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<LongTermRetentionBackup> getAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+    Observable<LongTermRetentionBackup> getByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
     /**
      * Lists all long term retention backups for a database.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database
      * @param longTermRetentionServerName The name of the server
      * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<LongTermRetentionBackup> listByDatabaseAsync(final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName);
+    Observable<LongTermRetentionBackup> listByResourceGroupDatabaseAsync(final String resourceGroupName, final String locationName, final String longTermRetentionServerName, final String longTermRetentionDatabaseName);
 
     /**
      * Deletes a long term retention backup.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param locationName The location of the database
      * @param longTermRetentionServerName The name of the server
      * @param longTermRetentionDatabaseName The name of the database
@@ -69,6 +128,6 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
+    Completable deleteByResourceGroupAsync(String resourceGroupName, String locationName, String longTermRetentionServerName, String longTermRetentionDatabaseName, String backupName);
 
 }
