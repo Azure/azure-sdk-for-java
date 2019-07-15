@@ -8,15 +8,16 @@
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventhubs-clients</artifactId>
     <version>2.3.1</version>
-    <relativePath>../pom.xml</relativePath>
+    <relativePath>../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-eventhubs-extensions</artifactId>
+  <artifactId>azure-eventhubs-eph</artifactId>
+  <version>2.5.1</version>
 
-  <name>Microsoft Azure SDK for Event Hubs Extensions</name>
-  <description>Extensions built on Microsoft Azure Event Hubs</description>
+  <name>Microsoft Azure SDK for Event Hubs Event Processor Host(EPH)</name>
+  <description>EPH is built on top of the Azure Event Hubs Client and provides a number of features not present in that lower layer</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -35,17 +36,15 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
       <version>${project.parent.version}</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-storage</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
     </dependency>
   </dependencies>
 
 </project>
-
