@@ -10,7 +10,9 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -25,6 +27,9 @@ import java.util.function.Function;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
+
+import static com.azure.core.implementation.util.FluxUtil.monoContext;
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -87,6 +92,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@link Secret#name()  name} or {@link Secret#value() value} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> setSecret(Secret secret) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
@@ -95,10 +101,10 @@ public final class SecretAsyncClient {
             .contentType(secret.contentType())
             .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.name()))
                 .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to set secret - {}", secret.name(), error));
+                .doOnError(error -> logger.warning("Failed to set secret - {}", secret.name(), error)));
     }
 
     /**
@@ -119,12 +125,13 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@code name} or {@code value} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> setSecret(String name, String value) {
         SecretRequestParameters parameters = new SecretRequestParameters().value(value);
-        return service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
                 .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to set secret - {}", name, error)));
     }
 
     /**
@@ -147,15 +154,16 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> getSecret(String name, String version) {
-        String secretVersion = "";
-        if (version != null) {
-            secretVersion = version;
+        if (version == null) {
+            return getSecret(name);
         }
-        return service.getSecret(endpoint, name, secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+
+        return monoContext(context -> service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to get secret - {}", name, error)));
     }
 
     /**
@@ -176,16 +184,13 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> getSecret(SecretBase secretBase) {
         Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
-        String secretVersion = "";
-        if (secretBase.version() != null) {
-            secretVersion = secretBase.version();
+        if (secretBase.version() == null) {
+            return getSecret(secretBase.name());
         }
-        return service.getSecret(endpoint, secretBase.name(), secretVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", secretBase.name()))
-                .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to get secret - {}", secretBase.name(), error));
+        return getSecret(secretBase.name(), secretBase.version());
     }
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
@@ -205,6 +210,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> getSecret(String name) {
         return getSecret(name, "");
     }
@@ -234,6 +240,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecretBase>> updateSecret(SecretBase secret) {
         Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
@@ -241,10 +248,10 @@ public final class SecretAsyncClient {
                 .contentType(secret.contentType())
                 .secretAttributes(new SecretRequestAttributes(secret));
 
-        return service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Updating secret - {}", secret.name()))
                 .doOnSuccess(response -> logger.info("Updated secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to update secret - {}", secret.name(), error));
+                .doOnError(error -> logger.warning("Failed to update secret - {}", secret.name(), error)));
     }
 
     /**
@@ -265,11 +272,12 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> deleteSecret(String name) {
-        return service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
                 .doOnSuccess(response -> logger.info("Deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error)));
     }
 
     /**
@@ -290,11 +298,12 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
-        return service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error)));
     }
 
     /**
@@ -315,11 +324,12 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link VoidResponse}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VoidResponse> purgeDeletedSecret(String name) {
-        return service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Purged deleted secret - {}", name))
-                .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error)));
     }
 
     /**
@@ -340,11 +350,12 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> recoverDeletedSecret(String name) {
-        return service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
+                .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error)));
     }
 
     /**
@@ -364,13 +375,14 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecret(String name) {
-        return service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
                 .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
                 .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
                 .flatMap(base64URLResponse ->  Mono.just(new SimpleResponse<byte[]>(base64URLResponse.request(),
-                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value())));
+                base64URLResponse.statusCode(), base64URLResponse.headers(), base64URLResponse.value().value()))));
     }
 
     /**
@@ -389,12 +401,13 @@ public final class SecretAsyncClient {
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
-        return service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return monoContext(context -> service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
                 .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
                 .doOnSuccess(response -> logger.info("Restored secret - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to restore secret", error));
+                .doOnError(error -> logger.warning("Failed to restore secret", error)));
     }
 
     /**
@@ -412,10 +425,11 @@ public final class SecretAsyncClient {
      *
      * @return A {@link PagedFlux} containing {@link SecretBase secret} of all the secrets in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretBase> listSecrets() {
         return new PagedFlux<>(() ->
-            listSecretsFirstPage(),
-            continuationToken -> listSecretsNextPage(continuationToken));
+            monoContext(context -> listSecretsFirstPage()),
+            continuationToken -> monoContext(context -> listSecretsNextPage(continuationToken)));
     }
 
     /*
@@ -456,10 +470,11 @@ public final class SecretAsyncClient {
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
         return new PagedFlux<>(() ->
-            listDeletedSecretsFirstPage(),
-            continuationToken -> listDeletedSecretsNextPage(continuationToken, Context.NONE));
+            monoContext(context -> listDeletedSecretsFirstPage()),
+            continuationToken -> monoContext(context -> listDeletedSecretsNextPage(continuationToken, Context.NONE)));
     }
 
     /**
@@ -505,10 +520,11 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link PagedFlux} containing {@link SecretBase secret} of all the versions of the specified secret in the vault. Flux is empty if secret with {@code name} does not exist in key vault
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretBase> listSecretVersions(String name) {
-        return new PagedFlux<>(() ->
-            listSecretVersionsFirstPage(name),
-            continuationToken -> listSecretVersionsNextPage(continuationToken));
+        return new PagedFlux<>(
+            () -> monoContext(context -> listSecretVersionsFirstPage(name)),
+            continuationToken -> monoContext(context -> listSecretVersionsNextPage(continuationToken)));
     }
 
     /*
