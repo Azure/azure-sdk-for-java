@@ -20,8 +20,9 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
  */
 public class QueueServiceJavaDocCodeSamples {
+
     /**
-     * Generates code sample for creating a {@link QueueServiceClient} with {@link QueueServiceClient}
+     * Generates code sample for creating a {@link QueueServiceClient} with {@link SASTokenCredential}
      * @return An instance of {@link QueueServiceClient}
      */
     public QueueServiceClient createClientWithSASToken() {
@@ -43,6 +44,34 @@ public class QueueServiceJavaDocCodeSamples {
             .endpoint("https://{accountName}.queue.core.windows.net?{SASToken}")
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation.sastoken
+        return queueServiceAsyncClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueServiceClient} with {@link SASTokenCredential}
+     * @return An instance of {@link QueueServiceClient}
+     */
+    public QueueServiceClient createClientWithCredential() {
+        // BEGIN: com.azure.storage.queue.queueServiceClient.instantiation.credential
+        QueueServiceClient queueServiceClient = new QueueServiceClientBuilder()
+            .endpoint("https://${accountName}.queue.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("{SASTokenQueryParams}"))
+            .buildClient();
+        // END: com.azure.storage.queue.queueServiceClient.instantiation.credential
+        return queueServiceClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueServiceAsyncClient} with {@link SASTokenCredential}
+     * @return An instance of {@link QueueServiceAsyncClient}
+     */
+    public QueueServiceAsyncClient createAsyncClientWithCredential() {
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
+        QueueServiceAsyncClient queueServiceAsyncClient = new QueueServiceClientBuilder()
+            .endpoint("https://{accountName}.queue.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("{SASTokenQueryParams}"))
+            .buildAsyncClient();
+        // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential
         return queueServiceAsyncClient;
     }
 
