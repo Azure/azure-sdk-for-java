@@ -22,7 +22,7 @@ public class SapTablePartitionSettings {
     private Object partitionColumnName;
 
     /**
-     * The maximum value of column specificed in partitionColumnName that will
+     * The maximum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -30,7 +30,7 @@ public class SapTablePartitionSettings {
     private Object partitionUpperBound;
 
     /**
-     * The minimum value of column specificed in partitionColumnName that will
+     * The minimum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -38,7 +38,7 @@ public class SapTablePartitionSettings {
     private Object partitionLowerBound;
 
     /**
-     * The maximum value of partitions the table will be splitted into. Type:
+     * The maximum value of partitions the table will be split into. Type:
      * integer (or Expression with resultType string).
      */
     @JsonProperty(value = "maxPartitionsNumber")
@@ -65,7 +65,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Get the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionUpperBound value
      */
@@ -74,7 +74,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Set the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionUpperBound the partitionUpperBound value to set
      * @return the SapTablePartitionSettings object itself.
@@ -85,7 +85,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Get the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionLowerBound value
      */
@@ -94,7 +94,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Set the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionLowerBound the partitionLowerBound value to set
      * @return the SapTablePartitionSettings object itself.
@@ -105,7 +105,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Get the maximum value of partitions the table will be splitted into. Type: integer (or Expression with resultType string).
+     * Get the maximum value of partitions the table will be split into. Type: integer (or Expression with resultType string).
      *
      * @return the maxPartitionsNumber value
      */
@@ -114,7 +114,7 @@ public class SapTablePartitionSettings {
     }
 
     /**
-     * Set the maximum value of partitions the table will be splitted into. Type: integer (or Expression with resultType string).
+     * Set the maximum value of partitions the table will be split into. Type: integer (or Expression with resultType string).
      *
      * @param maxPartitionsNumber the maxPartitionsNumber value to set
      * @return the SapTablePartitionSettings object itself.

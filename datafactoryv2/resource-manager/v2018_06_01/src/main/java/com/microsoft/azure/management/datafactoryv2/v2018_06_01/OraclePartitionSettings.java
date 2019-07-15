@@ -28,7 +28,7 @@ public class OraclePartitionSettings {
     private Object partitionColumnName;
 
     /**
-     * The maximum value of column specificed in partitionColumnName that will
+     * The maximum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -36,7 +36,7 @@ public class OraclePartitionSettings {
     private Object partitionUpperBound;
 
     /**
-     * The minimum value of column specificed in partitionColumnName that will
+     * The minimum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -84,7 +84,7 @@ public class OraclePartitionSettings {
     }
 
     /**
-     * Get the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionUpperBound value
      */
@@ -93,7 +93,7 @@ public class OraclePartitionSettings {
     }
 
     /**
-     * Set the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionUpperBound the partitionUpperBound value to set
      * @return the OraclePartitionSettings object itself.
@@ -104,7 +104,7 @@ public class OraclePartitionSettings {
     }
 
     /**
-     * Get the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionLowerBound value
      */
@@ -113,7 +113,7 @@ public class OraclePartitionSettings {
     }
 
     /**
-     * Set the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionLowerBound the partitionLowerBound value to set
      * @return the OraclePartitionSettings object itself.

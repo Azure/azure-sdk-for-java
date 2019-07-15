@@ -22,7 +22,7 @@ public class NetezzaPartitionSettings {
     private Object partitionColumnName;
 
     /**
-     * The maximum value of column specificed in partitionColumnName that will
+     * The maximum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -30,7 +30,7 @@ public class NetezzaPartitionSettings {
     private Object partitionUpperBound;
 
     /**
-     * The minimum value of column specificed in partitionColumnName that will
+     * The minimum value of column specified in partitionColumnName that will
      * be used for proceeding range partitioning. Type: string (or Expression
      * with resultType string).
      */
@@ -58,7 +58,7 @@ public class NetezzaPartitionSettings {
     }
 
     /**
-     * Get the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionUpperBound value
      */
@@ -67,7 +67,7 @@ public class NetezzaPartitionSettings {
     }
 
     /**
-     * Set the maximum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionUpperBound the partitionUpperBound value to set
      * @return the NetezzaPartitionSettings object itself.
@@ -78,7 +78,7 @@ public class NetezzaPartitionSettings {
     }
 
     /**
-     * Get the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Get the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionLowerBound value
      */
@@ -87,7 +87,7 @@ public class NetezzaPartitionSettings {
     }
 
     /**
-     * Set the minimum value of column specificed in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+     * Set the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionLowerBound the partitionLowerBound value to set
      * @return the NetezzaPartitionSettings object itself.
