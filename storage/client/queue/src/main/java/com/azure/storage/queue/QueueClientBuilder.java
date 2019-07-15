@@ -37,30 +37,20 @@ import java.util.Objects;
  * {@link QueueClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
  * {@link QueueClientBuilder#queueName(String) queueName} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
- * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
+ * <p><strong>Instantiating a synchronous Queue Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueClient.instantiation.sastoken}
  *
- * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
+ * <p><strong>Instantiating an Asynchronous Queue Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.sastoken}
  *
  * <p>If the {@code endpoint} doesn't contain the queue name or {@code SASTokenCredential} they may be set using
  * {@link QueueClientBuilder#queueName(String) queueName} and {@link QueueClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
- * <pre>
- * QueueClient client = QueueClient.builder()
- *     .endpoint(endpointWithoutQueueNameOrSASTokenQueryParams)
- *     .queueName(queueName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildClient();
- * </pre>
+ * <p><strong>Instantiating a synchronous Queue Client with credential</strong></p>
+ * {@codesnippet com.azure.storage.queue.queueClient.instantiation.credential}
  *
- * <pre>
- * QueueAsyncClient client = QueueAsyncClient.builder()
- *     .endpoint(endpointWithoutQueueNameOrSASTokenQueryParams)
- *     .queueName(queueName)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildAsyncClient();
- * </pre>
+ * <p><strong>Instantiating an Asynchronous Queue Client with credential</strong></p>
+ * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation.credential}
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage Queue service must be used. Set the SharedKeyCredential with

@@ -9,6 +9,9 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueClientBuilder;
+import com.azure.storage.queue.QueueServiceAsyncClient;
+import com.azure.storage.queue.QueueServiceClient;
+import com.azure.storage.queue.QueueServiceClientBuilder;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.UpdatedMessage;
 import java.time.Duration;
@@ -41,6 +44,36 @@ public class QueueJavaDocCodeSamples {
             .endpoint("https://{accountName}.queue.core.windows.net?{SASToken}")
             .buildAsyncClient();
         // END: com.azure.storage.queue.queueAsyncClient.instantiation.sastoken
+        return queueAsyncClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueClient} with {@link SASTokenCredential}
+     * @return An instance of {@link QueueClient}
+     */
+    public QueueClient createClientWithCredential() {
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation.credential
+        QueueClient queueClient = new QueueClientBuilder()
+            .endpoint("https://${accountName}.queue.core.windows.net")
+            .queueName("myqueue")
+            .credential(SASTokenCredential.fromQuery("{SASTokenQueryParams}"))
+            .buildClient();
+        // END: com.azure.storage.queue.queueClient.instantiation.credential
+        return queueClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueAsyncClient} with {@link SASTokenCredential}
+     * @return An instance of {@link QueueAsyncClient}
+     */
+    public QueueAsyncClient createAsyncClientWithCredential() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.instantiation.credential
+        QueueAsyncClient queueAsyncClient = new QueueClientBuilder()
+            .endpoint("https://{accountName}.queue.core.windows.net")
+            .queueName("myqueue")
+            .credential(SASTokenCredential.fromQuery("{SASTokenQueryParams}"))
+            .buildAsyncClient();
+        // END: com.azure.storage.queue.queueAsyncClient.instantiation.credential
         return queueAsyncClient;
     }
 

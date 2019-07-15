@@ -43,8 +43,10 @@ import java.util.Objects;
  * <p>If the {@code endpoint} doesn't contain {@code SASTokenCredential} they may be set using
  * {@link QueueClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
+ * <p><strong>Instantiating a synchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
+ * <p><strong>Instantiating an Asynchronous Queue Service Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation.credential}
  *
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
