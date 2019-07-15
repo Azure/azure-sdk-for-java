@@ -217,7 +217,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertNotNull(deletedSecret);
                     }).verifyComplete();
             pollOnSecretDeletion(secretToDeleteAndGet.name());
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             StepVerifier.create(client.getDeletedSecret(secretToDeleteAndGet.name()))
                     .assertNext(deletedSecretResponse -> {
@@ -233,7 +233,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertEquals(HttpResponseStatus.NO_CONTENT.code(), voidResponse.statusCode());
                     }).verifyComplete();
             pollOnSecretPurge(secretToDeleteAndGet.name());
-            sleep(10000);
+            sleepInRecordMode(10000);
         });
     }
 
@@ -331,7 +331,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                     }).verifyComplete();
             pollOnSecretPurge(secretToBackupAndRestore.name());
 
-            sleep(60000);
+            sleepInRecordMode(60000);
 
             StepVerifier.create(client.restoreSecret(backup))
                     .assertNext(response -> {
@@ -416,9 +416,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse.value()));
                 sleepInRecordMode(1000);
             }
-            sleep(30000);
+            sleepInRecordMode(30000);
             client.listSecretVersions(secretName).subscribe(output::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             assertEquals(secretVersions.size(), output.size());
 
@@ -450,9 +450,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 client.setSecret(secret).subscribe(secretResponse -> assertSecretEquals(secret, secretResponse.value()));
                 sleepInRecordMode(1000);
             }
-            sleep(30000);
+            sleepInRecordMode(30000);
             client.listSecrets().subscribe(output::add);
-            sleep(30000);
+            sleepInRecordMode(30000);
 
             for (SecretBase actualSecret : output) {
                 if (secretsToList.containsKey(actualSecret.name())) {

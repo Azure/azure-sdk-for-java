@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -13,17 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Code snippets demonstrating various {@link EventHubConsumer} scenarios.
  */
 public class EventHubConsumerJavaDocCodeSamples {
-    private final EventHubClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
+    private final EventHubAsyncClient client = new EventHubClientBuilder().connectionString("fake-string").buildAsyncClient();
 
     /**
      * Receives event data
      */
     public void receive() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receive
-        // Obtain partitionId from EventHubClient.getPartitionIds()
+        // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
@@ -40,10 +41,10 @@ public class EventHubConsumerJavaDocCodeSamples {
      * Receives event data with back pressure.
      */
     public void receiveBackpressure() {
-        // Obtain partitionId from EventHubClient.getPartitionIds()
+        // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
         String partitionId = "0";
 
-        EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
+        EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionId,
             EventPosition.latest());
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure
