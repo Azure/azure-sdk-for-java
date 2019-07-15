@@ -96,7 +96,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -116,7 +116,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -137,7 +137,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -155,7 +155,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -177,7 +177,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -216,7 +216,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -240,7 +240,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -265,7 +265,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -287,7 +287,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -313,7 +313,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
     ServiceResponse<PageImpl<NotificationChannelInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<NotificationChannelInner>> * @param labName The name of the lab.
@@ -359,7 +359,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -374,7 +374,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -388,7 +388,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -406,7 +406,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -446,7 +446,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -462,7 +462,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -477,7 +477,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -496,7 +496,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -645,7 +645,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Delete notification channel.
+     * Delete notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -659,7 +659,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Delete notification channel.
+     * Delete notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -673,7 +673,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Delete notification channel.
+     * Delete notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -691,7 +691,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Delete notification channel.
+     * Delete notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -738,7 +738,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notificationchannels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -754,7 +754,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notificationchannels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -769,7 +769,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notificationchannels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -788,7 +788,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * Modify properties of notification channels.
+     * Allows modifying tags of notificationchannels. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -939,7 +939,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -958,7 +958,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -979,7 +979,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -996,7 +996,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1017,7 +1017,7 @@ public class NotificationChannelsInner {
     }
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
     ServiceResponse<PageImpl<NotificationChannelInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

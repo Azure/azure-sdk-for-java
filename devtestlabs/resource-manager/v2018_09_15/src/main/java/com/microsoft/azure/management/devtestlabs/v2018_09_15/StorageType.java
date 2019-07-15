@@ -22,6 +22,9 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
     /** Static value Premium for StorageType. */
     public static final StorageType PREMIUM = fromString("Premium");
 
+    /** Static value StandardSSD for StorageType. */
+    public static final StorageType STANDARD_SSD = fromString("StandardSSD");
+
     /**
      * Creates or finds a StorageType from its string representation.
      * @param name a name to look for

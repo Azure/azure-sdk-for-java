@@ -979,7 +979,7 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -996,7 +996,7 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -1012,7 +1012,7 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -1032,7 +1032,7 @@ public class ServiceFabricsInner {
     }
 
     /**
-     * Modify properties of service fabrics.
+     * Allows modifying tags of service fabrics. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

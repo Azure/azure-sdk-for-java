@@ -202,7 +202,8 @@ public class LabVirtualMachineInner extends Resource {
 
     /**
      * Tells source of creation of lab virtual machine. Output property only.
-     * Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Possible values include: 'FromCustomImage', 'FromGalleryImage',
+     * 'FromSharedGalleryImage'.
      */
     @JsonProperty(value = "properties.virtualMachineCreationSource")
     private VirtualMachineCreationSource virtualMachineCreationSource;
@@ -784,7 +785,7 @@ public class LabVirtualMachineInner extends Resource {
     }
 
     /**
-     * Get tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Get tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'.
      *
      * @return the virtualMachineCreationSource value
      */
@@ -793,7 +794,7 @@ public class LabVirtualMachineInner extends Resource {
     }
 
     /**
-     * Set tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Set tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'.
      *
      * @param virtualMachineCreationSource the virtualMachineCreationSource value to set
      * @return the LabVirtualMachineInner object itself.

@@ -30,7 +30,7 @@ public class NotificationChannelInner extends Resource {
 
     /**
      * The email recipient to send notifications to (can be a list of
-     * semi-colon separated email addresses).
+     * semi-colon seperated email addresses).
      */
     @JsonProperty(value = "properties.emailRecipient")
     private String emailRecipient;
@@ -93,7 +93,7 @@ public class NotificationChannelInner extends Resource {
     }
 
     /**
-     * Get the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
+     * Get the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
      *
      * @return the emailRecipient value
      */
@@ -102,7 +102,7 @@ public class NotificationChannelInner extends Resource {
     }
 
     /**
-     * Set the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
+     * Set the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
      *
      * @param emailRecipient the emailRecipient value to set
      * @return the NotificationChannelInner object itself.

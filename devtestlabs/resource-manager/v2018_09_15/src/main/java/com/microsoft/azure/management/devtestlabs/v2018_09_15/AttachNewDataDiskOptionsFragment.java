@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AttachNewDataDiskOptionsFragment {
     /**
-     * Size of the disk to be attached in Gibibytes.
+     * Size of the disk to be attached in GibiBytes.
      */
     @JsonProperty(value = "diskSizeGiB")
     private Integer diskSizeGiB;
@@ -28,13 +28,13 @@ public class AttachNewDataDiskOptionsFragment {
 
     /**
      * The storage type for the disk (i.e. Standard, Premium). Possible values
-     * include: 'Standard', 'Premium'.
+     * include: 'Standard', 'Premium', 'StandardSSD'.
      */
     @JsonProperty(value = "diskType")
     private StorageType diskType;
 
     /**
-     * Get size of the disk to be attached in Gibibytes.
+     * Get size of the disk to be attached in GibiBytes.
      *
      * @return the diskSizeGiB value
      */
@@ -43,7 +43,7 @@ public class AttachNewDataDiskOptionsFragment {
     }
 
     /**
-     * Set size of the disk to be attached in Gibibytes.
+     * Set size of the disk to be attached in GibiBytes.
      *
      * @param diskSizeGiB the diskSizeGiB value to set
      * @return the AttachNewDataDiskOptionsFragment object itself.
@@ -74,7 +74,7 @@ public class AttachNewDataDiskOptionsFragment {
     }
 
     /**
-     * Get the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'.
+     * Get the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @return the diskType value
      */
@@ -83,7 +83,7 @@ public class AttachNewDataDiskOptionsFragment {
     }
 
     /**
-     * Set the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'.
+     * Set the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @param diskType the diskType value to set
      * @return the AttachNewDataDiskOptionsFragment object itself.

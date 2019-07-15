@@ -829,7 +829,7 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -847,7 +847,7 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -864,7 +864,7 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -885,7 +885,7 @@ public class ServiceFabricSchedulesInner {
     }
 
     /**
-     * Modify properties of schedules.
+     * Allows modifying tags of schedules. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

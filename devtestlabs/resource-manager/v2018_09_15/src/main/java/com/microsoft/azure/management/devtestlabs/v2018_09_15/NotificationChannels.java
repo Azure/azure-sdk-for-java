@@ -31,7 +31,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
     Completable notifyAsync(String resourceGroupName, String labName, String name, NotifyParameters notifyParameters);
 
     /**
-     * Get notification channel.
+     * Get notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -42,7 +42,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
     Observable<NotificationChannel> getAsync(String resourceGroupName, String labName, String name);
 
     /**
-     * List notification channels in a given lab.
+     * List notificationchannels in a given lab.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -52,7 +52,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
     Observable<NotificationChannel> listAsync(final String resourceGroupName, final String labName);
 
     /**
-     * Delete notification channel.
+     * Delete notificationchannel.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

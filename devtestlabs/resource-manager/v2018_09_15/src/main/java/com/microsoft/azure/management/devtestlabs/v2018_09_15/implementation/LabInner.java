@@ -59,7 +59,8 @@ public class LabInner extends Resource {
 
     /**
      * Type of storage used by the lab. It can be either Premium or Standard.
-     * Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Default is Premium. Possible values include: 'Standard', 'Premium',
+     * 'StandardSSD'.
      */
     @JsonProperty(value = "properties.labStorageType")
     private StorageType labStorageType;
@@ -116,7 +117,9 @@ public class LabInner extends Resource {
     private LabSupportProperties support;
 
     /**
-     * The resource group in which lab virtual machines will be created in.
+     * The resource group in which all new lab virtual machines will be
+     * created. To let DevTest Labs manage resource group creation, set this
+     * value to null.
      */
     @JsonProperty(value = "properties.vmCreationResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String vmCreationResourceGroup;
@@ -204,7 +207,7 @@ public class LabInner extends Resource {
     }
 
     /**
-     * Get type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Get type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @return the labStorageType value
      */
@@ -213,7 +216,7 @@ public class LabInner extends Resource {
     }
 
     /**
-     * Set type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium'.
+     * Set type of storage used by the lab. It can be either Premium or Standard. Default is Premium. Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @param labStorageType the labStorageType value to set
      * @return the LabInner object itself.
@@ -357,7 +360,7 @@ public class LabInner extends Resource {
     }
 
     /**
-     * Get the resource group in which lab virtual machines will be created in.
+     * Get the resource group in which all new lab virtual machines will be created. To let DevTest Labs manage resource group creation, set this value to null.
      *
      * @return the vmCreationResourceGroup value
      */

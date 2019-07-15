@@ -137,7 +137,7 @@ public interface NotificationChannel extends HasInner<NotificationChannelInner>,
         interface WithEmailRecipient {
             /**
              * Specifies emailRecipient.
-             * @param emailRecipient The email recipient to send notifications to (can be a list of semi-colon separated email addresses)
+             * @param emailRecipient The email recipient to send notifications to (can be a list of semi-colon seperated email addresses)
              * @return the next definition stage
              */
             WithCreate withEmailRecipient(String emailRecipient);
@@ -239,7 +239,7 @@ public interface NotificationChannel extends HasInner<NotificationChannelInner>,
         interface WithEmailRecipient {
             /**
              * Specifies emailRecipient.
-             * @param emailRecipient The email recipient to send notifications to (can be a list of semi-colon separated email addresses)
+             * @param emailRecipient The email recipient to send notifications to (can be a list of semi-colon seperated email addresses)
              * @return the next update stage
              */
             Update withEmailRecipient(String emailRecipient);

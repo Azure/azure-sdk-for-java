@@ -871,7 +871,7 @@ public class SecretsInner {
     }
 
     /**
-     * Modify properties of secrets.
+     * Allows modifying tags of secrets. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -888,7 +888,7 @@ public class SecretsInner {
     }
 
     /**
-     * Modify properties of secrets.
+     * Allows modifying tags of secrets. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -904,7 +904,7 @@ public class SecretsInner {
     }
 
     /**
-     * Modify properties of secrets.
+     * Allows modifying tags of secrets. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -924,7 +924,7 @@ public class SecretsInner {
     }
 
     /**
-     * Modify properties of secrets.
+     * Allows modifying tags of secrets. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

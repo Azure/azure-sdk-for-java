@@ -820,7 +820,7 @@ public class FormulasInner {
     }
 
     /**
-     * Modify properties of formulas.
+     * Allows modifying tags of formulas. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -836,7 +836,7 @@ public class FormulasInner {
     }
 
     /**
-     * Modify properties of formulas.
+     * Allows modifying tags of formulas. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -851,7 +851,7 @@ public class FormulasInner {
     }
 
     /**
-     * Modify properties of formulas.
+     * Allows modifying tags of formulas. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -870,7 +870,7 @@ public class FormulasInner {
     }
 
     /**
-     * Modify properties of formulas.
+     * Allows modifying tags of formulas. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

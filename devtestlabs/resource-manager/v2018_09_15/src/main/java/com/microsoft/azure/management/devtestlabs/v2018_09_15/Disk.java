@@ -147,7 +147,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskSizeGiB {
             /**
              * Specifies diskSizeGiB.
-             * @param diskSizeGiB The size of the disk in Gibibytes
+             * @param diskSizeGiB The size of the disk in GibiBytes
              * @return the next definition stage
              */
             WithCreate withDiskSizeGiB(Integer diskSizeGiB);
@@ -159,7 +159,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskType {
             /**
              * Specifies diskType.
-             * @param diskType The storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'
+             * @param diskType The storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'
              * @return the next definition stage
              */
             WithCreate withDiskType(StorageType diskType);
@@ -273,7 +273,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskSizeGiB {
             /**
              * Specifies diskSizeGiB.
-             * @param diskSizeGiB The size of the disk in Gibibytes
+             * @param diskSizeGiB The size of the disk in GibiBytes
              * @return the next update stage
              */
             Update withDiskSizeGiB(Integer diskSizeGiB);
@@ -285,7 +285,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskType {
             /**
              * Specifies diskType.
-             * @param diskType The storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'
+             * @param diskType The storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'
              * @return the next update stage
              */
             Update withDiskType(StorageType diskType);
