@@ -372,7 +372,7 @@ final class ServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign();
 
-        String signature = null;
+        String signature;
         try {
             signature = sharedKeyCredentials.computeHmac256(stringToSign);
         } catch (InvalidKeyException e) {
@@ -380,7 +380,7 @@ final class ServiceSASSignatureValues {
         }
 
         return new SASQueryParameters(this.version, null, null,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
+                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, this.resource,
                 this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
                 this.contentLanguage, this.contentType, null /* delegate */);
     }
@@ -401,7 +401,7 @@ final class ServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
         final String stringToSign = stringToSign(delegationKey);
 
-        String signature = null;
+        String signature;
         try {
             signature = Utility.delegateComputeHmac256(delegationKey, stringToSign);
         } catch (InvalidKeyException e) {
@@ -422,7 +422,7 @@ final class ServiceSASSignatureValues {
         Utility.assertNotNull("canonicalName", this.canonicalName);
 
         // Ensure either (expiryTime and permissions) or (identifier) is set
-        if (this.expiryTime == null || this.permissions == null) {
+        if (this.identifier == null && (this.expiryTime == null || this.permissions == null)) {
             // Identifier is not required if user delegation is being used
             if (!usingUserDelegation) {
                 Utility.assertNotNull("identifier", this.identifier);
@@ -449,7 +449,7 @@ final class ServiceSASSignatureValues {
                 this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : protocol.toString(),
                 this.version == null ? "" : this.version,
-                this.resource == null ? "" : this.resource,
+                this.resource == null ? "" : getResource(),
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
@@ -474,7 +474,7 @@ final class ServiceSASSignatureValues {
                 this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version == null ? "" : this.version,
-                this.resource == null ? "" : this.resource,
+                this.resource == null ? "" : getResource(),
                 this.snapshotId == null ? "" : this.snapshotId,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
@@ -482,5 +482,13 @@ final class ServiceSASSignatureValues {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
         );
+    }
+
+    private String getResource() {
+        if (Constants.UrlConstants.SAS_BLOB_CONSTANT.equals(resource) && this.snapshotId != null) {
+            return Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
+        } else {
+            return resource;
+        }
     }
 }

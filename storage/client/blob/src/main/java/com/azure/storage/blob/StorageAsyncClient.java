@@ -339,7 +339,7 @@ public final class StorageAsyncClient {
         accountSASSignatureValues.ipRange(ipRange);
         accountSASSignatureValues.protocol(sasProtocol);
 
-        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.storageAsyncRawClient.azureBlobStorage.httpPipeline());
+        SharedKeyCredential sharedKeyCredential = Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
 
         SASQueryParameters sasQueryParameters = accountSASSignatureValues.generateSASQueryParameters(sharedKeyCredential);
 

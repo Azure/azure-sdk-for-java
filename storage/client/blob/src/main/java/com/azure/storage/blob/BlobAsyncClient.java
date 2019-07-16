@@ -1096,7 +1096,7 @@ public class BlobAsyncClient {
             cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
 
         SharedKeyCredential sharedKeyCredential =
-            Utility.getSharedKeyCredential(this.blobAsyncRawClient.azureBlobStorage.httpPipeline());
+            Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
 
         Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
 
@@ -1115,7 +1115,7 @@ public class BlobAsyncClient {
         String accountName) {
 
         // Set canonical name
-        serviceSASSignatureValues.canonicalName(this.blobAsyncRawClient.azureBlobStorage.url(), accountName);
+        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.url(), accountName);
 
         // Set snapshotId
         serviceSASSignatureValues.snapshotId(getSnapshotId());
@@ -1137,7 +1137,7 @@ public class BlobAsyncClient {
      *      A string that represents the snapshotId of the snapshot blob
      */
     public String getSnapshotId() {
-        return this.blobAsyncRawClient.snapshot;
+        return this.snapshot;
     }
 
     /**
@@ -1147,6 +1147,6 @@ public class BlobAsyncClient {
      *      A boolean that indicates if a blob is a snapshot
      */
     public boolean isSnapshot() {
-        return this.blobAsyncRawClient.snapshot != null;
+        return this.snapshot != null;
     }
 }
