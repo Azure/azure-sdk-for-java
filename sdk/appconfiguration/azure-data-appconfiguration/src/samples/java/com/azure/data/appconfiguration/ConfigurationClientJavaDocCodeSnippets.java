@@ -4,8 +4,10 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
@@ -81,15 +83,15 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#addSetting(String, String)}
+     * Generates code sample for using {@link ConfigurationClient#addSettingWithResponse(String, String)}
      */
     public void addSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
-        ConfigurationSetting configurationSetting = configurationClient
-            .addSetting("prodDBConnection", "db_connection");
-        System.out.printf("Key: %s, Value: %s %n", configurationSetting.key(), configurationSetting.value());
-        // END: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.addSettingWithResponse#string-string
+        Response<ConfigurationSetting> response = configurationClient
+            .addSettingWithResponse("prodDBConnection", "db_connection", Context.NONE);
+        System.out.printf("Configuration setting %s %n", response.value());
+        // END: com.azure.data.applicationconfig.configurationclient.addSettingWithResponse#string-string
     }
 
     /**
