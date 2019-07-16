@@ -28,7 +28,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.HttpRequestException;
 
-import static com.azure.core.implementation.util.FluxUtil.monoContext;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * The SecretAsyncClient provides asynchronous methods to manage {@link Secret secrets} in the Azure Key Vault. The client
@@ -100,7 +100,7 @@ public final class SecretAsyncClient {
             .contentType(secret.contentType())
             .secretAttributes(new SecretRequestAttributes(secret));
 
-        return monoContext(context -> service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.setSecret(endpoint, secret.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.name()))
                 .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to set secret - {}", secret.name(), error)));
@@ -127,7 +127,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> setSecret(String name, String value) {
         SecretRequestParameters parameters = new SecretRequestParameters().value(value);
-        return monoContext(context -> service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.setSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
                 .doOnSuccess(response -> logger.info("Set secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to set secret - {}", name, error)));
@@ -159,7 +159,7 @@ public final class SecretAsyncClient {
             return getSecret(name);
         }
 
-        return monoContext(context -> service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to get secret - {}", name, error)));
@@ -247,7 +247,7 @@ public final class SecretAsyncClient {
                 .contentType(secret.contentType())
                 .secretAttributes(new SecretRequestAttributes(secret));
 
-        return monoContext(context -> service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.updateSecret(endpoint, secret.name(), secret.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Updating secret - {}", secret.name()))
                 .doOnSuccess(response -> logger.info("Updated secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to update secret - {}", secret.name(), error)));
@@ -273,7 +273,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> deleteSecret(String name) {
-        return monoContext(context -> service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.deleteSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
                 .doOnSuccess(response -> logger.info("Deleted secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error)));
@@ -299,7 +299,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
-        return monoContext(context -> service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.getDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error)));
@@ -325,7 +325,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VoidResponse> purgeDeletedSecret(String name) {
-        return monoContext(context -> service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.purgeDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Purged deleted secret - {}", name))
                 .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error)));
@@ -351,7 +351,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> recoverDeletedSecret(String name) {
-        return monoContext(context -> service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.recoverDeletedSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
                 .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error)));
@@ -376,7 +376,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupSecret(String name) {
-        return monoContext(context -> service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.backupSecret(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
                 .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
                 .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
@@ -403,7 +403,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Secret>> restoreSecret(byte[] backup) {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().secretBackup(backup);
-        return monoContext(context -> service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> service.restoreSecret(endpoint, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
                 .doOnSuccess(response -> logger.info("Restored secret - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to restore secret", error)));
@@ -427,8 +427,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretBase> listSecrets() {
         return new PagedFlux<>(
-            () -> monoContext(context -> listSecretsFirstPage()),
-            continuationToken -> monoContext(context -> listSecretsNextPage(continuationToken)));
+            () -> withContext(context -> listSecretsFirstPage(context)),
+            continuationToken -> withContext(context -> listSecretsNextPage(continuationToken, context)));
     }
 
     /*
@@ -438,8 +438,8 @@ public final class SecretAsyncClient {
      * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
      * @return A {@link Mono} of {@link PagedResponse<SecretBase>} from the next page of results.
      */
-    private Mono<PagedResponse<SecretBase>> listSecretsNextPage(String continuationToken) {
-        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+    private Mono<PagedResponse<SecretBase>> listSecretsNextPage(String continuationToken, Context context) {
+        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next secrets page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next secrets page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next secrets page - Page {}", continuationToken, error));
@@ -448,8 +448,8 @@ public final class SecretAsyncClient {
     /*
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<SecretBase>> listSecretsFirstPage() {
-        return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+    private Mono<PagedResponse<SecretBase>> listSecretsFirstPage(Context context) {
+        return service.getSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing secrets"))
             .doOnSuccess(response -> logger.info("Listed secrets"))
             .doOnError(error -> logger.warning("Failed to list secrets", error));
@@ -472,8 +472,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecret> listDeletedSecrets() {
         return new PagedFlux<>(
-            () -> monoContext(context -> listDeletedSecretsFirstPage()),
-            continuationToken -> monoContext(context -> listDeletedSecretsNextPage(continuationToken, Context.NONE)));
+            () -> withContext(context -> listDeletedSecretsFirstPage(context)),
+            continuationToken -> withContext(context -> listDeletedSecretsNextPage(continuationToken, context)));
     }
 
     /**
@@ -484,7 +484,7 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} of {@link PagedResponse<DeletedSecret>} from the next page of results.
      */
     private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsNextPage(String continuationToken, Context context) {
-        return service.getDeletedSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return service.getDeletedSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next deleted secrets page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next deleted secrets page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next deleted secrets page - Page {}", continuationToken, error));
@@ -493,8 +493,8 @@ public final class SecretAsyncClient {
     /*
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage() {
-        return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+    private Mono<PagedResponse<DeletedSecret>> listDeletedSecretsFirstPage(Context context) {
+        return service.getDeletedSecrets(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
             .doOnSuccess(response -> logger.info("Listed deleted secrets"))
             .doOnError(error -> logger.warning("Failed to list deleted secrets", error));
@@ -522,8 +522,8 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretBase> listSecretVersions(String name) {
         return new PagedFlux<>(
-            () -> monoContext(context -> listSecretVersionsFirstPage(name)),
-            continuationToken -> monoContext(context -> listSecretVersionsNextPage(continuationToken)));
+            () -> withContext(context -> listSecretVersionsFirstPage(name, context)),
+            continuationToken -> withContext(context -> listSecretVersionsNextPage(continuationToken, context)));
     }
 
     /*
@@ -534,8 +534,8 @@ public final class SecretAsyncClient {
      * 
      * @return A {@link Mono} of {@link PagedResponse<SecretBase>} from the next page of results.
      */
-    private Mono<PagedResponse<SecretBase>> listSecretVersionsNextPage(String continuationToken) {
-        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+    private Mono<PagedResponse<SecretBase>> listSecretVersionsNextPage(String continuationToken, Context context) {
+        return service.getSecrets(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next secrets versions page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next secrets versions page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next secrets versions page - Page {}", continuationToken, error));
@@ -544,8 +544,8 @@ public final class SecretAsyncClient {
     /*
      * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
      */
-    private Mono<PagedResponse<SecretBase>> listSecretVersionsFirstPage(String name) {
-        return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+    private Mono<PagedResponse<SecretBase>> listSecretVersionsFirstPage(String name, Context context) {
+        return service.getSecretVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))
             .doOnSuccess(response -> logger.info("Listed secret versions - {}", name))
             .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error));
