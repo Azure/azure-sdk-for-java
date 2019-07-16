@@ -82,7 +82,6 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
