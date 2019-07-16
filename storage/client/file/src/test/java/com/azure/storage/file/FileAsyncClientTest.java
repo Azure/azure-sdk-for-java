@@ -11,6 +11,8 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
@@ -20,6 +22,7 @@ import org.junit.BeforeClass;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 
 public class FileAsyncClientTest extends FileClientTestBase {
@@ -121,23 +124,20 @@ public class FileAsyncClientTest extends FileClientTestBase {
 
     @Override
     public void uploadToStorageAndDownloadToFile() throws Exception {
-        fileAsyncClient.create(1024).block();
         URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
+        File uploadFile = new File(fileFolder.getPath() + "/helloworld");
+        File downloadFile = new File(fileFolder.getPath() + "/testDownload");
 
-        String localFilePath = fileFolder.getPath() + "/helloworld";
-        String downloadFilePath = fileFolder.getPath() + "/testDownload";
-        File downloadFile = new File(downloadFilePath);
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile();
         }
-        StepVerifier.create(fileAsyncClient.uploadFromFile(localFilePath))
+        fileAsyncClient.create(uploadFile.length()).block();
+        StepVerifier.create(fileAsyncClient.uploadFromFile(uploadFile.toString()))
                     .verifyComplete();
-        StepVerifier.create(fileAsyncClient.downloadToFile(downloadFilePath))
+        StepVerifier.create(fileAsyncClient.downloadToFile(downloadFile.toString()))
                     .verifyComplete();
 
-        byte[] f1 = Files.readAllBytes(new File(localFilePath).toPath());
-        byte[] f2 = Files.readAllBytes(new File(localFilePath).toPath());
-        Assert.assertTrue("Uploaded file should have same content as the file downloaded from storage.", Arrays.equals(f1, f2));
+        assertTwoFilesAreSame(uploadFile, downloadFile);
     }
 
     @Override

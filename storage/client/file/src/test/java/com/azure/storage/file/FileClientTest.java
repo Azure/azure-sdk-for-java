@@ -16,12 +16,15 @@ import com.azure.storage.file.models.FileRange;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 
+import static com.azure.storage.file.FileTestHelpers.assertTwoFilesAreSame;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 
 public class FileClientTest extends FileClientTestBase {
@@ -114,19 +117,18 @@ public class FileClientTest extends FileClientTestBase {
 
     @Override
     public void uploadToStorageAndDownloadToFile() throws Exception {
-        fileClient.create(1024);
         URL fileFolder = FileClientTestBase.class.getClassLoader().getResource("testfiles");
-        String localFilePath = fileFolder.getPath() + "/helloworld";
-        String downloadFilePath = fileFolder.getPath() + "/helloworld";
-        File downloadFile = new File(downloadFilePath);
+        File uploadFile = new File(fileFolder.getPath() + "/helloworld");
+        File downloadFile = new File(fileFolder.getPath() + "/testDownload");
+
         if (!Files.exists(downloadFile.toPath())) {
             downloadFile.createNewFile();
         }
-        fileClient.uploadFromFile(localFilePath);
-        fileClient.downloadToFile(downloadFilePath);
-        byte[] f1 = Files.readAllBytes(new File(localFilePath).toPath());
-        byte[] f2 = Files.readAllBytes(new File(localFilePath).toPath());
-        Assert.assertTrue("Uploaded file should have same content as the file downloaded from storage.", Arrays.equals(f1, f2));
+
+        fileClient.create(uploadFile.length());
+        fileClient.uploadFromFile(uploadFile.toString());
+        fileClient.downloadToFile(downloadFile.toString());
+        assertTwoFilesAreSame(uploadFile, downloadFile);
     }
 
     @Override

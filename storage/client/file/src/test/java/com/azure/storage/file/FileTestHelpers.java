@@ -17,10 +17,19 @@ import com.azure.storage.file.models.RetentionPolicy;
 import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
+import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -171,6 +180,18 @@ class FileTestHelpers {
             assertEquals(expected.includeAPIs(), actual.includeAPIs());
             assertEquals(expected.version(), actual.version());
             assertRetentionPoliciesAreEqual(expected.retentionPolicy(), actual.retentionPolicy());
+        }
+    }
+
+    static void assertTwoFilesAreSame(File f1, File f2) throws IOException, NoSuchAlgorithmException {
+        List<String> uploadFileString = Files.readAllLines(f1.toPath());
+        List<String> downloadFileString = Files.readAllLines(f2.toPath());
+        if (uploadFileString != null && downloadFileString != null) {
+            downloadFileString.removeAll(uploadFileString);
+        }
+        while (!downloadFileString.isEmpty()) {
+            Assert.assertTrue("The download file is supposed to be the same as the upload file.", downloadFileString.get(0).isEmpty());
+            downloadFileString.remove(0);
         }
     }
 
