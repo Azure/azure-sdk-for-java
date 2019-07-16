@@ -9,15 +9,11 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueClientBuilder;
-import com.azure.storage.queue.QueueServiceAsyncClient;
-import com.azure.storage.queue.QueueServiceClient;
-import com.azure.storage.queue.QueueServiceClientBuilder;
 import com.azure.storage.queue.models.AccessPolicy;
 import com.azure.storage.queue.models.DequeuedMessage;
 import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.SignedIdentifier;
-import com.azure.storage.queue.models.StorageServiceProperties;
 import com.azure.storage.queue.models.UpdatedMessage;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -212,10 +208,10 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessage#string-duration-duration
         queueAsyncClient.enqueueMessage("Hello, Azure",
             Duration.ofSeconds(5), null).subscribe(
-            response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
-                response.value().expirationTime()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete enqueuing the message!")
+                response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
+                    response.value().expirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
         );
         // END: com.azure.storage.queue.queueAsyncClient.enqueueMessage#string-duration-duration
     }
@@ -240,10 +236,10 @@ public class QueueJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueAsyncClient.enqueueMessageLiveTime#string-duration-duration
         queueAsyncClient.enqueueMessage("Goodbye, Azure",
             null, Duration.ofSeconds(5)).subscribe(
-            response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
-                response.value().expirationTime()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete enqueuing the message!")
+                response -> System.out.printf("Message %s expires at %s", response.value().messageId(),
+                    response.value().expirationTime()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete enqueuing the message!")
         );
         // END: com.azure.storage.queue.queueAsyncClient.enqueueMessageLiveTime#string-duration-duration
     }
@@ -553,11 +549,11 @@ public class QueueJavaDocCodeSamples {
     }
 
     /**
-     * Generate a code sample for using {@link QueueAsyncClient#setMetadata(Map)}
+     * Generate a code sample for using {@link QueueAsyncClient#setMetadata(Map)} to clear metadata.
      */
     public void clearMetadataAsync() {
         QueueAsyncClient queueAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadata#map to clear metadata.
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.clearMetadata#map
         queueAsyncClient.setMetadata(null)
             .subscribe(response -> System.out.printf("Clearing metadata completed with status code %d",
                 response.statusCode()));
@@ -571,8 +567,8 @@ public class QueueJavaDocCodeSamples {
         QueueClient queueClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.queue.queueClient.getAccessPolicy
         for (SignedIdentifier permission : queueClient.getAccessPolicy()) {
-          System.out.printf("Access policy %s allows these permissions: %s", permission.id(),
-              permission.accessPolicy().permission());
+            System.out.printf("Access policy %s allows these permissions: %s", permission.id(),
+                permission.accessPolicy().permission());
         }
         // END: com.azure.storage.queue.queueClient.getAccessPolicy
     }

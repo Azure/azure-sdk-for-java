@@ -220,7 +220,7 @@ queueServiceClient.listQueuesSegment(marker, options).forEach{
 Get queue properties in account, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).build();
 
 Response<StorageServiceProperties> properties = queueServiceClient.getProperties();
 ```
@@ -230,7 +230,7 @@ Response<StorageServiceProperties> properties = queueServiceClient.getProperties
 Set queue properties in account, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).build();
 
 StorageServiceProperties properties = new StorageServiceProperties() {
     // logging: some logging;
@@ -247,7 +247,7 @@ he `Get Queue Service Stats` operation retrieves statistics related to replicati
 It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
 ```Java
 String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).build();
 
 Response<StorageServiceStats> queueStats = queueServiceClient.getStatistics();
 ```
@@ -257,7 +257,7 @@ The operation adds a new message to the back of the message queue. A visibility 
 A message must be in a format that can be included in an XML request with UTF-8 encoding. The encoded message can be up to 64 KB in size for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 
 queueClient.enqueueMessage("myMessage");
 ```
@@ -266,7 +266,7 @@ queueClient.enqueueMessage("myMessage");
 The operation updates a message in the message queue. 
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 // @param messageId Id of the message
 // @param popReceipt Unique identifier that must match the message for it to be updated
 // @param visibilityTimeout How long the message will be invisible in the queue in seconds
@@ -277,7 +277,7 @@ queueClient.updateMessage(messageId, "new message", popReceipt, visibilityTimeou
 The operation retrieves one or more messages from the front of the queue.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 
 queueClient.peekMessages().forEach(message-> {print message.messageText();});
 ```
@@ -287,7 +287,7 @@ queueClient.peekMessages().forEach(message-> {print message.messageText();});
 The operation retrieves one or more messages from the front of the queue.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 
 queueClient.dequeueMessage("myMessage").forEach(message-> {print message.messageText();});
 ```
@@ -297,7 +297,7 @@ queueClient.dequeueMessage("myMessage").forEach(message-> {print message.message
 The operation retrieves one or more messages from the front of the queue.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 
 queueClient.deleteMessage(messageId, popReceipt);
 ```
@@ -306,7 +306,7 @@ queueClient.deleteMessage(messageId, popReceipt);
 The operation retrieves user-defined metadata and queue properties on the specified queue. Metadata is associated with the queue as name-values pairs.
 ```Java
 String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+QueueClient queueClient = new QueueClientBuilder().endpoint(queueURL).build();
 
 Response<StorageServiceProperties> properties = queueClient.getProperties();
 ```
@@ -334,10 +334,11 @@ When you interact with queue using this Java client library, errors returned by 
 ## Next steps
 
 ### More Samples
-- QueueServiceSample
-- MessageSample
-- QueueExceptionSample
-- AsyncSample
+Get started with our [Queue samples][samples]:
+- [QueueServiceSample](src/samples/java/blob/QueueServiceSample.java): Create, list and delete queues
+- [MessageSample](src/samples/java/blob/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
+- [QueueExceptionSample](src/samples/java/blob/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
+- [AsyncSample](src/samples/java/blob/AsyncSample.java): Create queue and enqueue message using async queue client call.
 
 [Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
 
@@ -374,3 +375,4 @@ If you would like to become an active contributor to this project please follow 
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [sas_token]: https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
 [storage_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/queue-service-error-codes
+[samples]: samples/

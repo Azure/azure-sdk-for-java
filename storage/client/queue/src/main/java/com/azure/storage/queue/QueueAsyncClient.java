@@ -201,7 +201,7 @@ public final class QueueAsyncClient {
      *
      * <p>List the stored access policies</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getAccessPolicy
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.getAccessPolicy}
      *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the queue doesn't exist

@@ -293,7 +293,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnipeet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
+     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

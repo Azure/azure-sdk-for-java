@@ -123,7 +123,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         helper.assertResponseStatusCode(client.enqueueMessage("This queue will be deleted"), 201);
         helper.assertResponseStatusCode(client.delete(), 204);
 
-        helper.sleep(Duration.ofSeconds(30));
+        helper.sleepInRecordMode(Duration.ofSeconds(30));
 
         try {
             client.enqueueMessage("This should fail");
@@ -365,7 +365,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         String messageText = "test message";
         helper.assertResponseStatusCode(client.enqueueMessage(messageText, Duration.ofSeconds(0), Duration.ofSeconds(2)), 201);
 
-        helper.sleep(Duration.ofSeconds(5));
+        helper.sleepInRecordMode(Duration.ofSeconds(5));
         Iterator<PeekedMessage> response = client.peekMessages().iterator();
         assertFalse(response.hasNext());
     }
@@ -592,7 +592,7 @@ public class QueueClientTests extends QueueClientTestsBase {
         Response<UpdatedMessage> updatedMessageResponse = client.updateMessage(updatedMessageText, message.messageId(), message.popReceipt(), Duration.ofSeconds(1));
         helper.assertResponseStatusCode(updatedMessageResponse, 204);
 
-        helper.sleep(Duration.ofSeconds(2));
+        helper.sleepInRecordMode(Duration.ofSeconds(2));
 
         Iterator<PeekedMessage> peekedMessageIterator = client.peekMessages().iterator();
         PeekedMessage peekedMessage = peekedMessageIterator.next();

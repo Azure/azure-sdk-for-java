@@ -136,7 +136,7 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
             .assertNext(response -> helper.assertResponseStatusCode(response, 204))
             .verifyComplete();
 
-        helper.sleep(Duration.ofSeconds(30));
+        helper.sleepInRecordMode(Duration.ofSeconds(30));
 
         StepVerifier.create(client.enqueueMessage("This should fail"))
             .verifyErrorSatisfies(throwable -> helper.assertExceptionStatusCode(throwable, 404));

@@ -229,7 +229,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnipeet com.azure.storage.queue.queueServiceClient.getStatistics}
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

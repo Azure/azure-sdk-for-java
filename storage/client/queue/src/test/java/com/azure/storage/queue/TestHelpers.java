@@ -144,11 +144,18 @@ class TestHelpers {
         assertEquals(expectedStatusCode, storageErrorException.response().statusCode());
     }
 
+    void sleepInRecordMode(Duration duration) {
+        String azureTestMode = ConfigurationManager.getConfiguration().get("AZURE_TEST_MODE");
+        if ("RECORD".equalsIgnoreCase(azureTestMode)) {
+            sleep(duration);
+        }
+    }
+
     void sleep(Duration duration) {
         try {
             Thread.sleep(duration.toMillis());
         } catch (InterruptedException ex) {
-            // Ignore the errror
+            // Ignore the error
         }
     }
 }

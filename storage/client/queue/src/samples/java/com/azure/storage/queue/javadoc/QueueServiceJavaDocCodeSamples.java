@@ -150,10 +150,10 @@ public class QueueServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map
         queueServiceAsyncClient.createQueue("myqueue", Collections.singletonMap("queue", "metadata"))
             .subscribe(
-            response -> System.out.printf("Creating the queue with status code %d", response.statusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the queue!")
-        );
+                response -> System.out.printf("Creating the queue with status code %d", response.statusCode()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the queue!")
+            );
         // END: com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map
     }
 
