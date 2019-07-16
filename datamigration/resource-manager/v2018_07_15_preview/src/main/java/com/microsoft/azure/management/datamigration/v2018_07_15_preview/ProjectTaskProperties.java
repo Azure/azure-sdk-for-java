@@ -49,6 +49,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureDbForMySql", value = ConnectToTargetAzureDbForMySqlTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureSqlDbMI.Sync.LRS", value = ConnectToTargetSqlMISyncTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.AzureSqlDbMI", value = ConnectToTargetSqlMITaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesPostgreSql", value = GetUserTablesPostgreSqlTaskProperties.class),
+    @JsonSubTypes.Type(name = "GetUserTablesOracle", value = GetUserTablesOracleTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.AzureSqlDb.Sync", value = GetUserTablesSqlSyncTaskProperties.class),
     @JsonSubTypes.Type(name = "GetUserTables.Sql", value = GetUserTablesSqlTaskProperties.class),
     @JsonSubTypes.Type(name = "ConnectToTarget.Oracle.AzureDbForPostgreSql.Sync", value = ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties.class),
