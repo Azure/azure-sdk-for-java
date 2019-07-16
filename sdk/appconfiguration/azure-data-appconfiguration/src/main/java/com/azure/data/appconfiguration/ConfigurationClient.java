@@ -191,6 +191,10 @@ public final class ConfigurationClient {
      * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
      * will always be updated.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection". <p>
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
@@ -242,8 +246,9 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSettingWithResponse#ConfigurationSetting-Context}
+     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The configuration setting to create or update.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -305,6 +310,8 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#string-string}
      *
      * @param key The key of the configuration setting to update.
@@ -331,9 +338,7 @@ public final class ConfigurationClient {
      *
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
@@ -354,6 +359,8 @@ public final class ConfigurationClient {
      * Updates an existing configuration value in the service with the given key. The setting must already exist.
      *
      * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#string-string-context}
      *
@@ -380,6 +387,8 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to add or update in the service.
@@ -405,6 +414,8 @@ public final class ConfigurationClient {
      * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
      *
      * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context}
      *

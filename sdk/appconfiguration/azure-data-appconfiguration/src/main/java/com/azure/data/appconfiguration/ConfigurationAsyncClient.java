@@ -73,12 +73,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * client.addSetting("prodDBConnection", "db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -103,12 +98,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
@@ -131,7 +121,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addsettingWithResponse#String-String}
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#string-string}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -155,12 +145,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * client.addSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created with the REST response, or {@code null}, if a key collision occurs or the key
@@ -219,21 +204,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * client.setSetting("prodDBConnection", "db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * client.setSetting("prodDBConnection", "updated_db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting}
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -257,21 +228,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * client.setSetting("prodDBConnection", "db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * client.setSetting("prodDBConnection", "updated_db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#string-string}
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -299,21 +256,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
@@ -344,21 +287,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated with the REST response, or {@code null}, if the key is an invalid
@@ -439,12 +368,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * client.updateSetting("prodDBConnection", "updated_db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#string-string}
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -469,12 +393,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * client.updateSetting("prodDBConnection", "updated_db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#string-string}
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -501,12 +420,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
@@ -534,12 +448,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated with the REST response, or {@code null}, if the configuration value does not
@@ -603,12 +512,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.getSetting("prodDBConnection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string}
      *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -631,12 +535,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.getSetting("prodDBConnection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#string}
      *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service with the REST response, or {@code null}, if the configuration value does
@@ -657,12 +556,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * <pre>
-     * client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -685,12 +579,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * <pre>
-     * client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service with the REST response, or {@code null}, if the configuration value does
@@ -745,12 +634,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.deleteSetting("prodDBConnection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#string}
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
@@ -773,12 +657,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.deleteSetting("prodDBConnection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#string}
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting with the REST response or {@code null} if it didn't exist. {@code null} is also returned if
@@ -803,12 +682,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * <pre>
-     * client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response;
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSetting#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
@@ -838,12 +712,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
      *
-     * <pre>
-     * client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.deleteSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting with the REST response or {@code null} if didn't exist. {@code null} is also returned if
@@ -909,9 +778,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.listSettings(new SettingSelector().key("prodDBConnection"))
-     *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.listsettings}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
