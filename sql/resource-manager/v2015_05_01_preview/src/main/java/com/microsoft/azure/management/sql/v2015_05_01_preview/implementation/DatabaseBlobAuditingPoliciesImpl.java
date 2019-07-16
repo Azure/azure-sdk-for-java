@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.DatabaseBlobAuditingPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.DatabaseBlobAuditingPolicy;
 
 class DatabaseBlobAuditingPoliciesImpl extends WrapperImpl<DatabaseBlobAuditingPoliciesInner> implements DatabaseBlobAuditingPolicies {
@@ -38,6 +39,24 @@ class DatabaseBlobAuditingPoliciesImpl extends WrapperImpl<DatabaseBlobAuditingP
 
     private DatabaseBlobAuditingPolicyImpl wrapModel(String name) {
         return new DatabaseBlobAuditingPolicyImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<DatabaseBlobAuditingPolicy> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName) {
+        DatabaseBlobAuditingPoliciesInner client = this.inner();
+        return client.listByDatabaseAsync(resourceGroupName, serverName, databaseName)
+        .flatMapIterable(new Func1<Page<DatabaseBlobAuditingPolicyInner>, Iterable<DatabaseBlobAuditingPolicyInner>>() {
+            @Override
+            public Iterable<DatabaseBlobAuditingPolicyInner> call(Page<DatabaseBlobAuditingPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<DatabaseBlobAuditingPolicyInner, DatabaseBlobAuditingPolicy>() {
+            @Override
+            public DatabaseBlobAuditingPolicy call(DatabaseBlobAuditingPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

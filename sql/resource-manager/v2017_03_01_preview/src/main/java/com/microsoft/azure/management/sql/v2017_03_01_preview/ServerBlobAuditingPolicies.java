@@ -27,4 +27,14 @@ public interface ServerBlobAuditingPolicies extends SupportsCreating<ServerBlobA
      */
     Observable<ServerBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName);
 
+    /**
+     * Lists auditing settings of a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ServerBlobAuditingPolicy> listByServerAsync(final String resourceGroupName, final String serverName);
+
 }
