@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -265,8 +266,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverDeletedConfiguation, client.addSetting(neverDeletedConfiguation));
 
-        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
-        assertConfigurationEquals(null, client.deleteSetting(notFoundDelete));
+        assertConfigurationEquals(null, client.deleteSettingWithResponse("myNonExistentKey", Context.NONE), HttpResponseStatus.NO_CONTENT.code());
+        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpResponseStatus.NO_CONTENT.code());
 
         assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.key()));
     }
