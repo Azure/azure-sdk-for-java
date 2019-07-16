@@ -57,6 +57,24 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
     }
 
     @Override
+    public Observable<Provider> listAllAsync() {
+        ProvidersInner client = this.inner();
+        return client.listAllAsync()
+        .flatMapIterable(new Func1<Page<ProviderInner>, Iterable<ProviderInner>>() {
+            @Override
+            public Iterable<ProviderInner> call(Page<ProviderInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ProviderInner, Provider>() {
+            @Override
+            public Provider call(ProviderInner inner) {
+                return new ProviderImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<Provider> listAsync() {
         ProvidersInner client = this.inner();
         return client.listAsync()
