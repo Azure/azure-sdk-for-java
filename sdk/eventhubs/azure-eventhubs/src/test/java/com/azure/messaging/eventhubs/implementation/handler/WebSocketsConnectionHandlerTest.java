@@ -22,22 +22,22 @@ import reactor.test.StepVerifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.AMQPS_PORT;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.FRAMEWORK;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PLATFORM;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PRODUCT;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.VERSION;
+import static com.azure.messaging.eventhubs.implementation.handler.WebSocketsConnectionHandler.HTTPS_PORT;
+import static com.azure.messaging.eventhubs.implementation.handler.WebSocketsConnectionHandler.MAX_FRAME_SIZE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ConnectionHandlerTest {
+public class WebSocketsConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-random-id";
     private static final String HOSTNAME = "hostname-random";
-    private ConnectionHandler handler;
+    private WebSocketsConnectionHandler handler;
 
     @Captor
     ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
@@ -45,7 +45,7 @@ public class ConnectionHandlerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
+        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME);
     }
 
     @After
@@ -66,7 +66,7 @@ public class ConnectionHandlerTest {
         // Assert
         Assert.assertEquals(HOSTNAME, handler.getHostname());
         Assert.assertEquals(MAX_FRAME_SIZE, handler.getMaxFrameSize());
-        Assert.assertEquals(AMQPS_PORT, handler.getProtocolPort());
+        Assert.assertEquals(HTTPS_PORT, handler.getProtocolPort());
 
         final Map<String, Object> properties = handler.getConnectionProperties();
         expected.forEach((key, value) -> {
@@ -105,7 +105,7 @@ public class ConnectionHandlerTest {
     @Test
     public void onConnectionInit() {
         // Arrange
-        final String expectedHostname = String.join(":", HOSTNAME, String.valueOf(AMQPS_PORT));
+        final String expectedHostname = String.join(":", HOSTNAME, String.valueOf(HTTPS_PORT));
         final Map<String, Object> expectedProperties = new HashMap<>(handler.getConnectionProperties());
         final Connection connection = mock(Connection.class);
         final Event event = mock(Event.class);
