@@ -83,8 +83,6 @@ public final class SASTokenCredential {
 
         StringBuilder sasTokenBuilder = new StringBuilder();
 
-        tryToAddQueryParameter(SIGNED_VERSION, queryParams, sasTokenBuilder)
-
         if (queryParams.containsKey(SIGNED_VERSION)) {
             sasTokenBuilder.append(queryParams.get(SIGNED_VERSION));
         }
