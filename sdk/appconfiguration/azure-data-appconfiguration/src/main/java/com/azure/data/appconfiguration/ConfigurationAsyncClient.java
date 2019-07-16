@@ -539,11 +539,6 @@ public final class ConfigurationAsyncClient {
         return withContext(context -> deleteSetting(setting, context));
     }
 
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting) {
-        return withContext(context -> deleteSetting(setting, context)).map(Response::value);
-    }
-
     /**
      * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
      *
