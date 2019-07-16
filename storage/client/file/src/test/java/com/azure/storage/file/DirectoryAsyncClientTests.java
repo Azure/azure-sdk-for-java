@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -238,10 +237,10 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         client.createFile("test", 1024);
         Iterable<HandleItem> handleItems = client.getHandles(null, true).toIterable();
         handleItems.forEach(handleItem -> {
-                StepVerifier.create(client.forceCloseHandles(handleItem.handleId(), true))
-                    .assertNext(numOfClosedHandles -> Assert.assertTrue(numOfClosedHandles.longValue() > 0))
-                    .verifyComplete();
-            });
+            StepVerifier.create(client.forceCloseHandles(handleItem.handleId(), true))
+                .assertNext(numOfClosedHandles -> Assert.assertTrue(numOfClosedHandles.longValue() > 0))
+                .verifyComplete();
+        });
     }
 
     @Override

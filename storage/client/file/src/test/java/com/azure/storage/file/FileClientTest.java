@@ -16,8 +16,6 @@ import com.azure.storage.file.models.FileRange;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.AfterClass;
