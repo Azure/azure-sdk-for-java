@@ -3,6 +3,13 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceClient;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -11,16 +18,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.RestProxy;
-import com.azure.core.implementation.annotation.ReturnType;
-import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SettingSelector;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -84,8 +84,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).map(Response::value);
+    public Mono<Response<ConfigurationSetting>> addSettingWithResponse(String key, String value) {
+        return monoContext(
+            context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -98,7 +99,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.addSetting("prodDBConnection", "db_connection")
      *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
+     *         ConfigurationSetting result = response;
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
      *     });</pre>
      *
@@ -112,10 +113,38 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> addSetting(String key, String value, Context context) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), context);
+    public Mono<ConfigurationSetting> addSetting(String key, String value) {
+        return monoContext(
+            context -> addSetting(new ConfigurationSetting().key(key).value(value), context)).map(Response::value);
     }
 
+    /**
+     * Adds a configuration value in the service if that key and label does not exist. The label value of the
+     * ConfigurationSetting is optional.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     *
+     * <pre>
+     * client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response;
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * @param setting The setting to add to the configuration service.
+     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * is an invalid value (which will also throw HttpResponseException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
+        return monoContext(context -> addSetting(setting, context)).map(Response::value);
+    }
     /**
      * Adds a configuration value in the service if that key and label does not exist. The label value of the
      * ConfigurationSetting is optional.
@@ -140,8 +169,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+    public Mono<Response<ConfigurationSetting>> addSettingWithResponse(ConfigurationSetting setting) {
+        return monoContext(context -> addSetting(setting, context));
     }
 
     /**
@@ -168,7 +197,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -200,7 +229,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.setSetting("prodDBConnection", "updated_db_connection")
      *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
+     *         ConfigurationSetting result = response;
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
      *     });</pre>
      *
@@ -214,7 +243,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).map(Response::value);
+        return monoContext(
+            context -> setSetting(new ConfigurationSetting().key(key).value(value), context))
+            .map(Response::value);
     }
 
     /**
@@ -242,7 +273,6 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
      * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -250,8 +280,9 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> setSetting(String key, String value, Context context) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), context);
+    public Mono<Response<ConfigurationSetting>> setSettingWithResponse(String key, String value) {
+        return monoContext(
+            context -> setSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -295,7 +326,51 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+        return monoContext(context -> setSetting(setting, context)).map(Response::value);
+    }
+
+    /**
+     * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
+     * configuration setting is updated.
+     *
+     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
+     * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
+     * will always be updated.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     *
+     * <pre>
+     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * <p>Update the value of the setting to "updated_db_connection".</p>
+     *
+     * <pre>
+     * client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * @param setting The configuration setting to create or update.
+     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
+     * will also throw HttpResponseException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
+     * wildcard character, and the current configuration value's etag does not match, or the
+     * setting exists and is locked.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting) {
+        return monoContext(context -> setSetting(setting, context));
     }
 
     /**
@@ -338,7 +413,7 @@ public final class ConfigurationAsyncClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -364,7 +439,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.updateSetting("prodDBConnection", "updated_db_connection")
      *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
+     *         ConfigurationSetting result = response;
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
      *     });</pre>
      *
@@ -379,7 +454,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+        return monoContext(
+            context -> updateSetting(new ConfigurationSetting().key(key).value(value), context))
+            .map(Response::value);
     }
 
     /**
@@ -397,7 +474,6 @@ public final class ConfigurationAsyncClient {
      *     });</pre>
      *
      * @param key The key of the configuration setting to update.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @param value The updated value of this configuration setting.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
@@ -407,8 +483,41 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value, Context context) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), context);
+    public Mono<Response<ConfigurationSetting>> updateSettingWithResponse(String key, String value) {
+        return monoContext(
+            context -> updateSetting(new ConfigurationSetting().key(key).value(value), context));
+    }
+
+    /**
+     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
+     * supported, the entire configuration value is replaced.
+     *
+     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
+     *
+     * <pre>
+     * client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response;
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * @param setting The setting to add or update in the service.
+     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
+     * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
+     * the current value.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
+        return monoContext(context -> updateSetting(setting, context)).map(Response::value);
     }
 
     /**
@@ -439,8 +548,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+    public Mono<Response<ConfigurationSetting>> updateSettingWithResponse(ConfigurationSetting setting) {
+        return monoContext(context -> updateSetting(setting, context));
     }
 
     /**
@@ -471,7 +580,7 @@ public final class ConfigurationAsyncClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -493,7 +602,7 @@ public final class ConfigurationAsyncClient {
      * <pre>
      * client.getSetting("prodDBConnection")
      *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
+     *         ConfigurationSetting result = response;
      *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
      *     });</pre>
      *
@@ -506,7 +615,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+        return monoContext(
+            context -> getSetting(new ConfigurationSetting().key(key), context))
+            .map(Response::value);
     }
 
     /**
@@ -524,7 +635,6 @@ public final class ConfigurationAsyncClient {
      *     });</pre>
      *
      * @param key The key of the setting to retrieve.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -532,8 +642,35 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> getSetting(String key, Context context) {
-        return getSetting(new ConfigurationSetting().key(key), context);
+    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(String key) {
+        return monoContext(context -> getSetting(new ConfigurationSetting().key(key), context));
+    }
+
+    /**
+     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * <pre>
+     * client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response.value();
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * @param setting The setting to retrieve based on its key and optional label combination.
+     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
+     * @throws HttpResponseException If the {@code} key is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting) {
+        return monoContext(context -> getSetting(setting, context));
     }
 
     /**
@@ -560,7 +697,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+        return monoContext(context -> getSetting(setting, context)).map(Response::value);
     }
 
     /**
@@ -586,7 +723,7 @@ public final class ConfigurationAsyncClient {
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -619,7 +756,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+        return monoContext(
+            context -> deleteSetting(new ConfigurationSetting().key(key), context))
+            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
     }
 
     /**
@@ -637,7 +776,6 @@ public final class ConfigurationAsyncClient {
      *     });</pre>
      *
      * @param key The key of the setting to delete.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
@@ -645,8 +783,42 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> deleteSetting(String key, Context context) {
-        return deleteSetting(new ConfigurationSetting().key(key), context);
+    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(String key) {
+        return monoContext(context -> deleteSetting(new ConfigurationSetting().key(key), context));
+    }
+
+    /**
+     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
+     *
+     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
+     * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
+     * the ConfigurationSetting yet.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
+     *
+     * <pre>
+     * client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"))
+     *     .subscribe(response -&gt; {
+     *         ConfigurationSetting result = response;
+     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
+     *     });</pre>
+     *
+     * @param setting The ConfigurationSetting to delete.
+     * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
+     * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
+     * current etag (which will also throw HttpResponseException described below).
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
+     * @throws NullPointerException When {@code setting} is {@code null}.
+     * @throws ResourceModifiedException If the ConfigurationSetting is locked.
+     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
+     * character, and does not match the current etag value.
+     * @throws HttpResponseException If {@code key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
+        return monoContext(context -> deleteSetting(setting, context)).map(Response::value);
     }
 
     /**
@@ -679,8 +851,8 @@ public final class ConfigurationAsyncClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE).flatMap(configurationSettingResponse -> Mono.just(configurationSettingResponse.value()));
+    public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting) {
+        return monoContext(context -> deleteSetting(setting, context));
     }
 
     /**
@@ -713,7 +885,7 @@ public final class ConfigurationAsyncClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
-    public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
+    Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
 
@@ -762,7 +934,7 @@ public final class ConfigurationAsyncClient {
      * @return A {@link PagedFlux} of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
-    public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    PagedFlux<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return new PagedFlux<>(() -> listFirstPageSettings(options, context),
             continuationToken -> listNextPageSettings(context, continuationToken));
     }
@@ -776,7 +948,7 @@ public final class ConfigurationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
-                    error));
+                error));
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector options, Context context) {
@@ -873,7 +1045,7 @@ public final class ConfigurationAsyncClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
-    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result;
 
         if (selector != null) {
