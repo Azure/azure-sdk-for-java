@@ -92,7 +92,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> addSetting(String key, String value) {
         return monoContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -121,7 +121,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
         return monoContext(context -> addSetting(setting, context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -247,7 +247,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> setSetting(String key, String value) {
         return monoContext(
             context -> setSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -329,7 +329,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
         return monoContext(context -> setSetting(setting, context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -459,7 +459,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> updateSetting(String key, String value) {
         return monoContext(
             context -> updateSetting(new ConfigurationSetting().key(key).value(value), context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -521,7 +521,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
         return monoContext(context -> updateSetting(setting, context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -621,7 +621,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> getSetting(String key) {
         return monoContext(
             context -> getSetting(new ConfigurationSetting().key(key), context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -675,7 +675,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
         return monoContext(context -> getSetting(setting, context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -763,7 +763,7 @@ public final class ConfigurationAsyncClient {
     public Mono<ConfigurationSetting> deleteSetting(String key) {
         return monoContext(
             context -> deleteSetting(new ConfigurationSetting().key(key), context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -824,7 +824,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
         return monoContext(context -> deleteSetting(setting, context))
-            .flatMap(resp -> Mono.justOrEmpty(resp.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
