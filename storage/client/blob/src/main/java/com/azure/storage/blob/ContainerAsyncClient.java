@@ -25,37 +25,39 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method
- * {@link StorageAsyncClient#getContainerAsyncClient(String)}. This class does not hold any
- * state about a particular blob but is instead a convenient way of sending off appropriate requests to
- * the resource on the service. It may also be used to construct URLs to blobs.
+ * Client to a container. It may only be instantiated through a {@link ContainerClientBuilder} or via the method {@link
+ * StorageAsyncClient#getContainerAsyncClient(String)}. This class does not hold any state about a particular blob but
+ * is instead a convenient way of sending off appropriate requests to the resource on the service. It may also be used
+ * to construct URLs to blobs.
  *
  * <p>
  * This client contains operations on a container. Operations on a blob are available on {@link BlobAsyncClient} through
  * {@link #getBlobAsyncClient(String)}, and operations on the service are available on {@link StorageAsyncClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
- * for more information on containers.
+ * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure
+ * Docs</a> for more information on containers.
  *
  * <p>
- * Note this client is an async client that returns reactive responses from Spring Reactor Core
- * project (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong>
- * start the actual network operation, until {@code .subscribe()} is called on the reactive response.
- * You can simply convert one of these responses to a {@link java.util.concurrent.CompletableFuture}
- * object through {@link Mono#toFuture()}.
+ * Note this client is an async client that returns reactive responses from Spring Reactor Core project
+ * (https://projectreactor.io/). Calling the methods in this client will <strong>NOT</strong> start the actual network
+ * operation, until {@code .subscribe()} is called on the reactive response. You can simply convert one of these
+ * responses to a {@link java.util.concurrent.CompletableFuture} object through {@link Mono#toFuture()}.
  */
 public final class ContainerAsyncClient {
     public static final String ROOT_CONTAINER_NAME = "$root";
@@ -68,6 +70,7 @@ public final class ContainerAsyncClient {
 
     /**
      * Package-private constructor for use by {@link ContainerClientBuilder}.
+     *
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     ContainerAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
@@ -76,15 +79,14 @@ public final class ContainerAsyncClient {
 
     /**
      * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
-     * NewBlockBlobAsyncClient method.
+     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
+     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
+     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
+     * this object's NewBlockBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     *
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName) {
         return getBlockBlobAsyncClient(blobName, null);
@@ -92,17 +94,15 @@ public final class ContainerAsyncClient {
 
     /**
      * Creates a new {@link BlockBlobAsyncClient} object by concatenating the blobName to the end of
-     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling this object's
-     * NewBlockBlobAsyncClient method.
+     * ContainerAsyncClient's URL. The new BlockBlobAsyncClient uses the same request policy pipeline as the
+     * ContainerAsyncClient. To change the pipeline, create the BlockBlobAsyncClient and then call its WithPipeline
+     * method passing in the desired pipeline object. Or, call this package's NewBlockBlobAsyncClient instead of calling
+     * this object's NewBlockBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     * @param snapshot
-     *         the snapshot identifier for the blob.
-     *
-     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param snapshot the snapshot identifier for the blob.
+     * @return A new {@link BlockBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient(String blobName, String snapshot) {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
@@ -111,34 +111,31 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
-     * NewPageBlobAsyncClient method.
+     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
+     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
+     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
+     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
+     * method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     *
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName) {
         return getPageBlobAsyncClient(blobName, null);
     }
 
     /**
-     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's
-     * NewPageBlobAsyncClient method.
+     * Creates creates a new PageBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
+     * URL. The new PageBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the
+     * pipeline, create the PageBlobAsyncClient and then call its WithPipeline method passing in the desired pipeline
+     * object. Or, call this package's NewPageBlobAsyncClient instead of calling this object's NewPageBlobAsyncClient
+     * method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     * @param snapshot
-     *         the snapshot identifier for the blob.
-     *
-     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param snapshot the snapshot identifier for the blob.
+     * @return A new {@link PageBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient(String blobName, String snapshot) {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
@@ -147,34 +144,31 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
+     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
+     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
+     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
+     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     *
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName) {
         return getAppendBlobAsyncClient(blobName, null);
     }
 
     /**
-     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
+     * Creates creates a new AppendBlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's
+     * URL. The new AppendBlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change
+     * the pipeline, create the AppendBlobAsyncClient and then call its WithPipeline method passing in the desired
+     * pipeline object. Or, call this package's NewAppendBlobAsyncClient instead of calling this object's
      * NewAppendBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     * @param snapshot
-     *         the snapshot identifier for the blob.
-     *
-     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this container.
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param snapshot the snapshot identifier for the blob.
+     * @return A new {@link AppendBlobAsyncClient} object which references the blob with the specified name in this
+     * container.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient(String blobName, String snapshot) {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
@@ -183,15 +177,12 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates a new BlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
-     * getBlobAsyncClient method.
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
+     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
+     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     *
+     * @param blobName A {@code String} representing the name of the blob.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName) {
@@ -199,17 +190,13 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Creates a new BlobAsyncClient object by concatenating blobName to the end of
-     * ContainerAsyncClient's URL. The new BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient.
-     * To change the pipeline, create the BlobAsyncClient and then call its WithPipeline method passing in the
-     * desired pipeline object. Or, call this package's getBlobAsyncClient instead of calling this object's
-     * getBlobAsyncClient method.
+     * Creates a new BlobAsyncClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobAsyncClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create
+     * the BlobAsyncClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this
+     * package's getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
      *
-     * @param blobName
-     *         A {@code String} representing the name of the blob.
-     * @param snapshot
-     *         the snapshot identifier for the blob.
-     *
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
@@ -221,8 +208,7 @@ public final class ContainerAsyncClient {
     /**
      * Initializes a {@link StorageAsyncClient} object pointing to the storage account this container is in.
      *
-     * @return
-     *     A {@link StorageAsyncClient} object pointing to the specified storage account
+     * @return A {@link StorageAsyncClient} object pointing to the specified storage account
      */
     public StorageAsyncClient getStorageAsyncClient() {
         return new StorageAsyncClient(new AzureBlobStorageBuilder()
@@ -232,6 +218,7 @@ public final class ContainerAsyncClient {
 
     /**
      * Gets the URL of the container represented by this client.
+     *
      * @return the URL.
      * @throws RuntimeException If the container has a malformed URL.
      */
@@ -246,8 +233,7 @@ public final class ContainerAsyncClient {
     /**
      * Gets if the container this client represents exists in the cloud.
      *
-     * @return
-     *         true if the container exists, false if it doesn't
+     * @return true if the container exists, false if it doesn't
      */
     public Mono<Response<Boolean>> exists() {
         return this.getProperties(null)
@@ -263,8 +249,7 @@ public final class ContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response signalling completion.
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> create() {
         return this.create(null, null);
@@ -275,14 +260,10 @@ public final class ContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
-     * @param metadata
-     *         {@link Metadata}
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     *
-     * @return
-     *      A reactive response signalling completion.
+     * @param metadata {@link Metadata}
+     * @param accessType Specifies how the data in this container is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> create(Metadata metadata, PublicAccessType accessType) {
         metadata = metadata == null ? new Metadata() : metadata;
@@ -293,20 +274,19 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection. For more information, see the
+     * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
+     * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response signalling completion.
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> delete() {
         return this.delete(null);
     }
 
     /**
-     * Marks the specified container for deletion. The container and any blobs contained within it are later
-     * deleted during garbage collection. For more information, see the
+     * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
+     * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
      * @param accessConditions {@link ContainerAccessConditions}
@@ -333,8 +313,7 @@ public final class ContainerAsyncClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response containing the container properties.
+     * @return A reactive response containing the container properties.
      */
     public Mono<Response<ContainerProperties>> getProperties() {
         return this.getProperties(null);
@@ -344,12 +323,9 @@ public final class ContainerAsyncClient {
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
      *
-     * @param leaseAccessConditions
-     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *         lease on the blob.
-     *
-     * @return
-     *      A reactive response containing the container properties.
+     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
+     * not match the active lease on the blob.
+     * @return A reactive response containing the container properties.
      */
     public Mono<Response<ContainerProperties>> getProperties(LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.containers()
@@ -362,11 +338,8 @@ public final class ContainerAsyncClient {
      * Sets the container's metadata. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-metadata">Azure Docs</a>.
      *
-     * @param metadata
-     *         {@link Metadata}
-     *
-     * @return
-     *      A reactive response signalling completion.
+     * @param metadata {@link Metadata}
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata) {
         return this.setMetadata(metadata, null);
@@ -379,11 +352,11 @@ public final class ContainerAsyncClient {
      * @param metadata {@link Metadata}
      * @param accessConditions {@link ContainerAccessConditions}
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has anything
-     * set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
+     * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has
+     * anything set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
      */
     public Mono<VoidResponse> setMetadata(Metadata metadata,
-            ContainerAccessConditions accessConditions) {
+                                          ContainerAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())
@@ -405,8 +378,7 @@ public final class ContainerAsyncClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response containing the container access policy.
+     * @return A reactive response containing the container access policy.
      */
     public Mono<Response<ContainerAccessPolicies>> getAccessPolicy() {
         return this.getAccessPolicy(null);
@@ -417,12 +389,9 @@ public final class ContainerAsyncClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-acl">Azure Docs</a>.
      *
-     * @param leaseAccessConditions
-     *         By setting lease access conditions, requests will fail if the provided lease does not match the active
-     *         lease on the blob.
-     *
-     * @return
-     *      A reactive response containing the container access policy.
+     * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
+     * not match the active lease on the blob.
+     * @return A reactive response containing the container access policy.
      */
     public Mono<Response<ContainerAccessPolicies>> getAccessPolicy(LeaseAccessConditions leaseAccessConditions) {
         return postProcessResponse(this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(null, null, null, leaseAccessConditions, Context.NONE)
@@ -435,19 +404,16 @@ public final class ContainerAsyncClient {
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers
-     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
-     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *         for more information. Passing null will clear all access policies.
-     *
-     * @return
-     *      A reactive response signalling completion.
+     * @param accessType Specifies how the data in this container is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
-            List<SignedIdentifier> identifiers) {
+                                              List<SignedIdentifier> identifiers) {
         return this.setAccessPolicy(accessType, identifiers, null);
     }
 
@@ -457,22 +423,19 @@ public final class ContainerAsyncClient {
      * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
-     * @param accessType
-     *         Specifies how the data in this container is available to the public. See the x-ms-blob-public-access header
-     *         in the Azure Docs for more information. Pass null for no public access.
-     * @param identifiers
-     *         A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
-     *         <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *         for more information. Passing null will clear all access policies.
-     * @param accessConditions
-     *         {@link ContainerAccessConditions}
-     *
+     * @param accessType Specifies how the data in this container is available to the public. See the
+     * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
+     * @param identifiers A list of {@link SignedIdentifier} objects that specify the permissions for the container.
+     * Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information. Passing null will clear all access policies.
+     * @param accessConditions {@link ContainerAccessConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
      * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      */
     public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
-                                      List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
+                                              List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
@@ -508,53 +471,49 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
-     * The directories are flattened and only actual blobs and no directories are returned.
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed. The directories are
+     * flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p>
-     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
-     * on the root level 'bar', will return
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return
      *
      * <ul>
-     *     <li>foo/foo1
-     *     <li>foo/foo2
-     *     <li>bar
+     * <li>foo/foo1
+     * <li>foo/foo2
+     * <li>bar
      * </ul>
      *
-     * @return
-     *      A reactive response emitting the flattened blobs.
+     * @return A reactive response emitting the flattened blobs.
      */
     public Flux<BlobItem> listBlobsFlat() {
         return this.listBlobsFlat(new ListBlobsOptions());
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed.
-     * The directories are flattened and only actual blobs and no directories are returned.
+     * Returns a reactive Publisher emitting all the blobs in this container lazily as needed. The directories are
+     * flattened and only actual blobs and no directories are returned.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p>
-     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
-     * on the root level 'bar', will return
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return
      *
      * <ul>
-     *     <li>foo/foo1
-     *     <li>foo/foo2
-     *     <li>bar
+     * <li>foo/foo1
+     * <li>foo/foo2
+     * <li>bar
      * </ul>
      *
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
-     * @return
-     *      A reactive response emitting the listed blobs, flattened.
+     * @param options {@link ListBlobsOptions}
+     * @return A reactive response emitting the listed blobs, flattened.
      */
     public Flux<BlobItem> listBlobsFlat(ListBlobsOptions options) {
         return listBlobsFlatSegment(null, options).flatMapMany(response -> listBlobsFlatHelper(options, response));
@@ -608,72 +567,63 @@ public final class ContainerAsyncClient {
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under
-     * the given directory (prefix). Directories will have {@link BlobItem#isPrefix()} set to
-     * true.
+     * Returns a reactive Publisher emitting all the blobs and directories (prefixes) under the given directory
+     * (prefix). Directories will have {@link BlobItem#isPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p>
-     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
-     * on the root level 'bar', will return the following results when prefix=null:
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return the following results when prefix=null:
      *
      * <ul>
-     *     <li>foo/ (isPrefix = true)
-     *     <li>bar (isPrefix = false)
+     * <li>foo/ (isPrefix = true)
+     * <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
      *
      * <ul>
-     *     <li>foo/foo1 (isPrefix = false)
-     *     <li>foo/foo2 (isPrefix = false)
+     * <li>foo/foo1 (isPrefix = false)
+     * <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
-     * @param directory
-     *         The directory to list blobs underneath
-     *
-     * @return
-     *      A reactive response emitting the prefixes and blobs.
+     * @param directory The directory to list blobs underneath
+     * @return A reactive response emitting the prefixes and blobs.
      */
     public Flux<BlobItem> listBlobsHierarchy(String directory) {
         return this.listBlobsHierarchy("/", new ListBlobsOptions().prefix(directory));
     }
 
     /**
-     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under
-     * the given prefix (directory). Directories will have {@link BlobItem#isPrefix()} set to
-     * true.
+     * Returns a reactive Publisher emitting all the blobs and prefixes (directories) under the given prefix
+     * (directory). Directories will have {@link BlobItem#isPrefix()} set to true.
      *
      * <p>
      * Blob names are returned in lexicographic order. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * <p>
-     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob
-     * on the root level 'bar', will return the following results when prefix=null:
+     * E.g. listing a container containing a 'foo' folder, which contains blobs 'foo1' and 'foo2', and a blob on the
+     * root level 'bar', will return the following results when prefix=null:
      *
      * <ul>
-     *     <li>foo/ (isPrefix = true)
-     *     <li>bar (isPrefix = false)
+     * <li>foo/ (isPrefix = true)
+     * <li>bar (isPrefix = false)
      * </ul>
      * <p>
      * will return the following results when prefix="foo/":
      *
      * <ul>
-     *     <li>foo/foo1 (isPrefix = false)
-     *     <li>foo/foo2 (isPrefix = false)
+     * <li>foo/foo1 (isPrefix = false)
+     * <li>foo/foo2 (isPrefix = false)
      * </ul>
      *
-     * @param delimiter
-     *         The delimiter for blob hierarchy, "/" for hierarchy based on directories
-     * @param options
-     *         {@link ListBlobsOptions}
-     *
-     * @return
-     *      A reactive response emitting the prefixes and blobs.
+     * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
+     * @param options {@link ListBlobsOptions}
+     * @return A reactive response emitting the prefixes and blobs.
      */
     public Flux<BlobItem> listBlobsHierarchy(String delimiter, ListBlobsOptions options) {
         return listBlobsHierarchySegment(null, delimiter, options)
@@ -719,7 +669,7 @@ public final class ContainerAsyncClient {
     }
 
     private Flux<BlobItem> listBlobsHierarchyHelper(String delimiter, ListBlobsOptions options,
-                                               Context context, ContainersListBlobHierarchySegmentResponse response) {
+                                                    Context context, ContainersListBlobHierarchySegmentResponse response) {
         Flux<BlobItem> blobs;
         Flux<BlobPrefix> prefixes;
         BlobHierarchyListSegment segment = response.value().segment();
@@ -816,14 +766,10 @@ public final class ContainerAsyncClient {
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
      *
-     * @param proposedId
-     *      A {@code String} in any valid GUID format. May be null.
-     * @param duration
-     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
-     *         never expires. A non-infinite lease can be between 15 and 60 seconds.
-     *
-     * @return
-     *      A reactive response containing the lease ID.
+     * @param proposedId A {@code String} in any valid GUID format. May be null.
+     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
+     * non-infinite lease can be between 15 and 60 seconds.
+     * @return A reactive response containing the lease ID.
      */
     public Mono<Response<String>> acquireLease(String proposedId, int duration) {
         return this.acquireLease(proposedId, duration, null);
@@ -833,19 +779,15 @@ public final class ContainerAsyncClient {
      * Acquires a lease on the blob for write and delete operations. The lease duration must be between 15 to 60
      * seconds, or infinite (-1).
      *
-     * @param proposedID
-     *         A {@code String} in any valid GUID format. May be null.
-     * @param duration
-     *         The  duration of the lease, in seconds, or negative one (-1) for a lease that
-     *         never expires. A non-infinite lease can be between 15 and 60 seconds.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
+     * @param proposedID A {@code String} in any valid GUID format. May be null.
+     * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
+     * non-infinite lease can be between 15 and 60 seconds.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
-     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
+     * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
     public Mono<Response<String>> acquireLease(String proposedID, int duration, ModifiedAccessConditions modifiedAccessConditions) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
@@ -863,11 +805,8 @@ public final class ContainerAsyncClient {
     /**
      * Renews the blob's previously-acquired lease.
      *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     *
-     * @return
-     *      A reactive response containing the renewed lease ID.
+     * @param leaseID The leaseId of the active lease on the blob.
+     * @return A reactive response containing the renewed lease ID.
      */
     public Mono<Response<String>> renewLease(String leaseID) {
         return this.renewLease(leaseID, null);
@@ -876,16 +815,13 @@ public final class ContainerAsyncClient {
     /**
      * Renews the blob's previously-acquired lease.
      *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
+     * @param leaseID The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the renewed lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
-     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
+     * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
     public Mono<Response<String>> renewLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
@@ -903,11 +839,8 @@ public final class ContainerAsyncClient {
     /**
      * Releases the blob's previously-acquired lease.
      *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     *
-     * @return
-     *      A reactive response signalling completion.
+     * @param leaseID The leaseId of the active lease on the blob.
+     * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> releaseLease(String leaseID) {
         return this.releaseLease(leaseID, null);
@@ -916,16 +849,13 @@ public final class ContainerAsyncClient {
     /**
      * Releases the blob's previously-acquired lease.
      *
-     * @param leaseID
-     *         The leaseId of the active lease on the blob.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
+     * @param leaseID The leaseId of the active lease on the blob.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response signalling completion.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
-     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
+     * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
     public Mono<VoidResponse> releaseLease(String leaseID, ModifiedAccessConditions modifiedAccessConditions) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
@@ -944,8 +874,7 @@ public final class ContainerAsyncClient {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
-     * @return
-     *      A reactive response containing the remaining time in the broken lease.
+     * @return A reactive response containing the remaining time in the broken lease.
      */
     public Mono<Response<Duration>> breakLease() {
         return this.breakLease(null, null);
@@ -955,20 +884,17 @@ public final class ContainerAsyncClient {
      * BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1) constant
      * to break a fixed-duration lease when it expires or an infinite lease immediately.
      *
-     * @param breakPeriodInSeconds
-     *         An optional {@code Integer} representing the proposed duration of seconds that the lease should continue
-     *         before it is broken, between 0 and 60 seconds. This break period is only used if it is shorter than the
-     *         time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be
-     *         available before the break period has expired, but the lease may be held for longer than the break
-     *         period.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
+     * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
+     * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
+     * shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease
+     * will not be available before the break period has expired, but the lease may be held for longer than the break
+     * period.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the remaining time in the broken lease.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
-     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
+     * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
     public Mono<Response<Duration>> breakLease(Integer breakPeriodInSeconds, ModifiedAccessConditions modifiedAccessConditions) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
@@ -986,33 +912,26 @@ public final class ContainerAsyncClient {
     /**
      * ChangeLease changes the blob's lease ID.
      *
-     * @param leaseId
-     *         The leaseId of the active lease on the blob.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     *
-     * @return
-     *      A reactive response containing the new lease ID.
+     * @param leaseId The leaseId of the active lease on the blob.
+     * @param proposedID A {@code String} in any valid GUID format.
+     * @return A reactive response containing the new lease ID.
      */
     public Mono<Response<String>> changeLease(String leaseId, String proposedID) {
         return this.changeLease(leaseId, proposedID, null);
     }
 
     /**
-     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
+     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
+     * Docs</a>.
      *
-     * @param leaseId
-     *         The leaseId of the active lease on the blob.
-     * @param proposedID
-     *         A {@code String} in any valid GUID format.
-     * @param modifiedAccessConditions
-     *         Standard HTTP Access conditions related to the modification of data. ETag and LastModifiedTime are used
-     *         to construct conditions related to when the blob was changed relative to the given request. The request
-     *         will fail if the specified condition is not satisfied.
-     *
+     * @param leaseId The leaseId of the active lease on the blob.
+     * @param proposedID A {@code String} in any valid GUID format.
+     * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
+     * LastModifiedTime are used to construct conditions related to when the blob was changed relative to the given
+     * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the new lease ID.
-     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or
-     * {@link ModifiedAccessConditions#ifNoneMatch()} is set.
+     * @throws UnsupportedOperationException If either {@link ModifiedAccessConditions#ifMatch()} or {@link
+     * ModifiedAccessConditions#ifNoneMatch()} is set.
      */
     public Mono<Response<String>> changeLease(String leaseId, String proposedID, ModifiedAccessConditions modifiedAccessConditions) {
         if (!this.validateNoEtag(modifiedAccessConditions)) {
@@ -1031,8 +950,7 @@ public final class ContainerAsyncClient {
      * Returns the sku name and account kind for the account. For more information, please see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
      *
-     * @return
-     *      A reactive response containing the account info.
+     * @return A reactive response containing the account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return postProcessResponse(
@@ -1045,5 +963,171 @@ public final class ContainerAsyncClient {
             return true;
         }
         return modifiedAccessConditions.ifMatch() == null && modifiedAccessConditions.ifNoneMatch() == null;
+    }
+
+    /**
+     * Generates a user delegation SAS with the specified parameters
+     *
+     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+                                            ContainerSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, null, null,
+            null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Generates a user delegation SAS token with the specified parameters
+     *
+     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+                                            SASProtocol sasProtocol, IPRange ipRange) {
+        return this.generateUserDelegationSAS(userDelegationKey, accountName, permissions, expiryTime, startTime,
+            version, sasProtocol, ipRange, null /* cacheControl */, null /* contentDisposition */, null /*
+            contentEncoding */, null /* contentLanguage */, null /* contentType */);
+    }
+
+    /**
+     * Generates a user delegation SAS token with the specified parameters
+     *
+     * @param userDelegationKey The {@code UserDelegationKey} user delegation key for the SAS
+     * @param accountName The {@code String} account name for the SAS
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl An optional {@code String} cache-control header for the SAS.
+     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
+     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage An optional {@code String} content-language header for the SAS.
+     * @param contentType An optional {@code String} content-type header for the SAS.
+     * @return A string that represents the SAS token
+     */
+    public String generateUserDelegationSAS(UserDelegationKey userDelegationKey, String accountName,
+                                            ContainerSASPermission permissions, OffsetDateTime expiryTime, OffsetDateTime startTime, String version,
+                                            SASProtocol sasProtocol, IPRange ipRange, String cacheControl, String contentDisposition,
+                                            String contentEncoding, String contentLanguage, String contentType) {
+        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, null /* identifier*/,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+
+        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues, accountName);
+
+        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(userDelegationKey);
+
+        return sasQueryParameters.encode();
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(ContainerSASPermission permissions, OffsetDateTime expiryTime) {
+        return this.generateSAS(null, permissions,  /* identifier */  expiryTime, null /* startTime */, null /* version
+             */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /* contentDisposition */,
+            null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier) {
+        return this.generateSAS(identifier, null /* permissions*/, null /* expiryTime */, null /* startTime */, null
+            /* version */, null /* sasProtocol */, null /* ipRange */, null /* cacheControl */, null /*
+            contentDisposition */, null /* contentEncoding */, null /* contentLanguage */, null /*contentType*/);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
+                              OffsetDateTime startTime,
+                              String version, SASProtocol sasProtocol, IPRange ipRange) {
+        return this.generateSAS(identifier, permissions, expiryTime, startTime, version, sasProtocol, ipRange, null
+            /* cacheControl */, null /* contentDisposition */, null /* contentEncoding */, null /* contentLanguage */,
+            null /*contentType*/);
+    }
+
+    /**
+     * Generates a SAS token with the specified parameters
+     *
+     * @param identifier The {@code String} name of the access policy on the container this SAS references if any
+     * @param permissions The {@code ContainerSASPermissions} permission for the SAS
+     * @param expiryTime The {@code OffsetDateTime} expiry time for the SAS
+     * @param startTime An optional {@code OffsetDateTime} start time for the SAS
+     * @param version An optional {@code String} version for the SAS
+     * @param sasProtocol An optional {@code SASProtocol} protocol for the SAS
+     * @param ipRange An optional {@code IPRange} ip address range for the SAS
+     * @param cacheControl An optional {@code String} cache-control header for the SAS.
+     * @param contentDisposition An optional {@code String} content-disposition header for the SAS.
+     * @param contentEncoding An optional {@code String} content-encoding header for the SAS.
+     * @param contentLanguage An optional {@code String} content-language header for the SAS.
+     * @param contentType An optional {@code String} content-type header for the SAS.
+     * @return A string that represents the SAS token
+     */
+    public String generateSAS(String identifier, ContainerSASPermission permissions, OffsetDateTime expiryTime,
+                              OffsetDateTime startTime, String version, SASProtocol sasProtocol, IPRange ipRange, String cacheControl,
+                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+        ServiceSASSignatureValues serviceSASSignatureValues = new ServiceSASSignatureValues(version, sasProtocol,
+            startTime, expiryTime, permissions == null ? null : permissions.toString(), ipRange, identifier,
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType);
+
+        SharedKeyCredential sharedKeyCredential =
+            Utility.getSharedKeyCredential(this.azureBlobStorage.httpPipeline());
+
+        Utility.assertNotNull("sharedKeyCredential", sharedKeyCredential);
+
+        ServiceSASSignatureValues values = configureServiceSASSignatureValues(serviceSASSignatureValues,
+            sharedKeyCredential.accountName());
+
+        SASQueryParameters sasQueryParameters = values.generateSASQueryParameters(sharedKeyCredential);
+
+        return sasQueryParameters.encode();
+    }
+
+    /**
+     * Sets serviceSASSignatureValues parameters dependent on the current blob type
+     */
+    private ServiceSASSignatureValues configureServiceSASSignatureValues(ServiceSASSignatureValues serviceSASSignatureValues, String accountName) {
+        // Set canonical name
+        serviceSASSignatureValues.canonicalName(this.azureBlobStorage.url(), accountName);
+
+        // Set snapshotId to null
+        serviceSASSignatureValues.snapshotId(null);
+
+        // Set resource
+        serviceSASSignatureValues.resource(Constants.UrlConstants.SAS_CONTAINER_CONSTANT);
+        return serviceSASSignatureValues;
     }
 }

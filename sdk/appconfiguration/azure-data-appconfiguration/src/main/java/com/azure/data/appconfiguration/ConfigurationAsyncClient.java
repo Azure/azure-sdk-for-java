@@ -28,6 +28,9 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
+import static com.azure.core.implementation.util.FluxUtil.fluxContext;
+import static com.azure.core.implementation.util.FluxUtil.monoContext;
+
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
  * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, updating, and deleting
@@ -71,12 +74,7 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * client.addSetting("prodDBConnection", "db_connection")
-     *     .subscribe(response -&gt; {
-     *         ConfigurationSetting result = response.value();
-     *         System.out.printf("Key: %s, Value: %s", result.key(), result.value());
-     *     });</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addsetting#String-String}
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
@@ -88,7 +86,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return monoContext(
+            context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -116,7 +115,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE);
+        return monoContext(context -> addSetting(setting, context));
     }
 
     /**
@@ -189,7 +188,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return monoContext(
+            context -> setSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -233,7 +233,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, Context.NONE);
+        return monoContext(context -> setSetting(setting, context));
     }
 
     /**
@@ -317,7 +317,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return monoContext(
+            context -> updateSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -349,7 +350,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE);
+        return monoContext(context -> updateSetting(setting, context));
     }
 
     /**
@@ -415,7 +416,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE);
+        return monoContext(context -> getSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -442,7 +443,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE);
+        return monoContext(context -> getSetting(setting, context));
     }
 
     /**
@@ -501,7 +502,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
+        return monoContext(context -> deleteSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -535,7 +536,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE);
+        return monoContext(context -> deleteSetting(setting, context));
     }
 
     /**
@@ -594,8 +595,10 @@ public final class ConfigurationAsyncClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
-        return listSettings(options, Context.NONE);
+        return new PagedFlux<>(() -> monoContext(context -> listFirstPageSettings(options, context)),
+            continuationToken -> monoContext(context -> listNextPageSettings(context, continuationToken)));
     }
 
     /**
@@ -663,16 +666,14 @@ public final class ConfigurationAsyncClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * <pre>
-     * client.listSettingRevisions(new SettingSelector().key("prodDBConnection"))
-     *     .subscribe(setting -&gt; System.out.printf("Key: %s, Value: %s", setting.key(), setting.value()));</pre>
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return listSettingRevisions(selector, Context.NONE);
+        return fluxContext(context -> listSettingRevisions(selector, context));
     }
 
     /**
@@ -764,7 +765,9 @@ public final class ConfigurationAsyncClient {
      * Remaps the exception returned from the service if it is a PRECONDITION_FAILED response. This is performed since
      * add setting returns PRECONDITION_FAILED when the configuration already exists, all other uses of setKey return
      * this status when the configuration doesn't exist.
+     *
      * @param throwable Error response from the service.
+     *
      * @return Exception remapped to a ResourceModifiedException if the throwable was a ResourceNotFoundException,
      * otherwise the throwable is returned unmodified.
      */
