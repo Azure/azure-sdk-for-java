@@ -43,6 +43,7 @@ public final class SASTokenCredential {
 
     /**
      * Creates a SAS token credential from the passed SAS token.
+     *
      * @param sasToken SAS token used to authenticate requests with the service.
      */
     public SASTokenCredential(String sasToken) {
@@ -58,6 +59,7 @@ public final class SASTokenCredential {
 
     /**
      * Creates a SAS token credential from the passed URL query string
+     *
      * @param query URL query used to build the SAS token
      * @return a SAS token credential if the query param contains all the necessary pieces
      */
