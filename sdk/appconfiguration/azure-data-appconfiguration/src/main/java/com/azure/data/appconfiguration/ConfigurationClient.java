@@ -429,7 +429,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string}
      *
      * @param key The key of the setting to retrieve.
@@ -450,7 +450,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
@@ -472,7 +472,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#string-context}
      *
      * @param key The key of the setting to retrieve.
@@ -494,7 +494,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
@@ -539,7 +539,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#string}
      *
      * @param key The key of the setting to delete.
@@ -564,7 +564,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to delete.
@@ -589,7 +589,7 @@ public final class ConfigurationClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#string-context}
      *
      * @param key The key of the setting to delete.
@@ -643,9 +643,9 @@ public final class ConfigurationClient {
      * the ConfigurationSetting yet.
      *
      * <p><strong>Code Samples</strong></p>
-     * 
+     *
      * <p>Delete the setting with the key "prodDBConnection".</p>
-     * 
+     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-context}
      *
      * @param setting The ConfigurationSetting to delete.
@@ -719,7 +719,7 @@ public final class ConfigurationClient {
      *
      *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector}
-     * 
+     *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
      */
