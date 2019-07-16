@@ -83,10 +83,7 @@ public final class QueueClient {
      *
      * <p>Create a queue with metadata "queue:metadataMap"</p>
      *
-     * <pre>
-     * VoidResponse response = client.create(Collections.singletonMap("queue", "metadataMap"));
-     * System.out.printf("Create completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.create#map}
      *
      * @param metadata Metadata to associate with the queue
      * @return A response that only contains headers and response status code
@@ -119,10 +116,7 @@ public final class QueueClient {
      *
      * <p>Get the properties of the queue</p>
      *
-     * <pre>
-     * QueueProperties properties = client.getProperties().value();
-     * System.out.printf("Metadata: %s, Approximate message count: %d", properties.metadata(), properties.approximateMessagesCount());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.getProperties}
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
@@ -141,17 +135,11 @@ public final class QueueClient {
      *
      * <p>Set the queue's metadata to "queue:metadataMap"</p>
      *
-     * <pre>
-     * VoidResponse response = client.setMetadata(Collections.singletonMap("queue", "metadataMap"));
-     * System.out.printf("Setting metadata completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.setMetadata#map}
      *
      * <p>Clear the queue's metadata</p>
      *
-     * <pre>
-     * VoidResponse response = client.setMetadata(null);
-     * System.out.printf("Clearing metadata completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMetadata#map}
      *
      * @param metadata Metadata to set on the queue
      * @return A response that only contains headers and response status code
@@ -168,10 +156,7 @@ public final class QueueClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <pre>
-     * for (SignedIdentifier permission : client.getAccessPolicy()) {
-     *     System.out.printf("Access policy %s allows these permissions: %s", permission.id(), permission.accessPolicy().permission());
-     * }
+     * {@codesnippet com.azure.storage.queue.queueClient.getAccessPolicy}
      *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the queue doesn't exist
@@ -187,16 +172,7 @@ public final class QueueClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <pre>
-     * AccessPolicy policy = new AccessPolicy().permission("r")
-     *     .start(OffsetDateTime.now(ZoneOffset.UTC))
-     *     .expiry(OffsetDateTime.now(ZoneOffset.UTC).addDays(10));
-     *
-     * SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
-     *
-     * VoidResponse response = client.setAccessPolicy(Collections.singletonList(permission));
-     * System.out.printf("Setting access policies completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.setAccessPolicy}
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -214,10 +190,7 @@ public final class QueueClient {
      *
      * <p>Clear the messages</p>
      *
-     * <pre>
-     * VoidResponse response = client.clear();
-     * System.out.printf("Clearing messages completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.clearMessages}
      *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the queue doesn't exist
@@ -252,17 +225,11 @@ public final class QueueClient {
      *
      * <p>Add a message of "Hello, Azure" that has a timeout of 5 seconds</p>
      *
-     * <pre>
-     * EnqueuedMessage enqueuedMessage = client.enqueueMessage("Hello, Azure", Duration.ofSeconds(5), null);
-     * System.out.printf("Message %s becomes visible at %s", enqueuedMessage.messageId(), enqueuedMessage.timeNextVisible());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.enqueueMessage#string-duration-duration}
      *
      * <p>Add a message of "Goodbye, Azure" that has a time to live of 5 seconds</p>
      *
-     * <pre>
-     * EnqueuedMessage enqueuedMessage = client.enqueueMessage("Goodbye, Azure", null, Duration.ofSeconds(5));
-     * System.out.printf("Message %s expires at %s", enqueuedMessage.messageId(), enqueuedMessage.expirationTime());
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.enqueueMessageLiveTime#string-duration-duration}
      *
      * @param messageText Message text
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue in seconds.
@@ -305,11 +272,7 @@ public final class QueueClient {
      *
      * <p>Dequeue up to 5 messages</p>
      *
-     * <pre>
-     * for (DequeuedMessage dequeuedMessage : client.dequeue(5)) {
-     *     System.out.printf("Dequeued %s and it becomes visible at %s", dequeuedMessage.messageId(), dequeuedMessage.timeNextVisible());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer}
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
@@ -331,11 +294,7 @@ public final class QueueClient {
      *
      * <p>Dequeue up to 5 messages and give them a 60 second timeout period</p>
      *
-     * <pre>
-     * for (DequeuedMessage dequeuedMessage : client.dequeue(5, Duration.ofSeconds(60))) {
-     *     System.out.printf("Dequeued %s and it becomes visible at %s", dequeuedMessage.messageId(), dequeuedMessage.timeNextVisible());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.dequeueMessages#integer-duration}
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue than requested
      * all the messages will be returned. If left empty only 1 message will be retrieved, the allowed range is 1 to 32
@@ -380,11 +339,7 @@ public final class QueueClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * <pre>
-     * for (PeekedMessage peekedMessage : client.peekMessages(5)) {
-     *     System.out.printf("Peeked message %s has been dequeued %d times", peekedMessage.messageId(), peekedMessage.dequeueCount());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueClient.peekMessages#integer}
      *
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
      * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32

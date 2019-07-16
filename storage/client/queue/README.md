@@ -52,7 +52,6 @@ az storage queue generate-sas
 
 ```Powershell
 CONNECTION_STRING=<connection-string>
-#usage example
 az storage queue generate-sas
     --name javasdksas
     --expiry 2019-06-05
