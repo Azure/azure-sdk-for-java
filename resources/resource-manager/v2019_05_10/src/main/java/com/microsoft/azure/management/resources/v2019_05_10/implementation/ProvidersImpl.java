@@ -57,9 +57,9 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
     }
 
     @Override
-    public Observable<Provider> getAtTenantAsync(String resourceProviderNamespace) {
+    public Observable<Provider> getAtTenantScopeAsync(String resourceProviderNamespace) {
         ProvidersInner client = this.inner();
-        return client.getAtTenantAsync(resourceProviderNamespace)
+        return client.getAtTenantScopeAsync(resourceProviderNamespace)
         .map(new Func1<ProviderInner, Provider>() {
             @Override
             public Provider call(ProviderInner inner) {
@@ -69,9 +69,9 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
     }
 
     @Override
-    public Observable<Provider> listAllAsync() {
+    public Observable<Provider> listAtTenantScopeAsync() {
         ProvidersInner client = this.inner();
-        return client.listAllAsync()
+        return client.listAtTenantScopeAsync()
         .flatMapIterable(new Func1<Page<ProviderInner>, Iterable<ProviderInner>>() {
             @Override
             public Iterable<ProviderInner> call(Page<ProviderInner> page) {

@@ -41,7 +41,7 @@ public interface Providers extends HasInner<ProvidersInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Provider> getAtTenantAsync(String resourceProviderNamespace);
+    Observable<Provider> getAtTenantScopeAsync(String resourceProviderNamespace);
 
     /**
      * Gets all resource providers for the tenant.
@@ -49,7 +49,7 @@ public interface Providers extends HasInner<ProvidersInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Provider> listAllAsync();
+    Observable<Provider> listAtTenantScopeAsync();
 
     /**
      * Gets the specified resource provider.
