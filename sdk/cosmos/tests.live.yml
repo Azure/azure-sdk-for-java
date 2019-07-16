@@ -86,7 +86,7 @@ jobs:
       inputs:
         mavenPomFile: $(pomFile)
         goals: verify
-        options: '-Pe2e -DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)" -DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY)'
+        options: '-Pe2e -DargLine="-Dcosmos.directModeProtocol=$(cosmos.directModeProtocol)" -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
         testResultsFiles: '**/junitreports/TEST-*.xml'
       env:
         DESIRED_CONSISTENCY: $(Consistency)
