@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory939724?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory17115b?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A8828E6645\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:08:31 GMT",
+      "ETag" : "\"0x8D70A3CB53341A7\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:26:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e606677-501a-0051-5b91-38d167000000",
+      "x-ms-request-id" : "97675b9a-401a-0089-2825-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 09:08:30 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:26:54 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory939724%2ftestfile",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory17115b%2ftestfile",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9e60667b-501a-0051-5e91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:9e60667b-501a-0051-5e91-38d167000000\nTime:2019-07-12T09:08:31.2595011Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:08:30 GMT",
+      "x-ms-request-id" : "97675b9b-401a-0089-2925-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:97675b9b-401a-0089-2925-3c76b6000000\nTime:2019-07-16T22:26:55.1157090Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:26:54 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory939724" ]
+  "variables" : [ "directory17115b" ]
 }

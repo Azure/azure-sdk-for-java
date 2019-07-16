@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory294623?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory303455?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706E65D290B17\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 16:31:17 GMT",
+      "ETag" : "\"0x8D70A3CB5B8B6C9\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:26:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "1d178ba3-901a-0080-4ecf-386c38000000",
+      "x-ms-request-id" : "97675bab-401a-0089-3925-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 16:31:16 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:26:55 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory294623?comp=listhandles",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory303455?comp=listhandles",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "1d178ba5-901a-0080-4fcf-386c38000000",
+      "x-ms-request-id" : "97675bac-401a-0089-3a25-3c76b6000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults><Entries /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 16:31:16 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:26:55 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory294623" ]
+  "variables" : [ "directory303455" ]
 }

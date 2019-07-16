@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory411001?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory889925?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "84fdcdc1-d01a-002d-71d6-384c52000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:84fdcdc1-d01a-002d-71d6-384c52000000\nTime:2019-07-12T17:19:59.7736157Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 17:19:58 GMT",
+      "x-ms-request-id" : "97675b88-401a-0089-1725-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:97675b88-401a-0089-1725-3c76b6000000\nTime:2019-07-16T22:26:53.8858347Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:26:53 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory411001" ]
+  "variables" : [ "directory889925" ]
 }

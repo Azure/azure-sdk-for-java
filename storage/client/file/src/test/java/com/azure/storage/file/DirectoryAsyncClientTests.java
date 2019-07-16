@@ -10,6 +10,7 @@ import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.FileProperty;
 import com.azure.storage.file.models.FileRef;
+import com.azure.storage.file.models.HandleItem;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,7 +131,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
     @Override
     public void deleteNotExistFromDirClient() {
         StepVerifier.create(client.delete())
-            .expectErrorMessage("ResourceNotFound");
+            .verifyErrorSatisfies(exception -> FileTestHelpers.assertExceptionErrorMessage(exception, "ResourceNotFound"));
 
     }
 
@@ -221,7 +222,8 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
 
     @Override
     public void getHandlesFromDirClient() {
-        // TODO: Need to open channel and create handlers first.
+        // TODO: Need to figure out way of creating handlers first.
+
 //        StepVerifier.create(client.create())
 //            .assertNext(response -> StorageTestBase.assertResponseStatusCode(response, 201))
 //            .verifyComplete();
@@ -232,26 +234,14 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
 
     @Override
     public void forceCloseHandlesFromDirClient() {
-//        StepVerifier.create(client.create())
-//            .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
-//            .verifyComplete();
-//        StepVerifier.create(client.getHandles(null, true))
-//            .assertNext(handleItem -> {
-//                StepVerifier.create(client.forceCloseHandles(handleItem.handleId(), true))
-//                    .assertNext(numOfClosedHandles -> Assert.assertTrue(numOfClosedHandles.longValue() > 0))
-//                    .verifyComplete();
-//            })
-//            .verifyComplete();
         client.create().block();
-        CountDownLatch latch = new CountDownLatch(1);
-        client.getHandles(null, true).subscribe(
-            response -> {
-                StepVerifier.create(client.forceCloseHandles(response.handleId(), true))
-                    .assertNext(forceCloseHandles -> Assert.assertTrue(forceCloseHandles > 0))
+        client.createFile("test", 1024);
+        Iterable<HandleItem> handleItems = client.getHandles(null, true).toIterable();
+        handleItems.forEach(handleItem -> {
+                StepVerifier.create(client.forceCloseHandles(handleItem.handleId(), true))
+                    .assertNext(numOfClosedHandles -> Assert.assertTrue(numOfClosedHandles.longValue() > 0))
                     .verifyComplete();
-                latch.countDown();
-            }
-        );
+            });
     }
 
     @Override
@@ -284,7 +274,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(client.createSubDirectory(dirName, basicMetadata))
-            .expectErrorMessage("ResourceAlreadyExists");
+            .verifyErrorSatisfies(exception -> FileTestHelpers.assertExceptionErrorMessage(exception, "ResourceAlreadyExists"));
     }
 
     @Override

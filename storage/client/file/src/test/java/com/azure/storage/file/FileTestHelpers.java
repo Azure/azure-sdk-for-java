@@ -18,12 +18,8 @@ import com.azure.storage.file.models.ShareItem;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.List;
@@ -76,6 +72,12 @@ class FileTestHelpers {
         assertTrue(throwable instanceof StorageErrorException);
         StorageErrorException exception = (StorageErrorException) throwable;
         assertEquals(expectedStatusCode, exception.response().statusCode());
+    }
+
+    static void assertExceptionErrorMessage(Throwable throwable, String message) {
+        assertTrue(throwable instanceof StorageErrorException);
+        StorageErrorException exception = (StorageErrorException) throwable;
+        assertTrue(exception.getMessage().contains(message));
     }
 
     static void assertExceptionStatusCode(Runnable thrower, int expectedStatusCode) {

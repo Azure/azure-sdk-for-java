@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share46499a78?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share43145b3b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A8BE120AA4\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:10:10 GMT",
+      "ETag" : "\"0x8D70A3CED6B3D27\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:28:29 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e606773-501a-0051-5191-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:10:10 GMT"
+      "x-ms-request-id" : "97675c8e-401a-0089-2a25-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share46499a78?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share43145b3b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -30,12 +30,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e606775-501a-0051-5291-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:10:10 GMT"
+      "x-ms-request-id" : "97675c90-401a-0089-2b25-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share46499a78?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share43145b3b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -47,14 +47,14 @@
       "retry-after" : "0",
       "Content-Length" : "244",
       "StatusCode" : "409",
-      "x-ms-request-id" : "9e606776-501a-0051-5391-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:9e606776-501a-0051-5391-38d167000000\nTime:2019-07-12T09:10:11.0971507Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:10 GMT",
+      "x-ms-request-id" : "97675c91-401a-0089-2c25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:97675c91-401a-0089-2c25-3c76b6000000\nTime:2019-07-16T22:28:29.4798988Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share46499a78&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share43145b3b&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -65,11 +65,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e606777-501a-0051-5491-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share46499a78</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:10 GMT",
+      "x-ms-request-id" : "97675c92-401a-0089-2d25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share43145b3b</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share46499a78" ]
+  "variables" : [ "share43145b3b" ]
 }

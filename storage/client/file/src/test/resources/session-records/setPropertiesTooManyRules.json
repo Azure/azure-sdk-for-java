@@ -14,14 +14,14 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e606758-501a-0051-3c91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:9e606758-501a-0051-3c91-38d167000000\nTime:2019-07-12T09:10:07.9558943Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:07 GMT",
+      "x-ms-request-id" : "97675c73-401a-0089-1725-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:97675c73-401a-0089-1725-3c76b6000000\nTime:2019-07-16T22:28:28.3020589Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share31629ba5&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share15946ef4&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e606759-501a-0051-3d91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share31629ba5</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:07 GMT",
+      "x-ms-request-id" : "97675c74-401a-0089-1825-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share15946ef4</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share31629ba5" ]
+  "variables" : [ "share15946ef4" ]
 }

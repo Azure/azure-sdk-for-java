@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share32007623&maxresults=-1&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share01705821&maxresults=-1&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "461",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e6067ca-501a-0051-0c91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:9e6067ca-501a-0051-0c91-38d167000000\nTime:2019-07-12T09:10:21.6307113Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>-1</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:21 GMT",
+      "x-ms-request-id" : "97675cd8-401a-0089-6025-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:97675cd8-401a-0089-6025-3c76b6000000\nTime:2019-07-16T22:28:32.4390064Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>-1</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share32007623&maxresults=0&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share01705821&maxresults=0&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "460",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e6067cb-501a-0051-0d91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:9e6067cb-501a-0051-0d91-38d167000000\nTime:2019-07-12T09:10:21.7247780Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>0</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:21 GMT",
+      "x-ms-request-id" : "97675cd9-401a-0089-6125-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeQueryParameterValue</Code><Message>One of the query parameters specified in the request URI is outside the permissible range.\nRequestId:97675cd9-401a-0089-6125-3c76b6000000\nTime:2019-07-16T22:28:32.4870397Z</Message><QueryParameterName>maxresults</QueryParameterName><QueryParameterValue>0</QueryParameterValue><MinimumAllowed>1</MinimumAllowed><MaximumAllowed>2147483647</MaximumAllowed></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share32007623&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share01705821&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067cc-501a-0051-0e91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share32007623</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:21 GMT",
+      "x-ms-request-id" : "97675cda-401a-0089-6225-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share01705821</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share32007623" ]
+  "variables" : [ "share01705821" ]
 }

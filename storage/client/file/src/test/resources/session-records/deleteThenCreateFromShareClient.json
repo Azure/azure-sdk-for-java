@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share62556d3e?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share36020fa4?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A83D6F271B\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:06:35 GMT",
+      "ETag" : "\"0x8D70A3C78DC559C\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:25:13 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e6064fb-501a-0051-0391-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:34 GMT"
+      "x-ms-request-id" : "97675a00-401a-0089-3825-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:13 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share62556d3e?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share36020fa4?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -30,12 +30,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e6064fd-501a-0051-0491-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:34 GMT"
+      "x-ms-request-id" : "97675a02-401a-0089-3925-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:13 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share62556d3e?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share36020fa4?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -43,17 +43,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A85858B5D0\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:07:20 GMT",
+      "ETag" : "\"0x8D70A3C93BF49B2\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:25:58 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e606536-501a-0051-1591-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:07:19 GMT"
+      "x-ms-request-id" : "97675a54-401a-0089-5425-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share62556d3e?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share36020fa4?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -64,9 +64,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e606539-501a-0051-1691-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:07:20 GMT"
+      "x-ms-request-id" : "97675a57-401a-0089-5525-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT"
     }
   } ],
-  "variables" : [ "share62556d3e" ]
+  "variables" : [ "share36020fa4" ]
 }

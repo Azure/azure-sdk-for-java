@@ -12,9 +12,9 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067b6-501a-0051-7f91-38d167000000",
+      "x-ms-request-id" : "97675cc7-401a-0089-5425-3c76b6000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>7</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>false</Enabled><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 12 Jul 2019 09:10:18 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -31,8 +31,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e6067b7-501a-0051-8091-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:10:19 GMT"
+      "x-ms-request-id" : "97675cc9-401a-0089-5525-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT"
     }
   }, {
     "Method" : "GET",
@@ -47,9 +47,9 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067bc-501a-0051-0191-38d167000000",
+      "x-ms-request-id" : "97675cce-401a-0089-5625-3c76b6000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>false</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>3</Days></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 12 Jul 2019 09:10:19 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
@@ -66,8 +66,8 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e6067bd-501a-0051-0291-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:10:19 GMT"
+      "x-ms-request-id" : "97675ccf-401a-0089-5725-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT"
     }
   }, {
     "Method" : "GET",
@@ -82,14 +82,14 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067be-501a-0051-0391-38d167000000",
+      "x-ms-request-id" : "97675cd0-401a-0089-5825-3c76b6000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>7</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>false</Enabled><RetentionPolicy><Enabled>false</Enabled></RetentionPolicy></MinuteMetrics><Cors /></StorageServiceProperties>",
-      "Date" : "Fri, 12 Jul 2019 09:10:19 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share35516f66&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share972452bc&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -100,11 +100,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067bf-501a-0051-0491-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share35516f66</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:20 GMT",
+      "x-ms-request-id" : "97675cd1-401a-0089-5925-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share972452bc</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share35516f66" ]
+  "variables" : [ "share972452bc" ]
 }

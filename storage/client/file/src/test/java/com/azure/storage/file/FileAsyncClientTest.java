@@ -8,6 +8,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.configuration.ConfigurationManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.models.FileHTTPHeaders;
+import com.azure.storage.file.models.HandleItem;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -85,7 +86,8 @@ public class FileAsyncClientTest extends FileClientTestBase {
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(fileAsyncClient.getProperties())
-            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 1024));
+            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 1024))
+            .verifyComplete();
     }
 
     @Override
@@ -94,7 +96,8 @@ public class FileAsyncClientTest extends FileClientTestBase {
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
         StepVerifier.create(fileAsyncClient.getProperties())
-            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 0));
+            .assertNext(filePropertiesResponse -> Assert.assertTrue(filePropertiesResponse.value().contentLength() == 0))
+            .verifyComplete();
     }
 
     @Override
@@ -201,15 +204,14 @@ public class FileAsyncClientTest extends FileClientTestBase {
 
     @Override
     public void forceCloseHandlesFromFileClient() {
-        //TODO: need to create a handle first
+        //TODO: need to figureout create a handle first
         fileAsyncClient.create(1024).block();
-        CountDownLatch latch = new CountDownLatch(1);
-        fileAsyncClient.listHandles(10).subscribe(
+        Iterable<HandleItem> handles = fileAsyncClient.listHandles(10).toIterable();
+        handles.forEach(
             response -> {
                 StepVerifier.create(fileAsyncClient.forceCloseHandles(response.handleId()))
                     .assertNext(forceCloseHandles -> Assert.assertTrue(forceCloseHandles > 0))
                     .verifyComplete();
-                latch.countDown();
             }
         );
     }

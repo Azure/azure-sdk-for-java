@@ -14,14 +14,14 @@
       "retry-after" : "0",
       "Content-Length" : "340",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e6067c0-501a-0051-0591-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:9e6067c0-501a-0051-0591-38d167000000\nTime:2019-07-12T09:10:20.7480768Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:20 GMT",
+      "x-ms-request-id" : "97675cd2-401a-0089-5a25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlNodeValue</Code><Message>The value for one of the XML nodes is not in the correct format.\nRequestId:97675cd2-401a-0089-5a25-3c76b6000000\nTime:2019-07-16T22:28:32.0977636Z</Message><XmlNodeName>AllowedMethods</XmlNodeName><XmlNodeValue>NOTAREALHTTPMETHOD</XmlNodeValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share50838901&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share72190c8f&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6067c1-501a-0051-0691-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share50838901</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:20 GMT",
+      "x-ms-request-id" : "97675cd3-401a-0089-5b25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share72190c8f</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:31 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share50838901" ]
+  "variables" : [ "share72190c8f" ]
 }

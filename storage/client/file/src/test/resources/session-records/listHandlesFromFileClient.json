@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile38454f13",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile90341c80",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A7FF48B851\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:04:50 GMT",
+      "ETag" : "\"0x8D70A3C3D62BFC8\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:23:34 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "15d5b033-801a-0094-1190-38af5c000000",
+      "x-ms-request-id" : "9767589c-401a-0089-6325-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 09:04:50 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:23:33 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile38454f13?comp=listhandles",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile90341c80?comp=listhandles",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -31,11 +31,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "15d5b034-801a-0094-1290-38af5c000000",
+      "x-ms-request-id" : "9767589d-401a-0089-6425-3c76b6000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults><Entries /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:04:50 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:23:33 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "file38454f13" ]
+  "variables" : [ "file90341c80" ]
 }

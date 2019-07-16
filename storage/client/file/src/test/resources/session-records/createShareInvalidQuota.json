@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share24206082?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share33881c79?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e606755-501a-0051-3991-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e606755-501a-0051-3991-38d167000000\nTime:2019-07-12T09:10:07.5766212Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:07 GMT",
+      "x-ms-request-id" : "97675c70-401a-0089-1425-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675c70-401a-0089-1425-3c76b6000000\nTime:2019-07-16T22:28:28.1549544Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share24206082?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share33881c79?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "329",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e606756-501a-0051-3a91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e606756-501a-0051-3a91-38d167000000\nTime:2019-07-12T09:10:07.6526754Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:10:07 GMT",
+      "x-ms-request-id" : "97675c71-401a-0089-1525-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675c71-401a-0089-1525-3c76b6000000\nTime:2019-07-16T22:28:28.1999880Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share24206082&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share33881c79&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e606757-501a-0051-3b91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share24206082</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:10:07 GMT",
+      "x-ms-request-id" : "97675c72-401a-0089-1625-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share33881c79</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share24206082" ]
+  "variables" : [ "share33881c79" ]
 }

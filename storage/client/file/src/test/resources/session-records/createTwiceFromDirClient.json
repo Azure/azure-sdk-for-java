@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory788901?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory856406?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A882CA1AB2\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:08:31 GMT",
+      "ETag" : "\"0x8D70A3CB547B7D2\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:26:55 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e60667e-501a-0051-6091-38d167000000",
+      "x-ms-request-id" : "97675b9c-401a-0089-2a25-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 09:08:31 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:26:54 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory788901?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory856406?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "228",
       "StatusCode" : "409",
-      "x-ms-request-id" : "9e60667f-501a-0051-6191-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceAlreadyExists</Code><Message>The specified resource already exists.\nRequestId:9e60667f-501a-0051-6191-38d167000000\nTime:2019-07-12T09:08:31.6707972Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:08:31 GMT",
+      "x-ms-request-id" : "97675b9d-401a-0089-2b25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceAlreadyExists</Code><Message>The specified resource already exists.\nRequestId:97675b9d-401a-0089-2b25-3c76b6000000\nTime:2019-07-16T22:26:55.2568097Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:26:54 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory788901" ]
+  "variables" : [ "directory856406" ]
 }

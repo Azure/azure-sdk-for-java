@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share49400a7c?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share6499276b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A89F590DA0\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:09:19 GMT",
+      "ETag" : "\"0x8D70A3CD10A162F\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:27:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e6066de-501a-0051-0891-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:09:18 GMT"
+      "x-ms-request-id" : "97675c02-401a-0089-6725-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:27:41 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share49400a7c?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share6499276b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "222",
       "StatusCode" : "409",
-      "x-ms-request-id" : "9e6066e1-501a-0051-0991-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareAlreadyExists</Code><Message>The specified share already exists.\nRequestId:9e6066e1-501a-0051-0991-38d167000000\nTime:2019-07-12T09:09:19.7052701Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:09:19 GMT",
+      "x-ms-request-id" : "97675c05-401a-0089-6825-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareAlreadyExists</Code><Message>The specified share already exists.\nRequestId:97675c05-401a-0089-6825-3c76b6000000\nTime:2019-07-16T22:27:41.8139588Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:27:41 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share49400a7c&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share6499276b&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -49,14 +49,14 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6066e2-501a-0051-0a91-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share49400a7c</Prefix><Shares><Share><Name>share49400a7c</Name><Properties><Last-Modified>Fri, 12 Jul 2019 09:09:19 GMT</Last-Modified><Etag>\"0x8D706A89F590DA0\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
-      "Date" : "Fri, 12 Jul 2019 09:09:19 GMT",
+      "x-ms-request-id" : "97675c06-401a-0089-6925-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share6499276b</Prefix><Shares><Share><Name>share6499276b</Name><Properties><Last-Modified>Tue, 16 Jul 2019 22:27:41 GMT</Last-Modified><Etag>\"0x8D70A3CD10A162F\"</Etag><Quota>5120</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 16 Jul 2019 22:27:41 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share49400a7c?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share6499276b?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -67,9 +67,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e6066e3-501a-0051-0b91-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:09:19 GMT"
+      "x-ms-request-id" : "97675c07-401a-0089-6a25-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:27:41 GMT"
     }
   } ],
-  "variables" : [ "share49400a7c" ]
+  "variables" : [ "share6499276b" ]
 }

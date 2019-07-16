@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share4901090a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share90980123?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e60653a-501a-0051-1791-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e60653a-501a-0051-1791-38d167000000\nTime:2019-07-12T09:07:20.4596989Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:07:20 GMT",
+      "x-ms-request-id" : "97675a59-401a-0089-5625-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675a59-401a-0089-5625-3c76b6000000\nTime:2019-07-16T22:25:59.0637987Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share4901090a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share90980123?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "323",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e60653b-501a-0051-1891-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e60653b-501a-0051-1891-38d167000000\nTime:2019-07-12T09:07:20.5357531Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:07:20 GMT",
+      "x-ms-request-id" : "97675a5a-401a-0089-5725-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675a5a-401a-0089-5725-3c76b6000000\nTime:2019-07-16T22:25:59.1138335Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share4901090a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share90980123?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -51,11 +51,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9e60653c-501a-0051-1991-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:9e60653c-501a-0051-1991-38d167000000\nTime:2019-07-12T09:07:20.6068039Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:07:20 GMT",
+      "x-ms-request-id" : "97675a5b-401a-0089-5825-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:97675a5b-401a-0089-5825-3c76b6000000\nTime:2019-07-16T22:25:59.1618681Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share4901090a" ]
+  "variables" : [ "share90980123" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile12345297",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile20633694",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706E17BF81C1A\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 15:56:21 GMT",
+      "ETag" : "\"0x8D70A3C3E5EB336\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "ca3831f5-d01a-004b-71ca-38fe08000000",
+      "x-ms-request-id" : "976758c0-401a-0089-0525-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 15:56:20 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:23:35 GMT"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile12345297",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile20633694",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -28,18 +28,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "Last-Modified" : "Fri, 12 Jul 2019 15:56:21 GMT",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 12 Jul 2019 15:56:21 GMT",
+      "Date" : "Tue, 16 Jul 2019 22:23:35 GMT",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "\"0x8D706E17BF81C1A\"",
+      "ETag" : "\"0x8D70A3C3E5EB336\"",
       "Content-Length" : "1024",
-      "x-ms-request-id" : "ca3831f8-d01a-004b-72ca-38fe08000000",
+      "x-ms-request-id" : "976758c1-401a-0089-0625-3c76b6000000",
       "Body" : "",
       "Content-Type" : "application/octet-stream"
     }
   } ],
-  "variables" : [ "file12345297" ]
+  "variables" : [ "file20633694" ]
 }

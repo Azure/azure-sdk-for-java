@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile40907d4d",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile70884917",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A7FFF48161\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:04:51 GMT",
+      "ETag" : "\"0x8D70A3C3DF66859\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e6063ca-501a-0051-6290-38d167000000",
+      "x-ms-request-id" : "976758b6-401a-0089-7b25-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 09:04:51 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:23:34 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile40907d4d?comp=properties",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile70884917?comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -28,15 +28,15 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A8000106D3\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:04:52 GMT",
+      "ETag" : "\"0x8D70A3C3E002E29\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9e6063cc-501a-0051-6390-38d167000000",
+      "x-ms-request-id" : "976758b7-401a-0089-7c25-3c76b6000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Fri, 12 Jul 2019 09:04:52 GMT"
+      "Date" : "Tue, 16 Jul 2019 22:23:34 GMT"
     }
   } ],
-  "variables" : [ "file40907d4d" ]
+  "variables" : [ "file70884917" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share12282b00?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share63154200?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A8396144B0\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:06:28 GMT",
+      "ETag" : "\"0x8D70A3C7667AEB6\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:25:09 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e606486-501a-0051-3891-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:28 GMT"
+      "x-ms-request-id" : "9767599e-401a-0089-6f25-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:09 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share12282b00/test%2fshare?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/share63154200/test%2fshare?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "224",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9e606488-501a-0051-3991-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:9e606488-501a-0051-3991-38d167000000\nTime:2019-07-12T09:06:28.4653864Z</Message></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:06:28 GMT",
+      "x-ms-request-id" : "976759a0-401a-0089-7025-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:976759a0-401a-0089-7025-3c76b6000000\nTime:2019-07-16T22:25:09.7736956Z</Message></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:09 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share12282b00?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share63154200?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -49,9 +49,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e606489-501a-0051-3a91-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:28 GMT"
+      "x-ms-request-id" : "976759a1-401a-0089-7125-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:09 GMT"
     }
   } ],
-  "variables" : [ "share12282b00" ]
+  "variables" : [ "share63154200" ]
 }

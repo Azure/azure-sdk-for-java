@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share568594f8?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share675338ca?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D706A83BC39970\"",
-      "Last-Modified" : "Fri, 12 Jul 2019 09:06:32 GMT",
+      "ETag" : "\"0x8D70A3C77DA951A\"",
+      "Last-Modified" : "Tue, 16 Jul 2019 22:25:12 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9e6064cc-501a-0051-6291-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:32 GMT"
+      "x-ms-request-id" : "976759d7-401a-0089-1925-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share568594f8?restype=share&comp=properties",
+    "Uri" : "https://sima.file.core.windows.net/share675338ca?restype=share&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e6064ce-501a-0051-6391-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e6064ce-501a-0051-6391-38d167000000\nTime:2019-07-12T09:06:32.3952040Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:06:32 GMT",
+      "x-ms-request-id" : "976759d9-401a-0089-1a25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:976759d9-401a-0089-1a25-3c76b6000000\nTime:2019-07-16T22:25:12.1864145Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share568594f8?restype=share&comp=properties",
+    "Uri" : "https://sima.file.core.windows.net/share675338ca?restype=share&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -50,14 +50,14 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9e6064cf-501a-0051-6491-38d167000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9e6064cf-501a-0051-6491-38d167000000\nTime:2019-07-12T09:06:32.4672544Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999</HeaderValue></Error>",
-      "Date" : "Fri, 12 Jul 2019 09:06:32 GMT",
+      "x-ms-request-id" : "976759da-401a-0089-1b25-3c76b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:976759da-401a-0089-1b25-3c76b6000000\nTime:2019-07-16T22:25:12.2324468Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999</HeaderValue></Error>",
+      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share568594f8?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share675338ca?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
@@ -68,9 +68,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9e6064d0-501a-0051-6591-38d167000000",
-      "Date" : "Fri, 12 Jul 2019 09:06:32 GMT"
+      "x-ms-request-id" : "976759db-401a-0089-1c25-3c76b6000000",
+      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT"
     }
   } ],
-  "variables" : [ "share568594f8" ]
+  "variables" : [ "share675338ca" ]
 }
