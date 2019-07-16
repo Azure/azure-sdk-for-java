@@ -74,9 +74,9 @@
   </build>
 
   <modules>
-    <module>azure-eventhubs</module>
-    <module>azure-eventhubs-eph</module>
-    <module>azure-eventhubs-extensions</module>
+    <module>microsoft-azure-eventhubs</module>
+    <module>microsoft-azure-eventhubs-eph</module>
+    <module>microsoft-azure-eventhubs-extensions</module>
   </modules>
 
 </project>
