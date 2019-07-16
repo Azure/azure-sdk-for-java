@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.VaultCertificates;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.RegisteredIdentities;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.ReplicationUsages;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.RecoveryServices;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.Vaults;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.Operations;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.VaultExtendedInfos;
@@ -33,6 +34,7 @@ public final class RecoveryServicesManager extends ManagerCore<RecoveryServicesM
     private VaultCertificates vaultCertificates;
     private RegisteredIdentities registeredIdentities;
     private ReplicationUsages replicationUsages;
+    private RecoveryServices recoveryServices;
     private Vaults vaults;
     private Operations operations;
     private VaultExtendedInfos vaultExtendedInfos;
@@ -112,6 +114,16 @@ public final class RecoveryServicesManager extends ManagerCore<RecoveryServicesM
             this.replicationUsages = new ReplicationUsagesImpl(this);
         }
         return this.replicationUsages;
+    }
+
+    /**
+     * @return Entry point to manage RecoveryServices.
+     */
+    public RecoveryServices recoveryServices() {
+        if (this.recoveryServices == null) {
+            this.recoveryServices = new RecoveryServicesImpl(this);
+        }
+        return this.recoveryServices;
     }
 
     /**

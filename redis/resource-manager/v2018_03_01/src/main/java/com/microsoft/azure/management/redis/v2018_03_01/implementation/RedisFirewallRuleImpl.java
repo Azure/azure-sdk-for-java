@@ -35,7 +35,7 @@ class RedisFirewallRuleImpl extends CreatableUpdatableImpl<RedisFirewallRule, Re
         this.manager = manager;
         // Set resource name
         this.ruleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.cacheName = IdParsingUtils.getValueFromIdByName(inner.id(), "Redis");
         this.ruleName = IdParsingUtils.getValueFromIdByName(inner.id(), "firewallRules");

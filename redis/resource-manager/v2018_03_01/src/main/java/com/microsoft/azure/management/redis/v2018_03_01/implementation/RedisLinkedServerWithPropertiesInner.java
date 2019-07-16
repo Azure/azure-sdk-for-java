@@ -44,7 +44,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     private String provisioningState;
 
     /**
-     * Get the linkedRedisCacheId value.
+     * Get fully qualified resourceId of the linked redis cache.
      *
      * @return the linkedRedisCacheId value
      */
@@ -53,7 +53,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the linkedRedisCacheId value.
+     * Set fully qualified resourceId of the linked redis cache.
      *
      * @param linkedRedisCacheId the linkedRedisCacheId value to set
      * @return the RedisLinkedServerWithPropertiesInner object itself.
@@ -64,7 +64,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the linkedRedisCacheLocation value.
+     * Get location of the linked redis cache.
      *
      * @return the linkedRedisCacheLocation value
      */
@@ -73,7 +73,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the linkedRedisCacheLocation value.
+     * Set location of the linked redis cache.
      *
      * @param linkedRedisCacheLocation the linkedRedisCacheLocation value to set
      * @return the RedisLinkedServerWithPropertiesInner object itself.
@@ -84,7 +84,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the serverRole value.
+     * Get role of the linked server. Possible values include: 'Primary', 'Secondary'.
      *
      * @return the serverRole value
      */
@@ -93,7 +93,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the serverRole value.
+     * Set role of the linked server. Possible values include: 'Primary', 'Secondary'.
      *
      * @param serverRole the serverRole value to set
      * @return the RedisLinkedServerWithPropertiesInner object itself.
@@ -104,7 +104,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get terminal state of the link between primary and secondary redis cache.
      *
      * @return the provisioningState value
      */

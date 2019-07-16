@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobBasePropertiesConstraints {
     /**
-     * Max time the job can run.
-     * Default Value = 1 week.
+     * Max wall clock time.
+     * Max time the job can run. Default value: 1 week.
      */
     @JsonProperty(value = "maxWallClockTime")
     private Period maxWallClockTime;
 
     /**
-     * Get the maxWallClockTime value.
+     * Get max time the job can run. Default value: 1 week.
      *
      * @return the maxWallClockTime value
      */
@@ -32,7 +32,7 @@ public class JobBasePropertiesConstraints {
     }
 
     /**
-     * Set the maxWallClockTime value.
+     * Set max time the job can run. Default value: 1 week.
      *
      * @param maxWallClockTime the maxWallClockTime value to set
      * @return the JobBasePropertiesConstraints object itself.
