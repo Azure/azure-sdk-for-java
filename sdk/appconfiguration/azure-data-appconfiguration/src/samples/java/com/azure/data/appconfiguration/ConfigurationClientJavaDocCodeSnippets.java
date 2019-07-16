@@ -32,8 +32,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
             ConfigurationClient configurationClient = new ConfigurationClientBuilder()
                 .pipeline(pipeline)
-                .serviceEndpoint("https://myconfig.azure.net/")
-                .credentials(new ConfigurationClientCredentials(connectionString))
+                .endpoint("https://myconfig.azure.net/")
+                .credential(new ConfigurationClientCredentials(connectionString))
                 .buildClient();
             // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
             return configurationClient;
@@ -52,7 +52,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.data.applicationconfig.async.configurationclient.instantiation
             ConfigurationAsyncClient  configurationAsyncClient = new ConfigurationClientBuilder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
+                .credential(new ConfigurationClientCredentials(connectionString))
                 .buildAsyncClient();
             // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
             return configurationAsyncClient;
@@ -71,7 +71,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.data.applicationconfig.configurationclient.instantiation
             ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-                .credentials(new ConfigurationClientCredentials(connectionString))
+                .credential(new ConfigurationClientCredentials(connectionString))
                 .buildClient();
             // END: com.azure.data.applicationconfig.configurationclient.instantiation
             return configurationClient;
