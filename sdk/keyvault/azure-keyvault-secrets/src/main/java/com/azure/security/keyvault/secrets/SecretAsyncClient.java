@@ -404,7 +404,7 @@ public final class SecretAsyncClient {
         return withContext(context -> updateSecret(secret, context));
     }
 
-   /**
+    /**
      * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
      * operation changes specified attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
      * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
@@ -430,7 +430,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
-     Mono<Response<SecretBase>> updateSecret(SecretBase secret, Context context) {
+    Mono<Response<SecretBase>> updateSecret(SecretBase secret, Context context) {
         Objects.requireNonNull(secret, "The secret input parameter cannot be null.");
         SecretRequestParameters parameters = new SecretRequestParameters()
                 .tags(secret.tags())
