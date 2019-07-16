@@ -8,13 +8,12 @@ import java.time.Duration;
 public final class ClientConstants {
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
     public static final String NOT_APPLICABLE = "n/a";
-    public static final int HTTPS_PORT = 443;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 
     public static final String PRODUCT_NAME = "azsdk-java-eventhubs";
-    public static final String CURRENT_JAVACLIENT_VERSION = "1.0.0-SNAPSHOT";
+    public static final String CURRENT_JAVA_CLIENT_VERSION = "1.0.0-preview.2";
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
 
@@ -24,8 +23,7 @@ public final class ClientConstants {
      * TODO (conniey): Extract logic from UserAgentPolicy into something we can use here.
      */
     public static final String USER_AGENT = String.format("%s/%s %s;%s",
-        PRODUCT_NAME, CURRENT_JAVACLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
-    public static final String HTTPS_URI_FORMAT = "https://%s:%s";
+        PRODUCT_NAME, CURRENT_JAVA_CLIENT_VERSION, System.getProperty("java.version"), PLATFORM_INFO);
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
 
     private ClientConstants() {
