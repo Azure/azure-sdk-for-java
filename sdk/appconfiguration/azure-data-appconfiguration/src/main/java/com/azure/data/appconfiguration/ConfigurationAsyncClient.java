@@ -696,6 +696,7 @@ public final class ConfigurationAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
                 .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
         }
+        
         return result;
     }
 
