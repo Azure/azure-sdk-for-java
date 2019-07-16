@@ -696,7 +696,7 @@ public final class ConfigurationAsyncClient {
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
                 .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
         }
-        
+
         return result;
     }
 
@@ -765,6 +765,7 @@ public final class ConfigurationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+        
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
