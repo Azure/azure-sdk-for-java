@@ -78,6 +78,10 @@ public class ProvidersInner {
         @GET("subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
         Observable<Response<ResponseBody>> get(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2019_05_10.Providers getAtTenant" })
+        @GET("providers/{resourceProviderNamespace}")
+        Observable<Response<ResponseBody>> getAtTenant(@Path("resourceProviderNamespace") String resourceProviderNamespace, @Query("$expand") String expand, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2019_05_10.Providers listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -828,6 +832,156 @@ public class ProvidersInner {
     }
 
     private ServiceResponse<ProviderInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ProviderInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ProviderInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProviderInner object if successful.
+     */
+    public ProviderInner getAtTenant(String resourceProviderNamespace) {
+        return getAtTenantWithServiceResponseAsync(resourceProviderNamespace).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProviderInner> getAtTenantAsync(String resourceProviderNamespace, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getAtTenantWithServiceResponseAsync(resourceProviderNamespace), serviceCallback);
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ProviderInner> getAtTenantAsync(String resourceProviderNamespace) {
+        return getAtTenantWithServiceResponseAsync(resourceProviderNamespace).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> getAtTenantWithServiceResponseAsync(String resourceProviderNamespace) {
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final String expand = null;
+        return service.getAtTenant(resourceProviderNamespace, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProviderInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProviderInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProviderInner> clientResponse = getAtTenantDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ProviderInner object if successful.
+     */
+    public ProviderInner getAtTenant(String resourceProviderNamespace, String expand) {
+        return getAtTenantWithServiceResponseAsync(resourceProviderNamespace, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ProviderInner> getAtTenantAsync(String resourceProviderNamespace, String expand, final ServiceCallback<ProviderInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getAtTenantWithServiceResponseAsync(resourceProviderNamespace, expand), serviceCallback);
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ProviderInner> getAtTenantAsync(String resourceProviderNamespace, String expand) {
+        return getAtTenantWithServiceResponseAsync(resourceProviderNamespace, expand).map(new Func1<ServiceResponse<ProviderInner>, ProviderInner>() {
+            @Override
+            public ProviderInner call(ServiceResponse<ProviderInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ProviderInner object
+     */
+    public Observable<ServiceResponse<ProviderInner>> getAtTenantWithServiceResponseAsync(String resourceProviderNamespace, String expand) {
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getAtTenant(resourceProviderNamespace, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProviderInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ProviderInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ProviderInner> clientResponse = getAtTenantDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ProviderInner> getAtTenantDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProviderInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ProviderInner>() { }.getType())
                 .registerError(CloudException.class)

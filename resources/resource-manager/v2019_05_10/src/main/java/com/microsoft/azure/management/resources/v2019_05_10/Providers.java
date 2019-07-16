@@ -35,6 +35,15 @@ public interface Providers extends HasInner<ProvidersInner> {
     Observable<Provider> registerAsync(String resourceProviderNamespace);
 
     /**
+     * Gets the specified resource provider at the tenant level.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Provider> getAtTenantAsync(String resourceProviderNamespace);
+
+    /**
      * Gets all resource providers for the tenant.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation

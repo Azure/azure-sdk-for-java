@@ -57,6 +57,18 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
     }
 
     @Override
+    public Observable<Provider> getAtTenantAsync(String resourceProviderNamespace) {
+        ProvidersInner client = this.inner();
+        return client.getAtTenantAsync(resourceProviderNamespace)
+        .map(new Func1<ProviderInner, Provider>() {
+            @Override
+            public Provider call(ProviderInner inner) {
+                return new ProviderImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<Provider> listAllAsync() {
         ProvidersInner client = this.inner();
         return client.listAllAsync()
