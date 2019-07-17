@@ -101,7 +101,7 @@ The following sections provide several code snippets covering some of the most c
 - [Create container client](#create-container-client)
 - [Create blob client](#create-blob-client)
 - [Create a container](#create-a-container)
-- [Upload a blob from InputStream](#uploading-a-blob-from-inputstream)
+- [Upload a blob from InputStream](#uploading-a-blob-from-a-stream)
 - [Upload a blob from File](#uploading-a-blob-from-file)
 - [Download a blob to OutputStream](#downloading-a-blob-to-output-stream)
 - [Download a blob to File](#downloading-a-blob-to-local-path)
@@ -130,10 +130,10 @@ or
 Create the container client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
 ContainerClient containerClient = ContainerClient.builder()
-     .endpoint("<your-storage-blob-url>")
-     .credential("<your-sasToken>")
-     .containerName("mycontainer")
-     .build();
+         .endpoint("<your-storage-blob-url>")
+         .credential("<your-sasToken>")
+         .containerName("mycontainer")
+         .build();
 ```
 
 ### Create blob client
@@ -148,11 +148,11 @@ or
 Create the blob client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
 BlobClient blobClient = BlobClient.builder()
-     .endpoint("<your-storage-blob-url>")
-     .credential("<your-sasToken>")
-     .containerName("mycontainer")
-     .blobName("myblob")
-     .build();
+         .endpoint("<your-storage-blob-url>")
+         .credential("<your-sasToken>")
+         .containerName("mycontainer")
+         .blobName("myblob")
+         .build();
 ```
 
 ### Create a container
@@ -169,7 +169,7 @@ Create a container using container client.
 containerClient.create();
 ```
 
-### Uploading a blob from `InputStream`
+### Uploading a blob from a stream
 
 Upload data stream to a blob using blockBlobClient generated from containerClient.
 
@@ -181,7 +181,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 }
 ```
 
-### Uploading a blob from File
+### Uploading a blob from `File`
 
 Upload a file to a blob using blockBlobClient generated from containerClient.
 
@@ -209,7 +209,7 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 ### Enumerating blobs
 
-Enuerating all blobs using containerClient
+Enumerating all blobs using `ContainerClient`
 ```java
 containerClient.listBlobsFlat()
         .forEach(
@@ -220,28 +220,30 @@ containerClient.listBlobsFlat()
 ### Authenticate with Azure.Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
+
 ```java
 StorageClient storageClient = StorageClient.storageClientBuilder()
-                .endpoint(endpoint)
-                .credential(new DefaultAzureCredential())
-                .buildClient();
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredential())
+        .buildClient();
 ```
 
 ## Troubleshooting
 
-When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][error_codes] requests. 
-For example, if you try to retrieve a container or blob that doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
+When interacts with blobs using this Java client library, errors returned by the service correspond to the same HTTP 
+status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
+doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
 
 ## Next steps
 
 Get started with our [Blob samples][samples]:
 
-1. [Basic Examples](src/samples/java/blob/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
-1. [File Transfer Examples](src/samples/java/blob/FileTranferExample.java): Upload and download a large file through blobs.
-1. [Storage Error Examples](src/samples/java/blob/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
-1. [List Container Examples](src/samples/java/blob/ListContainersExample.java): Create, list and delete containers.
-1. [Set metadata and HTTPHeaders Examples](src/samples/java/blob/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
-1. [Azure Identity Examples](src/samples/java/blob/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
+1. [Basic Examples](src/samples/java/BasicExample.java): Create storage, container, blob clients, Upload, download, and list blobs.
+1. [File Transfer Examples](src/samples/java/FileTransferExample.java): Upload and download a large file through blobs.
+1. [Storage Error Examples](src/samples/java/StorageErrorHandlingExample.java): Handle the exceptions from storage blob service side.
+1. [List Container Examples](src/samples/java/ListContainersExample.java): Create, list and delete containers.
+1. [Set metadata and HTTPHeaders Examples](src/samples/java/SetMetadataAndHTTPHeadersExample.java): Set metadata for container and blob, and set HTTPHeaders for blob.
+1. [Azure Identity Examples](src/samples/java/AzureIdentityExample.java): Use DefaultAzureCredential to do the authentication.
 
 ## Contributing
 
