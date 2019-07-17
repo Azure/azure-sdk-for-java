@@ -674,7 +674,7 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return new PagedFlux<>(() ->
             monoContext(context -> listSettingRevisionsFirstPage(selector, context)),
-            continuationToken -> monoContext(context -> listSecretVersionsNextPage(continuationToken, context)));
+            continuationToken -> monoContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
     }
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
@@ -700,7 +700,7 @@ public final class ConfigurationAsyncClient {
         return result;
     }
 
-    Mono<PagedResponse<ConfigurationSetting>> listSecretVersionsNextPage(String nextPageLink, Context context) {
+    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
         Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
