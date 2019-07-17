@@ -15,7 +15,7 @@ definition, such as text or binary data.
 
 -  Java Development Kit (JDK) with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Create Strorage Account][storage_account]
+- [Create Storage Account][storage_account]
 
 ### Adding the package to your product
 
@@ -41,7 +41,7 @@ az group create \
 In order to interact with the Storage service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class. 
 To make this possible you'll need the Account SAS (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token]
 
-#### Get Credentials
+#### Get credentials
 
 - **SAS Token**
  
@@ -94,29 +94,31 @@ Blob storage is designed for:
 - Storing data for analysis by an on-premises or Azure-hosted service.
 
 ## Examples
+
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
+
 - [Create storage client](#create-storage-client)
 - [Create container client](#create-container-client)
 - [Create blob client](#create-blob-client)
 - [Create a container](#create-a-container)
-- [Upload a blob from InputStream](#upload-a-blob-from-inputstream)
-- [Upload a blob from File](#upload-a-blob-from-file)
-- [Download a blob to OutputStream](#download-a-blob-to-outputstream)
-- [Download a blob to File](#download-a-blob-to-file)
+- [Upload a blob from InputStream](#uploading-a-blob-from-inputstream)
+- [Upload a blob from File](#uploading-a-blob-from-file)
+- [Download a blob to OutputStream](#downloading-a-blob-to-output-stream)
+- [Download a blob to File](#downloading-a-blob-to-local-path)
 - [Enumerating blobs](#enumerating-blobs)
-- [Authenticate with Azure.Identity](#authenticate-with-azure-identity)
+- [Authenticate with Azure.Identity](#authenticate-with-azureidentity)
 
-### Create Storage Client
+### Create storage client
 
 Create a storage client using the [`sasToken`](#get-credentials) generated above.
 ```java
 StorageClient storageClient = StorageClient.builder()
-        .endpoiont(<your-storage-blob-url>)
-        .credentail(sasToken)
+        .endpoint("<your-storage-blob-url>")
+        .credential("<your-sasToken>")
         .build();
 ```
 
-### Create Container Client
+### Create container client
 
 Create a container client if storage client exists.
 ```java
@@ -128,13 +130,13 @@ or
 Create the container client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
 ContainerClient containerClient = ContainerClient.builder()
-     .endpoiont(<your-storage-blob-url>)
-     .credentail(sasToken)
+     .endpoint("<your-storage-blob-url>")
+     .credential("<your-sasToken>")
      .containerName("mycontainer")
      .build();
 ```
 
-### Create Blob Client
+### Create blob client
 
 Create a blob client if container client exists.
 ```java
@@ -146,8 +148,8 @@ or
 Create the blob client from the builder [`sasToken`](#get-credentials) generated above.
 ```java
 BlobClient blobClient = BlobClient.builder()
-     .endpoiont(<your-storage-blob-url>)
-     .credentail(sasToken)
+     .endpoint("<your-storage-blob-url>")
+     .credential("<your-sasToken>")
      .containerName("mycontainer")
      .blobName("myblob")
      .build();
@@ -164,10 +166,10 @@ or
 
 Create a container using container client.
 ```java
-conatinerClient.create();
+containerClient.create();
 ```
 
-### Uploading a blob from InputStream
+### Uploading a blob from `InputStream`
 
 Upload data stream to a blob using blockBlobClient generated from containerClient.
 
@@ -217,7 +219,7 @@ containerClient.listBlobsFlat()
 
 ### Authenticate with Azure.Identity
 
-The [Azure Identity library](identity) provides Azure Active Directory support for authenticating with Azure Storage.
+The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 ```java
 StorageClient storageClient = StorageClient.storageClientBuilder()
                 .endpoint(endpoint)
@@ -269,7 +271,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_sub]: https://azure.microsoft.com/free/
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
 [error_codes]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-error-codes
-[samples]: samples/
+[samples]: ./src/samples/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
