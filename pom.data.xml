@@ -546,5 +546,6 @@
     <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus</module>
     <module>./storage/data-plane</module>
+    <module>./sdk/cosmos</module>
   </modules>
 </project>
