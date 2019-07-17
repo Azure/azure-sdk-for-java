@@ -26,6 +26,7 @@ jobs:
           ProfileFlag: '-Pemulator'
           TestDisplayName: 'Emulator only Integration Tests'
           ProtocolFlag: '["Tcp"]'
+          Consistency: '["Strong", "Session"]'
 
         Https_Integration_Tests_Java8:
           OSVmImage: 'vs2017-win2016'
@@ -33,6 +34,7 @@ jobs:
           ProfileFlag: '-Pemulator'
           TestDisplayName: 'Emulator only Integration Tests'
           ProtocolFlag: '["Https"]'
+          Consistency: '["Strong", "Session"]'
 
 
         Examples_Integration_Tests_Java8:
@@ -40,7 +42,8 @@ jobs:
           JavaVersion: '1.8'
           ProfileFlag: '-Pexamples'
           TestDisplayName: 'Examples Integration Tests'
-          ProtocolFlag: '["Https", "Tcp"]'
+          ProtocolFlag: null
+          Consistency: null
 
     pool:
       vmImage: $(OSVmImage)
@@ -130,6 +133,7 @@ jobs:
          jdkVersionOption: $(JavaVersion)
         env:
           PROTOCOLS: $(ProtocolFlag)
+          DESIRED_CONSISTENCIES: $(Consistency)
         condition: succeededOrFailed()
 
       - task: CopyFiles@2
