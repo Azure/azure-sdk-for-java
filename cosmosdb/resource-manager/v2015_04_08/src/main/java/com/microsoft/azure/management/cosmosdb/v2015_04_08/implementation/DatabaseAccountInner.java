@@ -16,6 +16,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.Capability;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Location;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.VirtualNetworkRule;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.ConnectorOffer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -120,6 +121,19 @@ public class DatabaseAccountInner extends Resource {
      */
     @JsonProperty(value = "properties.enableMultipleWriteLocations")
     private Boolean enableMultipleWriteLocations;
+
+    /**
+     * Enables the cassandra connector on the Cosmos DB C* account.
+     */
+    @JsonProperty(value = "properties.enableCassandraConnector")
+    private Boolean enableCassandraConnector;
+
+    /**
+     * The cassandra connector offer type for the Cosmos DB database C*
+     * account. Possible values include: 'Small'.
+     */
+    @JsonProperty(value = "properties.connectorOffer")
+    private ConnectorOffer connectorOffer;
 
     /**
      * Get indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'.
@@ -343,6 +357,46 @@ public class DatabaseAccountInner extends Resource {
      */
     public DatabaseAccountInner withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
         this.enableMultipleWriteLocations = enableMultipleWriteLocations;
+        return this;
+    }
+
+    /**
+     * Get enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @return the enableCassandraConnector value
+     */
+    public Boolean enableCassandraConnector() {
+        return this.enableCassandraConnector;
+    }
+
+    /**
+     * Set enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @param enableCassandraConnector the enableCassandraConnector value to set
+     * @return the DatabaseAccountInner object itself.
+     */
+    public DatabaseAccountInner withEnableCassandraConnector(Boolean enableCassandraConnector) {
+        this.enableCassandraConnector = enableCassandraConnector;
+        return this;
+    }
+
+    /**
+     * Get the cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'.
+     *
+     * @return the connectorOffer value
+     */
+    public ConnectorOffer connectorOffer() {
+        return this.connectorOffer;
+    }
+
+    /**
+     * Set the cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'.
+     *
+     * @param connectorOffer the connectorOffer value to set
+     * @return the DatabaseAccountInner object itself.
+     */
+    public DatabaseAccountInner withConnectorOffer(ConnectorOffer connectorOffer) {
+        this.connectorOffer = connectorOffer;
         return this;
     }
 
