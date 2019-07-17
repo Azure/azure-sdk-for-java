@@ -102,9 +102,9 @@ public final class DownloadResponse {
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.
              */
-            this.info.offset(this.info.offset() + buffer.readableBytes()); // was `remaining()` in Rx world
+            this.info.offset(this.info.offset() + buffer.readableBytes());
             if (this.info.count() != null) {
-                this.info.count(this.info.count() - buffer.readableBytes()); // was `remaining()` in Rx world
+                this.info.count(this.info.count() - buffer.readableBytes());
             }
         }).onErrorResume(t2 -> {
             // Increment the retry count and try again with the new exception.

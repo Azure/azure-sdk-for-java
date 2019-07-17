@@ -3,14 +3,10 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.ResponseBase
+
 import com.azure.core.implementation.util.FluxUtil
-import com.azure.storage.blob.models.BlobDownloadHeaders
 import com.azure.storage.blob.models.ReliableDownloadOptions
 import com.azure.storage.blob.models.StorageErrorException
-import io.netty.buffer.ByteBuf
-import io.netty.buffer.Unpooled
-import reactor.core.publisher.Flux
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
@@ -25,6 +21,7 @@ class DownloadResponseTest extends APISpec {
     This shouldn't really be different from anything else we're doing in the other tests. Just a sanity check against
     a real use case.
      */
+
     def "Network call"() {
         expect:
         OutputStream outputStream = new ByteArrayOutputStream()
@@ -44,13 +41,11 @@ class DownloadResponseTest extends APISpec {
 
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
-        ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> mockRawResponse = flux.getter(info).block().rawResponse()
-
         when:
-        DownloadResponse response = new DownloadResponse(mockRawResponse, info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
+        DownloadResponse response = flux.getter(info).block()
 
         then:
-        FluxUtil.collectByteBufStream(response.body(options), false).block() == Unpooled.wrappedBuffer(flux.getScenarioData())
+        FluxUtil.collectByteBufStream(response.body(options), false).block().nioBuffer() == flux.getScenarioData()
         flux.getTryNumber() == tryNumber
 
 
@@ -65,17 +60,11 @@ class DownloadResponseTest extends APISpec {
     def "Failure"() {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario)
-
-        ReliableDownloadOptions options = new ReliableDownloadOptions()
-            .maxRetryRequests(5)
-
+        ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
         HTTPGetterInfo info = new HTTPGetterInfo().eTag("etag")
-        ResponseBase<BlobDownloadHeaders, Flux<ByteBuf>> mockRawResponse = flux.getter(info).block().rawResponse()
 
         when:
-        DownloadResponse response = new DownloadResponse(mockRawResponse, info, { HTTPGetterInfo newInfo ->
-            flux.getter(newInfo)
-        })
+        DownloadResponse response = flux.getter(info).block()
         response.body(options).blockFirst()
 
         then:
@@ -103,11 +92,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK)
 
         when:
-        new DownloadResponse(flux.getter(info).block().rawResponse(), info,
-            { HTTPGetterInfo newInfo ->
-                flux.getter(newInfo)
-            })
-
+        new DownloadResponse(flux.getter(info).block().rawResponse(), info, { HTTPGetterInfo newInfo -> flux.getter(newInfo) })
 
         then:
         thrown(IllegalArgumentException)
@@ -150,10 +135,7 @@ class DownloadResponseTest extends APISpec {
         ReliableDownloadOptions options = new ReliableDownloadOptions().maxRetryRequests(5)
 
         when:
-        def response = new DownloadResponse(flux.getter(info).block().rawResponse(), info,
-            { HTTPGetterInfo newInfo ->
-                return flux.getter(newInfo)
-            })
+        DownloadResponse response = flux.getter(info).block()
         response.body(options).blockFirst()
 
         then:

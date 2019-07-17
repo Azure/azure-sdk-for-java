@@ -13,6 +13,7 @@ import io.netty.buffer.Unpooled;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -39,7 +40,6 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                 this.scenarioData = APISpec.getRandomData(512 * 1024);
                 break;
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
-                // Fall through
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 this.scenarioData = APISpec.getRandomData(1024);
                 break;
@@ -66,7 +66,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
                 subscriber.onNext(Unpooled.wrappedBuffer(this.scenarioData.duplicate()));
-                subscriber.onComplete();
+                Operators.complete(subscriber);
                 break;
 
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
@@ -76,7 +76,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                     toSend.limit((i + 1) * 256);
                     subscriber.onNext(Unpooled.wrappedBuffer(toSend));
                 }
-                subscriber.onComplete();
+                Operators.complete(subscriber);
                 break;
 
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
@@ -84,34 +84,34 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                     // tryNumber is 1 indexed, so we have to sub 1.
                     if (this.info.offset() != (this.tryNumber - 1) * 256
                         || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
-                        subscriber.onError(new IllegalArgumentException("Info values are incorrect."));
+                        Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                         return;
                     }
                     ByteBuffer toSend = this.scenarioData.duplicate();
                     toSend.position((this.tryNumber - 1) * 256);
                     toSend.limit(this.tryNumber * 256);
                     subscriber.onNext(Unpooled.wrappedBuffer(toSend));
-                    subscriber.onError(new IOException());
+                    Operators.error(subscriber, new IOException());
                     break;
                 }
                 if (this.info.offset() != (this.tryNumber - 1) * 256
                     || this.info.count() != this.scenarioData.remaining() - (this.tryNumber - 1) * 256) {
-                    subscriber.onError(new IllegalArgumentException("Info values are incorrect."));
+                    Operators.error(subscriber, new IllegalArgumentException("Info values are incorrect."));
                     return;
                 }
                 ByteBuffer toSend = this.scenarioData.duplicate();
                 toSend.position((this.tryNumber - 1) * 256);
                 toSend.limit(this.tryNumber * 256);
                 subscriber.onNext(Unpooled.wrappedBuffer(toSend));
-                subscriber.onComplete();
+                Operators.complete(subscriber);
                 break;
 
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
-                subscriber.onError(new IOException());
+                Operators.error(subscriber, new IOException());
                 break;
 
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
-                subscriber.onError(new Exception());
+                Operators.error(subscriber, new Exception());
                 break;
 
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
@@ -120,9 +120,9 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                      We return a retryable error here so we have to invoke the getter, which will throw an error in
                      this case.
                      */
-                    subscriber.onError(new IOException());
+                    Operators.error(subscriber, new IOException());
                 } else {
-                    subscriber.onError(new IllegalArgumentException("Retried after getter error."));
+                    Operators.error(subscriber, new IllegalArgumentException("Retried after getter error."));
                 }
                 break;
 
@@ -130,11 +130,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                 switch (this.tryNumber) {
                     case 1:  // Test the value of info when getting the initial response.
                     case 2:  // Test the value of info when getting an intermediate response.
-                        subscriber.onError(new IOException());
+                        Operators.error(subscriber, new IOException());
                         break;
                     case 3:
                         // All calls to getter checked. Exit. This test does not check for data.
-                        subscriber.onComplete();
+                        Operators.complete(subscriber);
                         break;
                     default:
                         throw new IllegalArgumentException("Invalid try number.");
@@ -142,7 +142,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
                 break;
 
             default:
-                subscriber.onError(new IllegalArgumentException("Invalid test case"));
+                Operators.error(subscriber, new IllegalArgumentException("Invalid test case"));
         }
     }
 
