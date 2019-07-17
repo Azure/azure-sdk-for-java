@@ -112,8 +112,9 @@ jobs:
       - task: Maven@3
         displayName: Build
         inputs:
+          mavenPomFile: $(pomFile)
           goals: 'clean package'
-          options: '-DskipTests -Dgpg.skip'
+          options: '-DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true'
           testResultsFiles: '**/junitreports/TEST-*.xml'
           mavenAuthenticateFeed: true
         condition: succeededOrFailed()
