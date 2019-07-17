@@ -6,8 +6,8 @@ package com.azure.core.amqp;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -30,15 +30,15 @@ public class ExponentialRetryTest {
         // Act
         retry.incrementRetryCount();
         final Duration firstRetryInterval = retry.getNextRetryInterval(exception, remainingTime);
-        Assert.assertNotNull(firstRetryInterval);
+        assertNotNull(firstRetryInterval);
 
         retry.incrementRetryCount();
         final Duration leftoverTime = remainingTime.minus(firstRetryInterval);
         final Duration secondRetryInterval = retry.getNextRetryInterval(exception, leftoverTime);
 
         // Assert
-        Assert.assertNotNull(secondRetryInterval);
-        Assert.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
+        assertNotNull(secondRetryInterval);
+        assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
     }
 
     /**
@@ -61,12 +61,12 @@ public class ExponentialRetryTest {
         final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
 
         // Assert
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
+        assertNotNull(retryInterval);
+        assertNotNull(cloneRetryInterval);
 
         // The retry interval for the clone will be larger because we've incremented the retry count, so it should
         // calculate a longer waiting period.
-        Assert.assertTrue(cloneRetryInterval.toNanos() > retryInterval.toNanos());
+        assertTrue(cloneRetryInterval.toNanos() > retryInterval.toNanos());
     }
 
     @Test
@@ -84,12 +84,12 @@ public class ExponentialRetryTest {
         final Duration cloneRetryInterval = clone.getNextRetryInterval(exception, remainingTime);
 
         // Assert
-        Assert.assertNotSame(retry, clone);
-        Assert.assertEquals(retry, clone);
-        Assert.assertEquals(retry.hashCode(), clone.hashCode());
+        assertNotSame(retry, clone);
+        assertEquals(retry, clone);
+        assertEquals(retry.hashCode(), clone.hashCode());
 
-        Assert.assertNotNull(retryInterval);
-        Assert.assertNotNull(cloneRetryInterval);
-        Assert.assertEquals(retryInterval, cloneRetryInterval);
+        assertNotNull(retryInterval);
+        assertNotNull(cloneRetryInterval);
+        assertEquals(retryInterval, cloneRetryInterval);
     }
 }

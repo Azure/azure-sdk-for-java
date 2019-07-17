@@ -9,11 +9,12 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -32,8 +33,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertEquals;
-
 public class ReactorNettyClientTests {
 
     private static final String SHORT_BODY = "hi there";
@@ -41,8 +40,8 @@ public class ReactorNettyClientTests {
 
     private static WireMockServer server;
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void  BeforeAll() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
                 WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
@@ -55,7 +54,7 @@ public class ReactorNettyClientTests {
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         if (server != null) {
             server.shutdown();
@@ -90,7 +89,7 @@ public class ReactorNettyClientTests {
         response.body().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
-        Assert.assertTrue(response.internConnection().isDisposed());
+        assertTrue(response.internConnection().isDisposed());
     }
 
     @Test
@@ -106,7 +105,7 @@ public class ReactorNettyClientTests {
                 .expectNextCount(1)
                 .thenCancel()
                 .verify();
-        Assert.assertTrue(response.internConnection().isDisposed());
+        assertTrue(response.internConnection().isDisposed());
     }
 
     @Test
@@ -119,7 +118,7 @@ public class ReactorNettyClientTests {
     }
 
     @Test
-    @Ignore("Not working accurately at present")
+    @Disabled("Not working accurately at present")
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse("/long");
         //
@@ -166,7 +165,7 @@ public class ReactorNettyClientTests {
                 .verify();
     }
 
-    @Test(timeout = 5000)
+    @Test(/*timeout = 5000*/) // FIXME
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
             throws IOException, InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
@@ -214,7 +213,7 @@ public class ReactorNettyClientTests {
         }
     }
 
-    @Ignore("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
+    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         long t = System.currentTimeMillis();
@@ -244,8 +243,7 @@ public class ReactorNettyClientTests {
                             })
                             .map(bb -> new NumberedByteBuf(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
-                                    md.digest()));
+                            .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
                 }))
                 .sequential()
                 // enable the doOnNext call to see request numbers and thread names

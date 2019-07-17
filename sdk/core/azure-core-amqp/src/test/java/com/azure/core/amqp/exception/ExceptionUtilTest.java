@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class ExceptionUtilTest {
     private final ErrorContext context = new ErrorContext("test-namespace");
@@ -22,14 +22,14 @@ public class ExceptionUtilTest {
         Exception exception = ExceptionUtil.toException(condition.getErrorCondition(), message, context);
 
         // Assert
-        Assert.assertTrue(exception instanceof AmqpException);
+        assertTrue(exception instanceof AmqpException);
 
         AmqpException amqpException = (AmqpException) exception;
 
-        Assert.assertEquals(condition, amqpException.getErrorCondition());
-        Assert.assertFalse(amqpException.isTransient());
-        Assert.assertSame(context, amqpException.getContext());
-        Assert.assertTrue(amqpException.getMessage().startsWith(message));
+        assertEquals(condition, amqpException.getErrorCondition());
+        assertFalse(amqpException.isTransient());
+        assertSame(context, amqpException.getContext());
+        assertTrue(amqpException.getMessage().startsWith(message));
     }
 
     /**
@@ -47,14 +47,14 @@ public class ExceptionUtilTest {
         Exception exception = ExceptionUtil.amqpResponseCodeToException(notFound.getValue(), message, context);
 
         // Assert
-        Assert.assertTrue(exception instanceof AmqpException);
+        assertTrue(exception instanceof AmqpException);
 
         AmqpException amqpException = (AmqpException) exception;
 
-        Assert.assertEquals(condition, amqpException.getErrorCondition());
-        Assert.assertFalse(amqpException.isTransient());
-        Assert.assertSame(context, amqpException.getContext());
-        Assert.assertTrue(amqpException.getMessage().contains(message));
+        assertEquals(condition, amqpException.getErrorCondition());
+        assertFalse(amqpException.isTransient());
+        assertSame(context, amqpException.getContext());
+        assertTrue(amqpException.getMessage().contains(message));
     }
 
 
@@ -72,14 +72,14 @@ public class ExceptionUtilTest {
         Exception exception = ExceptionUtil.amqpResponseCodeToException(notFound.getValue(), message, context);
 
         // Assert
-        Assert.assertTrue(exception instanceof AmqpException);
+        assertTrue(exception instanceof AmqpException);
 
         AmqpException amqpException = (AmqpException) exception;
 
-        Assert.assertEquals(condition, amqpException.getErrorCondition());
-        Assert.assertTrue(amqpException.isTransient());
-        Assert.assertSame(context, amqpException.getContext());
-        Assert.assertTrue(amqpException.getMessage().contains(message));
+        assertEquals(condition, amqpException.getErrorCondition());
+        assertTrue(amqpException.isTransient());
+        assertSame(context, amqpException.getContext());
+        assertTrue(amqpException.getMessage().contains(message));
     }
 
     /**
@@ -95,14 +95,14 @@ public class ExceptionUtilTest {
         Exception exception = ExceptionUtil.amqpResponseCodeToException(responseCode.getValue(), message, context);
 
         // Assert
-        Assert.assertTrue(exception instanceof AmqpException);
+        assertTrue(exception instanceof AmqpException);
 
         AmqpException amqpException = (AmqpException) exception;
-        Assert.assertEquals(actualCondition, amqpException.getErrorCondition());
-        Assert.assertFalse(amqpException.isTransient());
-        Assert.assertSame(context, amqpException.getContext());
+        assertEquals(actualCondition, amqpException.getErrorCondition());
+        assertFalse(amqpException.isTransient());
+        assertSame(context, amqpException.getContext());
 
-        Assert.assertTrue(amqpException.getMessage().contains(message));
+        assertTrue(amqpException.getMessage().contains(message));
     }
 
     /**
@@ -117,13 +117,13 @@ public class ExceptionUtilTest {
         Exception exception = ExceptionUtil.amqpResponseCodeToException(unknownCode, message, context);
 
         // Assert
-        Assert.assertTrue(exception instanceof AmqpException);
+        assertTrue(exception instanceof AmqpException);
 
         AmqpException amqpException = (AmqpException) exception;
-        Assert.assertNull(amqpException.getErrorCondition());
-        Assert.assertTrue(amqpException.isTransient());
-        Assert.assertSame(context, amqpException.getContext());
+        assertNull(amqpException.getErrorCondition());
+        assertTrue(amqpException.isTransient());
+        assertSame(context, amqpException.getContext());
 
-        Assert.assertTrue(amqpException.getMessage().contains(message));
+        assertTrue(amqpException.getMessage().contains(message));
     }
 }

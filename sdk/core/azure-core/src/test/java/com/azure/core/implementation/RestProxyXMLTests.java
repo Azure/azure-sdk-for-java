@@ -23,7 +23,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -37,11 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RestProxyXMLTests {
     static class MockXMLHTTPClient implements HttpClient {

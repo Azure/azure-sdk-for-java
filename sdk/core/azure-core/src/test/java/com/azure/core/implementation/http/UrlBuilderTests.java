@@ -3,15 +3,12 @@
 
 package com.azure.core.implementation.http;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UrlBuilderTests {
     @Test
@@ -178,7 +175,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .host("www.example.com?a=b");
         assertEquals("www.example.com", builder.host());
-        assertThat(builder.toString(), CoreMatchers.containsString("a=b"));
+        assertTrue(builder.toString().contains("a=b"));
         assertEquals("www.example.com?a=b", builder.toString());
     }
 
@@ -309,7 +306,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .port("50?a=b&c=d");
         assertEquals(50, builder.port().intValue());
-        assertThat(builder.toString(), CoreMatchers.containsString("?a=b&c=d"));
+        assertTrue(builder.toString().contains("?a=b&c=d"));
         assertEquals(":50?a=b&c=d", builder.toString());
     }
 

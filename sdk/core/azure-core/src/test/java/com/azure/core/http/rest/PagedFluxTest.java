@@ -13,10 +13,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -25,14 +23,6 @@ import reactor.test.StepVerifier;
  */
 public class PagedFluxTest {
     private List<PagedResponse<Integer>> pagedResponses;
-
-    @Rule
-    public TestName testName = new TestName();
-
-    @Before
-    public void setup() {
-        System.out.println("-------------- Running " + testName.getMethodName() + " -----------------------------");
-    }
 
     @Test
     public void testEmptyResults() throws MalformedURLException {

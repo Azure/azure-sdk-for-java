@@ -6,8 +6,8 @@ package com.azure.core.implementation;
 import com.azure.core.implementation.annotation.SkipParentValidation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.TextNode;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorTests {
     @Test
@@ -36,7 +36,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("value is required"));
+            assertTrue(ex.getMessage().contains("value is required"));
         }
     }
 
@@ -50,7 +50,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("value is required"));
+            assertTrue(ex.getMessage().contains("value is required"));
         }
     }
 
@@ -64,7 +64,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("value is required"));
+            assertTrue(ex.getMessage().contains("value is required"));
         }
     }
 
@@ -76,7 +76,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("list is required"));
+            assertTrue(ex.getMessage().contains("list is required"));
         }
         body.list(new ArrayList<>());
         Validator.validate(body); // pass
@@ -91,7 +91,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("list.value is required"));
+            assertTrue(ex.getMessage().contains("list.value is required"));
         }
     }
 
@@ -103,7 +103,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("map is required"));
+            assertTrue(ex.getMessage().contains("map is required"));
         }
         body.map(new HashMap<>());
         Validator.validate(body); // pass
@@ -118,7 +118,7 @@ public class ValidatorTests {
             Validator.validate(body); // fail
             fail();
         } catch (IllegalArgumentException ex) {
-            Assert.assertTrue(ex.getMessage().contains("map.value is required"));
+            assertTrue(ex.getMessage().contains("map.value is required"));
         }
     }
 

@@ -28,8 +28,8 @@ import com.azure.core.implementation.exception.InvalidReturnTypeException;
 import com.azure.core.implementation.http.ContentType;
 
 import com.azure.core.management.implementation.AzureProxy;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -739,10 +739,9 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus300WithExpectedResponse300();
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void service18GetStatus400() {
-        createService(Service18.class)
-                .getStatus400();
+        assertThrows(HttpResponseException.class, () -> createService(Service18.class).getStatus400());
     }
 
     @Test
@@ -751,10 +750,9 @@ public abstract class AzureProxyToRestProxyTests {
                 .getStatus400WithExpectedResponse400();
     }
 
-    @Test(expected = HttpResponseException.class)
+    @Test
     public void service18GetStatus500() {
-        createService(Service18.class)
-                .getStatus500();
+        assertThrows(HttpResponseException.class, () -> createService(Service18.class).getStatus500());
     }
 
     @Test
@@ -784,7 +782,7 @@ public abstract class AzureProxyToRestProxyTests {
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        Assert.assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
+        assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
     }
 
 }

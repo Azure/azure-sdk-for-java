@@ -6,12 +6,10 @@ package com.azure.core.util.polling;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.polling.PollResponse.OperationStatus;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import static org.junit.Assert.assertTrue;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -123,9 +121,9 @@ public class PollerTests {
         });
 
         Thread.sleep(totalTimeoutInMillis + 3 * pollInterval.toMillis());
-        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /* Test where SDK Client is subscribed all responses.
@@ -153,8 +151,8 @@ public class PollerTests {
 
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         PollResponse<CreateCertificateResponse> pollResponse = createCertPoller.blockUntil(PollResponse.OperationStatus.fromString("OTHER_2"));
-        Assert.assertEquals(pollResponse.getStatus(), PollResponse.OperationStatus.fromString("OTHER_2"));
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertEquals(pollResponse.getStatus(), PollResponse.OperationStatus.fromString("OTHER_2"));
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     private Mono<Boolean> matchesState(PollResponse<CreateCertificateResponse> currentPollResponse, List<OperationStatus> observeAllOperationStates) {
@@ -208,8 +206,8 @@ public class PollerTests {
 
         debug("Poll and wait for it to complete  ");
         Thread.sleep(totalTimeoutInMillis);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /*
@@ -243,10 +241,10 @@ public class PollerTests {
         createCertPoller.setAutoPollingEnabled(true);
         Thread.sleep(5 * pollInterval.toMillis());
         debug(createCertPoller.getStatus().toString());
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
         Thread.sleep(5 * pollInterval.toMillis());
-        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
 
     }
 
@@ -274,8 +272,8 @@ public class PollerTests {
             Thread.sleep(pollInterval.toMillis());
         }
 
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /* Test where SDK Client is subscribed all responses.
@@ -298,9 +296,9 @@ public class PollerTests {
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
         Thread.sleep(totalTimeoutInMillis);
         debug("Calling poller.block ");
-        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /* Test where SDK Client is subscribed to only final/last response.
@@ -325,8 +323,8 @@ public class PollerTests {
         Poller<CreateCertificateResponse> createCertPoller = new Poller<>(pollInterval, pollOperation);
 
         assertTrue(createCertPoller.block().getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     /* Test where SDK Client is subscribed all responses.
@@ -360,8 +358,8 @@ public class PollerTests {
         };
         t.start();
         Thread.sleep(totalTimeoutInMillis);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.IN_PROGRESS);
-        Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.IN_PROGRESS);
+        assertFalse(createCertPoller.isAutoPollingEnabled());
     }
 
 
@@ -390,8 +388,8 @@ public class PollerTests {
             Thread.sleep(pollInterval.toMillis());
         }
 
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
-        Assert.assertFalse(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.getStatus() == OperationStatus.SUCCESSFULLY_COMPLETED);
+        assertFalse(createCertPoller.isAutoPollingEnabled());
 
     }
 
@@ -429,9 +427,9 @@ public class PollerTests {
         };
         t.start();
 
-        Assert.assertTrue(createCertPoller.block().getStatus() == OperationStatus.USER_CANCELLED);
-        Assert.assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
-        Assert.assertTrue(createCertPoller.isAutoPollingEnabled());
+        assertTrue(createCertPoller.block().getStatus() == OperationStatus.USER_CANCELLED);
+        assertTrue(createCertPoller.getStatus() == OperationStatus.USER_CANCELLED);
+        assertTrue(createCertPoller.isAutoPollingEnabled());
     }
 
     private void debug(String... messages) {

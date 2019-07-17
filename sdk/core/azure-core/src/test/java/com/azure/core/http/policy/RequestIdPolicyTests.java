@@ -10,8 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpClient;
 import io.netty.buffer.ByteBuf;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,13 +69,13 @@ public class RequestIdPolicyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.headers().value(REQUEST_ID_HEADER);
-                        Assert.assertNotNull(newRequestId);
-                        Assert.assertNotEquals(newRequestId, firstRequestId);
+                        assertNotNull(newRequestId);
+                        assertNotEquals(newRequestId, firstRequestId);
                     }
 
                     firstRequestId = request.headers().value(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
-                        Assert.fail();
+                        fail();
                     }
                     return Mono.just(mockResponse);
                 }
@@ -97,12 +97,12 @@ public class RequestIdPolicyTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.headers().value(REQUEST_ID_HEADER);
-                        Assert.assertNotNull(newRequestId);
-                        Assert.assertEquals(newRequestId, firstRequestId);
+                        assertNotNull(newRequestId);
+                        assertEquals(newRequestId, firstRequestId);
                     }
                     firstRequestId = request.headers().value(REQUEST_ID_HEADER);
                     if (firstRequestId == null) {
-                        Assert.fail();
+                        fail();
                     }
                     return Mono.just(mockResponse);
                 }
