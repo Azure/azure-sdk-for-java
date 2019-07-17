@@ -21,11 +21,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("CopySink")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudSink", value = SalesforceServiceCloudSink.class),
     @JsonSubTypes.Type(name = "SalesforceSink", value = SalesforceSink.class),
     @JsonSubTypes.Type(name = "AzureDataExplorerSink", value = AzureDataExplorerSink.class),
     @JsonSubTypes.Type(name = "CommonDataServiceForAppsSink", value = CommonDataServiceForAppsSink.class),
     @JsonSubTypes.Type(name = "DynamicsCrmSink", value = DynamicsCrmSink.class),
     @JsonSubTypes.Type(name = "DynamicsSink", value = DynamicsSink.class),
+    @JsonSubTypes.Type(name = "MicrosoftAccessSink", value = MicrosoftAccessSink.class),
+    @JsonSubTypes.Type(name = "InformixSink", value = InformixSink.class),
     @JsonSubTypes.Type(name = "OdbcSink", value = OdbcSink.class),
     @JsonSubTypes.Type(name = "AzureSearchIndexSink", value = AzureSearchIndexSink.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
