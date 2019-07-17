@@ -38,7 +38,7 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ListContainerItems> listAsync(String resourceGroupName, String accountName);
+    Observable<ListContainerItem> listAsync(final String resourceGroupName, final String accountName);
 
     /**
      * Gets properties of a specified container.

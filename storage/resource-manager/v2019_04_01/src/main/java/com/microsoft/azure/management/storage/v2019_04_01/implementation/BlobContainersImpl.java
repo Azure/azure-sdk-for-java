@@ -14,7 +14,8 @@ import com.microsoft.azure.management.storage.v2019_04_01.BlobContainers;
 import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.storage.v2019_04_01.ListContainerItems;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.management.storage.v2019_04_01.ListContainerItem;
 import com.microsoft.azure.management.storage.v2019_04_01.BlobContainer;
 import com.microsoft.azure.management.storage.v2019_04_01.LegalHold;
 import com.microsoft.azure.management.storage.v2019_04_01.LeaseContainerResponse;
@@ -68,13 +69,19 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     }
 
     @Override
-    public Observable<ListContainerItems> listAsync(String resourceGroupName, String accountName) {
+    public Observable<ListContainerItem> listAsync(final String resourceGroupName, final String accountName) {
         BlobContainersInner client = this.inner();
         return client.listAsync(resourceGroupName, accountName)
-        .map(new Func1<ListContainerItemsInner, ListContainerItems>() {
+        .flatMapIterable(new Func1<Page<ListContainerItemInner>, Iterable<ListContainerItemInner>>() {
             @Override
-            public ListContainerItems call(ListContainerItemsInner inner) {
-                return new ListContainerItemsImpl(inner, manager());
+            public Iterable<ListContainerItemInner> call(Page<ListContainerItemInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ListContainerItemInner, ListContainerItem>() {
+            @Override
+            public ListContainerItem call(ListContainerItemInner inner) {
+                return new ListContainerItemImpl(inner, manager());
             }
         });
     }
