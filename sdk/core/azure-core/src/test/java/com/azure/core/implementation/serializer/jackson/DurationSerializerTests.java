@@ -3,12 +3,11 @@
 
 package com.azure.core.implementation.serializer.jackson;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DurationSerializerTests {
     @Test

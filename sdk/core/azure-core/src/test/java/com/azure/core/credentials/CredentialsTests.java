@@ -9,12 +9,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.OffsetDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CredentialsTests {
 
@@ -24,7 +25,7 @@ public class CredentialsTests {
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
             String headerValue = context.httpRequest().headers().value("Authorization");
-            Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
+            assertEquals("Basic dXNlcjpwYXNz", headerValue);
             return next.process();
         };
         //
@@ -52,7 +53,7 @@ public class CredentialsTests {
 
         HttpPipelinePolicy auditorPolicy =  (context, next) -> {
             String headerValue = context.httpRequest().headers().value("Authorization");
-            Assert.assertEquals("Bearer this_is_a_token", headerValue);
+            assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
 

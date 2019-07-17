@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class SessionErrorContextTest {
     /**
@@ -20,7 +20,7 @@ public class SessionErrorContextTest {
         SessionErrorContext context = new SessionErrorContext(namespace, entity);
 
         // Assert
-        Assert.assertEquals(namespace, context.getNamespace());
-        Assert.assertEquals(entity, context.getEntityPath());
+        assertEquals(namespace, context.getNamespace());
+        assertEquals(entity, context.getEntityPath());
     }
 }
