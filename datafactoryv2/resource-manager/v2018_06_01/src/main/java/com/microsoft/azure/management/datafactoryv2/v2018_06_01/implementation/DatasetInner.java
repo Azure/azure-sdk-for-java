@@ -77,6 +77,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "OdbcTable", value = OdbcTableDataset.class),
     @JsonSubTypes.Type(name = "RelationalTable", value = RelationalTableDataset.class),
     @JsonSubTypes.Type(name = "AzureMySqlTable", value = AzureMySqlTableDataset.class),
+    @JsonSubTypes.Type(name = "TeradataTable", value = TeradataTableDataset.class),
     @JsonSubTypes.Type(name = "OracleTable", value = OracleTableDataset.class),
     @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
