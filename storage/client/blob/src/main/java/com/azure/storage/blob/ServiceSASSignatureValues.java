@@ -12,10 +12,10 @@ import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
 /**
- * ServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
- * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
- * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
- * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
+ * ServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once all
+ * the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS which
+ * can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because the
+ * former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  * <p>
  * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
@@ -24,9 +24,9 @@ import java.time.OffsetDateTime;
  * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
  * more details on each value, including which are required.
  *
- * @apiNote ## Sample Code \n
- * [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas "Sample code for ServiceSASSignatureValues")] \n
- * For more samples, please see the [Samples file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
+ * @apiNote ## Sample Code \n [!code-java[Sample_Code](../azure-storage-java/src/test/java/com/microsoft/azure/storage/Samples.java?name=service_sas
+ * "Sample code for ServiceSASSignatureValues")] \n For more samples, please see the [Samples
+ * file](%https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java)
  */
 final class ServiceSASSignatureValues {
 
@@ -68,6 +68,7 @@ final class ServiceSASSignatureValues {
 
     /**
      * Creates an object with the specified expiry time and permissions
+     *
      * @param expiryTime
      * @param permissions
      */
@@ -78,6 +79,7 @@ final class ServiceSASSignatureValues {
 
     /**
      * Creates an object with the specified identifier
+     *
      * @param identifier
      */
     ServiceSASSignatureValues(String identifier) {
@@ -85,8 +87,8 @@ final class ServiceSASSignatureValues {
     }
 
     ServiceSASSignatureValues(String version, SASProtocol sasProtocol, OffsetDateTime startTime,
-        OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
-        String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
+                              OffsetDateTime expiryTime, String permission, IPRange ipRange, String identifier, String cacheControl,
+                              String contentDisposition, String contentEncoding, String contentLanguage, String contentType) {
         if (version != null) {
             this.version = version;
         }
@@ -229,6 +231,7 @@ final class ServiceSASSignatureValues {
 
     /**
      * The canonical name of the object the SAS user may access.
+     *
      * @throws RuntimeException If urlString is a malformed URL.
      */
     public ServiceSASSignatureValues canonicalName(String urlString, String accountName) {
@@ -359,9 +362,7 @@ final class ServiceSASSignatureValues {
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *
-     * @param sharedKeyCredentials
-     *         A {@link SharedKeyCredential} object used to sign the SAS values.
-     *
+     * @param sharedKeyCredentials A {@link SharedKeyCredential} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
      * @throws Error If the accountKey is not a valid Base64-encoded string.
      */
@@ -380,17 +381,15 @@ final class ServiceSASSignatureValues {
         }
 
         return new SASQueryParameters(this.version, null, null,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, this.resource,
-                this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
-                this.contentLanguage, this.contentType, null /* delegate */);
+            this.protocol, this.startTime, this.expiryTime, this.ipRange, this.identifier, resource,
+            this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
+            this.contentLanguage, this.contentType, null /* delegate */);
     }
 
     /**
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
      *
-     * @param delegationKey
-     *         A {@link UserDelegationKey} object used to sign the SAS values.
-     *
+     * @param delegationKey A {@link UserDelegationKey} object used to sign the SAS values.
      * @return {@link SASQueryParameters}
      * @throws Error If the accountKey is not a valid Base64-encoded string.
      */
@@ -409,9 +408,9 @@ final class ServiceSASSignatureValues {
         }
 
         return new SASQueryParameters(this.version, null, null,
-                this.protocol, this.startTime, this.expiryTime, this.ipRange, null /* identifier */, resource,
-                this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
-                this.contentLanguage, this.contentType, delegationKey);
+            this.protocol, this.startTime, this.expiryTime, this.ipRange, null /* identifier */, resource,
+            this.permissions, signature, this.cacheControl, this.contentDisposition, this.contentEncoding,
+            this.contentLanguage, this.contentType, delegationKey);
     }
 
     /**
@@ -441,46 +440,46 @@ final class ServiceSASSignatureValues {
 
     private String stringToSign() {
         return String.join("\n",
-                this.permissions == null ? "" : this.permissions,
-                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                this.canonicalName == null ? "" : this.canonicalName,
-                this.identifier == null ? "" : this.identifier,
-                this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
-                this.protocol == null ? "" : protocol.toString(),
-                this.version == null ? "" : this.version,
-                this.resource == null ? "" : getResource(),
-                this.snapshotId == null ? "" : this.snapshotId,
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
+            this.permissions == null ? "" : this.permissions,
+            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.canonicalName == null ? "" : this.canonicalName,
+            this.identifier == null ? "" : this.identifier,
+            this.ipRange == null ? (new IPRange()).toString() : this.ipRange.toString(),
+            this.protocol == null ? "" : protocol.toString(),
+            this.version == null ? "" : this.version,
+            this.resource == null ? "" : this.resource,
+            this.snapshotId == null ? "" : this.snapshotId,
+            this.cacheControl == null ? "" : this.cacheControl,
+            this.contentDisposition == null ? "" : this.contentDisposition,
+            this.contentEncoding == null ? "" : this.contentEncoding,
+            this.contentLanguage == null ? "" : this.contentLanguage,
+            this.contentType == null ? "" : this.contentType
         );
     }
 
     private String stringToSign(final UserDelegationKey key) {
         return String.join("\n",
-                this.permissions == null ? "" : this.permissions,
-                this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                this.canonicalName == null ? "" : this.canonicalName,
-                key.signedOid() == null ? "" : key.signedOid(),
-                key.signedTid() == null ? "" : key.signedTid(),
-                key.signedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedStart()),
-                key.signedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedExpiry()),
-                key.signedService() == null ? "" : key.signedService(),
-                key.signedVersion() == null ? "" : key.signedVersion(),
-                this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                this.version == null ? "" : this.version,
-                this.resource == null ? "" : getResource(),
-                this.snapshotId == null ? "" : this.snapshotId,
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
+            this.permissions == null ? "" : this.permissions,
+            this.startTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            this.canonicalName == null ? "" : this.canonicalName,
+            key.signedOid() == null ? "" : key.signedOid(),
+            key.signedTid() == null ? "" : key.signedTid(),
+            key.signedStart() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedStart()),
+            key.signedExpiry() == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(key.signedExpiry()),
+            key.signedService() == null ? "" : key.signedService(),
+            key.signedVersion() == null ? "" : key.signedVersion(),
+            this.ipRange == null ? new IPRange().toString() : this.ipRange.toString(),
+            this.protocol == null ? "" : this.protocol.toString(),
+            this.version == null ? "" : this.version,
+            this.resource == null ? "" : this.resource,
+            this.snapshotId == null ? "" : this.snapshotId,
+            this.cacheControl == null ? "" : this.cacheControl,
+            this.contentDisposition == null ? "" : this.contentDisposition,
+            this.contentEncoding == null ? "" : this.contentEncoding,
+            this.contentLanguage == null ? "" : this.contentLanguage,
+            this.contentType == null ? "" : this.contentType
         );
     }
 
