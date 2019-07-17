@@ -101,27 +101,6 @@ public final class KeyAsyncClient {
         return withContext(context -> createKey(name, keyType, context));
     }
 
-    /**
-     * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
-     *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC},
-     * {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link KeyType#OCT OCT}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.createKey("keyName", KeyType.EC, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param name The name of the key being created.
-     * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
-     */
     Mono<Response<Key>> createKey(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
         return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
@@ -163,35 +142,6 @@ public final class KeyAsyncClient {
         return withContext(context -> createKey(keyCreateOptions, context));
     }
 
-    /**
-     * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
-     *
-     * <p>The {@link KeyCreateOptions} is required. The {@link KeyCreateOptions#expires() expires} and {@link KeyCreateOptions#notBefore() notBefore} values
-     * are optional. The {@link KeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
-     *
-     * <p>The {@link KeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC},
-     * {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link KeyType#OCT OCT}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call asynchronously
-     * and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * keyAsyncClient.createKey(keyCreateOptions, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param keyCreateOptions The key configuration object containing information about the key being created.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
-     * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
-     */
     Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
         Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -240,37 +190,6 @@ public final class KeyAsyncClient {
         return withContext(context -> createRsaKey(rsaKeyCreateOptions, context));
     }
 
-    /**
-     * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
-     *
-     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be optionally specified. The {@link RsaKeyCreateOptions#expires() expires}
-     * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled} field
-     * is set to true by Azure Key Vault, if not specified.</p>
-     *
-     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#RSA RSA} and
-     * {@link KeyType#RSA_HSM RSA-HSM}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Subscribes to the call asynchronously
-     * and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
-     *    .keySize(2048)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * keyAsyncClient.createRsaKey(rsaKeyCreateOptions, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being created.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
-     * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
-     */
     Mono<Response<Key>> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -319,37 +238,6 @@ public final class KeyAsyncClient {
         return withContext(context -> createEcKey(ecKeyCreateOptions, context));
     }
 
-    /**
-     * Creates a new Ec key and stores it in the key vault. The create Ec key operation can be used to create any Ec key type in
-     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
-     *
-     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be optionally specified. If not specified,
-     * default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
-     * are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
-     *
-     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC} and
-     * {@link KeyType#EC_HSM EC-HSM}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Subscribes to the call asynchronously
-     * and prints out the newly created ec key details when a response has been received.</p>
-     * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
-     *    .curve(KeyCurveName.P_384)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * keyAsyncClient.createEcKey(ecKeyCreateOptions, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
-     * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
-     */
     Mono<Response<Key>> createEcKey(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -385,24 +273,6 @@ public final class KeyAsyncClient {
         return withContext(context -> importKey(name, keyMaterial, context));
     }
 
-    /**
-     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any key type
-     * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key details
-     * when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.importKey("keyName", jsonWebKeyToImport, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param name The name for the imported key.
-     * @param keyMaterial The Json web key being imported.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
-     */
     Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial, Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
         return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
@@ -442,33 +312,6 @@ public final class KeyAsyncClient {
         return withContext(context -> importKey(keyImportOptions, context));
     }
 
-    /**
-     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any key type
-     * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
-     *
-     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link KeyImportOptions#keyMaterial() key material} cannot
-     * be null. The {@link KeyImportOptions#expires() expires} and {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions}
-     * are optional. If not specified, no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and
-     * the {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key details
-     * when a response has been received.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .expires(OffsetDateTime.now().plusDays(60));
-     *
-     * keyAsyncClient.importKey(keyImportOptions, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
-     * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
-     */
     Mono<Response<Key>> importKey(KeyImportOptions keyImportOptions, Context context) {
         Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
@@ -508,26 +351,6 @@ public final class KeyAsyncClient {
         return withContext(context -> getKey(name, version, context));
     }
 
-    /**
-     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     * <pre>
-     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * keyAsyncClient.getKey("keyName", keyVersion, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key returned with name %s, id %s and version %s", keyResponse.value().name(),
-     *   keyResponse.value().id(), keyResponse.value().version()));
-     * </pre>
-     *
-     * @param name The name of the key, cannot be null
-     * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
-     */
     Mono<Response<Key>> getKey(String name, String version, Context context) {
         return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving key - {}",  name))
@@ -614,31 +437,6 @@ public final class KeyAsyncClient {
         return withContext(context -> updateKey(key, context));
     }
 
-    /**
-     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
-     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
-     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key, context).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
-     *
-     * @param key The {@link KeyBase base key} object with updated properties.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
-     */
     Mono<Response<Key>> updateKey(KeyBase key, Context context) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -681,32 +479,6 @@ public final class KeyAsyncClient {
         return withContext(context -> updateKey(key, context, keyOperations));
     }
 
-    /**
-     * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
-     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
-     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key and associate Encrypt and Decrypt operations with it.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key, context, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
-     *
-     * @param key The {@link KeyBase base key} object with updated properties.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @param keyOperations The updated key operations to associate with the key.
-     * @throws NullPointerException if {@code key} is {@code null}.
-     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
-     */
     Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -745,27 +517,6 @@ public final class KeyAsyncClient {
         return withContext(context -> deleteKey(name, context));
     }
 
-    /**
-     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed in the deleted state
-     * and requires to be purged for permanent deletion else the key is permanently deleted. The delete operation applies to any key stored
-     * in Azure Key Vault but it cannot be applied to an individual version of a key. This operation removes the cryptographic material
-     * associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation
-     * requires the {@code keys/delete} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
-     * deleted key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.deleteKey("keyName", context).subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
-     *
-     * @param name The name of the key to be deleted.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
-     */
     Mono<Response<DeletedKey>> deleteKey(String name, Context context) {
         return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Deleting key - {}",  name))
@@ -796,25 +547,6 @@ public final class KeyAsyncClient {
         return withContext(context -> getDeletedKey(name, context));
     }
 
-    /**
-     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete enabled vaults. This operation
-     * requires the {@code keys/get} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * deleted key details when a response has been received.</p>
-     * <pre>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.getDeletedKey("keyName", context).subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key with recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
-     *
-     * @param name The name of the deleted key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
-     */
     Mono<Response<DeletedKey>> getDeletedKey(String name, Context context) {
         return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}",  name))
@@ -845,25 +577,6 @@ public final class KeyAsyncClient {
         return withContext(context -> purgeDeletedKey(name, context));
     }
 
-    /**
-     * Permanently deletes the specified key without the possibility of recovery. The Purge Deleted Key operation is applicable for
-     * soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * status code from the server response when a response has been received.</p>
-     * <pre>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.purgeDeletedKey("deletedKeyName", context).subscribe(purgeResponse -&gt;
-     *   System.out.printf("Purge Status response %rsaPrivateExponent \n", purgeResponse.statusCode()));
-     * </pre>
-     *
-     * @param name The name of the deleted key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link VoidResponse}.
-     */
     Mono<VoidResponse> purgeDeletedKey(String name, Context context) {
         return service.purgeDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Purging deleted key - {}",  name))
@@ -895,26 +608,6 @@ public final class KeyAsyncClient {
         return withContext(context -> recoverDeletedKey(name, context));
     }
 
-    /**
-     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete enabled vault. An attempt
-     * to recover an non-deleted key will return an error. Consider this the inverse of the delete operation on soft-delete enabled vaults.
-     * This operation requires the {@code keys/recover} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
-     * recovered key details when a response has been received.</p>
-     * <pre>
-     * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.recoverDeletedKey("deletedKeyName", context).subscribe(recoveredKeyResponse -&gt;
-     *   System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
-     * </pre>
-     *
-     * @param name The name of the deleted key to be recovered.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
-     */
     Mono<Response<Key>> recoverDeletedKey(String name, Context context) {
         return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Recovering deleted key - {}",  name))
@@ -950,30 +643,6 @@ public final class KeyAsyncClient {
         return withContext(context -> backupKey(name, context));
     }
 
-    /**
-     * Requests a backup of the specified key be downloaded to the client. The Key Backup operation exports a key from Azure Key
-     * Vault in a protected form. Note that this operation does not return key material in a form that can be used outside the Azure Key
-     * Vault system, the returned key material is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent
-     * of this operation is to allow a client to generate a key in one Azure Key Vault instance, backup the key, and then restore it
-     * into another Azure Key Vault instance. The backup operation may be used to export, in protected form, any key type from Azure
-     * Key Vault. Individual versions of a key cannot be backed up. Backup / Restore can be performed within geographical boundaries only;
-     * meaning that a backup from one geographical area cannot be restored to another geographical area. For example, a backup
-     * from the US geographical area cannot be restored in an EU geographical area. This operation requires the {@code key/backup} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Backs up the key from the key vault. Subscribes to the call asynchronously and prints out the
-     * length of the key's backup byte array returned in the response.</p>
-     * <pre>
-     * keyAsyncClient.backupKey("keyName", context).subscribe(keyBackupResponse -&gt;
-     *   System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.value().length));
-     * </pre>
-     *
-     * @param name The name of the key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up key blob.
-     */
     Mono<Response<byte[]>> backupKey(String name, Context context) {
         return service.backupKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Backing up key - {}",  name))
@@ -1010,29 +679,6 @@ public final class KeyAsyncClient {
         return withContext(context -> restoreKey(backup, context));
     }
 
-    /**
-     * Restores a backed up key to a vault. Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier,
-     * attributes and access control policies. The restore operation may be used to import a previously backed up key. The individual versions of a
-     * key cannot be restored. The key is restored in its entirety with the same key name as it had when it was backed up. If the key name is not
-     * available in the target Key Vault, the restore operation will be rejected. While the key name is retained during restore, the final key identifier
-     * will change if the key is restored to a different vault. Restore will restore all versions and preserve version identifiers. The restore operation is subject
-     * to security constraints: The target Key Vault must be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have restore permission in
-     * the target Key Vault. This operation requires the {@code keys/restore} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Restores the key in the key vault from its backup. Subscribes to the call asynchronously and prints out the restored key
-     * details when a response has been received.</p>
-     * <pre>
-     * //Pass the Key Backup Byte array to the restore operation.
-     * keyAsyncClient.restoreKey(keyBackupByteArray, context).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
-     *
-     * @param backup The backup blob associated with the key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceModifiedException when {@code backup} blob is malformed.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
-     */
     Mono<Response<Key>> restoreKey(byte[] backup, Context context) {
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().keyBackup(backup);
         return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -1063,22 +709,6 @@ public final class KeyAsyncClient {
             continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
     }
 
-    /**
-     * List keys in the key vault. Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public
-     * part of a stored key. The List operation is applicable to all key types and the individual key response in the flux is represented by {@link KeyBase} as only the base key identifier,
-     * attributes and tags are provided in the response. The key material and individual key versions are not listed in the response. This operation requires the {@code keys/list} permission.
-     *
-     * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing {@link KeyBase base key} to
-     * {@link Flux} containing {@link Key key} using {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Key&gt; keys = keyAsyncClient.listKeys(context)
-     *   .flatMap(keyAsyncClient::getKey)
-     *   .map(Response::value);
-     * </pre>
-     *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
-     */
     PagedFlux<KeyBase> listKeys(Context context) {
         return new PagedFlux<>(
             () -> listKeysFirstPage(context),
@@ -1131,22 +761,6 @@ public final class KeyAsyncClient {
             continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
     }
 
-    /**
-     * Lists {@link DeletedKey deleted keys} of the key vault. The deleted keys are retrieved as JSON Web Key structures
-     * that contain the public part of a deleted key. The Get Deleted Keys operation is applicable for vaults enabled
-     * for soft-delete. This operation requires the {@code keys/list} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted keys in the key vault. Subscribes to the call asynchronously and prints out the
-     * recovery id of each deleted key when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.listDeletedKeys(context).subscribe(deletedKey -&gt;
-     *   System.out.printf("Deleted key's recovery Id %s \n", deletedKey.recoveryId()));
-     * </pre>
-     *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
-     */
     PagedFlux<DeletedKey> listDeletedKeys(Context context) {
         return new PagedFlux<>(
             () -> listDeletedKeysFirstPage(context),
@@ -1203,26 +817,6 @@ public final class KeyAsyncClient {
             continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
     }
 
-    /**
-     * List all versions of the specified key. The individual key response in the flux is represented by {@link KeyBase}
-     * as only the base key identifier, attributes and tags are provided in the response. The key material values are
-     * not provided in the response. This operation requires the {@code keys/list} permission.
-     *
-     * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link Flux}
-     * containing {@link KeyBase base key} to {@link Flux} containing {@link Key key} using
-     * {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Key&gt; keys = keyAsyncClient.listKeyVersions("keyName", context)
-     *   .flatMap(keyAsyncClient::getKey)
-     *   .map(Response::value);
-     * </pre>
-     *
-     * @param name The name of the key.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
-     */
     PagedFlux<KeyBase> listKeyVersions(String name, Context context) {
         return new PagedFlux<>(
             () -> listKeyVersionsFirstPage(name, context),
