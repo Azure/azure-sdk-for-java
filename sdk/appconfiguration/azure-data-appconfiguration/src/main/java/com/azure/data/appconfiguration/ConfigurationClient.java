@@ -136,27 +136,6 @@ public final class ConfigurationClient {
         return addSetting(setting, context);
     }
 
-    /**
-     * Adds a configuration value in the service if that key and label does not exist. The label value of the
-     * ConfigurationSetting is optional.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * <pre>
-     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.value().key(), result.value().value());</pre>
-     *
-     * @param setting The setting to add to the configuration service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
-     * is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
     private Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
         return client.addSetting(setting, context).block();
     }
@@ -266,41 +245,6 @@ public final class ConfigurationClient {
         return client.setSetting(setting, context).block();
     }
 
-    /**
-     * Creates or updates a configuration value in the service. Partial updates are not supported and the entire
-     * configuration setting is updated.
-     *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is updated if the current
-     * setting's etag matches. If the etag's value is equal to the wildcard character ({@code "*"}), the setting
-     * will always be updated.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * <pre>
-     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.value().key(), result.value().value());</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * result = client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"), Context.NONE)
-     * System.out.printf("Key: %s, Value: %s", result.value().key(), result.value().value());</pre>
-     *
-     * @param setting The configuration setting to create or update.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
-     * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
-     * will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If the {@link ConfigurationSetting#etag() etag} was specified, is not the
-     * wildcard character, and the current configuration value's etag does not match, or the
-     * setting exists and is locked.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
     private Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
         return client.setSetting(setting, context).block();
     }
@@ -407,29 +351,6 @@ public final class ConfigurationClient {
         return updateSetting(setting, context);
     }
 
-    /**
-     * Updates an existing configuration value in the service. The setting must already exist. Partial updates are not
-     * supported, the entire configuration value is replaced.
-     *
-     * If {@link ConfigurationSetting#etag() etag} is specified, the configuration value is only updated if it matches.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context}
-     *
-     * @param setting The setting to add or update in the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} that was updated with the REST response, or {@code null}, if the configuration value does not
-     * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label does not
-     * exist, the setting is locked, or {@link ConfigurationSetting#etag() etag} is specified but does not match
-     * the current value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
     private Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
         return client.updateSetting(setting, context).block();
     }
@@ -522,24 +443,6 @@ public final class ConfigurationClient {
         return getSetting(setting, context);
     }
 
-    /**
-     * Attempts to get the ConfigurationSetting given the {@code key}, optional {@code label}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
-     *
-     * @param setting The setting to retrieve based on its key and optional label combination.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} stored in the service with the REST response, or {@code null}, if the configuration value does
-     * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
-     * @throws HttpResponseException If the {@code} key is an empty string.
-     */
     private Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
         return client.getSetting(setting, context).block();
     }
@@ -646,31 +549,6 @@ public final class ConfigurationClient {
         return deleteSetting(setting, context);
     }
 
-    /**
-     * Deletes the {@link ConfigurationSetting} with a matching key, along with the given label and etag.
-     *
-     * If {@link ConfigurationSetting#etag() etag} is specified and is not the wildcard character ({@code "*"}),
-     * then the setting is <b>only</b> deleted if the etag matches the current etag; this means that no one has updated
-     * the ConfigurationSetting yet.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the setting with the key "prodDBConnection".</p>
-     *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-context}
-     *
-     * @param setting The ConfigurationSetting to delete.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The deleted ConfigurationSetting with the REST response or {@code null} if didn't exist. {@code null} is also returned if
-     * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
-     * current etag (which will also throw ServiceRequestException described below).
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
-     * @throws NullPointerException When {@code setting} is {@code null}.
-     * @throws ResourceModifiedException If the ConfigurationSetting is locked.
-     * @throws ResourceNotFoundException If {@link ConfigurationSetting#etag() etag} is specified, not the wildcard
-     * character, and does not match the current etag value.
-     * @throws HttpResponseException If {@code key} is an empty string.
-     */
     private Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
         return client.deleteSetting(setting, context).block();
     }
@@ -694,24 +572,6 @@ public final class ConfigurationClient {
         return listSettings(options, Context.NONE);
     }
 
-    /**
-     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
-     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
-     *
-     * <pre>
-     * for (ConfigurationSetting setting : client.listSettings(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
-     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-     * }</pre>
-     *
-     * @param options Optional. Options to filter configuration setting results from the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
-     * contains all of the current settings in the service.
-     */
     private Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return client.listSettings(options, context).collectList().block();
     }
@@ -728,7 +588,6 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     *
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
@@ -739,27 +598,6 @@ public final class ConfigurationClient {
         return listSettingRevisions(selector, Context.NONE);
     }
 
-    /**
-     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
-     * after a period of time. The service maintains change history for up to 7 days.
-     *
-     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
-     *
-     * <pre>
-     * for (ConfigurationSetting revision : client.listSettingRevisions(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
-     *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-     * }</pre>
-     *
-     * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return Revisions of the ConfigurationSetting
-     */
     private Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         return client.listSettingRevisions(selector, context).collectList().block();
     }
