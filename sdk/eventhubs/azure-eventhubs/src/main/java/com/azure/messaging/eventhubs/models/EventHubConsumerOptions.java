@@ -74,7 +74,6 @@ public class EventHubConsumerOptions implements Cloneable {
         return this;
     }
 
-
     /**
      * Sets the {@code ownerLevel} value on this consumer. When populated, the level indicates that a consumer is
      * intended to be the only reader of events for the requested partition and an associated consumer group. To do so,
@@ -205,9 +204,7 @@ public class EventHubConsumerOptions implements Cloneable {
     /**
      * Creates a shallow clone of this instance.
      *
-     * The object is cloned, but this instance's fields are not cloned. {@link Duration} and {@link String} are
-     * immutable objects and are not an issue. The implementation of {@link Retry} could be mutable. In addition, the
-     * {@link #scheduler()} set is not cloned.
+     * The object is cloned, but this instance's fields
      *
      * @return A shallow clone of this object.
      */
