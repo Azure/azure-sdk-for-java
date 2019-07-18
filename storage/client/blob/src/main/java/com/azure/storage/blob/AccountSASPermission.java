@@ -12,7 +12,7 @@ import java.util.Locale;
  * {@link AccountSASSignatureValues} object. It is possible to construct the permissions string without this class, but
  * the order of the permissions is particular and this class guarantees correctness.
  */
-final class AccountSASPermission {
+public final class AccountSASPermission {
 
     private boolean read;
 
@@ -85,14 +85,17 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to read resources and list queues and tables granted.
+     * @return the read permission status
      */
     public boolean read() {
         return read;
     }
 
     /**
-     * Permission to read resources and list queues and tables granted.
+     * Sets the read permission status.
+     *
+     * @param read Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission read(boolean read) {
         this.read = read;
@@ -100,14 +103,17 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to add messages, table entities, and append to blobs granted.
+     * @return the add permission status
      */
     public boolean add() {
         return add;
     }
 
     /**
-     * Permission to add messages, table entities, and append to blobs granted.
+     * Sets the add permission status.
+     *
+     * @param add Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission add(boolean add) {
         this.add = add;
@@ -115,14 +121,17 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to create blobs and files granted.
+     * @return the create permission status
      */
     public boolean create() {
         return create;
     }
 
     /**
-     * Permission to create blobs and files granted.
+     * Sets the create permission status.
+     *
+     * @param create Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission create(boolean create) {
         this.create = create;
@@ -130,14 +139,17 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to write resources granted.
+     * @return the write permission status
      */
     public boolean write() {
         return write;
     }
 
     /**
-     * Permission to write resources granted.
+     * Sets the write permission status.
+     *
+     * @param write Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission write(boolean write) {
         this.write = write;
@@ -145,14 +157,17 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to delete resources granted.
+     * @return the delete permission status
      */
     public boolean delete() {
         return delete;
     }
 
     /**
-     * Permission to delete resources granted.
+     * Sets the delete permission status.
+     *
+     * @param delete Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission delete(boolean delete) {
         this.delete = delete;
@@ -160,14 +175,18 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to list blob containers, blobs, shares, directories, and files granted.
+     * @return the list permission status
      */
     public boolean list() {
         return list;
     }
 
     /**
-     * Permission to list blob containers, blobs, shares, directories, and files granted.
+     * Sets the list permission status. This permission grants the ability to list blob containers, blobs, shares,
+     * directories, and files.
+     *
+     * @param list Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission list(boolean list) {
         this.list = list;
@@ -175,14 +194,19 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permissions to update messages and table entities granted.
+     * Returns the update permission status, it allows the update of queue message and tables.
+     *
+     * @return the update permission status
      */
     public boolean update() {
         return update;
     }
 
     /**
-     * Permissions to update messages and table entities granted.
+     * Sets the update permission status, it allows the update of queue messages and tables.
+     *
+     * @param update Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission update(boolean update) {
         this.update = update;
@@ -190,14 +214,19 @@ final class AccountSASPermission {
     }
 
     /**
-     * Permission to get and delete messages granted.
+     * Returns the process messages permission, this allows the retrieval and deletion of queue messages.
+     *
+     * @return the process messages permission status.
      */
     public boolean processMessages() {
         return processMessages;
     }
 
     /**
-     * Permission to get and delete messages granted.
+     * Sets the process messages permission, this allows the retrieval and deletion of queue messages.
+     *
+     * @param processMessages Permission status to set
+     * @return the updated AccountSASPermission object
      */
     public AccountSASPermission processMessages(boolean processMessages) {
         this.processMessages = processMessages;

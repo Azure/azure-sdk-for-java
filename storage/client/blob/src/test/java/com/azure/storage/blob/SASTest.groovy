@@ -6,7 +6,6 @@ package com.azure.storage.blob
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
-import com.azure.storage.blob.models.StorageErrorCode
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
@@ -17,24 +16,10 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class SASTest extends APISpec {
-
-    def "responseError"() {
-        when:
-        cu.listBlobsFlat()
-
-        then:
-        def e = thrown(StorageException)
-        e.errorCode() == StorageErrorCode.INVALID_QUERY_PARAMETER_VALUE
-        e.statusCode() == 400
-        e.message().contains("Value for one of the query parameters specified in the request URI is invalid.")
-        e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
-    }
-
     /*
     This test is to validate the workaround for the autorest bug that forgets to set the request property on the
     response.
      */
-
     def "Request property"() {
         when:
         def response = cu.delete()
@@ -241,7 +226,7 @@ class SASTest extends APISpec {
             .httpClient(getHttpClient())
         def client2 = builder2.buildClient()
 
-        client2.listBlobsFlat()
+        client2.listBlobsFlat().iterator().hasNext()
 
         then:
         notThrown(StorageException)
@@ -250,45 +235,47 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob user delegation"() {
         setup:
-        def data = "test".getBytes()
-        def blobName = generateBlobName()
-        def bu = cu.getBlockBlobClient(blobName)
+        byte[] data = "test".getBytes()
+        String blobName = generateBlobName()
+        BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
 
-        def permissions = new BlobSASPermission()
+        BlobSASPermission permissions = new BlobSASPermission()
             .read(true)
             .write(true)
             .create(true)
             .delete(true)
             .add(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
-        def ipRange = new IPRange()
+
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1)
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+
+        IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
-        def cacheControl = "cache"
-        def contentDisposition = "disposition"
-        def contentEncoding = "encoding"
-        def contentLanguage = "language"
-        def contentType = "type"
 
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
+        String cacheControl = "cache"
+        String contentDisposition = "disposition"
+        String contentEncoding = "encoding"
+        String contentLanguage = "language"
+        String contentType = "type"
+
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
 
         when:
+        String sas = bu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        def sas = bu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
-
-        def builder = new BlockBlobClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        BlockBlobClient client = new BlockBlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
             .credential(new SASTokenCredential(sas))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildClient()
 
-        def os = new ByteArrayOutputStream()
+        OutputStream os = new ByteArrayOutputStream()
         client.download(os)
-        def properties = client.getProperties().value()
+        BlobProperties properties = client.getProperties().value()
 
         then:
         os.toString() == new String(data)
@@ -301,11 +288,11 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test blob snapshot user delegation"() {
         setup:
-        def data = "test".getBytes()
-        def blobName = generateBlobName()
-        def bu = cu.getBlockBlobClient(blobName)
+        byte[] data = "test".getBytes()
+        String blobName = generateBlobName()
+        BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
-        def snapshotId = bu.createSnapshot().value()
+        String snapshotId = bu.createSnapshot().value()
         def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
 
         def permissions = new BlobSASPermission()
@@ -394,7 +381,7 @@ class SASTest extends APISpec {
             .httpClient(getHttpClient())
         def client = builder.buildClient()
 
-        client.listBlobsFlat()
+        client.listBlobsFlat().iterator().hasNext()
 
         then:
         notThrown(StorageException)

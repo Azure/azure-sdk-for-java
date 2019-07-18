@@ -264,8 +264,7 @@ final class Utility {
     methods to conveniently access important values.
      */
     private static <T> Mono<T> addErrorWrappingToSingle(Mono<T> s) {
-        return s.onErrorResume(
-            StorageErrorException.class,
+        return s.onErrorResume(StorageErrorException.class,
             e -> e.response()
                 .bodyAsString()
                 .switchIfEmpty(Mono.just(""))

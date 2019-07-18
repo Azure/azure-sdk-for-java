@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob
 
+import io.netty.buffer.ByteBuf
+import io.netty.buffer.Unpooled
 import reactor.core.publisher.Flux
 
 import java.nio.ByteBuffer
@@ -38,11 +40,16 @@ class ProgressReporterTest extends APISpec {
         IProgressReceiver mockReceiver = Mock(IProgressReceiver)
 
         ByteBuffer buffer = getRandomData(1 * 1024 * 1024)
-        ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
+        Flux<ByteBuf> data = ProgressReporter.addProgressReporting(Flux.just(buffer), mockReceiver)
+            .map({ it -> Unpooled.wrappedBuffer(it) })
 
         when:
-        BlockBlobClient bu = cu.getBlockBlobClient(generateBlobName())
-        bu.upload(new ByteArrayInputStream(buffer.array()), buffer.remaining())
+        BlockBlobAsyncClient bu = new BlockBlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
+            .blobName(generateBlobName())
+            .credential(primaryCreds)
+            .buildAsyncClient()
+        bu.upload(data, buffer.remaining()).block()
 
         then:
         /*
@@ -74,7 +81,7 @@ class ProgressReporterTest extends APISpec {
         data.subscribe()
         data2.subscribe()
 
-        sleep(3000) // These Flowables should complete quickly, but we don't want to block or it'll order everything
+        sleep(3000) // These Fluxes should complete quickly, but we don't want to block or it'll order everything
 
         then:
         /*
@@ -86,13 +93,13 @@ class ProgressReporterTest extends APISpec {
         /*
         There should be 12 calls total, but either one or two of them could be reporting the total length, so we
         can only guarantee four calls with an unknown parameter. This test doesn't strictly mimic the network as
-        there would never be concurrent subscriptions to the same Flowable as may be the case here, but it is good
+        there would never be concurrent subscriptions to the same Flux as may be the case here, but it is good
         enough.
          */
         (10..11) * mockReceiver.reportProgress(_)
 
         /*
-        We should never report more progress than the 60 total (30 from each Flowable--Resubscribing is a retry and
+        We should never report more progress than the 60 total (30 from each Flux--Resubscribing is a retry and
         therefore rewinds).
          */
         0 * mockReceiver.reportProgress({it > 60})
