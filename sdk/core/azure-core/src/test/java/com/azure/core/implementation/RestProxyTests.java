@@ -1331,7 +1331,6 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection().toLowerCase());
         assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-         assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
@@ -1351,7 +1350,6 @@ public abstract class RestProxyTests {
         assertEquals(true, headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-         assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
@@ -1387,7 +1385,6 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection().toLowerCase());
         assertNotNull(headers.date());
         // assertEquals("1.1 vegur", headers.via);
-         assertNotEquals(0, headers.xProcessedTime());
     }
 
     @Test
