@@ -79,7 +79,7 @@ public class RestProxyStressTests {
     private static int port = 8080;
 
     @BeforeAll
-    public static void  BeforeAll() throws IOException {
+    public static void beforeAll() throws IOException {
         assumeTrue(
             Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")),
             "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests");
