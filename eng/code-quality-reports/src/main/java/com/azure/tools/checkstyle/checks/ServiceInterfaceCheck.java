@@ -34,13 +34,8 @@ public class ServiceInterfaceCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST token) {
-        switch (token.getType()) {
-            case TokenTypes.INTERFACE_DEF:
-                checkServiceInterface(token);
-                break;
-            default:
-                // Checkstyle complains if there's no default block in switch
-                break;
+        if (token.getType() == TokenTypes.INTERFACE_DEF) {
+            checkServiceInterface(token);
         }
     }
 

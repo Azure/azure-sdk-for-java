@@ -12,15 +12,15 @@ import java.util.Stack;
 /**
  * The @ServiceClientBuilder class should have the following rules:
  *  1) All service client builder should be named <ServiceName>ClientBuilder and annotated with @ServiceClientBuilder.
- *  2) No other method have prefix 'build' other than 'buildClient' or 'buildAsyncClient'.
+ *  2) No other method have prefix 'build' other than 'build*Client' or 'build*AsyncClient'.
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
     private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
-    private static final String BUILD_CLIENT = "buildClient";
-    private static final String BUILD_ASYNC_CLIENT = "buildAsyncClient";
 
     private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack();
+    private Stack<Boolean> hasBuildMethodStack = new Stack<>();
     private boolean hasServiceClientBuilderAnnotation;
+    private boolean hasBuildMethod;
 
     @Override
     public int[] getDefaultTokens() {
@@ -42,14 +42,12 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
 
     @Override
     public void leaveToken(DetailAST token) {
-        switch (token.getType()) {
-            case TokenTypes.CLASS_DEF:
-                // end of CLASS_DEF node, reset the value back to previous state
-                hasServiceClientBuilderAnnotation = hasServiceClientBuilderAnnotationStack.pop();
-                break;
-            default:
-                // Checkstyle complains if there's no default block in switch
-                break;
+        if (token.getType() == TokenTypes.CLASS_DEF) {
+            hasServiceClientBuilderAnnotation = hasServiceClientBuilderAnnotationStack.pop();
+            hasBuildMethod = hasBuildMethodStack.pop();
+            if (hasServiceClientBuilderAnnotation && !hasBuildMethod) {
+                log(token, "Class with @ServiceClientBuilder annotation must have a method starting with ''build'' and ending with ''Client''.");
+            }
         }
     }
 
@@ -59,7 +57,7 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
             case TokenTypes.CLASS_DEF:
                 // Save the state of variable 'hasServiceClientBuilderAnnotation' to limit the scope of accessibility
                 hasServiceClientBuilderAnnotationStack.push(hasServiceClientBuilderAnnotation);
-
+                hasBuildMethodStack.push(hasBuildMethod);
                 final DetailAST serviceClientAnnotationBuilderToken = getServiceClientBuilderAnnotation(token);
                 final String className = token.findFirstToken(TokenTypes.IDENT).getText();
 
@@ -84,13 +82,16 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
                 }
 
                 final String methodName = token.findFirstToken(TokenTypes.IDENT).getText();
-                // method name has prefix 'build' but not 'buildClient' or 'buildAsyncClient'
-                if (methodName.startsWith("build") && !BUILD_ASYNC_CLIENT.equals(methodName) && !BUILD_CLIENT.equals(methodName)) {
-                    log(token, String.format(
-                        "@ServiceClientBuilder class should not have a method name, '''' starting with ''build'' " +
-                            "other than ''buildClient'' or ''buildAsyncClient''." , methodName));
+                if (!methodName.startsWith("build")) {
+                    break;
                 }
 
+                hasBuildMethod = true;
+                // method name has prefix 'build' but not 'build*Client' or 'build*AsyncClient'
+                if (!methodName.endsWith("Client")) {
+                    log(token, String.format(
+                        "@ServiceClientBuilder class should not have a method name, ''%s'' starting with ''build'' but not ending with ''Client''." , methodName));
+                }
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
