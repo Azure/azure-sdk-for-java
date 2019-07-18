@@ -47,7 +47,7 @@ public class BatchOptions implements Cloneable {
      * recommended that the identifier of the position be specified directly when sending the batch.
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
-     * @return The updated {@link SendOptions} object.
+     * @return The updated {@link BatchOptions} object.
      */
     public BatchOptions partitionKey(String partitionKey) {
         this.partitionKey = partitionKey;
