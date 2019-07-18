@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.implementation.annotation.Fluent;
 import com.azure.messaging.eventhubs.EventHubProducer;
-
 import org.reactivestreams.Publisher;
 
 /**
@@ -52,7 +51,7 @@ public class SendOptions implements Cloneable {
     }
 
     /**
-     * Creates a shallow clone of this instance. The parameters are not cloned, but they are immutable.
+     * Creates a shallow clone of this instance.
      *
      * @return A shallow clone of this object.
      */

@@ -39,14 +39,14 @@ public final class EventDataBatch {
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
     private final byte[] eventBytes;
-    private int currentSize;
+    private int sizeInBytes;
 
     EventDataBatch(int maxMessageSize, String partitionKey, ErrorContextProvider contextProvider) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
-        this.currentSize = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
     }
 
@@ -55,8 +55,17 @@ public final class EventDataBatch {
      *
      * @return The number of {@link EventData events} in the batch.
      */
-    int getSize() {
+    public int getCount() {
         return events.size();
+    }
+
+    /**
+     * Gets the size of the {@link EventDataBatch} in bytes.
+     *
+     * @return the size of the {@link EventDataBatch} in bytes.
+     */
+    public int getSizeInBytes() {
+        return this.sizeInBytes;
     }
 
     /**
@@ -66,7 +75,8 @@ public final class EventDataBatch {
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
      *         the batch.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
-     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
+     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link
+     *         EventDataBatch}.
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
@@ -86,11 +96,11 @@ public final class EventDataBatch {
         }
 
         synchronized (lock) {
-            if (this.currentSize + size > this.maxMessageSize) {
+            if (this.sizeInBytes + size > this.maxMessageSize) {
                 return false;
             }
 
-            this.currentSize += size;
+            this.sizeInBytes += size;
         }
 
         this.events.add(eventData);

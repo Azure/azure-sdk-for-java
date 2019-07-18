@@ -79,7 +79,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
             if (count % 100 == 0) {
-                logger.verbose("Batch size: {}", batch.getSize());
+                logger.verbose("Batch size: {}", batch.getCount());
             }
 
             count++;
@@ -103,7 +103,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
             if (count % 100 == 0) {
-                logger.verbose("Batch size: {}", batch.getSize());
+                logger.verbose("Batch size: {}", batch.getCount());
             }
             count++;
         }
@@ -137,7 +137,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
             count++;
         }
 
-        final CountDownLatch countDownLatch = new CountDownLatch(batch.getSize());
+        final CountDownLatch countDownLatch = new CountDownLatch(batch.getCount());
 
         Flux<EventHubConsumer> consumers;
         Disposable.Composite subscriptions = Disposables.composite();
@@ -215,7 +215,7 @@ public class EventDataBatchIntegrationTest extends ApiTestBase {
         }
 
         // Act & Assert
-        Assert.assertEquals(count, batch.getSize());
+        Assert.assertEquals(count, batch.getCount());
         StepVerifier.create(producer.send(batch.getEvents(), sendOptions))
             .verifyComplete();
     }
