@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.MessageConstant;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ErrorContextProvider;
 import org.apache.qpid.proton.Proton;
@@ -31,6 +32,7 @@ import java.util.Objects;
  * @see EventHubProducer See EventHubProducer for examples.
  */
 public final class EventDataBatch {
+    private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
@@ -68,16 +70,19 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw new IllegalArgumentException("eventData cannot be null");
+            logger.logAndThrow(new IllegalArgumentException("eventData cannot be null"));
+            return false;
         }
 
         final int size;
         try {
             size = getSize(eventData, events.isEmpty());
         } catch (java.nio.BufferOverflowException exception) {
-            throw new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            logger.logAndThrow(new AmqpException(false, ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
-                contextProvider.getErrorContext());
+                contextProvider.getErrorContext()));
+
+            return false;
         }
 
         synchronized (lock) {
@@ -122,7 +127,7 @@ public final class EventDataBatch {
     /*
      * Creates the AMQP message represented by the event data
      */
-    private static Message createAmqpMessage(EventData event, String partitionKey) {
+    private Message createAmqpMessage(EventData event, String partitionKey) {
         final Message message = Proton.message();
 
         if (event.properties() != null && !event.properties().isEmpty()) {
@@ -180,7 +185,7 @@ public final class EventDataBatch {
                             message.setReplyToGroupId((String) value);
                             break;
                         default:
-                            throw new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key));
+                            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US, "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
                     final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
