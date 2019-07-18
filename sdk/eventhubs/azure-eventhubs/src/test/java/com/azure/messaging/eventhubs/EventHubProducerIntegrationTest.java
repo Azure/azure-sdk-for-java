@@ -10,6 +10,8 @@ import com.azure.messaging.eventhubs.implementation.ApiTestBase;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
+import com.azure.messaging.eventhubs.models.EventHubProducerOptions;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +29,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class EventHubProducerIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "1";
 
-    private EventHubClient client;
+    private EventHubAsyncClient client;
 
     public EventHubProducerIntegrationTest() {
         super(new ClientLogger(EventHubProducerIntegrationTest.class));
@@ -49,7 +51,7 @@ public class EventHubProducerIntegrationTest extends ApiTestBase {
             properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TIMEOUT, TransportType.AMQP,
             Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
 
-        client = new EventHubClient(connectionOptions, getReactorProvider(), handlerProvider);
+        client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }
 
     @Override
