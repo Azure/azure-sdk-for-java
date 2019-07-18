@@ -65,7 +65,7 @@ public class BatchOptions implements Cloneable {
     }
 
     /**
-     * Creates a shallow clone of this instance. The parameters are not cloned, but they are immutable.
+     * Creates a shallow clone of this instance.
      *
      * @return A shallow clone of this object.
      */
