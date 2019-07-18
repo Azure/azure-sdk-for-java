@@ -88,7 +88,13 @@ public class RsaKey implements IKey {
             throw new IllegalArgumentException("kid");
         }
 
-        final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", provider);
+        final KeyPairGenerator generator;
+
+        if (provider == null) {
+            generator = KeyPairGenerator.getInstance("RSA");
+        } else {
+            generator = KeyPairGenerator.getInstance("RSA", provider);
+        }
 
         generator.initialize(keySize);
 
