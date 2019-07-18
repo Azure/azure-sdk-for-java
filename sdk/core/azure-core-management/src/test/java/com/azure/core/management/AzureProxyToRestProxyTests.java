@@ -35,12 +35,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.LinkedHashMap;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AzureProxyToRestProxyTests {
     /**
@@ -770,7 +765,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     private static void assertContains(String value, String expectedSubstring) {
-        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
+        assertTrue(value.contains(expectedSubstring), "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
     }
 
     private static void assertMatchWithHttpOrHttps(String url1, String url2) {
@@ -782,7 +777,7 @@ public abstract class AzureProxyToRestProxyTests {
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        assertTrue("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.", false);
+        fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
 
 }

@@ -35,10 +35,7 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AzureProxyTests {
     private long delayInMillisecondsBackup;
@@ -859,7 +856,7 @@ public class AzureProxyTests {
     }
 
     private static void assertContains(String value, String expectedSubstring) {
-        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
+        assertTrue(value.contains(expectedSubstring), "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
     }
 
 }
