@@ -4,17 +4,15 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.Retry;
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Optional;
-
-import com.azure.core.implementation.annotation.Fluent;
 
 /**
  * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its

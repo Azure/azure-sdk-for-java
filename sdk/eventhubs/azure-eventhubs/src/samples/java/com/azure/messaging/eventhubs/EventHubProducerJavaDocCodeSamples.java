@@ -95,14 +95,14 @@ public class EventHubProducerJavaDocCodeSamples {
 
         // The sample Flux contains three events, but it could be an infinite stream of telemetry events.
         telemetryEvents.subscribe(event -> {
-                final EventDataBatch batch = currentBatch.get();
-                if (!batch.tryAdd(event)) {
-                    producer.createBatch(options).map(newBatch -> {
-                        currentBatch.set(newBatch);
-                        return producer.send(batch);
-                    }).block();
-                }
-            }, error -> System.err.println("Error received:" + error),
+            final EventDataBatch batch = currentBatch.get();
+            if (!batch.tryAdd(event)) {
+                producer.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+                    return producer.send(batch);
+                }).block();
+            }
+        }, error -> System.err.println("Error received:" + error),
             () -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null) {
