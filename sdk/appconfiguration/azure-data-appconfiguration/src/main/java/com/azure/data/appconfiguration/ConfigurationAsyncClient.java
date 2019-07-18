@@ -77,7 +77,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to add.
      * @param value The value associated with this configuration setting key.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key exists.
@@ -101,7 +101,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSetting#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * @return The {@link ConfigurationSetting} that was created, if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -125,7 +125,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs or the key
      * is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -161,7 +161,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
      * value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceModifiedException If the setting exists and is locked.
@@ -189,7 +189,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
-     * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * @return The {@link ConfigurationSetting} that was created or updated, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -220,7 +220,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.setSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
+     * @return A REST response containing the {@link ConfigurationSetting} that was created or updated, if the key is an invalid
      * value, the setting is locked, or an etag was provided but does not match the service's current etag value (which
      * will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -263,7 +263,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
-     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws HttpResponseException If a ConfigurationSetting with the key does not exist or the configuration value
@@ -290,7 +290,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
-     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * @return The {@link ConfigurationSetting} that was updated, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -318,7 +318,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.updateSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
-     * @return A REST response containing the {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * @return A REST response containing the {@link ConfigurationSetting} that was updated, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -354,7 +354,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#string}
      *
      * @param key The key of the setting to retrieve.
-     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws IllegalArgumentException If {@code key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with {@code key} does not exist.
@@ -377,7 +377,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSetting#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * @return The {@link ConfigurationSetting} stored in the service, if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -400,7 +400,7 @@ public final class ConfigurationAsyncClient {
      * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.getSettingWithResponse#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
-     * @return A REST response containing the {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * @return A REST response containing the {@link ConfigurationSetting} stored in the service, if the configuration value does
      * not exist or the key is an invalid value (which will also throw HttpResponseException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
