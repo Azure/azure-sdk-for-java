@@ -30,6 +30,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -165,52 +166,53 @@ public class ReactorNettyClientTests {
                 .verify();
     }
 
-    @Test(/*timeout = 5000*/) // FIXME
-    public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
-            throws IOException, InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Socket> sock = new AtomicReference<>();
-        ServerSocket ss = new ServerSocket(0);
-        try {
-            Mono.fromCallable(() -> {
-                latch.countDown();
-                Socket socket = ss.accept();
-                sock.set(socket);
-                // give the client time to get request across
-                Thread.sleep(500);
-                // respond but don't send the complete response
-                byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
-                System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
-                String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
-                OutputStream out = socket.getOutputStream();
-                out.write(response.getBytes());
-                out.flush();
-                // kill the socket with HTTP response body incomplete
-                socket.close();
-                return 1;
-            })
-            .subscribeOn(Schedulers.elastic())
-                .subscribe();
-            //
-            latch.await();
-            HttpClient client = HttpClient.createDefault();
-            HttpRequest request = new HttpRequest(HttpMethod.GET,
+    @Test
+    public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
+        assertTimeout(Duration.ofMillis(5000), () -> {
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<Socket> sock = new AtomicReference<>();
+            ServerSocket ss = new ServerSocket(0);
+            try {
+                Mono.fromCallable(() -> {
+                    latch.countDown();
+                    Socket socket = ss.accept();
+                    sock.set(socket);
+                    // give the client time to get request across
+                    Thread.sleep(500);
+                    // respond but don't send the complete response
+                    byte[] bytes = new byte[1024];
+                    int n = socket.getInputStream().read(bytes);
+                    System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
+                    String response = "HTTP/1.1 200 OK\r\n" //
+                                          + "Content-Type: text/plain\r\n" //
+                                          + "Content-Length: 10\r\n" //
+                                          + "\r\n" //
+                                          + "zi";
+                    OutputStream out = socket.getOutputStream();
+                    out.write(response.getBytes());
+                    out.flush();
+                    // kill the socket with HTTP response body incomplete
+                    socket.close();
+                    return 1;
+                })
+                    .subscribeOn(Schedulers.elastic())
+                    .subscribe();
+                //
+                latch.await();
+                HttpClient client = HttpClient.createDefault();
+                HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
-            HttpResponse response = client.send(request).block();
-            assertEquals(200, response.statusCode());
-            System.out.println("reading body");
-            //
-            StepVerifier.create(response.bodyAsByteArray())
+                HttpResponse response = client.send(request).block();
+                assertEquals(200, response.statusCode());
+                System.out.println("reading body");
+                //
+                StepVerifier.create(response.bodyAsByteArray())
                     // .awaitDone(20, TimeUnit.SECONDS)
                     .verifyError(IOException.class);
-        } finally {
-            ss.close();
-        }
+            } finally {
+                ss.close();
+            }
+        });
     }
 
     @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
