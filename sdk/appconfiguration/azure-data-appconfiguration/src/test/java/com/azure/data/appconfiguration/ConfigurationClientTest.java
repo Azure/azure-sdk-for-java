@@ -16,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -49,11 +50,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @Override
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
-
-        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys(keyPrefix + "*"))) {
+        client.listSettings(new SettingSelector().keys(keyPrefix + "*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
-        }
+        });
 
         logger.info("Finished cleaning up values.");
     }
@@ -323,7 +323,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return (List<ConfigurationSetting>) client.listSettings(new SettingSelector().keys(key, key2));
+            return client.listSettings(new SettingSelector().keys(key, key2)).collect(Collectors.toList());
         });
     }
 
@@ -340,7 +340,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return (List<ConfigurationSetting>) client.listSettings(new SettingSelector().keys(key).labels(label, label2));
+            return client.listSettings(new SettingSelector().keys(key).labels(label, label2)).collect(Collectors.toList());
         });
     }
 
@@ -350,7 +350,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listSettingsSelectFields() {
         listSettingsSelectFieldsRunner((settings, selector) -> {
             settings.forEach(client::setSetting);
-            return (List<ConfigurationSetting>) client.listSettings(selector);
+            return client.listSettings(selector).collect(Collectors.toList());
         });
     }
 
@@ -375,14 +375,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(keyName));
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
-        assertConfigurationEquals(updated, ((List<ConfigurationSetting>) client.listSettings(options)).get(0));
+        assertConfigurationEquals(updated, (client.listSettings(options).collect(Collectors.toList())).get(0));
     }
 
     /**
@@ -401,13 +401,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(updated2, client.setSetting(updated2));
 
         // Get all revisions for a key, they are listed in descending order.
-        List<ConfigurationSetting> revisions = (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(keyName));
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
         assertConfigurationEquals(updated2, revisions.get(0));
         assertConfigurationEquals(updated, revisions.get(1));
         assertConfigurationEquals(original, revisions.get(2));
 
         // Verifies that we can select specific fields.
-        revisions = (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG));
+        revisions = client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)).collect(Collectors.toList());
         validateListRevisions(updated2, revisions.get(0));
         validateListRevisions(updated, revisions.get(1));
         validateListRevisions(original, revisions.get(2));
@@ -426,7 +426,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(key, key2));
+            return client.listSettingRevisions(new SettingSelector().keys(key, key2)).collect(Collectors.toList());
         });
     }
 
@@ -444,7 +444,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2));
+            return client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)).collect(Collectors.toList());
         });
     }
 
@@ -461,7 +461,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(updated, client.updateSetting(updated));
         assertConfigurationEquals(updated2, client.updateSetting(updated2));
 
-        List<ConfigurationSetting> revisions = (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(1, 2)));
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(1, 2))).collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
         assertConfigurationEquals(original, revisions.get(1));
     }
@@ -499,7 +499,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = (List<ConfigurationSetting>) client.listSettingRevisions(new SettingSelector().keys(keyName));
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
@@ -507,7 +507,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
-        revisions = (List<ConfigurationSetting>) client.listSettingRevisions(options);
+        revisions = client.listSettingRevisions(options).collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
         assertConfigurationEquals(original, revisions.get(1));
     }
@@ -523,7 +523,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
-        assertEquals(numberExpected, ((List<ConfigurationSetting>) client.listSettingRevisions(filter)).size());
+        assertEquals(numberExpected, client.listSettingRevisions(filter).count());
     }
 
     /**
@@ -537,7 +537,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
-        assertEquals(numberExpected, ((List<ConfigurationSetting>) client.listSettings(filter)).size());
+        assertEquals(numberExpected, client.listSettings(filter).count());
     }
 
     /**
@@ -556,9 +556,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     public void deleteAllSettings() {
-        for (ConfigurationSetting configurationSetting : client.listSettings(new SettingSelector().keys("*"))) {
+        client.listSettings(new SettingSelector().keys("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);
-        }
+        });
     }
 }

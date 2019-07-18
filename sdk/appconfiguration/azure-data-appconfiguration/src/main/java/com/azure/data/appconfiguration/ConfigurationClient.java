@@ -15,6 +15,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -477,11 +479,11 @@ public final class ConfigurationClient {
      * }</pre>
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettings(SettingSelector options) {
+    public Stream<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
 
@@ -500,11 +502,12 @@ public final class ConfigurationClient {
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
-    private Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return client.listSettings(options, context).collectList().block();
+    private Stream<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+        List<ConfigurationSetting> listConfigurationSettings = client.listSettings(options, context).collectList().block();
+        return listConfigurationSettings != null ? listConfigurationSettings.stream() : Stream.empty();
     }
 
     /**
@@ -528,7 +531,7 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
 
@@ -553,7 +556,8 @@ public final class ConfigurationClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
-    private Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        return client.listSettingRevisions(selector, context).collectList().block();
+    private Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        List<ConfigurationSetting> listConfigurationSetting = client.listSettingRevisions(selector, context).collectList().block();
+        return listConfigurationSetting != null ? listConfigurationSetting.stream() : Stream.empty();
     }
 }
