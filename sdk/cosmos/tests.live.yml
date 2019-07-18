@@ -146,7 +146,7 @@ jobs:
       inputs:
        mavenPomFile: $(pomFile)
        goals: verify
-       options: '$(ProfileFlag) -DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY)'
+       options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY)'
        testResultsFiles: '**/junitreports/TEST-*.xml'
       env:
         DESIRED_CONSISTENCIES: $(Consistency)
