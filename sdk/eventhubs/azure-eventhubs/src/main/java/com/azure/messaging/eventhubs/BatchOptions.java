@@ -34,7 +34,7 @@ public class BatchOptions implements Cloneable {
     }
 
     /**
-     * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service map this key to
+     * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service to map this key to
      * a specific partition but allowing the service to choose an arbitrary, partition for this batch of events and any
      * other batches using the same partition hashing key.
      *
