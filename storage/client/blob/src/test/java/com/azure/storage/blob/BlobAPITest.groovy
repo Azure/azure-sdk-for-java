@@ -233,10 +233,10 @@ class BlobAPITest extends APISpec {
         bu.download(originalStream)
 
         BlockBlobClient bu2 = bu.asBlockBlobClient()
+        BlobClient bu3 = bu.createSnapshot().value()
         bu2.upload(new ByteArrayInputStream("ABC".getBytes()), 3)
 
         then:
-        BlobClient bu3 = bu.createSnapshot().value()
         ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream()
         bu3.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
