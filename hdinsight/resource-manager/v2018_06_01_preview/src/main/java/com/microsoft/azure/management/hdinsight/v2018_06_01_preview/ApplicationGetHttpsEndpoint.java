@@ -19,7 +19,7 @@ public class ApplicationGetHttpsEndpoint {
      * The list of access modes for the application.
      */
     @JsonProperty(value = "accessModes")
-    private List<String> accessModes;
+    private List<ApplicationHttpsEndpointAccessMode> accessModes;
 
     /**
      * The location of the endpoint.
@@ -56,7 +56,7 @@ public class ApplicationGetHttpsEndpoint {
      *
      * @return the accessModes value
      */
-    public List<String> accessModes() {
+    public List<ApplicationHttpsEndpointAccessMode> accessModes() {
         return this.accessModes;
     }
 
@@ -66,7 +66,7 @@ public class ApplicationGetHttpsEndpoint {
      * @param accessModes the accessModes value to set
      * @return the ApplicationGetHttpsEndpoint object itself.
      */
-    public ApplicationGetHttpsEndpoint withAccessModes(List<String> accessModes) {
+    public ApplicationGetHttpsEndpoint withAccessModes(List<ApplicationHttpsEndpointAccessMode> accessModes) {
         this.accessModes = accessModes;
         return this;
     }

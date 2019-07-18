@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Locations;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.CapabilitiesResult;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.UsagesListResult;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.BillingResponseListResult;
 
@@ -26,6 +27,18 @@ class LocationsImpl extends WrapperImpl<LocationsInner> implements Locations {
 
     public HDInsightManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Observable<CapabilitiesResult> getCapabilitiesAsync(String location) {
+        LocationsInner client = this.inner();
+        return client.getCapabilitiesAsync(location)
+        .map(new Func1<CapabilitiesResultInner, CapabilitiesResult>() {
+            @Override
+            public CapabilitiesResult call(CapabilitiesResultInner inner) {
+                return new CapabilitiesResultImpl(inner, manager());
+            }
+        });
     }
 
     @Override

@@ -52,10 +52,11 @@ public class ApplicationProperties {
     private String provisioningState;
 
     /**
-     * The application type.
+     * The application type. Possible values include: 'CustomApplication',
+     * 'RServer'.
      */
     @JsonProperty(value = "applicationType")
-    private String applicationType;
+    private ApplicationType applicationType;
 
     /**
      * The application state.
@@ -191,21 +192,21 @@ public class ApplicationProperties {
     }
 
     /**
-     * Get the application type.
+     * Get the application type. Possible values include: 'CustomApplication', 'RServer'.
      *
      * @return the applicationType value
      */
-    public String applicationType() {
+    public ApplicationType applicationType() {
         return this.applicationType;
     }
 
     /**
-     * Set the application type.
+     * Set the application type. Possible values include: 'CustomApplication', 'RServer'.
      *
      * @param applicationType the applicationType value to set
      * @return the ApplicationProperties object itself.
      */
-    public ApplicationProperties withApplicationType(String applicationType) {
+    public ApplicationProperties withApplicationType(ApplicationType applicationType) {
         this.applicationType = applicationType;
         return this;
     }
