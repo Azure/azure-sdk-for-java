@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains policies used by Azure Storage services.
+ * Package containing policies used by Azure Storage services.
  */
 package com.azure.storage.common.policy;

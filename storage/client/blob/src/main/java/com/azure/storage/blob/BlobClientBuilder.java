@@ -49,14 +49,15 @@ import java.util.Objects;
  * <ul>
  *     <li>{@link BlobClientBuilder#buildBlobClient()} - {@link BlobClient}</li>
  *     <li>{@link BlobClientBuilder#buildBlobAsyncClient()} - {@link BlobAsyncClient}</li>
- *     <li>{@link BlobClientBuilder#buildAppendBlobClient()} ()} - {@link AppendBlobClient}</li>
- *     <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient()} ()} - {@link AppendBlobAsyncClient}</li>
- *     <li>{@link BlobClientBuilder#buildBlockBlobClient()} ()} - {@link BlockBlobClient}</li>
- *     <li>{@link BlobClientBuilder#buildBlockBlobAsyncClient()} ()} - {@link BlockBlobAsyncClient}</li>
- *     <li>{@link BlobClientBuilder#buildPageBlobClient()} ()} - {@link PageBlobClient}</li>
- *     <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} ()} - {@link PageBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildAppendBlobClient()} - {@link AppendBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient() - {@link AppendBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildBlockBlobClient()} - {@link BlockBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildBlockBlobAsyncClient()} - {@link BlockBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildPageBlobClient()} - {@link PageBlobClient}</li>
+ *     <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} - {@link PageBlobAsyncClient}</li>
  * </ul>
  */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
@@ -128,8 +129,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link BlobClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobClient buildBlobClient() {
         return new BlobClient(buildBlobAsyncClient());
@@ -137,8 +137,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlobAsyncClient buildBlobAsyncClient() {
         return new BlobAsyncClient(buildImpl(), snapshot);
@@ -146,8 +145,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobClient buildAppendBlobClient() {
         return new AppendBlobClient(buildAppendBlobAsyncClient());
@@ -155,8 +153,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         return new AppendBlobAsyncClient(buildImpl(), snapshot);
@@ -164,8 +161,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobClient buildBlockBlobClient() {
         return new BlockBlobClient(buildBlockBlobAsyncClient());
@@ -173,8 +169,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         return new BlockBlobAsyncClient(buildImpl(), snapshot);
@@ -182,8 +177,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link PageBlobClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobClient buildPageBlobClient() {
         return new PageBlobClient(buildPageBlobAsyncClient());
@@ -191,8 +185,7 @@ public final class BlobClientBuilder {
 
     /**
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}, {@code containerName} is {@code null}, or
-     * {@code blobName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         return new PageBlobAsyncClient(buildImpl(), snapshot);
@@ -202,13 +195,11 @@ public final class BlobClientBuilder {
      * Sets the service endpoint, additionally parses it for information (SAS token, container name, blob name)
      * @param endpoint URL of the service
      * @return the updated BlobClientBuilder object
-     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public BlobClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        URL url;
         try {
-            url = new URL(endpoint);
+            URL url = new URL(endpoint);
             BlobURLParts parts = URLParser.parse(url);
             this.endpoint = parts.scheme() + "://" + parts.host();
 
@@ -223,13 +214,13 @@ public final class BlobClientBuilder {
             if (parts.snapshot() != null) {
                 this.snapshot = parts.snapshot();
             }
+
+            SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+            if (credential != null) {
+                this.credential(credential);
+            }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
-        }
-
-        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
-        if (credential != null) {
-            this.credential(credential);
         }
 
         return this;
@@ -239,9 +230,10 @@ public final class BlobClientBuilder {
      * Sets the name of the container this client is connecting to.
      * @param containerName the name of the container
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code containerName} is {@code null}
      */
     public BlobClientBuilder containerName(String containerName) {
-        this.containerName = containerName;
+        this.containerName = Objects.requireNonNull(containerName);
         return this;
     }
 
@@ -249,9 +241,10 @@ public final class BlobClientBuilder {
      * Sets the name of the blob this client is connecting to.
      * @param blobName the name of the blob
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public BlobClientBuilder blobName(String blobName) {
-        this.blobName = blobName;
+        this.blobName = Objects.requireNonNull(blobName);
         return this;
     }
 
@@ -269,9 +262,10 @@ public final class BlobClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}
      */
     public BlobClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -281,9 +275,10 @@ public final class BlobClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}
      */
     public BlobClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -293,9 +288,10 @@ public final class BlobClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}
      */
     public BlobClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -316,6 +312,7 @@ public final class BlobClientBuilder {
      * Sets the connection string for the service, parses it for authentication information (account name, account key)
      * @param connectionString connection string from access keys section
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code connectionString} is {@code null}
      * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public BlobClientBuilder connectionString(String connectionString) {
@@ -349,9 +346,10 @@ public final class BlobClientBuilder {
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code httpClient} is {@code null}
      */
     public BlobClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = Objects.requireNonNull(httpClient);
         return this;
     }
 
@@ -359,9 +357,10 @@ public final class BlobClientBuilder {
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}
      */
     public BlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(pipelinePolicy);
+        this.policies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
@@ -390,9 +389,10 @@ public final class BlobClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      * @param retryOptions the options to configure retry behaviors
      * @return the updated BlobClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}
      */
     public BlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+        this.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
     }
 }

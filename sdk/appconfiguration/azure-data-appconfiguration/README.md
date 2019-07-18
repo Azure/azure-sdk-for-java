@@ -59,7 +59,7 @@ Once you have the value of the connection string you can create the configuratio
 
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 ```
 
@@ -67,7 +67,7 @@ or
 
 ```Java
 ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildAsyncClient();
 ```
 
@@ -87,7 +87,7 @@ An application that needs to retrieve startup configurations is better suited us
 
 ```Java
 ConfigurationClient client = new ConfigurationClient()
-        .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
+        .credential(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildClient();
 
 String url = client.getSetting(urlKey).value();
@@ -104,7 +104,7 @@ An application that has a large set of configurations that it needs to periodica
 
 ```Java
 ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(appConfigConnectionString))
+        .credential(new ConfigurationClientCredentials(appConfigConnectionString))
         .buildAsyncClient();
         
 client.listSettings(new SettingSelection().label(periodicUpdateLabel))
@@ -126,7 +126,7 @@ Create a Configuration Setting to be stored in the Configuration Store. There ar
 - setSetting creates a setting if it doesn't exist or overrides an existing setting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 ConfigurationSetting setting = client.setSetting("some_key", "some_value");
 ```
@@ -136,7 +136,7 @@ ConfigurationSetting setting = client.setSetting("some_key", "some_value");
 Retrieve a previously stored Configuration Setting by calling getSetting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.getSetting("some_key");
@@ -147,7 +147,7 @@ ConfigurationSetting setting = client.getSetting("some_key");
 Update an existing Configuration Setting by calling updateSetting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
@@ -158,7 +158,7 @@ ConfigurationSetting setting = client.updateSetting("some_key", "new_value");
 Delete an existing Configuration Setting by calling deleteSetting.
 ```Java
 ConfigurationClient client = new ConfigurationClientBuilder()
-        .credentials(new ConfigurationClientCredentials(connectionString))
+        .credential(new ConfigurationClientCredentials(connectionString))
         .buildClient();
 client.setSetting("some_key", "some_value");
 ConfigurationSetting setting = client.deleteSetting("some_key");
