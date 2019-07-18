@@ -46,11 +46,11 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     SqlContainer.DefinitionStages.Blank defineContainer(String name);
 
     /**
-     * Begins definition for a new Storedprocedure resource.
+     * Begins definition for a new StoredProcedure resource.
      * @param name resource name.
-     * @return the first stage of the new Storedprocedure definition.
+     * @return the first stage of the new StoredProcedure definition.
      */
-    SqlStoredProcedure.DefinitionStages.Blank defineStoredprocedure(String name);
+    SqlStoredProcedure.DefinitionStages.Blank defineStoredProcedure(String name);
 
     /**
      * Begins definition for a new Collection resource.

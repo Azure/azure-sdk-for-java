@@ -44,7 +44,7 @@ class SqlStoredProcedureImpl extends CreatableUpdatableImpl<SqlStoredProcedure, 
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "databaseAccounts");
         this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
         this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
-        this.storedProcedureName = IdParsingUtils.getValueFromIdByName(inner.id(), "storedprocedures");
+        this.storedProcedureName = IdParsingUtils.getValueFromIdByName(inner.id(), "storedProcedures");
         //
         this.createOrUpdateParameter = new SqlStoredProcedureCreateUpdateParameters();
     }

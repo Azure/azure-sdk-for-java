@@ -230,8 +230,8 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
-    public SqlStoredProcedureImpl defineStoredprocedure(String name) {
-        return wrapStoredprocedureModel(name);
+    public SqlStoredProcedureImpl defineStoredProcedure(String name) {
+        return wrapStoredProcedureModel(name);
     }
 
     @Override
@@ -262,7 +262,7 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return new SqlContainerImpl(name, this.manager());
     }
 
-    private SqlStoredProcedureImpl wrapStoredprocedureModel(String name) {
+    private SqlStoredProcedureImpl wrapStoredProcedureModel(String name) {
         return new SqlStoredProcedureImpl(name, this.manager());
     }
 
@@ -336,7 +336,7 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
         String databaseName = IdParsingUtils.getValueFromIdByName(id, "databases");
         String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
-        String storedProcedureName = IdParsingUtils.getValueFromIdByName(id, "storedprocedures");
+        String storedProcedureName = IdParsingUtils.getValueFromIdByName(id, "storedProcedures");
         DatabaseAccountsInner client = this.inner();
         return client.getSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
     }
