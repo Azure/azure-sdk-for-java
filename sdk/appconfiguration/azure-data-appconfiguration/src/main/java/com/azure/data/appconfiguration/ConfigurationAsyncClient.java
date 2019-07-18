@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
 import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
@@ -672,8 +671,41 @@ public final class ConfigurationAsyncClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return fluxContext(context -> listSettingRevisions(selector, context));
+    public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+        return new PagedFlux<>(() ->
+            withContext(context -> listSettingRevisionsFirstPage(selector, context)),
+            continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+    }
+
+    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
+        Mono<PagedResponse<ConfigurationSetting>> result;
+
+        if (selector != null) {
+            String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
+            String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
+            String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
+
+            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
+                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
+        } else {
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
+                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
+                .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
+        }
+
+        return result;
+    }
+
+    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+        return result;
     }
 
     /**
@@ -733,6 +765,7 @@ public final class ConfigurationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+        
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
