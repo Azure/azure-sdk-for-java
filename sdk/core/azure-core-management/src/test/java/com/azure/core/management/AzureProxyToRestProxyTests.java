@@ -35,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.LinkedHashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public abstract class AzureProxyToRestProxyTests {
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
