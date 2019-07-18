@@ -42,7 +42,7 @@ public class ReactorNettyClientTests {
     private static WireMockServer server;
 
     @BeforeAll
-    public static void  BeforeAll() {
+    public static void beforeAll() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
                 WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
