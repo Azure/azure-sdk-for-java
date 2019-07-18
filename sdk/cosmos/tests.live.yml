@@ -290,28 +290,28 @@ jobs:
     strategy:
       matrix:
         Session_Tcp:
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'macOS-10.13'
           CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
           CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
           ProtocolFlag: '["Tcp"]'
           Consistency: '["Session"]'
 
         Session_Https:
-         OSVmImage: 'vs2017-win2016'
+         OSVmImage: 'macOS-10.13'
          CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
          CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
          ProtocolFlag: '["Https"]'
          Consistency: '["Session"]'
 
         Strong_Tcp:
-          OSVmImage: 'vs2017-win2016'
+          OSVmImage: 'macOS-10.13'
           CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
           CosmosAccountKey: $(SINGLE_STRONG_ONE_ACCOUNT_KEY)
           ProtocolFlag: '["Tcp"]'
           Consistency: '["Strong", "Session"]'
 
         Strong_Https:
-         OSVmImage: 'vs2017-win2016'
+         OSVmImage: 'macOS-10.13'
          CosmosAccountHost: $(SINGLE_STRONG_TWO_ACCOUNT_HOST)
          CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
          ProtocolFlag: '["Https"]'
