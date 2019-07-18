@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.monoContext;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -673,8 +673,8 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return new PagedFlux<>(() ->
-            monoContext(context -> listSettingRevisionsFirstPage(selector, context)),
-            continuationToken -> monoContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+            withContext(context -> listSettingRevisionsFirstPage(selector, context)),
+            continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
     }
 
     Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
