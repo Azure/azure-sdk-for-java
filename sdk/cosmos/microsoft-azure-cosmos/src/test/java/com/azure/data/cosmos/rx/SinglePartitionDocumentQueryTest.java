@@ -19,10 +19,7 @@ import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import com.azure.data.cosmos.internal.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -32,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;
@@ -49,6 +47,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean queryMetricsEnabled) throws Exception {
 

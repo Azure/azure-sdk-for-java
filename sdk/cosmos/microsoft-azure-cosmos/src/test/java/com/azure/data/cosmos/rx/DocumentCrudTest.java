@@ -15,11 +15,7 @@ import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.internal.FailureValidator;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -158,6 +154,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
+    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId) throws Exception {
         OffsetDateTime before = OffsetDateTime.now();

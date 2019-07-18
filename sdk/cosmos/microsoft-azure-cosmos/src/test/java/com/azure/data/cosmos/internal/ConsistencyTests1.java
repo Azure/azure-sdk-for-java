@@ -10,6 +10,7 @@ import com.azure.data.cosmos.PartitionKey;
 import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PartitionKind;
 import org.testng.SkipException;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ConsistencyTests1 extends ConsistencyTestsBase {
 
 
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnSyncReplication() throws Exception {
         if (!TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString())) {
@@ -131,11 +133,13 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateConsistentLSNAndQuorumAckedLSN();
     }
 
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationGW() throws InterruptedException {
         validateStrongConsistencyOnAsyncReplication(true);
     }
 
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationDirect() throws InterruptedException {
         validateStrongConsistencyOnAsyncReplication(false);
@@ -150,6 +154,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateSessionContainerAfterCollectionCreateReplace(true);
     }
 
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnSyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {
@@ -172,6 +177,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {

@@ -15,10 +15,7 @@ import com.azure.data.cosmos.internal.RetryAnalyzer;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.TakeContinuationToken;
 import io.reactivex.subscribers.TestSubscriber;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -45,6 +42,7 @@ public class TopQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 

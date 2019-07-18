@@ -23,12 +23,7 @@ import com.azure.data.cosmos.internal.routing.Range;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -44,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private final double minQueryRequestChargePerPartition = 2.0;
 
@@ -59,6 +55,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
         CosmosItemProperties expectedDocument = createdDocuments.get(0);

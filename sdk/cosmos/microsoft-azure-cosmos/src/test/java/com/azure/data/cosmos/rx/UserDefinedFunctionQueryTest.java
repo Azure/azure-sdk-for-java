@@ -14,10 +14,7 @@ import com.azure.data.cosmos.internal.FailureValidator;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
 import com.azure.data.cosmos.internal.TestUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore
 public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     private Database createdDatabase;

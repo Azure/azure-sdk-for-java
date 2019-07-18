@@ -12,10 +12,7 @@ import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
 import com.azure.data.cosmos.internal.FeedResponseListValidator;
 import com.azure.data.cosmos.internal.FeedResponseValidator;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -23,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Ignore
 public class ReadFeedTriggersTest extends TestSuiteBase {
 
     private CosmosContainer createdCollection;

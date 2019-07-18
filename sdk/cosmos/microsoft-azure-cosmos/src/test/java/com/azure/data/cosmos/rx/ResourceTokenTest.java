@@ -14,11 +14,7 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -32,6 +28,7 @@ import java.util.UUID;
  */
 
 // TODO: change to use external TestSuiteBase
+@Ignore
 public class ResourceTokenTest extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
 

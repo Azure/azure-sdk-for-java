@@ -8,14 +8,12 @@ import com.azure.data.cosmos.CosmosContainer;
 import com.azure.data.cosmos.CosmosResponseValidator;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionProperties;
 import com.azure.data.cosmos.CosmosUserDefinedFunctionResponse;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@Ignore
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
     private CosmosContainer createdCollection;

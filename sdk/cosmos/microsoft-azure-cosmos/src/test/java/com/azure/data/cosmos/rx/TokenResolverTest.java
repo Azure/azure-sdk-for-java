@@ -22,11 +22,7 @@ import com.azure.data.cosmos.Resource;
 import com.azure.data.cosmos.TokenResolver;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import reactor.core.publisher.Flux;
 
 import java.time.OffsetDateTime;
@@ -143,6 +139,7 @@ public class TokenResolverTest extends TestSuiteBase {
         }
     }
 
+    @Ignore
     @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
