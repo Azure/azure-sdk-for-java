@@ -15,6 +15,7 @@ import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -69,6 +70,7 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class QueueClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
@@ -133,6 +135,7 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(queueName);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
+            LOGGER.asError().log("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
@@ -199,7 +202,8 @@ public final class QueueClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
+            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
+            throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
         }
 
         return this;
@@ -237,7 +241,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
         return this;
     }
 
@@ -266,6 +270,8 @@ public final class QueueClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
+            LOGGER.asError().log("There is no valid account for the connection string. "
+                + "Connection String: %s", connectionString);
             throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
                                                                  + "Connection String: %s", connectionString));
         }

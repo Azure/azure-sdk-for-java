@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
@@ -54,6 +55,7 @@ import reactor.core.publisher.Mono;
  * @see SASTokenCredential
  */
 public final class QueueAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String queueName;
 
@@ -97,6 +99,7 @@ public final class QueueAsyncClient {
         try {
             return new URL(client.url());
         } catch (MalformedURLException ex) {
+            LOGGER.asError().log("Queue URL is malformed");
             throw new RuntimeException("Queue URL is malformed");
         }
     }

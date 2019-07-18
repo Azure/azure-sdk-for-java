@@ -31,8 +31,8 @@
     <azure-identity.version>1.0.0-preview.1</azure-identity.version>
     <azure-keyvault.version>4.0.0-preview.1</azure-keyvault.version>
     <azure-messaging-eventhubs.version>5.0.0-preview.2</azure-messaging-eventhubs.version>
-    <azure-storage-queue.version>12.0.0-preview.1</azure-storage-queue.version>
     <azure-storage-blob.version>12.0.0-preview.1</azure-storage-blob.version>
+    <azure-storage-queue.version>12.0.0-preview.1</azure-storage-queue.version>
   </properties>
 
   <distributionManagement>
@@ -89,17 +89,16 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>${azure-messaging-eventhubs.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-queue</artifactId>
-      <version>${azure-storage-queue.version}</version>
-    </dependency>
 <!--    <dependency>-->
 <!--      <groupId>com.azure</groupId>-->
 <!--      <artifactId>azure-storage-blob</artifactId>-->
 <!--      <version>${azure-storage-blob.version}</version>-->
 <!--    </dependency>-->
-
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-queue</artifactId>
+      <version>${azure-storage-queue.version}</version>
+    </dependency>
     <!-- Tracing will be built and released separately. Removing tracing dependency
      until we finalize dependency composition -->
     <!--    <dependency>-->

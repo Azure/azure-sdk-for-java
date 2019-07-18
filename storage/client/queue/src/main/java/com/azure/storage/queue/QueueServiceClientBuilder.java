@@ -14,6 +14,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
@@ -69,6 +70,7 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class QueueServiceClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -109,6 +111,7 @@ public final class QueueServiceClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
+            LOGGER.asError().log("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
@@ -185,6 +188,7 @@ public final class QueueServiceClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
+            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed.");
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
         }
 
@@ -199,7 +203,7 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueServiceClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
         return this;
     }
 
@@ -211,7 +215,7 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueServiceClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
         return this;
     }
 
