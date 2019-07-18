@@ -24,6 +24,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretPage;
 import com.azure.security.keyvault.secrets.implementation.SecretBasePage;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -50,7 +51,8 @@ interface SecretService {
                                      @QueryParam("api-version") String apiVersion,
                                      @HeaderParam("accept-language") String acceptLanguage,
                                      @BodyParam("body") SecretRequestParameters parameters,
-                                     @HeaderParam("Content-Type") String type);
+                                     @HeaderParam("Content-Type") String type,
+                                     Context context);
 
     @Get("secrets/{secret-name}/{secret-version}")
     @ExpectedResponses({200})
@@ -62,7 +64,8 @@ interface SecretService {
                                          @PathParam("secret-version") String secretVersion,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type);
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Patch("secrets/{secret-name}/{secret-version}")
@@ -74,7 +77,8 @@ interface SecretService {
                                             @QueryParam("api-version") String apiVersion,
                                             @HeaderParam("accept-language") String acceptLanguage,
                                             @BodyParam("body") SecretRequestParameters parameters,
-                                            @HeaderParam("Content-Type") String type);
+                                            @HeaderParam("Content-Type") String type,
+                                            Context context);
 
 
     @Delete("secrets/{secret-name}")
@@ -85,7 +89,8 @@ interface SecretService {
                                                @PathParam("secret-name") String secretName,
                                                @QueryParam("api-version") String apiVersion,
                                                @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type);
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
 
 
     @Get("deletedsecrets/{secret-name}")
@@ -96,7 +101,8 @@ interface SecretService {
                                                        @PathParam("secret-name") String secretName,
                                                        @QueryParam("api-version") String apiVersion,
                                                        @HeaderParam("accept-language") String acceptLanguage,
-                                                       @HeaderParam("Content-Type") String type);
+                                                       @HeaderParam("Content-Type") String type,
+                                                       Context context);
 
     @Delete("deletedsecrets/{secret-name}")
     @ExpectedResponses({204})
@@ -106,7 +112,8 @@ interface SecretService {
                                           @PathParam("secret-name") String secretName,
                                           @QueryParam("api-version") String apiVersion,
                                           @HeaderParam("accept-language") String acceptLanguage,
-                                          @HeaderParam("Content-Type") String type);
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
 
 
     @Post("deletedsecrets/{secret-name}/recover")
@@ -117,7 +124,8 @@ interface SecretService {
                                                     @PathParam("secret-name") String secretName,
                                                     @QueryParam("api-version") String apiVersion,
                                                     @HeaderParam("accept-language") String acceptLanguage,
-                                                    @HeaderParam("Content-Type") String type);
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
 
 
     @Post("secrets/{secret-name}/backup")
@@ -128,7 +136,8 @@ interface SecretService {
                                                   @PathParam("secret-name") String secretName,
                                                   @QueryParam("api-version") String apiVersion,
                                                   @HeaderParam("accept-language") String acceptLanguage,
-                                                  @HeaderParam("Content-Type") String type);
+                                                  @HeaderParam("Content-Type") String type,
+                                                  Context context);
 
 
 
@@ -140,7 +149,8 @@ interface SecretService {
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
                                              @BodyParam("application/json") SecretRestoreRequestParameters parameters,
-                                             @HeaderParam("Content-Type") String type);
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
 
     @Get("secrets")
@@ -151,7 +161,8 @@ interface SecretService {
                                                @QueryParam("maxresults") Integer maxresults,
                                                @QueryParam("api-version") String apiVersion,
                                                @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type);
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
 
 
     @Get("secrets/{secret-name}/versions")
@@ -163,7 +174,8 @@ interface SecretService {
                                                       @QueryParam("maxresults") Integer maxresults,
                                                       @QueryParam("api-version") String apiVersion,
                                                       @HeaderParam("accept-language") String acceptLanguage,
-                                                      @HeaderParam("Content-Type") String type);
+                                                      @HeaderParam("Content-Type") String type,
+                                                      Context context);
 
 
     @Get("{nextUrl}")
@@ -173,7 +185,8 @@ interface SecretService {
     Mono<PagedResponse<SecretBase>> getSecrets(@HostParam("url") String url,
                                                @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                @HeaderParam("accept-language") String acceptLanguage,
-                                               @HeaderParam("Content-Type") String type);
+                                               @HeaderParam("Content-Type") String type,
+                                               Context context);
 
 
     @Get("deletedsecrets")
@@ -184,7 +197,8 @@ interface SecretService {
                                                               @QueryParam("maxresults") Integer maxresults,
                                                               @QueryParam("api-version") String apiVersion,
                                                               @HeaderParam("accept-language") String acceptLanguage,
-                                                              @HeaderParam("Content-Type") String type);
+                                                              @HeaderParam("Content-Type") String type,
+                                                              Context context);
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
@@ -193,5 +207,6 @@ interface SecretService {
     Mono<PagedResponse<DeletedSecret>> getDeletedSecrets(@HostParam("url") String url,
                                                      @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                      @HeaderParam("accept-language") String acceptLanguage,
-                                                     @HeaderParam("Content-Type") String type);
+                                                     @HeaderParam("Content-Type") String type,
+                                                     Context context);
 }
