@@ -60,8 +60,8 @@ public final class QueueAsyncClient {
     private final String queueName;
 
     /**
-     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link AzureQueueStorageImpl#url() endpoint}.
-     * Each service call goes through the {@link HttpPipeline pipeline} in the {@code client}.
+     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code AzureQueueStorageImpl#url() endpoint}.
+     * Each service call goes through the {@link HttpPipeline pipeline} in the {@code AzureQueueStorageImpl client}.
      *
      * @param client Client that interacts with the service interfaces
      * @param queueName Name of the queue

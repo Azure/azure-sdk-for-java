@@ -393,6 +393,10 @@
                 <title>Azure Storage - Blobs</title>
                 <packages>com.azure.storage.blob*</packages>
               </group>
+              <group>
+                <title>Azure Storage - Queues</title>
+                <packages>com.azure.storage.queue*</packages>
+              </group>
             </groups>
             <links>
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -546,7 +550,7 @@
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-keyvault-secrets/src/samples/java
-                <!--                -snippetpath ${project.basedir}/storage/client/blob/src/samples/java-->
+                <!-- -snippetpath ${project.basedir}/storage/client/blob/src/samples/java-->
                 -snippetpath ${project.basedir}/storage/client/queue/src/samples/java
               </additionalOptions>
             </configuration>
