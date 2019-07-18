@@ -30,6 +30,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBDatabaseCreate
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.RegionForOnlineOffline;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainerCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlDatabaseCreateUpdateParameters;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlStoredProcedureCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.TableCreateUpdateParameters;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputResource;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputUpdateParameters;
@@ -254,6 +255,30 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginUpdateSqlContainerThroughput" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/settings/throughput")
         Observable<Response<ResponseBody>> beginUpdateSqlContainerThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ThroughputUpdateParameters updateThroughputParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listSqlStoredProcedures" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures")
+        Observable<Response<ResponseBody>> listSqlStoredProcedures(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts getSqlStoredProcedure" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}")
+        Observable<Response<ResponseBody>> getSqlStoredProcedure(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("storedProcedureName") String storedProcedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts createUpdateSqlStoredProcedure" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}")
+        Observable<Response<ResponseBody>> createUpdateSqlStoredProcedure(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("storedProcedureName") String storedProcedureName, @Query("api-version") String apiVersion, @Body SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginCreateUpdateSqlStoredProcedure" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}")
+        Observable<Response<ResponseBody>> beginCreateUpdateSqlStoredProcedure(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("storedProcedureName") String storedProcedureName, @Query("api-version") String apiVersion, @Body SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts deleteSqlStoredProcedure" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSqlStoredProcedure(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("storedProcedureName") String storedProcedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts beginDeleteSqlStoredProcedure" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteSqlStoredProcedure(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("containerName") String containerName, @Path("storedProcedureName") String storedProcedureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccounts listMongoDBDatabases" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/mongodb/databases")
@@ -4441,6 +4466,628 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
         return this.client.restClient().responseBuilderFactory().<ThroughputInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ThroughputInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;SqlStoredProcedureInner&gt; object if successful.
+     */
+    public List<SqlStoredProcedureInner> listSqlStoredProcedures(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return listSqlStoredProceduresWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlStoredProcedureInner>> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName, final ServiceCallback<List<SqlStoredProcedureInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listSqlStoredProceduresWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName), serviceCallback);
+    }
+
+    /**
+     * Lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlStoredProcedureInner&gt; object
+     */
+    public Observable<List<SqlStoredProcedureInner>> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return listSqlStoredProceduresWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName).map(new Func1<ServiceResponse<List<SqlStoredProcedureInner>>, List<SqlStoredProcedureInner>>() {
+            @Override
+            public List<SqlStoredProcedureInner> call(ServiceResponse<List<SqlStoredProcedureInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;SqlStoredProcedureInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SqlStoredProcedureInner>>> listSqlStoredProceduresWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSqlStoredProcedures(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SqlStoredProcedureInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SqlStoredProcedureInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlStoredProcedureInner>> result = listSqlStoredProceduresDelegate(response);
+                        List<SqlStoredProcedureInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SqlStoredProcedureInner>> clientResponse = new ServiceResponse<List<SqlStoredProcedureInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlStoredProcedureInner>> listSqlStoredProceduresDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlStoredProcedureInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlStoredProcedureInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlStoredProcedureInner object if successful.
+     */
+    public SqlStoredProcedureInner getSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        return getSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlStoredProcedureInner> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, final ServiceCallback<SqlStoredProcedureInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName), serviceCallback);
+    }
+
+    /**
+     * Gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlStoredProcedureInner object
+     */
+    public Observable<SqlStoredProcedureInner> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        return getSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).map(new Func1<ServiceResponse<SqlStoredProcedureInner>, SqlStoredProcedureInner>() {
+            @Override
+            public SqlStoredProcedureInner call(ServiceResponse<SqlStoredProcedureInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlStoredProcedureInner object
+     */
+    public Observable<ServiceResponse<SqlStoredProcedureInner>> getSqlStoredProcedureWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (storedProcedureName == null) {
+            throw new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSqlStoredProcedure(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlStoredProcedureInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlStoredProcedureInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlStoredProcedureInner> clientResponse = getSqlStoredProcedureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlStoredProcedureInner> getSqlStoredProcedureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlStoredProcedureInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlStoredProcedureInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlStoredProcedureInner object if successful.
+     */
+    public SqlStoredProcedureInner createUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return createUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).toBlocking().last().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlStoredProcedureInner> createUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, final ServiceCallback<SqlStoredProcedureInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<SqlStoredProcedureInner> createUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return createUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).map(new Func1<ServiceResponse<SqlStoredProcedureInner>, SqlStoredProcedureInner>() {
+            @Override
+            public SqlStoredProcedureInner call(ServiceResponse<SqlStoredProcedureInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SqlStoredProcedureInner>> createUpdateSqlStoredProcedureWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (storedProcedureName == null) {
+            throw new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlStoredProcedureParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlStoredProcedureParameters);
+        Observable<Response<ResponseBody>> observable = service.createUpdateSqlStoredProcedure(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.apiVersion(), createUpdateSqlStoredProcedureParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SqlStoredProcedureInner>() { }.getType());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SqlStoredProcedureInner object if successful.
+     */
+    public SqlStoredProcedureInner beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return beginCreateUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SqlStoredProcedureInner> beginCreateUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, final ServiceCallback<SqlStoredProcedureInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters), serviceCallback);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlStoredProcedureInner object
+     */
+    public Observable<SqlStoredProcedureInner> beginCreateUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return beginCreateUpdateSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).map(new Func1<ServiceResponse<SqlStoredProcedureInner>, SqlStoredProcedureInner>() {
+            @Override
+            public SqlStoredProcedureInner call(ServiceResponse<SqlStoredProcedureInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param createUpdateSqlStoredProcedureParameters The parameters to provide for the current SQL StoredProcedure.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SqlStoredProcedureInner object
+     */
+    public Observable<ServiceResponse<SqlStoredProcedureInner>> beginCreateUpdateSqlStoredProcedureWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (storedProcedureName == null) {
+            throw new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (createUpdateSqlStoredProcedureParameters == null) {
+            throw new IllegalArgumentException("Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null.");
+        }
+        Validator.validate(createUpdateSqlStoredProcedureParameters);
+        return service.beginCreateUpdateSqlStoredProcedure(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.apiVersion(), createUpdateSqlStoredProcedureParameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SqlStoredProcedureInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SqlStoredProcedureInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SqlStoredProcedureInner> clientResponse = beginCreateUpdateSqlStoredProcedureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SqlStoredProcedureInner> beginCreateUpdateSqlStoredProcedureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SqlStoredProcedureInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SqlStoredProcedureInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        deleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        return deleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteSqlStoredProcedureWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (storedProcedureName == null) {
+            throw new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteSqlStoredProcedure(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        beginDeleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        return beginDeleteSqlStoredProcedureWithServiceResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteSqlStoredProcedureWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (containerName == null) {
+            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
+        }
+        if (storedProcedureName == null) {
+            throw new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDeleteSqlStoredProcedure(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteSqlStoredProcedureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteSqlStoredProcedureDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

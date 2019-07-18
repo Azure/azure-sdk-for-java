@@ -23,6 +23,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetric
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountUsage;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.DatabaseAccountMetricDefinition;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlStoredProcedure;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinGraph;
 
@@ -43,6 +44,13 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the first stage of the new Container definition.
      */
     SqlContainer.DefinitionStages.Blank defineContainer(String name);
+
+    /**
+     * Begins definition for a new Storedprocedure resource.
+     * @param name resource name.
+     * @return the first stage of the new Storedprocedure definition.
+     */
+    SqlStoredProcedure.DefinitionStages.Blank defineStoredprocedure(String name);
 
     /**
      * Begins definition for a new Collection resource.
@@ -565,6 +573,44 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
      * @return the observable for the request
      */
     Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
+
+    /**
+     * Gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlStoredProcedure> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
+
+    /**
+     * Lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlStoredProcedure> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL StoredProcedure.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param storedProcedureName Cosmos DB SQL StoredProcedure name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.

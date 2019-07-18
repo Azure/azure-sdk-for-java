@@ -39,6 +39,7 @@ import com.microsoft.azure.management.cosmosdb.v2015_04_08.GremlinDatabaseCreate
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Throughput;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.ThroughputResource;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlContainer;
+import com.microsoft.azure.management.cosmosdb.v2015_04_08.SqlStoredProcedure;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.MongoDBCollection;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.Table;
 import com.microsoft.azure.management.cosmosdb.v2015_04_08.CassandraTable;
@@ -229,6 +230,11 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     }
 
     @Override
+    public SqlStoredProcedureImpl defineStoredprocedure(String name) {
+        return wrapStoredprocedureModel(name);
+    }
+
+    @Override
     public MongoDBCollectionImpl defineCollection(String name) {
         return wrapCollectionModel(name);
     }
@@ -254,6 +260,10 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
 
     private SqlContainerImpl wrapContainerModel(String name) {
         return new SqlContainerImpl(name, this.manager());
+    }
+
+    private SqlStoredProcedureImpl wrapStoredprocedureModel(String name) {
+        return new SqlStoredProcedureImpl(name, this.manager());
     }
 
     private MongoDBCollectionImpl wrapCollectionModel(String name) {
@@ -292,6 +302,10 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         return  new SqlContainerImpl(inner, manager());
     }
 
+    private SqlStoredProcedureImpl wrapSqlStoredProcedureModel(SqlStoredProcedureInner inner) {
+        return  new SqlStoredProcedureImpl(inner, manager());
+    }
+
     private MongoDBCollectionImpl wrapMongoDBCollectionModel(MongoDBCollectionInner inner) {
         return  new MongoDBCollectionImpl(inner, manager());
     }
@@ -315,6 +329,16 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
         String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
         DatabaseAccountsInner client = this.inner();
         return client.getSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName);
+    }
+
+    private Observable<SqlStoredProcedureInner> getSqlStoredProcedureInnerUsingDatabaseAccountsInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String accountName = IdParsingUtils.getValueFromIdByName(id, "databaseAccounts");
+        String databaseName = IdParsingUtils.getValueFromIdByName(id, "databases");
+        String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
+        String storedProcedureName = IdParsingUtils.getValueFromIdByName(id, "storedprocedures");
+        DatabaseAccountsInner client = this.inner();
+        return client.getSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
     }
 
     private Observable<MongoDBCollectionInner> getMongoDBCollectionInnerUsingDatabaseAccountsInnerAsync(String id) {
@@ -789,6 +813,42 @@ class DatabaseAccountsImpl extends GroupableResourcesCoreImpl<DatabaseAccount, D
     public Completable deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
         DatabaseAccountsInner client = this.inner();
         return client.deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).toCompletable();
+    }
+
+    @Override
+    public Observable<SqlStoredProcedure> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.getSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+        .map(new Func1<SqlStoredProcedureInner, SqlStoredProcedure>() {
+            @Override
+            public SqlStoredProcedure call(SqlStoredProcedureInner inner) {
+                return wrapSqlStoredProcedureModel(inner);
+            }
+       });
+    }
+
+    @Override
+    public Observable<SqlStoredProcedure> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.listSqlStoredProceduresAsync(resourceGroupName, accountName, databaseName, containerName)
+        .flatMap(new Func1<List<SqlStoredProcedureInner>, Observable<SqlStoredProcedureInner>>() {
+            @Override
+            public Observable<SqlStoredProcedureInner> call(List<SqlStoredProcedureInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<SqlStoredProcedureInner, SqlStoredProcedure>() {
+            @Override
+            public SqlStoredProcedure call(SqlStoredProcedureInner inner) {
+                return wrapSqlStoredProcedureModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+        DatabaseAccountsInner client = this.inner();
+        return client.deleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).toCompletable();
     }
 
     @Override
