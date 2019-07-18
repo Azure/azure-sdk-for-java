@@ -28,8 +28,7 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.core.implementation.util.FluxUtil.fluxContext;
-import static com.azure.core.implementation.util.FluxUtil.monoContext;
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -86,7 +85,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
@@ -115,7 +114,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE);
+        return withContext(context -> addSetting(setting, context));
     }
 
     /**
@@ -188,7 +187,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return withContext(
+            context -> setSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -232,7 +232,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, Context.NONE);
+        return withContext(context -> setSetting(setting, context));
     }
 
     /**
@@ -316,7 +316,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+        return withContext(
+            context -> updateSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
     /**
@@ -348,7 +349,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE);
+        return withContext(context -> updateSetting(setting, context));
     }
 
     /**
@@ -414,7 +415,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE);
+        return withContext(context -> getSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -441,7 +442,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE);
+        return withContext(context -> getSetting(setting, context));
     }
 
     /**
@@ -500,7 +501,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
+        return withContext(context -> deleteSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -534,7 +535,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE);
+        return withContext(context -> deleteSetting(setting, context));
     }
 
     /**
@@ -593,8 +594,10 @@ public final class ConfigurationAsyncClient {
      * @return A Flux of ConfigurationSettings that matches the {@code options}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
-        return listSettings(options, Context.NONE);
+        return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(options, context)),
+            continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
     }
 
     /**
@@ -668,8 +671,41 @@ public final class ConfigurationAsyncClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
-        return fluxContext(context -> listSettingRevisions(selector, context));
+    public PagedFlux<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+        return new PagedFlux<>(() ->
+            withContext(context -> listSettingRevisionsFirstPage(selector, context)),
+            continuationToken -> withContext(context -> listSettingRevisionsNextPage(continuationToken, context)));
+    }
+
+    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsFirstPage(SettingSelector selector, Context context) {
+        Mono<PagedResponse<ConfigurationSetting>> result;
+
+        if (selector != null) {
+            String fields = ImplUtils.arrayToString(selector.fields(), SettingFields::toStringMapper);
+            String keys = ImplUtils.arrayToString(selector.keys(), key -> key);
+            String labels = ImplUtils.arrayToString(selector.labels(), label -> label);
+            String range = selector.range() != null ? String.format(RANGE_QUERY, selector.range()) : null;
+
+            result = service.listKeyValueRevisions(serviceEndpoint, keys, labels, fields, selector.acceptDateTime(), range, context)
+                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                .doOnError(error -> logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
+        } else {
+            result = service.listKeyValueRevisions(serviceEndpoint, null, null, null, null, null, context)
+                .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
+                .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
+                .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
+        }
+
+        return result;
+    }
+
+    Mono<PagedResponse<ConfigurationSetting>> listSettingRevisionsNextPage(String nextPageLink, Context context) {
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
+            .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+        return result;
     }
 
     /**
@@ -729,6 +765,7 @@ public final class ConfigurationAsyncClient {
             .doOnRequest(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error));
+        
         return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
@@ -761,7 +798,9 @@ public final class ConfigurationAsyncClient {
      * Remaps the exception returned from the service if it is a PRECONDITION_FAILED response. This is performed since
      * add setting returns PRECONDITION_FAILED when the configuration already exists, all other uses of setKey return
      * this status when the configuration doesn't exist.
+     *
      * @param throwable Error response from the service.
+     *
      * @return Exception remapped to a ResourceModifiedException if the throwable was a ResourceNotFoundException,
      * otherwise the throwable is returned unmodified.
      */

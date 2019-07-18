@@ -140,7 +140,10 @@ public class JavadocThrowsChecks extends AbstractCheck {
             return false;
         }
 
-        return "Override".equals(modifierToken.findFirstToken(TokenTypes.IDENT).getText());
+        // Possible for an identifier not to exist if it is a nested class (ie. @Parameterized.Parameters(String)).
+        final DetailAST identifier = modifierToken.findFirstToken(TokenTypes.IDENT);
+
+        return identifier != null && "Override".equals(identifier.getText());
     }
 
     /*

@@ -47,10 +47,6 @@ import java.util.Objects;
  * {@codesnippet com.azure.security.keyvault.keys.async.secretclient.pipeline.instantiation}
  *
  * @see SecretClient
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
  * @see SecretAsyncClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
