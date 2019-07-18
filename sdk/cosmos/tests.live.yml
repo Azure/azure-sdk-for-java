@@ -36,24 +36,24 @@ jobs:
 
     strategy:
       matrix:
-        Session_Single_Region_ReadMyWrites:
-          OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
-          Consistency: 'Session'
-          TestDisplayName: 'ReadMyWrites Integration Tests'
-          ProfileFlag: '-Pe2e'
-          cosmos.directModeProtocol: 'Https'
+        # Session_Single_Region_ReadMyWrites:
+        #   OSVmImage: 'macOS-10.13'
+        #   CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
+        #   CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+        #   Consistency: 'Session'
+        #   TestDisplayName: 'ReadMyWrites Integration Tests'
+        #   ProfileFlag: '-Pe2e'
+        #   cosmos.directModeProtocol: 'Https'
 
 
-        Strong_Single_Region_ReadMyWrites:
-          OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(SINGLE_STRONG_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_STRONG_ACCOUNT_KEY)
-          Consistency: 'Strong'
-          TestDisplayName: 'ReadMyWrites Integration Tests'
-          ProfileFlag: '-Pe2e'
-          cosmos.directModeProtocol: 'Https'
+        # Strong_Single_Region_ReadMyWrites:
+        #   OSVmImage: 'macOS-10.13'
+        #   CosmosAccountHost: $(SINGLE_STRONG_ACCOUNT_HOST)
+        #   CosmosAccountKey: $(SINGLE_STRONG_ACCOUNT_KEY)
+        #   Consistency: 'Strong'
+        #   TestDisplayName: 'ReadMyWrites Integration Tests'
+        #   ProfileFlag: '-Pe2e'
+        #   cosmos.directModeProtocol: 'Https'
 
         Strong_Multi_Region_ReadMyWrites:
           OSVmImage: 'macOS-10.13'
