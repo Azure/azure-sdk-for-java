@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "GetMetadata", value = GetMetadataActivity.class),
     @JsonSubTypes.Type(name = "WebActivity", value = WebActivity.class),
     @JsonSubTypes.Type(name = "Lookup", value = LookupActivity.class),
+    @JsonSubTypes.Type(name = "AzureDataExplorerCommand", value = AzureDataExplorerCommand.class),
     @JsonSubTypes.Type(name = "Delete", value = DeleteActivity.class),
     @JsonSubTypes.Type(name = "SqlServerStoredProcedure", value = SqlServerStoredProcedureActivity.class),
     @JsonSubTypes.Type(name = "Custom", value = CustomActivity.class),
