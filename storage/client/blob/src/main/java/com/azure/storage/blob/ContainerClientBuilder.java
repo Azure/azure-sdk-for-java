@@ -49,6 +49,7 @@ import java.util.Objects;
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
+@SuppressWarnings({"unused", "WeakerAccess"})
 public final class ContainerClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
