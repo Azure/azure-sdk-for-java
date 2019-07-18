@@ -85,7 +85,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -110,7 +110,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return monoContext(context -> addSetting(setting, context))
+        return withContext(context -> addSetting(setting, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -134,7 +134,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSettingWithResponse(ConfigurationSetting setting) {
-        return monoContext(context -> addSetting(setting, context));
+        return withContext(context -> addSetting(setting, context));
     }
 
     Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting, Context context) {
@@ -169,7 +169,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> setSetting(new ConfigurationSetting().key(key).value(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -201,7 +201,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return monoContext(context -> setSetting(setting, context))
+        return withContext(context -> setSetting(setting, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -232,7 +232,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSettingWithResponse(ConfigurationSetting setting) {
-        return monoContext(context -> setSetting(setting, context));
+        return withContext(context -> setSetting(setting, context));
     }
 
     Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting, Context context) {
@@ -272,7 +272,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> updateSetting(new ConfigurationSetting().key(key).value(value), context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -301,7 +301,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return monoContext(context -> updateSetting(setting, context))
+        return withContext(context -> updateSetting(setting, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -329,7 +329,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSettingWithResponse(ConfigurationSetting setting) {
-        return monoContext(context -> updateSetting(setting, context));
+        return withContext(context -> updateSetting(setting, context));
     }
 
     Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting, Context context) {
@@ -362,7 +362,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(String key) {
-        return monoContext(
+        return withContext(
             context -> getSetting(new ConfigurationSetting().key(key), context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -386,7 +386,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return monoContext(context -> getSetting(setting, context))
+        return withContext(context -> getSetting(setting, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -409,7 +409,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSettingWithResponse(ConfigurationSetting setting) {
-        return monoContext(context -> getSetting(setting, context));
+        return withContext(context -> getSetting(setting, context));
     }
 
     Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting, Context context) {
@@ -440,7 +440,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(String key) {
-        return monoContext(
+        return withContext(
             context -> deleteSetting(new ConfigurationSetting().key(key), context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -471,7 +471,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return monoContext(context -> deleteSetting(setting, context))
+        return withContext(context -> deleteSetting(setting, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -501,7 +501,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSettingWithResponse(ConfigurationSetting setting) {
-        return monoContext(context -> deleteSetting(setting, context));
+        return withContext(context -> deleteSetting(setting, context));
     }
 
     Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting, Context context) {
