@@ -82,10 +82,10 @@ public class BlobAsyncClient {
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
      *
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    BlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
-        this.azureBlobStorage = azureBlobStorageBuilder.build();
+    BlobAsyncClient(AzureBlobStorageImpl azureBlobStorage, String snapshot) {
+        this.azureBlobStorage = azureBlobStorage;
         this.snapshot = snapshot;
     }
 
@@ -98,7 +98,8 @@ public class BlobAsyncClient {
     public BlockBlobAsyncClient asBlockBlobAsyncClient() {
         return new BlockBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -110,7 +111,8 @@ public class BlobAsyncClient {
     public AppendBlobAsyncClient asAppendBlobAsyncClient() {
         return new AppendBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -122,7 +124,21 @@ public class BlobAsyncClient {
     public PageBlobAsyncClient asPageBlobAsyncClient() {
         return new PageBlobAsyncClient(new AzureBlobStorageBuilder()
             .url(getBlobUrl().toString())
-            .pipeline(azureBlobStorage.httpPipeline()), snapshot);
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build(), snapshot);
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClient} linked to the {@code snapshot} of this blob resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this blob
+     * @return a {@link BlobAsyncClient} used to interact with the specific snapshot.
+     */
+    public BlobAsyncClient getSnapshotClient(String snapshot) {
+        return new BlobAsyncClient(new AzureBlobStorageBuilder()
+            .url(getBlobUrl().toString())
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build(), snapshot);
     }
 
     /**
@@ -136,7 +152,8 @@ public class BlobAsyncClient {
         BlobURLParts parts = URLParser.parse(getBlobUrl());
         return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s://%s/%s", parts.scheme(), parts.host(), parts.containerName()))
-            .pipeline(azureBlobStorage.httpPipeline()));
+            .pipeline(azureBlobStorage.httpPipeline())
+            .build());
     }
 
     /**
@@ -555,22 +572,24 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
+     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<Response<String>> createSnapshot() {
+    public Mono<Response<BlobAsyncClient>> createSnapshot() {
         return this.createSnapshot(null, null);
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
-     * @return A reactive response containing the ID of the new snapshot.
+     * @return A response containing a {@link BlobAsyncClient} which is used to interact with the created snapshot, use
+     * {@link BlobAsyncClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Mono<Response<String>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
+    public Mono<Response<BlobAsyncClient>> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
 
@@ -578,7 +597,7 @@ public class BlobAsyncClient {
             null, null, null, metadata, null, null,
             null, null, accessConditions.modifiedAccessConditions(),
             accessConditions.leaseAccessConditions(), Context.NONE))
-            .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().snapshot()));
+            .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.deserializedHeaders().snapshot())));
     }
 
     /**

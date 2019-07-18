@@ -723,7 +723,7 @@ class PageBlobAPITest extends APISpec {
 
     def "Get page ranges diff min"() {
         setup:
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
 
         when:
         bu.getPageRangesDiff(null, snapshot).iterator().hasNext()
@@ -735,7 +735,7 @@ class PageBlobAPITest extends APISpec {
     @Unroll
     def "Get page ranges diff AC"() {
         setup:
-        String snapshot = bu.createSnapshot(null, null, null).value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
         BlobAccessConditions bac = new BlobAccessConditions()
             .leaseAccessConditions(new LeaseAccessConditions().leaseId(setupBlobLeaseCondition(bu, leaseID)))
             .modifiedAccessConditions(new ModifiedAccessConditions()
@@ -984,7 +984,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
         PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
 
         Response<CopyStatusType> copyResponse = bu2.copyIncremental(bu.getBlobUrl(), snapshot)
         String status = copyResponse.value().toString()
@@ -1012,7 +1012,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
         PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
 
         expect:
         bu2.copyIncremental(bu.getBlobUrl(), snapshot).statusCode() == 202
@@ -1023,7 +1023,7 @@ class PageBlobAPITest extends APISpec {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
         PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
 
         Response<CopyStatusType> copyResponse = bu2.copyIncremental(bu.getBlobUrl(), snapshot)
         String status = copyResponse.value().toString()
@@ -1038,7 +1038,7 @@ class PageBlobAPITest extends APISpec {
             sleep(1000)
         }
 
-        snapshot = bu.createSnapshot().value()
+        snapshot = bu.createSnapshot().value().getSnapshotId()
         match = setupBlobMatchCondition(bu2, match)
         def mac = new ModifiedAccessConditions()
             .ifModifiedSince(modified)
@@ -1063,9 +1063,9 @@ class PageBlobAPITest extends APISpec {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null)
         PageBlobClient bu2 = cu.getPageBlobClient(generateBlobName())
-        String snapshot = bu.createSnapshot().value()
+        String snapshot = bu.createSnapshot().value().getSnapshotId()
         bu2.copyIncremental(bu.getBlobUrl(), snapshot)
-        snapshot = bu.createSnapshot().value()
+        snapshot = bu.createSnapshot().value().getSnapshotId()
         noneMatch = setupBlobMatchCondition(bu2, noneMatch)
         def mac = new ModifiedAccessConditions()
             .ifModifiedSince(modified)

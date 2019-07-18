@@ -618,7 +618,7 @@ class ContainerAPITest extends APISpec {
         values.put("foo", "bar")
         metadataBlob.create(512, null, null, values, null, null)
 
-        String snapshotTime = normal.createSnapshot().value()
+        String snapshotTime = normal.createSnapshot().value().getSnapshotId()
 
         BlockBlobClient uncommittedBlob = cu.getBlockBlobClient(uncommittedName)
 

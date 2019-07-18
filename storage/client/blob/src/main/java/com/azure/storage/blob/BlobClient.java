@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAccessConditions;
@@ -86,6 +87,16 @@ public class BlobClient {
      */
     public PageBlobClient asPageBlobClient() {
         return new PageBlobClient(blobAsyncClient.asPageBlobAsyncClient());
+    }
+
+    /**
+     * Creates a new {@link BlobClient} linked to the {@code snapshot} of this blob resource.
+     *
+     * @param snapshot the identifier for a specific snapshot of this blob
+     * @return a {@link BlobClient} used to interact with the specific snapshot.
+     */
+    public BlobClient getSnapshotClient(String snapshot) {
+        return new BlobClient(blobAsyncClient.getSnapshotClient(snapshot));
     }
 
     /**
@@ -440,25 +451,28 @@ public class BlobClient {
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
-     * @return The ID of the new snapshot.
+     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
+     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Response<String> createSnapshot() {
+    public Response<BlobClient> createSnapshot() {
         return this.createSnapshot(null, null, null);
     }
 
     /**
-     * Creates a read-only snapshot of a blob.
+     * Creates a read-only snapshot of the blob.
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The ID of the new snapshot.
+     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
+     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
      */
-    public Response<String> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
-        Mono<Response<String>> response = blobAsyncClient
-            .createSnapshot(metadata, accessConditions);
+    public Response<BlobClient> createSnapshot(Metadata metadata, BlobAccessConditions accessConditions, Duration timeout) {
+        Mono<Response<BlobClient>> response = blobAsyncClient
+            .createSnapshot(metadata, accessConditions)
+            .map(rb -> new SimpleResponse<>(rb, new BlobClient(rb.value())));
 
         return Utility.blockWithOptionalTimeout(response, timeout);
     }

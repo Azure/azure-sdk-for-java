@@ -33,7 +33,7 @@ final class AccountSASPermission {
     /**
      * Initializes an {@code AccountSASPermission} object with all fields set to false.
      */
-    private AccountSASPermission() {
+    public AccountSASPermission() {
     }
 
     /**

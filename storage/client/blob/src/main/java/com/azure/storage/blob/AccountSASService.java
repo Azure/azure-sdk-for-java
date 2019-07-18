@@ -25,7 +25,7 @@ final class AccountSASService {
     /**
      * Initializes an {@code AccountSASService} object with all fields set to false.
      */
-    private AccountSASService() {
+    public AccountSASService() {
     }
 
     /**
