@@ -116,11 +116,10 @@ public class ShareClientBuilder {
      * </p>
      *
      * @return A ShareAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws NullPointerException If {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public ShareAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
         Objects.requireNonNull(shareName);
 
         if (pipeline != null) {
@@ -192,7 +191,6 @@ public class ShareClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
     public ShareClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());

@@ -9,7 +9,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.file.models.FileServiceProperties;
 import com.azure.storage.file.models.ListSharesOptions;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
@@ -150,10 +149,10 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
         fileServiceAsyncClient.createShare("test", Collections.singletonMap("share", "metadata"), null)
             .subscribe(
-            response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete creating the share!")
-        );
+                response -> System.out.printf("Creating the share completed with status code %d", response.statusCode()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete creating the share!")
+            );
         // END: com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.metadata
     }
 
@@ -244,7 +243,7 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
         fileServiceClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true)).forEach(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name())
         );
         // END: com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot
     }
@@ -257,9 +256,9 @@ public class FileServiceJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
         fileServiceAsyncClient.listShares(new ListSharesOptions().includeMetadata(true)
             .includeSnapshots(true)).subscribe(
-            shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete listing the shares!")
+                shareItem -> System.out.printf("Share %s exists in the account", shareItem.name()),
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete listing the shares!")
         );
         // END: com.azure.storage.file.fileServiceAsyncClient.listShares#ListSharesOptions.metadata.snapshot
     }
@@ -316,11 +315,11 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void getProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceClient.getProperties
+        // BEGIN: com.azure.storage.file.fileServiceClient.getProperties
         FileServiceProperties properties = fileServiceClient.getProperties().value();
         System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b", properties.hourMetrics().enabled(),
             properties.minuteMetrics().enabled());
-        //END: com.azure.storage.file.fileServiceClient.getProperties
+        // END: com.azure.storage.file.fileServiceClient.getProperties
     }
 
     /**
@@ -328,14 +327,14 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void getPropertiesAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceAsyncClient.getProperties
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.getProperties
         fileServiceAsyncClient.getProperties()
             .subscribe(response -> {
                 FileServiceProperties properties = response.value();
                 System.out.printf("Hour metrics enabled: %b, Minute metrics enabled: %b",
                     properties.hourMetrics().enabled(), properties.minuteMetrics().enabled());
             });
-        //END: com.azure.storage.file.fileServiceAsyncClient.getProperties
+        // END: com.azure.storage.file.fileServiceAsyncClient.getProperties
     }
 
     /**
@@ -343,7 +342,7 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void setProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
+        // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
         FileServiceProperties properties = fileServiceClient.getProperties().value();
 
         properties.minuteMetrics().enabled(true);
@@ -351,7 +350,7 @@ public class FileServiceJavaDocCodeSamples {
 
         VoidResponse response = fileServiceClient.setProperties(properties);
         System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
-        //END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
+        // END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties
     }
 
     /**
@@ -359,7 +358,7 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void setPropertiesAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
         FileServiceProperties properties = fileServiceAsyncClient.getProperties().block().value();
 
         properties.minuteMetrics().enabled(true);
@@ -368,7 +367,7 @@ public class FileServiceJavaDocCodeSamples {
         fileServiceAsyncClient.setProperties(properties)
             .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
                 response.statusCode()));
-        //END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
+        // END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties
     }
 
     /**
@@ -376,13 +375,13 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void clearProperties() {
         FileServiceClient fileServiceClient = createClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
+        // BEGIN: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
         FileServiceProperties properties = fileServiceClient.getProperties().value();
         properties.cors(Collections.emptyList());
 
         VoidResponse response = fileServiceClient.setProperties(properties);
         System.out.printf("Setting File service properties completed with status code %d", response.statusCode());
-        //END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
+        // END: com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS
     }
 
     /**
@@ -390,13 +389,13 @@ public class FileServiceJavaDocCodeSamples {
      */
     public void clearPropertiesAsync() {
         FileServiceAsyncClient fileServiceAsyncClient = createAsyncClientWithSASToken();
-        //BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
         FileServiceProperties properties = fileServiceAsyncClient.getProperties().block().value();
         properties.cors(Collections.emptyList());
 
         fileServiceAsyncClient.setProperties(properties)
             .subscribe(response -> System.out.printf("Setting File service properties completed with status code %d",
                 response.statusCode()));
-        //END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
+        // END: com.azure.storage.file.fileServiceAsyncClient.setProperties#fileServiceProperties.clearCORS
     }
 }

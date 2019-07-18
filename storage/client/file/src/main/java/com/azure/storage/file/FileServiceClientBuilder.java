@@ -102,12 +102,9 @@ public final class FileServiceClientBuilder {
      * </p>
      *
      * @return A FileServiceAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
-
         if (pipeline != null) {
             return new FileServiceAsyncClient(endpoint, pipeline);
         }
@@ -174,7 +171,6 @@ public final class FileServiceClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
     public FileServiceClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());

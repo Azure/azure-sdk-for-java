@@ -115,11 +115,12 @@ public class DirectoryClientBuilder {
      * </p>
      *
      * @return A ShareAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public DirectoryAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(directoryName);
 
         if (pipeline != null) {
             return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, snapshot);
@@ -344,8 +345,7 @@ public class DirectoryClientBuilder {
      * that has been specified in the builder.
      *
      * @param snapshot Identifier of the snapshot
-     * @return the updated DirectoryClientBuilder object
-     * @throws NullPointerException If {@code snapshot} is {@code null}.
+     * @return the updated DirectoryClientBuilder object.
      */
     public DirectoryClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;

@@ -121,11 +121,12 @@ public class FileClientBuilder {
      * </p>
      *
      * @return A ShareAsyncClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
+     * @throws NullPointerException If {@code shareName} is {@code null} or the (@code filePath) is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public FileAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(endpoint);
+        Objects.requireNonNull(shareName);
+        Objects.requireNonNull(filePath);
 
         if (pipeline != null) {
             return new FileAsyncClient(endpoint, pipeline, shareName, filePath, snapshot);
@@ -197,7 +198,6 @@ public class FileClientBuilder {
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
     public FileClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
         try {
             URL fullURL = new URL(endpoint);
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());

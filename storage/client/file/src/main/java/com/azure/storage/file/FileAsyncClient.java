@@ -82,6 +82,7 @@ import reactor.core.scheduler.Schedulers;
 public class FileAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(FileAsyncClient.class);
     private static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
@@ -252,7 +253,6 @@ public class FileAsyncClient {
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional. Return file data only from the specified byte range.
      * @return An empty response.
-     * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
         AsynchronousFileChannel channel = channelSetup(downloadFilePath);
@@ -262,10 +262,8 @@ public class FileAsyncClient {
                          .subscribeOn(Schedulers.elastic())
                          .flatMap(fbb -> FluxUtil.bytebufStreamToFile(fbb, channel, chunk.start() - (range == null ? 0 : range.start()))
                          .subscribeOn(Schedulers.elastic())
-                         .timeout(Duration.ofSeconds(300))
-                         .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
-                   .doOnTerminate(() ->
-                                    LOGGER.asInfo().log("Saved " + chunk.toString() + " on thread " + Thread.currentThread().getName())))
+                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
+                         .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException)))
                    .then()
                    .doOnTerminate(() -> channelCleanUp(channel));
     }
@@ -539,7 +537,7 @@ public class FileAsyncClient {
         return Flux.fromIterable(sliceFile(uploadFilePath))
                    .flatMap(chunk -> {
                        return upload(FluxUtil.byteBufStreamFromFile(channel, chunk.start(), chunk.end() - chunk.start() + 1), chunk.end() - chunk.start() + 1, chunk.start(), type)
-                            .timeout(Duration.ofSeconds(300))
+                            .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                             .retry(3, throwable -> throwable instanceof IOException || throwable instanceof TimeoutException);
                    })
                    .then()
