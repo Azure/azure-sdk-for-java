@@ -5,7 +5,6 @@ package com.azure.core.amqp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.azure.core.amqp.exception.ErrorContext;
 import org.junit.jupiter.api.Test;
 
 public class TransportTypeTest {
