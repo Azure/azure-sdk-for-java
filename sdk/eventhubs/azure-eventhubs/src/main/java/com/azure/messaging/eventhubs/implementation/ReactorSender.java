@@ -231,7 +231,6 @@ class ReactorSender extends EndpointStateNotifierBase implements AmqpSendLink {
         super.close();
     }
 
-
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
         Mono<Void> sendWorkItem = Mono.create(sink -> {
             send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
