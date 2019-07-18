@@ -56,10 +56,10 @@ public final class StorageAsyncClient {
     /**
      * Package-private constructor for use by {@link StorageClientBuilder}.
      *
-     * @param azureBlobStorageBuilder the API client builder for blob storage API
+     * @param azureBlobStorage the API client for blob storage
      */
-    StorageAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder) {
-        this.azureBlobStorage = azureBlobStorageBuilder.build();
+    StorageAsyncClient(AzureBlobStorageImpl azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
     }
 
     /**

@@ -78,10 +78,16 @@ public final class ContainerClientBuilder {
     }
 
     /**
-     * Constructs an instance of ContainerAsyncClient based on the configurations stored in the appendBlobClientBuilder.
-     * @return a new client instance
+     * @return a {@link ContainerClient} created from the configurations in this builder.
      */
-    private AzureBlobStorageBuilder buildImpl() {
+    public ContainerClient buildClient() {
+        return new ContainerClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
+     */
+    public ContainerAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
@@ -115,36 +121,21 @@ public final class ContainerClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new ContainerAsyncClient(new AzureBlobStorageBuilder()
             .url(String.format("%s/%s", endpoint, containerName))
-            .pipeline(pipeline);
-    }
-
-    /**
-     * @return a {@link ContainerClient} created from the configurations in this builder.
-     */
-    public ContainerClient buildClient() {
-        return new ContainerClient(buildAsyncClient());
-    }
-
-    /**
-     * @return a {@link ContainerAsyncClient} created from the configurations in this builder.
-     */
-    public ContainerAsyncClient buildAsyncClient() {
-        return new ContainerAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, container name)
      * @param endpoint URL of the service
      * @return the updated ContainerClientBuilder object
-     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public ContainerClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        URL url;
         try {
-            url = new URL(endpoint);
+            URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
             String path = url.getPath();
             if (path != null && !path.isEmpty() && !path.equals("/")) {
@@ -155,13 +146,13 @@ public final class ContainerClientBuilder {
                     this.containerName = path;
                 }
             }
+
+            SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
+            if (credential != null) {
+                this.credential(credential);
+            }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
-        }
-
-        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
-        if (credential != null) {
-            this.credential(credential);
         }
 
         return this;

@@ -76,7 +76,17 @@ public final class StorageClientBuilder {
         policies = new ArrayList<>();
     }
 
-    private AzureBlobStorageBuilder buildImpl() {
+    /**
+     * @return a {@link StorageClient} created from the configurations in this builder.
+     */
+    public StorageClient buildClient() {
+        return new StorageClient(buildAsyncClient());
+    }
+
+    /**
+     * @return a {@link StorageAsyncClient} created from the configurations in this builder.
+     */
+    public StorageAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint);
 
         // Closest to API goes first, closest to wire goes last.
@@ -109,23 +119,10 @@ public final class StorageClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AzureBlobStorageBuilder()
+        return new StorageAsyncClient(new AzureBlobStorageBuilder()
             .url(endpoint)
-            .pipeline(pipeline);
-    }
-
-    /**
-     * @return a {@link StorageClient} created from the configurations in this builder.
-     */
-    public StorageClient buildClient() {
-        return new StorageClient(buildAsyncClient());
-    }
-
-    /**
-     * @return a {@link StorageAsyncClient} created from the configurations in this builder.
-     */
-    public StorageAsyncClient buildAsyncClient() {
-        return new StorageAsyncClient(buildImpl());
+            .pipeline(pipeline)
+            .build());
     }
 
     /**
