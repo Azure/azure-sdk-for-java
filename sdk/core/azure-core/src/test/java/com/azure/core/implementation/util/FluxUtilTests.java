@@ -312,9 +312,9 @@ public class FluxUtilTests {
         // Simulates the client library API
         List<PagedResponse<Integer>> pagedResponses = getPagedResponses(4);
         return new PagedFlux<>(
-            () -> FluxUtil.monoContext(context -> getFirstPage(pagedResponses, context)),
+            () -> FluxUtil.withContext(context -> getFirstPage(pagedResponses, context)),
             continuationToken -> FluxUtil
-                .monoContext(context -> getNextPage(continuationToken, pagedResponses, context)));
+                .withContext(context -> getNextPage(continuationToken, pagedResponses, context)));
     }
 
     private List<PagedResponse<Integer>> getPagedResponses(int noOfPages)
@@ -361,7 +361,7 @@ public class FluxUtilTests {
 
 
     private Mono<String> getSingle(String prefix) {
-        return FluxUtil.monoContext(context -> serviceCallSingle(prefix, context));
+        return FluxUtil.withContext(context -> serviceCallSingle(prefix, context));
     }
 
     private Flux<String> getCollection(String prefix) {
