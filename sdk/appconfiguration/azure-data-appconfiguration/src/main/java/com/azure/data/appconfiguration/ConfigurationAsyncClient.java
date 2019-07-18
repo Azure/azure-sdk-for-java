@@ -85,7 +85,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> addSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
@@ -114,7 +114,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> addSetting(ConfigurationSetting setting) {
-        return monoContext(context -> addSetting(setting, context));
+        return withContext(context -> addSetting(setting, context));
     }
 
     /**
@@ -187,7 +187,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> setSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
@@ -232,7 +232,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> setSetting(ConfigurationSetting setting) {
-        return monoContext(context -> setSetting(setting, context));
+        return withContext(context -> setSetting(setting, context));
     }
 
     /**
@@ -316,7 +316,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(String key, String value) {
-        return monoContext(
+        return withContext(
             context -> updateSetting(new ConfigurationSetting().key(key).value(value), context));
     }
 
@@ -349,7 +349,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> updateSetting(ConfigurationSetting setting) {
-        return monoContext(context -> updateSetting(setting, context));
+        return withContext(context -> updateSetting(setting, context));
     }
 
     /**
@@ -415,7 +415,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(String key) {
-        return monoContext(context -> getSetting(new ConfigurationSetting().key(key), context));
+        return withContext(context -> getSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -442,7 +442,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> getSetting(ConfigurationSetting setting) {
-        return monoContext(context -> getSetting(setting, context));
+        return withContext(context -> getSetting(setting, context));
     }
 
     /**
@@ -501,7 +501,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(String key) {
-        return monoContext(context -> deleteSetting(new ConfigurationSetting().key(key), context));
+        return withContext(context -> deleteSetting(new ConfigurationSetting().key(key), context));
     }
 
     /**
@@ -535,7 +535,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSetting>> deleteSetting(ConfigurationSetting setting) {
-        return monoContext(context -> deleteSetting(setting, context));
+        return withContext(context -> deleteSetting(setting, context));
     }
 
     /**
@@ -596,8 +596,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listSettings(SettingSelector options) {
-        return new PagedFlux<>(() -> monoContext(context -> listFirstPageSettings(options, context)),
-            continuationToken -> monoContext(context -> listNextPageSettings(context, continuationToken)));
+        return new PagedFlux<>(() -> withContext(context -> listFirstPageSettings(options, context)),
+            continuationToken -> withContext(context -> listNextPageSettings(context, continuationToken)));
     }
 
     /**
