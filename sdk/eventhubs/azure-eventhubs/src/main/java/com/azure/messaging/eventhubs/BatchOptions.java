@@ -34,17 +34,8 @@ public class BatchOptions implements Cloneable {
     }
 
     /**
-     * Sets a hashing key to be provided for the batch of events, which instructs the Event Hubs service to map this key to
-     * a specific partition but allowing the service to choose an arbitrary, partition for this batch of events and any
-     * other batches using the same partition hashing key.
-     *
-     * The selection of a partition is stable for a given partition hashing key. Should any other batches of events be
-     * sent using the same exact partition hashing key, the Event Hubs service will route them all to the same
-     * partition.
-     *
-     * This should be specified only when there is a need to group events by partition, but there is flexibility into
-     * which partition they are routed. If ensuring that a batch of events is sent only to a specific partition, it is
-     * recommended that the identifier of the position be specified directly when sending the batch.
+     * Sets a hashing key to be provided for the batch of events. Events with the same {@code partitionKey} are hashed
+     * and sent to the same partition.
      *
      * @param partitionKey The partition hashing key to associate with the event or batch of events.
      * @return The updated {@link BatchOptions} object.
