@@ -82,7 +82,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         }
         UrlBuilder urlBuilder = UrlBuilder.parse(azureStorageFileEndpoint);
         String endpointURL = new UrlBuilder().scheme(urlBuilder.scheme()).host(urlBuilder.host()).toString();
-        Assert.assertTrue(endpointURL.equals(client.getDirectoryUrl()));
+        Assert.assertTrue(endpointURL.equals(client.getDirectoryUrl().toString()));
     }
 
     @Override

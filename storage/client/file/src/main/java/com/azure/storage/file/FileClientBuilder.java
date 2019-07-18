@@ -96,7 +96,7 @@ public class FileClientBuilder {
     private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
-    private String shareSnapshot;
+    private String snapshot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link FileClient FileClients}
@@ -128,7 +128,7 @@ public class FileClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (pipeline != null) {
-            return new FileAsyncClient(endpoint, pipeline, shareName, filePath, shareSnapshot);
+            return new FileAsyncClient(endpoint, pipeline, shareName, filePath, snapshot);
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -161,7 +161,7 @@ public class FileClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new FileAsyncClient(endpoint, pipeline, shareName, filePath, shareSnapshot);
+        return new FileAsyncClient(endpoint, pipeline, shareName, filePath, snapshot);
     }
 
     /**
@@ -326,7 +326,7 @@ public class FileClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link FileClientBuilder#endpoint(String) endpoint},
-     * {@link FileClientBuilder#shareName(String) shareName} @{link FileClientBuilder#filePath(String) filePath}, and {@link FileClientBuilder#shareSnapshot(String) snaphotShot}
+     * {@link FileClientBuilder#shareName(String) shareName} @{link FileClientBuilder#filePath(String) filePath}, and {@link FileClientBuilder#snapshot(String) snaphotShot}
      * when building clients.</p>
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
@@ -353,12 +353,12 @@ public class FileClientBuilder {
      * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
      * that has been specified in the builder.
      *
-     * @param shareSnapshot Identifier of the snapshot
+     * @param snapshot Identifier of the snapshot
      * @return the updated FileClientBuilder object
-     * @throws NullPointerException If {@code shareSnapshot} is {@code null}.
+     * @throws NullPointerException If {@code snapshot} is {@code null}.
      */
-    public FileClientBuilder shareSnapshot(String shareSnapshot) {
-        this.shareSnapshot = shareSnapshot;
+    public FileClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 }

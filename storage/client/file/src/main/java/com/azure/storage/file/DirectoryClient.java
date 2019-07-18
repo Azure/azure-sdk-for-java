@@ -15,6 +15,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -52,10 +53,11 @@ public class DirectoryClient {
     }
 
     /**
-     * Get the getDirectoryUrl of the storage directory client.
-     * @return the URL of the storage directory client
+     * Get the url of the storage directory client.
+     * @return the URL of the storage directory client.
+     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public String getDirectoryUrl() {
+    public URL getDirectoryUrl() {
         return directoryAsyncClient.getDirectoryUrl();
     }
 

@@ -87,7 +87,7 @@ public class ShareClientBuilder {
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
     private String shareName;
-    private String shareSnapshot;
+    private String snapshot;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
@@ -124,7 +124,7 @@ public class ShareClientBuilder {
         Objects.requireNonNull(shareName);
 
         if (pipeline != null) {
-            return new ShareAsyncClient(endpoint, pipeline, shareName, shareSnapshot);
+            return new ShareAsyncClient(endpoint, pipeline, shareName, snapshot);
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -157,7 +157,7 @@ public class ShareClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new ShareAsyncClient(endpoint, pipeline, shareName, shareSnapshot);
+        return new ShareAsyncClient(endpoint, pipeline, shareName, snapshot);
     }
 
     /**
@@ -267,12 +267,12 @@ public class ShareClientBuilder {
      * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
      * that has been specified in the builder.
      *
-     * @param shareSnapshot Identifier of the snapshot
+     * @param snapshot Identifier of the snapshot
      * @return the updated ShareClientBuilder object
-     * @throws NullPointerException If {@code shareSnapshot} is {@code null}.
+     * @throws NullPointerException If {@code snapshot} is {@code null}.
      */
-    public ShareClientBuilder shareSnapshot(String shareSnapshot) {
-        this.shareSnapshot = Objects.requireNonNull(shareSnapshot);
+    public ShareClientBuilder snapshot(String snapshot) {
+        this.snapshot = Objects.requireNonNull(snapshot);
         return this;
     }
 
@@ -316,7 +316,7 @@ public class ShareClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link ShareClientBuilder#endpoint(String) endpoint},
-     * {@link ShareClientBuilder#shareName(String) shareName}, and {@link ShareClientBuilder#shareSnapshot(String) snaphotShot}
+     * {@link ShareClientBuilder#shareName(String) shareName}, and {@link ShareClientBuilder#snapshot(String) snaphotShot}
      * when building clients.</p>
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.

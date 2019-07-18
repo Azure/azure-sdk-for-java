@@ -14,6 +14,7 @@ import com.azure.storage.file.models.ShareSnapshotInfo;
 import com.azure.storage.file.models.ShareStatistics;
 import com.azure.storage.file.models.SignedIdentifier;
 import com.azure.storage.file.models.StorageErrorException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +47,11 @@ public class ShareClient {
     }
 
     /**
-     * @return the getShareUrl of the storage file service
+     * Get the url of the storage share client.
+     * @return the url of the Storage Share.
+     * @throws RuntimeException If the share is using a malformed URL.
      */
-    public String getShareUrl() {
+    public URL getShareUrl() {
         return client.getShareUrl();
     }
 
@@ -189,12 +192,12 @@ public class ShareClient {
      * System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
      * </pre>
      *
-     * @param shareSnapshot Identifier of the snapshot
+     * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
      */
-    public VoidResponse delete(String shareSnapshot) {
-        return client.delete(shareSnapshot).block();
+    public VoidResponse delete(String snapshot) {
+        return client.delete(snapshot).block();
     }
 
     /**
@@ -231,12 +234,12 @@ public class ShareClient {
      * System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
      * </pre>
      *
-     * @param shareSnapshot Identifier of the snapshot
+     * @param snapshot Identifier of the snapshot
      * @return the properties of the share snapshot
      * @throws StorageErrorException If the share or snapshot doesn't exist
      */
-    public Response<ShareProperties> getProperties(String shareSnapshot) {
-        return client.getProperties(shareSnapshot).block();
+    public Response<ShareProperties> getProperties(String snapshot) {
+        return client.getProperties(snapshot).block();
     }
 
     /**

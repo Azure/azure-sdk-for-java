@@ -57,12 +57,11 @@ public class FileClient {
     }
 
     /**
-     * Get the getFileUrl of the storage file client.
-     * @return the URL of the storage file client
-     * @throws MalformedURLException if no protocol is specified, or an
-     *         unknown protocol is found, or {@code spec} is {@code null}.
+     * Get the url of the storage file client.
+     * @return the URL of the storage file client.
+     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() throws MalformedURLException {
+    public URL getFileUrl() {
         return fileAsyncClient.getFileUrl();
     }
 

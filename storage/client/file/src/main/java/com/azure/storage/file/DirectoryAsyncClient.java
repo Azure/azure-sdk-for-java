@@ -25,6 +25,7 @@ import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.FileRef;
 import com.azure.storage.file.models.HandleItem;
 import com.azure.storage.file.models.StorageErrorException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class DirectoryAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String directoryName;
-    private final String shareSnapshot;
+    private final String snapshot;
 
     /**
      * Creates a DirectoryAsyncClient that sends requests to the storage directory at {@link AzureFileStorageImpl#url() endpoint}.
@@ -67,12 +68,12 @@ public class DirectoryAsyncClient {
      * @param azureFileStorageClient Client that interacts with the service interfaces
      * @param shareName Name of the share
      * @param directoryName Name of the directory
-     * @param shareSnapshot The snapshot of the share
+     * @param snapshot The snapshot of the share
      */
-    DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryName, String shareSnapshot) {
+    DirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryName, String snapshot) {
         this.shareName = shareName;
         this.directoryName = directoryName;
-        this.shareSnapshot = shareSnapshot;
+        this.snapshot = snapshot;
         this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(azureFileStorageClient.httpPipeline())
                                     .url(azureFileStorageClient.url())
                                     .version(azureFileStorageClient.version())
@@ -86,23 +87,29 @@ public class DirectoryAsyncClient {
      * @param httpPipeline HttpPipeline that HTTP requests and response flow through
      * @param shareName Name of the share
      * @param directoryName Name of the directory
-     * @param shareSnapshot Optional. The snapshot of the share
+     * @param snapshot Optional. The snapshot of the share
      */
-    DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryName, String shareSnapshot) {
+    DirectoryAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String directoryName, String snapshot) {
         this.shareName = shareName;
         this.directoryName = directoryName;
-        this.shareSnapshot = shareSnapshot;
+        this.snapshot = snapshot;
         this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
                                           .url(endpoint.toString())
                                           .build();
     }
 
     /**
-     * Get the getDirectoryUrl of the storage directory client.
+     * Get the url of the storage directory client.
      * @return the URL of the storage directory client
+     * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public String getDirectoryUrl() {
-        return azureFileStorageClient.url();
+    public URL getDirectoryUrl() {
+        try {
+            return new URL(azureFileStorageClient.url());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.url()), e);
+        }
     }
 
     /**
@@ -130,7 +137,7 @@ public class DirectoryAsyncClient {
      */
     public DirectoryAsyncClient getSubDirectoryClient(String subDirectoryName) {
         String directoryPath = directoryName + "/" + subDirectoryName;
-        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, shareSnapshot);
+        return new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot);
     }
 
     /**
@@ -206,7 +213,7 @@ public class DirectoryAsyncClient {
      * @return Storage directory properties
      */
     public Mono<Response<DirectoryProperties>> getProperties() {
-        return azureFileStorageClient.directorys().getPropertiesWithRestResponseAsync(shareName, directoryName, shareSnapshot, null, Context.NONE)
+        return azureFileStorageClient.directorys().getPropertiesWithRestResponseAsync(shareName, directoryName, snapshot, null, Context.NONE)
             .map(this::getPropertiesResponse);
     }
 
@@ -273,7 +280,7 @@ public class DirectoryAsyncClient {
      * @return {@link FileRef File info} in the storage account with prefix and max number of return results.
      */
     public Flux<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
-        return azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryName, prefix, shareSnapshot, null, maxResults, null, Context.NONE)
+        return azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryName, prefix, snapshot, null, maxResults, null, Context.NONE)
                   .flatMapMany(response -> nextPageForFileAndDirecotries(response, prefix, maxResults));
     }
 
@@ -293,7 +300,7 @@ public class DirectoryAsyncClient {
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
     public Flux<HandleItem> getHandles(Integer maxResult, boolean recursive) {
-        return azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryName, null, maxResult, null, shareSnapshot, recursive, Context.NONE)
+        return azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryName, null, maxResult, null, snapshot, recursive, Context.NONE)
                    .flatMapMany(response -> nextPageForHandles(response, maxResult, recursive));
     }
 
@@ -316,7 +323,7 @@ public class DirectoryAsyncClient {
      * @return The counts of number of handles closed
      */
     public Flux<Integer> forceCloseHandles(String handleId, boolean recursive) {
-        return azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryName, handleId, null, null, shareSnapshot, recursive, Context.NONE)
+        return azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryName, handleId, null, null, snapshot, recursive, Context.NONE)
             .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId, recursive));
     }
 
@@ -335,7 +342,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectory(String subDirectoryName) {
         String directoryPath = directoryName + "/" + subDirectoryName;
-        DirectoryAsyncClient createSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, shareSnapshot);
+        DirectoryAsyncClient createSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot);
         return createSubClient.create()
                    .map(response -> new SimpleResponse<>(response, createSubClient));
     }
@@ -359,7 +366,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<DirectoryAsyncClient>> createSubDirectory(String subDirectoryName, Map<String, String> metadata) {
         String directoryPath = directoryName + "/" + subDirectoryName;
-        DirectoryAsyncClient createSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, shareSnapshot);
+        DirectoryAsyncClient createSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot);
         return createSubClient.create(metadata)
                    .map(response -> new SimpleResponse<>(response, createSubClient));
     }
@@ -379,7 +386,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<VoidResponse> deleteSubDirectory(String subDirectoryName) {
         String directoryPath = directoryName + "/" + subDirectoryName;
-        DirectoryAsyncClient deleteSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, shareSnapshot);
+        DirectoryAsyncClient deleteSubClient = new DirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot);
         return deleteSubClient.delete().map(VoidResponse::new);
     }
 
@@ -399,7 +406,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<FileAsyncClient>> createFile(String fileName, long maxSize) {
         String filePath = directoryName + "/" + fileName;
-        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, shareSnapshot);
+        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
         return fileAsyncClient.create(maxSize).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
@@ -424,7 +431,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<Response<FileAsyncClient>> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         String filePath = directoryName + "/" + fileName;
-        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, shareSnapshot);
+        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
         return fileAsyncClient.create(maxSize, httpHeaders, metadata).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
@@ -443,7 +450,7 @@ public class DirectoryAsyncClient {
      */
     public Mono<VoidResponse> deleteFile(String fileName) {
         String filePath = directoryName + "/" + fileName;
-        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, shareSnapshot);
+        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
         return fileAsyncClient.delete().map(VoidResponse::new);
     }
 
@@ -480,7 +487,7 @@ public class DirectoryAsyncClient {
         if (response.value().nextMarker() == null) {
             return Flux.fromIterable(fileRefs);
         }
-        Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listResponse = azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryName, prefix, shareSnapshot, response.value().nextMarker(), maxResult, null, Context.NONE);
+        Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listResponse = azureFileStorageClient.directorys().listFilesAndDirectoriesSegmentWithRestResponseAsync(shareName, directoryName, prefix, snapshot, response.value().nextMarker(), maxResult, null, Context.NONE);
         Flux<FileRef> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForFileAndDirecotries(newResponse, prefix, maxResult));
         return Flux.fromIterable(fileRefs).concatWith(fileRefPublisher);
     }
@@ -491,7 +498,7 @@ public class DirectoryAsyncClient {
         if (response.value().nextMarker() == null) {
             return Flux.fromIterable(handleItems);
         }
-        Mono<DirectorysListHandlesResponse> listResponse = azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryName, response.value().nextMarker(), maxResult, null, shareSnapshot,  recursive, Context.NONE);
+        Mono<DirectorysListHandlesResponse> listResponse = azureFileStorageClient.directorys().listHandlesWithRestResponseAsync(shareName, directoryName, response.value().nextMarker(), maxResult, null, snapshot,  recursive, Context.NONE);
         Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, maxResult, recursive));
         return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
     }
@@ -502,7 +509,7 @@ public class DirectoryAsyncClient {
         if (response.deserializedHeaders().marker() == null) {
             return Flux.fromIterable(handleCount);
         }
-        Mono<DirectorysForceCloseHandlesResponse> listResponse = azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryName, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, recursive, Context.NONE);
+        Mono<DirectorysForceCloseHandlesResponse> listResponse = azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryName, handleId, null, response.deserializedHeaders().marker(), snapshot, recursive, Context.NONE);
         Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId, recursive));
         return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
     }

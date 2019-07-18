@@ -90,7 +90,7 @@ public class DirectoryClientBuilder {
     private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
-    private String shareSnapshot;
+    private String snapshot;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DirectoryClient DirectoryClients}
@@ -122,7 +122,7 @@ public class DirectoryClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (pipeline != null) {
-            return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, shareSnapshot);
+            return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, snapshot);
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -155,7 +155,7 @@ public class DirectoryClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, shareSnapshot);
+        return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, snapshot);
     }
 
     /**
@@ -316,7 +316,7 @@ public class DirectoryClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link DirectoryClientBuilder#endpoint(String) endpoint},
-     * {@link DirectoryClientBuilder#shareName(String) shareName} @{link DirectoryClientBuilder#directoryName(String) filePath}, and {@link DirectoryClientBuilder#shareSnapshot(String) snaphotShot}
+     * {@link DirectoryClientBuilder#shareName(String) shareName} @{link DirectoryClientBuilder#directoryName(String) filePath}, and {@link DirectoryClientBuilder#snapshot(String) snaphotShot}
      * when building clients.</p>
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
@@ -343,12 +343,12 @@ public class DirectoryClientBuilder {
      * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
      * that has been specified in the builder.
      *
-     * @param shareSnapshot Identifier of the snapshot
+     * @param snapshot Identifier of the snapshot
      * @return the updated DirectoryClientBuilder object
-     * @throws NullPointerException If {@code shareSnapshot} is {@code null}.
+     * @throws NullPointerException If {@code snapshot} is {@code null}.
      */
-    public DirectoryClientBuilder shareSnapshot(String shareSnapshot) {
-        this.shareSnapshot = shareSnapshot;
+    public DirectoryClientBuilder snapshot(String snapshot) {
+        this.snapshot = snapshot;
         return this;
     }
 }

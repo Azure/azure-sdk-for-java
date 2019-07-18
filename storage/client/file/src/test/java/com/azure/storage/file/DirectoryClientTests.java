@@ -78,7 +78,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
         }
         UrlBuilder urlBuilder = UrlBuilder.parse(azureStorageFileEndpoint);
         String endpointURL = new UrlBuilder().scheme(urlBuilder.scheme()).host(urlBuilder.host()).toString();
-        Assert.assertEquals(endpointURL, directoryClient.getDirectoryUrl());
+        Assert.assertEquals(endpointURL, directoryClient.getDirectoryUrl().toString());
     }
 
     @Override

@@ -86,7 +86,7 @@ public class FileAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;
     private final String filePath;
-    private final String shareSnapshot;
+    private final String snapshot;
 
     /**
      * Creates a FileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#url() endpoint}.
@@ -94,12 +94,12 @@ public class FileAsyncClient {
      * @param azureFileStorageClient Client that interacts with the service interfaces
      * @param shareName Name of the share
      * @param filePath Path to the file
-     * @param shareSnapshot The snapshot of the share
+     * @param snapshot The snapshot of the share
      */
-    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String shareSnapshot) {
+    FileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath, String snapshot) {
         this.shareName = shareName;
         this.filePath = filePath;
-        this.shareSnapshot = shareSnapshot;
+        this.snapshot = snapshot;
         this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(azureFileStorageClient.httpPipeline())
                             .url(azureFileStorageClient.url())
                             .version(azureFileStorageClient.version())
@@ -113,25 +113,29 @@ public class FileAsyncClient {
      * @param httpPipeline HttpPipeline that HTTP requests and response flow through
      * @param shareName Name of the share
      * @param filePath Path to the file
-     * @param shareSnapshot Optional. The snapshot of the share
+     * @param snapshot Optional. The snapshot of the share
      */
-    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String shareSnapshot) {
+    FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
         this.shareName = shareName;
         this.filePath = filePath;
-        this.shareSnapshot = shareSnapshot;
+        this.snapshot = snapshot;
         this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(httpPipeline)
                           .url(endpoint.toString())
                           .build();
     }
 
     /**
-     * Get the getFileUrl of the storage file client.
+     * Get the url of the storage file client.
      * @return the URL of the storage file client
-     * @throws MalformedURLException if no protocol is specified, or an
-     *         unknown protocol is found, or {@code spec} is {@code null}.
+     * @throws RuntimeException If the file is using a malformed URL.
      */
-    public URL getFileUrl() throws MalformedURLException {
-        return new URL(azureFileStorageClient.url());
+    public URL getFileUrl() {
+        try {
+            return new URL(azureFileStorageClient.url());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(String.format("Invalid URL on %s: %s" + getClass().getSimpleName(),
+                azureFileStorageClient.url()), e);
+        }
     }
 
     /**
@@ -379,7 +383,7 @@ public class FileAsyncClient {
      * @return Storage file properties
      */
     public Mono<Response<FileProperties>> getProperties() {
-        return azureFileStorageClient.files().getPropertiesWithRestResponseAsync(shareName, filePath, shareSnapshot, null, Context.NONE)
+        return azureFileStorageClient.files().getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, Context.NONE)
                     .map(this::getPropertiesResponse);
     }
 
@@ -571,7 +575,7 @@ public class FileAsyncClient {
      * @return {@link FileRange ranges} in the files.
      */
     public Flux<FileRange> listRanges() {
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, null, Context.NONE)
+        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, null, Context.NONE)
                    .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
     }
 
@@ -592,7 +596,7 @@ public class FileAsyncClient {
      */
     public Flux<FileRange> listRanges(FileRange range) {
         String rangeString = range == null ? null : range.toString();
-        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, shareSnapshot, null, rangeString, Context.NONE)
+        return azureFileStorageClient.files().getRangeListWithRestResponseAsync(shareName, filePath, snapshot, null, rangeString, Context.NONE)
                     .flatMapMany(this::convertListRangesResponseToFileRangeInfo);
     }
 
@@ -628,7 +632,7 @@ public class FileAsyncClient {
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
     public Flux<HandleItem> listHandles(Integer maxResults) {
-        return azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, shareSnapshot, Context.NONE)
+        return azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, null, maxResults, null, snapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForHandles(response, maxResults));
     }
 
@@ -650,7 +654,7 @@ public class FileAsyncClient {
      * @return The counts of number of handles closed
      */
     public Flux<Integer> forceCloseHandles(String handleId) {
-        return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, shareSnapshot, Context.NONE)
+        return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
     }
 
@@ -660,7 +664,7 @@ public class FileAsyncClient {
         if (response.deserializedHeaders().marker() == null) {
             return Flux.fromIterable(handleCount);
         }
-        Mono<FilesForceCloseHandlesResponse> listResponse = azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), shareSnapshot, Context.NONE);
+        Mono<FilesForceCloseHandlesResponse> listResponse = azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, response.deserializedHeaders().marker(), snapshot, Context.NONE);
         Flux<Integer> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForForceCloseHandles(newResponse, handleId));
         return Flux.fromIterable(handleCount).concatWith(fileRefPublisher);
     }
@@ -672,7 +676,7 @@ public class FileAsyncClient {
             return Flux.fromIterable(handleItems);
         }
 
-        Mono<FilesListHandlesResponse> listResponse = azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), maxResults, null, shareSnapshot,  Context.NONE);
+        Mono<FilesListHandlesResponse> listResponse = azureFileStorageClient.files().listHandlesWithRestResponseAsync(shareName, filePath, response.value().nextMarker(), maxResults, null, snapshot,  Context.NONE);
         Flux<HandleItem> fileRefPublisher = listResponse.flatMapMany(newResponse -> nextPageForHandles(newResponse, maxResults));
         return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
     }

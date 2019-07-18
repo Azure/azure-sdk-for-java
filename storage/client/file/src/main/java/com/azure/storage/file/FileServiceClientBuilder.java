@@ -47,19 +47,9 @@ import java.util.Objects;
  * <p>If the {@code endpoint} doesn't contain the query parameters to construct a {@code SASTokenCredential} they may
  * be set using {@link FileServiceClientBuilder#credential(SASTokenCredential) credential}.</p>
  *
- * <pre>
- * FileServiceClient client = FileServiceClient.builder()
- *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.fileServiceClient.instantiation.credential}
  *
- * <pre>
- * FileServiceAsyncClient client = FileServiceAsyncClient.builder()
- *     .endpoint(endpointWithoutSASTokenQueryParams)
- *     .credential(SASTokenCredential.fromQuery(SASTokenQueryParams))
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation.credential}
  *
  * <p>Another way to authenticate the client is using a {@link SharedKeyCredential}. To create a SharedKeyCredential
  * a connection string from the Storage File service must be used. Set the SharedKeyCredential with
