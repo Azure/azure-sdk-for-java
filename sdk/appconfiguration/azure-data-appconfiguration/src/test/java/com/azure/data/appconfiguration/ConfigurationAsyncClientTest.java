@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -317,22 +318,22 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingNotFound() {
         final String key = getKey();
-        final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
+        final ConfigurationSetting neverDeletedConfiguration = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
 
-        StepVerifier.create(client.addSetting(neverDeletedConfiguation))
-            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
+        StepVerifier.create(client.addSetting(neverDeletedConfiguration))
+            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse("myNonExistentKey"))
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key("myNonExistentKey")))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
             .verifyComplete();
 
-        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key(neverDeletedConfiguation.key()).label("myNonExistentLabel")))
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key(neverDeletedConfiguration.key()).label("myNonExistentLabel")))
             .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
             .verifyComplete();
 
-        StepVerifier.create(client.getSetting(neverDeletedConfiguation.key()))
-            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
+        StepVerifier.create(client.getSetting(neverDeletedConfiguration.key()))
+            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
             .verifyComplete();
     }
 

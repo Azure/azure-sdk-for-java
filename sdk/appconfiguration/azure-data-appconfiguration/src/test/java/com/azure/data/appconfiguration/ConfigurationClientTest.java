@@ -266,7 +266,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverDeletedConfiguation, client.addSetting(neverDeletedConfiguation));
 
-        assertConfigurationEquals(null, client.deleteSettingWithResponse("myNonExistentKey", Context.NONE), HttpResponseStatus.NO_CONTENT.code());
+        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
         assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpResponseStatus.NO_CONTENT.code());
 
         assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.key()));
