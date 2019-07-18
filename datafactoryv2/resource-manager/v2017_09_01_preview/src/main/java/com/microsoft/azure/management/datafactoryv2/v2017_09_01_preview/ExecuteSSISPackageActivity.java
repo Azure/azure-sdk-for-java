@@ -91,6 +91,12 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     private Map<String, SSISPropertyOverride> propertyOverrides;
 
     /**
+     * SSIS package execution log location.
+     */
+    @JsonProperty(value = "typeProperties.logLocation")
+    private SSISLogLocation logLocation;
+
+    /**
      * Get sSIS package location.
      *
      * @return the packageLocation value
@@ -307,6 +313,26 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
      */
     public ExecuteSSISPackageActivity withPropertyOverrides(Map<String, SSISPropertyOverride> propertyOverrides) {
         this.propertyOverrides = propertyOverrides;
+        return this;
+    }
+
+    /**
+     * Get sSIS package execution log location.
+     *
+     * @return the logLocation value
+     */
+    public SSISLogLocation logLocation() {
+        return this.logLocation;
+    }
+
+    /**
+     * Set sSIS package execution log location.
+     *
+     * @param logLocation the logLocation value to set
+     * @return the ExecuteSSISPackageActivity object itself.
+     */
+    public ExecuteSSISPackageActivity withLogLocation(SSISLogLocation logLocation) {
+        this.logLocation = logLocation;
         return this;
     }
 

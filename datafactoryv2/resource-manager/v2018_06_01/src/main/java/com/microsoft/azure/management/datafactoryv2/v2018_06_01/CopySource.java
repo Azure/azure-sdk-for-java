@@ -98,6 +98,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "DocumentDbCollectionSource", value = DocumentDbCollectionSource.class),
     @JsonSubTypes.Type(name = "BlobSource", value = BlobSource.class),
     @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
+    @JsonSubTypes.Type(name = "BinarySource", value = BinarySource.class),
     @JsonSubTypes.Type(name = "DelimitedTextSource", value = DelimitedTextSource.class),
     @JsonSubTypes.Type(name = "ParquetSource", value = ParquetSource.class)
 })
