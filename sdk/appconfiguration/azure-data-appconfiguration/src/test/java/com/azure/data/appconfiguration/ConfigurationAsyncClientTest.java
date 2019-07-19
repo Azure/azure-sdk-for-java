@@ -550,7 +550,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         listRevisionsWithMultipleKeysRunner(key, key2, (testInput) -> {
             List<ConfigurationSetting> selected = new ArrayList<>();
-
             StepVerifier.create(client.addSetting(testInput.get(0)))
                 .assertNext(response -> assertConfigurationEquals(testInput.get(0), response))
                 .verifyComplete();
@@ -574,7 +573,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected;
+            return selected.stream();
         });
     }
 

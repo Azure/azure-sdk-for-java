@@ -33,6 +33,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -386,7 +387,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithMultipleKeys();
 
-    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, Stream<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
@@ -394,13 +395,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
-        for (ConfigurationSetting actual : testRunner.apply(testInput)) {
-            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        }
+        testRunner.apply(testInput).forEach(actual ->  expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
 
         assertTrue(expectedSelection.isEmpty());
     }
-
     @Test
     public abstract void listRevisionsWithMultipleLabels();
 

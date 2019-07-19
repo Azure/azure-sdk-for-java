@@ -15,7 +15,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -506,8 +505,7 @@ public final class ConfigurationClient {
      * contains all of the current settings in the service.
      */
     private Stream<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        List<ConfigurationSetting> listConfigurationSettings = client.listSettings(options, context).collectList().block();
-        return listConfigurationSettings != null ? listConfigurationSettings.stream() : Stream.empty();
+        return client.listSettings(options, context).toStream();
     }
 
     /**
@@ -557,7 +555,6 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     private Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        List<ConfigurationSetting> listConfigurationSetting = client.listSettingRevisions(selector, context).collectList().block();
-        return listConfigurationSetting != null ? listConfigurationSetting.stream() : Stream.empty();
+        return client.listSettingRevisions(selector, context).toStream();
     }
 }

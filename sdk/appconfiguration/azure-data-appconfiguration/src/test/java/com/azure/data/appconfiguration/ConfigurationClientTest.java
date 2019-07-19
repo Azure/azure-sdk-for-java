@@ -426,7 +426,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return client.listSettingRevisions(new SettingSelector().keys(key, key2)).collect(Collectors.toList());
+            return client.listSettingRevisions(new SettingSelector().keys(key, key2));
         });
     }
 
