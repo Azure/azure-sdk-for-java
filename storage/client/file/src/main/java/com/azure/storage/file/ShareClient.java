@@ -25,12 +25,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating a Synchronous Share Client</strong></p>
  *
- * <pre>
- * ShareClient client = ShareClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.shareClient.initialization}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -103,17 +98,11 @@ public class ShareClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.createShare(Collections.singletonMap("share", "metadata"), null);
-     * System.out.printf("Creating the share completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.create#map-integer.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.createShare(null, 10);
-     * System.out.printf("Creating the share completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.create#map-integer.quota}
      *
      * @param metadata Optional. Metadata to associate with the share
      * @param quotaInGB Optional. Maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -184,13 +173,9 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Delete the snapshot of share that was created at midnight</p>
+     * <p>Delete the snapshot of share that was created at current time.</p>
      *
-     * <pre>
-     * OffsetDateTime midnight = OffsetDateTime.of(LocalTime.MIDNIGHT, ZoneOffset.UTC));
-     * VoidResponse response = client.deleteShare(midnight.toString());
-     * System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.delete#string}
      *
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
@@ -208,10 +193,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <pre>
-     * ShareProperties properties = client.getProperties().value();
-     * System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.getProperties}
      *
      * @return the properties of the share
      * @throws StorageErrorException If the share doesn't exist
@@ -226,13 +208,9 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the properties from the snapshot at midnight</p>
+     * <p>Retrieve the properties from the snapshot at current time.</p>
      *
-     * <pre>
-     * OffsetDateTime midnight = OffsetDateTime.of(LocalTime.MIDNIGHT, ZoneOffset.UTC));
-     * ShareProperties properties = client.getProperties(midnight.toString()).value();
-     * System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.getProperties#string}
      *
      * @param snapshot Identifier of the snapshot
      * @return the properties of the share snapshot
@@ -249,10 +227,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.setQuota(1024);
-     * System.out.printf("Setting the share quota completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.setQuota}
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return information about the share
@@ -271,17 +246,11 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.setMetadata(Collections.singletonMap("share", "updatedMetadata"));
-     * System.out.printf("Setting the share metadata completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.setMetadata#map}
      *
      * <p>Clear the metadata of the share</p>
      *
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = client.setMetadata(null);
-     * System.out.printf("Clearing the share metadata completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.clearMetadata#map}
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return information about the share
@@ -298,11 +267,7 @@ public class ShareClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <pre>
-     * for (SignedIdentifier result : client.getAccessPolicy()) {
-     *     System.out.printf("Access policy %s allows these permissions: %s", result.id(), result.accessPolicy().permission());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.getAccessPolicy}
      *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the share doesn't exist
@@ -318,16 +283,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <pre>
-     * AccessPolicy policy = new AccessPolicy().permission("r")
-     *     .start(OffsetDateTime.now(ZoneOffset.UTC))
-     *     .expiry(OffsetDateTime.now(ZoneOffset.UTC).addDays(10));
-     *
-     * SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
-     *
-     * Response&lt;ShareInfo&gt; response = client.setAccessPolicy(Collections.singletonList(permission));
-     * System.out.printf("Setting access policies completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicy}
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -345,10 +301,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <pre>
-     * Response&lt;ShareStatistics&gt; response = client.getStatistics();
-     * System.out.printf("The share is using %d GB", response.value().getShareUsageInGB());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.getStatistics}
      *
      * @return the storage statistics of the share
      */
@@ -382,10 +335,7 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * <pre>
-     * Response&lt;DirectoryClient&gt; response = client.createDirectory("documents", Collections.singletonMap("directory", "metadata"));
-     * System.out.printf("Creating the directory completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClient.createDirectory#string-map}
      *
      * @param directoryName Name of the directory
      * @param metadata Optional. Metadata to associate with the directory

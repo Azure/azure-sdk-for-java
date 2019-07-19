@@ -23,12 +23,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating a Synchronous File Service Client</strong></p>
  *
- * <pre>
- * FileServiceClient fileServiceAsyncClient = FileServiceClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.fileServiceClient.instantiation}
  *
  * <p>View {@link FileServiceClientBuilder this} for additional ways to construct the fileServiceAsyncClient.</p>
  *

@@ -38,12 +38,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous File Service Client</strong></p>
  *
- * <pre>
- * FileServiceAsyncClient azureFileStorageClient = FileServiceAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.instantiation}
  *
  * <p>View {@link FileServiceClientBuilder this} for additional ways to construct the azureFileStorageClient.</p>
  *

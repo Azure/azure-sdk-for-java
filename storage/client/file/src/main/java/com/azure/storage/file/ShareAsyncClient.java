@@ -39,12 +39,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Share Client</strong></p>
  *
- * <pre>
- * ShareAsyncClient azureFileStorageClient = ShareAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.shareAsyncClient.initialization}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the azureFileStorageClient.</p>
  *
@@ -156,17 +151,11 @@ public class ShareAsyncClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * <pre>
-     * azureFileStorageClient.createShare(Collections.singletonMap("share", "metadata"), null)
-     *     .subscribe(response -&gt; System.out.printf("Creating the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClientAsync.create#map-integer.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * <pre>
-     * azureFileStorageClient.createShare(null, 10)
-     *     .subscribe(response -&gt; System.out.printf("Creating the share completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareClientAsync.create#map-integer.quota}
      *
      * @param metadata Optional. Metadata to associate with the share
      * @param quotaInGB Optional. Maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -239,13 +228,9 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Delete the snapshot of share that was created at midnight</p>
+     * <p>Delete the snapshot of share that was created at current time.</p>
      *
-     * <pre>
-     * OffsetDateTime midnight = OffsetDateTime.of(LocalTime.MIDNIGHT, ZoneOffset.UTC));
-     * azureFileStorageClient.deleteShare(midnight.toString())
-     *     .subscribe(response -&gt; System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.delete#string}
      *
      * @param snapshot Identifier of the snapshot
      * @return A response that only contains headers and response status code
@@ -264,13 +249,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <pre>
-     * azureFileStorageClient.getProperties()
-     *     .subscribe(response -&gt; {
-     *         ShareProperties properties = response.value();
-     *         System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-     *     });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getProperties}
      *
      * @return the properties of the share
      * @throws StorageErrorException If the share doesn't exist
@@ -285,16 +264,9 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the properties from the snapshot at midnight</p>
+     * <p>Retrieve the properties from the snapshot at current time.</p>
      *
-     * <pre>
-     * OffsetDateTime midnight = OffsetDateTime.of(LocalTime.MIDNIGHT, ZoneOffset.UTC));
-     * azureFileStorageClient.getProperties(midnight.toString())
-     *     .subscribe(response -&gt; {
-     *         ShareProperties properties = response.value();
-     *         System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-     *     });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getProperties#string}
      *
      * @param snapshot Identifier of the snapshot
      * @return the properties of the share snapshot
@@ -312,10 +284,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <pre>
-     * azureFileStorageClient.setQuota(1024)
-     *     .subscribe(response -&gt; System.out.printf("Setting the share quota completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.setQuota}
      *
      * @param quotaInGB Size in GB to limit the share's growth. The quota in GB must be between 1 and 5120.
      * @return information about the share
@@ -335,17 +304,11 @@ public class ShareAsyncClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <pre>
-     * azureFileStorageClient.setMetadata(Collections.singletonMap("share", "updatedMetadata"))
-     *     .subscribe(response -&gt; System.out.printf("Setting the share metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.setMetadata#map}
      *
      * <p>Clear the metadata of the share</p>
      *
-     * <pre>
-     * azureFileStorageClient.setMetadata(null)
-     *     .subscribe(response -&gt; System.out.printf("Clearing the share metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.clearMetadata#map}
      *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return information about the share
@@ -363,10 +326,7 @@ public class ShareAsyncClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <pre>
-     * azureFileStorageClient.getAccessPolicy()
-     *     .subscribe(result -> System.out.printf("Access policy %s allows these permissions: %s", result.id(), result.accessPolicy().permission()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getAccessPolicy}
      *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the share doesn't exist
@@ -383,16 +343,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <pre>
-     * AccessPolicy policy = new AccessPolicy().permission("r")
-     *     .start(OffsetDateTime.now(ZoneOffset.UTC))
-     *     .expiry(OffsetDateTime.now(ZoneOffset.UTC).addDays(10));
-     *
-     * SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
-     *
-     * azureFileStorageClient.setAccessPolicy(Collections.singletonList(permission))
-     *     .subscribe(response -&gt; System.out.printf("Setting access policies completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}}
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -411,10 +362,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <pre>
-     * azureFileStorageClient.getStatistics()
-     *     .subscribe(response -&gt; System.out.printf("The share is using %d GB", response.value().getShareUsageInGB()));
-     * </pre>
+     * {@codesnippet {@codesnippet com.azure.storage.file.shareAsyncClient.getStatistics}}
      *
      * @return the storage statistics of the share
      */
@@ -449,10 +397,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * <pre>
-     * azureFileStorageClient.createDirectory("documents", Collections.singletonMap("directory", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the directory completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string-map}
      *
      * @param directoryName Name of the directory
      * @param metadata Optional. Metadata to associate with the directory

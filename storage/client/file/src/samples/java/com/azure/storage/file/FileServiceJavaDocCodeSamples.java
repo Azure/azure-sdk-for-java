@@ -18,13 +18,35 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link FileServiceClient} and {@link FileServiceAsyncClient}.
  */
 public class FileServiceJavaDocCodeSamples {
+    /**
+     * Generates code sample for {@link FileServiceClient} instantiation.
+     */
+    public void initialization() {
+        // BEGIN: com.azure.storage.file.fileServiceClient.instantiation
+        FileServiceClient client = new FileServiceClientBuilder()
+            .connectionString("${connectionString}")
+            .endpoint("${endpoint}")
+            .buildClient();
+        // END: com.azure.storage.file.fileServiceClient.instantiation
+    }
 
+    /**
+     * Generates code sample for {@link FileServiceAsyncClient} instantiation.
+     */
+    public void asyncInitialization() {
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation
+        ShareAsyncClient client = new ShareClientBuilder()
+            .connectionString("${connectionString}")
+            .endpoint("${endpoint}")
+            .buildAsyncClient();
+        // END: com.azure.storage.file.fileServiceAsyncClient.instantiation
+    }
     /**
      * Generates code sample for creating a {@link FileServiceClient} with {@link SASTokenCredential}
      * @return An instance of {@link FileServiceClient}
      */
     public FileServiceClient createClientWithSASToken() {
-        // BEGIN: com.azure.storage.file.fileServiceClient.instantiation.sastoken
+        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.sastoken
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .buildClient();
