@@ -308,14 +308,14 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleKeys();
 
-    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
+    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Stream<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
-        for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
+        testRunner.apply(setting, setting2).forEach(actual -> {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        }
+        });
 
         assertTrue(expectedSelection.isEmpty());
     }
@@ -323,14 +323,14 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleLabels();
 
-    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, List<ConfigurationSetting>> testRunner) {
+    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Stream<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
 
-        for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
+        testRunner.apply(setting, setting2).forEach(actual -> {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        }
+        });
 
         assertTrue(expectedSelection.isEmpty());
     }
@@ -401,7 +401,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithMultipleLabels();
 
-    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, List<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, Stream<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).label(setting.label()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
@@ -409,9 +409,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
 
-        for (ConfigurationSetting actual : testRunner.apply(testInput)) {
+        testRunner.apply(testInput).forEach(actual -> {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        }
+        });
 
         assertTrue(expectedSelection.isEmpty());
     }

@@ -416,7 +416,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected;
+            return selected.stream();
         });
     }
 
@@ -445,7 +445,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected;
+            return selected.stream();
         });
     }
 
@@ -611,7 +611,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected;
+            return selected.stream();
         });
     }
 

@@ -6,11 +6,14 @@ package com.azure.data.appconfiguration;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.net.MalformedURLException;
 import java.security.GeneralSecurityException;
+import java.util.stream.Stream;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
@@ -92,6 +95,33 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // END: com.azure.data.applicationconfig.configurationclient.addSetting#string-string
     }
 
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector)}  }
+     */
+    public void listSettings() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Stream<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
+        csStream.forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}  }
+     */
+    public void listSettingRevisions() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Stream<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
+        csStream.forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
+    }
     /**
      * Implementation not provided for this method
      * @return {@code null}

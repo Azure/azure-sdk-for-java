@@ -325,7 +325,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return client.listSettings(new SettingSelector().keys(key, key2)).collect(Collectors.toList());
+            return client.listSettings(new SettingSelector().keys(key, key2));
         });
     }
 
@@ -342,7 +342,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
 
-            return client.listSettings(new SettingSelector().keys(key).labels(label, label2)).collect(Collectors.toList());
+            return client.listSettings(new SettingSelector().keys(key).labels(label, label2));
         });
     }
 
@@ -446,7 +446,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             assertConfigurationEquals(testInput.get(2), client.addSetting(testInput.get(2)));
             assertConfigurationEquals(testInput.get(3), client.updateSetting(testInput.get(3)));
 
-            return client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2)).collect(Collectors.toList());
+            return client.listSettingRevisions(new SettingSelector().keys(key).labels(label, label2));
         });
     }
 

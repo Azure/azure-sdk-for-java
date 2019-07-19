@@ -472,10 +472,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * <pre>
-     * for (ConfigurationSetting setting : client.listSettings(new SettingSelector().key("prodDBConnection"))) {
-     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-     * }</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
@@ -520,10 +517,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * <pre>
-     * for (ConfigurationSetting revision : client.listSettingRevisions(new SettingSelector().key("prodDBConnection"))) {
-     *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-     * }</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @return Revisions of the ConfigurationSetting
