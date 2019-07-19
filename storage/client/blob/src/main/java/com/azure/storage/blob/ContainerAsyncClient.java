@@ -355,8 +355,7 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has
      * anything set other than {@link ModifiedAccessConditions#ifModifiedSince()}.
      */
-    public Mono<VoidResponse> setMetadata(Metadata metadata,
-                                          ContainerAccessConditions accessConditions) {
+    public Mono<VoidResponse> setMetadata(Metadata metadata, ContainerAccessConditions accessConditions) {
         metadata = metadata == null ? new Metadata() : metadata;
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())
@@ -434,8 +433,7 @@ public final class ContainerAsyncClient {
      * @throws UnsupportedOperationException If {@link ContainerAccessConditions#modifiedAccessConditions()} has either
      * {@link ModifiedAccessConditions#ifMatch()} or {@link ModifiedAccessConditions#ifNoneMatch()} set.
      */
-    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType,
-                                              List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
+    public Mono<VoidResponse> setAccessPolicy(PublicAccessType accessType, List<SignedIdentifier> identifiers, ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? new ContainerAccessConditions() : accessConditions;
 
         if (!validateNoEtag(accessConditions.modifiedAccessConditions())) {
