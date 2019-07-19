@@ -47,6 +47,7 @@ jobs:
     timeoutInMinutes: 240
 
     strategy:
+      maxParallel: 1
       matrix:
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'macOS-10.13'
@@ -130,6 +131,7 @@ jobs:
     timeoutInMinutes: 240
 
     strategy:
+      maxParallel: 1
       matrix:
         MultiMaster_Multi_Region_Long:
          OSVmImage: 'vs2017-win2016'
@@ -202,18 +204,19 @@ jobs:
     timeoutInMinutes: 240
 
     strategy:
+      maxParallel: 1
       matrix:
-        Multi_Region:
-          OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(ACCOUNT_HOST)
-          CosmosAccountKey: $(ACCOUNT_KEY)
-          PreferredLocations: '["East US 2"]'
-
         Single_Region:
          OSVmImage: 'macOS-10.13'
          CosmosAccountHost: $(MULTIMASTER_SINGLE_ACCOUNT_HOST)
          CosmosAccountKey: $(MULTIMASTER_SINGLE_ACCOUNT_KEY)
          PreferredLocations: null
+
+        Multi_Region:
+          OSVmImage: 'macOS-10.13'
+          CosmosAccountHost: $(ACCOUNT_HOST)
+          CosmosAccountKey: $(ACCOUNT_KEY)
+          PreferredLocations: '["East US 2"]'
 
     pool:
       vmImage: $(OSVmImage)
@@ -314,21 +317,8 @@ jobs:
     timeoutInMinutes: 120
 
     strategy:
+      maxParallel: 2
       matrix:
-        Session_Tcp:
-          OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
-          ProtocolFlag: '["Tcp"]'
-          Consistency: '["Session"]'
-
-        Session_Https:
-         OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
-         CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
-         ProtocolFlag: '["Https"]'
-         Consistency: '["Session"]'
-
         Strong_Tcp:
           OSVmImage: 'macOS-10.13'
           CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
@@ -342,6 +332,20 @@ jobs:
          CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
          ProtocolFlag: '["Https"]'
          Consistency: '["Strong", "Session"]'
+
+        Session_Tcp:
+          OSVmImage: 'macOS-10.13'
+          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
+          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+          ProtocolFlag: '["Tcp"]'
+          Consistency: '["Session"]'
+
+        Session_Https:
+         OSVmImage: 'macOS-10.13'
+         CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
+         CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+         ProtocolFlag: '["Https"]'
+         Consistency: '["Session"]'
     pool:
       vmImage: $(OSVmImage)
 
