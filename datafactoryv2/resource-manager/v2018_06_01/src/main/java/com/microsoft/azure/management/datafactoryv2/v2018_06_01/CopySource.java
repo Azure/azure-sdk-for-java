@@ -84,7 +84,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
     @JsonSubTypes.Type(name = "ODataSource", value = ODataSource.class),
     @JsonSubTypes.Type(name = "SybaseSource", value = SybaseSource.class),
-    @JsonSubTypes.Type(name = "SapBwSource", value = SapBwSource.class),
     @JsonSubTypes.Type(name = "PostgreSqlSource", value = PostgreSqlSource.class),
     @JsonSubTypes.Type(name = "MySqlSource", value = MySqlSource.class),
     @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),
