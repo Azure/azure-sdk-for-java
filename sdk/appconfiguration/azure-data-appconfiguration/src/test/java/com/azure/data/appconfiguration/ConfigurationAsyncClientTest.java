@@ -468,7 +468,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(settingsReturned::add)
                 .verifyComplete();
 
-            return settingsReturned;
+            return settingsReturned.stream();
         });
     }
 

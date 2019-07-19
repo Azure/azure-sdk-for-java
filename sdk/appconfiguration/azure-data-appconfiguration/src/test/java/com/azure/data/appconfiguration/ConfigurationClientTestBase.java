@@ -338,7 +338,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listSettingsSelectFields();
 
-    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, List<ConfigurationSetting>> testRunner) {
+    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Stream<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
@@ -357,8 +357,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             String lbl = value / 4 == 0 ? label : label2;
             settings.add(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
         }
-
-        for (ConfigurationSetting setting : testRunner.apply(settings, selector)) {
+        testRunner.apply(settings, selector).forEach(setting -> {
             assertNotNull(setting.etag());
             assertNotNull(setting.key());
             assertTrue(setting.key().contains(keyPrefix));
@@ -368,7 +367,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             assertNull(setting.lastModified());
             assertNull(setting.contentType());
             assertNull(setting.label());
-        }
+        });
     }
 
     @Test

@@ -352,7 +352,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     public void listSettingsSelectFields() {
         listSettingsSelectFieldsRunner((settings, selector) -> {
             settings.forEach(client::setSetting);
-            return client.listSettings(selector).collect(Collectors.toList());
+            return client.listSettings(selector);
         });
     }
 
