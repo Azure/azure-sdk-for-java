@@ -16,7 +16,6 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -631,8 +630,6 @@ public class StoreReaderDotNetTest {
     /**
      * test consistency writer for global strong
      */
-    // FIXME: Fails in Strong_Multi_Region_ReadMyWrites. Disabled Temporarily
-    @Ignore
     @Test(groups = "unit")
     public void globalStrongConsistentWrite() {
         // create a real document service request (with auth token level = god)

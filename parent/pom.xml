@@ -176,6 +176,7 @@
     <checkstyle.version>8.19</checkstyle.version>
     <mockito-core.version>2.28.2</mockito-core.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
+    <maven-exec-plugin.version>1.2.1</maven-exec-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -593,6 +594,13 @@
             </execution>
           </executions>
         </plugin>
+
+        <!-- This plugin lets you rin the main method of a Java class in your project, with project dependencies automatically included in the classpath. -->
+        <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${maven-exec-plugin.version}</version>
+       </plugin>
 
         <!-- This plugin is used to copy resources of your project. -->
         <plugin>

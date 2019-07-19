@@ -11,13 +11,23 @@ Licensed under the MIT License.
     <version>3.0.0</version>
   </parent>
 
+  <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-examples</artifactId>
-  <name>Async SDK for SQL API of Azure Cosmos DB Service - Examples</name>
-  <description>Examples for Async SDK for SQL API of Azure Cosmos DB Service</description>
+  <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Examples</name>
+  <description>This package contains examples for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+
   <build>
     <plugins>
       <plugin>
@@ -28,96 +38,107 @@ Licensed under the MIT License.
           <target>1.8</target>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <classpathContainers>
-            <classpathContainer>
-              org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8
-            </classpathContainer>
-          </classpathContainers>
-        </configuration>
-      </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-eclipse-plugin</artifactId>-->
+        <!--<version>2.8</version>-->
+        <!--<configuration>-->
+          <!--<classpathContainers>-->
+            <!--<classpathContainer>-->
+              <!--org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8-->
+            <!--</classpathContainer>-->
+          <!--</classpathContainers>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
         <configuration>
           <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
         </configuration>
       </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass>com.azure.data.cosmos.rx.examples.multimaster.samples.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <inherited>false</inherited>
-        <executions>
-          <execution>
-            <phase>none</phase>
-            <id>default-cli</id>
-          </execution>
-        </executions>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
+
+      <!--<plugin>-->
+        <!--<artifactId>maven-assembly-plugin</artifactId>-->
+        <!--<version>2.2</version>-->
+        <!--<configuration>-->
+          <!--<descriptorRefs>-->
+            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+          <!--</descriptorRefs>-->
+          <!--<archive>-->
+            <!--<manifest>-->
+              <!--<mainClass>com.azure.data.cosmos.rx.examples.multimaster.samples.Main</mainClass>-->
+            <!--</manifest>-->
+          <!--</archive>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<id>make-assembly</id>-->
+            <!--<phase>package</phase>-->
+            <!--<goals>-->
+              <!--<goal>single</goal>-->
+            <!--</goals>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-antrun-plugin</artifactId>-->
+        <!--<inherited>false</inherited>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--<phase>none</phase>-->
+            <!--<id>default-cli</id>-->
+          <!--</execution>-->
+        <!--</executions>-->
+        <!--<configuration>-->
+          <!--<skip>true</skip>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
     </plugins>
+
   </build>
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>

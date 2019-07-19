@@ -10,35 +10,80 @@ Licensed under the MIT License.
     <version>1.1.0</version>
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
+
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
   <version>3.0.0</version>
   <packaging>pom</packaging>
-  <name>Azure Cosmos DB SQL API</name>
-  <description>Java Async SDK (with Reactive Extension RX support) for Azure Cosmos DB SQL API</description>
-  <url>https://docs.microsoft.com/en-us/azure/cosmos-db</url>
-  <modules>
-    <module>microsoft-azure-cosmos</module>
-    <module>microsoft-azure-cosmos-benchmark</module>
-    <module>microsoft-azure-cosmos-examples</module>
-  </modules>
+
+  <name>Microsoft Azure Cosmos DB SQL API</name>
+  <description>This package contains Mircosoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <cosmosdb-sdk-direct-impl.version>3.0.0</cosmosdb-sdk-direct-impl.version>
     <direct-connectivity-version>3.0.0</direct-connectivity-version>
-    <!--<guava.version>27.0.1-jre</guava.version>-->
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.36.Final</netty.version>
+    <sdk-version>3.0.0</sdk-version>
     <!--<netty-tcnative.version>2.0.25.Final</netty-tcnative.version>-->
     <!--<reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>-->
-    <reactor-bom.version>Californium-SR7</reactor-bom.version>
-    <sdk-version>3.0.0</sdk-version>
-    <!--<slf4j.version>1.7.6</slf4j.version>-->
+    <!--<reactor-bom.version>Californium-SR7</reactor-bom.version>-->
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-cosmos</artifactId>
+        <version>${project.parent.version}</version>
+      </dependency>
+
+      <!--<dependency>-->
+      <!--<groupId>io.projectreactor</groupId>-->
+      <!--<artifactId>reactor-bom</artifactId>-->
+      <!--<version>${reactor-bom.version}</version>-->
+      <!--<type>pom</type>-->
+      <!--<scope>import</scope>-->
+      <!--</dependency>-->
+
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-codec-http</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <profiles>
   <profile>
     <!-- unit test -->
@@ -326,73 +371,31 @@ Licensed under the MIT License.
   </build>
     <reporting>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.22.0</version>
-            </plugin>
             <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>findbugs-maven-plugin</artifactId>-->
-                <!--<version>3.0.4</version>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-report-plugin</artifactId>-->
+                <!--<version>2.22.0</version>-->
             <!--</plugin>-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.1</version>
-            </plugin>
+
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-jxr-plugin</artifactId>-->
+                <!--<version>2.1</version>-->
+            <!--</plugin>-->
         </plugins>
     </reporting>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-cosmos</artifactId>
-        <version>${project.parent.version}</version>
-      </dependency>
-      <!--<dependency>-->
-        <!--<groupId>io.projectreactor</groupId>-->
-        <!--<artifactId>reactor-bom</artifactId>-->
-        <!--<version>${reactor-bom.version}</version>-->
-        <!--<type>pom</type>-->
-        <!--<scope>import</scope>-->
-      <!--</dependency>-->
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>${mockito.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-codec-http</artifactId>
-        <version>${netty.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-handler</artifactId>
-        <version>${netty.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  <dependencies/>
-  <licenses>
-    <license>
-      <name>MIT License</name>
-      <url>http://www.opensource.org/licenses/mit-license.php</url>
-    </license>
-  </licenses>
-  <scm>
-    <connection>scm:git:https://github.com/Azure/azure-cosmosdb-java.git</connection>
-    <developerConnection>scm:git:https://github.com/Azure/azure-cosmosdb-java.git</developerConnection>
-    <url>https://github.com/Azure/azure-cosmosdb-java.git</url>
-  </scm>
+
   <developers>
     <developer>
-      <name>Azure Cosmos DB Developer Platform Devs</name>
-      <email>docdbdevplatdevs@microsoft.com</email>
-      <organization>Microsoft</organization>
-      <organizationUrl>http://www.microsoft.com/</organizationUrl>
+      <id>microsoft</id>
+      <name>Microsoft Corporation</name>
     </developer>
   </developers>
+
+  <modules>
+    <module>microsoft-azure-cosmos</module>
+    <module>microsoft-azure-cosmos-benchmark</module>
+    <module>microsoft-azure-cosmos-examples</module>
+  </modules>
+
 </project>
