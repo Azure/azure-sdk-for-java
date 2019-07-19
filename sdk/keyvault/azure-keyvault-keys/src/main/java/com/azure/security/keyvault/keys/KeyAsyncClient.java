@@ -94,11 +94,36 @@ public final class KeyAsyncClient {
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
      * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Key created key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> createKey(String name, KeyType keyType) {
+        return withContext(context -> createKey(name, keyType, Context.NONE))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
+     *
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC},
+     * {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link KeyType#OCT OCT}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when a response has been received.</p>
+     * <pre>
+     * keyAsyncClient.createKey("keyName", KeyType.EC).subscribe(keyResponse -&gt;
+     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+     * </pre>
+     *
+     * @param keyCreateOptions The key configuration object containing information about the key being created.
+     * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
+     * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> createKey(String name, KeyType keyType) {
-        return withContext(context -> createKey(name, keyType, context));
+    public Mono<Response<Key>> createKeyWithResponse(KeyCreateOptions keyCreateOptions) {
+        return withContext(context -> createKey(keyCreateOptions, context));
     }
 
     Mono<Response<Key>> createKey(String name, KeyType keyType, Context context) {
@@ -135,11 +160,12 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code keyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
+     * @return A {@link Mono} containing the {@link Key created key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions) {
-        return withContext(context -> createKey(keyCreateOptions, context));
+    public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
+        return withContext(context -> createKey(keyCreateOptions, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
     }
 
     Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
@@ -154,6 +180,41 @@ public final class KeyAsyncClient {
             .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.name(), error));
     }
 
+    /**
+     * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa key type in
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
+     *
+     * <p>The {@link RsaKeyCreateOptions} is required. The {@link RsaKeyCreateOptions#keySize() keySize} can be optionally specified. The {@link RsaKeyCreateOptions#expires() expires}
+     * and {@link RsaKeyCreateOptions#notBefore() notBefore} values are optional. The {@link RsaKeyCreateOptions#enabled() enabled} field
+     * is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#RSA RSA} and
+     * {@link KeyType#RSA_HSM RSA-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Subscribes to the call asynchronously
+     * and prints out the newly created key details when a response has been received.</p>
+     * <pre>
+     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
+     *    .keySize(2048)
+     *    .notBefore(OffsetDateTime.now().plusDays(1))
+     *    .expires(OffsetDateTime.now().plusYears(1));
+     *
+     * keyAsyncClient.createRsaKey(rsaKeyCreateOptions).subscribe(keyResponse -&gt;
+     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+     * </pre>
+     *
+     * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being created.
+     * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException if {@code rsaKeyCreateOptions} is malformed.
+     * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Key created key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
+        return withContext(context -> createRsaKey(rsaKeyCreateOptions, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
 
     /**
      * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa key type in
@@ -186,7 +247,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
+    public Mono<Response<Key>> createRsaKeyWithResponse(RsaKeyCreateOptions rsaKeyCreateOptions) {
         return withContext(context -> createRsaKey(rsaKeyCreateOptions, context));
     }
 
@@ -231,10 +292,46 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
      * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
      * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Key created key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
+        return withContext(context -> createEcKey(ecKeyCreateOptions, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Creates a new Ec key and stores it in the key vault. The create Ec key operation can be used to create any Ec key type in
+     * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the {@code keys/create} permission.
+     *
+     * <p>The {@link EcKeyCreateOptions} parameter is required. The {@link EcKeyCreateOptions#curve() key curve} can be optionally specified. If not specified,
+     * default value of {@link KeyCurveName#P_256 P-256} is used by Azure Key Vault. The {@link EcKeyCreateOptions#expires() expires} and {@link EcKeyCreateOptions#notBefore() notBefore} values
+     * are optional. The {@link EcKeyCreateOptions#enabled() enabled} field is set to true by Azure Key Vault, if not specified.</p>
+     *
+     * <p>The {@link EcKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC EC} and
+     * {@link KeyType#EC_HSM EC-HSM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Subscribes to the call asynchronously
+     * and prints out the newly created ec key details when a response has been received.</p>
+     * <pre>
+     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
+     *    .curve(KeyCurveName.P_384)
+     *    .notBefore(OffsetDateTime.now().plusDays(1))
+     *    .expires(OffsetDateTime.now().plusYears(1));
+     *
+     * keyAsyncClient.createEcKey(ecKeyCreateOptions).subscribe(keyResponse -&gt;
+     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+     * </pre>
+     *
+     * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
+     * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
+     * @throws ResourceModifiedException if {@code ecKeyCreateOptions} is malformed.
+     * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
+    public Mono<Response<Key>> createEcKeyWithResponse(EcKeyCreateOptions ecKeyCreateOptions) {
         return withContext(context -> createEcKey(ecKeyCreateOptions, context));
     }
 
@@ -269,8 +366,9 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial) {
-        return withContext(context -> importKey(name, keyMaterial, context));
+    public Mono<Key> importKey(String name, JsonWebKey keyMaterial) {
+        return withContext(context -> importKey(name, keyMaterial, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
     }
 
     Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial, Context context) {
@@ -305,10 +403,42 @@ public final class KeyAsyncClient {
      * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
      * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Key imported key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
+        return withContext(context -> importKey(keyImportOptions, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Imports an externally created key and stores it in key vault. The import key operation may be used to import any key type
+     * into the Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. This operation requires the {@code keys/import} permission.
+     *
+     * <p>The {@code keyImportOptions} is required and its fields {@link KeyImportOptions#name() name} and {@link KeyImportOptions#keyMaterial() key material} cannot
+     * be null. The {@link KeyImportOptions#expires() expires} and {@link KeyImportOptions#notBefore() notBefore} values in {@code keyImportOptions}
+     * are optional. If not specified, no values are set for the fields. The {@link KeyImportOptions#enabled() enabled} field is set to true and
+     * the {@link KeyImportOptions#hsm() hsm} field is set to false by Azure Key Vault, if they are not specified.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Imports a new key into key vault. Subscribes to the call asynchronously and prints out the newly imported key details
+     * when a response has been received.</p>
+     * <pre>
+     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
+     *   .hsm(true)
+     *   .expires(OffsetDateTime.now().plusDays(60));
+     *
+     * keyAsyncClient.importKey(keyImportOptions).subscribe(keyResponse -&gt;
+     *   System.out.printf("Key is imported with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+     * </pre>
+     *
+     * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
+     * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
+     * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> importKey(KeyImportOptions keyImportOptions) {
+    public Mono<Response<Key>> importKeyWithResponse(KeyImportOptions keyImportOptions) {
         return withContext(context -> importKey(keyImportOptions, context));
     }
 
@@ -341,12 +471,40 @@ public final class KeyAsyncClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @return A {@link Mono} containing the requested {@link Key key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> getKey(String name, String version) {
+        if (version == null) {
+            return getKey(name);
+        }
+        return withContext(context -> getKey(name, version, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Gets the public part of the specified key and key version. The get key operation is applicable to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
+     * returned key details when a response has been received.</p>
+     * <pre>
+     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+     * keyAsyncClient.getKey("keyName", keyVersion).subscribe(keyResponse -&gt;
+     *   System.out.printf("Key returned with name %s, id %s and version %s", keyResponse.value().name(),
+     *   keyResponse.value().id(), keyResponse.value().version()));
+     * </pre>
+     *
+     * @param name The name of the key, cannot be null
+     * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
+     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKey(String name, String version) {
+    public Mono<Response<Key>> getKeyWithResponse(String name, String version) {
         if (version == null) {
-            return getKey(name);
+            return getKeyWithResponse(name);
         }
         return withContext(context -> getKey(name, version, context));
     }
@@ -374,11 +532,34 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
+     * @return A {@link Mono} containing the requested {@link Key key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> getKey(String name) {
+        return getKey(name, "");
+    }
+
+    /**
+     * Get the public part of the latest version of the specified key from the key vault. The get key operation is applicable to
+     * all key types and it requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
+     * returned key details when a response has been received.</p>
+     * <pre>
+     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt;
+     *   System.out.printf("Key with name %s, id %s \n", keyResponse.value().name(),
+     *   keyResponse.value().id()));
+     * </pre>
+     *
+     * @param name The name of the key.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKey(String name) {
-        return getKey(name, "");
+    public Mono<Response<Key>> getKeyWithResponse(String name) {
+        return getKeyWithResponse(name, "");
     }
 
     /**
@@ -397,15 +578,42 @@ public final class KeyAsyncClient {
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
+     * @return A {@link Mono} containing the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> getKey(KeyBase keyBase) {
+    public Mono<Key> getKey(KeyBase keyBase) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
         if (keyBase.version() == null) {
             return getKey(keyBase.name());
         }
         return getKey(keyBase.name(), keyBase.version());
+    }
+
+    /**
+     * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
+     * to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
+     * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
+     * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
+     * <pre>
+     * keyAsyncClient.listKeys().subscribe(keyBase -&gt;
+     *     client.getKey(keyBase).subscribe(keyResponse -&gt;
+     *       System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(), keyResponse.value().id())));
+     * </pre>
+     *
+     * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Mono} containing the requested {@link Key key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Key>> getKeyWithResponse(KeyBase keyBase) {
+        Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
+        if (keyBase.version() == null) {
+            return getKeyWithResponse(keyBase.name());
+        }
+        return getKeyWithResponse(keyBase.name(), keyBase.version());
     }
 
     /**
@@ -430,10 +638,40 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
+     * @return A {@link Mono} containing the {@link KeyBase updated key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> updateKey(KeyBase key) {
+    public Mono<Key> updateKey(KeyBase key) {
+        return withContext(context -> updateKey(key, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
+     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
+     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
+     * returned key details when a response has been received.</p>
+     * <pre>
+     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
+     *     Key key = keyResponse.value();
+     *     //Update the not before time of the key.
+     *     key.notBefore(OffsetDateTime.now().plusDays(50));
+     *     keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse -&gt;
+     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
+     *   });
+     * </pre>
+     *
+     * @param key The {@link KeyBase base key} object with updated properties.
+     * @throws NullPointerException if {@code key} is {@code null}.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Mono} containing the {@link KeyBase updated key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Key>> updateKeyWithResponse(KeyBase key) {
         return withContext(context -> updateKey(key, context));
     }
 
@@ -447,7 +685,6 @@ public final class KeyAsyncClient {
             .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
             .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
-
 
     /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
@@ -479,6 +716,37 @@ public final class KeyAsyncClient {
         return withContext(context -> updateKey(key, context, keyOperations));
     }
 
+    /**
+     * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
+     * operation changes specified attributes of an existing stored key and attributes that are not specified in the request are left unchanged.
+     * The cryptographic key material of a key itself cannot be changed. This operation requires the {@code keys/set} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
+     * returned key details when a response has been received.</p>
+     * <pre>
+     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
+     *     Key key = keyResponse.value();
+     *     //Update the not before time of the key and associate Encrypt and Decrypt operations with it.
+     *     key.notBefore(OffsetDateTime.now().plusDays(50));
+     *     keyAsyncClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).subscribe(updatedKeyResponse -&gt;
+     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
+     *   });
+     * </pre>
+     *
+     * @param key The {@link KeyBase base key} object with updated properties.
+     * @param keyOperations The updated key operations to associate with the key.
+     * @throws NullPointerException if {@code key} is {@code null}.
+     * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
+     * @return A {@link Mono} containing the {@link KeyBase updated key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> updateKeyWithResponse(KeyBase key, KeyOperation... keyOperations) {
+        return withContext(context -> updateKey(key, context, keyOperations))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
     Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
@@ -491,6 +759,31 @@ public final class KeyAsyncClient {
             .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
 
+    /**
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed in the deleted state
+     * and requires to be purged for permanent deletion else the key is permanently deleted. The delete operation applies to any key stored
+     * in Azure Key Vault but it cannot be applied to an individual version of a key. This operation removes the cryptographic material
+     * associated with the key, which means the key is not usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation
+     * requires the {@code keys/delete} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
+     * deleted key details when a response has been received.</p>
+     * <pre>
+     * keyAsyncClient.deleteKey("keyName").subscribe(deletedKeyResponse -&gt;
+     *   System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+     * </pre>
+     *
+     * @param name The name of the key to be deleted.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedKey> deleteKey(String name) {
+        return withContext(context -> deleteKey(name, context))
+            .flatMap(deletedKeyResponse -> Mono.justOrEmpty(deletedKeyResponse.value()));
+    }
 
     /**
      * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed in the deleted state
@@ -513,7 +806,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedKey>> deleteKey(String name) {
+    public Mono<Response<DeletedKey>> deleteKeyWithResponse(String name) {
         return withContext(context -> deleteKey(name, context));
     }
 
@@ -540,10 +833,34 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedKey> getDeletedKey(String name) {
+        return withContext(context -> getDeletedKey(name, context))
+            .flatMap(deletedKeyResponse -> Mono.justOrEmpty(deletedKeyResponse.value()));
+    }
+
+    /**
+     * Gets the public part of a deleted key. The Get Deleted Key operation is applicable for soft-delete enabled vaults. This operation
+     * requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p> Gets the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
+     * deleted key details when a response has been received.</p>
+     * <pre>
+     * //Assuming key is deleted on a soft-delete enabled vault.
+     * keyAsyncClient.getDeletedKey("keyName").subscribe(deletedKeyResponse -&gt;
+     *   System.out.printf("Deleted Key with recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+     * </pre>
+     *
+     * @param name The name of the deleted key.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedKey>> getDeletedKey(String name) {
+    public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
         return withContext(context -> getDeletedKey(name, context));
     }
 
@@ -601,10 +918,35 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key to be recovered.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Key recovered key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> recoverDeletedKey(String name) {
+        return withContext(context -> recoverDeletedKey(name, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete enabled vault. An attempt
+     * to recover an non-deleted key will return an error. Consider this the inverse of the delete operation on soft-delete enabled vaults.
+     * This operation requires the {@code keys/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
+     * recovered key details when a response has been received.</p>
+     * <pre>
+     * //Assuming key is deleted on a soft-delete enabled vault.
+     * keyAsyncClient.recoverDeletedKey("deletedKeyName").subscribe(recoveredKeyResponse -&gt;
+     *   System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
+     * </pre>
+     *
+     * @param name The name of the deleted key to be recovered.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> recoverDeletedKey(String name) {
+    public Mono<Response<Key>> recoverDeletedKeyWithResponse(String name) {
         return withContext(context -> recoverDeletedKey(name, context));
     }
 
@@ -636,10 +978,39 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @return A {@link Mono} containing the backed up key blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<byte[]> backupKey(String name) {
+        return withContext(context -> backupKey(name, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Requests a backup of the specified key be downloaded to the client. The Key Backup operation exports a key from Azure Key
+     * Vault in a protected form. Note that this operation does not return key material in a form that can be used outside the Azure Key
+     * Vault system, the returned key material is either protected to a Azure Key Vault HSM or to Azure Key Vault itself. The intent
+     * of this operation is to allow a client to generate a key in one Azure Key Vault instance, backup the key, and then restore it
+     * into another Azure Key Vault instance. The backup operation may be used to export, in protected form, any key type from Azure
+     * Key Vault. Individual versions of a key cannot be backed up. Backup / Restore can be performed within geographical boundaries only;
+     * meaning that a backup from one geographical area cannot be restored to another geographical area. For example, a backup
+     * from the US geographical area cannot be restored in an EU geographical area. This operation requires the {@code key/backup} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Backs up the key from the key vault. Subscribes to the call asynchronously and prints out the
+     * length of the key's backup byte array returned in the response.</p>
+     * <pre>
+     * keyAsyncClient.backupKey("keyName").subscribe(keyBackupResponse -&gt;
+     *   System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.value().length));
+     * </pre>
+     *
+     * @param name The name of the key.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up key blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<byte[]>> backupKey(String name) {
+    public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
         return withContext(context -> backupKey(name, context));
     }
 
@@ -672,10 +1043,38 @@ public final class KeyAsyncClient {
      *
      * @param backup The backup blob associated with the key.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
+     * @return A {@link Mono} containing the {@link Key restored key}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Key> restoreKey(byte[] backup) {
+        return withContext(context -> restoreKey(backup, context))
+            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+    }
+
+    /**
+     * Restores a backed up key to a vault. Imports a previously backed up key into Azure Key Vault, restoring the key, its key identifier,
+     * attributes and access control policies. The restore operation may be used to import a previously backed up key. The individual versions of a
+     * key cannot be restored. The key is restored in its entirety with the same key name as it had when it was backed up. If the key name is not
+     * available in the target Key Vault, the restore operation will be rejected. While the key name is retained during restore, the final key identifier
+     * will change if the key is restored to a different vault. Restore will restore all versions and preserve version identifiers. The restore operation is subject
+     * to security constraints: The target Key Vault must be owned by the same Microsoft Azure Subscription as the source Key Vault The user must have restore permission in
+     * the target Key Vault. This operation requires the {@code keys/restore} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Restores the key in the key vault from its backup. Subscribes to the call asynchronously and prints out the restored key
+     * details when a response has been received.</p>
+     * <pre>
+     * //Pass the Key Backup Byte array to the restore operation.
+     * keyAsyncClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
+     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
+     * </pre>
+     *
+     * @param backup The backup blob associated with the key.
+     * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> restoreKey(byte[] backup) {
+    public Mono<Response<Key>> restoreKeyWithResponse(byte[] backup) {
         return withContext(context -> restoreKey(backup, context));
     }
 

@@ -26,7 +26,7 @@ public class HelloWorldAsync {
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
-            .endpoint("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .endpoint("https://vault9538173b.vault.azure.net/")
             .credential(new DefaultAzureCredential())
             .buildAsyncClient();
 
@@ -36,13 +36,13 @@ public class HelloWorldAsync {
                 .expires(OffsetDateTime.now().plusYears(1))
                 .keySize(2048))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
         // Let's Get the Cloud Rsa Key from the key vault.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse ->
-                System.out.printf("Key returned with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                System.out.printf("Key returned with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
@@ -50,11 +50,11 @@ public class HelloWorldAsync {
         // After one year, the Cloud Rsa Key is still required, we need to update the expiry time of the key.
         // The update method can be used to update the expiry attribute of the key.
         keyAsyncClient.getKey("CloudRsaKey").subscribe(keyResponse -> {
-            Key key = keyResponse.value();
+            Key key = keyResponse;
             //Update the expiry time of the key.
             key.expires(key.expires().plusYears(1));
             keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse ->
-                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.value().expires().toString()));
+                System.out.printf("Key's updated expiry time %s \n", updatedKeyResponse.expires().toString()));
         });
 
         Thread.sleep(2000);
@@ -65,13 +65,13 @@ public class HelloWorldAsync {
                 .expires(OffsetDateTime.now().plusYears(1))
                 .keySize(4096))
                 .subscribe(keyResponse ->
-                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.value().name(), keyResponse.value().keyMaterial().kty()));
+                        System.out.printf("Key is created with name %s and type %s \n", keyResponse.name(), keyResponse.keyMaterial().kty()));
 
         Thread.sleep(2000);
 
         // The Cloud Rsa Key is no longer needed, need to delete it from the key vault.
         keyAsyncClient.deleteKey("CloudRsaKey").subscribe(deletedKeyResponse ->
-            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
+            System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.recoveryId()));
 
         //To ensure key is deleted on server side.
         Thread.sleep(30000);

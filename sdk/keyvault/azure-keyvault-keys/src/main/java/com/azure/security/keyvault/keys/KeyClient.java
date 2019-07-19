@@ -426,7 +426,9 @@ public final class KeyClient {
      * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
      * @return The requested {@link Key key}.
      */
-    public Key getKey(KeyBase keyBase) { return client.getKey(keyBase).block().value(); }
+    public Key getKey(KeyBase keyBase) {
+        return client.getKeyWithResponse(keyBase).block().value();
+    }
 
     /**
      * Updates the attributes associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
@@ -449,7 +451,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Response<Key> updateKey(KeyBase key) {
-        return client.updateKey(key).block();
+        return client.updateKeyWithResponse(key).block();
     }
 
     /**
