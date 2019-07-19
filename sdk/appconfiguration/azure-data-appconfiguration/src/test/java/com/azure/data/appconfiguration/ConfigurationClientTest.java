@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -17,6 +18,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -474,7 +476,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting original = new ConfigurationSetting().key(key).value("myValue");
 
         assertConfigurationEquals(original, client.addSetting(original));
-        assertRestException(() -> client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))),
+        assertRestException(() -> client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(0, 10))).forEach(cs -> cs.key()),
             HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE.code());
     }
 
