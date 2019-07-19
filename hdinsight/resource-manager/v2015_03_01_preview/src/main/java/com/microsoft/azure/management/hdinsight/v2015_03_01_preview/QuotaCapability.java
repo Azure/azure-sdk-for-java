@@ -16,10 +16,62 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class QuotaCapability {
     /**
+     * The number of cores used in the subscription.
+     */
+    @JsonProperty(value = "cores_used")
+    private Long coresUsed;
+
+    /**
+     * The number of cores that the subscription allowed.
+     */
+    @JsonProperty(value = "max_cores_allowed")
+    private Long maxCoresAllowed;
+
+    /**
      * The list of region quota capabilities.
      */
     @JsonProperty(value = "regionalQuotas")
     private List<RegionalQuotaCapability> regionalQuotas;
+
+    /**
+     * Get the number of cores used in the subscription.
+     *
+     * @return the coresUsed value
+     */
+    public Long coresUsed() {
+        return this.coresUsed;
+    }
+
+    /**
+     * Set the number of cores used in the subscription.
+     *
+     * @param coresUsed the coresUsed value to set
+     * @return the QuotaCapability object itself.
+     */
+    public QuotaCapability withCoresUsed(Long coresUsed) {
+        this.coresUsed = coresUsed;
+        return this;
+    }
+
+    /**
+     * Get the number of cores that the subscription allowed.
+     *
+     * @return the maxCoresAllowed value
+     */
+    public Long maxCoresAllowed() {
+        return this.maxCoresAllowed;
+    }
+
+    /**
+     * Set the number of cores that the subscription allowed.
+     *
+     * @param maxCoresAllowed the maxCoresAllowed value to set
+     * @return the QuotaCapability object itself.
+     */
+    public QuotaCapability withMaxCoresAllowed(Long maxCoresAllowed) {
+        this.maxCoresAllowed = maxCoresAllowed;
+        return this;
+    }
 
     /**
      * Get the list of region quota capabilities.
