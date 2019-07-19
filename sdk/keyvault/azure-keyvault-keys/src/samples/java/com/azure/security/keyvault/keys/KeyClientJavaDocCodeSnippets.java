@@ -90,7 +90,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void createKey() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.createKey#string-keyType
-        Key retKey = keyClient.createKey("keyName", KeyType.EC).value();
+        Key retKey = keyClient.createKey("keyName", KeyType.EC);
         System.out.printf("Key is created with name %s and id %s %n", retKey.name(), retKey.id());
         // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
     }
@@ -102,7 +102,7 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.keyvault.keys.keyclient.listKeyVersions
         for (KeyBase key : keyClient.listKeyVersions("keyName")) {
-            Key keyWithMaterial  = keyClient.getKey(key).value();
+            Key keyWithMaterial  = keyClient.getKey(key);
             System.out.printf("Received key's version with name %s, type %s and version %s", keyWithMaterial.name(),
                     keyWithMaterial.keyMaterial().kty(), keyWithMaterial.version());
         }
