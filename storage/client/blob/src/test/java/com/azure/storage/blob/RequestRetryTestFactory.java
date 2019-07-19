@@ -195,7 +195,7 @@ class RequestRetryTestFactory {
             ByteBuf buf = Unpooled.buffer();
             Disposable disposable = request.body().subscribe(buf::writeBytes);
             while (!disposable.isDisposed()) {
-                // Wait until the Flux has been collected.
+                System.out.println("Waiting for Flux to finish to prevent blocking on another thread exception");
             }
             if (RETRY_TEST_DEFAULT_DATA.compareTo(buf) != 0) {
                 throw new IllegalArgumentException(("Body not reset."));
