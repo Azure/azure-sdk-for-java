@@ -55,7 +55,7 @@ public final class EventDataBatch {
      *
      * @return The number of {@link EventData events} in the batch.
      */
-    public int getCount() {
+    public int getSize() {
         return events.size();
     }
 
