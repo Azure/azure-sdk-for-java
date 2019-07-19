@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.storage.blob.models.AccessPolicy
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.SignedIdentifier
@@ -194,37 +195,40 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test container"() {
         setup:
-        def identifier = new SignedIdentifier().id("0000").accessPolicy(new AccessPolicy().permission("racwdl")
-            .expiry(OffsetDateTime.now().plusDays(1)))
+        SignedIdentifier identifier = new SignedIdentifier()
+            .id("0000")
+            .accessPolicy(new AccessPolicy().permission("racwdl")
+                .expiry(OffsetDateTime.now().plusDays(1)))
         cu.setAccessPolicy(null, Arrays.asList(identifier), null, null)
 
         // Check containerSASPermissions
-        def permissions = new ContainerSASPermission()
+        ContainerSASPermission permissions = new ContainerSASPermission()
             .read(true)
             .write(true)
             .create(true)
             .delete(true)
             .add(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
+
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
 
         when:
-        def sasWithId = cu.generateSAS(identifier.id())
+        String sasWithId = cu.generateSAS(identifier.id())
 
-        def builder1 = new ContainerClientBuilder()
-        builder1.endpoint(cu.getContainerUrl().toString())
+        ContainerClient client1 = new ContainerClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .credential(new SASTokenCredential(sasWithId))
             .httpClient(getHttpClient())
-        def client1 = builder1.buildClient()
+            .buildClient()
 
-        client1.listBlobsFlat()
+        client1.listBlobsFlat().iterator().hasNext()
 
-        def sasWithPermissions = cu.generateSAS(permissions, expiryTime)
+        String sasWithPermissions = cu.generateSAS(permissions, expiryTime)
 
-        def builder2 = new ContainerClientBuilder()
-        builder2.endpoint(cu.getContainerUrl().toString())
+        ContainerClient client2 = new ContainerClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .credential(new SASTokenCredential(sasWithPermissions))
             .httpClient(getHttpClient())
-        def client2 = builder2.buildClient()
+            .buildClient()
 
         client2.listBlobsFlat().iterator().hasNext()
 
@@ -293,39 +297,43 @@ class SASTest extends APISpec {
         BlockBlobClient bu = cu.getBlockBlobClient(blobName)
         bu.upload(new ByteArrayInputStream(data), data.length)
         String snapshotId = bu.createSnapshot().value()
-        def snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
+        BlockBlobClient snapshotBlob = cu.getBlockBlobClient(blobName, snapshotId)
 
-        def permissions = new BlobSASPermission()
+        BlobSASPermission permissions = new BlobSASPermission()
             .read(true)
             .write(true)
             .create(true)
             .delete(true)
             .add(true)
-        def startTime = OffsetDateTime.now().minusDays(1)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
-        def ipRange = new IPRange()
+
+        OffsetDateTime startTime = OffsetDateTime.now().minusDays(1)
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+
+        IPRange ipRange = new IPRange()
             .ipMin("0.0.0.0")
             .ipMax("255.255.255.255")
-        def sasProtocol = SASProtocol.HTTPS_HTTP
-        def cacheControl = "cache"
-        def contentDisposition = "disposition"
-        def contentEncoding = "encoding"
-        def contentLanguage = "language"
-        def contentType = "type"
 
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        SASProtocol sasProtocol = SASProtocol.HTTPS_HTTP
+        String cacheControl = "cache"
+        String contentDisposition = "disposition"
+        String contentEncoding = "encoding"
+        String contentLanguage = "language"
+        String contentType = "type"
+
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(startTime, expiryTime).value()
 
         when:
 
-        def sas = snapshotBlob.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
+        String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
-        def builder1 = new BlockBlobClientBuilder()
-        builder1.endpoint(cu.getContainerUrl().toString())
+        BlockBlobClient client1 = new BlockBlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
             .credential(new SASTokenCredential(sas))
             .httpClient(getHttpClient())
-        def client1 = builder1.buildClient()
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .buildClient()
         client1.download(new ByteArrayOutputStream())
 
         then:
@@ -333,16 +341,17 @@ class SASTest extends APISpec {
         thrown(StorageException)
 
         when:
-
         // blob snapshot with snapshot SAS
-        def builder2 = new BlockBlobClientBuilder()
-        builder2.endpoint(cu.getContainerUrl().toString())
+        BlockBlobClient client2 = new BlockBlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
             .snapshot(snapshotId)
             .credential(new SASTokenCredential(sas))
             .httpClient(getHttpClient())
-        def client2 = builder2.buildClient()
-        def os = new ByteArrayOutputStream()
+            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .buildClient()
+
+        OutputStream os = new ByteArrayOutputStream()
         client2.download(os)
 
         then:
@@ -361,25 +370,26 @@ class SASTest extends APISpec {
 
     def "serviceSASSignatureValues network test container user delegation"() {
         setup:
-        def permissions = new ContainerSASPermission()
+        ContainerSASPermission permissions = new ContainerSASPermission()
             .read(true)
             .write(true)
             .create(true)
             .delete(true)
             .add(true)
-        def expiryTime = OffsetDateTime.now().plusDays(1)
 
-        def key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1)
+
+        UserDelegationKey key = getOAuthServiceURL().getUserDelegationKey(null, OffsetDateTime.now().plusDays(1)).value()
 
         when:
 
-        def sasWithPermissions = cu.generateUserDelegationSAS(key, cu.getContainerUrl().getHost().split("\\.")[0], permissions, expiryTime)
+        String sasWithPermissions = cu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime)
 
-        def builder = new ContainerClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        ContainerClient client = new ContainerClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .credential(new SASTokenCredential(sasWithPermissions))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildClient()
 
         client.listBlobsFlat().iterator().hasNext()
 

@@ -16,11 +16,8 @@ public final class RequestRetryOptions {
     private final int tryTimeout;
     private final long retryDelayInMs;
     private final long maxRetryDelayInMs;
-    /**
-     * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
-     */
-    private RetryPolicyType retryPolicyType;
-    private String secondaryHost;
+    private final RetryPolicyType retryPolicyType;
+    private final String secondaryHost;
 
     /**
      * Constructor with default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4000,
@@ -107,22 +104,37 @@ public final class RequestRetryOptions {
         this.secondaryHost = secondaryHost;
     }
 
+    /**
+     * @return the maximum number attempts that will be retried before the operation finally fails.
+     */
     public int maxTries() {
         return this.maxTries;
     }
 
+    /**
+     * @return the timeout in seconds allowed for each retry operation.
+     */
     public int tryTimeout() {
         return this.tryTimeout;
     }
 
+    /**
+     * @return the secondary host that retries could be attempted against.
+     */
     public String secondaryHost() {
         return this.secondaryHost;
     }
 
+    /**
+     * @return the delay in milliseconds between retry attempts.
+     */
     public long retryDelayInMs() {
         return retryDelayInMs;
     }
 
+    /**
+     * @return the maximum delay in milliseconds between retry attempts.
+     */
     public long maxRetryDelayInMs() {
         return maxRetryDelayInMs;
     }

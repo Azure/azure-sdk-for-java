@@ -33,7 +33,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
     private HTTPGetterInfo info;
     private ByteBuffer scenarioData;
 
-    public DownloadResponseMockFlux(int scenario) {
+    DownloadResponseMockFlux(int scenario) {
         this.scenario = scenario;
         switch (this.scenario) {
             case DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK:
@@ -53,11 +53,11 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
         }
     }
 
-    public ByteBuffer getScenarioData() {
+    ByteBuffer getScenarioData() {
         return this.scenarioData;
     }
 
-    public int getTryNumber() {
+    int getTryNumber() {
         return this.tryNumber;
     }
 
@@ -146,7 +146,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuf> {
         }
     }
 
-    public Mono<DownloadResponse> getter(HTTPGetterInfo info) {
+    Mono<DownloadResponse> getter(HTTPGetterInfo info) {
         this.tryNumber++;
         this.info = info;
         BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), this, new BlobDownloadHeaders());

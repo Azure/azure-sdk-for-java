@@ -14,6 +14,9 @@ public final class IPRange {
 
     private String ipMax;
 
+    /**
+     * Constructs an empty IPRange.
+     */
     public IPRange() {
     }
 

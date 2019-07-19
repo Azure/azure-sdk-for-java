@@ -466,21 +466,35 @@ public final class ServiceSASSignatureValues {
         Utility.assertNotNull("version", this.version);
         Utility.assertNotNull("canonicalName", this.canonicalName);
 
-        // Ensure either (expiryTime and permissions) or (identifier) is set
-        if (this.identifier == null && (this.expiryTime == null || this.permissions == null)) {
-            // Identifier is not required if user delegation is being used
-            if (!usingUserDelegation) {
-                Utility.assertNotNull("identifier", this.identifier);
-            }
-        } else {
+        // If a SignedIdentifier or UserDelegationKey isn't being used expiryTime and permissions must be set.
+        if (!usingUserDelegation && this.identifier == null) {
             Utility.assertNotNull("expiryTime", this.expiryTime);
             Utility.assertNotNull("permissions", this.permissions);
         }
 
-        if (this.resource != null && this.resource.equals(Constants.UrlConstants.SAS_CONTAINER_CONSTANT)) {
-            if (this.snapshotId != null) {
-                throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
-            }
+        // When using an identifier or delegation key permissions and expiry time are allowed to be null.
+//        if (this.expiryTime == null && this.permissions == null) {
+//            if (!usingUserDelegation) {
+//                Utility.assertNotNull("identifier", this.identifier);
+//            }
+//        } else {
+//            Utility.assertNotNull("expiryTime", this.expiryTime);
+//            Utility.assertNotNull("permissions", this.permissions);
+//        }
+
+//        // Ensure either (expiryTime and permissions) or (identifier) is set
+//        if (this.identifier == null && (this.expiryTime == null && this.permissions == null)) {
+//            // Identifier is not required if user delegation is being used
+//            if (!usingUserDelegation) {
+//                Utility.assertNotNull("identifier", this.identifier);
+//            }
+//        } else {
+//            Utility.assertNotNull("expiryTime", this.expiryTime);
+//            Utility.assertNotNull("permissions", this.permissions);
+//        }
+
+        if (Constants.UrlConstants.SAS_CONTAINER_CONSTANT.equals(this.resource) && this.snapshotId != null) {
+            throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
         }
     }
 
@@ -527,13 +541,5 @@ public final class ServiceSASSignatureValues {
             this.contentLanguage == null ? "" : this.contentLanguage,
             this.contentType == null ? "" : this.contentType
         );
-    }
-
-    private String getResource() {
-        if (Constants.UrlConstants.SAS_BLOB_CONSTANT.equals(resource) && this.snapshotId != null) {
-            return Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT;
-        } else {
-            return resource;
-        }
     }
 }

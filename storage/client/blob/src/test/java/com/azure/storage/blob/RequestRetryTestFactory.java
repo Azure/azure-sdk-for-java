@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 import static java.lang.StrictMath.pow;
 
-public class RequestRetryTestFactory {
+class RequestRetryTestFactory {
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_SUCCESS = 1;
 
     static final int RETRY_TEST_SCENARIO_RETRY_UNTIL_MAX_RETRIES = 2;
@@ -85,7 +85,7 @@ public class RequestRetryTestFactory {
 
     private OffsetDateTime time;
 
-    public RequestRetryTestFactory(int scenario, RequestRetryOptions options) {
+    RequestRetryTestFactory(int scenario, RequestRetryOptions options) {
         this.retryTestScenario = scenario;
         this.options = options;
     }
@@ -98,7 +98,7 @@ public class RequestRetryTestFactory {
             .send(new HttpRequest(HttpMethod.GET, url).body(Flux.just(RETRY_TEST_DEFAULT_DATA)));
     }
 
-    public int getTryNumber() {
+    int getTryNumber() {
         return this.tryNumber;
     }
 
@@ -195,6 +195,7 @@ public class RequestRetryTestFactory {
             ByteBuf buf = Unpooled.buffer();
             Disposable disposable = request.body().subscribe(buf::writeBytes);
             while (!disposable.isDisposed()) {
+                // Wait until the Flux has been collected.
             }
             if (RETRY_TEST_DEFAULT_DATA.compareTo(buf) != 0) {
                 throw new IllegalArgumentException(("Body not reset."));

@@ -434,9 +434,14 @@ class HelperTest extends APISpec {
             v.permissions("")
         }
 
+        if (snapId != null) {
+            v.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+        } else {
+            v.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+        }
+
         v.startTime(startTime)
             .expiryTime(expiryTime)
-            .resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
             .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCreds.accountName()))
             .snapshotId(snapId)
 
@@ -454,6 +459,12 @@ class HelperTest extends APISpec {
 
         SASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
 
+        if (startTime != null) {
+            expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(startTime), Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime))
+        } else {
+            expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime))
+        }
+
         then:
         token.signature() == primaryCreds.computeHmac256(expectedStringToSign)
 
@@ -464,19 +475,19 @@ class HelperTest extends APISpec {
         Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
          */
         where:
-        permissions             | startTime                                                 | expiryTime                                                | identifier | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        new BlobSASPermission() | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n\n" + "/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n" + Utility.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-        null                    | null                                                      | null                                                      | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "\n\n\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
+        permissions             | startTime                                             | expiryTime                                           | identifier | ipRange       | protocol               | snapId   | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
+        new BlobSASPermission() | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "r\n\n%s\n" + "/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | OffsetDateTime.now(ZoneOffset.UTC).minusDays(1) | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n%s\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | "id"       | null          | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\nid\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | new IPRange() | null                   | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\nip\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | SASProtocol.HTTPS_ONLY | null     | null         | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n" + SASProtocol.HTTPS_ONLY + "\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | "snapId" | null         | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nsnapId\n\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | "control"    | null          | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\ncontrol\n\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | "disposition" | null       | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\ndisposition\n\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | "encoding" | null       | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\nencoding\n\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | "language" | null   || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\nlanguage\n"
+        null                    | null                                                  | OffsetDateTime.now(ZoneOffset.UTC).plusDays(1) | null       | null          | null                   | null     | null         | null          | null       | null       | "type" || "\n\n%s\n/blob/" + primaryCreds.accountName() + "/containerName/blobName\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\ntype"
     }
 
     @Unroll
@@ -489,9 +500,14 @@ class HelperTest extends APISpec {
 
         v.startTime(startTime)
             .expiryTime(expiryTime)
-            .resource(new AccountSASService().blob(true).toString())
             .canonicalName(String.format("/blob/%s/containerName/blobName", primaryCreds.accountName()))
             .snapshotId(snapId)
+
+        if (snapId != null) {
+            v.resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
+        } else {
+            v.resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+        }
 
         if (ipRange != null) {
             v.ipRange(new IPRange().ipMin("ip"))
@@ -546,11 +562,17 @@ class HelperTest extends APISpec {
     def "serviceSASSignatureValues canonicalizedResource"() {
         setup:
         ServiceSASSignatureValues v = new ServiceSASSignatureValues()
-            .expiryTime(OffsetDateTime.now())
+            .expiryTime(expiryTime)
             .permissions(new BlobSASPermission().toString())
             .resource(expectedResource)
-            .canonicalName(String.format("/blob/%s/%s/%s", primaryCreds.accountName(), containerName, blobName))
+            .canonicalName(String.format("/blob/%s/%s", primaryCreds.accountName(), containerName))
             .snapshotId(snapId)
+
+        if (blobName != null) {
+            v.canonicalName(v.canonicalName() + "/" + blobName)
+        }
+
+        expectedStringToSign = String.format(expectedStringToSign, Utility.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime))
 
         when:
         SASQueryParameters token = v.generateSASQueryParameters(primaryCreds)
@@ -560,10 +582,10 @@ class HelperTest extends APISpec {
         token.resource() == expectedResource
 
         where:
-        containerName | blobName | snapId || expectedResource | expectedStringToSign
-        "c"           | "b"      | "id"   || "bs"             | "\n\n\n" + "/blob/" + primaryCreds.accountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
-        "c"           | "b"      | null   || "b"              | "\n\n\n" + "/blob/" + primaryCreds.accountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
-        "c"           | null     | null   || "c"              | "\n\n\n" + "/blob/" + primaryCreds.accountName() + "/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
+        containerName | blobName | snapId | expiryTime           || expectedResource | expectedStringToSign
+        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/" + primaryCreds.accountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nbs\nid\n\n\n\n\n"
+        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/" + primaryCreds.accountName() + "/c/b\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nb\n\n\n\n\n\n"
+        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/" + primaryCreds.accountName() + "/c\n\n\n\n" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "\nc\n\n\n\n\n\n"
 
     }
 
@@ -587,7 +609,6 @@ class HelperTest extends APISpec {
 
         where:
         containerName | version | creds        | blobName || parameter
-        null          | "v"     | primaryCreds | "b"       | "container"
         "c"           | null    | primaryCreds | "b"       | "version"
         "c"           | "v"     | null         | "b"       | "sharedKeyCredentials"
         "c"           | "v"     | primaryCreds | null      | "canonicalName"
@@ -931,9 +952,10 @@ class HelperTest extends APISpec {
             .snapshot("snapshot")
 
         ServiceSASSignatureValues sasValues = new ServiceSASSignatureValues()
+            .expiryTime(OffsetDateTime.now(ZoneOffset.UTC).plusDays(1))
             .permissions("r")
             .canonicalName(String.format("/blob/%s/container/blob", primaryCreds.accountName()))
-            .resource(Constants.UrlConstants.SAS_BLOB_CONSTANT)
+            .resource(Constants.UrlConstants.SAS_BLOB_SNAPSHOT_CONSTANT)
 
         parts.sasQueryParameters(sasValues.generateSASQueryParameters(primaryCreds))
 
@@ -946,7 +968,7 @@ class HelperTest extends APISpec {
         splitParts[1].contains("snapshot=snapshot")
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 5 // snapshot & sv & sr & sp & sig
+        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig & se
     }
 
     def "URLParser"() {
