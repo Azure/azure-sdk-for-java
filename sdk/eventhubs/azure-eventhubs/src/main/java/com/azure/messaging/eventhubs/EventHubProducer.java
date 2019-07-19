@@ -80,7 +80,7 @@ import java.util.stream.Collector;
  *
  * <p><strong>Publish events using an {@link EventDataBatch}.</strong></p>
  *
- * Developers can create an {@link EventDataBatch}, add the events they want in into it, and publish these
+ * Developers can create an {@link EventDataBatch}, add the events they want into it, and publish these
  * events together. When creating a {@link EventDataBatch batch}, developers can specify a set of {@link BatchOptions
  * options} to configure this batch.
  *
