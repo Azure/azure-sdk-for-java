@@ -458,7 +458,23 @@ public final class ConfigurationClient {
         return listSettings(options, Context.NONE);
     }
 
-    private Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    /**
+     * Fetches the configuration settings that match the {@code options}. If {@code options} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context}
+     *
+     * @param options Optional. Options to filter configuration setting results from the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A List of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * contains all of the current settings in the service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Iterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return client.listSettings(options, context).collectList().block();
     }
 
@@ -484,7 +500,26 @@ public final class ConfigurationClient {
         return listSettingRevisions(selector, Context.NONE);
     }
 
-    private Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
+     * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
+     * after a period of time. The service maintains change history for up to 7 days.
+     *
+     * If {@code options} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code options}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
+     *
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context}
+     *
+     * @param selector Optional. Used to filter configuration setting revisions from the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Revisions of the ConfigurationSetting
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Iterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         return client.listSettingRevisions(selector, context).collectList().block();
     }
 }

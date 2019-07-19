@@ -249,18 +249,18 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#string
 
-    /*
-      Generates code sample for using {@link ConfigurationClient#addSetting(ConfigurationSetting)}
-     */
+        /**
+         * Generates code sample for using {@link ConfigurationClient#addSetting(ConfigurationSetting)}
+         */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
         ConfigurationSetting resultSetting = configurationClient
             .deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
         System.out.printf("Key: %s, Value: %s", resultSetting.key(), resultSetting.value());
         // END: com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting
 
-    /*
-      Generates code sample for using {@link ConfigurationClient#deleteSettingWithResponse(ConfigurationSetting, Context)}
-     */
+        /**
+         * Generates code sample for using {@link ConfigurationClient#deleteSettingWithResponse(ConfigurationSetting, Context)}
+         */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context
         Response<ConfigurationSetting> responseSetting = configurationClient
             .deleteSettingWithResponse(new ConfigurationSetting().key("prodDBConnection").label("westUS"),
@@ -280,6 +280,16 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         }
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector, Context)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+        for (ConfigurationSetting setting : configurationClient.listSettings(new SettingSelector()
+            .keys("prodDBConnection"), new Context(key1, value1))) {
+            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        }
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
     }
 
     /**
@@ -293,6 +303,16 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
         }
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector
+
+        /**
+         * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector, Context)}
+         */
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+        for (ConfigurationSetting revision : configurationClient.listSettingRevisions(new SettingSelector()
+            .keys("prodDBConnection"), new Context(key2, value2))) {
+            System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
+        }
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
     }
 
     /**
