@@ -4,17 +4,19 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.MessageIdsDeleteResponse;
 import com.azure.storage.queue.models.MessageIdsUpdateResponse;
@@ -43,7 +45,7 @@ public final class MessageIdsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public MessageIdsImpl(AzureQueueStorageImpl client) {
-        this.service = RestProxy.create(MessageIdsService.class, client);
+        this.service = RestProxy.create(MessageIdsService.class, client.httpPipeline());
         this.client = client;
     }
 
@@ -52,14 +54,14 @@ public final class MessageIdsImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Queues MessageId")
+    @ServiceInterface(name = "MessageIds")
     private interface MessageIdsService {
-        @PUT("{queueName}/messages/{messageid}")
+        @Put("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessageIdsUpdateResponse> update(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @DELETE("{queueName}/messages/{messageid}")
+        @Delete("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessageIdsDeleteResponse> delete(@HostParam("url") String url, @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
@@ -75,6 +77,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -93,6 +96,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
         return service.update(this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
@@ -105,6 +109,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -121,6 +126,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Integer timeout, String requestId, Context context) {
         return service.delete(this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
     }

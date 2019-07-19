@@ -5,6 +5,7 @@
 package com.azure.storage.file.models;
 
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
  * Properties of a share.
  */
 @JacksonXmlRootElement(localName = "ShareProperties")
+@Fluent
 public final class ShareProperties {
     /*
      * The lastModified property.
@@ -30,7 +32,7 @@ public final class ShareProperties {
      * The quota property.
      */
     @JsonProperty(value = "Quota", required = true)
-    private int quota;
+    private long quota;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -84,7 +86,7 @@ public final class ShareProperties {
      *
      * @return the quota value.
      */
-    public int quota() {
+    public long quota() {
         return this.quota;
     }
 
@@ -94,7 +96,7 @@ public final class ShareProperties {
      * @param quota the quota value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties quota(int quota) {
+    public ShareProperties quota(long quota) {
         this.quota = quota;
         return this;
     }

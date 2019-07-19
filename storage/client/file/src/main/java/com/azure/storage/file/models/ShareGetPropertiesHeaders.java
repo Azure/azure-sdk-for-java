@@ -4,8 +4,9 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.implementation.annotation.HeaderCollection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -15,6 +16,7 @@ import java.util.Map;
  * Defines headers for GetProperties operation.
  */
 @JacksonXmlRootElement(localName = "Share-GetProperties-Headers")
+@Fluent
 public final class ShareGetPropertiesHeaders {
     /*
      * The metadata property.
@@ -62,7 +64,7 @@ public final class ShareGetPropertiesHeaders {
      * Returns the current share quota in GB.
      */
     @JsonProperty(value = "x-ms-share-quota")
-    private Integer quota;
+    private Long quota;
 
     /*
      * The errorCode property.
@@ -223,7 +225,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the quota value.
      */
-    public Integer quota() {
+    public Long quota() {
         return this.quota;
     }
 
@@ -233,7 +235,7 @@ public final class ShareGetPropertiesHeaders {
      * @param quota the quota value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders quota(Integer quota) {
+    public ShareGetPropertiesHeaders quota(Long quota) {
         this.quota = quota;
         return this;
     }

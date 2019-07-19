@@ -4,17 +4,19 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.file.models.DirectorysCreateResponse;
 import com.azure.storage.file.models.DirectorysDeleteResponse;
@@ -24,9 +26,8 @@ import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentRes
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
 import com.azure.storage.file.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -49,7 +50,7 @@ public final class DirectorysImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public DirectorysImpl(AzureFileStorageImpl client) {
-        this.service = RestProxy.create(DirectorysService.class, client);
+        this.service = RestProxy.create(DirectorysService.class, client.httpPipeline());
         this.client = client;
     }
 
@@ -58,39 +59,39 @@ public final class DirectorysImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Files Directory")
+    @ServiceInterface(name = "Directorys")
     private interface DirectorysService {
-        @PUT("{shareName}/{directory}")
+        @Put("{shareName}/{directory}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
-        @GET("{shareName}/{directory}")
+        @Get("{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
-        @DELETE("{shareName}/{directory}")
+        @Delete("{shareName}/{directory}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysDeleteResponse> delete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
 
-        @PUT("{shareName}/{directory}")
+        @Put("{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("{shareName}/{directory}")
+        @Get("{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
-        @GET("{shareName}/{directory}")
+        @Get("{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysListHandlesResponse> listHandles(@HostParam("url") String url, @QueryParam("marker") String marker, @QueryParam("maxresults") Integer maxresults, @QueryParam("timeout") Integer timeout, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-recursive") Boolean recursive, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
 
-        @PUT("{shareName}/{directory}")
+        @Put("{shareName}/{directory}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<DirectorysForceCloseHandlesResponse> forceCloseHandles(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @QueryParam("marker") String marker, @QueryParam("sharesnapshot") String sharesnapshot, @HeaderParam("x-ms-handle-id") String handleId, @HeaderParam("x-ms-recursive") Boolean recursive, @HeaderParam("x-ms-version") String version, @QueryParam("comp") String comp, Context context);
@@ -103,6 +104,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysCreateResponse> createWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
@@ -119,6 +121,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         return service.create(this.client.url(), timeout, metadata, this.client.version(), restype, context);
@@ -131,6 +134,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
@@ -147,6 +151,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysGetPropertiesResponse> getPropertiesWithRestResponseAsync(String sharesnapshot, Integer timeout, Context context) {
         final String restype = "directory";
         return service.getProperties(this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
@@ -159,6 +164,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String restype = "directory";
@@ -173,6 +179,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(Integer timeout, Context context) {
         final String restype = "directory";
         return service.delete(this.client.url(), timeout, this.client.version(), restype, context);
@@ -185,6 +192,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
@@ -202,6 +210,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         final String comp = "metadata";
@@ -215,6 +224,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithRestResponseAsync(Context context) {
         final String prefix = null;
         final String sharesnapshot = null;
@@ -238,6 +248,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithRestResponseAsync(String prefix, String sharesnapshot, String marker, Integer maxresults, Integer timeout, Context context) {
         final String restype = "directory";
         final String comp = "list";
@@ -251,6 +262,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysListHandlesResponse> listHandlesWithRestResponseAsync(Context context) {
         final String marker = null;
         final Integer maxresults = null;
@@ -273,6 +285,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysListHandlesResponse> listHandlesWithRestResponseAsync(String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "listhandles";
         return service.listHandles(this.client.url(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.version(), comp, context);
@@ -286,6 +299,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Context context) {
         final Integer timeout = null;
         final String marker = null;
@@ -307,6 +321,7 @@ public final class DirectorysImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "forceclosehandles";
         return service.forceCloseHandles(this.client.url(), timeout, marker, sharesnapshot, handleId, recursive, this.client.version(), comp, context);

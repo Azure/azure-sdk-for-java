@@ -6,10 +6,12 @@ package com.azure.storage.queue.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 
 /**
- * A appendBlobClientBuilder for creating a new instance of the AzureQueueStorage type.
+ * A builder for creating a new instance of the AzureQueueStorage type.
  */
+@ServiceClientBuilder(serviceClients = AzureQueueStorageImpl.class)
 public final class AzureQueueStorageBuilder {
     /*
      * The URL of the service account, queue or message that is the targe of the desired operation.

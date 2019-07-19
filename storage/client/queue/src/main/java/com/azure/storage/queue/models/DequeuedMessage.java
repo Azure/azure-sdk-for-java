@@ -11,12 +11,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /**
- * The object returned in the QueueMessageList array when calling Put Message
+ * The object returned in the QueueMessageList array when calling Get Messages
  * on a Queue.
  */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
-public final class EnqueuedMessage {
+public final class DequeuedMessage {
     /*
      * The Id of the Message.
      */
@@ -48,6 +48,18 @@ public final class EnqueuedMessage {
     @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
+    /*
+     * The number of times the message has been dequeued.
+     */
+    @JsonProperty(value = "DequeueCount", required = true)
+    private long dequeueCount;
+
+    /*
+     * The content of the Message.
+     */
+    @JsonProperty(value = "MessageText", required = true)
+    private String messageText;
+
     /**
      * Get the messageId property: The Id of the Message.
      *
@@ -61,9 +73,9 @@ public final class EnqueuedMessage {
      * Set the messageId property: The Id of the Message.
      *
      * @param messageId the messageId value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the DequeuedMessage object itself.
      */
-    public EnqueuedMessage messageId(String messageId) {
+    public DequeuedMessage messageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -86,9 +98,9 @@ public final class EnqueuedMessage {
      * the Queue.
      *
      * @param insertionTime the insertionTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the DequeuedMessage object itself.
      */
-    public EnqueuedMessage insertionTime(OffsetDateTime insertionTime) {
+    public DequeuedMessage insertionTime(OffsetDateTime insertionTime) {
         if (insertionTime == null) {
             this.insertionTime = null;
         } else {
@@ -115,9 +127,9 @@ public final class EnqueuedMessage {
      * and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the DequeuedMessage object itself.
      */
-    public EnqueuedMessage expirationTime(OffsetDateTime expirationTime) {
+    public DequeuedMessage expirationTime(OffsetDateTime expirationTime) {
         if (expirationTime == null) {
             this.expirationTime = null;
         } else {
@@ -143,9 +155,9 @@ public final class EnqueuedMessage {
      * been dequeued by another client.
      *
      * @param popReceipt the popReceipt value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the DequeuedMessage object itself.
      */
-    public EnqueuedMessage popReceipt(String popReceipt) {
+    public DequeuedMessage popReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
         return this;
     }
@@ -168,14 +180,56 @@ public final class EnqueuedMessage {
      * become visible in the Queue.
      *
      * @param timeNextVisible the timeNextVisible value to set.
-     * @return the EnqueuedMessage object itself.
+     * @return the DequeuedMessage object itself.
      */
-    public EnqueuedMessage timeNextVisible(OffsetDateTime timeNextVisible) {
+    public DequeuedMessage timeNextVisible(OffsetDateTime timeNextVisible) {
         if (timeNextVisible == null) {
             this.timeNextVisible = null;
         } else {
             this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
         }
+        return this;
+    }
+
+    /**
+     * Get the dequeueCount property: The number of times the message has been
+     * dequeued.
+     *
+     * @return the dequeueCount value.
+     */
+    public long dequeueCount() {
+        return this.dequeueCount;
+    }
+
+    /**
+     * Set the dequeueCount property: The number of times the message has been
+     * dequeued.
+     *
+     * @param dequeueCount the dequeueCount value to set.
+     * @return the DequeuedMessage object itself.
+     */
+    public DequeuedMessage dequeueCount(long dequeueCount) {
+        this.dequeueCount = dequeueCount;
+        return this;
+    }
+
+    /**
+     * Get the messageText property: The content of the Message.
+     *
+     * @return the messageText value.
+     */
+    public String messageText() {
+        return this.messageText;
+    }
+
+    /**
+     * Set the messageText property: The content of the Message.
+     *
+     * @param messageText the messageText value to set.
+     * @return the DequeuedMessage object itself.
+     */
+    public DequeuedMessage messageText(String messageText) {
+        this.messageText = messageText;
         return this;
     }
 }

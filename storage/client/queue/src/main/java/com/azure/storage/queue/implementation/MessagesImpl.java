@@ -4,18 +4,20 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.POST;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Post;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.MessagesClearResponse;
 import com.azure.storage.queue.models.MessagesDequeueResponse;
@@ -46,7 +48,7 @@ public final class MessagesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public MessagesImpl(AzureQueueStorageImpl client) {
-        this.service = RestProxy.create(MessagesService.class, client);
+        this.service = RestProxy.create(MessagesService.class, client.httpPipeline());
         this.client = client;
     }
 
@@ -55,24 +57,24 @@ public final class MessagesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Queues Messages")
+    @ServiceInterface(name = "Messages")
     private interface MessagesService {
-        @GET("{queueName}/messages")
+        @Get("{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessagesDequeueResponse> dequeue(@HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @DELETE("{queueName}/messages")
+        @Delete("{queueName}/messages")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessagesClearResponse> clear(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @POST("{queueName}/messages")
+        @Post("{queueName}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessagesEnqueueResponse> enqueue(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @GET("{queueName}/messages")
+        @Get("{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<MessagesPeekResponse> peek(@HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("peekonly") String peekonly, Context context);
@@ -85,6 +87,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesDequeueResponse> dequeueWithRestResponseAsync(Context context) {
         final Integer numberOfMessages = null;
         final Integer visibilitytimeout = null;
@@ -104,6 +107,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesDequeueResponse> dequeueWithRestResponseAsync(Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId, Context context) {
         return service.dequeue(this.client.url(), numberOfMessages, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
@@ -115,6 +119,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesClearResponse> clearWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -130,6 +135,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesClearResponse> clearWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         return service.clear(this.client.url(), timeout, this.client.version(), requestId, context);
     }
@@ -142,6 +148,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(QueueMessage queueMessage, Context context) {
         final Integer visibilitytimeout = null;
         final Integer messageTimeToLive = null;
@@ -162,6 +169,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesEnqueueResponse> enqueueWithRestResponseAsync(QueueMessage queueMessage, Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
         return service.enqueue(this.client.url(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.version(), requestId, context);
     }
@@ -173,6 +181,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesPeekResponse> peekWithRestResponseAsync(Context context) {
         final Integer numberOfMessages = null;
         final Integer timeout = null;
@@ -191,6 +200,7 @@ public final class MessagesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesPeekResponse> peekWithRestResponseAsync(Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
         return service.peek(this.client.url(), numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);

@@ -4,14 +4,13 @@
 
 package com.azure.storage.file.implementation;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
  * Initializes a new instance of the AzureFileStorage type.
  */
-public final class AzureFileStorageImpl extends ServiceClient {
+public final class AzureFileStorageImpl {
     /**
      * Specifies the version of the operation to use for this request.
      */
@@ -60,6 +59,20 @@ public final class AzureFileStorageImpl extends ServiceClient {
     AzureFileStorageImpl url(String url) {
         this.url = url;
         return this;
+    }
+
+    /**
+     * The HTTP pipeline to send requests through.
+     */
+    private HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline httpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
@@ -131,7 +144,7 @@ public final class AzureFileStorageImpl extends ServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AzureFileStorageImpl(HttpPipeline httpPipeline) {
-        super(httpPipeline);
+        this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
         this.directorys = new DirectorysImpl(this);

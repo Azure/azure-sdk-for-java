@@ -4,6 +4,7 @@
 
 package com.azure.storage.queue.models;
 
+import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
  * An Access policy.
  */
 @JacksonXmlRootElement(localName = "AccessPolicy")
+@Fluent
 public final class AccessPolicy {
     /*
      * the date-time the policy is active

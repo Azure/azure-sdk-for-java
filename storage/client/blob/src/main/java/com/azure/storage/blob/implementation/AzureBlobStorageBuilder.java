@@ -6,10 +6,12 @@ package com.azure.storage.blob.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 
 /**
  * A builder for creating a new instance of the AzureBlobStorage type.
  */
+@ServiceClientBuilder(serviceClients = AzureBlobStorageImpl.class)
 public final class AzureBlobStorageBuilder {
     /*
      * The URL of the service account, container, or blob that is the targe of the desired operation.

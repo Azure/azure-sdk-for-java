@@ -4,14 +4,13 @@
 
 package com.azure.storage.blob.implementation;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
  * Initializes a new instance of the AzureBlobStorage type.
  */
-public final class AzureBlobStorageImpl extends ServiceClient {
+public final class AzureBlobStorageImpl {
     /**
      * The URL of the service account, container, or blob that is the targe of the desired operation.
      */
@@ -60,6 +59,20 @@ public final class AzureBlobStorageImpl extends ServiceClient {
     AzureBlobStorageImpl version(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * The HTTP pipeline to send requests through.
+     */
+    private HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline httpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
@@ -159,7 +172,7 @@ public final class AzureBlobStorageImpl extends ServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AzureBlobStorageImpl(HttpPipeline httpPipeline) {
-        super(httpPipeline);
+        this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.containers = new ContainersImpl(this);
         this.blobs = new BlobsImpl(this);

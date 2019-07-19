@@ -4,18 +4,20 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.annotations.BodyParam;
-import com.azure.core.annotations.DELETE;
-import com.azure.core.annotations.ExpectedResponses;
-import com.azure.core.annotations.GET;
-import com.azure.core.annotations.HeaderParam;
-import com.azure.core.annotations.Host;
-import com.azure.core.annotations.HostParam;
-import com.azure.core.annotations.PUT;
-import com.azure.core.annotations.QueryParam;
-import com.azure.core.annotations.Service;
-import com.azure.core.annotations.UnexpectedResponseExceptionType;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.BodyParam;
+import com.azure.core.implementation.annotation.Delete;
+import com.azure.core.implementation.annotation.ExpectedResponses;
+import com.azure.core.implementation.annotation.Get;
+import com.azure.core.implementation.annotation.HeaderParam;
+import com.azure.core.implementation.annotation.Host;
+import com.azure.core.implementation.annotation.HostParam;
+import com.azure.core.implementation.annotation.Put;
+import com.azure.core.implementation.annotation.QueryParam;
+import com.azure.core.implementation.annotation.ReturnType;
+import com.azure.core.implementation.annotation.ServiceInterface;
+import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.util.Context;
 import com.azure.storage.queue.models.QueuesCreateResponse;
 import com.azure.storage.queue.models.QueuesDeleteResponse;
@@ -25,10 +27,9 @@ import com.azure.storage.queue.models.QueuesSetAccessPolicyResponse;
 import com.azure.storage.queue.models.QueuesSetMetadataResponse;
 import com.azure.storage.queue.models.SignedIdentifier;
 import com.azure.storage.queue.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -51,7 +52,7 @@ public final class QueuesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public QueuesImpl(AzureQueueStorageImpl client) {
-        this.service = RestProxy.create(QueuesService.class, client);
+        this.service = RestProxy.create(QueuesService.class, client.httpPipeline());
         this.client = client;
     }
 
@@ -60,34 +61,34 @@ public final class QueuesImpl {
      * proxy service to perform REST calls.
      */
     @Host("{url}")
-    @Service("Storage Queues Queue")
+    @ServiceInterface(name = "Queues")
     private interface QueuesService {
-        @PUT("{queueName}")
+        @Put("{queueName}")
         @ExpectedResponses({201, 204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @DELETE("{queueName}")
+        @Delete("{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesDeleteResponse> delete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
-        @GET("{queueName}")
+        @Get("{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesGetPropertiesResponse> getProperties(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
-        @PUT("{queueName}")
+        @Put("{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesSetMetadataResponse> setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
-        @GET("{queueName}")
+        @Get("{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
-        @PUT("{queueName}")
+        @Put("{queueName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
         Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper queueAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
@@ -100,6 +101,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesCreateResponse> createWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
@@ -117,6 +119,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesCreateResponse> createWithRestResponseAsync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         return service.create(this.client.url(), timeout, metadata, this.client.version(), requestId, context);
     }
@@ -128,6 +131,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -143,6 +147,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesDeleteResponse> deleteWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         return service.delete(this.client.url(), timeout, this.client.version(), requestId, context);
     }
@@ -154,6 +159,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -170,6 +176,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String comp = "metadata";
         return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, comp, context);
@@ -182,6 +189,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesSetMetadataResponse> setMetadataWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
@@ -200,6 +208,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesSetMetadataResponse> setMetadataWithRestResponseAsync(Integer timeout, Map<String, String> metadata, String requestId, Context context) {
         final String comp = "metadata";
         return service.setMetadata(this.client.url(), timeout, metadata, this.client.version(), requestId, comp, context);
@@ -212,6 +221,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -228,6 +238,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         return service.getAccessPolicy(this.client.url(), timeout, this.client.version(), requestId, comp, context);
@@ -240,6 +251,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
@@ -258,6 +270,7 @@ public final class QueuesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueuesSetAccessPolicyResponse> setAccessPolicyWithRestResponseAsync(List<SignedIdentifier> queueAcl, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);

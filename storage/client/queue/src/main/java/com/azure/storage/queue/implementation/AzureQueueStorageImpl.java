@@ -4,14 +4,13 @@
 
 package com.azure.storage.queue.implementation;
 
-import com.azure.core.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.RestProxy;
 
 /**
  * Initializes a new instance of the AzureQueueStorage type.
  */
-public final class AzureQueueStorageImpl extends ServiceClient {
+public final class AzureQueueStorageImpl {
     /**
      * The URL of the service account, queue or message that is the targe of the desired operation.
      */
@@ -60,6 +59,20 @@ public final class AzureQueueStorageImpl extends ServiceClient {
     AzureQueueStorageImpl version(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * The HTTP pipeline to send requests through.
+     */
+    private HttpPipeline httpPipeline;
+
+    /**
+     * Gets The HTTP pipeline to send requests through.
+     *
+     * @return the httpPipeline value.
+     */
+    public HttpPipeline httpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
@@ -131,7 +144,7 @@ public final class AzureQueueStorageImpl extends ServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public AzureQueueStorageImpl(HttpPipeline httpPipeline) {
-        super(httpPipeline);
+        this.httpPipeline = httpPipeline;
         this.services = new ServicesImpl(this);
         this.queues = new QueuesImpl(this);
         this.messages = new MessagesImpl(this);

@@ -4,18 +4,20 @@
 
 package com.azure.storage.file.models;
 
-import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
+import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.implementation.annotation.HeaderCollection;
+import com.azure.core.implementation.util.ImplUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
  * Defines headers for Download operation.
  */
 @JacksonXmlRootElement(localName = "File-Download-Headers")
+@Fluent
 public final class FileDownloadHeaders {
     /*
      * Returns the date and time the file was last modified. Any operation that
@@ -345,7 +347,7 @@ public final class FileDownloadHeaders {
      * @return the contentMD5 value.
      */
     public byte[] contentMD5() {
-        return Arrays.copyOf(this.contentMD5, this.contentMD5.length);
+        return ImplUtils.clone(this.contentMD5);
     }
 
     /**
@@ -362,7 +364,7 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders contentMD5(byte[] contentMD5) {
-        this.contentMD5 = Arrays.copyOf(contentMD5, contentMD5.length);
+        this.contentMD5 = ImplUtils.clone(contentMD5);
         return this;
     }
 
@@ -714,7 +716,7 @@ public final class FileDownloadHeaders {
      * @return the fileContentMD5 value.
      */
     public byte[] fileContentMD5() {
-        return Arrays.copyOf(this.fileContentMD5, this.fileContentMD5.length);
+        return ImplUtils.clone(this.fileContentMD5);
     }
 
     /**
@@ -728,7 +730,7 @@ public final class FileDownloadHeaders {
      * @return the FileDownloadHeaders object itself.
      */
     public FileDownloadHeaders fileContentMD5(byte[] fileContentMD5) {
-        this.fileContentMD5 = Arrays.copyOf(fileContentMD5, fileContentMD5.length);
+        this.fileContentMD5 = ImplUtils.clone(fileContentMD5);
         return this;
     }
 
