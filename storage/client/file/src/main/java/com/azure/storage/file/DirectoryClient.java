@@ -25,12 +25,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating an Synchronous Directory Client</strong></p>
  *
- * <pre>
- * DirectoryClient client = DirectoryClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.directoryClient.instantiation}
  *
  * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -110,10 +105,7 @@ public class DirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * <pre>
-     * Response&lt;DirectoryInfo&gt; response = client.create(Collections.singletonMap("directory", "metadata"));
-     * System.out.printf("Creating the directory completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.createDirectory#map}
      *
      * @param metadata Optional. Metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
@@ -147,10 +139,7 @@ public class DirectoryClient {
      *
      * <p>Retrieve directory properties</p>
      *
-     * <pre>
-     * Response&lt;DirectoryProperties&gt; response = client.getProperties();
-     * System.out.printf("Directory latest modified date is %s.", properties.value().lastModified());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.getProperties}
      *
      * @return Storage directory properties
      */
@@ -167,17 +156,11 @@ public class DirectoryClient {
      *
      * <p>Set the metadata to "directory:updatedMetadata"</p>
      *
-     * <pre>
-     * Response&ltDirectorySetMetadataInfo&gt response = client.setMetadata(Collections.singletonMap("directory", "updatedMetadata"));
-     * System.out.printf("Setting the directory metadata completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.setMetadata#map}
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * <pre>
-     * client.setMetadata(null)
-     *     .subscribe(response -&gt; System.out.printf("Clearing the directory metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata}
      *
      * @param metadata Optional. Metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return information about the directory
@@ -194,10 +177,7 @@ public class DirectoryClient {
      *
      * <p>List all directories and files in the account</p>
      *
-     * <pre>
-     * Iterable&lt;FileRef&gt; result = client.listFilesAndDirectories()
-     * System.out.printf("The file or directory %s exists in the account", result.iterator().next().name());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
      *
      * @return {@link FileRef File info} in the storage directory
      */
@@ -212,7 +192,7 @@ public class DirectoryClient {
      *
      * <p>List all directories with "subdir" prefix and return 10 results in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
+     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer}
      *
      * @param prefix Optional. Filters the results to return only files and directories whose name begins with the specified prefix.
      * @param maxResults Optional. Specifies the maximum number of files and/or directories to return per page.
@@ -230,10 +210,8 @@ public class DirectoryClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * <pre>
-     * Iterable&lt;HandleItem&gt; result = client.getHandles(10, true)
-     * System.out.printf("Get handles completed with handle id %s", result.iterator().next().handleId());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.getHandles}
+     *
      * @param maxResult Optional. The number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
@@ -249,13 +227,8 @@ public class DirectoryClient {
      *
      * <p>Force close handles with handles returned by get handles in recursive.</p>
      *
-     * <pre>
-     * Iterable&lt;HandleItem&gt; result = client.getHandles(10, true)
-     * result.forEach(handleItem -&gt;  {
-     *    client.forceCloseHandles(handleItem.handleId, true).forEach(numOfClosedHandles -&gt
-     *    System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
-     * });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.forceCloseHandles}
+     *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed.
@@ -271,10 +244,7 @@ public class DirectoryClient {
      *
      * <p>Create the sub directory "subdir" </p>
      *
-     * <pre>
-     * Response&lt;DirectoryClient&gt; response = client.createSubDirectory("subdir")
-     * System.out.printf("Creating the sub directory completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string}
      *
      * @param subDirectoryName Name of the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
@@ -291,7 +261,7 @@ public class DirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * com.azure.storage.file.directoryClient.createSubDirectory#string
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
      *
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional. Metadata to associate with the subdirectory
@@ -345,10 +315,7 @@ public class DirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * <pre>
-     * Response&lt;FileClient&gt; response = client.createFile("myFile", Collections.singletonMap("directory", "metadata"))
-     * System.out.printf("Creating the file completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.createFile#string-long-fileHTTPHeaders-map}
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file

@@ -42,12 +42,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Directory Client</strong></p>
  *
- * <pre>
- * DirectoryAsyncClient client = DirectoryAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.directoryAsyncClient.instantiation}
  *
  * <p>View {@link DirectoryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -163,10 +158,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the directory</p>
      *
-     * <pre>
-     * client.create(Collections.singletonMap("directory", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the directory completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createDirectory#map}
      *
      * @param metadata Optional. Metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
@@ -202,13 +194,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Retrieve directory properties</p>
      *
-     * <pre>
-     * client.getProperties()
-     *    .subscribe(response -&gt; {
-     *        DirectoryProperties properties = response.value();
-     *        System.out.printf("Directory latest modified date is %s.", properties.lastModified());
-     *    });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getProperties}
      *
      * @return Storage directory properties
      */
@@ -226,17 +212,11 @@ public class DirectoryAsyncClient {
      *
      * <p>Set the metadata to "directory:updatedMetadata"</p>
      *
-     * <pre>
-     * client.setMetadata(Collections.singletonMap("directory", "updatedMetadata"))
-     *     .subscribe(response -&gt; System.out.printf("Setting the directory metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setMetadata#map}
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * <pre>
-     * client.setMetadata(null)
-     *     .subscribe(response -&gt; System.out.printf("Clearing the directory metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata}
      *
      * @param metadata Optional. Metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return information about the directory
@@ -254,10 +234,7 @@ public class DirectoryAsyncClient {
      *
      * <p>List all directories and files in the account</p>
      *
-     * <pre>
-     * client.listFilesAndDirectories()
-     *     .subscribe(result -&gt; System.out.printf("The file or directory %s exists in the account", result.name()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
      *
      * @return {@link FileRef File info} in the storage directory
      */
@@ -272,7 +249,7 @@ public class DirectoryAsyncClient {
      *
      * <p>List all directories with "subdir" prefix and return 10 results in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer}
      *
      * @param prefix Optional. Filters the results to return only files and directories whose name begins with the specified prefix.
      * @param maxResults Optional. Specifies the maximum number of files and/or directories to return per page.
@@ -291,10 +268,8 @@ public class DirectoryAsyncClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * <pre>
-     * client.getHandles(10, true)
-     *     .subscribe(handleItem -&gt; System.out.printf("Get handles completed with handle id %s", handleItem.handleId()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.getHandles}
+     *
      * @param maxResult Optional. The number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
@@ -311,13 +286,8 @@ public class DirectoryAsyncClient {
      *
      * <p>Force close handles with handles returned by get handles in recursive.</p>
      *
-     * <pre>
-     * client.getHandles(10, true)
-     *     .subscribe(handleItem -&gt; {
-     *         client.forceCloseHandles(handleItem.handleId(), true).subscribe(numOfClosedHandles -&gt
-     *              System.out.printf("Close %d handles.", numOfClosedHandles)
-     *     )});
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
      * @return The counts of number of handles closed
@@ -354,10 +324,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * <pre>
-     * client.createSubDirectory("subdir", Collections.singletonMap("directory", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the subdirectory completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
      *
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional. Metadata to associate with the subdirectory
@@ -417,10 +384,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * <pre>
-     * client.createFile("myFile", Collections.singletonMap("directory", "metadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFile#string-long-fileHTTPHeaders-map}
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
@@ -430,8 +394,7 @@ public class DirectoryAsyncClient {
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */
     public Mono<Response<FileAsyncClient>> createFile(String fileName, long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
-        String filePath = directoryName + "/" + fileName;
-        FileAsyncClient fileAsyncClient = new FileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot);
+        FileAsyncClient fileAsyncClient = getFileClient(fileName);
         return fileAsyncClient.create(maxSize, httpHeaders, metadata).map(response -> new SimpleResponse<>(response, fileAsyncClient));
     }
 
