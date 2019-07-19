@@ -33,7 +33,7 @@ public class OracleSource extends CopySource {
     private Object queryTimeout;
 
     /**
-     * The partition mechanism that will be used for oracle read in parallel.
+     * The partition mechanism that will be used for Oracle read in parallel.
      * Possible values include: 'None', 'PhysicalPartitionsOfTable',
      * 'DynamicRange'.
      */
@@ -41,7 +41,7 @@ public class OracleSource extends CopySource {
     private OraclePartitionOption partitionOption;
 
     /**
-     * The settings that will be leveraged for oracle source partitioning.
+     * The settings that will be leveraged for Oracle source partitioning.
      */
     @JsonProperty(value = "partitionSettings")
     private OraclePartitionSettings partitionSettings;
@@ -87,7 +87,7 @@ public class OracleSource extends CopySource {
     }
 
     /**
-     * Get the partition mechanism that will be used for oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     * Get the partition mechanism that will be used for Oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
      *
      * @return the partitionOption value
      */
@@ -96,7 +96,7 @@ public class OracleSource extends CopySource {
     }
 
     /**
-     * Set the partition mechanism that will be used for oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     * Set the partition mechanism that will be used for Oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
      *
      * @param partitionOption the partitionOption value to set
      * @return the OracleSource object itself.
@@ -107,7 +107,7 @@ public class OracleSource extends CopySource {
     }
 
     /**
-     * Get the settings that will be leveraged for oracle source partitioning.
+     * Get the settings that will be leveraged for Oracle source partitioning.
      *
      * @return the partitionSettings value
      */
@@ -116,7 +116,7 @@ public class OracleSource extends CopySource {
     }
 
     /**
-     * Set the settings that will be leveraged for oracle source partitioning.
+     * Set the settings that will be leveraged for Oracle source partitioning.
      *
      * @param partitionSettings the partitionSettings value to set
      * @return the OracleSource object itself.

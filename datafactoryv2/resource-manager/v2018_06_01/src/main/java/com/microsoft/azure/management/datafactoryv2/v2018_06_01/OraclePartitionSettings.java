@@ -11,11 +11,11 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The settings that will be leveraged for oracle source partitioning.
+ * The settings that will be leveraged for Oracle source partitioning.
  */
 public class OraclePartitionSettings {
     /**
-     * Names of the physical partitions of oracle table.
+     * Names of the physical partitions of Oracle table.
      */
     @JsonProperty(value = "partitionNames")
     private Object partitionNames;
@@ -44,7 +44,7 @@ public class OraclePartitionSettings {
     private Object partitionLowerBound;
 
     /**
-     * Get names of the physical partitions of oracle table.
+     * Get names of the physical partitions of Oracle table.
      *
      * @return the partitionNames value
      */
@@ -53,7 +53,7 @@ public class OraclePartitionSettings {
     }
 
     /**
-     * Set names of the physical partitions of oracle table.
+     * Set names of the physical partitions of Oracle table.
      *
      * @param partitionNames the partitionNames value to set
      * @return the OraclePartitionSettings object itself.
