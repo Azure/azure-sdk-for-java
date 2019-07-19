@@ -50,7 +50,7 @@ jobs:
       maxParallel: 1
       matrix:
         Session_Single_Region_ReadMyWrites:
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'vs2017-win2016'
           CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
           CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
           Consistency: 'Session'
@@ -60,7 +60,7 @@ jobs:
 
 
         Strong_Single_Region_ReadMyWrites:
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'vs2017-win2016'
           CosmosAccountHost: $(SINGLE_STRONG_ACCOUNT_HOST)
           CosmosAccountKey: $(SINGLE_STRONG_ACCOUNT_KEY)
           Consistency: 'Strong'
