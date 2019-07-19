@@ -22,10 +22,17 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.L
 @JsonFlatten
 public class TeradataLinkedService extends LinkedServiceInner {
     /**
+     * Teradata ODBC connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.connectionString")
+    private Object connectionString;
+
+    /**
      * Server name for connection. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
+    @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /**
@@ -55,6 +62,26 @@ public class TeradataLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value
+     */
+    public Object connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Set teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set
+     * @return the TeradataLinkedService object itself.
+     */
+    public TeradataLinkedService withConnectionString(Object connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
 
     /**
      * Get server name for connection. Type: string (or Expression with resultType string).
