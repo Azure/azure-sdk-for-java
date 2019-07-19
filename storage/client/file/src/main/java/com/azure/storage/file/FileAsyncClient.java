@@ -65,12 +65,7 @@ import reactor.core.scheduler.Schedulers;
  *
  * <p><strong>Instantiating an Asynchronous File Client</strong></p>
  *
- * <pre>
- * FileAsyncClient client = FileAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.file.fileAsyncClient.asyncInstantiation}
  *
  * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -163,11 +158,7 @@ public class FileAsyncClient {
      *
      * <p>Create the file with length of 1024 bytes, some headers and metadata.</p>
      *
-     * <pre>
-     * FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-     * client.create(1024, httpHeaders, Collections.singletonMap("file", "updatedMetadata"))
-     *     .subscribe(response -&gt; System.out.printf("Creating the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.create#long-filehttpheaders-map}
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
@@ -207,10 +198,7 @@ public class FileAsyncClient {
      *
      * <p>Abort copy file from copy id("someCopyId") </p>
      *
-     * <pre>
-     * client.abortCopy("someCopyId")
-     *     .subscribe(response -&gt; System.out.printf("Abort copying the file completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.abortCopy#string}
      *
      * @param copyId Specifies the copy id which has copying pending status associate with it.
      * @return A response containing the status of aborting copy the file.
@@ -227,12 +215,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file to current folder. </p>
      *
-     * <pre>
-     * client.downloadToFile("someFilePath")
-     *     .doOnTerminate(() -> if (Files.exist(Paths.get("someFilePath"))) {
-     *          System.out.println("Download the file completed");
-     *     });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string}
      *
      * @param downloadFilePath The path where store the downloaded file
      * @return An empty response.
@@ -248,7 +231,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange}
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional. Return file data only from the specified byte range.
@@ -330,10 +313,7 @@ public class FileAsyncClient {
      *
      * <p>Download the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * <pre>
-     * client.downloadWithProperties(new Range(1024, 2048), false)
-     *     .subscribe(response -&gt; System.out.printf("Downloading the file range completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean}
      *
      * @param range Optional. Return file data only from the specified byte range.
      * @param rangeGetContentMD5 Optional. When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
@@ -370,13 +350,7 @@ public class FileAsyncClient {
      *
      * <p>Retrieve file properties</p>
      *
-     * <pre>
-     * client.getProperties()
-     *    .subscribe(response -&gt; {
-     *        DirectoryProperties properties = response.value();
-     *        System.out.printf("File latest modified date is %s.", properties.lastModified());
-     *    });
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getProperties}
      *
      * @return Storage file properties
      */
@@ -394,18 +368,11 @@ public class FileAsyncClient {
      *
      * <p>Set the httpHeaders of contentType of "text/plain"</p>
      *
-     * <pre>
-     * FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
-     * client.setHttpHeaders(1024, httpHeaders)
-     *     .subscribe(response -&gt; System.out.printf("Setting the file httpHeaders completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders}
      *
      * <p>Clear the metadata of the file</p>
      *
-     * <pre>
-     * client.setHttpHeaders(1024, null)
-     *     .subscribe(response -&gt; System.out.printf("Clearing the file httpHeaders completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setHttpHeaders#long-filehttpheaders.clearHttpHeaders}
      *
      * @param newFileSize New file size of the file
      * @param httpHeaders Resizes a file to the specified size. If the specified byte value is less than the current size of the file, then all ranges above the specified byte value are cleared.
@@ -426,17 +393,11 @@ public class FileAsyncClient {
      *
      * <p>Set the metadata to "file:updatedMetadata"</p>
      *
-     * <pre>
-     * client.setMetadata(Collections.singletonMap("file", "updatedMetadata"))
-     *     .subscribe(response -&gt; System.out.printf("Setting the file metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setMetadata#map}
      *
      * <p>Clear the metadata of the file</p>
      *
-     * <pre>
-     * client.setMetadata(null)
-     *     .subscribe(response -&gt; System.out.printf("Clearing the file metadata completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.setMetadata#map.clearMetadata}
      *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return information about the file

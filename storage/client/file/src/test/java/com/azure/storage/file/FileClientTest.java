@@ -158,7 +158,7 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void setMeatadataFromFileClient() {
         fileClient.create(1024, null, null);
-        FileTestHelpers.assertResponseStatusCode(fileClient.setMeatadata(basicMetadata), 200);
+        FileTestHelpers.assertResponseStatusCode(fileClient.setMetadata(basicMetadata), 200);
     }
 
     @Override

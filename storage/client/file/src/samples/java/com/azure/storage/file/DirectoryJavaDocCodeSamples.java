@@ -84,6 +84,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
             .shareName("myshare")
+            .directoryName("mydirectory")
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation.credential
         return directoryClient;
@@ -99,6 +100,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
             .shareName("myshare")
+            .directoryName("mydirectory")
             .buildAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         return direcotryAsyncClient;
