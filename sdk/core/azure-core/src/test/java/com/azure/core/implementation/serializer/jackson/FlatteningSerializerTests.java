@@ -7,8 +7,8 @@ import com.azure.core.implementation.annotation.JsonFlatten;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.util.Foo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,24 +33,24 @@ public class FlatteningSerializerTests {
 
         // serialization
         String serialized = adapter.serialize(foo, SerializerEncoding.JSON);
-        Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}},\"more.props\":\"hello\"}}", serialized);
+        assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}},\"more.props\":\"hello\"}}", serialized);
 
         // deserialization
         Foo deserialized = adapter.deserialize(serialized, Foo.class, SerializerEncoding.JSON);
-        Assert.assertEquals("hello.world", deserialized.bar());
-        Assert.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz().toArray());
-        Assert.assertNotNull(deserialized.qux());
-        Assert.assertEquals("world", deserialized.qux().get("hello"));
-        Assert.assertEquals("c.d", deserialized.qux().get("a.b"));
-        Assert.assertEquals("ttyy", deserialized.qux().get("bar.a"));
-        Assert.assertEquals("uuzz", deserialized.qux().get("bar.b"));
-        Assert.assertEquals("hello", deserialized.moreProps());
+        assertEquals("hello.world", deserialized.bar());
+        assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz().toArray());
+        assertNotNull(deserialized.qux());
+        assertEquals("world", deserialized.qux().get("hello"));
+        assertEquals("c.d", deserialized.qux().get("a.b"));
+        assertEquals("ttyy", deserialized.qux().get("bar.a"));
+        assertEquals("uuzz", deserialized.qux().get("bar.b"));
+        assertEquals("hello", deserialized.moreProps());
     }
 
     @Test
     public void canSerializeMapKeysWithDotAndSlash() throws Exception {
         String serialized = new JacksonAdapter().serialize(prepareSchoolModel(), SerializerEncoding.JSON);
-        Assert.assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
+        assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
     }
 
     @JsonFlatten

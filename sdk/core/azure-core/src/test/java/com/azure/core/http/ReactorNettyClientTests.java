@@ -9,11 +9,12 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -29,10 +30,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static org.junit.Assert.assertEquals;
 
 public class ReactorNettyClientTests {
 
@@ -41,8 +41,8 @@ public class ReactorNettyClientTests {
 
     private static WireMockServer server;
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void beforeAll() {
         server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
         server.stubFor(
                 WireMock.get("/short").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
@@ -55,7 +55,7 @@ public class ReactorNettyClientTests {
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
 
-    @AfterClass
+    @AfterAll
     public static void afterClass() {
         if (server != null) {
             server.shutdown();
@@ -90,7 +90,7 @@ public class ReactorNettyClientTests {
         response.body().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
-        Assert.assertTrue(response.internConnection().isDisposed());
+        assertTrue(response.internConnection().isDisposed());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ReactorNettyClientTests {
                 .expectNextCount(1)
                 .thenCancel()
                 .verify();
-        Assert.assertTrue(response.internConnection().isDisposed());
+        assertTrue(response.internConnection().isDisposed());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ReactorNettyClientTests {
     }
 
     @Test
-    @Ignore("Not working accurately at present")
+    @Disabled("Not working accurately at present")
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse("/long");
         //
@@ -166,55 +166,56 @@ public class ReactorNettyClientTests {
                 .verify();
     }
 
-    @Test(timeout = 5000)
-    public void testServerShutsDownSocketShouldPushErrorToContentFlowable()
-            throws IOException, InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicReference<Socket> sock = new AtomicReference<>();
-        ServerSocket ss = new ServerSocket(0);
-        try {
-            Mono.fromCallable(() -> {
-                latch.countDown();
-                Socket socket = ss.accept();
-                sock.set(socket);
-                // give the client time to get request across
-                Thread.sleep(500);
-                // respond but don't send the complete response
-                byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
-                System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
-                String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
-                OutputStream out = socket.getOutputStream();
-                out.write(response.getBytes());
-                out.flush();
-                // kill the socket with HTTP response body incomplete
-                socket.close();
-                return 1;
-            })
-            .subscribeOn(Schedulers.elastic())
-                .subscribe();
-            //
-            latch.await();
-            HttpClient client = HttpClient.createDefault();
-            HttpRequest request = new HttpRequest(HttpMethod.GET,
+    @Test
+    public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
+        assertTimeout(Duration.ofMillis(5000), () -> {
+            CountDownLatch latch = new CountDownLatch(1);
+            AtomicReference<Socket> sock = new AtomicReference<>();
+            ServerSocket ss = new ServerSocket(0);
+            try {
+                Mono.fromCallable(() -> {
+                    latch.countDown();
+                    Socket socket = ss.accept();
+                    sock.set(socket);
+                    // give the client time to get request across
+                    Thread.sleep(500);
+                    // respond but don't send the complete response
+                    byte[] bytes = new byte[1024];
+                    int n = socket.getInputStream().read(bytes);
+                    System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
+                    String response = "HTTP/1.1 200 OK\r\n" //
+                                          + "Content-Type: text/plain\r\n" //
+                                          + "Content-Length: 10\r\n" //
+                                          + "\r\n" //
+                                          + "zi";
+                    OutputStream out = socket.getOutputStream();
+                    out.write(response.getBytes());
+                    out.flush();
+                    // kill the socket with HTTP response body incomplete
+                    socket.close();
+                    return 1;
+                })
+                    .subscribeOn(Schedulers.elastic())
+                    .subscribe();
+                //
+                latch.await();
+                HttpClient client = HttpClient.createDefault();
+                HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
-            HttpResponse response = client.send(request).block();
-            assertEquals(200, response.statusCode());
-            System.out.println("reading body");
-            //
-            StepVerifier.create(response.bodyAsByteArray())
+                HttpResponse response = client.send(request).block();
+                assertEquals(200, response.statusCode());
+                System.out.println("reading body");
+                //
+                StepVerifier.create(response.bodyAsByteArray())
                     // .awaitDone(20, TimeUnit.SECONDS)
                     .verifyError(IOException.class);
-        } finally {
-            ss.close();
-        }
+            } finally {
+                ss.close();
+            }
+        });
     }
 
-    @Ignore("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
+    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         long t = System.currentTimeMillis();
@@ -244,8 +245,7 @@ public class ReactorNettyClientTests {
                             })
                             .map(bb -> new NumberedByteBuf(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
-                                    md.digest()));
+                            .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest(), "wrong digest!"));
                 }))
                 .sequential()
                 // enable the doOnNext call to see request numbers and thread names

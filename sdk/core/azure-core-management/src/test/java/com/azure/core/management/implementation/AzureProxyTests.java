@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,21 +35,18 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AzureProxyTests {
     private long delayInMillisecondsBackup;
 
-    @Before
+    @BeforeEach
     public void beforeTest() {
         delayInMillisecondsBackup = AzureProxy.defaultDelayInMilliseconds();
         AzureProxy.setDefaultPollingDelayInMilliseconds(0);
     }
 
-    @After
+    @AfterEach
     public void afterTest() {
         AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMillisecondsBackup);
     }
@@ -396,7 +393,7 @@ public class AzureProxyTests {
     }
 
     @Test
-    @Ignore("Test does not run in a stable fashion across Windows, MacOS, and Linux")
+    @Disabled("Test does not run in a stable fashion across Windows, MacOS, and Linux")
     public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
         final long delayInMilliseconds = 100;
         AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMilliseconds);
@@ -859,7 +856,7 @@ public class AzureProxyTests {
     }
 
     private static void assertContains(String value, String expectedSubstring) {
-        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
+        assertTrue(value.contains(expectedSubstring), "Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".");
     }
 
 }

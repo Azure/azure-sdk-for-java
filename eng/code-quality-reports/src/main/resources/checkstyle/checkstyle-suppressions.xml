@@ -73,6 +73,9 @@
   <suppress checks="FinalClass" files="RequestResponseLink.java"/>
   <suppress checks="FinalClass" files="Util.java"/>
 
+  <!-- star imports are ok in unit tests - it makes it easier to import all assertions, etc -->
+  <suppress checks="AvoidStarImport" files=".*[/\\]src[/\\]test[/\\]java[/\\].*\.java"/>
+
   <!-- All auto generated files need to exclude from checkstyle -->
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]storage[/\\].*[/\\](models|implementation)[/\\].*\.java"/>
   <suppress checks="UnusedImports" files=".*[/\\]storage[/\\].*Generated.*.java"/>

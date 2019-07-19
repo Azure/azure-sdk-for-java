@@ -6,8 +6,8 @@ package com.azure.core.amqp;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.ErrorCondition;
 import com.azure.core.amqp.exception.ErrorContext;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -27,15 +27,15 @@ public class RetryTest {
         // Act
         retry.incrementRetryCount();
         final Duration firstRetryInterval = retry.getNextRetryInterval(exception, remainingTime);
-        Assert.assertNotNull(firstRetryInterval);
+        assertNotNull(firstRetryInterval);
 
         retry.incrementRetryCount();
         final Duration leftoverTime = remainingTime.minus(firstRetryInterval);
         final Duration secondRetryInterval = retry.getNextRetryInterval(exception, leftoverTime);
 
         // Assert
-        Assert.assertNotNull(secondRetryInterval);
-        Assert.assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
+        assertNotNull(secondRetryInterval);
+        assertTrue(secondRetryInterval.toNanos() > firstRetryInterval.toNanos());
     }
 
     /**
@@ -44,39 +44,39 @@ public class RetryTest {
     @Test
     public void canIncrementRetryCount() {
         Retry retry = Retry.getDefaultRetry();
-        Assert.assertEquals(0, retry.getRetryCount());
-        Assert.assertEquals(0, retry.incrementRetryCount());
+        assertEquals(0, retry.getRetryCount());
+        assertEquals(0, retry.incrementRetryCount());
 
-        Assert.assertEquals(1, retry.getRetryCount());
-        Assert.assertEquals(1, retry.incrementRetryCount());
+        assertEquals(1, retry.getRetryCount());
+        assertEquals(1, retry.incrementRetryCount());
 
-        Assert.assertEquals(2, retry.getRetryCount());
-        Assert.assertEquals(2, retry.incrementRetryCount());
+        assertEquals(2, retry.getRetryCount());
+        assertEquals(2, retry.incrementRetryCount());
 
         retry.resetRetryInterval();
 
-        Assert.assertEquals(0, retry.getRetryCount());
-        Assert.assertEquals(0, retry.incrementRetryCount());
+        assertEquals(0, retry.getRetryCount());
+        assertEquals(0, retry.incrementRetryCount());
 
-        Assert.assertEquals(1, retry.getRetryCount());
+        assertEquals(1, retry.getRetryCount());
     }
 
     @Test
     public void isRetriableException() {
         final Exception exception = new AmqpException(true, "error message", errorContext);
-        Assert.assertTrue(Retry.isRetriableException(exception));
+        assertTrue(Retry.isRetriableException(exception));
     }
 
     @Test
     public void notRetriableException() {
         final Exception invalidException = new RuntimeException("invalid exception");
-        Assert.assertFalse(Retry.isRetriableException(invalidException));
+        assertFalse(Retry.isRetriableException(invalidException));
     }
 
     @Test
     public void notRetriableExceptionNotTransient() {
         final Exception invalidException = new AmqpException(false, "Some test exception", errorContext);
-        Assert.assertFalse(Retry.isRetriableException(invalidException));
+        assertFalse(Retry.isRetriableException(invalidException));
     }
 
     /**
@@ -94,8 +94,8 @@ public class RetryTest {
         int retryCount = noRetry.incrementRetryCount();
 
         // Assert
-        Assert.assertEquals(0, retryCount);
-        Assert.assertNull(nextRetryInterval);
+        assertEquals(0, retryCount);
+        assertNull(nextRetryInterval);
     }
 
     /**
@@ -118,7 +118,7 @@ public class RetryTest {
         final Duration nextRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
 
         // Assert
-        Assert.assertEquals(Retry.DEFAULT_MAX_RETRY_COUNT, retry.getRetryCount());
-        Assert.assertNull(nextRetryInterval);
+        assertEquals(Retry.DEFAULT_MAX_RETRY_COUNT, retry.getRetryCount());
+        assertNull(nextRetryInterval);
     }
 }

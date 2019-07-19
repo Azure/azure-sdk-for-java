@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class ErrorContextTest {
     /**
@@ -19,24 +19,28 @@ public class ErrorContextTest {
         ErrorContext context = new ErrorContext(namespace);
 
         // Assert
-        Assert.assertEquals(namespace, context.getNamespace());
+        assertEquals(namespace, context.getNamespace());
     }
 
     /**
      * Verifies an exception is thrown if namespace is an empty string.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void constructorEmptyString() {
         // Act
-        ErrorContext context = new ErrorContext("");
+        assertThrows(IllegalArgumentException.class, () -> {
+            ErrorContext context = new ErrorContext("");
+        });
     }
 
     /**
      * Verifies an exception is thrown if namespace is null.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void constructorNull() {
         // Act
-        ErrorContext context = new ErrorContext(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            ErrorContext context = new ErrorContext(null);
+        });
     }
 }

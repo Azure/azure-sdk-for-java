@@ -3,8 +3,8 @@
 
 package com.azure.core.amqp.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class AmqpExceptionTest {
     private final SessionErrorContext context = new SessionErrorContext("namespace-test", "entity-path-test");
@@ -19,17 +19,17 @@ public class AmqpExceptionTest {
         AmqpException exception = new AmqpException(true, message, context);
 
         // Assert
-        Assert.assertTrue(exception.isTransient());
-        Assert.assertNotNull(exception.getMessage());
-        Assert.assertTrue(exception.getMessage().contains(message));
+        assertTrue(exception.isTransient());
+        assertNotNull(exception.getMessage());
+        assertTrue(exception.getMessage().contains(message));
 
-        Assert.assertTrue(exception.getContext() instanceof SessionErrorContext);
+        assertTrue(exception.getContext() instanceof SessionErrorContext);
 
         SessionErrorContext actualContext = (SessionErrorContext) exception.getContext();
-        Assert.assertEquals(context.getNamespace(), actualContext.getNamespace());
-        Assert.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
+        assertEquals(context.getNamespace(), actualContext.getNamespace());
+        assertEquals(context.getEntityPath(), actualContext.getEntityPath());
 
-        Assert.assertNull(exception.getErrorCondition());
+        assertNull(exception.getErrorCondition());
     }
 
     /**
@@ -45,14 +45,14 @@ public class AmqpExceptionTest {
         AmqpException exception = new AmqpException(false, condition, message, innerException, context);
 
         // Assert
-        Assert.assertEquals(condition, exception.getErrorCondition());
+        assertEquals(condition, exception.getErrorCondition());
 
-        Assert.assertTrue(exception.getContext() instanceof SessionErrorContext);
+        assertTrue(exception.getContext() instanceof SessionErrorContext);
 
         SessionErrorContext actualContext = (SessionErrorContext) exception.getContext();
-        Assert.assertEquals(context.getNamespace(), actualContext.getNamespace());
-        Assert.assertEquals(context.getEntityPath(), actualContext.getEntityPath());
+        assertEquals(context.getNamespace(), actualContext.getNamespace());
+        assertEquals(context.getEntityPath(), actualContext.getEntityPath());
 
-        Assert.assertSame(innerException, exception.getCause());
+        assertSame(innerException, exception.getCause());
     }
 }
