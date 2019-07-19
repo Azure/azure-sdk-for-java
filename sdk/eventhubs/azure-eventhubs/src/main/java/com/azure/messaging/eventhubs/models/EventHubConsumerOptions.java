@@ -202,8 +202,6 @@ public class EventHubConsumerOptions implements Cloneable {
     /**
      * Creates a shallow clone of this instance.
      *
-     * The object is cloned, but this instance's fields
-     *
      * @return A shallow clone of this object.
      */
     public EventHubConsumerOptions clone() {
