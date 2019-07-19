@@ -42,6 +42,7 @@ public class TopQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
+    //FIXME: line 82 Assertion error. Error message "Expecting <0> to be greater than <0>" : FastIntegrationTests (Builds: SingeRegionSessionTcp)
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
