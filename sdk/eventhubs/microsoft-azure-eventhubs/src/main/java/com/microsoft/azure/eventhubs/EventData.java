@@ -50,7 +50,7 @@ public interface EventData extends Serializable, Comparable<EventData> {
      *
      * @param data the actual payload of data in bytes to be Sent to EventHubs.
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, ScheduledExecutorService)
+     * @see EventHubClient#createFromConnectionString(String, ScheduledExecutorService)
      */
     static EventData create(final byte[] data) {
         return new EventDataImpl(data);
@@ -74,7 +74,7 @@ public interface EventData extends Serializable, Comparable<EventData> {
      * @param offset Offset in the byte[] to read from ; inclusive index
      * @param length length of the byte[] to be read, starting from offset
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, ScheduledExecutorService)
+     * @see EventHubClient#createFromConnectionString(String, ScheduledExecutorService)
      */
     static EventData create(final byte[] data, final int offset, final int length) {
         return new EventDataImpl(data, offset, length);
@@ -96,7 +96,7 @@ public interface EventData extends Serializable, Comparable<EventData> {
      *
      * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, ScheduledExecutorService)
+     * @see EventHubClient#createFromConnectionString(String, ScheduledExecutorService)
      */
     static EventData create(final ByteBuffer buffer) {
         return new EventDataImpl(buffer);

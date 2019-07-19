@@ -11,6 +11,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
+import java.util.Date;
 import java.util.Locale;
 
 public final class AmqpUtil {
@@ -119,6 +120,10 @@ public final class AmqpUtil {
 
         if (obj instanceof Double) {
             return Double.BYTES;
+        }
+
+        if (obj instanceof Date) {
+            return 32;
         }
 
         throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));

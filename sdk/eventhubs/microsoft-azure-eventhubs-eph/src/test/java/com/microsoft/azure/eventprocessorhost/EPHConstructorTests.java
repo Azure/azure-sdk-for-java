@@ -38,7 +38,8 @@ public class EPHConstructorTests extends TestBase {
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
 
-        settings.inoutEPHConstructorArgs.setEHPath("", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE_AND_REPLACE);
+        settings.inoutEPHConstructorArgs.removePathFromEHConnection();
+        settings.inoutEPHConstructorArgs.setEHPath(null, PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
 
         try {
             settings = testSetup(settings);
@@ -191,7 +192,7 @@ public class EPHConstructorTests extends TestBase {
         settings.inEventHubDoesNotExist = true;
         settings.inoutEPHConstructorArgs.dummyStorageConnection();
 
-        settings.inoutEPHConstructorArgs.setEHPath("", PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
+        settings.inoutEPHConstructorArgs.setEHPath(null, PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE);
 
         try {
             settings = testSetup(settings);
@@ -212,7 +213,7 @@ public class EPHConstructorTests extends TestBase {
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
@@ -231,7 +232,7 @@ public class EPHConstructorTests extends TestBase {
         try {
             settings = testSetup(settings);
             fail("No exception occurred");
-        } catch (IllegalArgumentException e) {
+        } catch (NullPointerException e) {
             TestBase.logInfo("Got expected exception");
         } finally {
             testFinish(settings, NO_CHECKS);
