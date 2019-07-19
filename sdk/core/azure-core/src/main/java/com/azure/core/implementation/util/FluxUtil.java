@@ -187,13 +187,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.monocontext}
+     * {@codesnippet com.azure.core.implementation.util.fluxutil.withcontext}
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
      * @return The response from service call
      */
-    public static <T> Mono<T> monoContext(Function<Context, Mono<T>> serviceCall) {
+    public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall) {
         return Mono.subscriberContext()
             .map(FluxUtil::toAzureContext)
             .flatMap(serviceCall);
