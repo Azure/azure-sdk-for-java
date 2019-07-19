@@ -22,7 +22,7 @@ public interface ArmTemplates extends HasInner<ArmTemplatesInner> {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

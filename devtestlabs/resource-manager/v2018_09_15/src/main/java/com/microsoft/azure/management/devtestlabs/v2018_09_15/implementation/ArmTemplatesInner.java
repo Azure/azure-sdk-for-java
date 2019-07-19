@@ -356,7 +356,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -372,7 +372,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -387,7 +387,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArmTemplateInner object
      */
@@ -406,7 +406,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArmTemplateInner object
      */
@@ -450,7 +450,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @param expand Specify the $expand query. Example: 'properties($select=displayName)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -467,7 +467,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @param expand Specify the $expand query. Example: 'properties($select=displayName)'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -483,7 +483,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @param expand Specify the $expand query. Example: 'properties($select=displayName)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArmTemplateInner object
@@ -503,7 +503,7 @@ public class ArmTemplatesInner {
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the azure Resource Manager template.
+     * @param name The name of the azure resource manager template.
      * @param expand Specify the $expand query. Example: 'properties($select=displayName)'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ArmTemplateInner object

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.devtestlabs.v2018_09_15.ServiceRunners;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.management.devtestlabs.v2018_09_15.ServiceRunner;
 
 class ServiceRunnersImpl extends WrapperImpl<ServiceRunnersInner> implements ServiceRunners {
@@ -40,24 +39,6 @@ class ServiceRunnersImpl extends WrapperImpl<ServiceRunnersInner> implements Ser
 
     private ServiceRunnerImpl wrapModel(String name) {
         return new ServiceRunnerImpl(name, this.manager());
-    }
-
-    @Override
-    public Observable<ServiceRunner> listAsync(final String resourceGroupName, final String labName) {
-        ServiceRunnersInner client = this.inner();
-        return client.listAsync(resourceGroupName, labName)
-        .flatMapIterable(new Func1<Page<ServiceRunnerInner>, Iterable<ServiceRunnerInner>>() {
-            @Override
-            public Iterable<ServiceRunnerInner> call(Page<ServiceRunnerInner> page) {
-                return page.items();
-            }
-        })
-        .map(new Func1<ServiceRunnerInner, ServiceRunner>() {
-            @Override
-            public ServiceRunner call(ServiceRunnerInner inner) {
-                return wrapModel(inner);
-            }
-        });
     }
 
     @Override

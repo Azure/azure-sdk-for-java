@@ -22,6 +22,9 @@ public final class VirtualMachineCreationSource extends ExpandableStringEnum<Vir
     /** Static value FromGalleryImage for VirtualMachineCreationSource. */
     public static final VirtualMachineCreationSource FROM_GALLERY_IMAGE = fromString("FromGalleryImage");
 
+    /** Static value FromSharedGalleryImage for VirtualMachineCreationSource. */
+    public static final VirtualMachineCreationSource FROM_SHARED_GALLERY_IMAGE = fromString("FromSharedGalleryImage");
+
     /**
      * Creates or finds a VirtualMachineCreationSource from its string representation.
      * @param name a name to look for

@@ -186,7 +186,8 @@ public class LabVirtualMachineCreationParameter {
 
     /**
      * Tells source of creation of lab virtual machine. Output property only.
-     * Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Possible values include: 'FromCustomImage', 'FromGalleryImage',
+     * 'FromSharedGalleryImage'.
      */
     @JsonProperty(value = "properties.virtualMachineCreationSource")
     private VirtualMachineCreationSource virtualMachineCreationSource;
@@ -776,7 +777,7 @@ public class LabVirtualMachineCreationParameter {
     }
 
     /**
-     * Get tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Get tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'.
      *
      * @return the virtualMachineCreationSource value
      */
@@ -785,7 +786,7 @@ public class LabVirtualMachineCreationParameter {
     }
 
     /**
-     * Set tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage'.
+     * Set tells source of creation of lab virtual machine. Output property only. Possible values include: 'FromCustomImage', 'FromGalleryImage', 'FromSharedGalleryImage'.
      *
      * @param virtualMachineCreationSource the virtualMachineCreationSource value to set
      * @return the LabVirtualMachineCreationParameter object itself.

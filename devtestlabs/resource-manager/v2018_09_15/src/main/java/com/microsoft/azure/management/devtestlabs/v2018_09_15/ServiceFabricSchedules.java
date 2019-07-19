@@ -24,7 +24,7 @@ public interface ServiceFabricSchedules extends SupportsCreating<UserLabSchedule
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -37,7 +37,7 @@ public interface ServiceFabricSchedules extends SupportsCreating<UserLabSchedule
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -50,7 +50,7 @@ public interface ServiceFabricSchedules extends SupportsCreating<UserLabSchedule
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -62,7 +62,7 @@ public interface ServiceFabricSchedules extends SupportsCreating<UserLabSchedule
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param userName The name of the user profile.
-     * @param serviceFabricName The name of the service Fabric.
+     * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

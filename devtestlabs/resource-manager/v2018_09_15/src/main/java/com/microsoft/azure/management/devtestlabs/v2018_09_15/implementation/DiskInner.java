@@ -23,13 +23,13 @@ import com.microsoft.azure.Resource;
 public class DiskInner extends Resource {
     /**
      * The storage type for the disk (i.e. Standard, Premium). Possible values
-     * include: 'Standard', 'Premium'.
+     * include: 'Standard', 'Premium', 'StandardSSD'.
      */
     @JsonProperty(value = "properties.diskType")
     private StorageType diskType;
 
     /**
-     * The size of the disk in Gibibytes.
+     * The size of the disk in GibiBytes.
      */
     @JsonProperty(value = "properties.diskSizeGiB")
     private Integer diskSizeGiB;
@@ -84,7 +84,7 @@ public class DiskInner extends Resource {
     private String uniqueIdentifier;
 
     /**
-     * Get the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'.
+     * Get the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @return the diskType value
      */
@@ -93,7 +93,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium'.
+     * Set the storage type for the disk (i.e. Standard, Premium). Possible values include: 'Standard', 'Premium', 'StandardSSD'.
      *
      * @param diskType the diskType value to set
      * @return the DiskInner object itself.
@@ -104,7 +104,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Get the size of the disk in Gibibytes.
+     * Get the size of the disk in GibiBytes.
      *
      * @return the diskSizeGiB value
      */
@@ -113,7 +113,7 @@ public class DiskInner extends Resource {
     }
 
     /**
-     * Set the size of the disk in Gibibytes.
+     * Set the size of the disk in GibiBytes.
      *
      * @param diskSizeGiB the diskSizeGiB value to set
      * @return the DiskInner object itself.

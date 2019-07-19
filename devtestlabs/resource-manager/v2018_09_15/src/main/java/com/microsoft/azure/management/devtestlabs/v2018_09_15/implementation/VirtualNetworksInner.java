@@ -900,7 +900,7 @@ public class VirtualNetworksInner {
     }
 
     /**
-     * Modify properties of virtual networks.
+     * Allows modifying tags of virtual networks. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -916,7 +916,7 @@ public class VirtualNetworksInner {
     }
 
     /**
-     * Modify properties of virtual networks.
+     * Allows modifying tags of virtual networks. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -931,7 +931,7 @@ public class VirtualNetworksInner {
     }
 
     /**
-     * Modify properties of virtual networks.
+     * Allows modifying tags of virtual networks. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
@@ -950,7 +950,7 @@ public class VirtualNetworksInner {
     }
 
     /**
-     * Modify properties of virtual networks.
+     * Allows modifying tags of virtual networks. All other properties will be ignored.
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.

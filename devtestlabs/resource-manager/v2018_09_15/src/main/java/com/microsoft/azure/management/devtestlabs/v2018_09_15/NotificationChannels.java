@@ -23,7 +23,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @param notifyParameters Properties for generating a Notification.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -35,7 +35,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -56,7 +56,7 @@ public interface NotificationChannels extends SupportsCreating<NotificationChann
      *
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
-     * @param name The name of the notificationChannel.
+     * @param name The name of the notification channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
