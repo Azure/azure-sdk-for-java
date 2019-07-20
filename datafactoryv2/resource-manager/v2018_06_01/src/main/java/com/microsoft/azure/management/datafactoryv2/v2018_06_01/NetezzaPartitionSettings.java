@@ -11,15 +11,9 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The settings that will be leveraged for Oracle source partitioning.
+ * The settings that will be leveraged for Netezza source partitioning.
  */
-public class OraclePartitionSettings {
-    /**
-     * Names of the physical partitions of Oracle table.
-     */
-    @JsonProperty(value = "partitionNames")
-    private Object partitionNames;
-
+public class NetezzaPartitionSettings {
     /**
      * The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).
@@ -44,26 +38,6 @@ public class OraclePartitionSettings {
     private Object partitionLowerBound;
 
     /**
-     * Get names of the physical partitions of Oracle table.
-     *
-     * @return the partitionNames value
-     */
-    public Object partitionNames() {
-        return this.partitionNames;
-    }
-
-    /**
-     * Set names of the physical partitions of Oracle table.
-     *
-     * @param partitionNames the partitionNames value to set
-     * @return the OraclePartitionSettings object itself.
-     */
-    public OraclePartitionSettings withPartitionNames(Object partitionNames) {
-        this.partitionNames = partitionNames;
-        return this;
-    }
-
-    /**
      * Get the name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @return the partitionColumnName value
@@ -76,9 +50,9 @@ public class OraclePartitionSettings {
      * Set the name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionColumnName the partitionColumnName value to set
-     * @return the OraclePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public OraclePartitionSettings withPartitionColumnName(Object partitionColumnName) {
+    public NetezzaPartitionSettings withPartitionColumnName(Object partitionColumnName) {
         this.partitionColumnName = partitionColumnName;
         return this;
     }
@@ -96,9 +70,9 @@ public class OraclePartitionSettings {
      * Set the maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionUpperBound the partitionUpperBound value to set
-     * @return the OraclePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public OraclePartitionSettings withPartitionUpperBound(Object partitionUpperBound) {
+    public NetezzaPartitionSettings withPartitionUpperBound(Object partitionUpperBound) {
         this.partitionUpperBound = partitionUpperBound;
         return this;
     }
@@ -116,9 +90,9 @@ public class OraclePartitionSettings {
      * Set the minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      *
      * @param partitionLowerBound the partitionLowerBound value to set
-     * @return the OraclePartitionSettings object itself.
+     * @return the NetezzaPartitionSettings object itself.
      */
-    public OraclePartitionSettings withPartitionLowerBound(Object partitionLowerBound) {
+    public NetezzaPartitionSettings withPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
     }

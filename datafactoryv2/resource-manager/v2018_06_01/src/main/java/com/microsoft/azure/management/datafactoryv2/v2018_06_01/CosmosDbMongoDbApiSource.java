@@ -35,7 +35,7 @@ public class CosmosDbMongoDbApiSource extends CopySource {
     /**
      * Specifies the number of documents to return in each batch of the
      * response from MongoDB instance. In most cases, modifying the batch size
-     * will not affect the user or the application. This property�s main
+     * will not affect the user or the application. This property's main
      * purpose is to avoid hit the limitation of response size. Type: integer
      * (or Expression with resultType integer).
      */
@@ -83,7 +83,7 @@ public class CosmosDbMongoDbApiSource extends CopySource {
     }
 
     /**
-     * Get specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property�s main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
+     * Get specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
      *
      * @return the batchSize value
      */
@@ -92,7 +92,7 @@ public class CosmosDbMongoDbApiSource extends CopySource {
     }
 
     /**
-     * Set specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property�s main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
+     * Set specifies the number of documents to return in each batch of the response from MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
      *
      * @param batchSize the batchSize value to set
      * @return the CosmosDbMongoDbApiSource object itself.
