@@ -279,7 +279,7 @@ public class FileClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.upload}
+     * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
@@ -297,11 +297,7 @@ public class FileClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * <pre>
-     * ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
-     * Response&lt;FileUploadInfo&gt; response = client.upload(defaultData, defaultData.readableBytes());
-     * System.out.printf("Upload the bytes to file range completed with status code %d", response.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype}
      *
      * @param data The data which will upload to the storage file.
      * @param offset Optional. The starting point of the upload range. It will start from the beginning if it is {@code null}
@@ -323,7 +319,7 @@ public class FileClient {
      *
      * <p>Upload the file from the source file path. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.uploadFromFile}
+     * {@codesnippet com.azure.storage.file.fileClient.uploadFromFile#string}
      *
      * @param uploadFilePath The path where store the source file to upload
      */
@@ -338,12 +334,7 @@ public class FileClient {
      *
      * <p> Upload the file from the source file path. </p>
      *
-     * <pre>
-     * client.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE);
-     * if (client.getProperties() != null) {
-     *     System.out.printf("Upload the file with length of %d completed", client.getProperties().block().value().contentLength());
-     * };
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype}
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param type You may specify one of the following options:
@@ -361,11 +352,7 @@ public class FileClient {
      *
      * <p>List all ranges for the file client.</p>
      *
-     * <pre>
-     * Iterable&lt;FileRange&gt; ranges = client.listRanges();
-     * ranges.forEach(range -&gt
-     *      System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.listRanges}
      *
      * @return {@link FileRange ranges} in the files.
      */
@@ -380,11 +367,7 @@ public class FileClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * <pre>
-     * Iterable%lt;FileRange&gt; ranges = client.listRanges(new FileRange(1024, 2048));
-     * ranges.forEach(range -&gt
-     *      System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange}
      *
      * @param range Optional. Return file data only from the specified byte range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
@@ -400,10 +383,7 @@ public class FileClient {
      *
      * <p>List all handles for the file client.</p>
      *
-     * <pre>
-     * client.listHandles()
-     *     .forEach(handleItem -&gt; System.out.printf("List handles completed with handleId %d", handleItem.handleId()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.listHandles}
      *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
@@ -418,10 +398,8 @@ public class FileClient {
      *
      * <p>List 10 handles for the file client.</p>
      *
-     * <pre>
-     * client.listHandles(10)
-     *     .forEach(handleItem -&gt; System.out.printf("List handles completed with handleId %d", handleItem.handleId()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer}
+     *
      * @param maxResults Optional. The number of results will return per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
@@ -436,13 +414,8 @@ public class FileClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * <pre>
-     * client.listHandles(10)
-     *     .forEach(result -&gt; {
-     *         client.forceCloseHandles(result.handleId(), true).subscribe(numOfClosedHandles -&gt
-     *              System.out.printf("Close %d handles.", numOfClosedHandles)
-     *     )});
-     * </pre>
+     * {@codesnippet om.azure.storage.file.fileClient.forceCloseHandles#string}
+     *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed
      */

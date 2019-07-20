@@ -415,7 +415,7 @@ public class FileAsyncClient {
      *
      * <p>Upload "default" to the file. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#flux-long}
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
@@ -435,11 +435,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
-     * <pre>
-     * ByteBuf defaultData = Unpooled.wrappedBuffer(defaultText.getBytes(StandardCharsets.UTF_8));
-     * client.upload(defaultData, defaultData.readableBytes())
-     *     .subscribe(response -&gt; System.out.printf("Upload the bytes to file range completed with status code %d", response.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype}
      *
      * @param data The data which will upload to the storage file.
      * @param offset Optional. The starting point of the upload range. It will start from the beginning if it is {@code null}
@@ -463,7 +459,7 @@ public class FileAsyncClient {
      *
      * <p>Upload the file from the source file path. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile#string}
      *
      * @param uploadFilePath The path where store the source file to upload
      * @return An empty response.
@@ -479,12 +475,7 @@ public class FileAsyncClient {
      *
      * <p> Upload the file from the source file path. </p>
      *
-     * <pre>
-     * client.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE)
-     *     .doOnTerminate(() -> if (client.getProperties() != null) {
-     *          System.out.printf("Upload the file with length of %d completed", client.getProperties().block().value().contentLength());
-     *     });
-     * </pre>
+     * (@codesnippet com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype}
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param type You may specify one of the following options:
@@ -526,10 +517,7 @@ public class FileAsyncClient {
      *
      * <p>List all ranges for the file client.</p>
      *
-     * <pre>
-     * client.listRanges()
-     *     .subscribe(range -&gt; System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listRanges}
      *
      * @return {@link FileRange ranges} in the files.
      */
@@ -545,10 +533,7 @@ public class FileAsyncClient {
      *
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
-     * <pre>
-     * client.listRanges(new FileRange(1024, 2048)
-     *     .subscribe(result -&gt; System.out.printf("List ranges completed with start: %d, end: %d", result.start(), result.end()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listRanges#filerange}
      *
      * @param range Optional. Return file data only from the specified byte range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
@@ -566,10 +551,7 @@ public class FileAsyncClient {
      *
      * <p>List all handles for the file client.</p>
      *
-     * <pre>
-     * client.listHandles()
-     *     .subscribe(result -&gt; System.out.printf("List handles completed with handle id %s", result.handleId()));
-     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listHandles}
      *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
@@ -584,9 +566,8 @@ public class FileAsyncClient {
      *
      * <p>List 10 handles for the file client.</p>
      *
-     * <pre>
-     * client.listHandles(10)
-     *     .subscribe(result -&gt; System.out.printf("List handles completed with handle id %s", result.handleId()));     * </pre>
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.listHandles#integer}
+     *
      * @param maxResults Optional. The number of results will return per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
@@ -602,13 +583,8 @@ public class FileAsyncClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * <pre>
-     * client.listHandles(10)
-     *     .subscribe(result -&gt; {
-     *         client.forceCloseHandles(result.handleId(), true).subscribe(numOfClosedHandles -&gt
-     *              System.out.printf("Close %d handles.", numOfClosedHandles)
-     *     )});
-     * </pre>
+     * {@codesnippet om.azure.storage.file.fileAsyncClient.forceCloseHandles#string}
+     *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed
      */
