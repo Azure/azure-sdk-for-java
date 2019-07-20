@@ -20,6 +20,29 @@ import java.util.Map;
  * Contains code snippets when generating javadocs through doclets for {@link QueueServiceClient} and {@link QueueServiceAsyncClient}.
  */
 public class QueueServiceJavaDocCodeSamples {
+    /**
+     * Generates code sample for creating a {@link QueueServiceClient}.
+     */
+    public void buildQueueServiceClient() {
+        // BEGIN: com.azure.storage.queue.queueServiceClient.instantiation
+        QueueServiceClient client = new QueueServiceClientBuilder()
+            .connectionString("connectionstring")
+            .endpoint("endpoint")
+            .buildClient();
+        // END: com.azure.storage.queue.queueServiceClient.instantiation
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueServiceAsyncClient}.
+     */
+    public void buildQueueServiceAsyncClient() {
+        // BEGIN: com.azure.storage.queue.queueServiceAsyncClient.instantiation
+        QueueServiceAsyncClient client = new QueueServiceClientBuilder()
+            .connectionString("connectionstring")
+            .endpoint("endpoint")
+            .buildAsyncClient();
+        // END: com.azure.storage.queue.queueServiceAsyncClient.instantiation
+    }
 
     /**
      * Generates code sample for creating a {@link QueueServiceClient} with {@link SASTokenCredential}

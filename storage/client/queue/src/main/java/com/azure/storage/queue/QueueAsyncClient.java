@@ -39,13 +39,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Queue Client</strong></p>
  *
- * <pre>
- * QueueAsyncClient client = QueueAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.queue.queueAsyncClient.instantiation}
  *
  * <p>View {@link QueueClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -397,10 +391,7 @@ public final class QueueAsyncClient {
      *
      * <p>Peek up to the first five messages</p>
      *
-     * <pre>
-     * client.peekMessages(5)
-     *     .subscribe(result -&gt; System.out.printf("Peeked message %s has been dequeued %d times", result.messageId(), result.dequeueCount()));
-     * </pre>
+     * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages#integer}
      *
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue than requested
      * all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is 1 to 32

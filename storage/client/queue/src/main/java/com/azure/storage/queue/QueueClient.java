@@ -25,13 +25,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating an Synchronous Queue Client</strong></p>
  *
- * <pre>
- * QueueClient client = QueueClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .queueName(queueName)
- *     .buildClient();
- * </pre>
+ * {@codesnippet com.azure.storage.queue.queueClient.instantiation}
  *
  * <p>View {@link QueueClientBuilder this} for additional ways to construct the client.</p>
  *

@@ -37,12 +37,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client</strong></p>
  *
- * <pre>
- * QueueServiceAsyncClient client = QueueServiceAsyncClient.builder()
- *     .connectionString(connectionString)
- *     .endpoint(endpoint)
- *     .buildAsyncClient();
- * </pre>
+ * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation}
  *
  * <p>View {@link QueueServiceClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -227,7 +222,7 @@ public final class QueueServiceAsyncClient {
     /*
      * Helper function used to auto-enumerate though paged responses
      */
-    private Publisher<QueueItem> extractAndFetchQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
+    private Flux<QueueItem> extractAndFetchQueues(ServicesListQueuesSegmentResponse response, List<ListQueuesIncludeType> include, Context context) {
         String nextPageLink = response.value().nextMarker();
         if (nextPageLink == null) {
             return Flux.fromIterable(response.value().queueItems());

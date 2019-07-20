@@ -109,10 +109,10 @@ The queue service do operations on the queues in the storage account and manage 
 ### Queue Service Client
 
 The client performs the interactions with the Queue service, create or delete a queue, getting and setting Queue properties, list queues in account, and get queue statistics. An asynchronous, `QueueServiceAsyncClient`, and synchronous, `QueueClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
-Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${sasToken}`.
+Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${SASToken}`.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueServiceURL = String.format("https://%s.queue.core.windows.net", accountName)
+QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueURL).credential(SASToken).build();
 
 QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
 ```
@@ -120,8 +120,9 @@ QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
 or
 
 ```Java
-String queueServiceAsyncURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceAsyncClient queueServiceAsyncClient = QueueServiceAsyncClient.builder().endpoint(queueServiceAsyncURL).build();
+String queueServiceAsyncURL = String.format("https://%s.queue.core.windows.net/", accountName)
+QueueServiceAsyncClient queueServiceAsyncClient = new QueueServiceClientBuilder().endpoint(queueServiceAsyncURL)
+                                                        credential(SASToken).build();
 queueServiceAsyncClient.createQueue("newAsyncQueue").subscribe(
     result -> {
       // do something when new queue created
@@ -139,10 +140,10 @@ Azure Queue storage is a service for storing large numbers of messages that can 
 A single queue message can be up to 64 KB in size, and a queue can contain millions of messages, up to the total capacity limit of a storage account.
 
 ### QueueClient
-Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${queueName}`, `${sasToken}`.
+Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${queueName}`, `${SASToken}`.
 ```Java
-String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", accountName, queueName, sasToken);
-QueueClient queueClient = QueueClient.builder().endpoint(queueURL).build();
+String queueURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName);
+QueueClient queueClient = QueueClient.builder().endpoint(queueURL).credential(SASToken).build();
 // metadata is map of key-value pair, timeout is client side timeout
 QueueClient newQueueClient = queueClient.create(metadata, timeout);
 ```

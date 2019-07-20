@@ -28,6 +28,30 @@ import java.util.Map;
 
 public class QueueJavaDocCodeSamples {
     /**
+     * Generates code sample for creating a {@link QueueClient}.
+     */
+    public void buildQueueClient() {
+        // BEGIN: com.azure.storage.queue.queueClient.instantiation
+        QueueClient client = new QueueClientBuilder()
+            .connectionString("connectionstring")
+            .endpoint("endpoint")
+            .buildClient();
+        // END: com.azure.storage.queue.queueClient.instantiation
+    }
+
+    /**
+     * Generates code sample for creating a {@link QueueAsyncClient}.
+     */
+    public void buildQueueAsyncClient() {
+        // BEGIN: com.azure.storage.queue.queueAsyncClient.instantiation
+        QueueAsyncClient client = new QueueClientBuilder()
+            .connectionString("connectionstring")
+            .endpoint("endpoint")
+            .buildAsyncClient();
+        // END: com.azure.storage.queue.queueAsyncClient.instantiation
+    }
+
+    /**
      * Generates code sample for creating a {@link QueueClient} with {@link QueueClient}
      * @return An instance of {@link QueueClient}
      */
