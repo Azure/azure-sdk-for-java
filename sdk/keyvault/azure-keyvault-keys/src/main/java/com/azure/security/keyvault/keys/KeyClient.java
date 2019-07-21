@@ -80,14 +80,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * <pre>
-     * KeyCreateOptions KeyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key key = keyClient.createKey(keyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createKey#string-keyOptions}
      *
      * @param keyCreateOptions The key options object containing information about the key being created.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
@@ -111,14 +104,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * <pre>
-     * KeyCreateOptions KeyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key key = keyClient.createKey(keyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", key.name(), key.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createKeyWithResponse#keyCreateOptions-Context}
      *
      * @param keyCreateOptions The key options object containing information about the key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -144,15 +130,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
-     *    .keySize(2048)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key rsaKey = keyClient.createRsaKey(rsaKeyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKey#keyOptions}
      *
      * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
@@ -177,15 +155,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
-     *    .keySize(2048)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key rsaKey = keyClient.createRsaKey(rsaKeyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", rsaKey.name(), rsaKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createRsaKeyWithResponse#keyOptions}
      *
      * @param rsaKeyCreateOptions The key options object containing information about the rsa key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -212,15 +182,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
-     * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
-     *    .curve(KeyCurveName.P_384)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key ecKey = keyClient.createEcKey(ecKeyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKey#keyOptions}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
@@ -246,15 +208,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Prints out
      * the details of the created key.</p>
-     * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
-     *    .curve(KeyCurveName.P_384)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * Key ecKey = keyClient.createEcKey(ecKeyCreateOptions).value();
-     * System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -273,10 +227,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * Key importedKey = keyClient.importKey("keyName", jsonWebKeyToImport).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.importKey#string-JsonWebKey}
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -298,14 +249,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .expires(OffsetDateTime.now().plusDays(60));
-     *
-     * Key importedKey = keyClient.importKey(keyImportOptions).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.importKey#keyImportOptions}
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
@@ -327,14 +271,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * <pre>
-     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-     *   .hsm(true)
-     *   .expires(OffsetDateTime.now().plusDays(60));
-     *
-     * Key importedKey = keyClient.importKey(keyImportOptions).value();
-     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.importKeyWithResponse#keyImportOptions-Context}
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -351,11 +288,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the key in the key vault. Prints out the details of the returned key.</p>
-     * <pre>
-     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * Key keyWithVersion = keyClient.getKey("keyName", keyVersion).value();
-     * System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string-string}
      *
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
@@ -372,11 +305,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the key in the key vault. Prints out the details of the returned key.</p>
-     * <pre>
-     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * Key keyWithVersion = keyClient.getKey("keyName", keyVersion).value();
-     * System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context}
      *
      * @param name The name of the key, cannot be null
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -395,10 +324,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the key in the key vault. Prints out the details of the returned key.</p>
-     * <pre>
-     * Key key = keyClient.getKey("keyName").value();
-     * System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.value().id());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -416,10 +342,7 @@ public final class KeyClient {
      * <p>The list operations {@link KeyClient#listKeys()} and {@link KeyClient#listKeyVersions(String)} return
      * the {@link List} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}. </p>
-     * <pre>
-     * keyClient.listKeys().stream().map(keyClient::getKey).forEach(keyResponse -&gt;
-     *   System.out.printf("Key is returned with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#KeyBase}
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
@@ -437,21 +360,16 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the key, changes its expiry time and the updates the key in the key vault.</p>
-     * <pre>
-     * Key key = keyClient.getKey("keyName").value();
-     * key.expires(OffsetDateTime.now().plusDays(60));
-     * KeyBase updatedKeyBase = keyClient.updateKey(key).value();
-     * Key updatedKey = keyClient.getKey(updatedKeyBase.name()).value();
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.updateKey#KeyBase}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
+     * @return The {@link KeyBase updated key}.
      */
-    public Response<Key> updateKey(KeyBase key) {
-        return client.updateKeyWithResponse(key).block();
+    public Key updateKey(KeyBase key) {
+        return client.updateKeyWithResponse(key).block().value();
     }
 
     /**
@@ -461,12 +379,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the key, changes its expiry time and key operations and the updates the key in the key vault.</p>
-     * <pre>
-     * Key key = keyClient.getKey("keyName").value();
-     * key.expires(OffsetDateTime.now().plusDays(60));
-     * KeyBase updatedKeyBase = keyClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).value();
-     * Key updatedKey = keyClient.getKey(updatedKeyBase.name()).value();
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.updateKey#KeyBase-keyOperations}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
@@ -486,12 +399,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the key, changes its expiry time and key operations and the updates the key in the key vault.</p>
-     * <pre>
-     * Key key = keyClient.getKey("keyName").value();
-     * key.expires(OffsetDateTime.now().plusDays(60));
-     * KeyBase updatedKeyBase = keyClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).value();
-     * Key updatedKey = keyClient.getKey(updatedKeyBase.name()).value();
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-keyOperations-Context}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -514,10 +422,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the response.</p>
-     * <pre>
-     * DeletedKey deletedKey = keyClient.deleteKey("keyName").value();
-     * System.out.printf("Deleted Key's Recovery Id %s", deletedKey.recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -537,10 +442,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the response.</p>
-     * <pre>
-     * DeletedKey deletedKey = keyClient.deleteKey("keyName").value();
-     * System.out.printf("Deleted Key's Recovery Id %s", deletedKey.recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKeyWithResponse#string-Context}
      *
      * @param name The name of the key to be deleted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -561,8 +463,7 @@ public final class KeyClient {
      * returned in the response.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * DeletedKey deletedKey = keyClient.getDeletedKey("keyName").value();
-     * System.out.printf("Deleted Key with recovery Id %s \n", deletedKey.recoveryId());
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
      * </pre>
      *
      * @param name The name of the deleted key.
@@ -583,9 +484,7 @@ public final class KeyClient {
      * returned in the response.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * DeletedKey deletedKey = keyClient.getDeletedKey("keyName").value();
-     * System.out.printf("Deleted Key with recovery Id %s \n", deletedKey.recoveryId());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getDeletedKeyWithResponse#string-Context}
      *
      * @param name The name of the deleted key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -603,11 +502,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted key from the key vault enabled for soft-delete. Prints out the status code from the server response.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * VoidResponse purgeResponse = keyClient.purgeDeletedKey("deletedKeyName");
-     * System.out.printf("Purge Status Code: %rsaPrivateExponent", purgeResponse.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.purgeDeletedKey#string}
      *
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -625,11 +521,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * Key recoveredKey =  keyClient.recoverDeletedKey("deletedKeyName").value();
-     * System.out.printf("Recovered key with name %s", recoveredKey.name());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -647,11 +540,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
-     * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * Key recoveredKey =  keyClient.recoverDeletedKey("deletedKeyName").value();
-     * System.out.printf("Recovered key with name %s", recoveredKey.name());
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKeyWithResponse#string-Context}
      *
      * @param name The name of the deleted key to be recovered.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -675,10 +565,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the key from the key vault and prints out the length of the key's backup byte array returned in the response</p>
-     * <pre>
-     * byte[] keyBackup = keyClient.backupKey("keyName").value();
-     * System.out.printf("Key's Backup Byte array's length %s", keyBackup.length);
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.backupKey#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -701,10 +588,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the key from the key vault and prints out the length of the key's backup byte array returned in the response</p>
-     * <pre>
-     * byte[] keyBackup = keyClient.backupKey("keyName").value();
-     * System.out.printf("Key's Backup Byte array's length %s", keyBackup.length);
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.backupKeyWithResponse#string-Context}
      *
      * @param name The name of the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -727,11 +611,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the key in the key vault from its backup. Prints out the details of the restored key returned in the response.</p>
-     * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
-     * KeyClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.restoreKey#byte}
      *
      * @param backup The backup blob associated with the key.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -752,11 +633,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the key in the key vault from its backup. Prints out the details of the restored key returned in the response.</p>
-     * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
-     * KeyClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.restoreKeyWithResponse#byte-Context}
      *
      * @param backup The backup blob associated with the key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -774,12 +652,7 @@ public final class KeyClient {
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyBase key} and
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
-     * <pre>
-     * for (KeyBase key : keyClient.listKeys()) {
-     *   Key keyWithMaterial = keyClient.getKey(key).value();
-     *   System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys}
      *
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
@@ -794,12 +667,8 @@ public final class KeyClient {
      *
      * <p>It is possible to get full keys with key material from this information. Loop over the {@link KeyBase key} and
      * call {@link KeyClient#getKey(KeyBase baseKey)} . This will return the {@link Key key} with key material included of its latest version.</p>
-     * <pre>
-     * for (KeyBase key : keyClient.listKeys()) {
-     *   Key keyWithMaterial = keyClient.getKey(key).value();
-     *   System.out.printf("Received key with name %s and type %s", keyWithMaterial.name(), keyWithMaterial.keyMaterial().kty());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listKeys#Context}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link List} containing {@link KeyBase key} of all the keys in the vault.
      */
@@ -814,11 +683,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
-     * <pre>
-     * for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
-     *   System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys}
      *
      * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
@@ -833,11 +698,8 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted keys in the key vault and for each deleted key prints out its recovery id.</p>
-     * <pre>
-     * for (DeletedKey deletedKey : keyClient.listDeletedKeys()) {
-     *   System.out.printf("Deleted key's recovery Id %s", deletedKey.recoveryId());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.listDeletedKeys#Context}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link List} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
