@@ -42,10 +42,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "DocumentDbCollectionSink", value = DocumentDbCollectionSink.class),
     @JsonSubTypes.Type(name = "FileSystemSink", value = FileSystemSink.class),
     @JsonSubTypes.Type(name = "BlobSink", value = BlobSink.class),
+    @JsonSubTypes.Type(name = "BinarySink", value = BinarySink.class),
     @JsonSubTypes.Type(name = "ParquetSink", value = ParquetSink.class),
     @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
     @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
+    @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
     @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class)
 })
 public class CopySink {

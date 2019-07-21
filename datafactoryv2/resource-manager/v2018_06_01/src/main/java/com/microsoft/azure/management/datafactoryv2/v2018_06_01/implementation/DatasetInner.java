@@ -72,6 +72,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "SalesforceServiceCloudObject", value = SalesforceServiceCloudObjectDataset.class),
     @JsonSubTypes.Type(name = "SalesforceObject", value = SalesforceObjectDataset.class),
     @JsonSubTypes.Type(name = "MicrosoftAccessTable", value = MicrosoftAccessTableDataset.class),
+    @JsonSubTypes.Type(name = "PostgreSqlTable", value = PostgreSqlTableDataset.class),
+    @JsonSubTypes.Type(name = "MySqlTable", value = MySqlTableDataset.class),
+    @JsonSubTypes.Type(name = "OdbcTable", value = OdbcTableDataset.class),
     @JsonSubTypes.Type(name = "InformixTable", value = InformixTableDataset.class),
     @JsonSubTypes.Type(name = "RelationalTable", value = RelationalTableDataset.class),
     @JsonSubTypes.Type(name = "AzureMySqlTable", value = AzureMySqlTableDataset.class),
@@ -96,6 +99,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzureSqlTable", value = AzureSqlTableDataset.class),
     @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataset.class),
     @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDataset.class),
+    @JsonSubTypes.Type(name = "Binary", value = BinaryDataset.class),
     @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class)

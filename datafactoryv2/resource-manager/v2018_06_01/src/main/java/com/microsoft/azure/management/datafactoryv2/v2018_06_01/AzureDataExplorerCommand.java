@@ -21,14 +21,14 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class AzureDataExplorerCommand extends ExecutionActivity {
     /**
-     * A control command, according to the ADX command syntax. Type: string (or
-     * Expression with resultType string).
+     * A control command, according to the Azure Data Explorer command syntax.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.command", required = true)
     private Object command;
 
     /**
-     * Get a control command, according to the ADX command syntax. Type: string (or Expression with resultType string).
+     * Get a control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with resultType string).
      *
      * @return the command value
      */
@@ -37,7 +37,7 @@ public class AzureDataExplorerCommand extends ExecutionActivity {
     }
 
     /**
-     * Set a control command, according to the ADX command syntax. Type: string (or Expression with resultType string).
+     * Set a control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with resultType string).
      *
      * @param command the command value to set
      * @return the AzureDataExplorerCommand object itself.

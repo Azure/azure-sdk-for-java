@@ -33,6 +33,20 @@ public class OracleSource extends CopySource {
     private Object queryTimeout;
 
     /**
+     * The partition mechanism that will be used for Oracle read in parallel.
+     * Possible values include: 'None', 'PhysicalPartitionsOfTable',
+     * 'DynamicRange'.
+     */
+    @JsonProperty(value = "partitionOption")
+    private OraclePartitionOption partitionOption;
+
+    /**
+     * The settings that will be leveraged for Oracle source partitioning.
+     */
+    @JsonProperty(value = "partitionSettings")
+    private OraclePartitionSettings partitionSettings;
+
+    /**
      * Get oracle reader query. Type: string (or Expression with resultType string).
      *
      * @return the oracleReaderQuery value
@@ -69,6 +83,46 @@ public class OracleSource extends CopySource {
      */
     public OracleSource withQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get the partition mechanism that will be used for Oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     *
+     * @return the partitionOption value
+     */
+    public OraclePartitionOption partitionOption() {
+        return this.partitionOption;
+    }
+
+    /**
+     * Set the partition mechanism that will be used for Oracle read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     *
+     * @param partitionOption the partitionOption value to set
+     * @return the OracleSource object itself.
+     */
+    public OracleSource withPartitionOption(OraclePartitionOption partitionOption) {
+        this.partitionOption = partitionOption;
+        return this;
+    }
+
+    /**
+     * Get the settings that will be leveraged for Oracle source partitioning.
+     *
+     * @return the partitionSettings value
+     */
+    public OraclePartitionSettings partitionSettings() {
+        return this.partitionSettings;
+    }
+
+    /**
+     * Set the settings that will be leveraged for Oracle source partitioning.
+     *
+     * @param partitionSettings the partitionSettings value to set
+     * @return the OracleSource object itself.
+     */
+    public OracleSource withPartitionSettings(OraclePartitionSettings partitionSettings) {
+        this.partitionSettings = partitionSettings;
         return this;
     }
 
