@@ -116,29 +116,30 @@ Licensed under the MIT License.
           <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
         </configuration>
       </plugin>
-      <!--<plugin>-->
-        <!--<artifactId>maven-assembly-plugin</artifactId>-->
-        <!--<version>2.2</version>-->
-        <!--<configuration>-->
-          <!--<descriptorRefs>-->
-            <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
-          <!--</descriptorRefs>-->
-          <!--<archive>-->
-            <!--<manifest>-->
-              <!--<mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>-->
-            <!--</manifest>-->
-          <!--</archive>-->
-        <!--</configuration>-->
-        <!--<executions>-->
-          <!--<execution>-->
-            <!--<id>make-assembly</id>-->
-            <!--<phase>package</phase>-->
-            <!--<goals>-->
-              <!--<goal>single</goal>-->
-            <!--</goals>-->
-          <!--</execution>-->
-        <!--</executions>-->
-      <!--</plugin>-->
+      
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>com.azure.data.cosmos.benchmark.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
