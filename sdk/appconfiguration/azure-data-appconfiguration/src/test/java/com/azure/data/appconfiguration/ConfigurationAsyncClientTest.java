@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.Range;
-import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -13,6 +9,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.Range;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,18 +36,18 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .credential(credentials)
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .buildAsyncClient());
+                .credential(credentials)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .buildAsyncClient());
         } else {
             client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                    .credential(credentials)
-                    .httpClient(HttpClient.createDefault().wiretap(true))
-                    .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .addPolicy(new RetryPolicy())
-                    .buildAsyncClient());
+                .credential(credentials)
+                .httpClient(HttpClient.createDefault().wiretap(true))
+                .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy())
+                .buildAsyncClient());
         }
     }
 
@@ -55,11 +55,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listSettings(new SettingSelector().keys(keyPrefix + "*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting);
-                })
-                .blockLast();
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+                return client.deleteSetting(configurationSetting);
+            })
+            .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
@@ -102,7 +102,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void addSettingNullKey() {
         assertRunnableThrowsException(() -> client.addSetting(null, "A Value").block(), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.addSetting(null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.addSetting(null).block(), NullPointerException.class);
     }
 
     /**
@@ -121,8 +121,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void setSetting() {
         setSettingRunner((expected, update) ->
             StepVerifier.create(client.setSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete());
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
     }
 
     /**
@@ -134,20 +134,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setSettingIfEtagRunner((initial, update) -> {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setSetting(initial.etag("badEtag")))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
-            final String etag = client.addSetting(initial).block().value().etag();
+            final String etag = client.addSetting(initial).block().etag();
 
             StepVerifier.create(client.setSetting(update.etag(etag)))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.setSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.getSetting(update))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
         });
     }
 
@@ -179,8 +179,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void setSettingNullKey() {
-        assertRunnableThrowsException(() -> client.setSetting(null, "A Value"), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.setSetting(null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.setSetting(null, "A Value").block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.setSetting(null).block(), NullPointerException.class);
     }
 
     /**
@@ -190,7 +190,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void updateNoExistingSetting() {
         updateNoExistingSettingRunner((expected) ->
             StepVerifier.create(client.updateSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code())));
     }
 
     /**
@@ -200,8 +200,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void updateSetting() {
         updateSettingRunner((initial, update) ->
             StepVerifier.create(client.addSetting(initial))
-                    .assertNext(response -> assertConfigurationEquals(initial, response))
-                    .verifyComplete());
+                .assertNext(response -> assertConfigurationEquals(initial, response))
+                .verifyComplete());
     }
 
     /**
@@ -224,8 +224,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     public void updateSettingNullKey() {
-        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value"), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.updateSetting(null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null, "A Value").block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.updateSetting(null).block(), NullPointerException.class);
     }
 
     /**
@@ -238,8 +238,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting update = settings.get(1);
             final ConfigurationSetting last = settings.get(2);
 
-            final String initialEtag = client.addSetting(initial).block().value().etag();
-            final String updateEtag = client.updateSetting(update).block().value().etag();
+            final String initialEtag = client.addSetting(initial).block().etag();
+            final String updateEtag = client.updateSetting(update).block().etag();
 
             // The setting does not exist in the service yet, so we cannot update it.
             StepVerifier.create(client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)))
@@ -281,15 +281,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().key(key).label("myNonExistentLabel");
 
         StepVerifier.create(client.addSetting(neverRetrievedConfiguration))
-                .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(neverRetrievedConfiguration, response))
+            .verifyComplete();
 
         StepVerifier.create(client.getSetting("myNonExistentKey"))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
 
 
         StepVerifier.create(client.getSetting(nonExistentLabel))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
     }
 
     /**
@@ -300,15 +300,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void deleteSetting() {
         deleteSettingRunner((expected) -> {
             StepVerifier.create(client.addSetting(expected).then(client.getSetting(expected)))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
 
             StepVerifier.create(client.deleteSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete();
 
             StepVerifier.create(client.getSetting(expected))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -317,23 +317,23 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingNotFound() {
         final String key = getKey();
-        final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
+        final ConfigurationSetting neverDeletedConfiguration = new ConfigurationSetting().key(key).value("myNeverDeletedValue");
 
-        StepVerifier.create(client.addSetting(neverDeletedConfiguation))
-                .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
-                .verifyComplete();
+        StepVerifier.create(client.addSetting(neverDeletedConfiguration))
+            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
+            .verifyComplete();
 
-        StepVerifier.create(client.deleteSetting("myNonExistentKey"))
-                .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key("myNonExistentKey")))
+            .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+            .verifyComplete();
 
-        StepVerifier.create(client.deleteSetting(new ConfigurationSetting().key(neverDeletedConfiguation.key()).label("myNonExistentLabel")))
-                .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
+        StepVerifier.create(client.deleteSettingWithResponse(new ConfigurationSetting().key(neverDeletedConfiguration.key()).label("myNonExistentLabel")))
+            .assertNext(response -> assertConfigurationEquals(null, response, HttpResponseStatus.NO_CONTENT.code()))
+            .verifyComplete();
 
-        StepVerifier.create(client.getSetting(neverDeletedConfiguation.key()))
-                .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguation, response))
-                .verifyComplete();
+        StepVerifier.create(client.getSetting(neverDeletedConfiguration.key()))
+            .assertNext(response -> assertConfigurationEquals(neverDeletedConfiguration, response))
+            .verifyComplete();
     }
 
     /**
@@ -342,22 +342,22 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingWithETag() {
         deleteSettingWithETagRunner((initial, update) -> {
-            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block().value();
-            final ConfigurationSetting updatedConfig = client.updateSetting(update).block().value();
+            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).block();
+            final ConfigurationSetting updatedConfig = client.updateSetting(update).block();
 
             StepVerifier.create(client.getSetting(initial))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.deleteSetting(initiallyAddedConfig))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code()));
 
             StepVerifier.create(client.deleteSetting(updatedConfig))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.getSetting(initial))
-                    .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code()));
         });
     }
 
@@ -365,8 +365,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     public void deleteSettingNullKey() {
-        assertRunnableThrowsException(() -> client.deleteSetting((String) null), IllegalArgumentException.class);
-        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null), NullPointerException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting((String) null).block(), IllegalArgumentException.class);
+        assertRunnableThrowsException(() -> client.deleteSetting((ConfigurationSetting) null).block(), NullPointerException.class);
     }
 
     /**
@@ -380,16 +380,16 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         StepVerifier.create(client.setSetting(expected))
-                .assertNext(response -> assertConfigurationEquals(expected, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(expected, response))
+            .verifyComplete();
 
         StepVerifier.create(client.listSettings(new SettingSelector().keys(key).labels(label)))
-                .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
-                .verifyComplete();
+            .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
+            .verifyComplete();
 
         StepVerifier.create(client.listSettings(new SettingSelector().keys(key)))
-                .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
-                .verifyComplete();
+            .assertNext(configurationSetting -> assertConfigurationEquals(expected, configurationSetting))
+            .verifyComplete();
     }
 
     /**
@@ -456,7 +456,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         listSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
             for (ConfigurationSetting setting : settings) {
-                settingsBeingAdded.add(client.setSetting(setting));
+                settingsBeingAdded.add(client.setSettingWithResponse(setting));
             }
 
             // Waiting for all the settings to be added.
@@ -483,14 +483,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
@@ -501,8 +501,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettings(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
     }
 
     /**
@@ -517,28 +517,28 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName)))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
 
         // Verifies that we can select specific fields.
         StepVerifier.create(client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)))
-                .assertNext(response -> validateListRevisions(updated2, response))
-                .assertNext(response -> validateListRevisions(updated, response))
-                .assertNext(response -> validateListRevisions(original, response))
-                .verifyComplete();
+            .assertNext(response -> validateListRevisions(updated2, response))
+            .assertNext(response -> validateListRevisions(updated, response))
+            .assertNext(response -> validateListRevisions(original, response))
+            .verifyComplete();
     }
 
     /**
@@ -626,7 +626,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().key(original.key()).value("anotherValue2");
 
         StepVerifier.create(client.addSetting(original))
-            .assertNext(response -> assertConfigurationEquals(original, response.value()))
+            .assertNext(response -> assertConfigurationEquals(original, response))
             .verifyComplete();
 
         StepVerifier.create(client.updateSetting(updated))
@@ -669,14 +669,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setSetting(original))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setSetting(updated2))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collectList().block();
@@ -688,9 +688,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
         StepVerifier.create(client.listSettingRevisions(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
     }
 
     /**
@@ -706,15 +706,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting));
+            results.add(client.setSettingWithResponse(setting));
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettingRevisions(filter))
-                .expectNextCount(numberExpected)
-                .verifyComplete();
+            .expectNextCount(numberExpected)
+            .verifyComplete();
     }
 
     /**
@@ -730,15 +730,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setSetting(setting));
+            results.add(client.setSettingWithResponse(setting));
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
 
         Flux.merge(results).blockLast();
         StepVerifier.create(client.listSettings(filter))
-                .expectNextCount(numberExpected)
-                .verifyComplete();
+            .expectNextCount(numberExpected)
+            .verifyComplete();
     }
 
     /**
@@ -749,21 +749,22 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final String key = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
-        final Response<ConfigurationSetting> block = client.addSetting(expected).single().block();
+        final ConfigurationSetting block = client.addSetting(expected).single().block();
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);
 
         StepVerifier.create(client.setSetting(newExpected))
-                .assertNext(response -> assertConfigurationEquals(newExpected, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(newExpected, response))
+            .verifyComplete();
     }
 
     public void deleteAllSettings() {
         client.listSettings(new SettingSelector().keys("*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
-                    return client.deleteSetting(configurationSetting);
-                }).blockLast();
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+                return client.deleteSetting(configurationSetting);
+            }).blockLast();
     }
 }
+

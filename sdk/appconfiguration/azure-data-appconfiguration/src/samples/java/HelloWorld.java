@@ -42,7 +42,7 @@ public class HelloWorld {
         // .block() exists there so the program does not end before the deletion has completed.
         client.setSetting(key, "world").subscribe(
             result -> {
-                ConfigurationSetting setting = result.value();
+                ConfigurationSetting setting = result;
                 System.out.println(String.format("Key: %s, Value: %s", setting.key(), setting.value()));
             },
             error -> System.err.println("There was an error adding the setting: " + error.toString()),

@@ -72,7 +72,6 @@ public class ReactorNettyClientTests {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
-
     @Test
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short");
@@ -93,8 +92,6 @@ public class ReactorNettyClientTests {
         Thread.sleep(5000);
         Assert.assertTrue(response.internConnection().isDisposed());
     }
-
-
 
     @Test
     public void testCancel() {
@@ -217,6 +214,7 @@ public class ReactorNettyClientTests {
         }
     }
 
+    @Ignore("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         long t = System.currentTimeMillis();
