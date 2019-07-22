@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.file;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.storage.common.credentials.SASTokenCredential;
@@ -95,7 +94,7 @@ public class DirectoryJavaDocCodeSamples {
      * @return An instance of {@link DirectoryAsyncClient}
      */
     public DirectoryAsyncClient createAsyncClientWithCredential() {
-        // BEGIN: com.azure.storage.file.direcotryAsyncClient.instantiation.credential
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         DirectoryAsyncClient direcotryAsyncClient = new DirectoryClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
@@ -166,10 +165,10 @@ public class DirectoryJavaDocCodeSamples {
      */
     public void createDirectoryWithOverload() {
         DirectoryClient directoryClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.directoryClient.createDirectory#map
+        // BEGIN: com.azure.storage.file.directoryClient.create#map
         Response<DirectoryInfo> response = directoryClient.create(Collections.singletonMap("directory", "metadata"));
         System.out.println("Complete creating the directory with status code: " + response.statusCode());
-        // END: com.azure.storage.file.directoryClient.createDirectory#map
+        // END: com.azure.storage.file.directoryClient.create#map
     }
 
     /**
@@ -285,9 +284,9 @@ public class DirectoryJavaDocCodeSamples {
         FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
         directoryAsyncClient.createFile("myFile", 1024, httpHeaders,
             Collections.singletonMap("directory", "metadata")).subscribe(
-            response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
-            error -> System.err.println(error.toString()),
-            () -> System.out.println("Complete creating the file.")
+                response ->  System.out.printf("Creating the file completed with status code %d", response.statusCode()),
+                error -> System.err.println(error.toString()),
+                () -> System.out.println("Complete creating the file.")
         );
         // END: com.azure.storage.file.directoryAsyncClient.createFile#string-long-fileHTTPHeaders-map
     }

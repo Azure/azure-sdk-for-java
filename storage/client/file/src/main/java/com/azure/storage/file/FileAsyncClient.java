@@ -65,7 +65,7 @@ import reactor.core.scheduler.Schedulers;
  *
  * <p><strong>Instantiating an Asynchronous File Client</strong></p>
  *
- * {@codesnippet com.azure.storage.file.fileAsyncClient.asyncInstantiation}
+ * {@codesnippet com.azure.storage.file.fileAsyncClient.instantiation}
  *
  * <p>View {@link FileClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -583,7 +583,7 @@ public class FileAsyncClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * {@codesnippet om.azure.storage.file.fileAsyncClient.forceCloseHandles#string}
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.forceCloseHandles#string}
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed

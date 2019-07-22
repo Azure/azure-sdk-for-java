@@ -414,7 +414,7 @@ public class ShareJavaDocCodeSamples {
                 ShareProperties properties = response.value();
                 System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
             });
-        // END: com.azure.storage.file.shareAsyncClient.delete.getProperties
+        // END: com.azure.storage.file.shareAsyncClient.getProperties
     }
 
     /**
@@ -442,7 +442,7 @@ public class ShareJavaDocCodeSamples {
                 ShareProperties properties = response.value();
                 System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
             });
-        // END: com.azure.storage.file.shareAsyncClient.delete.getProperties#string
+        // END: com.azure.storage.file.shareAsyncClient.getProperties#string
     }
 
     /**
@@ -467,7 +467,7 @@ public class ShareJavaDocCodeSamples {
             .subscribe(response ->
                 System.out.printf("Setting the share quota completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.delete.setQuota
+        // END: com.azure.storage.file.shareAsyncClient.setQuota
     }
 
     /**
@@ -492,7 +492,7 @@ public class ShareJavaDocCodeSamples {
             .subscribe(response ->
                 System.out.printf("Setting the share metadata completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.delete.setMetadata#map
+        // END: com.azure.storage.file.shareAsyncClient.setMetadata#map
     }
 
     /**
@@ -517,7 +517,7 @@ public class ShareJavaDocCodeSamples {
             .subscribe(response ->
                 System.out.printf("Setting the share metadata completed with status code %d", response.statusCode())
             );
-        // END: com.azure.storage.file.shareAsyncClient.delete.clearMetadata#map
+        // END: com.azure.storage.file.shareAsyncClient.clearMetadata#map
     }
 
     /**

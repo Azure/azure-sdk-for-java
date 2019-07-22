@@ -46,7 +46,7 @@ public class FileServiceJavaDocCodeSamples {
      * @return An instance of {@link FileServiceClient}
      */
     public FileServiceClient createClientWithSASToken() {
-        // BEGIN: com.azure.storage.file.fileServiceAsyncClient.instantiation.sastoken
+        // BEGIN: com.azure.storage.file.fileServiceClient.instantiation.sastoken
         FileServiceClient fileServiceClient = new FileServiceClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .buildClient();

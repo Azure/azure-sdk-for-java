@@ -414,7 +414,7 @@ public class FileClient {
      *
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
-     * {@codesnippet om.azure.storage.file.fileClient.forceCloseHandles#string}
+     * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string}
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed

@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating a Synchronous Share Client</strong></p>
  *
- * {@codesnippet com.azure.storage.file.shareClient.initialization}
+ * {@codesnippet com.azure.storage.file.shareClient.instantiation}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the client.</p>
  *

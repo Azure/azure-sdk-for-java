@@ -158,7 +158,7 @@ public class DirectoryAsyncClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryAsyncClient.createDirectory#map}
+     * {@codesnippet com.azure.storage.file.directoryAsyncClient.create#map}
      *
      * @param metadata Optional. Metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.

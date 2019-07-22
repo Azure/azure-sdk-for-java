@@ -39,7 +39,7 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Share Client</strong></p>
  *
- * {@codesnippet com.azure.storage.file.shareAsyncClient.initialization}
+ * {@codesnippet com.azure.storage.file.shareAsyncClient.instantiation}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the azureFileStorageClient.</p>
  *
@@ -151,11 +151,11 @@ public class ShareAsyncClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClientAsync.create#map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClientAsync.create#map-integer.quota}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.quota}
      *
      * @param metadata Optional. Metadata to associate with the share
      * @param quotaInGB Optional. Maximum size the share is allowed to grow to in GB. This must be greater than 0 and
@@ -343,7 +343,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * {@codesnippet {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.setAccessPolicy}
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -362,7 +362,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * {@codesnippet {@codesnippet com.azure.storage.file.shareAsyncClient.getStatistics}}
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getStatistics}
      *
      * @return the storage statistics of the share
      */

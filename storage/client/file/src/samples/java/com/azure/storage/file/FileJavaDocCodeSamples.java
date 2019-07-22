@@ -15,7 +15,6 @@ import com.azure.storage.file.models.FileProperties;
 import com.azure.storage.file.models.FileRange;
 import com.azure.storage.file.models.FileRangeWriteType;
 import com.azure.storage.file.models.FileUploadInfo;
-import com.azure.storage.file.models.Range;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.nio.charset.StandardCharsets;
@@ -298,9 +297,9 @@ public class FileJavaDocCodeSamples {
         ByteBuf defaultData = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
         fileAsyncClient.upload(Flux.just(defaultData), defaultData.readableBytes(), 1024,
             FileRangeWriteType.UPDATE).subscribe(
-            response -> { },
-            error -> System.err.print(error.toString()),
-            () -> System.out.println("Complete deleting the file!")
+                response -> { },
+                error -> System.err.print(error.toString()),
+                () -> System.out.println("Complete deleting the file!")
         );
         // END: com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype
     }
@@ -339,7 +338,7 @@ public class FileJavaDocCodeSamples {
         if (fileClient.getProperties() != null) {
             System.out.printf("Upload the file with length of %d completed",
                 fileClient.getProperties().value().contentLength());
-        };
+        }
         // END: com.azure.storage.file.fileClient.uploadFromFile#string-filerangewritetype
     }
 
@@ -350,9 +349,12 @@ public class FileJavaDocCodeSamples {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
         fileAsyncClient.uploadFromFile("someFilePath", FileRangeWriteType.UPDATE)
-            .subscribe(response -> {if (fileAsyncClient.getProperties() != null) {
-                System.out.printf("Upload the file with length of %d completed",
-                    fileAsyncClient.getProperties().block().value().contentLength());}});
+            .subscribe(response -> {
+                if (fileAsyncClient.getProperties() != null) {
+                    System.out.printf("Upload the file with length of %d completed",
+                        fileAsyncClient.getProperties().block().value().contentLength());
+                }
+            });
         // END: com.azure.storage.file.fileAsyncClient.uploadFromFile#string-filerangewritetype
     }
 
@@ -411,7 +413,7 @@ public class FileJavaDocCodeSamples {
     public void downloadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-        fileAsyncClient.downloadWithProperties(new FileRange(1024, 2047),false).subscribe(
+        fileAsyncClient.downloadWithProperties(new FileRange(1024, 2047), false).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
@@ -723,10 +725,10 @@ public class FileJavaDocCodeSamples {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.forceCloseHandles#string
         fileClient.listHandles(10)
-            .forEach(result -> {
+            .forEach(result ->
                 fileClient.forceCloseHandles(result.handleId()).forEach(numOfClosedHandles ->
                     System.out.printf("Close %d handles.", numOfClosedHandles)
-                );});
+                ));
         // END: com.azure.storage.file.fileClient.forceCloseHandles#string
     }
 

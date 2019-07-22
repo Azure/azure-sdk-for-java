@@ -105,7 +105,7 @@ public class DirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.createDirectory#map}
+     * {@codesnippet com.azure.storage.file.directoryClient.create#map}
      *
      * @param metadata Optional. Metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
