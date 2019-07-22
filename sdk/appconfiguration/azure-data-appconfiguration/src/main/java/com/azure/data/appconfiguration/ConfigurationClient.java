@@ -63,8 +63,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> addSetting(String key, String value) {
-        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+    public ConfigurationSetting addSetting(String key, String value) {
+        return addSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
     }
 
     /**
@@ -75,9 +75,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSetting#ConfigurationSetting}
      *
      * @param setting The setting to add to the configuration service.
      * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
@@ -88,8 +86,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> addSetting(ConfigurationSetting setting) {
-        return addSetting(setting, Context.NONE);
+    public ConfigurationSetting addSetting(ConfigurationSetting setting) {
+        return addSetting(setting, Context.NONE).value();
     }
 
     /**
@@ -100,19 +98,22 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.addSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.addSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to add to the configuration service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
+     * @return A REST response containing the the {@link ConfigurationSetting} that was created, or {@code null}, if a key collision occurs or the key
      * is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> addSettingWithResponse(ConfigurationSetting setting, Context context) {
+        return addSetting(setting, context);
+    }
+
     private Response<ConfigurationSetting> addSetting(ConfigurationSetting setting, Context context) {
         return client.addSetting(setting, context).block();
     }
@@ -124,15 +125,7 @@ public final class ConfigurationClient {
      *
      * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.setSetting("prodDBConnection", "db_connection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * result = client.setSetting("prodDBConnection", "updated_db_connection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSetting#string-string}
      *
      * @param key The key of the configuration setting to create or update.
      * @param value The value of this configuration setting.
@@ -143,8 +136,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> setSetting(String key, String value) {
-        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+    public ConfigurationSetting setSetting(String key, String value) {
+        return setSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
     }
 
     /**
@@ -157,18 +150,9 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection". <p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * result = client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"))
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSetting#ConfigurationSetting}
      *
      * @param setting The configuration setting to create or update.
      * @return The {@link ConfigurationSetting} that was created or updated, or {@code null}, if the key is an invalid
@@ -182,8 +166,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> setSetting(ConfigurationSetting setting) {
-        return setSetting(setting, Context.NONE);
+    public ConfigurationSetting setSetting(ConfigurationSetting setting) {
+        return setSetting(setting, Context.NONE).value();
     }
 
     /**
@@ -196,18 +180,9 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     * <p>Add a setting with the key "prodDBConnection" and value "db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("db_connection"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
-     *
-     * <p>Update the value of the setting to "updated_db_connection".</p>
-     *
-     * <pre>
-     * result = client
-     *     .setSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"), Context.NONE)
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.setSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The configuration setting to create or update.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -221,6 +196,10 @@ public final class ConfigurationClient {
      * setting exists and is locked.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
+    public Response<ConfigurationSetting> setSettingWithResponse(ConfigurationSetting setting, Context context) {
+        return client.setSetting(setting, context).block();
+    }
+
     private Response<ConfigurationSetting> setSetting(ConfigurationSetting setting, Context context) {
         return client.setSetting(setting, context).block();
     }
@@ -232,9 +211,7 @@ public final class ConfigurationClient {
      *
      * <p>Update a setting with the key "prodDBConnection" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.updateSetting("prodDCConnection", "updated_db_connection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#string-string}
      *
      * @param key The key of the configuration setting to update.
      * @param value The updated value of this configuration setting.
@@ -246,8 +223,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> updateSetting(String key, String value) {
-        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE);
+    public ConfigurationSetting updateSetting(String key, String value) {
+        return updateSetting(new ConfigurationSetting().key(key).value(value), Context.NONE).value();
     }
 
     /**
@@ -260,9 +237,7 @@ public final class ConfigurationClient {
      *
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSetting#ConfigurationSetting}
      *
      * @param setting The setting to add or update in the service.
      * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
@@ -275,8 +250,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting) {
-        return updateSetting(setting, Context.NONE);
+    public ConfigurationSetting updateSetting(ConfigurationSetting setting) {
+        return updateSetting(setting, Context.NONE).value();
     }
 
     /**
@@ -289,13 +264,11 @@ public final class ConfigurationClient {
      *
      * <p>Update the setting with the key-label pair "prodDBConnection"-"westUS" to have the value "updated_db_connection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.updateSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS").value("updated_db_connection"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.updateSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to add or update in the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
+     * @return A REST response containing the {@link ConfigurationSetting} that was updated, or {@code null}, if the configuration value does not
      * exist, is locked, or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -304,6 +277,11 @@ public final class ConfigurationClient {
      * the current value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> updateSettingWithResponse(ConfigurationSetting setting, Context context) {
+        return updateSetting(setting, context);
+    }
+
     private Response<ConfigurationSetting> updateSetting(ConfigurationSetting setting, Context context) {
         return client.updateSetting(setting, context).block();
     }
@@ -315,9 +293,7 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.get("prodDBConnection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#string}
      *
      * @param key The key of the setting to retrieve.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -327,8 +303,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSetting(String key) {
-        return getSetting(new ConfigurationSetting().key(key), Context.NONE);
+    public ConfigurationSetting getSetting(String key) {
+        return getSetting(new ConfigurationSetting().key(key), Context.NONE).value();
     }
 
     /**
@@ -336,11 +312,9 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSetting#ConfigurationSetting}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
@@ -351,8 +325,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> getSetting(ConfigurationSetting setting) {
-        return getSetting(setting, Context.NONE);
+    public ConfigurationSetting getSetting(ConfigurationSetting setting) {
+        return getSetting(setting, Context.NONE).value();
     }
 
     /**
@@ -360,21 +334,24 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Retrieve the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Retrieve the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.getSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.getSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The setting to retrieve based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
+     * @return A REST response containg the {@link ConfigurationSetting} stored in the service, or {@code null}, if the configuration value does
      * not exist or the key is an invalid value (which will also throw ServiceRequestException described below).
      * @throws NullPointerException If {@code setting} is {@code null}.
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
      * @throws ResourceNotFoundException If a ConfigurationSetting with the same key and label does not exist.
      * @throws HttpResponseException If the {@code} key is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> getSettingWithResponse(ConfigurationSetting setting, Context context) {
+        return getSetting(setting, context);
+    }
+
     private Response<ConfigurationSetting> getSetting(ConfigurationSetting setting, Context context) {
         return client.getSetting(setting, context).block();
     }
@@ -386,9 +363,7 @@ public final class ConfigurationClient {
      *
      * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.deleteSetting("prodDBConnection");
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#string}
      *
      * @param key The key of the setting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if it didn't exist. {@code null} is also returned if
@@ -398,8 +373,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSetting(String key) {
-        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE);
+    public ConfigurationSetting deleteSetting(String key) {
+        return deleteSetting(new ConfigurationSetting().key(key), Context.NONE).value();
     }
 
     /**
@@ -411,11 +386,9 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"));
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSetting#ConfigurationSetting}
      *
      * @param setting The ConfigurationSetting to delete.
      * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
@@ -429,8 +402,8 @@ public final class ConfigurationClient {
      * @throws HttpResponseException If {@code key} is an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting) {
-        return deleteSetting(setting, Context.NONE);
+    public ConfigurationSetting deleteSetting(ConfigurationSetting setting) {
+        return deleteSetting(setting, Context.NONE).value();
     }
 
     /**
@@ -442,15 +415,13 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>Delete the setting with the key-label "prodDBConnection"-"westUS".</p>
+     * <p>Delete the setting with the key "prodDBConnection".</p>
      *
-     * <pre>
-     * ConfigurationSetting result = client.deleteSetting(new ConfigurationSetting().key("prodDBConnection").label("westUS"), Context.NONE);
-     * System.out.printf("Key: %s, Value: %s", result.key(), result.value());</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.deleteSettingWithResponse#ConfigurationSetting-Context}
      *
      * @param setting The ConfigurationSetting to delete.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
+     * @return A REST response containing the deleted ConfigurationSetting or {@code null} if didn't exist. {@code null} is also returned if
      * the {@code key} is an invalid value or {@link ConfigurationSetting#etag() etag} is set but does not match the
      * current etag (which will also throw ServiceRequestException described below).
      * @throws IllegalArgumentException If {@link ConfigurationSetting#key() key} is {@code null}.
@@ -460,6 +431,11 @@ public final class ConfigurationClient {
      * character, and does not match the current etag value.
      * @throws HttpResponseException If {@code key} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConfigurationSetting> deleteSettingWithResponse(ConfigurationSetting setting, Context context) {
+        return deleteSetting(setting, context);
+    }
+
     private Response<ConfigurationSetting> deleteSetting(ConfigurationSetting setting, Context context) {
         return client.deleteSetting(setting, context).block();
     }
@@ -491,16 +467,14 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all settings that use the key "prodDBConnection".</p>
      *
-     * <pre>
-     * for (ConfigurationSetting setting : client.listSettings(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
-     *     System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
-     * }</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     private Stream<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return client.listSettings(options, context).toStream();
     }
@@ -527,7 +501,7 @@ public final class ConfigurationClient {
         return listSettingRevisions(selector, Context.NONE);
     }
 
-    /**
+    /*
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
@@ -539,15 +513,13 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * <pre>
-     * for (ConfigurationSetting revision : client.listSettingRevisions(new SettingSelector().key("prodDBConnection"), Context.NONE)) {
-     *     System.out.printf("Key: %s, Value: %s", revision.key(), revision.value());
-     * }</pre>
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     private Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         return client.listSettingRevisions(selector, context).toStream();
     }

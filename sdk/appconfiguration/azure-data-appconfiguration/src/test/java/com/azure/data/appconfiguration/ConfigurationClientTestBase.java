@@ -74,7 +74,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
                 : ConfigurationManager.getConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
-        Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
+        Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
 
         T client;
         try {
