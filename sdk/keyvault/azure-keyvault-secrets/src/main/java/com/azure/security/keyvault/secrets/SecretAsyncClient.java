@@ -86,14 +86,13 @@ public final class SecretAsyncClient {
      * </pre>
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
      * @throws HttpRequestException if {@link Secret#name()  name} or {@link Secret#value() value} is empty string.
      * @return A {@link Mono} containing the {@link Secret created secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Secret> setSecret(Secret secret, Context context) {
+    public Mono<Secret> setSecret(Secret secret) {
         return withContext(context -> setSecret(secret, context))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
@@ -125,7 +124,7 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret created secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> setSecret(Secret secret) {
+    public Mono<Response<Secret>> setSecretWithResponse(Secret secret) {
         return withContext(context -> setSecret(secret, context));
     }
 
@@ -203,13 +202,45 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> getSecret(String name, String version) {
+    public Mono<Secret> getSecret(String name, String version) {
+        return withContext(context -> getSecret(name, version, context))
+            .flatMap(secretResponse -> Mono.justOrEmpty(secretResponse.value()));
+    }
+
+    /**
+     * Get the specified secret with specified version from the key vault. The get operation is
+     * applicable to any secret stored in Azure Key Vault. This operation requires the {@code
+     * secrets/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
+     * asynchronously and prints out the
+     * returned secret details when a response is received.</p>
+     * <pre>
+     * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+     * secretAsyncClient.getSecret("secretName", secretVersion).subscribe(secretResponse -&gt;
+     *   System.out.printf("Secret with name %s, value %s and version %s", secretResponse.value().name(),
+     *   secretResponse.value().value(), secretResponse.value().version()));
+     * </pre>
+     *
+     * @param name The name of the secret, cannot be null
+     * @param version The version of the secret to retrieve. If this is an empty String or null, this
+     * call is equivalent to calling {@link #getSecret(String)}, with the latest version being
+     * retrieved.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
+     * contains the requested {@link Secret secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't
+     * exist in the key vault.
+     * @throws HttpRequestException if {@code name}  name} or {@code version} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Secret>> getSecretWithResponse(String name, String version) {
         return withContext(context -> getSecret(name, version, context));
     }
 
     Mono<Response<Secret>> getSecret(String name, String version, Context context) {
         if (version == null) {
-            return getSecret(name);
+            return getSecretWithResponse(name, "");
         }
 
         return service.getSecret(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
@@ -244,12 +275,46 @@ public final class SecretAsyncClient {
      * version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> getSecret(SecretBase secretBase) {
+    public Mono<Secret> getSecret(SecretBase secretBase) {
         Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
         if (secretBase.version() == null) {
             return getSecret(secretBase.name());
         }
         return getSecret(secretBase.name(), secretBase.version());
+    }
+
+    /**
+     * Get the secret which represents {@link SecretBase secretBase} from the key vault. The get
+     * operation is applicable to any secret stored in Azure Key Vault. This operation requires the
+     * {@code secrets/get} permission.
+     *
+     * <p>The list operations {@link SecretAsyncClient#listSecrets()} and {@link
+     * SecretAsyncClient#listSecretVersions(String)} return
+     * the {@link Flux} containing {@link SecretBase base secret} as output. This operation can then be used to get
+     * the full secret with its value from {@code secretBase}. </p>
+     * <p><strong>Code Samples</strong></p>
+     * <pre>
+     * secretAsyncClient.listSecrets().subscribe(secretBase -&gt;
+     *     client.getSecret(secretBase).subscribe(secretResponse -&gt;
+     *       System.out.printf("Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value())));
+     * </pre>
+     *
+     * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the
+     * secret being requested.
+     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link
+     * Secret secret}.
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
+     * SecretBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version()
+     * version} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Secret>> getSecretWithResponse(SecretBase secretBase) {
+        Objects.requireNonNull(secretBase, "The Secret Base parameter cannot be null.");
+        if (secretBase.version() == null) {
+            return getSecretWithResponse(secretBase.name(), "");
+        }
+        return getSecretWithResponse(secretBase.name(), secretBase.version());
     }
 
     Mono<Response<Secret>> getSecret(SecretBase secretBase, Context context) {
@@ -259,6 +324,7 @@ public final class SecretAsyncClient {
         }
         return getSecret(secretBase.name(), secretBase.version(), context);
     }
+
     /**
      * Get the latest version of the specified secret from the key vault. The get operation is applicable to any secret stored in Azure Key Vault.
      * This operation requires the {@code secrets/get} permission.
@@ -278,7 +344,7 @@ public final class SecretAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> getSecret(String name) {
+    public Mono<Secret> getSecret(String name) {
         return getSecret(name, "");
     }
 
