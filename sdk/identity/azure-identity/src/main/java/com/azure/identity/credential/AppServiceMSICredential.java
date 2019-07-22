@@ -91,6 +91,6 @@ class AppServiceMSICredential {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticate(String[] scopes) {
-        return identityClient.authenticateToManagedIdentityEnpoint(msiEndpoint, msiSecret, clientId(), scopes);
+        return identityClient.authenticateToManagedIdentityEndpoint(msiEndpoint, msiSecret, clientId(), scopes);
     }
 }

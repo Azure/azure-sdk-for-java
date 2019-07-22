@@ -4,22 +4,13 @@
 package com.azure.identity.implementation.util;
 
 import com.azure.core.implementation.util.Base64Util;
-import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
-import com.microsoft.aad.adal4j.AuthenticationCallback;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import reactor.core.Exceptions;
-import reactor.core.publisher.MonoSink;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -29,53 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Utility class for various operations for interacting with adal4j.
+ * Utility class for various operations for interacting with certificates.
  */
-public final class Adal4jUtil {
-    /**
-     * Routes a callback based call in adal4j to a Mono emitter.
-     * @param callback the Mono emitter
-     * @return the callback to pass into adal4j
-     */
-    public static AuthenticationCallback<AuthenticationResult> authenticationDelegate(final MonoSink<AuthenticationResult> callback) {
-        return new AuthenticationCallback<AuthenticationResult>() {
-            @Override
-            public void onSuccess(AuthenticationResult o) {
-                callback.success(o);
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-                callback.error(throwable);
-            }
-        };
-    }
-
-    /**
-     * Creates an AsymmetricKeyCredential from a PKCS12 certificate.
-     * @param clientId the client ID of the application.
-     * @param clientCertificate the PKCS12 certificate
-     * @param clientCertificatePassword the password protecting the PKCS12 certificate
-     * @return the AsymmetricKeyCredential
-     */
-    public static AsymmetricKeyCredential createAsymmetricKeyCredential(String clientId, byte[] clientCertificate, String clientCertificatePassword) {
-        try {
-            return AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword);
-        } catch (KeyStoreException kse) {
-            throw  Exceptions.propagate(kse);
-        } catch (NoSuchProviderException nspe) {
-            throw  Exceptions.propagate(nspe);
-        } catch (NoSuchAlgorithmException nsae) {
-            throw  Exceptions.propagate(nsae);
-        } catch (CertificateException ce) {
-            throw  Exceptions.propagate(ce);
-        } catch (IOException ioe) {
-            throw  Exceptions.propagate(ioe);
-        } catch (UnrecoverableKeyException uke) {
-            throw  Exceptions.propagate(uke);
-        }
-    }
-
+public final class CertificateUtil {
     /**
      * Extracts the PrivateKey from a PEM certificate.
      * @param pem the contents of a PEM certificate.
@@ -122,5 +69,5 @@ public final class Adal4jUtil {
         }
     }
 
-    private Adal4jUtil() { }
+    private CertificateUtil() { }
 }

@@ -4,35 +4,53 @@
 package com.azure.identity;
 
 import com.azure.core.credentials.AccessToken;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.ProxyOptions.Type;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.AuthorizationCodeListener;
 import com.azure.identity.implementation.MSIToken;
-import com.azure.identity.implementation.util.Adal4jUtil;
-import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
-import reactor.core.Exceptions;
+import com.azure.identity.implementation.util.CertificateUtil;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ClientSecret;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCode;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters;
+import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters.IntegratedWindowsAuthenticationParametersBuilder;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.UserAssertion;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
 
+import java.awt.*;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.Proxy;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -72,17 +90,19 @@ public final class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithClientSecret(String tenantId, String clientId, String clientSecret, String[] scopes) {
-        String resource = ScopeUtil.scopesToResource(scopes);
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-            context.acquireToken(
-                resource,
-                new ClientCredential(clientId, clientSecret),
-                Adal4jUtil.authenticationDelegate(callback));
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
-            .doFinally(s -> executor.shutdown());
+        try {
+            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -96,21 +116,19 @@ public final class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, String[] scopes) {
-        String resource = ScopeUtil.scopesToResource(scopes);
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-            try {
-                context.acquireToken(
-                    resource,
-                    Adal4jUtil.createAsymmetricKeyCredential(clientId, Files.readAllBytes(Paths.get(pfxCertificatePath)), pfxCertificatePassword),
-                    Adal4jUtil.authenticationDelegate(callback));
-            } catch (IOException e) {
-                callback.error(e);
-            }
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
-            .doFinally(s -> executor.shutdown());
+        try {
+            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (CertificateException | UnrecoverableKeyException | NoSuchAlgorithmException | KeyStoreException | NoSuchProviderException | IOException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -123,34 +141,82 @@ public final class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, String[] scopes) {
-        String resource = ScopeUtil.scopesToResource(scopes);
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = createAuthenticationContext(executor, authorityUrl, options.proxyOptions());
-        return Mono.create((Consumer<MonoSink<AuthenticationResult>>) callback -> {
-            try {
-                context.acquireToken(
-                    resource,
-                    AsymmetricKeyCredential.create(clientId, Adal4jUtil.privateKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath))), Adal4jUtil.publicKeyFromPem(Files.readAllBytes(Paths.get(pemCertificatePath)))),
-                    Adal4jUtil.authenticationDelegate(callback));
-            } catch (IOException e) {
-                callback.error(e);
-            }
-        }).map(ar -> new AccessToken(ar.getAccessToken(), OffsetDateTime.ofInstant(ar.getExpiresOnDate().toInstant(), ZoneOffset.UTC)))
-            .doFinally(s -> executor.shutdown());
+        try {
+            byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemCertificatePath));
+            ConfidentialClientApplication application = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(CertificateUtil.privateKeyFromPem(pemCertificateBytes), CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(application.acquireToken(ClientCredentialParameters.builder(new HashSet<>(Arrays.asList(scopes))).build()))
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
     }
 
-    private static AuthenticationContext createAuthenticationContext(ExecutorService executor, String authorityUrl, ProxyOptions proxyOptions) {
-        AuthenticationContext context;
+    //TODO: Convert DeviceCode to our own type
+    public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCode> deviceCodeConsumer) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            context = new AuthenticationContext(authorityUrl, false, executor);
-        } catch (MalformedURLException mue) {
-            throw Exceptions.propagate(mue);
+            PublicClientApplication application = PublicClientApplication.builder(clientId)
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(() -> {
+                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)), deviceCodeConsumer).build();
+                return application.acquireToken(parameters);
+            })
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
         }
-        if (proxyOptions != null) {
-            context.setProxy(new Proxy(proxyOptions.type() == Type.HTTP ? Proxy.Type.HTTP : Proxy.Type.SOCKS, proxyOptions.address()));
+    }
+    public Mono<AccessToken> authenticateWithAuthorizationCode(String tenantId, String clientId, String[] scopes, String authorizationCode, URI redirectUri) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            PublicClientApplication application = PublicClientApplication.builder(clientId)
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(application.acquireToken(AuthorizationCodeParameters.builder(authorizationCode, redirectUri).scopes(new HashSet<>(Arrays.asList(scopes))).build()))
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
         }
-        return context;
+    }
+
+    public Mono<AccessToken> authenticateWithBrowserPrompt(String tenantId, String clientId, String[] scopes, int port) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        return AuthorizationCodeListener.create(port)
+            .flatMap(server -> {
+                URI redirectUri;
+                URI browserUri;
+                try {
+                    redirectUri = new URI(String.format("http://localhost:%s", port));
+                    browserUri = new URI(String.format("%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&prompt=select_account&client_id=%s&redirect_uri=%s&state=%s&scope=%s",
+                        authorityUrl, clientId, redirectUri.toString(), UUID.randomUUID(), String.join(" ", scopes)));
+                } catch (URISyntaxException e) {
+                    return server.dispose().then(Mono.error(e));
+                }
+
+                return server.listen()
+                    .doOnSubscribe(s -> {
+                        try {
+                            Desktop.getDesktop().browse(browserUri);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
+                    .flatMap(code -> authenticateWithAuthorizationCode(tenantId, clientId, scopes, code, redirectUri))
+                    .doFinally(s -> server.dispose());
+            });
     }
 
     /**
@@ -162,7 +228,7 @@ public final class IdentityClient {
      * @param scopes      the scopes to authenticate to
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEnpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret, String clientId, String[] scopes) {
         String resource = ScopeUtil.scopesToResource(scopes);
         HttpURLConnection connection = null;
         StringBuilder payload = new StringBuilder();
