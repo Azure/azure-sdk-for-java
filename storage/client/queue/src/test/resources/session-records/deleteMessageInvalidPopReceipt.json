@@ -1,0 +1,109 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd221e11-4003-0028-0575-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535/messages?visibilitytimeout=0&messagettl=604800",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "Content-Type" : "application/xml; charset=utf-8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "dd221e1c-4003-0028-0f75-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>a848cec9-d421-43a6-ac39-6a941d76d21b</MessageId><InsertionTime>Wed, 10 Jul 2019 23:17:54 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:17:54 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAJDmgs3U31QE=</PopReceipt><TimeNextVisible>Wed, 10 Jul 2019 23:17:54 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535/messages?numofmessages=1&visibilitytimeout=30",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dd221e2b-4003-0028-1e75-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>a848cec9-d421-43a6-ac39-6a941d76d21b</MessageId><InsertionTime>Wed, 10 Jul 2019 23:17:54 GMT</InsertionTime><ExpirationTime>Wed, 17 Jul 2019 23:17:54 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAANWmKxXU31QE=</PopReceipt><TimeNextVisible>Wed, 10 Jul 2019 23:18:24 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message</MessageText></QueueMessage></QueueMessagesList>",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535/messages/a848cec9-d421-43a6-ac39-6a941d76d21b?popreceipt=AgAAAAMAAAAAAAAANWmKxXU31QE%3drandom",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "Content-Length" : "444",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "dd221e4c-4003-0028-3c75-37b82d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:dd221e4c-4003-0028-3c75-37b82d000000\nTime:2019-07-10T23:17:54.2735030Z</Message><QueryParameterName>popreceipt</QueryParameterName><QueryParameterValue>AgAAAAMAAAAAAAAANWmKxXU31QE=random</QueryParameterValue><Reason>Invalid pop receipt format</Reason></Error>",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535/messages",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd221e6a-4003-0028-5575-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://sima.queue.core.windows.net/queue67327535",
+    "Headers" : {
+      "x-ms-version" : "2018-03-28",
+      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-03-28",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "dd221e7b-4003-0028-6675-37b82d000000",
+      "Date" : "Wed, 10 Jul 2019 23:17:53 GMT"
+    }
+  } ],
+  "variables" : [ "queue67327535" ]
+}
