@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+package com.azure.data.appconfiguration;
+
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 

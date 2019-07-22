@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
+package com.azure.data.appconfiguration;
+
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
