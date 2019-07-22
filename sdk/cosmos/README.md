@@ -227,7 +227,7 @@ For other platforms (Redhat, Windows, Mac, etc) please refer to these instructio
 
 ### Common Perf Tips
 
-There is a set of common perf tips written for our Java SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java).
+There is a set of common perf tips written for our Java SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-async-java).
 
 ## FAQ
 
