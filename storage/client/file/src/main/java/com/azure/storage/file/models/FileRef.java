@@ -7,9 +7,9 @@ package com.azure.storage.file.models;
  * Contains file or directory reference information in the storage File service.
  */
 public final class FileRef {
-    private String name;
-    private boolean isDirectory;
-    private FileProperty fileProperty;
+    private final String name;
+    private final boolean isDirectory;
+    private final FileProperty fileProperty;
 
     /**
      * Creates an instance of file or directory reference information about a specific Share.

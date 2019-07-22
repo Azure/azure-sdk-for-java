@@ -395,7 +395,7 @@ public class FileJavaDocCodeSamples {
     public void downloadDataMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.downloadWithProperties#filerange-boolean
-        Response<FileDownloadInfo> response = fileClient.downloadWithProperties(new FileRange(1024, 2047),
+        Response<FileDownloadInfo> response = fileClient.downloadWithProperties(new FileRange(1024, 2047L),
             false);
         System.out.println("Complete downloading the data with status code: " + response.statusCode());
         response.value().body().subscribe(
@@ -413,7 +413,7 @@ public class FileJavaDocCodeSamples {
     public void downloadDataAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean
-        fileAsyncClient.downloadWithProperties(new FileRange(1024, 2047), false).subscribe(
+        fileAsyncClient.downloadWithProperties(new FileRange(1024, 2047L), false).subscribe(
             response -> { },
             error -> System.err.print(error.toString()),
             () -> System.out.println("Complete downloading the data!")
@@ -458,7 +458,7 @@ public class FileJavaDocCodeSamples {
     public void downloadFileMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.downloadToFile#string-filerange
-        fileClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047));
+        fileClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L));
         if (Files.exists(Paths.get("somelocalfilepath"))) {
             System.out.println("Complete downloading the file.");
         }
@@ -471,7 +471,7 @@ public class FileJavaDocCodeSamples {
     public void downloadFileAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange
-        fileAsyncClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047)).subscribe(
+        fileAsyncClient.downloadToFile("somelocalfilepath", new FileRange(1024, 2047L)).subscribe(
             response -> {
                 if (Files.exists(Paths.get("somelocalfilepath"))) {
                     System.out.println("Successfully downloaded the file.");
@@ -657,7 +657,7 @@ public class FileJavaDocCodeSamples {
     public void listRangesMaxOverload() {
         FileClient fileClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileClient.listRanges#filerange
-        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048));
+        Iterable<FileRange> ranges = fileClient.listRanges(new FileRange(1024, 2048L));
         ranges.forEach(range ->
             System.out.printf("List ranges completed with start: %d, end: %d", range.start(), range.end()));
         // END: com.azure.storage.file.fileClient.listRanges#filerange
@@ -669,7 +669,7 @@ public class FileJavaDocCodeSamples {
     public void listRangesAsyncMaxOverload() {
         FileAsyncClient fileAsyncClient = createAsyncClientWithSASToken();
         // BEGIN: com.azure.storage.file.fileAsyncClient.listRanges#filerange
-        fileAsyncClient.listRanges(new FileRange(1024, 2048))
+        fileAsyncClient.listRanges(new FileRange(1024, 2048L))
             .subscribe(result -> System.out.printf("List ranges completed with start: %d, end: %d",
                 result.start(), result.end()));
         // END: com.azure.storage.file.fileAsyncClient.listRanges#filerange

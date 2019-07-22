@@ -200,6 +200,18 @@ public final class FileServiceClientBuilder {
     }
 
     /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the Queue service.
+     *
+     * @param credential Shared key credential generated from the Storage account that authorizes requests
+     * @return the updated FileServiceClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public FileServiceClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        return this;
+    }
+
+    /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
      * File service.
      *

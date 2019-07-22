@@ -289,7 +289,7 @@ public class DirectoryClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public DirectoryClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(pipelinePolicy);
+        this.policies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 

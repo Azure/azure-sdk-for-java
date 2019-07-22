@@ -9,10 +9,10 @@ import java.time.OffsetDateTime;
  * Contains copy information about a File in the storage File service.
  */
 public final class FileCopyInfo {
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private String copyId;
-    private CopyStatusType copyStatus;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final String copyId;
+    private final CopyStatusType copyStatus;
 
     /**
      * Creates an instance of copy information about a specific File.
@@ -21,8 +21,10 @@ public final class FileCopyInfo {
      * @param lastModified Last time the directory was modified.
      * @param copyId String identifier for this copy operation.
      * @param copyStatus State of the copy operation with these values:
-     *                       - success: the copy completed successfully.
-     *                       - pending: the copy is still in progress.
+     *                       <ul>
+     *                           <li>success: the copy completed successfully.</li>
+     *                           <li>pending: the copy is still in progress.</li>
+     *                       </ul>
      */
     public FileCopyInfo(final String eTag, final OffsetDateTime lastModified, final String copyId, final CopyStatusType copyStatus) {
         this.eTag = eTag;

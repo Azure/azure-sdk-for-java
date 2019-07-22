@@ -4,8 +4,8 @@ package com.azure.storage.file.models;
  * Contains metadata information about a Directory in the storage File service.
  */
 public class DirectorySetMetadataInfo {
-    private String eTag;
-    private boolean isServerEncrypted;
+    private final String eTag;
+    private final boolean isServerEncrypted;
 
     /**
      * Creates an instance of information about a specific Directory.

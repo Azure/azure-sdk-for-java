@@ -10,10 +10,10 @@ import java.util.Map;
  * Contains properties information about a Directory in the storage File service.
  */
 public final class DirectoryProperties {
-    private Map<String, String> metadata;
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private boolean isServerEncrypted;
+    private final Map<String, String> metadata;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final boolean isServerEncrypted;
 
     /**
      * Creates an instance of properties information about a specific Directory.

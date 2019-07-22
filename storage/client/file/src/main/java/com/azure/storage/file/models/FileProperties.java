@@ -11,23 +11,23 @@ import java.util.Map;
  * Contains property information about a File in the storage File service.
  */
 public final class FileProperties {
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private Map<String, String> metadata;
-    private String fileType;
-    private Long contentLength;
-    private String contentType;
-    private byte[] contentMD5;
-    private String contentEncoding;
-    private String cacheControl;
-    private String contentDisposition;
-    private OffsetDateTime copyCompletionTime;
-    private String copyStatusDescription;
-    private String copyId;
-    private String copyProgress;
-    private String copySource;
-    private CopyStatusType copyStatus;
-    private Boolean isServerEncrypted;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final Map<String, String> metadata;
+    private final String fileType;
+    private final Long contentLength;
+    private final String contentType;
+    private final byte[] contentMD5;
+    private final String contentEncoding;
+    private final String cacheControl;
+    private final String contentDisposition;
+    private final OffsetDateTime copyCompletionTime;
+    private final String copyStatusDescription;
+    private final String copyId;
+    private final String copyProgress;
+    private final String copySource;
+    private final CopyStatusType copyStatus;
+    private final Boolean isServerEncrypted;
 
     /**
      * Creates an instance of property information about a specific File.

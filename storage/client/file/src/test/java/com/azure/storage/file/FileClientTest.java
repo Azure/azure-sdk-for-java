@@ -109,7 +109,7 @@ public class FileClientTest extends FileClientTestBase {
     @Override
     public void downloadWithProperties() {
         fileClient.create(1024, null, null);
-        FileRange range = new FileRange(0, 1024);
+        FileRange range = new FileRange(0, 1024L);
         FileTestHelpers.assertResponseListStatusCode(fileClient.downloadWithProperties(range, null), Arrays.asList(200, 206));
     }
 
@@ -171,7 +171,7 @@ public class FileClientTest extends FileClientTestBase {
     public void listRangesFromFileClient() {
         fileClient.create(1024, null, null);
         fileClient.upload(defaultData, defaultData.readableBytes());
-        fileClient.listRanges(new FileRange(0, 511)).forEach(
+        fileClient.listRanges(new FileRange(0, 511L)).forEach(
             fileRangeInfo -> {
                 Assert.assertTrue(fileRangeInfo.start() == 0);
                 Assert.assertTrue(fileRangeInfo.end() == 511);

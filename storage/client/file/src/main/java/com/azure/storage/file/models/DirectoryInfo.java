@@ -9,8 +9,8 @@ import java.time.OffsetDateTime;
  * Contains information about a Directory in the storage File service.
  */
 public final class DirectoryInfo {
-    private String eTag;
-    private OffsetDateTime lastModified;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
 
     /**
      * Creates an instance of information about a specific Directory.

@@ -9,9 +9,9 @@ import java.time.OffsetDateTime;
  * Contains information about a File in the storage File service.
  */
 public final class FileInfo {
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private Boolean isServerEncrypted;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final Boolean isServerEncrypted;
 
     /**
      * Creates an instance of information about a specific Directory.

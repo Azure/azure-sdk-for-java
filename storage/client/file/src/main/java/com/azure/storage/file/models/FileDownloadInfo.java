@@ -12,13 +12,13 @@ import reactor.core.publisher.Flux;
  * Contains download information about a File in the storage File service.
  */
 public final class FileDownloadInfo {
-    private String eTag;
-    private OffsetDateTime lastModified;
-    private Map<String, String> metadata;
-    private Long contentLength;
-    private String contentType;
-    private String contentRange;
-    private Flux<ByteBuf> body;
+    private final String eTag;
+    private final OffsetDateTime lastModified;
+    private final Map<String, String> metadata;
+    private final Long contentLength;
+    private final String contentType;
+    private final String contentRange;
+    private final Flux<ByteBuf> body;
 
     /**
      * Creates an instance of download information about a specific File.

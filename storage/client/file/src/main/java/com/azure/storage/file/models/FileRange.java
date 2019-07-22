@@ -3,19 +3,21 @@
 
 package com.azure.storage.file.models;
 
+import java.util.Objects;
+
 /**
  * The range of a file in the storage file service.
  */
 public final class FileRange {
-    private long start;
-    private long end;
+    private final long start;
+    private final Long end;
 
     /**
      * Create an instance of the range of a file.  Both the start and end of the range must be specified.
      * @param start Specifies the start of bytes to be written.
      * @param end Specifies the end of bytes to be written
      */
-    public FileRange(final long start, final long end) {
+    public FileRange(final long start, final Long end) {
         this.start = start;
         this.end = end;
     }
@@ -30,7 +32,7 @@ public final class FileRange {
     /**
      * @return The end of bytes to be written.
      */
-    public long end() {
+    public Long end() {
         return end;
     }
 
@@ -39,6 +41,7 @@ public final class FileRange {
      */
     @Override
     public String toString() {
-        return "bytes=" + start + "-" + end;
+        String endString = Objects.toString(end);
+        return "bytes=" + String.valueOf(start) + "-" + endString;
     }
 }
