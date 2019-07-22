@@ -6,6 +6,7 @@ package com.microsoft.azure.servicebus.primitives;
 import org.junit.Test;
 
 import com.microsoft.azure.servicebus.ClientSettings;
+import com.microsoft.azure.servicebus.TestUtils;
 import com.microsoft.azure.servicebus.security.ManagedIdentityTokenProvider;
 import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
 
@@ -22,16 +23,17 @@ public class ConnectionStringBuilderTests {
         assertEquals(connectionString, builder.toString());
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidAadAndSasKeyConnectionStringTest() {
-        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
-        new ConnectionStringBuilder(connecitionString);
-    }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void invalidAadAndSasTokenConnectionStringTest() {
-        String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
-        new ConnectionStringBuilder(connecitionString);
+    @Test
+    public void invalidAadTokenConnectionStringTest() {
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SHAREDACCESSKEYNAME=val2";
+            new ConnectionStringBuilder(connecitionString);
+        });
+        
+        TestUtils.assertThrows(IllegalArgumentException.class, () -> {
+            String connecitionString = "Endpoint=sb://test.servicebus.windows.net/;Authentication=Managed Identity;SharedAccessSignatureToken=val2";
+            new ConnectionStringBuilder(connecitionString);
+        });
     }
     
     @Test

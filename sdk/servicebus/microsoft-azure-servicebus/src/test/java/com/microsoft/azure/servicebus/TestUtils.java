@@ -39,8 +39,9 @@ public class TestUtils extends TestBase {
         namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
         if (namespaceConnectionString == null || namespaceConnectionString.isEmpty()) {
             System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
+        } else {
+            namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
         }
-        namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
 
         // Read proxy settings only if transport type is WebSockets
         runWithProxy = Boolean.valueOf(System.getenv(RUN_WITH_PROXY_ENV_VAR));
