@@ -189,7 +189,7 @@ public final class BlobInputStream extends InputStream {
      */
     private synchronized void dispatchRead(final int readLength) throws IOException {
         try {
-            this.currentBuffer = this.blobClient.blobAsyncRawClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
+            this.currentBuffer = this.blobClient.download(new BlobRange(this.currentAbsoluteReadPosition, (long) readLength), this.accessCondition, false)
                 .flatMap(res -> ByteBufFlux.fromInbound(res.body(null)).aggregate().asByteBuffer())
                 .block();
 

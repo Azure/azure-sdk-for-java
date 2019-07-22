@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.messaging.eventhubs.EventHubClient;
+import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 
 import java.util.concurrent.Semaphore;
@@ -27,7 +27,7 @@ public class GetEventHubMetadata {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubPath}";
 
         // Instantiate a client that will be used to call the service.
-        EventHubClient client = new EventHubClientBuilder()
+        EventHubAsyncClient client = new EventHubClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
 

@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import org.apache.qpid.proton.message.Message;
 import org.junit.After;
 import org.junit.Assert;
