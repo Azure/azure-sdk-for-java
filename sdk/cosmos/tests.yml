@@ -51,8 +51,8 @@ jobs:
       matrix:
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+          CosmosAccountHost: $(java-cosmos-session-singleregion-host)
+          CosmosAccountKey: $(java-cosmos-session-singleregion-key)
           Consistency: 'Session'
           TestDisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
@@ -61,14 +61,14 @@ jobs:
 
         Strong_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(SINGLE_STRONG_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_STRONG_ACCOUNT_KEY)
+          CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
+          CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
           Consistency: 'Strong'
           TestDisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
           cosmos.directModeProtocol: 'Https'
 
-        # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later.
+        # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later by cosmos team.
         # Strong_Multi_Region_ReadMyWrites:
         #   OSVmImage: 'macOS-10.13'
         #   CosmosAccountHost: $(MULTI_STRONG_ACCOUNT_HOST)
@@ -135,8 +135,8 @@ jobs:
       matrix:
         MultiMaster_Multi_Region_Long:
          OSVmImage: 'vs2017-win2016'
-         CosmosAccountHost: $(ACCOUNT_HOST)
-         CosmosAccountKey: $(ACCOUNT_KEY)
+         CosmosAccountHost: $(java-cosmos-multimaster-multiregion-host)
+         CosmosAccountKey: $(java-cosmos-multimaster-multiregion-key)
          Consistency: '["Session"]'
          TestDisplayName: 'Long Integration Tests'
          ProfileFlag: '-e -Plong'
@@ -144,8 +144,8 @@ jobs:
 
         Session_Single_Region_Long:
          OSVmImage: 'vs2017-win2016'
-         CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
-         CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+         CosmosAccountHost: $(java-cosmos-session-singleregion-host)
+         CosmosAccountKey: $(java-cosmos-session-singleregion-key)
          Consistency: '["Session"]'
          TestDisplayName: 'Long Integration Tests'
          ProfileFlag: '-e -Plong'
@@ -174,7 +174,7 @@ jobs:
       inputs:
        mavenPomFile: $(pomFile)
        goals: verify
-       options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(ACCOUNT_HOST) -DACCOUNT_KEY=$(ACCOUNT_KEY)'
+       options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(CosmosAccountHost) -DACCOUNT_KEY=$(CosmosAccountKey)'
        testResultsFiles: '**/junitreports/TEST-*.xml'
       env:
         DESIRED_CONSISTENCIES: $(Consistency)
@@ -208,14 +208,14 @@ jobs:
       matrix:
         Single_Region:
          OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(MULTIMASTER_SINGLE_ACCOUNT_HOST)
-         CosmosAccountKey: $(MULTIMASTER_SINGLE_ACCOUNT_KEY)
+         CosmosAccountHost: $(java-cosmos-multimaster-singleregion-host)
+         CosmosAccountKey: $(java-cosmos-multimaster-singleregion-key)
          PreferredLocations: null
 
         Multi_Region:
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(ACCOUNT_HOST)
-          CosmosAccountKey: $(ACCOUNT_KEY)
+          CosmosAccountHost: $(java-cosmos-multimaster-multiregion-host)
+          CosmosAccountKey: $(java-cosmos-multimaster-multiregion-key)
           PreferredLocations: '["East US 2"]'
 
     pool:
@@ -321,29 +321,29 @@ jobs:
       matrix:
         Strong_Tcp:
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(SINGLE_STRONG_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_STRONG_ONE_ACCOUNT_KEY)
+          CosmosAccountHost: $(java-cosmos-strong-singleregion-host)
+          CosmosAccountKey: $(java-cosmos-strong-singleregion-key)
           ProtocolFlag: '["Tcp"]'
           Consistency: '["Strong", "Session"]'
 
-        Strong_Https:
-         OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(SINGLE_STRONG_TWO_ACCOUNT_HOST)
-         CosmosAccountKey: $(SINGLE_STRONG_TWO_ACCOUNT_KEY)
-         ProtocolFlag: '["Https"]'
-         Consistency: '["Strong", "Session"]'
-
         Session_Tcp:
           OSVmImage: 'macOS-10.13'
-          CosmosAccountHost: $(SINGLE_SESSION_ONE_ACCOUNT_HOST)
-          CosmosAccountKey: $(SINGLE_SESSION_ONE_ACCOUNT_KEY)
+          CosmosAccountHost: $(java-cosmos-session-singleregion-one-host)
+          CosmosAccountKey: $(java-cosmos-session-singleregion-one-key)
           ProtocolFlag: '["Tcp"]'
           Consistency: '["Session"]'
 
+        Strong_Https:
+         OSVmImage: 'macOS-10.13'
+         CosmosAccountHost: $(java-cosmos-session-singleregion-one-host)
+         CosmosAccountKey: $(java-cosmos-session-singleregion-one-key)
+         ProtocolFlag: '["Https"]'
+         Consistency: '["Strong", "Session"]'
+
         Session_Https:
          OSVmImage: 'macOS-10.13'
-         CosmosAccountHost: $(SINGLE_SESSION_ACCOUNT_HOST)
-         CosmosAccountKey: $(SINGLE_SESSION_ACCOUNT_KEY)
+         CosmosAccountHost: $(java-cosmos-session-singleregion-host)
+         CosmosAccountKey: $(java-cosmos-session-singleregion-key)
          ProtocolFlag: '["Https"]'
          Consistency: '["Session"]'
     pool:
