@@ -228,7 +228,10 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.importKey#string-JsonWebKey}
+     * <pre>
+     * Key importedKey = keyClient.importKey("keyName", jsonWebKeyToImport);
+     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
+     * </pre>
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -250,7 +253,14 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.importKey#keyImportOptions}
+     * <pre>
+     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
+     *   .hsm(true)
+     *   .expires(OffsetDateTime.now().plusDays(60));
+     *
+     * Key importedKey = keyClient.importKey(keyImportOptions);
+     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
+     * </pre>
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
      * @throws NullPointerException if {@code keyImportOptions} is {@code null}.
@@ -272,7 +282,14 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new key into key vault. Prints out the details of the imported key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.importKeyWithResponse#keyImportOptions-Context}
+     * <pre>
+     * KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
+     *   .hsm(true)
+     *   .expires(OffsetDateTime.now().plusDays(60));
+     *
+     * Key importedKey = keyClient.importKey(keyImportOptions, new Context(key1, value1)).value();
+     * System.out.printf("Key is imported with name %s and id %s \n", importedKey.name(), importedKey.id());
+     * </pre>
      *
      * @param keyImportOptions The key import configuration object containing information about the json web key being imported.
      * @param context Additional context that is passed through the Http pipeline during the service call.

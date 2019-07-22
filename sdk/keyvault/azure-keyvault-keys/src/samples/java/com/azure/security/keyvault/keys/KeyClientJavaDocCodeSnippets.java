@@ -10,11 +10,15 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.Context;
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.security.keyvault.keys.models.*;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
+import com.azure.security.keyvault.keys.models.Key;
+import com.azure.security.keyvault.keys.models.KeyBase;
+import com.azure.security.keyvault.keys.models.KeyCreateOptions;
+import com.azure.security.keyvault.keys.models.KeyImportOptions;
+import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
@@ -85,29 +89,6 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#importKey(KeyImportOptions)}
-     */
-    public void importKeySnippets() {
-        // BEGIN: com.azure.keyvault.keys.keyclient.importKey#keyImportOptions
-        // JsonWebKey jsonWebKeyToImport;
-        // KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-        //     .hsm(true)
-        //     .expires(OffsetDateTime.now().plusYears(1));
-        // Key importedKey = keyClient.importKey(ecKeyCreateOptions);
-        // System.out.printf("Key is created with name %s and id %s \n", importedKey.name(), importedKey.id());
-        // END: com.azure.keyvault.keys.keyclient.importKey#keyImportOptions
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.importKey#string-JsonWebKey
-        // JsonWebKey jsonWebKeyToImport;
-        // KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-        //     .hsm(true)
-        //     .expires(OffsetDateTime.now().plusYears(1));
-        // Key importedKey = keyClient.importKey(ecKeyCreateOptions);
-        // System.out.printf("Key is created with name %s and id %s \n", importedKey.name(), importedKey.id());
-        // END: com.azure.keyvault.keys.keyclient.importKey#string-JsonWebKey
-    }
-
-    /**
      * Generates a code sample for using {@link KeyClient#deleteKey(String)}
      */
     public void deleteKeySnippets() {
@@ -160,20 +141,6 @@ public final class KeyClientJavaDocCodeSnippets {
         Key ecKey = keyClient.createEcKeyWithResponse(ecKeyCreateOptions, new Context(key1, value1)).value();
         System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
         // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions
-    }
-
-    /**
-     * Generates a code sample for using {@link KeyClient#importKeyWithResponse(KeyImportOptions, Context)}
-     */
-    public void importKeyWithResponseSnippets() {
-        // BEGIN: com.azure.keyvault.keys.keyclient.importKeyWithResponse#keyImportOptions-Context
-        // JsonWebKey jsonWebKeyToImport;
-        // KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
-        //     .hsm(true)
-        //     .expires(OffsetDateTime.now().plusYears(1));
-        // Key importedKey = keyClient.importKey(ecKeyCreateOptions);
-        // System.out.printf("Key is created with name %s and id %s \n", importedKey.name(), importedKey.id());
-        // END: com.azure.keyvault.keys.keyclient.importKeyWithResponse#keyImportOptions-Context
     }
 
     /**
