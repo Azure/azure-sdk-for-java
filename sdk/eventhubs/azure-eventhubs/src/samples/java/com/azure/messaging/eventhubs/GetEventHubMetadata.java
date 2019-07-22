@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-import com.azure.messaging.eventhubs.EventHubAsyncClient;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
+package com.azure.messaging.eventhubs;
 
 import java.util.concurrent.Semaphore;
 
