@@ -142,8 +142,9 @@ The File Service REST API provides operations on accounts and manage file servic
 Once you have the SASToken, you can construct the file service client with `${accountName}`, `${sasToken}`
 
 ```
-String fileServiceURL = String.format("https://%s.file.core.windows.net/%s", accountName, sasToken);
-FileServiceClient fileServiceClient = FileServiceClient.builder().endpoint(fileServiceURL).build();
+String fileServiceURL = String.format("https://%s.file.core.windows.net", accountName);
+FileServiceClient fileServiceClient = new FileServiceClientBuilder().endpoint(fileServiceURL)
+    .credential(sasToken).buildClient();
 ```
 
 ### Share 
@@ -151,8 +152,9 @@ The share resource includes metadata and properties for that share. It allows th
 Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${sasToken}`
 
 ```
-String shareURL = String.format("https://%s.file.core.windows.net/%s%s", accountName, shareName, sasToken);
-ShareClient shareClient = ShareClient.builder().endpoint(shareURL).build();
+String shareURL = String.format("https://%s.file.core.windows.net", accountName);
+ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
+    .credential(sasToken).shareName(shareName).buildClient();
 ```
 
 ### Directory
@@ -161,15 +163,17 @@ ShareClient shareClient = ShareClient.builder().endpoint(shareURL).build();
  
  ```
  String directoryURL = String.format("https://%s.file.core.windows.net/%s%s", accountName, shareName, directoryPath, sasToken);
- DirectoryClient directoryClient = DirectoryClient.builder().endpoint(directoryURL).build();
+ DirectoryClient directoryClient = new DirectoryClientBuilder().endpoint(directoryURL)
+    .credential(sasToken).shareName(shareName).directoryName(directoryPath).buildClient();
  ```
 ### File
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${fileName}`, `${sasToken}`
  
  ```
- String fileURL = String.format("https://%s.file.core.windows.net/%s/%s/%s", accountName, shareName, directoryPath, fileName, sasToken);
- FileClient fileClient = FileClient.builder().endpoint(fileURL).build();
+ String fileURL = String.format("https://%s.file.core.windows.net", accountName);
+ FileClient fileClient = new FileClientBuilder().endpoint(fileURL)
+    .credential(sasToken).shareName(shareName).filePath(directoryPath + "/" + fileName).buildClient();
  ```
 
 ## Examples
@@ -400,11 +404,11 @@ When you interact with file using this Java client library, errors returned by t
 ## Next steps
 
 ### More Samples
-- FileServiceSample
-- ShareSample
-- DirectorySample
-- FileSample
-- AsyncSample
+- [FileServiceSample](src/samples/java/file/FileServiceSample.java)
+- [ShareSample](src/samples/java/file/ShareSample.java)
+- [DirectorySample](src/samples/java/file/DirectorySample.java)
+- [FileSample](src/samples/java/file/FileSample.java)
+- [AsyncSample](src/samples/java/file/AsyncSample.java)
 
 [Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
 

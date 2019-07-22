@@ -169,7 +169,7 @@ public class FileAsyncClient {
      */
     public Mono<Response<FileInfo>> create(long maxSize, FileHTTPHeaders httpHeaders, Map<String, String> metadata) {
         return azureFileStorageClient.files().createWithRestResponseAsync(shareName, filePath, maxSize, null, metadata, httpHeaders, Context.NONE)
-            .map(this::createResponse);
+            .map(this::createFileInfoResponse);
     }
 
     /**
@@ -616,7 +616,7 @@ public class FileAsyncClient {
         return Flux.fromIterable(handleItems).concatWith(fileRefPublisher);
     }
 
-    private Response<FileInfo> createResponse(final FilesCreateResponse response) {
+    private Response<FileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.deserializedHeaders().eTag();
         OffsetDateTime lastModified = response.deserializedHeaders().lastModified();
         boolean isServerEncrypted = response.deserializedHeaders().isServerEncrypted();
