@@ -86,6 +86,39 @@ public final class SecretAsyncClient {
      * </pre>
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws NullPointerException if {@code secret} is {@code null}.
+     * @throws ResourceModifiedException if {@code secret} is malformed.
+     * @throws HttpRequestException if {@link Secret#name()  name} or {@link Secret#value() value} is empty string.
+     * @return A {@link Mono} containing the {@link Secret created secret}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Secret> setSecret(Secret secret, Context context) {
+        return withContext(context -> setSecret(secret, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * The set operation adds a secret to the key vault. If the named secret already exists, Azure Key Vault creates
+     * a new version of that secret. This operation requires the {@code secrets/set} permission.
+     *
+     * <p>The {@link Secret} is required. The {@link Secret#expires() expires}, {@link Secret#contentType() contentType} and
+     * {@link Secret#notBefore() notBefore} values in {@code secret} are optional. The {@link Secret#enabled() enabled} field is
+     * set to true by key vault, if not specified.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the call asynchronously and
+     * prints out the newly created secret details when a response is received.</p>
+     * <pre>
+     * Secret secret = new Secret("secretName", "secretValue")
+     *   .notBefore(OffsetDateTime.now().plusDays(1))
+     *   .expires(OffsetDateTime.now().plusDays(365));
+     *
+     * secretAsyncClient.setSecret(secret).subscribe(secretResponse -&gt;
+     *   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+     * </pre>
+     *
+     * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceModifiedException if {@code secret} is malformed.
      * @throws HttpRequestException if {@link Secret#name()  name} or {@link Secret#value() value} is empty string.
