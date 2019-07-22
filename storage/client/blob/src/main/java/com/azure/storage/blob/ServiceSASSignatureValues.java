@@ -466,32 +466,14 @@ public final class ServiceSASSignatureValues {
         Utility.assertNotNull("version", this.version);
         Utility.assertNotNull("canonicalName", this.canonicalName);
 
-        // If a SignedIdentifier or UserDelegationKey isn't being used expiryTime and permissions must be set.
-        if (!usingUserDelegation && this.identifier == null) {
+        // If a UserDelegation key or a SignedIdentifier is not being used both expiryDate and permissions must be set.
+        if (usingUserDelegation || identifier == null) {
             Utility.assertNotNull("expiryTime", this.expiryTime);
             Utility.assertNotNull("permissions", this.permissions);
+        } else if (!usingUserDelegation) {
+            // Otherwise a SignedIdentifier must be used.
+            Utility.assertNotNull("identifier", this.identifier);
         }
-
-        // When using an identifier or delegation key permissions and expiry time are allowed to be null.
-//        if (this.expiryTime == null && this.permissions == null) {
-//            if (!usingUserDelegation) {
-//                Utility.assertNotNull("identifier", this.identifier);
-//            }
-//        } else {
-//            Utility.assertNotNull("expiryTime", this.expiryTime);
-//            Utility.assertNotNull("permissions", this.permissions);
-//        }
-
-//        // Ensure either (expiryTime and permissions) or (identifier) is set
-//        if (this.identifier == null && (this.expiryTime == null && this.permissions == null)) {
-//            // Identifier is not required if user delegation is being used
-//            if (!usingUserDelegation) {
-//                Utility.assertNotNull("identifier", this.identifier);
-//            }
-//        } else {
-//            Utility.assertNotNull("expiryTime", this.expiryTime);
-//            Utility.assertNotNull("permissions", this.permissions);
-//        }
 
         if (Constants.UrlConstants.SAS_CONTAINER_CONSTANT.equals(this.resource) && this.snapshotId != null) {
             throw new IllegalArgumentException("Cannot set a snapshotId without resource being a blob.");
