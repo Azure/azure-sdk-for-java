@@ -7,17 +7,17 @@ import com.azure.core.exception.HttpRequestException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.implementation.RestProxy;
+import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
-import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
-import com.azure.security.keyvault.keys.implementation.KeyBasePage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
@@ -34,9 +34,10 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.implementation.util.FluxUtil.withContext;
 
 /**
  * The KeyAsyncClient provides asynchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -48,6 +49,7 @@ import reactor.core.publisher.Mono;
  * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
  *
  * @see KeyClientBuilder
+ * @see PagedFlux
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
@@ -94,9 +96,14 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createKey(String name, KeyType keyType) {
+        return withContext(context -> createKey(name, keyType, context));
+    }
+
+    Mono<Response<Key>> createKey(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().kty(keyType);
-        return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return service.createKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Creating key - {}",  name))
                 .doOnSuccess(response -> logger.info("Created key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to create key - {}", name, error));
@@ -130,17 +137,23 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions) {
-        Objects.requireNonNull(keyCreateOptions, "The key options parameter cannot be null.");
-        KeyRequestParameters parameters = new KeyRequestParameters()
-                .kty(keyCreateOptions.keyType())
-                .keyOps(keyCreateOptions.keyOperations())
-                .keyAttributes(new KeyRequestAttributes(keyCreateOptions));
-        return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Creating key - {}",  keyCreateOptions.name()))
-                .doOnSuccess(response -> logger.info("Created key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.name(), error));
+        return withContext(context -> createKey(keyCreateOptions, context));
     }
+
+    Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
+        Objects.requireNonNull(keyCreateOptions, "The key create options parameter cannot be null.");
+        KeyRequestParameters parameters = new KeyRequestParameters()
+            .kty(keyCreateOptions.keyType())
+            .keyOps(keyCreateOptions.keyOperations())
+            .keyAttributes(new KeyRequestAttributes(keyCreateOptions));
+        return service.createKey(endpoint, keyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Creating key - {}",  keyCreateOptions.name()))
+            .doOnSuccess(response -> logger.info("Created key - {}", response.value().name()))
+            .doOnError(error -> logger.warning("Failed to create key - {}", keyCreateOptions.name(), error));
+    }
+
 
     /**
      * Creates a new Rsa key and stores it in the key vault. The create Rsa key operation can be used to create any Rsa key type in
@@ -172,14 +185,19 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
+        return withContext(context -> createRsaKey(rsaKeyCreateOptions, context));
+    }
+
+    Mono<Response<Key>> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions, Context context) {
         Objects.requireNonNull(rsaKeyCreateOptions, "The Rsa key options parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .kty(rsaKeyCreateOptions.keyType())
             .keySize(rsaKeyCreateOptions.keySize())
             .keyOps(rsaKeyCreateOptions.keyOperations())
             .keyAttributes(new KeyRequestAttributes(rsaKeyCreateOptions));
-        return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return service.createKey(endpoint, rsaKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Creating Rsa key - {}",  rsaKeyCreateOptions.name()))
                 .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to create Rsa key - {}", rsaKeyCreateOptions.name(), error));
@@ -215,14 +233,19 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key created key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
+        return withContext(context -> createEcKey(ecKeyCreateOptions, context));
+    }
+
+    Mono<Response<Key>> createEcKey(EcKeyCreateOptions ecKeyCreateOptions, Context context) {
         Objects.requireNonNull(ecKeyCreateOptions, "The Ec key options options cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
             .kty(ecKeyCreateOptions.keyType())
             .curve(ecKeyCreateOptions.curve())
             .keyOps(ecKeyCreateOptions.keyOperations())
             .keyAttributes(new KeyRequestAttributes(ecKeyCreateOptions));
-        return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
+        return service.createKey(endpoint, ecKeyCreateOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Creating Ec key - {}",  ecKeyCreateOptions.name()))
                 .doOnSuccess(response -> logger.info("Created Ec key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to create Ec key - {}", ecKeyCreateOptions.name(), error));
@@ -245,12 +268,17 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial) {
+        return withContext(context -> importKey(name, keyMaterial, context));
+    }
+
+    Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial, Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().key(keyMaterial);
-        return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Importing key - {}",  name))
-                .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
+        return service.importKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Importing key - {}",  name))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
+            .doOnError(error -> logger.warning("Failed to import key - {}", name, error));
     }
 
     /**
@@ -279,16 +307,21 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key imported key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> importKey(KeyImportOptions keyImportOptions) {
+        return withContext(context -> importKey(keyImportOptions, context));
+    }
+
+    Mono<Response<Key>> importKey(KeyImportOptions keyImportOptions, Context context) {
         Objects.requireNonNull(keyImportOptions, "The key import configuration parameter cannot be null.");
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
-                .key(keyImportOptions.keyMaterial())
-                .hsm(keyImportOptions.hsm())
-                .keyAttributes(new KeyRequestAttributes(keyImportOptions));
-        return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Importing key - {}",  keyImportOptions.name()))
-                .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to import key - {}", keyImportOptions.name(), error));
+            .key(keyImportOptions.keyMaterial())
+            .hsm(keyImportOptions.hsm())
+            .keyAttributes(new KeyRequestAttributes(keyImportOptions));
+        return service.importKey(endpoint, keyImportOptions.name(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Importing key - {}",  keyImportOptions.name()))
+            .doOnSuccess(response -> logger.info("Imported key - {}", response.value().name()))
+            .doOnError(error -> logger.warning("Failed to import key - {}", keyImportOptions.name(), error));
     }
 
     /**
@@ -310,12 +343,16 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} or {@code version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKey(String name, String version) {
-        String keyVersion = "";
-        if (version != null) {
-            keyVersion = version;
+        if (version == null) {
+            return getKey(name);
         }
-        return service.getKey(endpoint, name, keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> getKey(name, version, context));
+    }
+
+    Mono<Response<Key>> getKey(String name, String version, Context context) {
+        return service.getKey(endpoint, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving key - {}",  name))
                 .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
@@ -339,13 +376,10 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKey(String name) {
-        return getKey(name, "")
-                .doOnRequest(ignored -> logger.info("Retrieving key - {}",  name))
-                .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
+        return getKey(name, "");
     }
-
 
     /**
      * Get public part of the key which represents {@link KeyBase keyBase} from the key vault. The get key operation is applicable
@@ -365,16 +399,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKey(KeyBase keyBase) {
         Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
-        String keyVersion = "";
-        if (keyBase.version() != null) {
-            keyVersion = keyBase.version();
+        if (keyBase.version() == null) {
+            return getKey(keyBase.name());
         }
-        return service.getKey(endpoint, keyBase.name(), keyVersion, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Retrieving key - {}",  keyBase.name()))
-                .doOnSuccess(response -> logger.info("Retrieved key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to get key - {}", keyBase.name(), error));
+        return getKey(keyBase.name(), keyBase.version());
     }
 
     /**
@@ -401,17 +432,22 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> updateKey(KeyBase key) {
+        return withContext(context -> updateKey(key, context));
+    }
+
+    Mono<Response<Key>> updateKey(KeyBase key, Context context) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-                .tags(key.tags())
-                .keyAttributes(new KeyRequestAttributes(key));
-
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Updating key - {}",  key.name()))
-                .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
+            .tags(key.tags())
+            .keyAttributes(new KeyRequestAttributes(key));
+        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Updating key - {}",  key.name()))
+            .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
+            .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
+
 
     /**
      * Updates the attributes and key operations associated with the specified key, but not the cryptographic key material of the specified key in the key vault. The update
@@ -438,18 +474,23 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> updateKey(KeyBase key, KeyOperation... keyOperations) {
+        return withContext(context -> updateKey(key, context, keyOperations));
+    }
+
+    Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(key, "The key input parameter cannot be null.");
         KeyRequestParameters parameters = new KeyRequestParameters()
-                .tags(key.tags())
-                .keyOps(Arrays.asList(keyOperations))
-                .keyAttributes(new KeyRequestAttributes(key));
-
-        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Updating key - {}",  key.name()))
-                .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
-                .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
+            .tags(key.tags())
+            .keyOps(Arrays.asList(keyOperations))
+            .keyAttributes(new KeyRequestAttributes(key));
+        return service.updateKey(endpoint, key.name(), key.version(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Updating key - {}",  key.name()))
+            .doOnSuccess(response -> logger.info("Updated key - {}", response.value().name()))
+            .doOnError(error -> logger.warning("Failed to update key - {}", key.name(), error));
     }
+
 
     /**
      * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed in the deleted state
@@ -471,8 +512,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> deleteKey(String name) {
-        return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> deleteKey(name, context));
+    }
+
+    Mono<Response<DeletedKey>> deleteKey(String name, Context context) {
+        return service.deleteKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Deleting key - {}",  name))
                 .doOnSuccess(response -> logger.info("Deleted key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to delete key - {}", name, error));
@@ -496,8 +542,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedKey deleted key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKey(String name) {
-        return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> getDeletedKey(name, context));
+    }
+
+    Mono<Response<DeletedKey>> getDeletedKey(String name, Context context) {
+        return service.getDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}",  name))
                 .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
@@ -521,8 +572,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link VoidResponse}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VoidResponse> purgeDeletedKey(String name) {
-        return service.purgeDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> purgeDeletedKey(name, context));
+    }
+
+    Mono<VoidResponse> purgeDeletedKey(String name, Context context) {
+        return service.purgeDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Purging deleted key - {}",  name))
                 .doOnSuccess(response -> logger.info("Purged deleted key - {}", name))
                 .doOnError(error -> logger.warning("Failed to purge deleted key - {}", name, error));
@@ -547,8 +603,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key recovered key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> recoverDeletedKey(String name) {
-        return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> recoverDeletedKey(name, context));
+    }
+
+    Mono<Response<Key>> recoverDeletedKey(String name, Context context) {
+        return service.recoverDeletedKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Recovering deleted key - {}",  name))
                 .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to recover deleted key - {}", name, error));
@@ -577,8 +638,13 @@ public final class KeyAsyncClient {
      * @throws HttpRequestException when a key with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the backed up key blob.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKey(String name) {
-        return service.backupKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return withContext(context -> backupKey(name, context));
+    }
+
+    Mono<Response<byte[]>> backupKey(String name, Context context) {
+        return service.backupKey(endpoint, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Backing up key - {}",  name))
                 .doOnSuccess(response -> logger.info("Backed up key - {}", name))
                 .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
@@ -608,9 +674,14 @@ public final class KeyAsyncClient {
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Key restored key}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> restoreKey(byte[] backup) {
+        return withContext(context -> restoreKey(backup, context));
+    }
+
+    Mono<Response<Key>> restoreKey(byte[] backup, Context context) {
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().keyBackup(backup);
-        return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
+        return service.restoreKey(endpoint, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Attempting to restore key"))
                 .doOnSuccess(response -> logger.info("Restored Key - {}", response.value().name()))
                 .doOnError(error -> logger.warning("Failed to restore key - {}", error));
@@ -629,14 +700,43 @@ public final class KeyAsyncClient {
      *   .map(Response::value);
      * </pre>
      *
-     * @return A {@link Flux} containing {@link KeyBase key} of all the keys in the vault.
+     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
      */
-    public Flux<KeyBase> listKeys() {
-        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing keys"))
-                .doOnSuccess(response -> logger.info("Listed keys"))
-                .doOnError(error -> logger.warning("Failed to list keys", error))
-                .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KeyBase> listKeys() {
+        return new PagedFlux<>(
+            () -> withContext(context -> listKeysFirstPage(context)),
+            continuationToken -> withContext(context -> listKeysNextPage(continuationToken, context)));
+    }
+
+    PagedFlux<KeyBase> listKeys(Context context) {
+        return new PagedFlux<>(
+            () -> listKeysFirstPage(context),
+            continuationToken -> listKeysNextPage(continuationToken, context));
+    }
+
+    /*
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
+     */
+    private Mono<PagedResponse<KeyBase>> listKeysNextPage(String continuationToken, Context context) {
+        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing next keys page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next keys page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next keys page - Page {} ", continuationToken, error));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
+    private Mono<PagedResponse<KeyBase>> listKeysFirstPage(Context context) {
+        return service.getKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing keys"))
+            .doOnSuccess(response -> logger.info("Listed keys"))
+            .doOnError(error -> logger.warning("Failed to list keys", error));
     }
 
     /**
@@ -652,14 +752,43 @@ public final class KeyAsyncClient {
      *   System.out.printf("Deleted key's recovery Id %s \n", deletedKey.recoveryId()));
      * </pre>
      *
-     * @return A {@link Flux} containing all of the {@link DeletedKey deleted keys} in the vault.
+     * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
-    public Flux<DeletedKey> listDeletedKeys() {
-        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing deleted keys"))
-                .doOnSuccess(response -> logger.info("Listed deleted keys"))
-                .doOnError(error -> logger.warning("Failed to list deleted keys", error))
-                .flatMapMany(r -> extractAndFetchDeletedKeys(r, Context.NONE));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DeletedKey> listDeletedKeys() {
+        return new PagedFlux<>(
+            () -> withContext(context -> listDeletedKeysFirstPage(context)),
+            continuationToken -> withContext(context -> listDeletedKeysNextPage(continuationToken, context)));
+    }
+
+    PagedFlux<DeletedKey> listDeletedKeys(Context context) {
+        return new PagedFlux<>(
+            () -> listDeletedKeysFirstPage(context),
+            continuationToken -> listDeletedKeysNextPage(continuationToken, context));
+    }
+
+    /*
+     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyAsyncClient#listDeletedKeys()}.
+     *
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
+     * @return A {@link Mono} of {@link PagedResponse<DeletedKey>} from the next page of results.
+     */
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysNextPage(String continuationToken, Context context) {
+        return service.getDeletedKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing next deleted keys page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next deleted keys page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next deleted keys page - Page {} ", continuationToken, error));
+    }
+
+    /*
+     * Calls the service and retrieve first page result. It makes one call and retrieve {@code DEFAULT_MAX_PAGE_RESULTS} values.
+     */
+    private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
+        return service.getDeletedKeys(endpoint, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing deleted keys"))
+            .doOnSuccess(response -> logger.info("Listed deleted keys"))
+            .doOnError(error -> logger.warning("Failed to list deleted keys", error));
     }
 
     /**
@@ -679,44 +808,40 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a key with {@code name} is empty string.
-     * @return A {@link Flux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
+     * @return A {@link PagedFlux} containing {@link KeyBase key} of all the versions of the specified key in the vault. Flux is empty if key with {@code name} does not exist in key vault.
      */
-    public Flux<KeyBase> listKeyVersions(String name) {
-        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE)
-                .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
-                .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error))
-                .flatMapMany(r -> extractAndFetchKeys(r, Context.NONE));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KeyBase> listKeyVersions(String name) {
+        return new PagedFlux<>(
+            () -> withContext(context -> listKeyVersionsFirstPage(name, context)),
+            continuationToken -> withContext(context -> listKeyVersionsNextPage(continuationToken, context)));
     }
 
-    /**
+    PagedFlux<KeyBase> listKeyVersions(String name, Context context) {
+        return new PagedFlux<>(
+            () -> listKeyVersionsFirstPage(name, context),
+            continuationToken -> listKeyVersionsNextPage(continuationToken, context));
+    }
+
+    private Mono<PagedResponse<KeyBase>> listKeyVersionsFirstPage(String name, Context context) {
+        return service.getKeyVersions(endpoint, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
+            .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
+            .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
+    }
+
+    /*
      * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listKeys()}.
+     * {@link KeyAsyncClient#listKeyVersions()}.
      *
-     * @param nextPageLink The {@link KeyBasePage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
+     * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the listKeys operations.
+     * @return A {@link Mono} of {@link PagedResponse<KeyBase>} from the next page of results.
      */
-    private Flux<KeyBase> listKeysNext(String nextPageLink, Context context) {
-        return service.getKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchKeys(r, context));
-    }
-
-    private Publisher<KeyBase> extractAndFetchKeys(PagedResponse<KeyBase> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listKeysNext);
-    }
-
-    /**
-     * Gets attributes of all the keys given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyAsyncClient#listDeletedKeys()}.
-     *
-     * @param nextPageLink The {@link DeletedKeyPage#nextLink()} from a previous, successful call to one of the list operations.
-     * @return A stream of {@link KeyBase key} from the next page of results.
-     */
-    private Flux<DeletedKey> listDeletedKeysNext(String nextPageLink, Context context) {
-        return service.getDeletedKeys(endpoint, nextPageLink, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE).flatMapMany(r -> extractAndFetchDeletedKeys(r, context));
-    }
-
-    private Publisher<DeletedKey> extractAndFetchDeletedKeys(PagedResponse<DeletedKey> page, Context context) {
-        return ImplUtils.extractAndFetch(page, context, this::listDeletedKeysNext);
+    private Mono<PagedResponse<KeyBase>> listKeyVersionsNextPage(String continuationToken, Context context) {
+        return service.getKeys(endpoint, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            .doOnRequest(ignored -> logger.info("Listing next key versions page - Page {} ", continuationToken))
+            .doOnSuccess(response -> logger.info("Listed next key versions page - Page {} ", continuationToken))
+            .doOnError(error -> logger.warning("Failed to list next key versions page - Page {} ", continuationToken, error));
     }
 }
 

@@ -51,12 +51,12 @@ The easiest means for doing so is to use a connection string, which is created a
 Event Hubs namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the
 step-by-step guide to [get an Event Hubs connection string][event_hubs_connection_string].
 
-Once the connection string is obtained, create an `EventHubClient` using the `EventHubClientBuilder`:
+Once the connection string is obtained, create an `EventHubAsyncClient` using the `EventHubClientBuilder`:
 
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
-EventHubClient client = new EventHubClientBuilder()
+EventHubAsyncClient client = new EventHubClientBuilder()
     .connectionString(connectionString, eventHubPath)
     .buildAsyncClient();
 ```
@@ -91,7 +91,7 @@ ClientSecretCredential credential = new ClientSecretCredential()
 // {your-namespace}.servicebus.windows.net
 String host = "<< EVENT HUBS HOST >>"
 String eventHubPath = "<< NAME OF THE EVENT HUB >>";
-EventHubClient client = new EventHubClientBuilder()
+EventHubAsyncClient client = new EventHubClientBuilder()
     .credential(host, eventHubPath, credential)
     .buildAsyncClient();
 ```
@@ -143,7 +143,7 @@ you can also use the send method to send multiple events using a single call.
 
 #### Producer creation
 
-With an existing [EventHubClient][eventhubclient], developers can create a producer by calling `createProducer()` or
+With an existing [EventHubAsyncClient][eventhubasyncclient], developers can create a producer by calling `createProducer()` or
 `createProducer(EventHubProducerOptions)`.
 
 Creates a producer sends events to any partition, allowing Event Hubs service to route the event to an available
@@ -192,7 +192,7 @@ We are creating a consumer that receives events from `partitionID` and only list
 the partition.
 
 ```java
-EventHubConsumer consumer = client.createConsumer(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID,
+EventHubConsumer consumer = client.createConsumer(EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME, partitionID,
     EventPosition.latest());
 ```
 
@@ -305,7 +305,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_messaging_exceptions]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-messaging-exceptions
 [event_hubs_product_docs]: https://docs.microsoft.com/en-us/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-quotas
-[eventhubclient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubClient.java
+[eventhubasyncclient]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubAsyncClient.java
 [eventhubconsumer]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducer.java
 [eventhubproduceroptions]: ./azure-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventHubProducerOptions.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html

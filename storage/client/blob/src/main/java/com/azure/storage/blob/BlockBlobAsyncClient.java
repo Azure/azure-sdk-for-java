@@ -8,6 +8,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -15,11 +16,11 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockItem;
 import com.azure.storage.blob.models.BlockListType;
+import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +28,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
+
+import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
@@ -66,8 +68,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
-    final BlockBlobAsyncRawClient blockBlobAsyncRawClient;
-
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
@@ -89,7 +89,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        this.blockBlobAsyncRawClient = new BlockBlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
@@ -114,7 +113,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length) {
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length) {
         return this.upload(data, length, null, null, null);
     }
 
@@ -146,10 +145,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuffer> data, long length, BlobHTTPHeaders headers,
+    public Mono<Response<BlockBlobItem>> upload(Flux<ByteBuf> data, long length, BlobHTTPHeaders headers,
             Metadata metadata, BlobAccessConditions accessConditions) {
-        return blockBlobAsyncRawClient
-            .upload(data.map(Unpooled::wrappedBuffer), length, headers, metadata, accessConditions)
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
+            null, data, length, null, metadata, null, null,
+            null, null, headers, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 
@@ -291,8 +295,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<VoidResponse> stageBlock(String base64BlockID, Flux<ByteBuf> data, long length,
                  LeaseAccessConditions leaseAccessConditions) {
-        return blockBlobAsyncRawClient
-            .stageBlock(base64BlockID, data, length, leaseAccessConditions)
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null,
+            null, base64BlockID, length, data, null, null, null,
+            null, null, null, leaseAccessConditions, Context.NONE))
             .map(VoidResponse::new);
     }
 
@@ -349,8 +354,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public Mono<VoidResponse> stageBlockFromURL(String base64BlockID, URL sourceURL,
             BlobRange sourceRange, byte[] sourceContentMD5, LeaseAccessConditions leaseAccessConditions,
             SourceModifiedAccessConditions sourceModifiedAccessConditions) {
-        return blockBlobAsyncRawClient
-            .stageBlockFromURL(base64BlockID, sourceURL, sourceRange, sourceContentMD5, leaseAccessConditions, sourceModifiedAccessConditions)
+        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
+
+        return postProcessResponse(
+            this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null,
+                base64BlockID, 0, sourceURL, sourceRange.toHeaderValue(), sourceContentMD5, null,
+                null, null, null, null,
+                leaseAccessConditions, sourceModifiedAccessConditions, Context.NONE))
             .map(VoidResponse::new);
     }
 
@@ -386,8 +396,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Flux<BlockItem> listBlocks(BlockListType listType,
                                       LeaseAccessConditions leaseAccessConditions) {
-        return blockBlobAsyncRawClient
-            .listBlocks(listType, leaseAccessConditions)
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
+            null, null, listType, snapshot, null, null, null,
+            leaseAccessConditions, Context.NONE))
             .map(ResponseBase::value)
             .flatMapMany(bl -> {
                 Flux<BlockItem> committed = Flux.fromIterable(bl.committedBlocks())
@@ -440,8 +451,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
      */
     public Mono<Response<BlockBlobItem>> commitBlockList(List<String> base64BlockIDs,
                                               BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
-        return blockBlobAsyncRawClient
-            .commitBlockList(base64BlockIDs, headers, metadata, accessConditions)
+        metadata = metadata == null ? new Metadata() : metadata;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(
+            null, null, new BlockLookupList().latest(base64BlockIDs), null, metadata,
+            null, null, null, null, headers,
+            accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new BlockBlobItem(rb.deserializedHeaders())));
     }
 }

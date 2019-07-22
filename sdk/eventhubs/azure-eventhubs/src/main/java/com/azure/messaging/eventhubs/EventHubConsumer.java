@@ -3,8 +3,11 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.implementation.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
+import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -41,9 +44,10 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumer.receiveBackpressure}
  *
- * @see EventHubClient#createConsumer(String, String, EventPosition)
- * @see EventHubClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
+ * @see EventHubAsyncClient#createConsumer(String, String, EventPosition)
+ * @see EventHubAsyncClient#createConsumer(String, String, EventPosition, EventHubConsumerOptions)
  */
+@Immutable
 public class EventHubConsumer implements Closeable {
     private static final AtomicReferenceFieldUpdater<EventHubConsumer, AmqpReceiveLink> RECEIVE_LINK_FIELD_UPDATER =
         AtomicReferenceFieldUpdater.newUpdater(EventHubConsumer.class, AmqpReceiveLink.class, "receiveLink");
@@ -80,8 +84,7 @@ public class EventHubConsumer implements Closeable {
             }
 
             return link.receive().map(EventData::new);
-        }).timeout(operationTimeout)
-            .subscribeWith(emitterProcessor)
+        }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
                 if (existingLink == null) {
@@ -127,8 +130,8 @@ public class EventHubConsumer implements Closeable {
     }
 
     /**
-     * Begin consuming events until there are no longer any subscribers, or the parent {@link EventHubClient#close()
-     * EventHubClient.close()} is called.
+     * Begin consuming events until there are no longer any subscribers, or the parent {@link EventHubAsyncClient#close()
+     * EventHubAsyncClient.close()} is called.
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *

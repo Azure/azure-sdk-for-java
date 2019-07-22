@@ -18,10 +18,18 @@ public final class SharedKeyCredentialPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates a SharedKey pipeline policy that adds the SharedKey into the request's authorization header.
+     *
      * @param credential the SharedKey credential used to create the policy.
      */
     public SharedKeyCredentialPolicy(SharedKeyCredential credential) {
         this.credential = credential;
+    }
+
+    /**
+     * @return the {@link SharedKeyCredential} linked to the policy.
+     */
+    public SharedKeyCredential sharedKeyCredential() {
+        return this.credential;
     }
 
     @Override
