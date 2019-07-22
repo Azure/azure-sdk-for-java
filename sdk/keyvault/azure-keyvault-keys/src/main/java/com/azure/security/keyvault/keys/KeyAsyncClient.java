@@ -85,10 +85,8 @@ public final class KeyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.createKey("keyName", KeyType.EC).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKey#string-keyType}
      *
      * @param name The name of the key being created.
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
@@ -98,7 +96,7 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(String name, KeyType keyType) {
-        return withContext(context -> createKey(name, keyType, Context.NONE))
+        return withContext(context -> createKey(name, keyType, context))
             .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
     }
 
@@ -111,10 +109,8 @@ public final class KeyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.createKey("keyName", KeyType.EC).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKeyWithResponse#keyCreateOptions}
      *
      * @param keyCreateOptions The key configuration object containing information about the key being created.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
@@ -147,14 +143,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createKey(keyCreateOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createKey#keyCreateOptions}
      *
      * @param keyCreateOptions The key configuration object containing information about the key being created.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
@@ -194,15 +184,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
-     *    .keySize(2048)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createRsaKey(rsaKeyCreateOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKey#RsaKeyCreateOptions}
      *
      * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being created.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
@@ -227,18 +210,7 @@ public final class KeyAsyncClient {
      * <p>The {@link RsaKeyCreateOptions#keyType() keyType} indicates the type of key to create. Possible values include: {@link KeyType#RSA RSA} and
      * {@link KeyType#RSA_HSM RSA-HSM}.</p>
      *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new RSA key with size 2048 which activates in one day and expires in one year. Subscribes to the call asynchronously
-     * and prints out the newly created key details when a response has been received.</p>
-     * <pre>
-     * RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName", KeyType.RSA)
-     *    .keySize(2048)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
-     *
-     * keyAsyncClient.createRsaKey(rsaKeyCreateOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("RSA Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createRsaKeyWithResponse#RsaKeyCreateOptions}
      *
      * @param rsaKeyCreateOptions The key configuration object containing information about the rsa key being created.
      * @throws NullPointerException if {@code rsaKeyCreateOptions} is {@code null}.
@@ -278,15 +250,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created ec key details when a response has been received.</p>
-     * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
-     *    .curve(KeyCurveName.P_384)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createEcKey(ecKeyCreateOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createEcKey#EcKeyCreateOptions}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
@@ -314,15 +279,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key with P-384 web key curve. The key activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created ec key details when a response has been received.</p>
-     * <pre>
-     * EcKeyCreateOptions ecKeyCreateOptions = new EcKeyCreateOptions("keyName", KeyType.EC)
-     *    .curve(KeyCurveName.P_384)
-     *    .notBefore(OffsetDateTime.now().plusDays(1))
-     *    .expires(OffsetDateTime.now().plusYears(1));
      *
-     * keyAsyncClient.createEcKey(ecKeyCreateOptions).subscribe(keyResponse -&gt;
-     *   System.out.printf("EC Key is created with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.createEcKeyWithResponse#EcKeyCreateOptions}
      *
      * @param ecKeyCreateOptions The key options object containing information about the ec key being created.
      * @throws NullPointerException if {@code ecKeyCreateOptions} is {@code null}.
@@ -460,12 +418,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * keyAsyncClient.getKey("keyName", keyVersion).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key returned with name %s, id %s and version %s", keyResponse.value().name(),
-     *   keyResponse.value().id(), keyResponse.value().version()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#string-string}
      *
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
@@ -488,12 +442,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * keyAsyncClient.getKey("keyName", keyVersion).subscribe(keyResponse -&gt;
-     *   System.out.printf("Key returned with name %s, id %s and version %s", keyResponse.value().name(),
-     *   keyResponse.value().id(), keyResponse.value().version()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string-string}
      *
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
@@ -523,11 +473,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt;
-     *   System.out.printf("Key with name %s, id %s \n", keyResponse.value().name(),
-     *   keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -546,11 +493,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key in the key vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt;
-     *   System.out.printf("Key with name %s, id %s \n", keyResponse.value().name(),
-     *   keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -569,11 +513,8 @@ public final class KeyAsyncClient {
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
      * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
-     * <pre>
-     * keyAsyncClient.listKeys().subscribe(keyBase -&gt;
-     *     client.getKey(keyBase).subscribe(keyResponse -&gt;
-     *       System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(), keyResponse.value().id())));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKey#KeyBase}
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
@@ -596,16 +537,13 @@ public final class KeyAsyncClient {
      * <p>The list operations {@link KeyAsyncClient#listKeys()} and {@link KeyAsyncClient#listKeyVersions(String)} return
      * the {@link Flux} containing {@link KeyBase base key} as output excluding the key material of the key.
      * This operation can then be used to get the full key with its key material from {@code keyBase}.</p>
-     * <pre>
-     * keyAsyncClient.listKeys().subscribe(keyBase -&gt;
-     *     client.getKey(keyBase).subscribe(keyResponse -&gt;
-     *       System.out.printf("Key with name %s and value %s \n", keyResponse.value().name(), keyResponse.value().id())));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getKeyWithResponse#KeyBase}
      *
      * @param keyBase The {@link KeyBase base key} holding attributes of the key being requested.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name()}  name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing the requested {@link Key key}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Key key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> getKeyWithResponse(KeyBase keyBase) {
@@ -624,15 +562,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKey#KeyBase}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @throws NullPointerException if {@code key} is {@code null}.
@@ -654,21 +585,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyBase#name() name} and {@link KeyBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link KeyBase#name() name} or {@link KeyBase#version() version} is empty string.
-     * @return A {@link Mono} containing the {@link KeyBase updated key}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Key>> updateKeyWithResponse(KeyBase key) {
@@ -694,15 +618,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key and associate Encrypt and Decrypt operations with it.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKeyWithResponse#KeyBase-keyOperations}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
@@ -712,7 +629,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Key>> updateKey(KeyBase key, KeyOperation... keyOperations) {
+    public Mono<Response<Key>> updateKeyWithResponse(KeyBase key, KeyOperation... keyOperations) {
         return withContext(context -> updateKey(key, context, keyOperations));
     }
 
@@ -724,15 +641,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the key, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.getKey("keyName").subscribe(keyResponse -&gt; {
-     *     Key key = keyResponse.value();
-     *     //Update the not before time of the key and associate Encrypt and Decrypt operations with it.
-     *     key.notBefore(OffsetDateTime.now().plusDays(50));
-     *     keyAsyncClient.updateKey(key, KeyOperation.ENCRYPT, KeyOperation.DECRYPT).subscribe(updatedKeyResponse -&gt;
-     *         System.out.printf("Key's updated not before time %s \n", updatedKeyResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.updateKey#KeyBase-keyOperations}
      *
      * @param key The {@link KeyBase base key} object with updated properties.
      * @param keyOperations The updated key operations to associate with the key.
@@ -742,7 +652,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing the {@link KeyBase updated key}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Key> updateKeyWithResponse(KeyBase key, KeyOperation... keyOperations) {
+    public Mono<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
         return withContext(context -> updateKey(key, context, keyOperations))
             .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
     }
@@ -769,10 +679,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * deleted key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.deleteKey("keyName").subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#string}
      *
      * @param name The name of the key to be deleted.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -795,10 +703,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * deleted key details when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.deleteKey("keyName").subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key's Recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKeyWithResponse#string}
      *
      * @param name The name of the key to be deleted.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -826,9 +732,8 @@ public final class KeyAsyncClient {
      * deleted key details when a response has been received.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.getDeletedKey("keyName").subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key with recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKey#string}
      *
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -850,9 +755,7 @@ public final class KeyAsyncClient {
      * deleted key details when a response has been received.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.getDeletedKey("keyName").subscribe(deletedKeyResponse -&gt;
-     *   System.out.printf("Deleted Key with recovery Id %s \n", deletedKeyResponse.value().recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.getDeletedKeyWithResponse#string}
      *
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -880,9 +783,7 @@ public final class KeyAsyncClient {
      * status code from the server response when a response has been received.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.purgeDeletedKey("deletedKeyName").subscribe(purgeResponse -&gt;
-     *   System.out.printf("Purge Status response %rsaPrivateExponent \n", purgeResponse.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.purgeDeletedKey#string}
      *
      * @param name The name of the deleted key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -911,9 +812,7 @@ public final class KeyAsyncClient {
      * recovered key details when a response has been received.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.recoverDeletedKey("deletedKeyName").subscribe(recoveredKeyResponse -&gt;
-     *   System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
      *
      * @param name The name of the deleted key to be recovered.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -936,9 +835,7 @@ public final class KeyAsyncClient {
      * recovered key details when a response has been received.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * keyAsyncClient.recoverDeletedKey("deletedKeyName").subscribe(recoveredKeyResponse -&gt;
-     *   System.out.printf("Recovered Key with name %s \n", recoveredKeyResponse.value().name()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKeyWithResponse#string}
      *
      * @param name The name of the deleted key to be recovered.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -970,10 +867,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the key from the key vault. Subscribes to the call asynchronously and prints out the
      * length of the key's backup byte array returned in the response.</p>
-     * <pre>
-     * keyAsyncClient.backupKey("keyName").subscribe(keyBackupResponse -&gt;
-     *   System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.value().length));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.backupKey#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -999,10 +894,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the key from the key vault. Subscribes to the call asynchronously and prints out the
      * length of the key's backup byte array returned in the response.</p>
-     * <pre>
-     * keyAsyncClient.backupKey("keyName").subscribe(keyBackupResponse -&gt;
-     *   System.out.printf("Key's Backup Byte array's length %s \n", keyBackupResponse.value().length));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.backupKeyWithResponse#string}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
@@ -1037,9 +930,8 @@ public final class KeyAsyncClient {
      * details when a response has been received.</p>
      * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
-     * keyAsyncClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKey#byte}
      *
      * @param backup The backup blob associated with the key.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -1065,9 +957,8 @@ public final class KeyAsyncClient {
      * details when a response has been received.</p>
      * <pre>
      * //Pass the Key Backup Byte array to the restore operation.
-     * keyAsyncClient.restoreKey(keyBackupByteArray).subscribe(keyResponse -&gt;
-     *   System.out.printf("Restored Key with name %s and id %s \n", keyResponse.value().name(), keyResponse.value().id()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.restoreKeyWithResponse#byte}
      *
      * @param backup The backup blob associated with the key.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -1093,11 +984,8 @@ public final class KeyAsyncClient {
      *
      * <p>It is possible to get full keys with key material from this information. Convert the {@link Flux} containing {@link KeyBase base key} to
      * {@link Flux} containing {@link Key key} using {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Key&gt; keys = keyAsyncClient.listKeys()
-     *   .flatMap(keyAsyncClient::getKey)
-     *   .map(Response::value);
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeys}
      *
      * @return A {@link PagedFlux} containing {@link KeyBase key} of all the keys in the vault.
      */
@@ -1146,10 +1034,8 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted keys in the key vault. Subscribes to the call asynchronously and prints out the
      * recovery id of each deleted key when a response has been received.</p>
-     * <pre>
-     * keyAsyncClient.listDeletedKeys().subscribe(deletedKey -&gt;
-     *   System.out.printf("Deleted key's recovery Id %s \n", deletedKey.recoveryId()));
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listDeletedKeys}
      *
      * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
@@ -1198,11 +1084,8 @@ public final class KeyAsyncClient {
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the {@link Flux}
      * containing {@link KeyBase base key} to {@link Flux} containing {@link Key key} using
      * {@link KeyAsyncClient#getKey(KeyBase baseKey)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Key&gt; keys = keyAsyncClient.listKeyVersions("keyName")
-     *   .flatMap(keyAsyncClient::getKey)
-     *   .map(Response::value);
-     * </pre>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.listKeyVersions}
      *
      * @param name The name of the key.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.

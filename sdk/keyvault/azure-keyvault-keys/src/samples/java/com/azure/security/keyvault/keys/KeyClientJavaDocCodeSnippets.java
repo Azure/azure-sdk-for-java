@@ -32,24 +32,6 @@ public final class KeyClientJavaDocCodeSnippets {
     private String value2 = "val2";
 
     /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
-     */
-    public KeyAsyncClient createAsyncClientWithHttpClient() {
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
-        RecordedData networkData = new RecordedData();
-        KeyAsyncClient keyClient = new KeyClientBuilder()
-            .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
-            .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .addPolicy(new RecordNetworkCallPolicy(networkData))
-            .httpClient(HttpClient.createDefault())
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation
-        return keyClient;
-    }
-
-    /**
      * Generates code sample for creating a {@link KeyClient}
      * @return An instance of {@link KeyClient}
      */
@@ -64,38 +46,6 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
-     */
-    public KeyAsyncClient createAsyncClient() {
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.instantiation
-        KeyAsyncClient keyClient = new KeyClientBuilder()
-            .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.async.keyclient.instantiation
-        return keyClient;
-    }
-
-    /**
-     * Generates code sample for creating a {@link KeyAsyncClient}
-     * @return An instance of {@link KeyAsyncClient}
-     */
-    public KeyAsyncClient createAsyncClientWithPipeline() {
-        // BEGIN: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
-        RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
-        KeyAsyncClient keyClient = new KeyClientBuilder()
-            .pipeline(pipeline)
-            .endpoint("https://myvault.azure.net/")
-            .credential(new DefaultAzureCredential())
-            .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
-        return keyClient;
-    }
-
-
-    /**
      * Generates a code sample for using {@link KeyClient#createKey(String, KeyType)}
      */
     public void createKey() {
@@ -105,13 +55,13 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is created with name %s and id %s %n", key.name(), key.id());
         // END: com.azure.keyvault.keys.keyclient.createKey#string-keyType
 
-        // BEGIN: com.azure.keyvault.keys.keyclient.createKey#string-keyOptions
+        // BEGIN: com.azure.keyvault.keys.keyclient.createKey#keyOptions
         KeyCreateOptions keyCreateOptions = new KeyCreateOptions("keyName", KeyType.RSA)
             .notBefore(OffsetDateTime.now().plusDays(1))
             .expires(OffsetDateTime.now().plusYears(1));
         Key optionsKey = keyClient.createKey(keyCreateOptions);
         System.out.printf("Key is created with name %s and id %s \n", optionsKey.name(), optionsKey.id());
-        // END: com.azure.keyvault.keys.keyclient.createKey#string-keyOptions
+        // END: com.azure.keyvault.keys.keyclient.createKey#keyOptions
 
         // BEGIN: com.azure.keyvault.keys.keyclient.createRsaKey#keyOptions
         RsaKeyCreateOptions rsaKeyCreateOptions = new RsaKeyCreateOptions("keyName")
@@ -131,6 +81,13 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
         // END: com.azure.keyvault.keys.keyclient.createEcKey#keyOptions
 
+
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyClient#importKey(KeyImportOptions)}
+     */
+    public void importKeySnippets() {
         // BEGIN: com.azure.keyvault.keys.keyclient.importKey#keyImportOptions
         // JsonWebKey jsonWebKeyToImport;
         // KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
@@ -148,30 +105,6 @@ public final class KeyClientJavaDocCodeSnippets {
         // Key importedKey = keyClient.importKey(ecKeyCreateOptions);
         // System.out.printf("Key is created with name %s and id %s \n", importedKey.name(), importedKey.id());
         // END: com.azure.keyvault.keys.keyclient.importKey#string-JsonWebKey
-}
-
-    /**
-     * Generates a code sample for using {@link KeyClient#getKey(String, String)}
-     */
-    public void getKeySnippets() {
-        KeyClient keyClient = createClient();
-        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string-string
-        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
-        Key keyWithVersion = keyClient.getKey("keyName", keyVersion);
-        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
-        // END: com.azure.keyvault.keys.keyclient.getKey#string-string
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string
-        Key key = keyClient.getKey("keyName");
-        System.out.printf("Key is returned with name %s and id %s \n", key.name(), key.id());
-        // END: com.azure.keyvault.keys.keyclient.getKey#string
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#KeyBase
-        keyClient.listKeys().forEach(keyBase -> {
-            Key keyResponse = keyClient.getKey(keyBase);
-            System.out.printf("Key is returned with name %s and id %s \n", keyResponse.name(), keyResponse.id());
-        });
-        // END: com.azure.keyvault.keys.keyclient.getKey#KeyBase
     }
 
     /**
@@ -184,6 +117,17 @@ public final class KeyClientJavaDocCodeSnippets {
         DeletedKey deletedKey = keyClient.deleteKey("keyName");
         System.out.printf("Deleted Key's Recovery Id %s", deletedKey.recoveryId());
         // END: com.azure.keyvault.keys.keyclient.deleteKey#string
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyClient#getDeletedKey(String)}
+     */
+    public void getDeletedKeySnippets() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.keyvault.keys.keyclient.getDeletedKey#string
+        DeletedKey deletedKey = keyClient.getDeletedKey("keyName");
+        System.out.printf("Deleted Key's Recovery Id %s", deletedKey.recoveryId());
+        // END: com.azure.keyvault.keys.keyclient.getDeletedKey#string
     }
 
     /**
@@ -216,7 +160,12 @@ public final class KeyClientJavaDocCodeSnippets {
         Key ecKey = keyClient.createEcKeyWithResponse(ecKeyCreateOptions, new Context(key1, value1)).value();
         System.out.printf("Key is created with name %s and id %s \n", ecKey.name(), ecKey.id());
         // END: com.azure.keyvault.keys.keyclient.createEcKeyWithResponse#keyOptions
+    }
 
+    /**
+     * Generates a code sample for using {@link KeyClient#importKeyWithResponse(KeyImportOptions, Context)}
+     */
+    public void importKeyWithResponseSnippets() {
         // BEGIN: com.azure.keyvault.keys.keyclient.importKeyWithResponse#keyImportOptions-Context
         // JsonWebKey jsonWebKeyToImport;
         // KeyImportOptions keyImportOptions = new KeyImportOptions("keyName", jsonWebKeyToImport)
@@ -228,7 +177,7 @@ public final class KeyClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link KeyClient#getKey(String, String)}
+     * Generates a code sample for using {@link KeyClient#getKeyWithResponse(String, String, Context)}
      */
     public void getKeyWithResponseSnippets() {
         KeyClient keyClient = createClient();
@@ -238,7 +187,31 @@ public final class KeyClientJavaDocCodeSnippets {
             new Context(key1, value1)).value();
         System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
         // END: com.azure.keyvault.keys.keyclient.getKeyWithResponse#string-string-Context
+    }
 
+    /**
+     * Generates a code sample for using {@link KeyClient#getKey(String, String)}
+     */
+    public void getKeySnippets() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string-string
+        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        Key keyWithVersion = keyClient.getKey("keyName", keyVersion);
+        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersion.name(), keyWithVersion.id());
+        // END: com.azure.keyvault.keys.keyclient.getKey#string-string
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#string
+        Key keyWithVersionValue = keyClient.getKey("keyName");
+        System.out.printf("Key is returned with name %s and id %s \n", keyWithVersionValue.name(), keyWithVersionValue.id());
+        // END: com.azure.keyvault.keys.keyclient.getKey#string
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.getKey#KeyBase
+        for (KeyBase key : keyClient.listKeys()) {
+            Key keyResponse = keyClient.getKey(key);
+            System.out.printf("Received key with name %s and type %s", keyResponse.name(),
+                keyResponse.keyMaterial().kty());
+        }
+        // END: com.azure.keyvault.keys.keyclient.getKey#KeyBase
     }
 
     /**
@@ -255,17 +228,9 @@ public final class KeyClientJavaDocCodeSnippets {
         Key updatedKey = keyClient.getKey(updatedKeyBase.name());
         System.out.printf("Key is updated with name %s and id %s \n", updatedKey.name(), updatedKey.id());
         // END: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-keyOperations-Context
-
-        // BEGIN: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-Context
-        Key updateKey = keyClient.getKey("keyName");
-        key.expires(OffsetDateTime.now().plusDays(60));
-        KeyBase updatedKeyBaseValue = keyClient.updateKeyWithResponse(updateKey, new Context(key1, value1)).value();
-        Key updatedKeyValue = keyClient.getKey(updatedKeyBaseValue.name());
-        System.out.printf("Key is updated with name %s and id %s \n", updatedKeyValue.name(), updatedKeyValue.id());
-        // END: com.azure.keyvault.keys.keyclient.updateKeyWithResponse#KeyBase-Context
     }
 
-        /**
+    /**
      * Generates a code sample for using {@link KeyClient#updateKey(KeyBase, KeyOperation...)}
      */
     public void updateKeySnippets() {
@@ -287,8 +252,6 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Key is updated with name %s and id %s \n", updatedKeyValue.name(), updatedKeyValue.id());
         // END: com.azure.keyvault.keys.keyclient.updateKey#KeyBase
     }
-
-
 
     /**
      * Generates a code sample for using {@link KeyClient#deleteKeyWithResponse(String, Context)}
@@ -322,6 +285,11 @@ public final class KeyClientJavaDocCodeSnippets {
         VoidResponse purgeResponse = keyClient.purgeDeletedKey("deletedKeyName");
         System.out.printf("Purge Status Code: %rsaPrivateExponent", purgeResponse.statusCode());
         // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string
+
+        // BEGIN: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
+        VoidResponse purgedResponse = keyClient.purgeDeletedKey("deletedKeyName", new Context(key2, value2));
+        System.out.printf("Purge Status Code: %rsaPrivateExponent", purgedResponse.statusCode());
+        // END: com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context
     }
 
     /**

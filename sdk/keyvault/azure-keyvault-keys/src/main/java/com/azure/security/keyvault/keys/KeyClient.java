@@ -23,6 +23,7 @@ import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
 import com.azure.security.keyvault.keys.models.webkey.KeyType;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The KeyClient provides synchronous methods to manage {@link Key keys} in the Azure Key Vault. The client
@@ -80,7 +81,7 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the created key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.createKey#string-keyOptions}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.createKey#keyOptions}
      *
      * @param keyCreateOptions The key options object containing information about the key being created.
      * @throws NullPointerException if {@code keyCreateOptions} is {@code null}.
@@ -350,7 +351,11 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(KeyBase keyBase) {
-        return client.getKeyWithResponse(keyBase).block().value();
+        Objects.requireNonNull(keyBase, "The Key Base parameter cannot be null.");
+        if (keyBase.version() == null) {
+            return getKey(keyBase.name());
+        }
+        return getKey(keyBase.name(), keyBase.version());
     }
 
     /**
@@ -369,7 +374,7 @@ public final class KeyClient {
      * @return The {@link KeyBase updated key}.
      */
     public Key updateKey(KeyBase key) {
-        return client.updateKeyWithResponse(key).block().value();
+        return client.updateKey(key, Context.NONE).block().value();
     }
 
     /**
@@ -463,7 +468,7 @@ public final class KeyClient {
      * returned in the response.</p>
      * <pre>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getDeletedKey#string}
      * </pre>
      *
      * @param name The name of the deleted key.
@@ -511,7 +516,26 @@ public final class KeyClient {
      * @return A {@link VoidResponse}.
      */
     public VoidResponse purgeDeletedKey(String name) {
-        return client.purgeDeletedKey(name).block();
+        return client.purgeDeletedKey(name, Context.NONE).block();
+    }
+
+    /**
+     * Permanently deletes the specified key without the possibility of recovery. The Purge Deleted Key operation is applicable for
+     * soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Purges the deleted key from the key vault enabled for soft-delete. Prints out the status code from the server response.</p>
+     * //Assuming key is deleted on a soft-delete enabled key vault.
+     * {@codesnippet com.azure.keyvault.keys.keyclient.purgeDeletedKey#string-Context}
+     *
+     * @param name The name of the deleted key.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @return A {@link VoidResponse}.
+     */
+    public VoidResponse purgeDeletedKey(String name, Context context) {
+        return client.purgeDeletedKey(name, context).block();
     }
 
     /**
