@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Represents input files for a Job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = JobInputClip.class)
 @JsonTypeName("#Microsoft.Media.JobInputClip")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputAsset", value = JobInputAsset.class),
@@ -30,6 +30,20 @@ public class JobInputClip extends JobInput {
      */
     @JsonProperty(value = "files")
     private List<String> files;
+
+    /**
+     * Defines a point on the timeline of the input media at which processing
+     * will start. Defaults to the beginning of the input media.
+     */
+    @JsonProperty(value = "start")
+    private ClipTime start;
+
+    /**
+     * Defines a point on the timeline of the input media at which processing
+     * will end. Defaults to the end of the input media.
+     */
+    @JsonProperty(value = "end")
+    private ClipTime end;
 
     /**
      * A label that is assigned to a JobInputClip, that is used to satisfy a
@@ -59,6 +73,46 @@ public class JobInputClip extends JobInput {
      */
     public JobInputClip withFiles(List<String> files) {
         this.files = files;
+        return this;
+    }
+
+    /**
+     * Get defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input media.
+     *
+     * @return the start value
+     */
+    public ClipTime start() {
+        return this.start;
+    }
+
+    /**
+     * Set defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input media.
+     *
+     * @param start the start value to set
+     * @return the JobInputClip object itself.
+     */
+    public JobInputClip withStart(ClipTime start) {
+        this.start = start;
+        return this;
+    }
+
+    /**
+     * Get defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
+     *
+     * @return the end value
+     */
+    public ClipTime end() {
+        return this.end;
+    }
+
+    /**
+     * Set defines a point on the timeline of the input media at which processing will end. Defaults to the end of the input media.
+     *
+     * @param end the end value to set
+     * @return the JobInputClip object itself.
+     */
+    public JobInputClip withEnd(ClipTime end) {
+        this.end = end;
         return this;
     }
 
