@@ -60,7 +60,6 @@ public class ReadMyWritesConsistencyTest {
     private DocumentCollection collection;
 
     //FIXME: Test is flaky, fails inconsistently
-    @Ignore
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "e2e")
     public void readMyWrites(boolean useNameLink) throws Exception {
         int concurrency = 5;
