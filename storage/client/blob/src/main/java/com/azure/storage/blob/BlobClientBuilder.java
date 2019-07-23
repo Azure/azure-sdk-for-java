@@ -54,14 +54,13 @@ import java.util.Objects;
  *     <li>{@link BlobClientBuilder#buildBlobClient()} - {@link BlobClient}</li>
  *     <li>{@link BlobClientBuilder#buildBlobAsyncClient()} - {@link BlobAsyncClient}</li>
  *     <li>{@link BlobClientBuilder#buildAppendBlobClient()} - {@link AppendBlobClient}</li>
- *     <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient() - {@link AppendBlobAsyncClient}</li>
+ *     <li>{@link BlobClientBuilder#buildAppendBlobAsyncClient()} - {@link AppendBlobAsyncClient}</li>
  *     <li>{@link BlobClientBuilder#buildBlockBlobClient()} - {@link BlockBlobClient}</li>
  *     <li>{@link BlobClientBuilder#buildBlockBlobAsyncClient()} - {@link BlockBlobAsyncClient}</li>
  *     <li>{@link BlobClientBuilder#buildPageBlobClient()} - {@link PageBlobClient}</li>
  *     <li>{@link BlobClientBuilder#buildPageBlobAsyncClient()} - {@link PageBlobAsyncClient}</li>
  * </ul>
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
 public final class BlobClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
