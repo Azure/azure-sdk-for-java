@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -197,6 +198,21 @@ public final class FluxUtil {
         return Mono.subscriberContext()
             .map(FluxUtil::toAzureContext)
             .flatMap(serviceCall);
+    }
+
+    /**
+     * Converts the incoming content to Mono.
+     *<p>
+     * If the response {@link Response#value() value} is empty, an empty Mono is returned.
+     *</p>
+     * <p><strong>Code samples</strong></p>
+     * {@codesnippet com.azure.core.implementation.util.fluxutil.toMono}
+     *
+     * @param response whose {@link Response#value() value} is to be converted
+     * @return The converted {@link Mono}
+     */
+    public static <T> Mono<T> toMono(Response<T> response) {
+        return Mono.justOrEmpty(response.value());
     }
 
     /**

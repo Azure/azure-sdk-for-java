@@ -16,6 +16,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -97,7 +98,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(String name, KeyType keyType) {
         return withContext(context -> createKey(name, keyType, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -155,7 +156,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createKey(KeyCreateOptions keyCreateOptions) {
         return withContext(context -> createKey(keyCreateOptions, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Key>> createKey(KeyCreateOptions keyCreateOptions, Context context) {
@@ -196,7 +197,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
         return withContext(context -> createRsaKey(rsaKeyCreateOptions, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -262,7 +263,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
         return withContext(context -> createEcKey(ecKeyCreateOptions, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -326,7 +327,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(String name, JsonWebKey keyMaterial) {
         return withContext(context -> importKey(name, keyMaterial, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Key>> importKey(String name, JsonWebKey keyMaterial, Context context) {
@@ -366,7 +367,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> importKey(KeyImportOptions keyImportOptions) {
         return withContext(context -> importKey(keyImportOptions, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -433,7 +434,7 @@ public final class KeyAsyncClient {
             return getKey(name);
         }
         return withContext(context -> getKey(name, version, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -574,7 +575,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key) {
         return withContext(context -> updateKey(key, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -654,7 +655,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> updateKey(KeyBase key, KeyOperation... keyOperations) {
         return withContext(context -> updateKey(key, context, keyOperations))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Key>> updateKey(KeyBase key, Context context, KeyOperation... keyOperations) {
@@ -690,7 +691,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> deleteKey(String name) {
         return withContext(context -> deleteKey(name, context))
-            .flatMap(deletedKeyResponse -> Mono.justOrEmpty(deletedKeyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -743,7 +744,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
         return withContext(context -> getDeletedKey(name, context))
-            .flatMap(deletedKeyResponse -> Mono.justOrEmpty(deletedKeyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -822,7 +823,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> recoverDeletedKey(String name) {
         return withContext(context -> recoverDeletedKey(name, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -878,7 +879,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
         return withContext(context -> backupKey(name, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -940,7 +941,7 @@ public final class KeyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Key> restoreKey(byte[] backup) {
         return withContext(context -> restoreKey(backup, context))
-            .flatMap(keyResponse -> Mono.justOrEmpty(keyResponse.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
