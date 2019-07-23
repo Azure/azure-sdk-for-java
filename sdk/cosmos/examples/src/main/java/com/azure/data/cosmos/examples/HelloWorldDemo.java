@@ -29,7 +29,7 @@ public class HelloWorldDemo {
             .flatMap(response -> Mono.just(response.container()))
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 
-        // Create an item ✨
+        // Create an item
         container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
             .flatMap(response -> {
                 System.out.println("Created item: " + response.properties().toJson());

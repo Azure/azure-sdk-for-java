@@ -39,6 +39,7 @@ Licensed under the MIT License.
     <mockito.version>1.10.19</mockito.version>
     <netty.version>4.1.36.Final</netty.version>
     <sdk-version>3.0.0</sdk-version>
+    <guava.version>27.0.1-jre</guava.version>
     <!--<netty-tcnative.version>2.0.25.Final</netty-tcnative.version>-->
     <!--<reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>-->
     <!--<reactor-bom.version>Californium-SR7</reactor-bom.version>-->
@@ -74,6 +75,12 @@ Licensed under the MIT License.
         <groupId>io.netty</groupId>
         <artifactId>netty-codec-http</artifactId>
         <version>${netty.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
       </dependency>
 
       <dependency>

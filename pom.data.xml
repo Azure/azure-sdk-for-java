@@ -542,10 +542,10 @@
 
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
+    <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/pom.data.xml</module>
     <module>./sdk/keyvault/pom.data.xml</module>
     <module>./sdk/servicebus</module>
     <module>./storage/data-plane</module>
-    <module>./sdk/cosmos</module>
   </modules>
 </project>

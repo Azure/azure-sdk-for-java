@@ -116,7 +116,7 @@
     <async-http-client.version>2.5.2</async-http-client.version>
     <opencensus.version>0.20.0</opencensus.version>
     <rxjava.version>1.2.4</rxjava.version>
-    <guava.version>27.0.1-jre</guava.version>
+    <guava.version>24.1.1-jre</guava.version>
     <azure-annotations.version>1.7.0</azure-annotations.version>
     <jgit.version>4.5.0.201609210915-r</jgit.version>
     <commons-net.version>3.3</commons-net.version>
@@ -595,11 +595,11 @@
           </executions>
         </plugin>
 
-        <!-- This plugin lets you rin the main method of a Java class in your project, with project dependencies automatically included in the classpath. -->
+        <!-- This plugin lets you run the main method of a Java class in your project, with project dependencies automatically included in the classpath. -->
         <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>${maven-exec-plugin.version}</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>${maven-exec-plugin.version}</version>
        </plugin>
 
         <!-- This plugin is used to copy resources of your project. -->

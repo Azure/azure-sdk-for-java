@@ -145,6 +145,8 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateStrongConsistencyOnAsyncReplication(false);
     }
 
+    //FIXME: test is flaky, fails inconsistently
+    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateSessionContainerAfterCollectionCreateReplace() {
         //TODO Need to test with TCP protocol

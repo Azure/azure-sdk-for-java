@@ -49,7 +49,7 @@ import java.io.IOException;
         .flatMap(response -> Mono.just(response.container()))
         .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 
-    // Create an item ✨
+    // Create an item
     container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
         .flatMap(response -> {
             System.out.println("Created item: " + response.properties().toJson());
@@ -121,7 +121,7 @@ Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/2.4.0/co
 The SDK provides Reactor Core based async APIs. You can read more about Reactor Core and [Flux/Mono types here](https://projectreactor.io/docs/core/release/api/).
 -->
 
-## Guide for Prod
+## Guide for Production
 
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
