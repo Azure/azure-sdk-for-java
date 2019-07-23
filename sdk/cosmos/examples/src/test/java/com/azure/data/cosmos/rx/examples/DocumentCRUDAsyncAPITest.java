@@ -26,6 +26,7 @@ import org.apache.commons.lang3.RandomUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -67,6 +68,8 @@ import static org.hamcrest.Matchers.is;
  * transform a flux to CompletableFuture. Please see
  * {@link #transformObservableToCompletableFuture()}
  */
+//FIXME: Test times out inconsistently
+@Ignore
 public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 
     private final static String PARTITION_KEY_PATH = "/mypk";
