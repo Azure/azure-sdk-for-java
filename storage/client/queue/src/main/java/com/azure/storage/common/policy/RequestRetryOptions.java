@@ -65,10 +65,10 @@ public final class RequestRetryOptions {
      *
      * <p>For more samples, please see the <a href="https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java">samples file</a></p>
      * @throws IllegalArgumentException If one of the following case exists:
-     *                                  <ul>
-     *                                      <li> There is only one null value for retryDelay and maxRetryDelay.<li/>
-     *                                      <li> Unrecognized retry policy type.<li/>
-     *                                  </ul>
+     * <ul>
+     *      <li> There is only one null value for retryDelay and maxRetryDelay.<li/>
+     *      <li> Unrecognized retry policy type.<li/>
+     * </ul>
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
             Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {

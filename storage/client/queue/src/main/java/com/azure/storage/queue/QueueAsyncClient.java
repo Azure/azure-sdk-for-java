@@ -49,7 +49,7 @@ import reactor.core.publisher.Mono;
  * @see SASTokenCredential
  */
 public final class QueueAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(QueueAsyncClient.class);
     private final AzureQueueStorageImpl client;
     private final String queueName;
 
@@ -93,7 +93,7 @@ public final class QueueAsyncClient {
         try {
             return new URL(client.url());
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("Queue URL is malformed");
+            logger.asError().log("Queue URL is malformed");
             throw new RuntimeException("Queue URL is malformed");
         }
     }

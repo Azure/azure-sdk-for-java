@@ -70,7 +70,7 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class QueueServiceClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
 
     private URL endpoint;
@@ -111,7 +111,7 @@ public final class QueueServiceClientBuilder {
         Objects.requireNonNull(endpoint);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            LOGGER.asError().log("Credentials are required for authorization");
+            logger.asError().log("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
@@ -188,7 +188,7 @@ public final class QueueServiceClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed.");
+            logger.asError().log("The Azure Storage Queue endpoint url is malformed.");
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed.");
         }
 

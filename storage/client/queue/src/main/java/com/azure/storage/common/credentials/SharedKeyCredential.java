@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class SharedKeyCredential {
-    private static final ClientLogger LOGGER = new ClientLogger(SharedKeyCredential.class);
+    private final ClientLogger logger = new ClientLogger(SharedKeyCredential.class);
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
 
     // Pieces of the connection string that are needed.
@@ -101,8 +101,10 @@ public final class SharedKeyCredential {
      * @param stringToSign The UTF-8-encoded string to sign.
      * @return A {@code String} that contains the HMAC-SHA256-encoded signature.
      * @throws RuntimeException for one of the following cases:
-     *                              - If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.
-     *                              - If the an invalid key has been given to the client.
+     * <ul>
+     *     <li>If the HMAC-SHA256 signature for {@code sharedKeyCredentials} fails to generate.</li>
+     *     <li>If the an invalid key has been given to the client.</li>
+     * </ul>
      */
     public String computeHmac256(final String stringToSign) {
         try {
@@ -116,10 +118,10 @@ public final class SharedKeyCredential {
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final NoSuchAlgorithmException e) {
-            LOGGER.asError().log(e.getMessage());
+            logger.asError().log(e.getMessage());
             throw new RuntimeException(e);
         } catch (InvalidKeyException e) {
-            LOGGER.asError().log("Please double check the account key. Error details: " + e.getMessage());
+            logger.asError().log("Please double check the account key. Error details: " + e.getMessage());
             throw new RuntimeException("Please double check the account key. Error details: " + e.getMessage());
         }
     }
@@ -232,7 +234,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            LOGGER.asError().log(ex.getMessage());
+            logger.asError().log(ex.getMessage());
             throw new Error(ex);
         }
     }

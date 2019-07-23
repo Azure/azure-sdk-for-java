@@ -70,7 +70,7 @@ import java.util.Objects;
  * @see SharedKeyCredential
  */
 public final class QueueClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
     private static final String ACCOUNT_NAME = "accountname";
     private final List<HttpPipelinePolicy> policies;
 
@@ -135,7 +135,7 @@ public final class QueueClientBuilder {
         Objects.requireNonNull(queueName);
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
-            LOGGER.asError().log("Credentials are required for authorization");
+            logger.asError().log("Credentials are required for authorization");
             throw new IllegalArgumentException("Credentials are required for authorization");
         }
 
@@ -202,7 +202,7 @@ public final class QueueClientBuilder {
                 this.sasTokenCredential = credential;
             }
         } catch (MalformedURLException ex) {
-            LOGGER.asError().log("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
+            logger.asError().log("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
             throw new IllegalArgumentException("The Azure Storage Queue endpoint url is malformed. Endpoint: " + endpoint);
         }
 
@@ -270,7 +270,7 @@ public final class QueueClientBuilder {
         try {
             this.endpoint = new URL(String.format("https://%s.queue.core.windows.net", accountName));
         } catch (MalformedURLException e) {
-            LOGGER.asError().log("There is no valid account for the connection string. "
+            logger.asError().log("There is no valid account for the connection string. "
                 + "Connection String: %s", connectionString);
             throw new IllegalArgumentException(String.format("There is no valid account for the connection string. "
                                                                  + "Connection String: %s", connectionString));
