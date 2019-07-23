@@ -36,7 +36,7 @@ import static com.azure.core.implementation.util.FluxUtil.withContext;
  * also supports listing {@link DeletedSecret deleted secrets} for a soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the async client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secretclient.async.construct}
+ * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
  *
  * @see SecretClientBuilder
  * @see PagedFlux
@@ -76,14 +76,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the call asynchronously and
      * prints out the newly created secret details when a response is received.</p>
-     * <pre>
-     * Secret secret = new Secret("secretName", "secretValue")
-     *   .notBefore(OffsetDateTime.now().plusDays(1))
-     *   .expires(OffsetDateTime.now().plusDays(365));
-     *
-     * secretAsyncClient.setSecret(secret).subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#secret}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -108,14 +101,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret which activates in 1 day and expires in 1 year in the Azure Key Vault. Subscribes to the call asynchronously and
      * prints out the newly created secret details when a response is received.</p>
-     * <pre>
-     * Secret secret = new Secret("secretName", "secretValue")
-     *   .notBefore(OffsetDateTime.now().plusDays(1))
-     *   .expires(OffsetDateTime.now().plusDays(365));
-     *
-     * secretAsyncClient.setSecret(secret).subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -150,10 +136,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Subscribes to the call asynchronously and prints out
      * the newly created secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.setSecret("secretName", "secretValue").subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#string-string}
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
@@ -184,12 +167,7 @@ public final class SecretAsyncClient {
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
      * asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * <pre>
-     * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * secretAsyncClient.getSecret("secretName", secretVersion).subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret with name %s, value %s and version %s", secretResponse.value().name(),
-     *   secretResponse.value().value(), secretResponse.value().version()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#string-string}
      *
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this
@@ -216,12 +194,7 @@ public final class SecretAsyncClient {
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
      * asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * <pre>
-     * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * secretAsyncClient.getSecret("secretName", secretVersion).subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret with name %s, value %s and version %s", secretResponse.value().name(),
-     *   secretResponse.value().value(), secretResponse.value().version()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string}
      *
      * @param name The name of the secret, cannot be null
      * @param version The version of the secret to retrieve. If this is an empty String or null, this
@@ -259,11 +232,7 @@ public final class SecretAsyncClient {
      * the {@link Flux} containing {@link SecretBase base secret} as output. This operation can then be used to get
      * the full secret with its value from {@code secretBase}. </p>
      * <p><strong>Code Samples</strong></p>
-     * <pre>
-     * secretAsyncClient.listSecrets().subscribe(secretBase -&gt;
-     *     client.getSecret(secretBase).subscribe(secretResponse -&gt;
-     *       System.out.printf("Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value())));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the
      * secret being requested.
@@ -293,11 +262,7 @@ public final class SecretAsyncClient {
      * the {@link Flux} containing {@link SecretBase base secret} as output. This operation can then be used to get
      * the full secret with its value from {@code secretBase}. </p>
      * <p><strong>Code Samples</strong></p>
-     * <pre>
-     * secretAsyncClient.listSecrets().subscribe(secretBase -&gt;
-     *     client.getSecret(secretBase).subscribe(secretResponse -&gt;
-     *       System.out.printf("Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value())));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecretWithResponse#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the
      * secret being requested.
@@ -332,11 +297,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt;
-     *   System.out.printf("Secret with name %s , value %s \n", secretResponse.value().name(),
-     *   secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -360,15 +321,8 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt; {
-     *     Secret secret = secretResponse.value();
-     *     //Update the not before time of the secret.
-     *     secret.notBefore(OffsetDateTime.now().plusDays(50));
-     *     secretAsyncClient.updateSecret(secret).subscribe(secretResponse -&gt;
-     *         System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.updateSecret#secretBase}
+     *
      * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version() version} cannot be null.</p>
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
@@ -391,15 +345,8 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets latest version of the secret, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt; {
-     *     Secret secret = secretResponse.value();
-     *     //Update the not before time of the secret.
-     *     secret.notBefore(OffsetDateTime.now().plusDays(50));
-     *     secretAsyncClient.updateSecret(secret).subscribe(secretResponse -&gt;
-     *         System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
-     *   });
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.updateSecretWithResponse#secretBase}
+     *
      * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version() version} cannot be null.</p>
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
@@ -434,10 +381,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * deleted secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse -&gt;
-     *   System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -458,10 +402,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * deleted secret details when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse -&gt;
-     *   System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecretWithResponse#string}
      *
      * @param name The name of the secret to be deleted.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -490,9 +431,7 @@ public final class SecretAsyncClient {
      * deleted secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.getDeletedSecret("secretName").subscribe(deletedSecretResponse -&gt;
-     *   System.out.printf("Deleted Secret with recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecret#string}
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
@@ -516,9 +455,7 @@ public final class SecretAsyncClient {
      * deleted secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.getDeletedSecret("secretName").subscribe(deletedSecretResponse -&gt;
-     *   System.out.printf("Deleted Secret with recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -550,9 +487,7 @@ public final class SecretAsyncClient {
      * status code from the server response when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.purgeDeletedSecret("deletedSecretName").subscribe(purgeResponse -&gt;
-     *   System.out.printf("Purge Status response %d \n", purgeResponse.statusCode()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link VoidResponse}.
@@ -581,9 +516,7 @@ public final class SecretAsyncClient {
      * recovered secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse -&gt;
-     *   System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -605,9 +538,7 @@ public final class SecretAsyncClient {
      * recovered secret details when a response is received.</p>
      * <pre>
      * //Assuming secret is deleted on a soft-delete enabled vault.
-     * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse -&gt;
-     *   System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecretWithResponse#string}
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -635,9 +566,7 @@ public final class SecretAsyncClient {
      * the
      * length of the secret's backup byte array returned in the response.</p>
      * <pre>
-     * secretAsyncClient.backupSecret("secretName").subscribe(secretBackupResponse -&gt;
-     *   System.out.printf("Secret's Backup Byte array's length %s \n", secretBackupResponse.value().length));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecret#string}
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the backed up secret blob.
@@ -659,10 +588,7 @@ public final class SecretAsyncClient {
      * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out
      * the
      * length of the secret's backup byte array returned in the response.</p>
-     * <pre>
-     * secretAsyncClient.backupSecret("secretName").subscribe(secretBackupResponse -&gt;
-     *   System.out.printf("Secret's Backup Byte array's length %s \n", secretBackupResponse.value().length));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string}
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -695,9 +621,7 @@ public final class SecretAsyncClient {
      * restored secret details when a response is received.</p>
      * <pre>
      * //Pass the Secret Backup Byte array to the restore operation.
-     * secretAsyncClient.restoreSecret(secretBackupByteArray).subscribe(secretResponse -&gt;
-     *   System.out.printf("Restored Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecret#byte}
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing the {@link Secret restored secret}.
@@ -719,9 +643,7 @@ public final class SecretAsyncClient {
      * restored secret details when a response is received.</p>
      * <pre>
      * //Pass the Secret Backup Byte array to the restore operation.
-     * secretAsyncClient.restoreSecret(secretBackupByteArray).subscribe(secretResponse -&gt;
-     *   System.out.printf("Restored Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
@@ -749,11 +671,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get full Secrets with values from this information. Convert the {@link Flux} containing {@link SecretBase base secret} to
      * {@link Flux} containing {@link Secret secret} using {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecrets()
-     *   .flatMap(secretAsyncClient::getSecret)
-     *   .map(Response::value);
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
      *
      * @return A {@link PagedFlux} containing {@link SecretBase secret} of all the secrets in the vault.
      */
@@ -801,10 +719,7 @@ public final class SecretAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault. Subscribes to the call asynchronously and prints out the
      * recovery id of each deleted secret when a response is received.</p>
-     * <pre>
-     * secretAsyncClient.listDeletedSecrets().subscribe(deletedSecret -&gt;
-     *   System.out.printf("Deleted secret's recovery Id %s \n", deletedSecret.recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.listDeletedSecrets}
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
@@ -854,11 +769,7 @@ public final class SecretAsyncClient {
      * <p>It is possible to get the Secret with value of all the versions from this information. Convert the {@link Flux}
      * containing {@link SecretBase base secret} to {@link Flux} containing {@link Secret secret} using
      * {@link SecretAsyncClient#getSecret(SecretBase baseSecret)} within {@link Flux#flatMap(Function)}.</p>
-     * <pre>
-     * Flux&lt;Secret&gt; secrets = secretAsyncClient.listSecretVersions("secretName")
-     *   .flatMap(secretAsyncClient::getSecret)
-     *   .map(Response::value);
-     * </pre>
+     * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.

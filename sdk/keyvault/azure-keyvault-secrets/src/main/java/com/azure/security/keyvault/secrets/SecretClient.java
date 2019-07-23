@@ -49,15 +49,7 @@ public final class SecretClient {
      * set to true by key vault, if not specified.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new secret which expires in 60 days in the key vault. Prints out the details of the
-     * newly created secret returned in the response.</p>
-     * <pre>
-     * Secret secret = new Secret("secretName", "secretValue")
-     *   .expires(OffsetDateTime.now.plusDays(60));
-     *
-     * Secret retSecret = secretClient.setSecret(keySecret).value();
-     * System.out.printf("Secret is created with name %s and value %s \n", retSecret.name(), retSecret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#secretBase}
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties secret.name and secret.value must be non null.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -75,10 +67,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the response.</p>
-     * <pre>
-     * Secret secret = secretClient.setSecret("secretName", "secretValue").value();
-     * System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#string-string}
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
@@ -96,10 +85,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new secret in the key vault. Prints out the details of the newly created secret returned in the response.</p>
-     * <pre>
-     * Secret secret = secretClient.setSecret("secretName", "secretValue").value();
-     * System.out.printf("Secret is created with name %s and value %s \n", secret.name(), secret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.setSecret#string-string-Context}
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
@@ -118,11 +104,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Prints out the details of the returned secret.</p>
-     * <pre>
-     * String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
-     * Secret secretWithVersion = secretClient.getSecret("secretName", secretVersion).value();
-     * System.out.printf("Secret is returned with name %s and value %s \n", secretWithVersion.name(), secretWithVersion.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#string-string}
      *
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty String or null, this call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
@@ -141,7 +123,8 @@ public final class SecretClient {
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
-     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretBase}
+     * <p><strong>Code Samples</strong></p>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -160,6 +143,7 @@ public final class SecretClient {
      * <p>The list operations {@link SecretClient#listSecrets()} and {@link SecretClient#listSecretVersions(String)} return
      * the {@link List} containing {@link SecretBase base secret} as output excluding the include the value of the secret.
      * This operation can then be used to get the full secret with its value from {@code secretBase}.</p>
+     * <p><strong>Code Samples</strong></p>
      * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#secretBase}
      *
      * @param secretBase The {@link SecretBase base secret} holding attributes of the secret being requested.
@@ -177,10 +161,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
-     * <pre>
-     * Secret secret = secretClient.getSecret("secretName").value();
-     * System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecret#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -197,10 +178,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
-     * <pre>
-     * Secret secret = secretClient.getSecret("secretName").value();
-     * System.out.printf("Secret is returned with name %s and value %s \n", secret.name(), secret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getSecretWithResponse#string-Context}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -221,12 +199,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key vault.</p>
-     * <pre>
-     * Secret secret = secretClient.getSecret("secretName").value();
-     * secret.expires(OffsetDateTime.now().plusDays(60));
-     * SecretBase updatedSecretBase = secretClient.updateSecret(secret).value();
-     * Secret updatedSecret = secretClient.getSecret(updatedSecretBase.name()).value();
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecretWithResponse#secretBase-Context}
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -248,12 +221,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the secret, changes its expiry time and the updates the secret in the key vault.</p>
-     * <pre>
-     * Secret secret = secretClient.getSecret("secretName").value();
-     * secret.expires(OffsetDateTime.now().plusDays(60));
-     * SecretBase updatedSecretBase = secretClient.updateSecret(secret).value();
-     * Secret updatedSecret = secretClient.getSecret(updatedSecretBase.name()).value();
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.updateSecret#secretBase}
      *
      * @param secret The {@link SecretBase base secret} object with updated properties.
      * @throws NullPointerException if {@code secret} is {@code null}.
@@ -272,10 +240,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the response.</p>
-     * <pre>
-     * DeletedSecret deletedSecret = secretClient.deleteSecret("secretName").value();
-     * System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecret#string}
      *
      * @param name The name of the secret to be deleted.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -293,10 +258,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the secret from the keyvault. Prints out the recovery id of the deleted secret returned in the response.</p>
-     * <pre>
-     * DeletedSecret deletedSecret = secretClient.deleteSecret("secretName").value();
-     * System.out.printf("Deleted Secret's Recovery Id %s", deletedSecret.recoveryId()));
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.deleteSecretWithResponse#string-Context}
      *
      * @param name The name of the secret to be deleted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -315,11 +277,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted secret from the key vault enabled for soft-delete. Prints out the details of the deleted secret
      * returned in the response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
-     * System.out.printf("Deleted Secret with recovery Id %s \n", deletedSecret.recoveryId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getDeletedSecret#string}
      *
      * @param name The name of the deleted secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -337,11 +296,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the deleted secret from the key vault enabled for soft-delete. Prints out the details of the deleted secret
      * returned in the response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * DeletedSecret deletedSecret = secretClient.getDeletedSecret("secretName").value();
-     * System.out.printf("Deleted Secret with recovery Id %s \n", deletedSecret.recoveryId());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.getDeletedSecretWithResponse#string-Context}
      *
      * @param name The name of the deleted secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -359,11 +315,8 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Prints out the status code from the server response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * VoidResponse purgeResponse = secretClient.purgeDeletedSecret("deletedSecretName");
-     * System.out.printf("Purge Status Code: %d", purgeResponse.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.purgeDeletedSecret#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -380,11 +333,8 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Prints out the status code from the server response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * VoidResponse purgeResponse = secretClient.purgeDeletedSecret("deletedSecretName");
-     * System.out.printf("Purge Status Code: %d", purgeResponse.statusCode());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.purgeDeletedSecret#string-Context}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -403,11 +353,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the recovered secret
      * returned in the response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * Secret recoveredSecret =  secretClient.recoverDeletedSecret("deletedSecretName").value();
-     * System.out.printf("Recovered Secret with name %s", recoveredSecret.name());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecret#string}
      *
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -425,11 +372,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Prints out the details of the recovered secret
      * returned in the response.</p>
-     * <pre>
      * //Assuming secret is deleted on a soft-delete enabled key vault.
-     * Secret recoveredSecret =  secretClient.recoverDeletedSecret("deletedSecretName").value();
-     * System.out.printf("Recovered Secret with name %s", recoveredSecret.name());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.recoverDeletedSecretWithResponse#string-Context}
      *
      * @param name The name of the deleted secret to be recovered.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -447,10 +391,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the secret from the key vault and prints out the length of the secret's backup byte array returned in the response</p>
-     * <pre>
-     * byte[] secretBackup = secretClient.backupSecret("secretName").value();
-     * System.out.printf("Secret's Backup Byte array's length %s", secretBackup.length);
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.backupSecret#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -467,10 +408,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the secret from the key vault and prints out the length of the secret's backup byte array returned in the response</p>
-     * <pre>
-     * byte[] secretBackup = secretClient.backupSecret("secretName").value();
-     * System.out.printf("Secret's Backup Byte array's length %s", secretBackup.length);
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.backupSecretWithResponse#string-Context}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -489,11 +427,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup byte array. Prints out the details of the restored secret returned
      * in the response.</p>
-     * <pre>
      * //Pass the secret backup byte array of the secret to be restored.
-     * Secret restoredSecret = secretClient.restoreSecret(secretBackupByteArray).value();
-     * System.out.printf("Restored Secret with name %s and value %s", restoredSecret.name(), restoredSecret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.restoreSecret#byte}
      *
      * @param backup The backup blob associated with the secret.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
@@ -510,11 +445,8 @@ public final class SecretClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the secret in the key vault from its backup byte array. Prints out the details of the restored secret returned
      * in the response.</p>
-     * <pre>
      * //Pass the secret backup byte array of the secret to be restored.
-     * Secret restoredSecret = secretClient.restoreSecret(secretBackupByteArray).value();
-     * System.out.printf("Restored Secret with name %s and value %s", restoredSecret.name(), restoredSecret.value());
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.restoreSecretWithResponse#byte-Context}
      *
      * @param backup The backup blob associated with the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -532,12 +464,8 @@ public final class SecretClient {
      *
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
-     * <pre>
-     * for (SecretBase secret : secretClient.listSecrets()) {
-     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
-     *   System.out.printf("Received secret with name %s and value %s", secretWithValue.name(), secretWithValue.value());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets}
+     *
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
     public Iterable<SecretBase> listSecrets() {
@@ -551,12 +479,8 @@ public final class SecretClient {
      *
      * <p>It is possible to get full secrets with values from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase baseSecret)} . This will return the {@link Secret secret} with value included of its latest version.</p>
-     * <pre>
-     * for (SecretBase secret : secretClient.listSecrets()) {
-     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
-     *   System.out.printf("Received secret with name %s and value %s", secretWithValue.name(), secretWithValue.value());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecrets#Context}
+     *
      * @param context Additional context that is passed through the Http pipeline during the service call.*
      * @return A {@link List} containing {@link SecretBase} of all the secrets in the vault. The {@link SecretBase} contains all the information about the secret, except its value.
      */
@@ -570,11 +494,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
-     * <pre>
-     * for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets()) {
-     *   System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
@@ -589,11 +509,7 @@ public final class SecretClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the deleted secrets in the key vault and for each deleted secret prints out its recovery id.</p>
-     * <pre>
-     * for (DeletedSecret deletedSecret : secretClient.listDeletedSecrets()) {
-     *   System.out.printf("Deleted secret's recovery Id %s", deletedSecret.recoveryId());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listDeletedSecrets}
      *
      * @return A {@link List} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
@@ -608,12 +524,7 @@ public final class SecretClient {
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
-     * <pre>
-     * for (SecretBase secret : secretClient.listSecretVersions("secretName")) {
-     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
-     *   System.out.printf("Received secret's version with name %s and value %s", secretWithValue.name(), secretWithValue.value());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string}
      *
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
@@ -631,12 +542,7 @@ public final class SecretClient {
      *
      * <p>It is possible to get full Secrets with values for each version from this information. Loop over the {@link SecretBase secret} and
      * call {@link SecretClient#getSecret(SecretBase)} . This will return the {@link Secret} secrets with values included of the specified versions.</p>
-     * <pre>
-     * for (SecretBase secret : secretClient.listSecretVersions("secretName")) {
-     *   Secret secretWithValue  = secretClient.getSecret(secret).value();
-     *   System.out.printf("Received secret's version with name %s and value %s", secretWithValue.name(), secretWithValue.value());
-     * }
-     * </pre>
+     * {@codesnippet com.azure.security.keyvault.secretclient.listSecretVersions#string-Context}
      *
      * @param name The name of the secret.
      * @param context Additional context that is passed through the Http pipeline during the service call.
