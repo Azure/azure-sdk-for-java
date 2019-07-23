@@ -19,6 +19,7 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+import com.azure.storage.file.models.ShareProperties;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -184,9 +185,9 @@ public class ShareClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            if(this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
@@ -204,6 +205,20 @@ public class ShareClientBuilder {
      */
     public ShareClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the File service.
+     *
+     * @param credential Shared key credential generated from the Storage account that authorizes requests
+     * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public ShareClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
         return this;
     }
 

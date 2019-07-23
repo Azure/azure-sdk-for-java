@@ -366,32 +366,6 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareClient#delete(String)}
-     */
-    public void deleteSnapshot() {
-        ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.delete#string
-        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        VoidResponse response = shareClient.delete(currentTime.toString());
-        System.out.printf("Deleting the snapshot completed with status code %d", response.statusCode());
-        // END: com.azure.storage.file.shareClient.delete#string
-    }
-
-
-    /**
-     * Generates a code sample for using {@link ShareAsyncClient#delete(String)}
-     */
-    public void deleteSnapshotAsync() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.delete#string
-        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        shareAsyncClient.delete(currentTime.toString())
-            .subscribe(response -> System.out.printf("Deleting the snapshot completed with status code %d",
-                response.statusCode()));
-        // END: com.azure.storage.file.shareAsyncClient.delete#string
-    }
-
-    /**
      * Generates a code sample for using {@link ShareClient#getProperties()}
      */
     public void getProperties() {
@@ -415,34 +389,6 @@ public class ShareJavaDocCodeSamples {
                 System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
             });
         // END: com.azure.storage.file.shareAsyncClient.getProperties
-    }
-
-    /**
-     * Generates a code sample for using {@link ShareClient#getProperties(String)}
-     */
-    public void getPropertiesWithOverload() {
-        ShareClient shareClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareClient.getProperties#string
-        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        ShareProperties properties = shareClient.getProperties().value();
-        System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-        // END: com.azure.storage.file.shareClient.getProperties#string
-    }
-
-
-    /**
-     * Generates a code sample for using {@link ShareAsyncClient#getProperties(String)}
-     */
-    public void getPropertiesAsyncWithOverload() {
-        ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
-        // BEGIN: com.azure.storage.file.shareAsyncClient.getProperties#string
-        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
-        shareAsyncClient.getProperties(currentTime.toString())
-            .subscribe(response -> {
-                ShareProperties properties = response.value();
-                System.out.printf("Share quota: %d, Metadata: %s", properties.quota(), properties.metadata());
-            });
-        // END: com.azure.storage.file.shareAsyncClient.getProperties#string
     }
 
     /**
@@ -600,5 +546,35 @@ public class ShareJavaDocCodeSamples {
             .subscribe(response -> System.out.printf("The share is using %d GB",
                 response.value().getShareUsageInGB()));
         // END: com.azure.storage.file.shareAsyncClient.getStatistics
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#getSnapshotId()}
+     */
+    public void getSnapshotId() {
+        // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        ShareClient shareClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .snapshot(currentTime.toString())
+            .buildClient();
+        shareClient.getSnapshotId();
+        // END: com.azure.storage.file.shareClient.getSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareAsyncClient#getSnapshotId()}
+     */
+    public void getSnapshotIdAsync() {
+        // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        ShareAsyncClient shareAysncClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .snapshot(currentTime.toString())
+            .buildAsyncClient();
+        shareAysncClient.getSnapshotId();
+        // END: com.azure.storage.file.shareClient.getSnapshotId
     }
 }

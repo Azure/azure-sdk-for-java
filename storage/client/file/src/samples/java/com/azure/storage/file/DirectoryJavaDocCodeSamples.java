@@ -11,6 +11,9 @@ import com.azure.storage.file.models.DirectoryProperties;
 import com.azure.storage.file.models.DirectorySetMetadataInfo;
 import com.azure.storage.file.models.FileHTTPHeaders;
 import com.azure.storage.file.models.HandleItem;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,7 +54,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryClient directoryClient = new DirectoryClientBuilder()
             .endpoint("https://${accountName}.file.core.windows.net?${SASToken}")
             .shareName("myshare")
-            .directoryName("mydirectory")
+            .directoryPath("mydirectory")
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation.sastoken
         return directoryClient;
@@ -66,7 +69,7 @@ public class DirectoryJavaDocCodeSamples {
         DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
             .endpoint("https://{accountName}.file.core.windows.net?{SASToken}")
             .shareName("myshare")
-            .directoryName("mydirectory")
+            .directoryPath("mydirectory")
             .buildAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.sastoken
         return directoryAsyncClient;
@@ -83,7 +86,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
             .shareName("myshare")
-            .directoryName("mydirectory")
+            .directoryPath("mydirectory")
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation.credential
         return directoryClient;
@@ -99,7 +102,7 @@ public class DirectoryJavaDocCodeSamples {
             .endpoint("https://{accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASTokenQueryParams}"))
             .shareName("myshare")
-            .directoryName("mydirectory")
+            .directoryPath("mydirectory")
             .buildAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.credential
         return direcotryAsyncClient;
@@ -114,7 +117,7 @@ public class DirectoryJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key}"
             + ";EndpointSuffix={core.windows.net}";
         DirectoryClient directoryClient = new DirectoryClientBuilder()
-            .connectionString(connectionString).shareName("myshare").directoryName("mydirectory")
+            .connectionString(connectionString).shareName("myshare").directoryPath("mydirectory")
             .buildClient();
         // END: com.azure.storage.file.directoryClient.instantiation.connectionstring
         return directoryClient;
@@ -129,7 +132,7 @@ public class DirectoryJavaDocCodeSamples {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName={name};AccountKey={key};"
             + "EndpointSuffix={core.windows.net}";
         DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
-            .connectionString(connectionString).shareName("myshare").directoryName("mydirectory")
+            .connectionString(connectionString).shareName("myshare").directoryPath("mydirectory")
             .buildAsyncClient();
         // END: com.azure.storage.file.directoryAsyncClient.instantiation.connectionstring
         return directoryAsyncClient;
@@ -545,5 +548,39 @@ public class DirectoryJavaDocCodeSamples {
                     System.out.printf("Close %d handles.", numOfClosedHandles));
             });
         // END: com.azure.storage.file.directoryAsyncClient.forceCloseHandles
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryClient#getShareSnapshotId()}
+     */
+    public void getShareSnapshotId() {
+        // BEGIN: com.azure.storage.file.directoryClient.getShareSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        DirectoryClient directoryClient = new DirectoryClientBuilder()
+            .endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .directoryPath("mydirectory")
+            .snapshot(currentTime.toString())
+            .buildClient();
+        directoryClient.getShareSnapshotId();
+        // END: com.azure.storage.file.directoryClient.getShareSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link DirectoryAsyncClient#getShareSnapshotId()}
+     */
+    public void getShareSnapshotIdAsync() {
+        // BEGIN: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        DirectoryAsyncClient directoryAsyncClient = new DirectoryClientBuilder()
+            .endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .directoryPath("mydirectory")
+            .snapshot(currentTime.toString())
+            .buildAsyncClient();
+        directoryAsyncClient.getShareSnapshotId();
+        // END: com.azure.storage.file.directoryAsyncClient.getShareSnapshotId
     }
 }

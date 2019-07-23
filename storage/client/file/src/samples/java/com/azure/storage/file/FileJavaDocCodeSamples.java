@@ -20,6 +20,9 @@ import io.netty.buffer.Unpooled;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import reactor.core.publisher.Flux;
@@ -746,4 +749,37 @@ public class FileJavaDocCodeSamples {
         // END: com.azure.storage.file.fileAsyncClient.forceCloseHandles#string
     }
 
+    /**
+     * Generates a code sample for using {@link FileClient#getShareSnapshotId()}
+     */
+    public void getShareSnapshotId() {
+        // BEGIN: com.azure.storage.file.fileClient.getShareSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        FileClient fileClient = new FileClientBuilder()
+            .endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .filePath("myfile")
+            .snapshot(currentTime.toString())
+            .buildClient();
+        fileClient.getShareSnapshotId();
+        // END: com.azure.storage.file.fileClient.getShareSnapshotId
+    }
+
+    /**
+     * Generates a code sample for using {@link FileAsyncClient#getShareSnapshotId()}
+     */
+    public void getShareSnapshotIdAsync() {
+        // BEGIN: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
+        OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        FileAsyncClient fileAsyncClient = new FileClientBuilder()
+            .endpoint("https://${accountName}.file.core.windows.net")
+            .credential(SASTokenCredential.fromQuery("${SASToken}"))
+            .shareName("myshare")
+            .filePath("myfiile")
+            .snapshot(currentTime.toString())
+            .buildAsyncClient();
+        fileAsyncClient.getShareSnapshotId();
+        // END: com.azure.storage.file.fileAsyncClient.getShareSnapshotId
+    }
 }

@@ -176,9 +176,9 @@ public final class FileServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            if(this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage File Service endpoint url is malformed.");
@@ -196,6 +196,7 @@ public final class FileServiceClientBuilder {
      */
     public FileServiceClientBuilder credential(SASTokenCredential credential) {
         this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
         return this;
     }
 
@@ -208,6 +209,7 @@ public final class FileServiceClientBuilder {
      */
     public FileServiceClientBuilder credential(SharedKeyCredential credential) {
         this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
         return this;
     }
 

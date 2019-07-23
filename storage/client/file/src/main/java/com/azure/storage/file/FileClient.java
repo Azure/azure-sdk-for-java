@@ -422,5 +422,21 @@ public class FileClient {
     public Iterable<Integer> forceCloseHandles(String handleId) {
         return fileAsyncClient.forceCloseHandles(handleId).toIterable();
     }
+
+    /**
+     * Get snapshot id which attached to {@link FileClient}.
+     * Return {@code null} if no snapshot id attached.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the share snapshot id. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileClient.getSnapshotId}
+     *
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     */
+    public String getShareSnapshotId() {
+        return fileAsyncClient.getShareSnapshotId();
+    }
 }
 

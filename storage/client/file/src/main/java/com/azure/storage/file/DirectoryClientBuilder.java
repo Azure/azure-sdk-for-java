@@ -36,7 +36,7 @@ import java.util.Objects;
  *
  * <p>The client needs the endpoint of the Azure Storage File service, name of the share, and authorization credential.
  * {@link DirectoryClientBuilder#endpoint(String) endpoint} gives the builder the endpoint and may give the builder the
- * {@link DirectoryClientBuilder#shareName(String)}, {@link DirectoryClientBuilder#directoryName(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
+ * {@link DirectoryClientBuilder#shareName(String)}, {@link DirectoryClientBuilder#directoryPath(String)} and a {@link SASTokenCredential} that authorizes the client.</p>
  *
  * <p><strong>Instantiating a synchronous Directory Client with SAS token</strong></p>
  * {@codesnippet com.azure.storage.file.directoryClient.instantiation.sastoken}
@@ -76,7 +76,7 @@ public class DirectoryClientBuilder {
     private Configuration configuration;
     private URL endpoint;
     private String shareName;
-    private String directoryName;
+    private String directoryPath;
     private SASTokenCredential sasTokenCredential;
     private SharedKeyCredential sharedKeyCredential;
     private HttpClient httpClient;
@@ -111,10 +111,10 @@ public class DirectoryClientBuilder {
      */
     public DirectoryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName);
-        Objects.requireNonNull(directoryName);
+        Objects.requireNonNull(directoryPath);
 
         if (pipeline != null) {
-            return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, snapshot);
+            return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryPath, snapshot);
         }
 
         if (sasTokenCredential == null && sharedKeyCredential == null) {
@@ -147,7 +147,7 @@ public class DirectoryClientBuilder {
                                     .httpClient(httpClient)
                                     .build();
 
-        return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryName, snapshot);
+        return new DirectoryAsyncClient(endpoint, pipeline, shareName, directoryPath, snapshot);
     }
 
     /**
@@ -161,7 +161,7 @@ public class DirectoryClientBuilder {
      * </p>
      *
      * @return A DirectoryClient with the options set from the builder.
-     * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryName} is {@code null}.
+     * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public DirectoryClient buildClient() {
@@ -189,12 +189,12 @@ public class DirectoryClientBuilder {
             String[] pathSegments = fullURL.getPath().split("/");
             int length = pathSegments.length;
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
-            this.directoryName = length >= 3 ? pathSegments[2] : this.directoryName;
+            this.directoryPath = length >= 3 ? pathSegments[2] : this.directoryPath;
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            if (this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Directory endpoint url is malformed.");
@@ -211,7 +211,21 @@ public class DirectoryClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public DirectoryClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the File service.
+     *
+     * @param credential Shared key credential generated from the Storage account that authorizes requests
+     * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public DirectoryClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
         return this;
     }
 
@@ -260,12 +274,12 @@ public class DirectoryClientBuilder {
     /**
      * Sets the directory that the constructed clients will interact with
      *
-     * @param directoryName Path to the directory
+     * @param directoryPath Path to the directory
      * @return the updated DirectoryClientBuilder object
-     * @throws NullPointerException If {@code directoryName} is {@code null}.
+     * @throws NullPointerException If {@code directoryPath} is {@code null}.
      */
-    public DirectoryClientBuilder directoryName(String directoryName) {
-        this.directoryName = directoryName;
+    public DirectoryClientBuilder directoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
         return this;
     }
 
@@ -308,7 +322,7 @@ public class DirectoryClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link DirectoryClientBuilder#endpoint(String) endpoint},
-     * {@link DirectoryClientBuilder#shareName(String) shareName} @{link DirectoryClientBuilder#directoryName(String) filePath}, and {@link DirectoryClientBuilder#snapshot(String) snaphotShot}
+     * {@link DirectoryClientBuilder#shareName(String) shareName} @{link DirectoryClientBuilder#directoryPath(String) filePath}, and {@link DirectoryClientBuilder#snapshot(String) snaphotShot}
      * when building clients.</p>
      *
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
@@ -332,10 +346,10 @@ public class DirectoryClientBuilder {
     }
 
     /**
-     * Sets the snapshot that the constructed clients will interact with. This snapshot must be linked to the share
+     * Sets the share snapshot that the constructed clients will interact with. This snapshot must be linked to the share
      * that has been specified in the builder.
      *
-     * @param snapshot Identifier of the snapshot
+     * @param snapshot Identifier of the share snapshot
      * @return the updated DirectoryClientBuilder object.
      */
     public DirectoryClientBuilder snapshot(String snapshot) {

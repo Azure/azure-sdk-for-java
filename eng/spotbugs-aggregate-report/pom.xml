@@ -183,6 +183,12 @@
 <!--          <artifactId>azure-storage-blob</artifactId>-->
 <!--          <version>${azure-storage.version}</version>-->
 <!--        </dependency>-->
+
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-storage-file</artifactId>
+          <version>${azure-storage-file.version}</version>
+        </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>

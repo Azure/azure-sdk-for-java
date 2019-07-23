@@ -37,7 +37,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
                              .connectionString(connectionString)
                              .endpoint(endpoint)
                              .shareName(shareName)
-                             .directoryName(dirName)
+                             .directoryPath(dirName)
                              .httpClient(interceptorManager.getPlaybackClient())
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .buildAsyncClient(), true, directoryAsyncLogger);
@@ -46,7 +46,7 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
                              .connectionString(connectionString)
                              .endpoint(endpoint)
                              .shareName(shareName)
-                             .directoryName(dirName)
+                             .directoryPath(dirName)
                              .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .addPolicy(interceptorManager.getRecordPolicy())

@@ -59,7 +59,7 @@ public class DirectoryClient {
     /**
      * Constructs a FileClient that interacts with the specified file.
      *
-     * <p>If the file doesn't exist in the storage account {@link FileClient#create(long)} create} in the client will
+     * <p>If the file doesn't exist in this directory {@link FileClient#create(long)} create} in the client will
      * need to be called before interaction with the file can happen.</p>
      *
      * @param fileName Name of the file
@@ -72,7 +72,7 @@ public class DirectoryClient {
     /**
      * Constructs a DirectoryClient that interacts with the specified directory.
      *
-     * <p>If the file doesn't exist in the storage account {@link DirectoryClient#create()} create} in the client will
+     * <p>If the file doesn't exist in this directory {@link DirectoryClient#create()} create} in the client will
      * need to be called before interaction with the directory can happen.</p>
      *
      * @param subDirectoryName Name of the directory
@@ -83,7 +83,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Creates a directory in the storage account and returns a response of {@link DirectoryInfo} to interact with it.
+     * Creates a directory in the file share and returns a response of {@link DirectoryInfo} to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -99,7 +99,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Creates a directory in the storage account and returns a response of DirectoryInfo to interact with it.
+     * Creates a directory in the file share and returns a response of DirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -116,7 +116,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Deletes the directory in the storage account. The directory must be empty before it can be deleted.
+     * Deletes the directory in the file share. The directory must be empty before it can be deleted.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -132,7 +132,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Retrieves the properties of the storage account's directory.
+     * Retrieves the properties of this directory.
      * The properties includes directory metadata, last modified date, is server encrypted, and eTag.
      *
      * <p><strong>Code Samples</strong></p>
@@ -171,11 +171,11 @@ public class DirectoryClient {
     }
 
     /**
-     * Lists all directories and files in the storage account without their prefix or maxResult.
+     * Lists all sub-directories and files in this directory without their prefix or maxResult.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>List all directories and files in the account</p>
+     * <p>List all sub-directories and files in the account</p>
      *
      * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
      *
@@ -186,18 +186,18 @@ public class DirectoryClient {
     }
 
     /**
-     * Lists all shares in the storage account with their prefix or snapshots.
+     * Lists all sub-directories and files in this directory with their prefix or snapshots.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <p>List all directories with "subdir" prefix and return 10 results in the account</p>
+     * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the account</p>
      *
      * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer}
      *
      * @param prefix Optional. Filters the results to return only files and directories whose name begins with the specified prefix.
      * @param maxResults Optional. Specifies the maximum number of files and/or directories to return per page.
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
-     * @return {@link FileRef File info} in the storage account with prefix and max number of return results.
+     * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
     public Iterable<FileRef> listFilesAndDirectories(String prefix, Integer maxResults) {
         return directoryAsyncClient.listFilesAndDirectories(prefix, maxResults).toIterable();
@@ -274,7 +274,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Deletes the subdirectory with specific name in the storage account. The directory must be empty before it can be deleted.
+     * Deletes the subdirectory with specific name in this directory. The directory must be empty before it can be deleted.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -291,7 +291,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Creates a file in the storage account with specific name, max number of results and returns a response of DirectoryInfo to interact with it.
+     * Creates a file in this directory with specific name, max number of results and returns a response of DirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -309,7 +309,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Creates a file in the storage account with specific name and returns a response of DirectoryInfo to interact with it.
+     * Creates a file in this directory with specific name and returns a response of DirectoryInfo to interact with it.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -330,7 +330,7 @@ public class DirectoryClient {
     }
 
     /**
-     * Deletes the file with specific name in the storage account.
+     * Deletes the file with specific name in this directory.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -344,5 +344,21 @@ public class DirectoryClient {
      */
     public VoidResponse deleteFile(String fileName) {
         return directoryAsyncClient.deleteFile(fileName).block();
+    }
+
+    /**
+     * Get snapshot id which attached to {@link DirectoryClient}.
+     * Return {@code null} if no snapshot id attached.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the share snapshot id. </p>
+     *
+     * {@codesnippet com.azure.storage.file.directoryClient.getSnapshotId}
+     *
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     */
+    public String getShareSnapshotId() {
+        return directoryAsyncClient.getShareSnapshotId();
     }
 }

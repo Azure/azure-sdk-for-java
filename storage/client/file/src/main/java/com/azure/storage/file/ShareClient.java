@@ -164,25 +164,7 @@ public class ShareClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public VoidResponse delete() {
-        return delete(null);
-    }
-
-    /**
-     * Deletes the specific snapshot of the share in the storage account. Snapshot are identified by the time they
-     * were created.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the snapshot of share that was created at current time.</p>
-     *
-     * {@codesnippet com.azure.storage.file.shareClient.delete#string}
-     *
-     * @param snapshot Identifier of the snapshot
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
-     */
-    public VoidResponse delete(String snapshot) {
-        return client.delete(snapshot).block();
+        return delete();
     }
 
     /**
@@ -199,25 +181,7 @@ public class ShareClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public Response<ShareProperties> getProperties() {
-        return getProperties(null);
-    }
-
-    /**
-     * Retrieves the properties of a specific snapshot of the share, these include the metadata associated to it and
-     * the quota that the share is restricted to.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve the properties from the snapshot at current time.</p>
-     *
-     * {@codesnippet com.azure.storage.file.shareClient.getProperties#string}
-     *
-     * @param snapshot Identifier of the snapshot
-     * @return the properties of the share snapshot
-     * @throws StorageErrorException If the share or snapshot doesn't exist
-     */
-    public Response<ShareProperties> getProperties(String snapshot) {
-        return client.getProperties(snapshot).block();
+        return getProperties();
     }
 
     /**
@@ -367,4 +331,19 @@ public class ShareClient {
         return client.deleteDirectory(directoryName).block();
     }
 
+    /**
+     * Get snapshot id which attached to {@link ShareClient}.
+     * Return {@code null} if no snapshot id attached.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the share snapshot id. </p>
+     *
+     * {@codesnippet com.azure.storage.file.shareClient.getSnapshotId}
+     *
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     */
+    public String getSnapshotId() {
+        return client.getSnapshotId();
+    }
 }

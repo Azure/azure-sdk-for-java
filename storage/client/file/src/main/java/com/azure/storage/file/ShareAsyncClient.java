@@ -64,10 +64,7 @@ public class ShareAsyncClient {
         this.shareName = shareName;
         this.snapshot = null;
 
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(client.httpPipeline())
-            .url(client.url())
-            .version(client.version())
-            .build();
+        this.azureFileStorageClient = client;
     }
 
     /**
@@ -219,24 +216,6 @@ public class ShareAsyncClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public Mono<VoidResponse> delete() {
-        return delete(null);
-    }
-
-    /**
-     * Deletes the specific snapshot of the share in the storage account. Snapshot are identified by the time they
-     * were created.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Delete the snapshot of share that was created at current time.</p>
-     *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.delete#string}
-     *
-     * @param snapshot Identifier of the snapshot
-     * @return A response that only contains headers and response status code
-     * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
-     */
-    public Mono<VoidResponse> delete(String snapshot) {
         return azureFileStorageClient.shares().deleteWithRestResponseAsync(shareName, snapshot, null, null,  Context.NONE)
             .map(VoidResponse::new);
     }
@@ -255,24 +234,6 @@ public class ShareAsyncClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public Mono<Response<ShareProperties>> getProperties() {
-        return getProperties(null);
-    }
-
-    /**
-     * Retrieves the properties of a specific snapshot of the share, these include the metadata associated to it and
-     * the quota that the share is restricted to.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Retrieve the properties from the snapshot at current time.</p>
-     *
-     * {@codesnippet com.azure.storage.file.shareAsyncClient.getProperties#string}
-     *
-     * @param snapshot Identifier of the snapshot
-     * @return the properties of the share snapshot
-     * @throws StorageErrorException If the share or snapshot doesn't exist
-     */
-    public Mono<Response<ShareProperties>> getProperties(String snapshot) {
         return azureFileStorageClient.shares().getPropertiesWithRestResponseAsync(shareName, snapshot, null, Context.NONE)
             .map(this::mapGetPropertiesResponse);
     }
@@ -427,6 +388,22 @@ public class ShareAsyncClient {
      */
     public Mono<VoidResponse> deleteDirectory(String directoryName) {
         return getDirectoryClient(directoryName).delete().map(VoidResponse::new);
+    }
+
+    /**
+     * Get snapshot id which attached to {@link ShareAsyncClient}.
+     * Return {@code null} if no snapshot id attached.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the share snapshot id. </p>
+     *
+     * {@codesnippet com.azure.storage.file.shareAsyncClient.getSnapshotId}
+     *
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     */
+    public String getSnapshotId() {
+        return this.snapshot;
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {

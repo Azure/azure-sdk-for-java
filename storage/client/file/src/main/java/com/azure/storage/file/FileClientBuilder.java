@@ -196,9 +196,9 @@ public class FileClientBuilder {
             this.filePath = filePathParams != null ? String.join("/", filePathParams) : this.filePath;
 
             // Attempt to get the SAS token from the URL passed
-            SASTokenCredential credential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if (credential != null) {
-                this.sasTokenCredential = credential;
+            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            if (this.sasTokenCredential != null) {
+                this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage File endpoint url is malformed.");
@@ -215,10 +215,23 @@ public class FileClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public FileClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
+        this.sharedKeyCredential = null;
         return this;
     }
 
+    /**
+     * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the File service.
+     *
+     * @param credential Shared key credential generated from the Storage account that authorizes requests
+     * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public FileClientBuilder credential(SharedKeyCredential credential) {
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
+        this.sasTokenCredential = null;
+        return this;
+    }
     /**
      * Creates a {@link SharedKeyCredential} from the {@code connectionString} used to authenticate requests sent to the
      * File service.

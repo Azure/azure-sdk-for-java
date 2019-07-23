@@ -96,10 +96,7 @@ public class FileAsyncClient {
         this.shareName = shareName;
         this.filePath = filePath;
         this.snapshot = snapshot;
-        this.azureFileStorageClient = new AzureFileStorageBuilder().pipeline(azureFileStorageClient.httpPipeline())
-                            .url(azureFileStorageClient.url())
-                            .version(azureFileStorageClient.version())
-                            .build();
+        this.azureFileStorageClient = azureFileStorageClient;
     }
 
     /**
@@ -591,6 +588,22 @@ public class FileAsyncClient {
     public Flux<Integer> forceCloseHandles(String handleId) {
         return azureFileStorageClient.files().forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot, Context.NONE)
                    .flatMapMany(response -> nextPageForForceCloseHandles(response, handleId));
+    }
+
+    /**
+     * Get snapshot id which attached to {@link FileAsyncClient}.
+     * Return {@code null} if no snapshot id attached.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Get the share snapshot id. </p>
+     *
+     * {@codesnippet com.azure.storage.file.fileAsyncClient.getSnapshotId}
+     *
+     * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
+     */
+    public String getShareSnapshotId() {
+        return this.snapshot;
     }
 
     private Flux<Integer> nextPageForForceCloseHandles(final FilesForceCloseHandlesResponse response, final String handleId) {
