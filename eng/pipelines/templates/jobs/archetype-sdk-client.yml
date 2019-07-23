@@ -24,6 +24,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
+      - task: CacheBeta@0
+        inputs:
+          key: |
+            $(Build.SourcesDirectory)/sdk/core/pom.xml
+            $(Build.SourcesDirectory)/pom.xml
+            $(Build.SourcesDirectory)/pom.client.xml
+            $(Build.SourcesDirectory)/parent/pom.xml
+          path: $(Pipeline.Workspace)/.m2/repository
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:

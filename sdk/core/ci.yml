@@ -5,6 +5,9 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
+      - release/*
+      - hotfix/*
   paths:
     include:
       - sdk/core/
@@ -13,6 +16,10 @@ pr:
   branches:
     include:
       - master
+      - feature/*
+      - release/*
+      - hotfix/*
+
   paths:
     include:
       - sdk/core/
