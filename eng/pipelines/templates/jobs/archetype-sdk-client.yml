@@ -33,6 +33,9 @@ jobs:
             $(Build.SourcesDirectory)/parent/pom.xml
           path: $(Pipeline.Workspace)/.m2/repository
 
+      - script: |
+          mvn help:evaluate -Dexpression=settings.localRepository
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
