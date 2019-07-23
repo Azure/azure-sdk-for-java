@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 /**
  * This class provides utility to iterate over values.
- * @param <T> vslue
+ * @param <T> value
  */
 public class IterableResponse<T> implements Iterable<T> {
     private final Flux<T> flux;
