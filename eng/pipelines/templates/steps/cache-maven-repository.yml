@@ -10,8 +10,9 @@ steps:
 - task: CacheBeta@0
   inputs:
     key: |
-      $(Agent.JobName)
-      $(CacheSalt)
+      JobName-$(Agent.JobName)
+      CacheSalt-$(CacheSalt)
+      EnableJetty-$(EnableJetty)
       $(Build.SourcesDirectory)/pom.client.xml
       $(Build.SourcesDirectory)/pom.data.xml
       $(Build.SourcesDirectory)/pom.management.xml
