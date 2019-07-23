@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File Service.
- * Operations allowed by the client are creating, deleting and listing subdirectory and file, retrieving properties, , setting metadata
+ * Operations allowed by the client are creating, deleting and listing subdirectory and file, retrieving properties, setting metadata
  * and list or force close handles of the directory or file.
  *
  * <p><strong>Instantiating an Asynchronous Directory Client</strong></p>
