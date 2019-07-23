@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * The @ServiceInterface class should have the following rules:
  *   1) The annotation property 'name' should be non-empty
- *   2) The length of value of property 'name' should be less than 10 characters and without space
+ *   2) The length of value of property 'name' should be less than 20 characters and without space
  */
 public class ServiceInterfaceCheck extends AbstractCheck {
     @Override
@@ -42,7 +42,7 @@ public class ServiceInterfaceCheck extends AbstractCheck {
     /**
      *  The @ServiceInterface class should have the following rules:
      *   1) The annotation property 'name' should be non-empty
-     *   2) The length of value of property 'name' should be less than 10 characters and without space
+     *   2) The length of value of property 'name' should be less than 20 characters and without space
      *
      * @param interfaceDefToken INTERFACE_DEF AST node
      */

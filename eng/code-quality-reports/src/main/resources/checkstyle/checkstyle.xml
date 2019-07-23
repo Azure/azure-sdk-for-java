@@ -301,7 +301,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!--CUSTOM CHECKS-->
     <!-- The @ServiceInterface class should have the following rules:
     1) The annotation property 'name' should be non-empty
-    2) The length of value of property 'name' should be less than 10 characters and without space -->
+    2) The length of value of property 'name' should be less than 20 characters and without space -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!--CUSTOM CHECKS-->
