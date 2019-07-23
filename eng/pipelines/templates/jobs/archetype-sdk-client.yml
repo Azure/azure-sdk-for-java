@@ -31,10 +31,11 @@ jobs:
             $(Build.SourcesDirectory)/pom.xml
             $(Build.SourcesDirectory)/pom.client.xml
             $(Build.SourcesDirectory)/parent/pom.xml
-          path: $(Pipeline.Workspace)/.m2/repository
+          path: $(Pipeline.Workspace)/../../.m2/repository
+        displayName: 'Populate $(Agent.ToolsDirectory)/.m2/repository from cache'
 
-      - script: |
-          mvn help:evaluate -Dexpression=settings.localRepository
+      # - script: |
+      #     mvn help:evaluate -Dexpression=settings.localRepository
 
       - task: Maven@3
         displayName: 'Build and Package'
