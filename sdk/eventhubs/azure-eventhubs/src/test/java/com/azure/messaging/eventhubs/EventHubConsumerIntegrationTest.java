@@ -26,17 +26,19 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.exception.ErrorCondition.RESOURCE_LIMIT_EXCEEDED;
 import static com.azure.messaging.eventhubs.EventHubAsyncClient.DEFAULT_CONSUMER_GROUP_NAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Integration tests with Azure Event Hubs service. There are other tests that also test {@link EventHubConsumer} in
@@ -49,6 +51,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
     private static final String PARTITION_ID = "0";
     // The maximum number of receivers on a partition + consumer group is 5.
     private static final int MAX_NUMBER_OF_CONSUMERS = 5;
+    private static final String MESSAGE_TRACKING_ID = UUID.randomUUID().toString();
 
     private EventHubAsyncClient client;
 
@@ -66,11 +69,13 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
 
     @Override
     protected void beforeTest() {
+        skipIfNotRecordMode();
+
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(getReactorProvider());
         final ConnectionStringProperties properties = new ConnectionStringProperties(getConnectionString());
         final ConnectionOptions connectionOptions = new ConnectionOptions(properties.endpoint().getHost(),
             properties.eventHubPath(), getTokenCredential(), getAuthorizationType(), TIMEOUT, TransportType.AMQP,
-            Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newSingle("single-threaded"));
+            Retry.getNoRetry(), ProxyConfiguration.SYSTEM_DEFAULTS, Schedulers.newElastic("test-pool"));
 
         client = new EventHubAsyncClient(connectionOptions, getReactorProvider(), handlerProvider);
     }
@@ -120,7 +125,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
             }
 
             // Act
-            Flux.fromArray(producers).flatMap(producer -> producer.send(createEvents(numberOfEvents)))
+            Flux.fromArray(producers).flatMap(producer -> producer.send(TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID)))
                 .blockLast(TIMEOUT);
 
             // Assert
@@ -185,8 +190,68 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
         }
     }
 
-    private static Flux<EventData> createEvents(int numberOfEvents) {
-        return Flux.range(0, numberOfEvents)
-            .map(number -> new EventData(("Test event data. Number: " + number).getBytes(UTF_8)));
+    /**
+     * Verifies when a consumer with the same owner level takes over the consumption of events, the first consumer is
+     * closed.
+     */
+    @Test
+    public void sameOwnerLevelClosesFirstConsumer() throws InterruptedException {
+        // Arrange
+        final Semaphore semaphore = new Semaphore(1);
+        final String secondPartitionId = "1";
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
+        final EventHubConsumerOptions options = new EventHubConsumerOptions()
+            .ownerLevel(1L);
+        final EventHubConsumer consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
+        final EventHubConsumer consumer2 = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, secondPartitionId,
+            position, options);
+        final AtomicBoolean isActive = new AtomicBoolean(true);
+        final Disposable.Composite subscriptions = Disposables.composite();
+
+        final EventHubProducer producer = client.createProducer();
+        subscriptions.add(getEvents(isActive).flatMap(event -> producer.send(event)).subscribe(
+            sent -> logger.info("Event sent."),
+            error -> logger.error("Error sending event", error)));
+
+        // Act
+        logger.info("STARTED CONSUMING FROM PARTITION 1");
+        semaphore.acquire();
+
+        subscriptions.add(consumer.receive()
+            .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
+            .subscribe(
+                event -> logger.info("C1:\tReceived event sequence: {}", event.sequenceNumber()),
+                ex -> logger.error("C1:\tERROR", ex),
+                () -> {
+                    logger.info("C1:\tCompleted.");
+                    semaphore.release();
+                }));
+
+        Thread.sleep(2000);
+
+        logger.info("STARTED CONSUMING FROM PARTITION 1 with a different consumer");
+        subscriptions.add(consumer2.receive()
+            .filter(event -> TestUtils.isMatchingEvent(event, MESSAGE_TRACKING_ID))
+            .subscribe(
+                event -> logger.info("C3:\tReceived event sequence: {}", event.sequenceNumber()),
+                ex -> logger.error("C3:\tERROR", ex),
+                () -> logger.info("C3:\tCompleted.")));
+
+        // Assert
+        try {
+            boolean success = semaphore.tryAcquire(2, TimeUnit.SECONDS);
+            Assert.assertTrue(success);
+        } finally {
+            subscriptions.dispose();
+            isActive.set(false);
+            dispose(producer, consumer, consumer2);
+        }
+    }
+
+    private Flux<EventData> getEvents(AtomicBoolean isActive) {
+        return Flux.interval(Duration.ofMillis(500))
+            .takeWhile(count -> isActive.get())
+            .map(position -> TestUtils.getEvent("Event: " + position, MESSAGE_TRACKING_ID, position.intValue()));
     }
 }
