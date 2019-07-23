@@ -86,7 +86,7 @@ public class EventHubConsumerTest {
             .prefetchCount(PREFETCH)
             .retry(Retry.getNoRetry())
             .scheduler(Schedulers.elastic());
-        consumer = new EventHubConsumer(receiveLinkMono, options, TIMEOUT);
+        consumer = new EventHubConsumer(receiveLinkMono, options);
     }
 
     @After

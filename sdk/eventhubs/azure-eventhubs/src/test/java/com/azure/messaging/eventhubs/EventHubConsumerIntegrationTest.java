@@ -240,7 +240,7 @@ public class EventHubConsumerIntegrationTest extends ApiTestBase {
 
         // Assert
         try {
-            boolean success = semaphore.tryAcquire(2, TimeUnit.SECONDS);
+            boolean success = semaphore.tryAcquire(15, TimeUnit.SECONDS);
             Assert.assertTrue(success);
         } finally {
             subscriptions.dispose();

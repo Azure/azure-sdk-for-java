@@ -63,7 +63,7 @@ public class EventHubConsumer implements Closeable {
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
+    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
