@@ -27,15 +27,16 @@ jobs:
       - task: CacheBeta@0
         inputs:
           key: |
+            $(Agent.JobName)
             $(Build.SourcesDirectory)/sdk/core/pom.xml
             $(Build.SourcesDirectory)/pom.xml
             $(Build.SourcesDirectory)/pom.client.xml
             $(Build.SourcesDirectory)/parent/pom.xml
-          path: $(Pipeline.Workspace)/../../.m2/repository
-        displayName: 'Populate $(Agent.ToolsDirectory)/.m2/repository from cache'
+          path: $(Agent.WorkDirectory)/../../.m2/repository
+        displayName: 'Download/upload cache'
 
-      # - script: |
-      #     mvn help:evaluate -Dexpression=settings.localRepository
+       - script: |
+           mvn help:evaluate -Dexpression=settings.localRepository
 
       - task: Maven@3
         displayName: 'Build and Package'
@@ -73,6 +74,9 @@ jobs:
             $(Build.SourcesDirectory)/parent/pom.xml
           path: $(Agent.WorkDirectory)/../../.m2/repository
         displayName: 'Download/upload cache'
+
+      - script: |
+          mvn help:evaluate -Dexpression=settings.localRepository
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -257,6 +261,9 @@ jobs:
             $(Build.SourcesDirectory)/parent/pom.xml
           path: $(Agent.WorkDirectory)/../../.m2/repository
         displayName: 'Download/upload cache'
+
+      - script: |
+          mvn help:evaluate -Dexpression=settings.localRepository
 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
