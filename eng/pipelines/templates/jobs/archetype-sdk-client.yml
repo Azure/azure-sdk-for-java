@@ -35,8 +35,8 @@ jobs:
           path: $(Agent.WorkDirectory)/../../.m2/repository
         displayName: 'Download/upload cache'
 
-       - script: |
-           mvn help:evaluate -Dexpression=settings.localRepository
+      - script: |
+          mvn help:evaluate -Dexpression=settings.localRepository
 
       - task: Maven@3
         displayName: 'Build and Package'
