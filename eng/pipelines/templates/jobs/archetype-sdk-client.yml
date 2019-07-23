@@ -19,8 +19,7 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
-      - ${{if eq(variables.EnableCache, 'true')}}:
-        - template: ../steps/cache-maven-repository.yml
+      - template: ../steps/cache-maven-repository.yml
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -52,8 +51,7 @@ jobs:
       vmImage: 'ubuntu-16.04'
 
     steps:
-      - ${{if eq(variables.EnableCache, 'true')}}:
-        - template: ../steps/cache-maven-repository.yml
+      - template: ../steps/cache-maven-repository.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -227,8 +225,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - ${{if eq(variables.EnableCache, 'true')}}:
-        - template: ../steps/cache-maven-repository.yml
+      - template: ../steps/cache-maven-repository.yml
 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
@@ -242,19 +239,18 @@ jobs:
           scriptPath: '$(Build.BinariesDirectory)/sdk-tools/scripts/python/verify_agent_os.py'
           arguments: $(OSName)
 
-      - ${{if eq(variables.EnableJetty, 'true') }}:
-        - task: Maven@3
-          displayName: 'Start Jetty'
-          inputs:
-            mavenPomFile: pom.client.xml
-            options: '$(DefaultOptions) $(ProfileFlag)'
-            mavenOptions: '$(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'jetty:run-forked'
-          condition: eq(variables['EnableJetty'], 'true')
+      - task: Maven@3
+        displayName: 'Start Jetty'
+        inputs:
+          mavenPomFile: pom.client.xml
+          options: '$(DefaultOptions) $(ProfileFlag)'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'jetty:run-forked'
+        condition: eq(variables['EnableJetty'], 'true')
 
       - task: Maven@3
         displayName: 'Run tests'
