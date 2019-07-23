@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapistorageprod.blob.core.windows.net/sdkautomation/prod/schemas/swagger_to_sdk_config.schema.json",
   "meta": {
     "autorest_options": {
       "java": "",
@@ -7,6 +8,10 @@
       "multiapi": "",
       "use": "@microsoft.azure/autorest.java@2.1.85"
     },
-    "version": "0.2.0"
+    "version": "0.2.0",
+    "advanced_options": {
+      "create_sdk_pull_requests": true,
+      "sdk_generation_pull_request_base": "integration_branch"
+    }
   }
 }
