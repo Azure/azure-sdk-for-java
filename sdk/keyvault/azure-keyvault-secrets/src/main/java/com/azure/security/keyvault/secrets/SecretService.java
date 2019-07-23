@@ -39,7 +39,7 @@ import reactor.core.publisher.Mono;
  * This is package-private so that these REST calls are transparent to the user.
  */
 @Host("{url}")
-@ServiceInterface(name = "KVSecrets")
+@ServiceInterface(name = "KeyVaultSecrets")
 interface SecretService {
 
     @Put("secrets/{secret-name}")
