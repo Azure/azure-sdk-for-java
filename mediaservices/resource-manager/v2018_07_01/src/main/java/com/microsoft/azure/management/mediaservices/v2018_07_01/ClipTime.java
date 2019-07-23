@@ -13,13 +13,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Base class for inputs to a Job.
+ * Base class for specifying a clip time. Use sub classes of this class to
+ * specify the time position in the media.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = JobInput.class)
-@JsonTypeName("JobInput")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ClipTime.class)
+@JsonTypeName("ClipTime")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputClip", value = JobInputClip.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputs", value = JobInputs.class)
+    @JsonSubTypes.Type(name = "#Microsoft.Media.AbsoluteClipTime", value = AbsoluteClipTime.class)
 })
-public class JobInput {
+public class ClipTime {
 }

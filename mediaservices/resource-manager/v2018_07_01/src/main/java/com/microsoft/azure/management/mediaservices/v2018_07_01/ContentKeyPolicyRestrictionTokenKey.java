@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for Content Key Policy key for token validation. A derived class
  * must be used to create a token key.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyRestrictionTokenKey.class)
 @JsonTypeName("ContentKeyPolicyRestrictionTokenKey")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ContentKeyPolicySymmetricTokenKey", value = ContentKeyPolicySymmetricTokenKey.class),

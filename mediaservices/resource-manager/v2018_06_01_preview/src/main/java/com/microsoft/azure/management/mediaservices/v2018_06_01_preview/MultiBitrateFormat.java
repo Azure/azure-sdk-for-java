@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * output files produced can be controlled by specifying the outputFiles
  * collection.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = MultiBitrateFormat.class)
 @JsonTypeName("#Microsoft.Media.MultiBitrateFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.Mp4Format", value = Mp4Format.class),
