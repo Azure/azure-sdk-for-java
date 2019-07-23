@@ -19,6 +19,10 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
+      - checkout: self
+        fetchDepth: 1
+
+
       - template: ../steps/cache-maven-repository.yml
 
       - script: |
