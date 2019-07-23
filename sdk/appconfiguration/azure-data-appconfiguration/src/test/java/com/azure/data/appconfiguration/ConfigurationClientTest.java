@@ -539,7 +539,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
-        assertEquals(numberExpected, client.listSettings(filter).streamByPage().count());
+        assertEquals(numberExpected, client.listSettings(filter).stream().count());
     }
 
     /**
