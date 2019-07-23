@@ -6,7 +6,7 @@ package com.azure.core.http.rest;
 import java.util.stream.Stream;
 
 /**
- *  This class provides utility to iterate over {@link PagedResponse}.
+ *  This class provides utility to iterate over {@link PagedResponse<T>}.
  * @param <T> value
  */
 public class PagedIterable<T> extends IterableResponse<T> {
@@ -23,14 +23,14 @@ public class PagedIterable<T> extends IterableResponse<T> {
 
     /**
      * Retrieve the {@link Stream}, one page at a time.
-     * @return {@link Stream} of {@link PagedResponse}
+     * @return {@link Stream} of {@link PagedResponse<T>}
      */
     public Stream<PagedResponse<T>> streamByPage() {
         return pagedFlux.byPage().toStream();
     }
 
     /**
-     * Provides iterable API.
+     * Provides iterable API for{@link PagedResponse<T>}.
      * @return iterable interface
      */
     public Iterable<PagedResponse<T>> iterableByPage() {

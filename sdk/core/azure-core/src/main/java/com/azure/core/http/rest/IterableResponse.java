@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 
 /**
- * This class provides utility to iterate over valuea.
+ * This class provides utility to iterate over values.
  * @param <T> vslue
  */
 public class IterableResponse<T> implements Iterable<T> {
