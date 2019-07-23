@@ -60,14 +60,6 @@ Licensed under the MIT License.
       <artifactId>metrics-graphite</artifactId>
     </dependency>
 
-    <!-- Disabling this dependency as it is not getting used currently, if needed enable it back else remove it. -->
-    <!--<dependency>-->
-    <!--<groupId>io.netty</groupId>-->
-    <!--<artifactId>netty-tcnative</artifactId>-->
-    <!--<version>${netty-tcnative.version}</version>-->
-    <!--<classifier>linux-x86_64</classifier>-->
-    <!--</dependency>-->
-
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -93,14 +85,6 @@ Licensed under the MIT License.
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <!-- Disabling this dependency as it is not getting used currently, if needed enable it back else remove it. -->
-    <!--<dependency>-->
-    <!--<groupId>org.hamcrest</groupId>-->
-    <!--<artifactId>hamcrest-all</artifactId>-->
-    <!--<version>${hamcrest.version}</version>-->
-    <!--<scope>test</scope>-->
-    <!--</dependency>-->
 
     <dependency>
       <groupId>org.testng</groupId>
@@ -152,19 +136,6 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
-      <!-- Disabling this plugin as it is not getting used currently, if needed enable it back else remove it. -->
-      <!--<plugin>-->
-        <!--<groupId>org.apache.maven.plugins</groupId>-->
-        <!--<artifactId>maven-eclipse-plugin</artifactId>-->
-        <!--<version>2.8</version>-->
-        <!--<configuration>-->
-          <!--<classpathContainers>-->
-            <!--<classpathContainer>-->
-              <!--org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8-->
-            <!--</classpathContainer>-->
-          <!--</classpathContainers>-->
-        <!--</configuration>-->
-      <!--</plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
