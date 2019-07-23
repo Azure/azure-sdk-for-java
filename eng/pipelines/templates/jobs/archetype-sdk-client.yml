@@ -180,7 +180,7 @@ jobs:
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
       - publish:
-        artifactName: reports
+        artifact: reports
         condition: succeededOrFailed()
         displayName: Publish report artifacts
 
