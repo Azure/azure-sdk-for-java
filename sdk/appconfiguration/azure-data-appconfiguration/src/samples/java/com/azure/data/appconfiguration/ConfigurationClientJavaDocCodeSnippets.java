@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -13,7 +14,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.security.GeneralSecurityException;
-import java.util.stream.Stream;
 
 /**
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
@@ -277,7 +277,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        Stream<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
+        IterableResponse<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
         csStream.forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });
@@ -291,7 +291,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        Stream<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
+        IterableResponse<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
         csStream.forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
         });

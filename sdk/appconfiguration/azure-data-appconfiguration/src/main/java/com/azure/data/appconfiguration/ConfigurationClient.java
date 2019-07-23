@@ -3,6 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
@@ -14,8 +16,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.stream.Stream;
 
 /**
  * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
@@ -451,11 +451,11 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector}
      *
      * @param options Optional. Options to filter configuration setting results from the service.
-     * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Stream<ConfigurationSetting> listSettings(SettingSelector options) {
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options) {
         return listSettings(options, Context.NONE);
     }
 
@@ -471,12 +471,12 @@ public final class ConfigurationClient {
      *
      * @param options Optional. Options to filter configuration setting results from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Stream} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code options}. If no options were provided, the List
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private Stream<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
-        return client.listSettings(options, context).toStream();
+    private PagedIterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+        return new PagedIterable<>(client.listSettings(options, context));
     }
 
     /**
@@ -494,10 +494,10 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @return Revisions of the ConfigurationSetting
+     * @return {@link IterableResponse} of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public IterableResponse<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
 
@@ -513,14 +513,15 @@ public final class ConfigurationClient {
      *
      * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
      *
-     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector}
+     * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private Stream<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        return client.listSettingRevisions(selector, context).toStream();
+    private IterableResponse<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return new IterableResponse<ConfigurationSetting>(client.listSettingRevisions(selector, context));
+
     }
 }

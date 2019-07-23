@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -33,7 +34,6 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -308,7 +308,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleKeys();
 
-    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Stream<ConfigurationSetting>> testRunner) {
+    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, IterableResponse<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -323,7 +323,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleLabels();
 
-    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Stream<ConfigurationSetting>> testRunner) {
+    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, IterableResponse<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
@@ -338,7 +338,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listSettingsSelectFields();
 
-    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Stream<ConfigurationSetting>> testRunner) {
+    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, IterableResponse<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
@@ -386,7 +386,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithMultipleKeys();
 
-    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, Stream<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, IterableResponse<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
@@ -401,7 +401,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithMultipleLabels();
 
-    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, Stream<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, IterableResponse<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).label(setting.label()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);

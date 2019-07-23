@@ -7,6 +7,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -410,13 +411,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.addSetting(setting2))
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
-
             StepVerifier.create(client.listSettings(new SettingSelector().keys(key, key2)))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
-
-            return selected.stream();
+            return new IterableResponse<>(Flux.fromStream(selected.stream()));
         });
     }
 
@@ -445,7 +444,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected.stream();
+            return new IterableResponse<>(Flux.fromStream(selected.stream()));
         });
     }
 
@@ -455,20 +454,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void listSettingsSelectFields() {
         listSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
+
             for (ConfigurationSetting setting : settings) {
                 settingsBeingAdded.add(client.setSettingWithResponse(setting));
             }
 
             // Waiting for all the settings to be added.
             Flux.merge(settingsBeingAdded).blockLast();
-
             List<ConfigurationSetting> settingsReturned = new ArrayList<>();
             StepVerifier.create(client.listSettings(selector))
                 .assertNext(settingsReturned::add)
                 .assertNext(settingsReturned::add)
                 .verifyComplete();
 
-            return settingsReturned.stream();
+            return new IterableResponse<>(Flux.fromStream(settingsReturned.stream()));
         });
     }
 
@@ -573,7 +572,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected.stream();
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 
@@ -611,7 +610,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return selected.stream();
+            return new IterableResponse<>(Flux.fromIterable(selected));
         });
     }
 

@@ -377,14 +377,14 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).stream().collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
 
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
-        assertConfigurationEquals(updated, (client.listSettings(options).collect(Collectors.toList())).get(0));
+        assertConfigurationEquals(updated, (client.listSettings(options).stream().collect(Collectors.toList())).get(0));
     }
 
     /**
@@ -403,13 +403,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(updated2, client.setSetting(updated2));
 
         // Get all revisions for a key, they are listed in descending order.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated2, revisions.get(0));
         assertConfigurationEquals(updated, revisions.get(1));
         assertConfigurationEquals(original, revisions.get(2));
 
         // Verifies that we can select specific fields.
-        revisions = client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)).collect(Collectors.toList());
+        revisions = client.listSettingRevisions(new SettingSelector().keys(keyName).fields(SettingFields.KEY, SettingFields.ETAG)).stream().collect(Collectors.toList());
         validateListRevisions(updated2, revisions.get(0));
         validateListRevisions(updated, revisions.get(1));
         validateListRevisions(original, revisions.get(2));
@@ -463,7 +463,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(updated, client.updateSetting(updated));
         assertConfigurationEquals(updated2, client.updateSetting(updated2));
 
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(1, 2))).collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(key).range(new Range(1, 2))).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
         assertConfigurationEquals(original, revisions.get(1));
     }
@@ -501,7 +501,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         // Gets all versions of this value.
-        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).collect(Collectors.toList());
+        List<ConfigurationSetting> revisions = client.listSettingRevisions(new SettingSelector().keys(keyName)).stream().collect(Collectors.toList());
 
         assertNotNull(revisions);
         assertEquals(3, revisions.size());
@@ -509,7 +509,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         // We want to fetch all the revisions that existed up and including when the first revision was created.
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().keys(keyName).acceptDatetime(revisions.get(1).lastModified());
-        revisions = client.listSettingRevisions(options).collect(Collectors.toList());
+        revisions = client.listSettingRevisions(options).stream().collect(Collectors.toList());
         assertConfigurationEquals(updated, revisions.get(0));
         assertConfigurationEquals(original, revisions.get(1));
     }
@@ -525,7 +525,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
-        assertEquals(numberExpected, client.listSettingRevisions(filter).count());
+        assertEquals(numberExpected, client.listSettingRevisions(filter).stream().count());
     }
 
     /**
@@ -539,7 +539,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
-        assertEquals(numberExpected, client.listSettings(filter).count());
+        assertEquals(numberExpected, client.listSettings(filter).streamByPage().count());
     }
 
     /**
