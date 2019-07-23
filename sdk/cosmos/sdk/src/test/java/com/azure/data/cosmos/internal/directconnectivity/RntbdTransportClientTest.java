@@ -56,6 +56,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -683,6 +684,8 @@ public final class RntbdTransportClientTest {
      * @param request   An RNTBD request instance
      * @param response  The RNTBD response instance to be returned as a result of the request
      */
+    //FIXME: Test inconsistently flakes with assertion error.
+    @Ignore
     @Test(enabled = true, groups = { "unit" }, dataProvider = "fromMockedRntbdResponseToExpectedDocumentClientException")
     public void verifyRequestFailures(
         final FailureValidator.Builder builder,
