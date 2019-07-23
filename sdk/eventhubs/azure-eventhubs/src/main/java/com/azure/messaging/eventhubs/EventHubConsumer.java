@@ -109,7 +109,7 @@ public class EventHubConsumer implements Closeable {
                     ? MAXIMUM_REQUEST
                     : (int) request;
 
-                logger.info("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
                 creditsToRequest.set(newRequest);
             });
     }
