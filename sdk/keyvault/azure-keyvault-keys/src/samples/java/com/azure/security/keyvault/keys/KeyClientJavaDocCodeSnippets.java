@@ -17,7 +17,6 @@ import com.azure.security.keyvault.keys.models.EcKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.models.KeyBase;
 import com.azure.security.keyvault.keys.models.KeyCreateOptions;
-import com.azure.security.keyvault.keys.models.KeyImportOptions;
 import com.azure.security.keyvault.keys.models.RsaKeyCreateOptions;
 import com.azure.security.keyvault.keys.models.webkey.KeyCurveName;
 import com.azure.security.keyvault.keys.models.webkey.KeyOperation;
