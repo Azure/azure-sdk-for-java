@@ -32,13 +32,13 @@ public class HelloWorldAsync {
         // already exists in the key vault, then a new version of the secret is created.
         secretAsyncClient.setSecret(new Secret("BankAccountPassword", "f4G34fMh8v")
             .expires(OffsetDateTime.now().plusYears(1))).subscribe(secretResponse ->
-                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
         // Let's Get the bank secret from the key vault.
         secretAsyncClient.getSecret("BankAccountPassword").subscribe(secretResponse ->
-                System.out.printf("Secret returned with name %s , value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+                System.out.printf("Secret returned with name %s , value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
@@ -46,11 +46,11 @@ public class HelloWorldAsync {
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
         // the value of the secret.
         secretAsyncClient.getSecret("BankAccountPassword").subscribe(secretResponse -> {
-            Secret secret = secretResponse.value();
+            Secret secret = secretResponse;
             //Update the expiry time of the secret.
             secret.expires(secret.expires().plusYears(1));
             secretAsyncClient.updateSecret(secret).subscribe(updatedSecretResponse ->
-                System.out.printf("Secret's updated expiry time %s \n", updatedSecretResponse.value().expires().toString()));
+                System.out.printf("Secret's updated expiry time %s \n", updatedSecretResponse.expires().toString()));
         });
 
         Thread.sleep(2000);
@@ -65,7 +65,7 @@ public class HelloWorldAsync {
 
         // The bank account was closed, need to delete its credentials from the key vault.
         secretAsyncClient.deleteSecret("BankAccountPassword").subscribe(deletedSecretResponse ->
-            System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+            System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.recoveryId()));
 
         //To ensure secret is deleted on server side.
         Thread.sleep(30000);

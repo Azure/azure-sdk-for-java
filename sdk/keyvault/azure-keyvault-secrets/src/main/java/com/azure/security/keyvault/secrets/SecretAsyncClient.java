@@ -204,7 +204,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name, String version) {
         return withContext(context -> getSecret(name, version, context))
-            .flatMap(secretResponse -> Mono.justOrEmpty(secretResponse.value()));
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -375,10 +375,41 @@ public final class SecretAsyncClient {
      * @throws NullPointerException if {@code secret} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
+     * @return A {@link Mono} containing the {@link SecretBase updated secret}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SecretBase> updateSecret(SecretBase secret) {
+        return withContext(context -> updateSecret(secret, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Updates the attributes associated with the specified secret, but not the value of the specified secret in the key vault. The update
+     * operation changes specified attributes of an existing stored secret and attributes that are not specified in the request are left unchanged.
+     * The value of a secret itself cannot be changed. This operation requires the {@code secrets/set} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets latest version of the secret, changes its notBefore time and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
+     * returned secret details when a response is received.</p>
+     * <pre>
+     * secretAsyncClient.getSecret("secretName").subscribe(secretResponse -&gt; {
+     *     Secret secret = secretResponse.value();
+     *     //Update the not before time of the secret.
+     *     secret.notBefore(OffsetDateTime.now().plusDays(50));
+     *     secretAsyncClient.updateSecret(secret).subscribe(secretResponse -&gt;
+     *         System.out.printf("Secret's updated not before time %s \n", secretResponse.value().notBefore().toString()));
+     *   });
+     * </pre>
+     * <p>The {@code secret} is required and its fields {@link SecretBase#name() name} and {@link SecretBase#version() version} cannot be null.</p>
+     *
+     * @param secret The {@link SecretBase base secret} object with updated properties.
+     * @throws NullPointerException if {@code secret} is {@code null}.
+     * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link SecretBase#version() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version() version} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link SecretBase updated secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBase>> updateSecret(SecretBase secret) {
+    public Mono<Response<SecretBase>> updateSecretWithResponse(SecretBase secret) {
         return withContext(context -> updateSecret(secret, context));
     }
 
@@ -411,10 +442,34 @@ public final class SecretAsyncClient {
      * @param name The name of the secret to be deleted.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedSecret> deleteSecret(String name) {
+        return withContext(context -> deleteSecret(name, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Deletes a secret from the key vault. If soft-delete is enabled on the key vault then the secret is placed in the deleted state
+     * and requires to be purged for permanent deletion else the secret is permanently deleted. The delete operation applies to any secret stored in Azure Key Vault but
+     * it cannot be applied to an individual version of a secret. This operation requires the {@code secrets/delete} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
+     * deleted secret details when a response is received.</p>
+     * <pre>
+     * secretAsyncClient.deleteSecret("secretName").subscribe(deletedSecretResponse -&gt;
+     *   System.out.printf("Deleted Secret's Recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+     * </pre>
+     *
+     * @param name The name of the secret to be deleted.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecret>> deleteSecret(String name) {
+    public Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name) {
         return withContext(context -> deleteSecret(name, context));
     }
 
@@ -440,6 +495,32 @@ public final class SecretAsyncClient {
      * </pre>
      *
      * @param name The name of the deleted secret.
+     * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
+     * vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedSecret> getDeletedSecret(String name) {
+        return withContext(context -> getDeletedSecret(name, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * The get deleted secret operation returns the secrets that have been deleted for a vault enabled
+     * for soft-delete. This operation requires the {@code secrets/list} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p> Gets the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
+     * asynchronously and prints out the
+     * deleted secret details when a response is received.</p>
+     * <pre>
+     * //Assuming secret is deleted on a soft-delete enabled vault.
+     * secretAsyncClient.getDeletedSecret("secretName").subscribe(deletedSecretResponse -&gt;
+     *   System.out.printf("Deleted Secret with recovery Id %s \n", deletedSecretResponse.value().recoveryId()));
+     * </pre>
+     *
+     * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
      * contains the {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
@@ -447,7 +528,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecret>> getDeletedSecret(String name) {
+    public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
         return withContext(context -> getDeletedSecret(name, context));
     }
 
@@ -507,10 +588,34 @@ public final class SecretAsyncClient {
      * @param name The name of the deleted secret to be recovered.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when a secret with {@code name} is empty string.
+     * @return A {@link Mono} containing the {@link Secret recovered secret}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Secret> recoverDeletedSecret(String name) {
+        return withContext(context -> recoverDeletedSecret(name, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Recovers the deleted secret in the key vault to its latest version and can only be performed on a soft-delete enabled vault.
+     * This operation requires the {@code secrets/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Recovers the deleted secret from the key vault enabled for soft-delete. Subscribes to the call asynchronously and prints out the
+     * recovered secret details when a response is received.</p>
+     * <pre>
+     * //Assuming secret is deleted on a soft-delete enabled vault.
+     * secretAsyncClient.recoverDeletedSecret("deletedSecretName").subscribe(recoveredSecretResponse -&gt;
+     *   System.out.printf("Recovered Secret with name %s \n", recoveredSecretResponse.value().name()));
+     * </pre>
+     *
+     * @param name The name of the deleted secret to be recovered.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the {@link Secret recovered secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> recoverDeletedSecret(String name) {
+    public Mono<Response<Secret>> recoverDeletedSecretWithResponse(String name) {
         return withContext(context -> recoverDeletedSecret(name, context));
     }
 
@@ -535,6 +640,31 @@ public final class SecretAsyncClient {
      * </pre>
      *
      * @param name The name of the secret.
+     * @return A {@link Mono} containing the backed up secret blob.
+     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
+     * vault.
+     * @throws HttpRequestException when a secret with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<byte[]> backupSecret(String name) {
+        return withContext(context -> backupSecret(name, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Requests a backup of the specified secret be downloaded to the client. All versions of the
+     * secret will be downloaded. This operation requires the {@code secrets/backup} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out
+     * the
+     * length of the secret's backup byte array returned in the response.</p>
+     * <pre>
+     * secretAsyncClient.backupSecret("secretName").subscribe(secretBackupResponse -&gt;
+     *   System.out.printf("Secret's Backup Byte array's length %s \n", secretBackupResponse.value().length));
+     * </pre>
+     *
+     * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
      * contains the backed up secret blob.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key
@@ -542,7 +672,7 @@ public final class SecretAsyncClient {
      * @throws HttpRequestException when a secret with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<byte[]>> backupSecret(String name) {
+    public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
         return withContext(context -> backupSecret(name, context));
     }
 
@@ -570,12 +700,36 @@ public final class SecretAsyncClient {
      * </pre>
      *
      * @param backup The backup blob associated with the secret.
+     * @return A {@link Mono} containing the {@link Secret restored secret}.
+     * @throws ResourceModifiedException when {@code backup} blob is malformed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Secret> restoreSecret(byte[] backup) {
+        return withContext(context -> restoreSecret(backup, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
+    }
+
+    /**
+     * Restores a backed up secret, and all its versions, to a vault. This operation requires the
+     * {@code secrets/restore} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
+     * and prints out the
+     * restored secret details when a response is received.</p>
+     * <pre>
+     * //Pass the Secret Backup Byte array to the restore operation.
+     * secretAsyncClient.restoreSecret(secretBackupByteArray).subscribe(secretResponse -&gt;
+     *   System.out.printf("Restored Secret with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+     * </pre>
+     *
+     * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
      * contains the {@link Secret restored secret}.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> restoreSecret(byte[] backup) {
+    public Mono<Response<Secret>> restoreSecretWithResponse(byte[] backup) {
         return withContext(context -> restoreSecret(backup, context));
     }
 
@@ -729,7 +883,7 @@ public final class SecretAsyncClient {
      * {@link SecretAsyncClient#listSecretVersions()}.
      *
      * @param continuationToken The {@link PagedResponse#nextLink()} from a previous, successful call to one of the list operations.
-     * 
+     *
      * @return A {@link Mono} of {@link PagedResponse<SecretBase>} from the next page of results.
      */
     private Mono<PagedResponse<SecretBase>> listSecretVersionsNextPage(String continuationToken, Context context) {

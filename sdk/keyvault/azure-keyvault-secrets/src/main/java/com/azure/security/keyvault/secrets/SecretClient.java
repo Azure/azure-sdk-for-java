@@ -479,7 +479,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
     public Response<byte[]> backupSecretWithResponse(String name, Context context) {
-        return client.backupSecret(name).block();
+        return client.backupSecret(name, context).block();
     }
 
     /**
