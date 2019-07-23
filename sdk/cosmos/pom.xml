@@ -41,6 +41,7 @@ Licensed under the MIT License.
     <sdk-version>3.0.0</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
     <reactor-core.version>3.2.9.RELEASE</reactor-core.version>
+    <netty-tcnative.version>2.0.25.Final</netty-tcnative.version>
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
@@ -77,6 +78,13 @@ Licensed under the MIT License.
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-tcnative</artifactId>
+        <version>${netty-tcnative.version}</version>
+        <classifier>linux-x86_64</classifier>
       </dependency>
 
       <dependency>
