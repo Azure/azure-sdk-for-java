@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.models.BatchOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
