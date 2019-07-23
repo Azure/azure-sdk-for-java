@@ -177,7 +177,7 @@ public final class FileServiceClientBuilder {
 
             // Attempt to get the SAS token from the URL passed
             this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if(this.sasTokenCredential != null) {
+            if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {

@@ -164,7 +164,7 @@ public class ShareClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public VoidResponse delete() {
-        return delete();
+        return client.delete().block();
     }
 
     /**
@@ -181,7 +181,7 @@ public class ShareClient {
      * @throws StorageErrorException If the share doesn't exist
      */
     public Response<ShareProperties> getProperties() {
-        return getProperties();
+        return client.getProperties().block();
     }
 
     /**

@@ -70,16 +70,22 @@ public class ShareSample {
         }
 
         // Get the properties of the share with first snapshot.
+        ShareClient shareClientWithSnapshot1 = null;
         try {
-            Response<ShareProperties> shareProperties1 = shareClient.getProperties(shareSnapshot1);
+            shareClientWithSnapshot1 = new ShareClientBuilder().endpoint(ENDPOINT)
+                .shareName(shareName).snapshot(shareSnapshot1).buildClient();
+            Response<ShareProperties> shareProperties1 = shareClientWithSnapshot1.getProperties();
             System.out.println("This is the first snapshot eTag: " + shareProperties1.value().etag());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get properties for the first share snapshot. Reasons: " + e.getMessage());
         }
 
         // Get the properties of the share with second snapshot.
+        ShareClient shareClientWithSnapshot2 = null;
         try {
-            Response<ShareProperties> shareProperties2 = shareClient.getProperties(shareSnapshot2);
+            shareClientWithSnapshot2 = new ShareClientBuilder().endpoint(ENDPOINT)
+                .shareName(shareName).snapshot(shareSnapshot2).buildClient();
+            Response<ShareProperties> shareProperties2 = shareClientWithSnapshot2.getProperties();
             System.out.println("This is the second snapshot eTag: " + shareProperties2.value().etag());
         } catch (StorageErrorException e) {
             System.out.println("Failed to get properties for the second share snapshot. Reasons: " + e.getMessage());
@@ -98,21 +104,21 @@ public class ShareSample {
 
         // Delete the share snapshot 1
         try {
-            shareClient.delete(shareSnapshot1);
+            shareClientWithSnapshot1.delete();
         } catch (StorageErrorException e) {
             System.out.println("Failed to delete the share snapshot 1. Reasons: " + e.getMessage());
         }
 
         // Check the delete share snapshot properties.
         try {
-            shareClient.getProperties(shareSnapshot1);
+            shareClientWithSnapshot1.getProperties();
         } catch (StorageErrorException e) {
             System.out.println("This is expected. The snapshot has been delete. Reasons: " + e.getMessage());
         }
 
         // Check the one not deleted.
         try {
-            shareClient.getProperties(shareSnapshot2);
+            shareClientWithSnapshot2.getProperties();
         } catch (StorageErrorException e) {
             System.out.println("Failed to get the properties of share snapshot 2. Reasons: " + e.getMessage());
         }

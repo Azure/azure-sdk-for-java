@@ -354,7 +354,7 @@ public class DirectoryClient {
      *
      * <p>Get the share snapshot id. </p>
      *
-     * {@codesnippet com.azure.storage.file.directoryClient.getSnapshotId}
+     * {@codesnippet com.azure.storage.file.directoryClient.getShareSnapshotId}
      *
      * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
      */

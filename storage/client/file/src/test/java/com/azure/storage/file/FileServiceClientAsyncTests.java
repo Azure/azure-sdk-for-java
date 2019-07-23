@@ -60,7 +60,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .forEach(share -> {
                 ShareAsyncClient client = fileServiceAsyncClient.getShareAsyncClient(share.name());
                 try {
-                    client.delete(null).block();
+                    client.delete().block();
                 } catch (StorageErrorException ex) {
                     // Share already deleted, that's what we wanted anyways.
                 }

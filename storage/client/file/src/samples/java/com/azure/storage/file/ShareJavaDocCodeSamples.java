@@ -567,7 +567,7 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareAsyncClient#getSnapshotId()}
      */
     public void getSnapshotIdAsync() {
-        // BEGIN: com.azure.storage.file.shareClient.getSnapshotId
+        // BEGIN: com.azure.storage.file.shareAsyncClient.getSnapshotId
         OffsetDateTime currentTime = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
         ShareAsyncClient shareAysncClient = new ShareClientBuilder().endpoint("https://${accountName}.file.core.windows.net")
             .credential(SASTokenCredential.fromQuery("${SASToken}"))
@@ -575,6 +575,6 @@ public class ShareJavaDocCodeSamples {
             .snapshot(currentTime.toString())
             .buildAsyncClient();
         shareAysncClient.getSnapshotId();
-        // END: com.azure.storage.file.shareClient.getSnapshotId
+        // END: com.azure.storage.file.shareAsyncClient.getSnapshotId
     }
 }

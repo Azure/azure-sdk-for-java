@@ -19,7 +19,6 @@ import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
-import com.azure.storage.file.models.ShareProperties;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -186,7 +185,7 @@ public class ShareClientBuilder {
 
             // Attempt to get the SAS token from the URL passed
             this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
-            if(this.sasTokenCredential != null) {
+            if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {

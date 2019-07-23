@@ -61,7 +61,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
         for (ShareItem share : fileServiceClient.listShares(new ListSharesOptions().prefix(shareName))) {
             ShareClient client = fileServiceClient.getShareClient(share.name());
             try {
-                client.delete(null);
+                client.delete();
             } catch (StorageErrorException ex) {
                 // Share already deleted, that's what we wanted anyways.
             }

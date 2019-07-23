@@ -76,7 +76,7 @@ public class FileClientTest extends FileClientTestBase {
         if (FileTestHelpers.getTestMode() == TestMode.PLAYBACK) {
             return;
         }
-        shareClient.delete(null);
+        shareClient.delete();
         FileTestHelpers.sleepInRecordMode(Duration.ofSeconds(45));
     }
 

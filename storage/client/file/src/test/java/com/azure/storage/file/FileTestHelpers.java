@@ -55,6 +55,21 @@ class FileTestHelpers {
         return clientBuilder.apply(connectionString, endpoint);
     }
 
+    static ShareClientBuilder createShareClientWithSnapshot(boolean isPlayback, String shareName, String snapshot) {
+        String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
+        String endpoint = "https://teststorage.file.core.windows.net/";
+
+        if (!isPlayback) {
+            connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
+            endpoint = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+        }
+        return new ShareClientBuilder()
+            .endpoint(endpoint)
+            .connectionString(connectionString)
+            .shareName(shareName)
+            .snapshot(snapshot);
+    }
+
     static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.statusCode());
     }

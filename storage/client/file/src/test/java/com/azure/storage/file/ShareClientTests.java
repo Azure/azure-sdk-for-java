@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Assert;
 
+import static com.azure.storage.file.FileTestHelpers.createShareClientWithSnapshot;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -200,7 +201,9 @@ public class ShareClientTests extends ShareClientTestBase {
         Response<ShareSnapshotInfo> snapshotInfoResponse = shareClient.createSnapshot();
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
-        FileTestHelpers.assertResponseStatusCode(shareClient.delete(snapshotInfoResponse.value().snapshot()), 202);
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            snapshotInfoResponse.value().snapshot()).buildClient();
+        FileTestHelpers.assertResponseStatusCode(shareClientWithSnapshot.delete(), 202);
 
         FileTestHelpers.assertResponseStatusCode(shareClient.createSnapshot(), 201);
     }
@@ -214,7 +217,9 @@ public class ShareClientTests extends ShareClientTestBase {
         Response<ShareSnapshotInfo> snapshotInfoResponse = shareClient.createSnapshot(metadata);
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
-        Response<ShareProperties> propertiesResponse = shareClient.getProperties(snapshotInfoResponse.value().snapshot());
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            snapshotInfoResponse.value().snapshot()).buildClient();
+        Response<ShareProperties> propertiesResponse = shareClientWithSnapshot.getProperties();
         FileTestHelpers.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(metadata, propertiesResponse.value().metadata());
     }
@@ -233,7 +238,9 @@ public class ShareClientTests extends ShareClientTestBase {
         FileTestHelpers.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(createMetadata, propertiesResponse.value().metadata());
 
-        propertiesResponse = shareClient.getProperties(snapshotInfoResponse.value().snapshot());
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            snapshotInfoResponse.value().snapshot()).buildClient();
+        propertiesResponse = shareClientWithSnapshot.getProperties();
         FileTestHelpers.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(updateMetadata, propertiesResponse.value().metadata());
     }
@@ -266,7 +273,9 @@ public class ShareClientTests extends ShareClientTestBase {
         Response<ShareSnapshotInfo> snapshotInfoResponse = shareClient.createSnapshot(snapshotMetadata);
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
-        Response<ShareProperties> propertiesResponse = shareClient.getProperties(snapshotInfoResponse.value().snapshot());
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            snapshotInfoResponse.value().snapshot()).buildClient();
+        Response<ShareProperties> propertiesResponse = shareClientWithSnapshot.getProperties();
         FileTestHelpers.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(quotaInGB, propertiesResponse.value().quota());
         assertEquals(snapshotMetadata, propertiesResponse.value().metadata());
@@ -281,7 +290,9 @@ public class ShareClientTests extends ShareClientTestBase {
     public void getSnapshotPropertiesDoesNotExist() {
         FileTestHelpers.assertResponseStatusCode(shareClient.create(), 201);
 
-        FileTestHelpers.assertExceptionStatusCode(() -> shareClient.getProperties("snapshot"), 400);
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            "snapshot").buildClient();
+        FileTestHelpers.assertExceptionStatusCode(() -> shareClientWithSnapshot.getProperties(), 400);
     }
 
     @Override
@@ -334,7 +345,9 @@ public class ShareClientTests extends ShareClientTestBase {
         Response<ShareSnapshotInfo> snapshotInfoResponse = shareClient.createSnapshot();
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
-        Response<ShareProperties> propertiesResponse = shareClient.getProperties(snapshotInfoResponse.value().snapshot());
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            snapshotInfoResponse.value().snapshot()).buildClient();
+        Response<ShareProperties> propertiesResponse = shareClientWithSnapshot.getProperties();
         FileTestHelpers.assertResponseStatusCode(propertiesResponse, 200);
         assertEquals(metadata, propertiesResponse.value().metadata());
     }
@@ -348,7 +361,9 @@ public class ShareClientTests extends ShareClientTestBase {
     public void getSnapshotMetadataDoesNotExistFromShareClient() {
         FileTestHelpers.assertResponseStatusCode(shareClient.create(), 201);
 
-        FileTestHelpers.assertExceptionStatusCode(() -> shareClient.getProperties("snapshot"), 400);
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(), shareName,
+            "snapshot").buildClient();
+        FileTestHelpers.assertExceptionStatusCode(() -> shareClientWithSnapshot.getProperties(), 400);
     }
 
     @Override

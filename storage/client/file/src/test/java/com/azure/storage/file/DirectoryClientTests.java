@@ -67,7 +67,7 @@ public class DirectoryClientTests extends DirectoryClientTestBase {
         if (FileTestHelpers.getTestMode() == TestMode.PLAYBACK) {
             return;
         }
-        shareClient.delete(null);
+        shareClient.delete();
         FileTestHelpers.sleepInRecordMode(Duration.ofSeconds(45));
     }
 

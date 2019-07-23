@@ -431,7 +431,7 @@ public class FileClient {
      *
      * <p>Get the share snapshot id. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileClient.getSnapshotId}
+     * {@codesnippet com.azure.storage.file.fileClient.getShareSnapshotId}
      *
      * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base share.
      */
