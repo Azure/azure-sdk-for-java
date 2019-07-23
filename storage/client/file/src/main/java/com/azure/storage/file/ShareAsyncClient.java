@@ -74,7 +74,7 @@ public class ShareAsyncClient {
      * @param endpoint URL for the Storage File service
      * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
      * @param shareName Name of the share
-     * @param snapshot Optional. Specific snapshot of the share
+     * @param snapshot Optional specific snapshot of the share
      */
     ShareAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String snapshot) {
         this.shareName = shareName;
@@ -154,8 +154,8 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.create#map-integer.quota}
      *
-     * @param metadata Optional. Metadata to associate with the share
-     * @param quotaInGB Optional. Maximum size the share is allowed to grow to in GB. This must be greater than 0 and
+     * @param metadata Optional metadata to associate with the share
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing information about the share and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata or {@code quotaInGB} is outside the
@@ -192,7 +192,7 @@ public class ShareAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createSnapshot#map}
      *
-     * @param metadata Optional. Metadata to associate with the snapshot. If {@code null} the metadata of the share
+     * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
      * @return A response containing information about the snapshot of share.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
@@ -361,7 +361,7 @@ public class ShareAsyncClient {
      * {@codesnippet com.azure.storage.file.shareAsyncClient.createDirectory#string-map}
      *
      * @param directoryName Name of the directory
-     * @param metadata Optional. Metadata to associate with the directory
+     * @param metadata Optional metadata to associate with the directory
      * @return A response containing a {@link DirectoryAsyncClient} to interact with the created directory and the
      * status of its creation.
      * @throws StorageErrorException If the share doesn't exist, the directory already exists or is in the process of

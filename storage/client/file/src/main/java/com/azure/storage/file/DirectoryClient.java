@@ -107,7 +107,7 @@ public class DirectoryClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.create#map}
      *
-     * @param metadata Optional. Metadata to associate with the directory
+     * @param metadata Optional metadata to associate with the directory.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
@@ -162,7 +162,7 @@ public class DirectoryClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.setMetadata#map.clearMetadata}
      *
-     * @param metadata Optional. Metadata to set on the directory, if null is passed the metadata for the directory is cleared
+     * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return information about the directory
      * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
      */
@@ -194,8 +194,8 @@ public class DirectoryClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories#string-integer}
      *
-     * @param prefix Optional. Filters the results to return only files and directories whose name begins with the specified prefix.
-     * @param maxResults Optional. Specifies the maximum number of files and/or directories to return per page.
+     * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
+     * @param maxResults Optional maximum number of files and/or directories to return per page.
      *                   If the request does not specify maxresults or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @return {@link FileRef File info} in this directory with prefix and max number of return results.
      */
@@ -212,7 +212,7 @@ public class DirectoryClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.getHandles}
      *
-     * @param maxResult Optional. The number of results will return per page
+     * @param maxResult Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
      */
@@ -222,6 +222,8 @@ public class DirectoryClient {
 
     /**
      * Closes a handle or handles opened on a directory or a file at the service. It is intended to be used alongside {@link DirectoryClient#getHandles(Integer, boolean)} .
+     * TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
+     * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -264,7 +266,7 @@ public class DirectoryClient {
      * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
      *
      * @param subDirectoryName Name of the subdirectory
-     * @param metadata Optional. Metadata to associate with the subdirectory
+     * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or subdirectory is an invalid resource name.
      */
@@ -320,7 +322,7 @@ public class DirectoryClient {
      * @param fileName Name of the file
      * @param maxSize Max size of the file
      * @param httpHeaders the Http headers set to the file
-     * @param metadata Optional. Name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or file name is an invalid resource name.
      */

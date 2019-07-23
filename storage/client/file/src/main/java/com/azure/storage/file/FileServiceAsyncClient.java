@@ -271,8 +271,8 @@ public final class FileServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.fileServiceAsyncClient.createShare#string-map-integer.quota}
      *
      * @param shareName Name of the share
-     * @param metadata Optional. Metadata to associate with the share
-     * @param quotaInGB Optional. Maximum size the share is allowed to grow to in GB. This must be greater than 0 and
+     * @param metadata Optional metadata to associate with the share
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
      * @return A response containing the ShareAsyncClient and the status of creating the share.
      * @throws StorageErrorException If a share with the same name already exists or {@code quotaInGB} is outside the

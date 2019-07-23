@@ -106,7 +106,7 @@ public class FileAsyncClient {
      * @param httpPipeline HttpPipeline that HTTP requests and response flow through
      * @param shareName Name of the share
      * @param filePath Path to the file
-     * @param snapshot Optional. The snapshot of the share
+     * @param snapshot Optional snapshot of the share
      */
     FileAsyncClient(URL endpoint, HttpPipeline httpPipeline, String shareName, String filePath, String snapshot) {
         this.shareName = shareName;
@@ -159,7 +159,7 @@ public class FileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
-     * @param metadata Optional. Name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      *                           @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
@@ -179,7 +179,7 @@ public class FileAsyncClient {
      * {@codesnippet com.azure.storage.file.fileAsyncClient.startCopy#string-map}
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
-     * @param metadata Optional. Name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
+     * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
      *      *                           @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      * @return A response containing the file copy info and the status of copying the file.
      */
@@ -231,7 +231,7 @@ public class FileAsyncClient {
      * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadToFile#string-filerange}
      *
      * @param downloadFilePath The path where store the downloaded file
-     * @param range Optional. Return file data only from the specified byte range.
+     * @param range Optional byte range which returns file data only from the specified range.
      * @return An empty response.
      */
     public Mono<Void> downloadToFile(String downloadFilePath, FileRange range) {
@@ -312,8 +312,8 @@ public class FileAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.downloadWithProperties#filerange-boolean}
      *
-     * @param range Optional. Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 Optional. When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param range Optional byte range which returns file data only from the specified range.
+     * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to true, as long as the range is less than or equal to 4 MB in size.
      * @return A response that only contains headers and response status code
      */
     public Mono<Response<FileDownloadInfo>> downloadWithProperties(FileRange range, Boolean rangeGetContentMD5) {
@@ -435,11 +435,13 @@ public class FileAsyncClient {
      * {@codesnippet com.azure.storage.file.fileAsyncClient.upload#bytebuf-long-int-filerangewritetype}
      *
      * @param data The data which will upload to the storage file.
-     * @param offset Optional. The starting point of the upload range. It will start from the beginning if it is {@code null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero.
      * @param type You may specify one of the following options:
-     *              - Update: Writes the bytes specified by the request body into the specified range.
-     *              - Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.
+     * <ul>
+     *      <li>Update: Writes the bytes specified by the request body into the specified range.</li>
+     *      <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
+     * <ul/>
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If you attempt to upload a range that is larger than 4 MB, the service returns status code 413 (Request Entity Too Large)
      */
@@ -476,8 +478,11 @@ public class FileAsyncClient {
      *
      * @param uploadFilePath The path where store the source file to upload
      * @param type You may specify one of the following options:
-     *              - Update: Writes the bytes specified by the request body into the specified range.
-     *              - Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.
+     * <ul>
+     *    <li>Update: Writes the bytes specified by the request body into the specified range.</li>
+     *    <li>Clear: Clears the specified range and releases the space used in storage for that range. To clear a range, set the Content-Length header to zero.</li>
+     * <ul/>
+     *
      * @return An empty response.
      * @throws UncheckedIOException If an I/O error occurs.
      */
@@ -532,7 +537,7 @@ public class FileAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.listRanges#filerange}
      *
-     * @param range Optional. Return file data only from the specified byte range.
+     * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
      */
     public Flux<FileRange> listRanges(FileRange range) {
@@ -565,7 +570,7 @@ public class FileAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.fileAsyncClient.listHandles#integer}
      *
-     * @param maxResults Optional. The number of results will return per page
+     * @param maxResults Optional maximum number of results will return per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
      */
     public Flux<HandleItem> listHandles(Integer maxResults) {
@@ -575,6 +580,8 @@ public class FileAsyncClient {
 
     /**
      * Closes a handle or handles opened on a file at the service. It is intended to be used alongside {@link FileAsyncClient#listHandles()} (Integer)} .
+     * TODO: Will change the return type to how many handles have been closed. Implement one more API to force close all handles.
+     * TODO: @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/4525">Github Issue 4525</a>
      *
      * <p><strong>Code Samples</strong></p>
      *

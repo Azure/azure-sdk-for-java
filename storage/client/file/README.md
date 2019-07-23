@@ -209,38 +209,43 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a share
 Create a share in the Storage Account. Throws StorageErrorException If the share fails to be created.
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) with share name of ${shareName} = "testshare"
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
+String shareName = "testshare";
 fileServiceClient.createShare(shareName);
 ```
 
 ### Create a snapshot on Share
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) with share name of `${shareName} = "testshare"`
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
+String shareName = "testshare";
 ShareClient shareClient = fileServiceClient.getShareClient(shareName);
 shareClient.createSnapshot();
 ```
 
 ### Create a directory
-Taking the [`${shareClient}](#Create-snapshot-on-share) initialized above, [`${shareClient}`](#Share) with directory name of `${dirName} = "testdir"`
+Taking the [`${shareClient}](#Create-snapshot-on-share) initialized above, [`${shareClient}`](#Share) .
 
 ```Java
+String dirName = "testdir";
 shareClient.createDirectory(dirName);
 ```
 
 ### Create a subdirectory
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) with the subdirectory name of `${subDirName}="testsubdir"`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
+String subDirName = "testsubdir";
 directoryClient.createSubDirectory(subDirName);
 ```
 
 ### Create a File
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) with the file name of `${fileName}="testfile"`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
+String fileName = "testfile";
 directoryClient.createFile(fileName);
 ```
 
@@ -262,7 +267,7 @@ directoryClient.listFilesAndDirectories();
 Taking the fileClient in KeyConcept, [`${fileClient}`](#File)
 
 ```Java
-fileClient.ranges();
+fileClient.listRanges();
 ```
 
 ### Delete a share
@@ -273,83 +278,98 @@ shareClient.delete();
 ```
 
 ### Delete a directory
-Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) with directory name of `${dirName} = "testdir"`
+Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
+String dirName = "testdir";
 shareClient.deleteDirectory(dirName)
 ```
 
 ### Delete a subdirectory
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) with the subdirectory name of `${subDirName}="testsubdir"`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
+String subDirName = "testsubdir";
 directoryClient.deleteSubDirectory(subDirName)
 ```
 
 ### Delete a file
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) with the file name of `${fileName}="testfile"`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) .
 
 ```Java
+String fileName = "testfile";
 directoryClient.deleteFile(fileName)
 ```
 
 ### Copy a file
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the source URL of `${sourceURL}="https://myaccount.file.core.windows.net/myshare/myfile"`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with string of source URL.
 
 ```Java
+String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
 Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);
 ```
 
 ### Abort copy a file
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file).value().copyId()`.
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the copy info response returned above `${copyId}=[copyInfoResponse](#Copy-a-file)`.
 
 ```Java
+String copyId = copyInfoResponse.value().copyId();
 fileClient.abortCopy(copyId);
 ```
 
 ### Upload data to storage
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the data `${data}=Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with data of "default" .
 
 ```Java
+ByteBuf data = Unpooled.wrappedBuffer("default".getBytes(StandardCharsets.UTF_8));
 fileClient.upload(data, data.readableBytes());
 ```
 
 ### Upload file to storage
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the file of filePath `${filePath}="/mydir/myfile"`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 ```Java
-fileClient.uploadFromFile(filePath, );
+String filePath = "/mydir/myfile";
+fileClient.uploadFromFile(filePath);
 ```
 
 ### Download data from file range
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the file range of `${fileRange}=new FileRnage(1024, 2048)`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with the range from 1024 to 2048.
 ```Java
+FileRange fileRange = new FileRange(1024, 2047);
 fileClient.downloadWithProperties(fileRange, false);
 ```
 
 ### Download file from storage
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) and download to the file of filePath `${filePath}="/mydir/myfile"`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) and download to the file of filePath.
 ```Java
+String filePath = "/mydir/myfile";
 fileClient.downloadToFile(filePath);
 ```
 
 ### Get a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services)
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
 fileServiceClient.getProperties();
 ```
 
 ### Set a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) with `${fileServiceProperties}=new FileServiceProperties()`
+Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
 
 ```Java
-fileServiceClient.setProperties(fileServiceProperties);
+FileServiceProperties properties = fileServiceClient.getProperties().value();
+
+properties.minuteMetrics().enabled(true);
+properties.hourMetrics().enabled(true);
+
+VoidResponse response = fileServiceClient.setProperties(properties);
 ```
 
 ### Set a share metadata
-Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) with metadata of `${metadata}=Collections.singletonMap("directory", "metadata")`
+Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
+Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
 shareClient.setMetadata(metadata);
 ```
 
@@ -361,10 +381,15 @@ shareClient.getAccessPolicy();
 ```
 
 ### Set a share access policy
-Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) with list of permissions `${permissions}=Arrays.asList(= Arrays.asList(new SignedIdentifier()))`
+Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
-shareClient.setAccessPolicy(permissions);
+AccessPolicy accessPolicy = new AccessPolicy().permission("r")
+            .start(OffsetDateTime.now(ZoneOffset.UTC))
+            .expiry(OffsetDateTime.now(ZoneOffset.UTC).plusDays(10));
+
+SignedIdentifier permission = new SignedIdentifier().id("mypolicy").accessPolicy(accessPolicy);
+shareClient.setAccessPolicy(Collections.singletonList(permission));
 ```
 
 ### Get handles on directory file
@@ -375,23 +400,26 @@ Iterable<HandleItem> handleItems = directoryClient.getHandles(null, true);
 ```
 
 ### Force close handles on handle id
-Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file).iterator().next().handleId()`
+Taking the directoryClient in KeyConcept, [`${directoryClient}`](#Directory) and the handle id returned above `${handleId}=[handleItems](#Get-handles-on-directory-file)`
 
 ```Java
+String handleId = result.iterator().next().handleId();
 directoryClient.forceCloseHandles(handleId);
 ```
 
 ### Set quota on share
-Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) with `${quotaOnGB}=1`
+Taking the shareClient in KeyConcept, [`${shareClient}`](#Share) .
 
 ```Java
+int quotaOnGB = 1;
 shareClient.setQuota(quotaOnGB);
 ```
 
 ### Set file httpheaders
-Taking the fileClient in KeyConcept, [`${fileClient}`](#File) with httpHeaders `${httpHeaders}=new FileHTTPHeaders().fileContentType("text/plain")`
+Taking the fileClient in KeyConcept, [`${fileClient}`](#File) .
 
 ```Java
+FileHTTPHeaders httpHeaders = new FileHTTPHeaders().fileContentType("text/plain");
 fileClient.setHttpHeaders(httpHeaders);
 ```
 
