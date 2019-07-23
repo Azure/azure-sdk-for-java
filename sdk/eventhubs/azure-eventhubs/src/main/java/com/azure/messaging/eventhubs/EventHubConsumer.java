@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -70,7 +69,7 @@ public class EventHubConsumer implements Closeable {
         // Caching the created link so we don't invoke another link creation.
         this.messageFlux = receiveLinkMono.flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initialising prefetch credit: {}", options.prefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.prefetchCount());
                 link.addCredits(options.prefetchCount());
 
                 link.setEmptyCreditListener(() -> {
@@ -79,6 +78,21 @@ public class EventHubConsumer implements Closeable {
                     } else {
                         logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
                         return 0;
+                    }
+                });
+
+                link.getErrors().subscribe(error -> {
+                    logger.info("Error received in ReceiveLink. {}", error.toString());
+                });
+
+                link.getShutdownSignals().subscribe(signal -> {
+                    logger.info("Shutting down. Initiated by client? {}. Reason: {}",
+                        signal.isInitiatedByClient(), signal.toString());
+
+                    try {
+                        close();
+                    } catch (IOException e) {
+                        logger.error("Error closing consumer: {}", e.toString());
                     }
                 });
             }
@@ -130,8 +144,8 @@ public class EventHubConsumer implements Closeable {
     }
 
     /**
-     * Begin consuming events until there are no longer any subscribers, or the parent {@link EventHubAsyncClient#close()
-     * EventHubAsyncClient.close()} is called.
+     * Begin consuming events until there are no longer any subscribers, or the parent {@link
+     * EventHubAsyncClient#close() EventHubAsyncClient.close()} is called.
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *
