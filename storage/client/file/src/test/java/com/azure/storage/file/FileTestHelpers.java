@@ -5,6 +5,7 @@ package com.azure.storage.file;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -55,19 +56,29 @@ class FileTestHelpers {
         return clientBuilder.apply(connectionString, endpoint);
     }
 
-    static ShareClientBuilder createShareClientWithSnapshot(boolean isPlayback, String shareName, String snapshot) {
+    static ShareClientBuilder createShareClientWithSnapshot(InterceptorManager interceptorManager, String shareName, String snapshot) {
         String connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;AccountKey=atestaccountkey;EndpointSuffix=core.windows.net";
         String endpoint = "https://teststorage.file.core.windows.net/";
 
-        if (!isPlayback) {
+        ShareClientBuilder shareClientBuilder;
+        if (!interceptorManager.isPlaybackMode()) {
             connectionString = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING");
             endpoint = ConfigurationManager.getConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+            shareClientBuilder = new ShareClientBuilder()
+                .endpoint(endpoint)
+                .connectionString(connectionString)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .shareName(shareName)
+                .snapshot(snapshot);
+        } else {
+            shareClientBuilder = new ShareClientBuilder()
+                .endpoint(endpoint)
+                .connectionString(connectionString)
+                .httpClient(interceptorManager.getPlaybackClient())
+                .shareName(shareName)
+                .snapshot(snapshot);
         }
-        return new ShareClientBuilder()
-            .endpoint(endpoint)
-            .connectionString(connectionString)
-            .shareName(shareName)
-            .snapshot(snapshot);
+        return shareClientBuilder;
     }
 
     static void assertResponseStatusCode(Response<?> response, int expectedStatusCode) {

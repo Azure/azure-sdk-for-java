@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share33881c79?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share783156eb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "97675c70-401a-0089-1425-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675c70-401a-0089-1425-3c76b6000000\nTime:2019-07-16T22:28:28.1549544Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
+      "x-ms-request-id" : "a4781f7b-001a-006b-6b75-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a4781f7b-001a-006b-6b75-4192c4000000\nTime:2019-07-23T16:43:44.4843579Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share33881c79?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share783156eb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -32,17 +32,17 @@
       "retry-after" : "0",
       "Content-Length" : "329",
       "StatusCode" : "400",
-      "x-ms-request-id" : "97675c71-401a-0089-1525-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:97675c71-401a-0089-1525-3c76b6000000\nTime:2019-07-16T22:28:28.1999880Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
+      "x-ms-request-id" : "a4781f7c-001a-006b-6c75-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a4781f7c-001a-006b-6c75-4192c4000000\nTime:2019-07-23T16:43:44.5303917Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share33881c79&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share783156eb&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -50,11 +50,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "97675c72-401a-0089-1625-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share33881c79</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 16 Jul 2019 22:28:27 GMT",
+      "x-ms-request-id" : "a4781f7d-001a-006b-6d75-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share783156eb</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share33881c79" ]
+  "variables" : [ "share783156eb" ]
 }

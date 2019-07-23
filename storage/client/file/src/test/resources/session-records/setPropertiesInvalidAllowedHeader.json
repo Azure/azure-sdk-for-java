@@ -4,7 +4,7 @@
     "Uri" : "https://sima.file.core.windows.net?restype=service&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,17 +14,17 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "97675cba-401a-0089-4a25-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:97675cba-401a-0089-4a25-3c76b6000000\nTime:2019-07-16T22:28:31.1530899Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:28:30 GMT",
+      "x-ms-request-id" : "a4781fc2-001a-006b-2175-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:a4781fc2-001a-006b-2175-4192c4000000\nTime:2019-07-23T16:43:47.4734913Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:43:46 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share7731861b&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share42833eb8&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -32,11 +32,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "97675cbb-401a-0089-4b25-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share7731861b</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 16 Jul 2019 22:28:30 GMT",
+      "x-ms-request-id" : "a4781fc3-001a-006b-2275-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share42833eb8</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 23 Jul 2019 16:43:46 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share7731861b" ]
+  "variables" : [ "share42833eb8" ]
 }

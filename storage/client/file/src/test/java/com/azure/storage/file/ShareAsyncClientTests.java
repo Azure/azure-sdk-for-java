@@ -232,7 +232,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
         ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(
-            interceptorManager.isPlaybackMode(), shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
+            interceptorManager, shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.delete())
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
@@ -255,7 +255,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
         ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(
-            interceptorManager.isPlaybackMode(), shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
+            interceptorManager, shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
             .assertNext(response -> {
                 FileTestHelpers.assertResponseStatusCode(response, 200);
@@ -283,7 +283,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
                 assertEquals(createMetadata, response.value().metadata());
             })
             .verifyComplete();
-        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
             shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
 
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
@@ -330,7 +330,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         Response<ShareSnapshotInfo> snapshotInfoResponse = shareAsyncClient.createSnapshot(snapshotMetadata).block();
         assertNotNull(snapshotInfoResponse);
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
-        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
             shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
             .assertNext(response -> {
@@ -352,7 +352,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         StepVerifier.create(shareAsyncClient.create())
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
-        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
             shareName, "snapshot").buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
@@ -431,7 +431,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         assertNotNull(snapshotInfoResponse);
         FileTestHelpers.assertResponseStatusCode(snapshotInfoResponse, 201);
 
-        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
             shareName, snapshotInfoResponse.value().snapshot()).buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
             .assertNext(response -> {
@@ -452,7 +452,7 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         StepVerifier.create(shareAsyncClient.create())
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
-        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+        ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
             shareName, "snapshot").buildAsyncClient();
         StepVerifier.create(shareAsyncClientWithSnapshot.getProperties())
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
@@ -605,9 +605,14 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
 
     @Override
     public void getSnapshotId() {
-        String actualSnapshot = shareAsyncClient.createSnapshot().block().value().snapshot();
-        ShareAsyncClient shareAsyncClient = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
-            shareName, actualSnapshot).buildAsyncClient();
-        Assert.assertEquals(actualSnapshot, shareAsyncClient.getSnapshotId());
+        shareAsyncClient.create().block();
+        StepVerifier.create(shareAsyncClient.createSnapshot())
+            .assertNext(response -> {
+                ShareAsyncClient shareAsyncClientWithSnapshot = createShareClientWithSnapshot(interceptorManager,
+                    shareName, response.value().snapshot()).buildAsyncClient();
+                Assert.assertEquals(response.value().snapshot(), shareAsyncClientWithSnapshot.getSnapshotId());
+            })
+            .verifyComplete();
+
     }
 }

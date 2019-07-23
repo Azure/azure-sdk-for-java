@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/share43260475?restype=share&comp=stats",
+    "Uri" : "https://sima.file.core.windows.net/share840508c1?restype=share&comp=stats",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "97675a60-401a-0089-5c25-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:97675a60-401a-0089-5c25-3c76b6000000\nTime:2019-07-16T22:25:59.4170496Z</Message></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:25:58 GMT",
+      "x-ms-request-id" : "a4781db4-001a-006b-7175-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a4781db4-001a-006b-7175-4192c4000000\nTime:2019-07-23T16:41:16.1013399Z</Message></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:41:15 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share43260475?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share840508c1?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "97675a62-401a-0089-5d25-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:97675a62-401a-0089-5d25-3c76b6000000\nTime:2019-07-16T22:25:59.4670848Z</Message></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:25:59 GMT",
+      "x-ms-request-id" : "a4781db6-001a-006b-7275-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a4781db6-001a-006b-7275-4192c4000000\nTime:2019-07-23T16:41:16.1493733Z</Message></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:41:15 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share43260475" ]
+  "variables" : [ "share840508c1" ]
 }

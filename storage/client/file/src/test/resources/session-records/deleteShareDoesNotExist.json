@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share36281948?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share60248f77?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -13,17 +13,17 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "97675c8c-401a-0089-2825-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:97675c8c-401a-0089-2825-3c76b6000000\nTime:2019-07-16T22:28:29.2697483Z</Message></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT",
+      "x-ms-request-id" : "a4781f91-001a-006b-7d75-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a4781f91-001a-006b-7d75-4192c4000000\nTime:2019-07-23T16:43:45.5241000Z</Message></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:43:44 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share36281948&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share60248f77&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -31,11 +31,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "97675c8d-401a-0089-2925-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share36281948</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 16 Jul 2019 22:28:28 GMT",
+      "x-ms-request-id" : "a4781f92-001a-006b-7e75-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share60248f77</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 23 Jul 2019 16:43:44 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share36281948" ]
+  "variables" : [ "share60248f77" ]
 }

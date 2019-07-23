@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share872249d8?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share439185d7?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70A3C77F9E2A1\"",
-      "Last-Modified" : "Tue, 16 Jul 2019 22:25:12 GMT",
+      "ETag" : "\"0x8D70F8C78A0A76D\"",
+      "Last-Modified" : "Tue, 23 Jul 2019 16:40:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "976759dc-401a-0089-1d25-3c76b6000000",
-      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT"
+      "x-ms-request-id" : "a4781d3f-001a-006b-4175-4192c4000000",
+      "Date" : "Tue, 23 Jul 2019 16:40:28 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share872249d8/testshare?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/share439185d7/testshare?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -31,17 +31,17 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "976759de-401a-0089-1e25-3c76b6000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:976759de-401a-0089-1e25-3c76b6000000\nTime:2019-07-16T22:25:12.3945618Z</Message></Error>",
-      "Date" : "Tue, 16 Jul 2019 22:25:11 GMT",
+      "x-ms-request-id" : "a4781d41-001a-006b-4275-4192c4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:a4781d41-001a-006b-4275-4192c4000000\nTime:2019-07-23T16:40:29.0387539Z</Message></Error>",
+      "Date" : "Tue, 23 Jul 2019 16:40:28 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share872249d8?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share439185d7?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
@@ -49,9 +49,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "976759df-401a-0089-1f25-3c76b6000000",
-      "Date" : "Tue, 16 Jul 2019 22:25:12 GMT"
+      "x-ms-request-id" : "a4781d42-001a-006b-4375-4192c4000000",
+      "Date" : "Tue, 23 Jul 2019 16:40:28 GMT"
     }
   } ],
-  "variables" : [ "share872249d8" ]
+  "variables" : [ "share439185d7" ]
 }

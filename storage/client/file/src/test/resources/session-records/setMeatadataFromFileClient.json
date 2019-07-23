@@ -1,42 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile58811c37",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile571383d4",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70A3C3E24D3E1\"",
-      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
+      "ETag" : "\"0x8D70F8C3ECFB295\"",
+      "Last-Modified" : "Tue, 23 Jul 2019 16:38:51 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "976758ba-401a-0089-7f25-3c76b6000000",
+      "x-ms-request-id" : "a4781c37-001a-006b-3c75-4192c4000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 16 Jul 2019 22:23:35 GMT"
+      "Date" : "Tue, 23 Jul 2019 16:38:51 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile58811c37?comp=metadata",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile571383d4?comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
-      "User-Agent" : "azsdk-java-storage-file/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70A3C3E2E4B7E\"",
-      "Last-Modified" : "Tue, 16 Jul 2019 22:23:35 GMT",
+      "ETag" : "\"0x8D70F8C3ED81888\"",
+      "Last-Modified" : "Tue, 23 Jul 2019 16:38:52 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "976758bb-401a-0089-8025-3c76b6000000",
+      "x-ms-request-id" : "a4781c38-001a-006b-3d75-4192c4000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 16 Jul 2019 22:23:35 GMT"
+      "Date" : "Tue, 23 Jul 2019 16:38:51 GMT"
     }
   } ],
-  "variables" : [ "file58811c37" ]
+  "variables" : [ "file571383d4" ]
 }
