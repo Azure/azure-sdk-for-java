@@ -252,7 +252,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'jetty:run-forked'
-        condition: ne(variables['DisableJetty'], 'true')
+        condition: eq(variables['EnableJetty'], 'true')
 
       - task: Maven@3
         displayName: 'Run tests'

@@ -1,11 +1,11 @@
 steps:
 - script: |
     echo "##vso[task.setvariable variable=Maven.RepositoryPath;]%USERPROFILE%\.m2\repository"
-  condition: and(eq(variables['Agent.OS'], 'Windows_NT'), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(eq(variables['Agent.OS'], 'Windows_NT'), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['EnableCache'], 'true'))
   displayName: Detecting Maven repository on Windows
 - script: |
     echo "##vso[task.setvariable variable=Maven.RepositoryPath;]$HOME/.m2/repository"
-  condition: and(ne(variables['Agent.OS'], 'Windows_NT'), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(ne(variables['Agent.OS'], 'Windows_NT'), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['EnableCache'], 'true'))
   displayName: Detecting Maven repository on Linux and macOS
 - task: CacheBeta@0
   inputs:
@@ -277,4 +277,4 @@ steps:
       $(Build.SourcesDirectory)/streamanalytics/resource-manager/v2016_03_01/pom.xml
     path: $(Maven.RepositoryPath)
   displayName: 'Download/upload cache'
-  condition: and(ne(variables['DisableCache'], 'true'), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['EnableCache'], 'true'))

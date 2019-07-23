@@ -2,6 +2,6 @@ variables:
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   skipComponentGovernanceDetection: true
-  DisableJetty: true
-  DisableCache: true
+  EnableJetty: true
+  EnableCache: true
   CacheSalt: 0
