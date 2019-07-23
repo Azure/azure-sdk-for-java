@@ -19,11 +19,8 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
-      - checkout: self
-        fetchDepth: 1
-
-
-      - template: ../steps/cache-maven-repository.yml
+      - ${{if eq(variables.EnableCache, 'true')}}:
+        - template: ../steps/cache-maven-repository.yml
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -42,10 +39,9 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Publish Artifacts $(ArtifactName)'
-        inputs:
-          artifactName: '$(ArtifactName)'
+      - publish:
+        artifact: $(ArtifactName)
+        displayName: 'Publish artifacts - $(ArtifactName)'
 
   - job: 'Analyze'
 
@@ -56,7 +52,8 @@ jobs:
       vmImage: 'ubuntu-16.04'
 
     steps:
-      - template: ../steps/cache-maven-repository.yml
+      - ${{if eq(variables.EnableCache, 'true')}}:
+        - template: ../steps/cache-maven-repository.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -182,11 +179,10 @@ jobs:
         displayName: 'Copy reports to artifact staging'
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
-      - task: PublishBuildArtifacts@1
+      - publish:
+        artifactName: reports
         condition: succeededOrFailed()
-        displayName: 'Publish Report Artifacts'
-        inputs:
-          artifactName: reports
+        displayName: Publish report artifacts
 
 
   - job: 'Test'
@@ -231,7 +227,8 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: ../steps/cache-maven-repository.yml
+      - ${{if eq(variables.EnableCache, 'true')}}:
+        - template: ../steps/cache-maven-repository.yml
 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
@@ -245,18 +242,19 @@ jobs:
           scriptPath: '$(Build.BinariesDirectory)/sdk-tools/scripts/python/verify_agent_os.py'
           arguments: $(OSName)
 
-      - task: Maven@3
-        displayName: 'Start Jetty'
-        inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
-          mavenOptions: '$(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
-        condition: eq(variables['EnableJetty'], 'true')
+      - ${{if eq(variables.EnableJetty, 'true') }}:
+        - task: Maven@3
+          displayName: 'Start Jetty'
+          inputs:
+            mavenPomFile: pom.client.xml
+            options: '$(DefaultOptions) $(ProfileFlag)'
+            mavenOptions: '$(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'jetty:run-forked'
+          condition: eq(variables['EnableJetty'], 'true')
 
       - task: Maven@3
         displayName: 'Run tests'
