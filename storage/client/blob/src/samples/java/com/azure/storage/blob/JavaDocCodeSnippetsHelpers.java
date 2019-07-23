@@ -12,6 +12,10 @@ final class JavaDocCodeSnippetsHelpers {
         return getContainerAsyncClient().getBlobAsyncClient(blobName);
     }
 
+    static BlobClient getBlobClient(String blobName) {
+        return new BlobClient(getBlobAsyncClient(blobName));
+    }
+
     static URL generateURL(String urlString) {
         try {
             return new URL(urlString);
