@@ -23,6 +23,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.VoidResponse;
+import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyPage;
 import com.azure.security.keyvault.keys.implementation.KeyBasePage;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -49,7 +50,8 @@ interface KeyService {
                                   @QueryParam("api-version") String apiVersion,
                                   @HeaderParam("accept-language") String acceptLanguage,
                                   @BodyParam("body") KeyRequestParameters parameters,
-                                  @HeaderParam("Content-Type") String type);
+                                  @HeaderParam("Content-Type") String type,
+                                  Context context);
 
     @Get("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
@@ -61,7 +63,8 @@ interface KeyService {
                                      @PathParam("key-version") String keyVersion,
                                      @QueryParam("api-version") String apiVersion,
                                      @HeaderParam("accept-language") String acceptLanguage,
-                                     @HeaderParam("Content-Type") String type);
+                                     @HeaderParam("Content-Type") String type,
+                                     Context context);
 
     @Post("keys/{key-name}")
     @ExpectedResponses({200})
@@ -71,7 +74,8 @@ interface KeyService {
                                   @QueryParam("api-version") String apiVersion,
                                   @HeaderParam("accept-language") String acceptLanguage,
                                   @BodyParam("body") KeyImportRequestParameters parameters,
-                                  @HeaderParam("Content-Type") String type);
+                                  @HeaderParam("Content-Type") String type,
+                                  Context context);
 
 
     @Delete("keys/{key-name}")
@@ -82,7 +86,8 @@ interface KeyService {
                                          @PathParam("key-name") String keyName,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type);
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
     @Patch("keys/{key-name}/{key-version}")
     @ExpectedResponses({200})
@@ -93,7 +98,8 @@ interface KeyService {
                                       @QueryParam("api-version") String apiVersion,
                                       @HeaderParam("accept-language") String acceptLanguage,
                                       @BodyParam("body") KeyRequestParameters parameters,
-                                      @HeaderParam("Content-Type") String type);
+                                      @HeaderParam("Content-Type") String type,
+                                      Context context);
 
     @Get("keys/{key-name}/versions")
     @ExpectedResponses({200})
@@ -104,7 +110,8 @@ interface KeyService {
                                                     @QueryParam("maxresults") Integer maxresults,
                                                     @QueryParam("api-version") String apiVersion,
                                                     @HeaderParam("accept-language") String acceptLanguage,
-                                                    @HeaderParam("Content-Type") String type);
+                                                    @HeaderParam("Content-Type") String type,
+                                                    Context context);
 
     @Post("keys/{key-name}/backup")
     @ExpectedResponses({200})
@@ -114,7 +121,8 @@ interface KeyService {
                                          @PathParam("key-name") String keyName,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type);
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Post("keys/restore")
@@ -125,7 +133,8 @@ interface KeyService {
                                      @QueryParam("api-version") String apiVersion,
                                      @BodyParam("body") KeyRestoreRequestParameters parameters,
                                      @HeaderParam("accept-language") String acceptLanguage,
-                                     @HeaderParam("Content-Type") String type);
+                                     @HeaderParam("Content-Type") String type,
+                                     Context context);
 
 
     @Get("keys")
@@ -136,7 +145,8 @@ interface KeyService {
                                          @QueryParam("maxresults") Integer maxresults,
                                          @QueryParam("api-version") String apiVersion,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type);
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Get("{nextUrl}")
@@ -146,7 +156,8 @@ interface KeyService {
     Mono<PagedResponse<KeyBase>> getKeys(@HostParam("url") String url,
                                          @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                          @HeaderParam("accept-language") String acceptLanguage,
-                                         @HeaderParam("Content-Type") String type);
+                                         @HeaderParam("Content-Type") String type,
+                                         Context context);
 
 
     @Get("deletedkeys")
@@ -157,7 +168,8 @@ interface KeyService {
                                                    @QueryParam("maxresults") Integer maxresults,
                                                    @QueryParam("api-version") String apiVersion,
                                                    @HeaderParam("accept-language") String acceptLanguage,
-                                                   @HeaderParam("Content-Type") String type);
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
 
     @Get("{nextUrl}")
     @ExpectedResponses({200})
@@ -166,7 +178,8 @@ interface KeyService {
     Mono<PagedResponse<DeletedKey>> getDeletedKeys(@HostParam("url") String url,
                                                    @PathParam(value = "nextUrl", encoded = true) String nextUrl,
                                                    @HeaderParam("accept-language") String acceptLanguage,
-                                                   @HeaderParam("Content-Type") String type);
+                                                   @HeaderParam("Content-Type") String type,
+                                                   Context context);
 
     @Get("deletedkeys/{key-name}")
     @ExpectedResponses({200})
@@ -176,7 +189,8 @@ interface KeyService {
                                              @PathParam("key-name") String keyName,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
-                                             @HeaderParam("Content-Type") String type);
+                                             @HeaderParam("Content-Type") String type,
+                                             Context context);
 
     @Delete("deletedkeys/{key-name}")
     @ExpectedResponses({204})
@@ -186,7 +200,8 @@ interface KeyService {
                                        @PathParam("key-name") String keyName,
                                        @QueryParam("api-version") String apiVersion,
                                        @HeaderParam("accept-language") String acceptLanguage,
-                                       @HeaderParam("Content-Type") String type);
+                                       @HeaderParam("Content-Type") String type,
+                                       Context context);
 
 
     @Post("deletedkeys/{key-name}/recover")
@@ -197,5 +212,6 @@ interface KeyService {
                                           @PathParam("key-name") String keyName,
                                           @QueryParam("api-version") String apiVersion,
                                           @HeaderParam("accept-language") String acceptLanguage,
-                                          @HeaderParam("Content-Type") String type);
+                                          @HeaderParam("Content-Type") String type,
+                                          Context context);
 }

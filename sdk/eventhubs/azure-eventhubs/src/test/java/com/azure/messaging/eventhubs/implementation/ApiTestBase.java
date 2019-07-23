@@ -11,7 +11,7 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubSharedAccessKeyCredential;
-import com.azure.messaging.eventhubs.ProxyConfiguration;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.After;
@@ -47,8 +47,10 @@ public abstract class ApiTestBase extends TestBase {
     private TokenCredential tokenCredential;
     private ReactorProvider reactorProvider;
     private ConnectionOptions connectionOptions;
+    private TransportType transportType;
 
     protected ApiTestBase(ClientLogger logger) {
+        this.transportType = TransportType.AMQP;
         this.logger = logger;
     }
 
@@ -70,7 +72,7 @@ public abstract class ApiTestBase extends TestBase {
             tokenCredential = new EventHubSharedAccessKeyCredential(properties.sharedAccessKeyName(),
                 properties.sharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
         } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-            Assert.fail("Could not create tokenProvider :" + e.toString());
+            Assert.fail("Could not create tokenProvider :" + e);
         }
 
         if (getTestMode() != TestMode.RECORD) {
@@ -79,13 +81,13 @@ public abstract class ApiTestBase extends TestBase {
             try {
                 reactorDispatcher = new ReactorDispatcher(reactor);
             } catch (IOException e) {
-                Assert.fail("Could not create dispatcher.");
+                Assert.fail("Could not create dispatcher: " + e);
             }
             reactorProvider = new MockReactorProvider(reactor, reactorDispatcher);
         }
 
         connectionOptions = new ConnectionOptions(properties.endpoint().getHost(), properties.eventHubPath(),
-            tokenCredential, getAuthorizationType(), TIMEOUT, TransportType.AMQP, Retry.getNoRetry(),
+            tokenCredential, getAuthorizationType(), TIMEOUT, transportType, Retry.getNoRetry(),
             ProxyConfiguration.SYSTEM_DEFAULTS, scheduler);
 
         beforeTest();
@@ -123,6 +125,10 @@ public abstract class ApiTestBase extends TestBase {
 
     protected void skipIfNotRecordMode() {
         Assume.assumeTrue(getTestMode() == TestMode.RECORD);
+    }
+
+    protected void setTransportType(TransportType transportType) {
+        this.transportType = transportType;
     }
 
     protected ConnectionOptions getConnectionOptions() {

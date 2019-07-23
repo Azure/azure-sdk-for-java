@@ -371,9 +371,13 @@ public class Util {
     }
 
     public static ClientSettings getClientSettingsFromConnectionStringBuilder(ConnectionStringBuilder builder) {
-        TokenProvider tokenProvider;
-        if (builder.getAuthentication() != null && builder.getAuthentication().equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION)) {
-            tokenProvider = new ManagedIdentityTokenProvider();
+        TokenProvider tokenProvider = null;
+        String authentication = builder.getAuthentication();
+        if (authentication != null) {
+            if (authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION_WITH_SPACE)
+                    || authentication.equalsIgnoreCase(ConnectionStringBuilder.MANAGED_IDENTITY_AUTHENTICATION_WITHOUT_SPACE)) {
+                tokenProvider = new ManagedIdentityTokenProvider();
+            }
         } else if (builder.getSharedAccessSignatureToken() == null) {
             tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey(), SecurityConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
         } else {

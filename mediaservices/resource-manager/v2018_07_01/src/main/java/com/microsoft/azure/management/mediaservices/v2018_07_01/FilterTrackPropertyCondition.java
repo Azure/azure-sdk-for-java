@@ -22,7 +22,7 @@ public class FilterTrackPropertyCondition {
     private FilterTrackPropertyType property;
 
     /**
-     * The track proprty value.
+     * The track property value.
      */
     @JsonProperty(value = "value", required = true)
     private String value;
@@ -55,7 +55,7 @@ public class FilterTrackPropertyCondition {
     }
 
     /**
-     * Get the track proprty value.
+     * Get the track property value.
      *
      * @return the value value
      */
@@ -64,7 +64,7 @@ public class FilterTrackPropertyCondition {
     }
 
     /**
-     * Set the track proprty value.
+     * Set the track property value.
      *
      * @param value the value value to set
      * @return the FilterTrackPropertyCondition object itself.

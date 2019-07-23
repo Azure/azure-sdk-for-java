@@ -7,6 +7,7 @@ import com.azure.core.amqp.Retry;
 import com.azure.core.amqp.TransportType;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
@@ -17,6 +18,8 @@ import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
+import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
+import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -30,29 +33,30 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * EventHubClient}. Calling {@link #buildAsyncClient()} constructs an instant of the client.
+ * EventHubAsyncClient}. Calling {@link #buildAsyncClient()} constructs an instant of the client.
  *
  * <p>
  * The client requires credentials or a connection string to perform operations against Azure Event Hubs. Setting
  * credentials by using {@link #connectionString(String)}, {@link #connectionString(String, String)}, or {@link
- * #credential(String, String, TokenCredential)}, is required in order to construct an {@link EventHubClient}.
+ * #credential(String, String, TokenCredential)}, is required in order to construct an {@link EventHubAsyncClient}.
  * </p>
  *
- * <p><strong>Creating an {@link EventHubClient} using Event Hubs namespace connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hubs namespace connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionString#string-string}
  *
- * <p><strong>Creating an {@link EventHubClient} using Event Hub instance connection string</strong></p>
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub instance connection string</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.connectionstring#string}
  *
- * <p><strong>Creating an {@link EventHubClient} using Event Hub with no {@link Retry}, different timeout and new
+ * <p><strong>Creating an {@link EventHubAsyncClient} using Event Hub with no {@link Retry}, different timeout and new
  * Scheduler</strong></p>
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.retry-timeout-scheduler}
  *
- * @see EventHubClient
+ * @see EventHubAsyncClient
  */
+@ServiceClientBuilder(serviceClients = EventHubAsyncClient.class)
 public class EventHubClientBuilder {
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
@@ -151,10 +155,10 @@ public class EventHubClientBuilder {
     /**
      * Sets the configuration store that is used during construction of the service client.
      *
-     * If not specified, the default configuration store is used to configure the {@link EventHubClient}. Use {@link
+     * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use {@link
      * Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to configure the {@link EventHubClient}.
+     * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder configuration(Configuration configuration) {
@@ -191,7 +195,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the proxy configuration to use for {@link EventHubClient}. When a proxy is configured, {@link
+     * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * TransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyConfiguration The proxy configuration to use.
@@ -228,7 +232,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the default operation timeout for operations performed using {@link EventHubClient} and {@link
+     * Sets the default operation timeout for operations performed using {@link EventHubAsyncClient} and {@link
      * EventHubConsumer} such as starting the communication link with the service and sending messages.
      *
      * @param timeout Duration for operation timeout.
@@ -240,7 +244,7 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Sets the retry policy for {@link EventHubClient}. If not specified, {@link Retry#getDefaultRetry()} is used.
+     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, {@link Retry#getDefaultRetry()} is used.
      *
      * @param retry The retry policy to use.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -251,8 +255,8 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * Creates a new {@link EventHubClient} based on options set on this builder. Every time {@code buildAsyncClient()}
-     * is invoked, a new instance of {@link EventHubClient} is created.
+     * Creates a new {@link EventHubAsyncClient} based on options set on this builder. Every time {@code buildAsyncClient()}
+     * is invoked, a new instance of {@link EventHubAsyncClient} is created.
      *
      * <p>
      * The following options are used if ones are not specified in the builder:
@@ -269,12 +273,12 @@ public class EventHubClientBuilder {
      * <li>If no scheduler is specified, an {@link Schedulers#elastic() elastic scheduler} is used.</li>
      * </ul>
      *
-     * @return A new {@link EventHubClient} instance with all the configured options.
+     * @return A new {@link EventHubAsyncClient} instance with all the configured options.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      *         #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
      *         specified but the transport type is not {@link TransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubClient buildAsyncClient() {
+    public EventHubAsyncClient buildAsyncClient() {
         configuration = configuration == null ? ConfigurationManager.getConfiguration().clone() : configuration;
 
         if (credentials == null) {
@@ -320,7 +324,7 @@ public class EventHubClientBuilder {
         final ConnectionOptions parameters = new ConnectionOptions(host, eventHubPath, credentials,
             authorizationType, timeout, transport, retry, proxyConfiguration, scheduler);
 
-        return new EventHubClient(parameters, provider, handlerProvider);
+        return new EventHubAsyncClient(parameters, provider, handlerProvider);
     }
 
     private ProxyConfiguration getDefaultProxyConfiguration(Configuration configuration) {
