@@ -40,12 +40,15 @@ Licensed under the MIT License.
     <netty.version>4.1.36.Final</netty.version>
     <sdk-version>3.0.0</sdk-version>
     <guava.version>27.0.1-jre</guava.version>
-    <!--<netty-tcnative.version>2.0.25.Final</netty-tcnative.version>-->
-    <!--<reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>-->
-    <!--<reactor-bom.version>Californium-SR7</reactor-bom.version>-->
+    <reactor-core.version>3.2.9.RELEASE</reactor-core.version>
     <test.groups>unit</test.groups>
     <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
     <javadoc.opts/>
+
+    <!-- Disabling these properties as they're not used currently, if needed enable them back else remove them. -->
+    <!--<netty-tcnative.version>2.0.25.Final</netty-tcnative.version>-->
+    <!--<reactor-addons.version>3.2.2.RELEASE</reactor-addons.version>-->
+    <!--<reactor-bom.version>Californium-SR7</reactor-bom.version>-->
   </properties>
 
   <dependencyManagement>
@@ -56,6 +59,7 @@ Licensed under the MIT License.
         <version>${project.parent.version}</version>
       </dependency>
 
+      <!-- Disabling this dependency as currently full reactor bom doesn't seem to be required, if needed enable it back. -->
       <!--<dependency>-->
       <!--<groupId>io.projectreactor</groupId>-->
       <!--<artifactId>reactor-bom</artifactId>-->
@@ -69,6 +73,12 @@ Licensed under the MIT License.
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
         <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-core</artifactId>
+        <version>${reactor-core.version}</version>
       </dependency>
 
       <dependency>
@@ -378,13 +388,15 @@ Licensed under the MIT License.
   </build>
     <reporting>
         <plugins>
-            <!--<plugin>-->
+          <!-- Disabling this plugin, if needed enable it back else remove it. -->
+          <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->
                 <!--<artifactId>maven-surefire-report-plugin</artifactId>-->
                 <!--<version>2.22.0</version>-->
             <!--</plugin>-->
 
-            <!--<plugin>-->
+          <!-- Disabling this plugin, if needed enable it back else remove it. -->
+          <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->
                 <!--<artifactId>maven-jxr-plugin</artifactId>-->
                 <!--<version>2.1</version>-->

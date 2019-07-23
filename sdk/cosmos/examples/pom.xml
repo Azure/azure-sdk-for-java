@@ -39,6 +39,7 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
+      <!-- Disabling this plugin, if needed enable it back else remove it. -->
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-eclipse-plugin</artifactId>-->
@@ -84,6 +85,7 @@ Licensed under the MIT License.
         </executions>
       </plugin>
 
+      <!-- Disabling this plugin, if needed enable it back else remove it. -->
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-antrun-plugin</artifactId>-->

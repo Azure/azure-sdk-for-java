@@ -60,6 +60,7 @@ Licensed under the MIT License.
       <artifactId>metrics-graphite</artifactId>
     </dependency>
 
+    <!-- Disabling this dependency as it is not getting used currently, if needed enable it back else remove it. -->
     <!--<dependency>-->
     <!--<groupId>io.netty</groupId>-->
     <!--<artifactId>netty-tcnative</artifactId>-->
@@ -93,6 +94,7 @@ Licensed under the MIT License.
       <scope>test</scope>
     </dependency>
 
+    <!-- Disabling this dependency as it is not getting used currently, if needed enable it back else remove it. -->
     <!--<dependency>-->
     <!--<groupId>org.hamcrest</groupId>-->
     <!--<artifactId>hamcrest-all</artifactId>-->
@@ -150,6 +152,7 @@ Licensed under the MIT License.
         </configuration>
       </plugin>
 
+      <!-- Disabling this plugin as it is not getting used currently, if needed enable it back else remove it. -->
       <!--<plugin>-->
         <!--<groupId>org.apache.maven.plugins</groupId>-->
         <!--<artifactId>maven-eclipse-plugin</artifactId>-->
