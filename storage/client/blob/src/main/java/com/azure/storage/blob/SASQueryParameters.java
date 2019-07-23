@@ -19,7 +19,7 @@ import static com.azure.storage.blob.Utility.safeURLEncode;
  * are existing query parameters, which might affect the appropriate means of appending these query parameters).
  * NOTE: Instances of this class are immutable to ensure thread safety.
  */
-final class SASQueryParameters {
+public final class SASQueryParameters {
 
     private final String version;
 
