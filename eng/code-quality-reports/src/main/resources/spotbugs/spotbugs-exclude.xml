@@ -445,14 +445,14 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
-  <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
+  <!-- Incorrect flagging, if the response is null a HttpResponseException should be thrown
+  https://github.com/azure/azure-sdk-for-java/issues/4556 -->
   <Match>
     <Or>
       <Class name="com.azure.security.keyvault.keys.KeyClient"/>
     </Or>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
-
 
   <!-- Super doesn't need to be cloned since it is Object -->
   <Match>
