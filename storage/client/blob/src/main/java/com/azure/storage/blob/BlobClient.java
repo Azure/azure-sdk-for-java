@@ -162,12 +162,14 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURL#URL}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return The copy ID for the long running operation.
@@ -177,12 +179,14 @@ public class BlobClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
@@ -194,9 +198,8 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> startCopyFromURL(URL sourceURL, Metadata metadata,
-                                             ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                                             Duration timeout) {
+    public Response<String> startCopyFromURL(URL sourceURL, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
+                                             BlobAccessConditions destAccessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .startCopyFromURL(sourceURL, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
@@ -209,6 +212,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.abortCopyFromURL#String}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
@@ -224,6 +230,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.abortCopyFromURL#String-LeaseAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
@@ -246,6 +255,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURL#URL}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     *
      * @param copySource The source URL to copy from.
      * @return The copy ID for the long running operation.
      */
@@ -260,6 +272,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions-Duration}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
      * @param sourceModifiedAccessConditions {@link ModifiedAccessConditions} against the source. Standard HTTP Access
@@ -270,9 +285,8 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The copy ID for the long running operation.
      */
-    public Response<String> copyFromURL(URL copySource, Metadata metadata,
-                                        ModifiedAccessConditions sourceModifiedAccessConditions, BlobAccessConditions destAccessConditions,
-                                        Duration timeout) {
+    public Response<String> copyFromURL(URL copySource, Metadata metadata, ModifiedAccessConditions sourceModifiedAccessConditions,
+                                        BlobAccessConditions destAccessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .copyFromURL(copySource, metadata, sourceModifiedAccessConditions, destAccessConditions);
 
@@ -286,6 +300,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.download#OutputStream}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @return A response containing status code and HTTP headers.
@@ -302,6 +319,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.download#OutputStream-BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -339,6 +359,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -354,6 +377,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -378,6 +404,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse delete() {
@@ -390,6 +419,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
@@ -413,6 +445,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
      * @return The blob properties and metadata.
      */
     public Response<BlobProperties> getProperties() {
@@ -425,6 +460,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.getProperties#BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param accessConditions {@link BlobAccessConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -439,13 +477,14 @@ public class BlobClient {
 
     /**
      * Changes a blob's HTTP header properties. if only one HTTP header is updated, the others will all be erased. In
-     * order to preserve existing values, they must be passed alongside the header being changed. For more information,
-     * see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     * order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHTTPHeaders}
      * @return A response containing status code and HTTP headers.
@@ -456,13 +495,14 @@ public class BlobClient {
 
     /**
      * Changes a blob's HTTP header properties. if only one HTTP header is updated, the others will all be erased. In
-     * order to preserve existing values, they must be passed alongside the header being changed. For more information,
-     * see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     * order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setHTTPHeaders#BlobHTTPHeaders-BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHTTPHeaders}
      * @param accessConditions {@link BlobAccessConditions}
@@ -479,12 +519,14 @@ public class BlobClient {
 
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing metadata. If old values
-     * must be preserved, they must be downloaded and included in the call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setMetadata#Metadata}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @return A response containing status code and HTTP headers.
@@ -495,12 +537,14 @@ public class BlobClient {
 
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing metadata. If old values
-     * must be preserved, they must be downloaded and included in the call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setMetadata#Metadata-BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -521,6 +565,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.createSnapshot}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
+     *
      * @return The ID of the new snapshot.
      */
     public Response<String> createSnapshot() {
@@ -533,6 +580,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.createSnapshot#Metadata-BlobAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -556,6 +606,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setTier#AccessTier}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
      * @param tier The new tier for the blob.
      * @return A response containing status code and HTTP headers.
      */
@@ -572,6 +625,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.setTier#AccessTier-LeaseAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
@@ -593,6 +649,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.undelete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
+     *
      * @return A response containing status code and HTTP headers.
      */
     public VoidResponse undelete() {
@@ -605,6 +664,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.undelete#Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return A response containing status code and HTTP headers.
@@ -624,6 +686,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.acquireLease#String-int}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
      * non-infinite lease can be between 15 and 60 seconds.
@@ -640,6 +705,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.acquireLease#String-int-ModifiedAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
@@ -665,6 +733,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.renewLease#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @return The renewed lease ID.
      */
@@ -678,6 +749,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.renewLease#String-ModifiedAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -701,6 +775,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.releaseLease#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @return A response containing status code and HTTP headers.
      */
@@ -714,6 +791,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.releaseLease#String-ModifiedAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -736,6 +816,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.breakLease}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @return The remaining time in the broken lease in seconds.
      */
     public Response<Integer> breakLease() {
@@ -749,6 +832,9 @@ public class BlobClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.breakLease#Integer-ModifiedAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
      * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
@@ -775,6 +861,9 @@ public class BlobClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.changeLease#String-String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedId A {@code String} in any valid GUID format.
      * @return The new lease ID.
@@ -784,12 +873,14 @@ public class BlobClient {
     }
 
     /**
-     * ChangeLease changes the blob's lease ID.  For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
-     * Docs</a>.
+     * ChangeLease changes the blob's lease ID.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.changeLease#String-String-ModifiedAccessConditions-Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedId A {@code String} in any valid GUID format.
@@ -806,12 +897,14 @@ public class BlobClient {
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.getAccountInfo}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
      *
      * @return The sku name and account kind.
      */
@@ -820,12 +913,14 @@ public class BlobClient {
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobClient.getAccountInfo#Duration}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The sku name and account kind.

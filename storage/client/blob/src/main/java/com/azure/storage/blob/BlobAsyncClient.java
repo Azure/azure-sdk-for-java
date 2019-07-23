@@ -126,7 +126,7 @@ public class BlobAsyncClient {
 
     /**
      * Initializes a {@link ContainerAsyncClient} object pointing to the container this blob is in. This method does not
-     * create a container. It simply constructs the URL to the container and offers access to methods relevant to
+     * create a container. It simply constructs the client to the container and offers access to methods relevant to
      * containers.
      *
      * @return A {@link ContainerAsyncClient} object pointing to the container containing the blob
@@ -179,7 +179,7 @@ public class BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.BlobAsyncClient.startCopyFromURL#URL}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.startCopyFromURL#URL}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -236,6 +236,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
+     *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
      * @return A reactive response signalling completion.
@@ -250,6 +253,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.abortCopyFromURL#String-LeaseAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
@@ -270,6 +276,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     *
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
@@ -283,6 +292,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
@@ -320,6 +332,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.download}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
      * @return A reactive response containing the blob data.
      */
     public Mono<Response<Flux<ByteBuffer>>> download() {
@@ -333,6 +348,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.download#BlobRange-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param range {@link BlobRange}
      * @param options {@link ReliableDownloadOptions}
@@ -402,6 +420,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFile#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @return An empty response
      */
@@ -420,6 +441,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadToFile#String-BlobRange-Integer-ReliableDownloadOptions-BlobAccessConditions-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param range {@link BlobRange}
@@ -491,6 +515,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
      * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> delete() {
@@ -503,6 +530,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.delete#DeleteSnapshotsOptionType-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-blob">Azure Docs</a></p>
      *
      * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
      * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
@@ -527,6 +557,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getProperties}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<Response<BlobProperties>> getProperties() {
@@ -539,6 +572,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getProperties#BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param accessConditions {@link BlobAccessConditions}
      * @return A reactive response containing the blob properties and metadata.
@@ -555,13 +591,14 @@ public class BlobAsyncClient {
 
     /**
      * Changes a blob's HTTP header properties. if only one HTTP header is updated, the others will all be erased. In
-     * order to preserve existing values, they must be passed alongside the header being changed. For more information,
-     * see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     * order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHTTPHeaders}
      * @return A reactive response signalling completion.
@@ -572,13 +609,14 @@ public class BlobAsyncClient {
 
     /**
      * Changes a blob's HTTP header properties. if only one HTTP header is updated, the others will all be erased. In
-     * order to preserve existing values, they must be passed alongside the header being changed. For more information,
-     * see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
+     * order to preserve existing values, they must be passed alongside the header being changed.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setHTTPHeaders#BlobHTTPHeaders-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link BlobHTTPHeaders}
      * @param accessConditions {@link BlobAccessConditions}
@@ -595,12 +633,14 @@ public class BlobAsyncClient {
 
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing metadata. If old values
-     * must be preserved, they must be downloaded and included in the call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @return A reactive response signalling completion.
@@ -611,12 +651,14 @@ public class BlobAsyncClient {
 
     /**
      * Changes a blob's metadata. The specified metadata in this method will replace existing metadata. If old values
-     * must be preserved, they must be downloaded and included in the call to this method. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a>.
+     * must be preserved, they must be downloaded and included in the call to this method.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setMetadata#Metadata-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -640,6 +682,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.createSnapshot}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
+     *
      * @return A reactive response containing the ID of the new snapshot.
      */
     public Mono<Response<String>> createSnapshot() {
@@ -652,6 +697,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.createSnapshot#Metadata-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
      * @param metadata {@link Metadata}
      * @param accessConditions {@link BlobAccessConditions}
@@ -678,6 +726,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
      * @param tier The new tier for the blob.
      * @return A reactive response signalling completion.
      */
@@ -694,6 +745,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.setTier#AccessTier-LeaseAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
      *
      * @param tier The new tier for the blob.
      * @param leaseAccessConditions By setting lease access conditions, requests will fail if the provided lease does
@@ -715,6 +769,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.undelete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
+     *
      * @return A reactive response signalling completion.
      */
     public Mono<VoidResponse> undelete() {
@@ -730,6 +787,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
@@ -747,6 +807,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.acquireLease#String-int-ModifiedAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param proposedId A {@code String} in any valid GUID format. May be null.
      * @param duration The  duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A
@@ -777,6 +840,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.renewLease#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @return A reactive response containing the renewed lease ID.
      */
@@ -790,6 +856,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.renewLease#String-ModifiedAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -810,6 +879,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.releaseLease#String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @return A reactive response signalling completion.
      */
@@ -823,6 +895,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.releaseLease#String-ModifiedAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param modifiedAccessConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -844,6 +919,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.breakLease}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @return A reactive response containing the remaining time in the broken lease in seconds.
      */
     public Mono<Response<Integer>> breakLease() {
@@ -857,6 +935,9 @@ public class BlobAsyncClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.breakLease#Integer-ModifiedAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param breakPeriodInSeconds An optional {@code Integer} representing the proposed duration of seconds that the
      * lease should continue before it is broken, between 0 and 60 seconds. This break period is only used if it is
@@ -881,6 +962,9 @@ public class BlobAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.changeLease#String-String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
+     *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedId A {@code String} in any valid GUID format.
      * @return A reactive response containing the new lease ID.
@@ -890,12 +974,14 @@ public class BlobAsyncClient {
     }
 
     /**
-     * ChangeLease changes the blob's lease ID. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure
-     * Docs</a>.
+     * ChangeLease changes the blob's lease ID.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.changeLease#String-String-ModifiedAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a></p>
      *
      * @param leaseId The leaseId of the active lease on the blob.
      * @param proposedId A {@code String} in any valid GUID format.
@@ -911,16 +997,17 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Returns the sku name and account kind for the account. For more information, please see the <a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a>.
+     * Returns the sku name and account kind for the account.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.getAccountInfo}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-account-information">Azure Docs</a></p>
+     *
      * @return a reactor response containing the sku name and account kind.
      */
-    // TODO (unknown): determine this return type
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
         return postProcessResponse(
             this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null, Context.NONE))
