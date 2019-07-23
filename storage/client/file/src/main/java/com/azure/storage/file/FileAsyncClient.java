@@ -75,7 +75,7 @@ import reactor.core.scheduler.Schedulers;
  * @see SASTokenCredential
  */
 public class FileAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(FileAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(FileAsyncClient.class);
     private static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
 

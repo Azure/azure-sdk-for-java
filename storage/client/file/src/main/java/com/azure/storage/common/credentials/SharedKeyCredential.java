@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class SharedKeyCredential {
-    private static final ClientLogger LOGGER = new ClientLogger(SASTokenCredential.class);
+    private final ClientLogger logger = new ClientLogger(SASTokenCredential.class);
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
 
     // Pieces of the connection string that are needed.
@@ -68,9 +68,7 @@ public final class SharedKeyCredential {
         String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
 
         if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
-            String errorMsg = "Connection string must contain 'AccountName' and 'AccountKey'.";
-            LOGGER.asError().log(errorMsg);
-            throw new IllegalArgumentException(errorMsg);
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");
         }
 
         return new SharedKeyCredential(accountName, accountKey);
@@ -121,11 +119,11 @@ public final class SharedKeyCredential {
             return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         } catch (final NoSuchAlgorithmException e) {
             String errorMsg = "There is no such algorithm. Error Details: " + e.getMessage();
-            LOGGER.asError().log(errorMsg);
+            logger.asWarning().log(errorMsg);
             throw new RuntimeException(errorMsg);
         } catch (InvalidKeyException e) {
             String errorMsg = "Please double check the account key. Error details: " + e.getMessage();
-            LOGGER.asError().log(errorMsg);
+            logger.asWarning().log(errorMsg);
             throw new RuntimeException(errorMsg);
         }
     }
@@ -238,7 +236,7 @@ public final class SharedKeyCredential {
             String signature = Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
             return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
         } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
-            LOGGER.asError().log(ex.getMessage());
+            logger.asWarning().log(ex.getMessage());
             throw new Error(ex);
         }
     }
