@@ -7,12 +7,18 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-client-sdk-parent</artifactId>
+        <version>1.1.0</version>
+        <relativePath>../../../pom.client.xml</relativePath>
+   </parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-applicationinsight-query</artifactId>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for </name>
-    <description>This package contains Microsoft  SDK.</description>
+    <name>Microsoft Azure SDK for Application Insights Data Client</name>
+    <description>This package contains Microsoft Application Insights Data Client SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
