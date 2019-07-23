@@ -35,6 +35,13 @@ public interface AmqpSendLink extends AmqpLink {
     Mono<Void> send(List<Message> messageBatch);
 
     /**
+     * Gets the size of the send link. {@link Message Messages} sent on the link cannot exceed the size.
+     *
+     * @return A Mono that completes and returns the size of the send link.
+     */
+    Mono<Integer> getLinkSize();
+
+    /**
      * Gets the context for this AMQP send link.
      */
     ErrorContext getErrorContext();
