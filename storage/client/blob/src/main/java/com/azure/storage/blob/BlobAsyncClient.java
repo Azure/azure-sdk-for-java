@@ -157,7 +157,11 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Gets if the blob this client represents exists in the cloud.
+     * Determines if the blob this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.exists}
      *
      * @return true if the blob exists, false if it doesn't
      */
@@ -171,8 +175,14 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.startCopyFromURL#URL}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @return A reactive response containing the copy ID for the long running operation.
@@ -182,8 +192,14 @@ public class BlobAsyncClient {
     }
 
     /**
-     * Copies the data at the source URL to a blob. For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a>
+     * Copies the data at the source URL to a blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.startCopyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceURL The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}
@@ -216,6 +232,10 @@ public class BlobAsyncClient {
     /**
      * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.abortCopyFromURL#String}
+     *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
      * @return A reactive response signalling completion.
@@ -226,6 +246,10 @@ public class BlobAsyncClient {
 
     /**
      * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.abortCopyFromURL#String-LeaseAccessConditions}
      *
      * @param copyId The id of the copy operation to abort. Returned as the {@code copyId} field on the {@link
      * BlobStartCopyFromURLHeaders} object.
@@ -242,6 +266,10 @@ public class BlobAsyncClient {
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.copyFromURL#URL}
+     *
      * @param copySource The source URL to copy from.
      * @return A reactive response containing the copy ID for the long running operation.
      */
@@ -251,6 +279,10 @@ public class BlobAsyncClient {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.copyFromURL#URL-Metadata-ModifiedAccessConditions-BlobAccessConditions}
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata {@link Metadata}

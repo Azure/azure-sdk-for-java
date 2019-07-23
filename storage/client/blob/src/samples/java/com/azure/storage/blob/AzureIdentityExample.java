@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.storage.blob;
+
 import com.azure.identity.credential.DefaultAzureCredential;
-import com.azure.storage.blob.StorageClient;
-import com.azure.storage.blob.StorageClientBuilder;
 
 import java.util.Locale;
 
