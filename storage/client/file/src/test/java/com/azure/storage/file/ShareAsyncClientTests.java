@@ -602,4 +602,12 @@ public class ShareAsyncClientTests extends ShareClientTestBase {
         StepVerifier.create(shareAsyncClient.getStatistics())
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 404));
     }
+
+    @Override
+    public void getSnapshotId() {
+        String actualSnapshot = shareAsyncClient.createSnapshot().block().value().snapshot();
+        ShareAsyncClient shareAsyncClient = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+            shareName, actualSnapshot).buildAsyncClient();
+        Assert.assertEquals(actualSnapshot, shareAsyncClient.getSnapshotId());
+    }
 }

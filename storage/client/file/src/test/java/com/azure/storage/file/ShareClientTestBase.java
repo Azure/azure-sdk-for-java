@@ -164,4 +164,7 @@ public abstract class ShareClientTestBase extends TestBase {
 
     @Test
     public abstract void getStatsDoesNotExist();
+
+    @Test
+    public abstract void getSnapshotId();
 }

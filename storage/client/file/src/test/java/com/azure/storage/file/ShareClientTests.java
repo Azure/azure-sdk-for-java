@@ -478,4 +478,12 @@ public class ShareClientTests extends ShareClientTestBase {
     public void getStatsDoesNotExist() {
         FileTestHelpers.assertExceptionStatusCode(() -> shareClient.getStatistics(), 404);
     }
+
+    @Override
+    public void getSnapshotId() {
+        String actualSnapshot = shareClient.createSnapshot().value().snapshot();
+        ShareClient shareClientWithSnapshot = createShareClientWithSnapshot(interceptorManager.isPlaybackMode(),
+            shareName, actualSnapshot).buildClient();
+        Assert.assertEquals(actualSnapshot, shareClientWithSnapshot.getSnapshotId());
+    }
 }
