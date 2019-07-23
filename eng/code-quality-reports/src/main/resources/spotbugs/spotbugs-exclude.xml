@@ -114,11 +114,6 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
 
-  <Match>
-    <Class name="~com\.azure\.(.+)Impl"/>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
-  </Match>
-
   <!-- Public field already exists in the public API surface area even though no writes were seen to this public field.
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L50
     https://github.com/Azure/azure-sdk-for-java/blob/master/eventhubs/data-plane/azure-eventhubs/src/main/java/com/microsoft/azure/eventhubs/BatchOptions.java#L57 -->
