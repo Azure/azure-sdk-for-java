@@ -1,0 +1,19 @@
+steps:
+- script: |
+    echo "##vso[task.setvariable variable=Maven.RepositoryPath;]%USERPROFILE%\.m2\repository"
+  condition: eq(variables['Agent.OS'], 'Windows_NT')
+  displayName: Detecting Maven repository on Windows
+- script: |
+    echo "##vso[task.setvariable variable=Maven.RepositoryPath;]$HOME/.m2/repository"
+  condition: ne(variables['Agent.OS'], 'Windows_NT')
+  displayName: Detecting Maven repository on Linux and macOS
+- task: CacheBeta@0
+  inputs:
+    key: |
+      $(Agent.JobName)
+      $(Build.SourcesDirectory)/sdk/core/pom.xml
+      $(Build.SourcesDirectory)/pom.xml
+      $(Build.SourcesDirectory)/pom.client.xml
+      $(Build.SourcesDirectory)/parent/pom.xml
+    path: $(Maven.RepositoryPath)
+  displayName: 'Download/upload cache'

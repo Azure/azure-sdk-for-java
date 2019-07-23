@@ -19,24 +19,14 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
+      - template: ../steps/cache-maven-repository.yml
+
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
         condition: and(eq(variables['Build.SourceBranchName'],'master'),eq(variables['Build.Reason'],'Schedule'))
 
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.JobName)
-            $(Build.SourcesDirectory)/sdk/core/pom.xml
-            $(Build.SourcesDirectory)/pom.xml
-            $(Build.SourcesDirectory)/pom.client.xml
-            $(Build.SourcesDirectory)/parent/pom.xml
-          path: $(Agent.WorkDirectory)/../../.m2/repository
-        displayName: 'Download/upload cache'
-
-      - script: |
-          mvn help:evaluate -Dexpression=settings.localRepository
+      - template: ../steps/cache-maven-repository.yml
 
       - task: Maven@3
         displayName: 'Build and Package'
@@ -64,19 +54,7 @@ jobs:
       vmImage: 'ubuntu-16.04'
 
     steps:
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.JobName)
-            $(Build.SourcesDirectory)/sdk/core/pom.xml
-            $(Build.SourcesDirectory)/pom.xml
-            $(Build.SourcesDirectory)/pom.client.xml
-            $(Build.SourcesDirectory)/parent/pom.xml
-          path: $(Agent.WorkDirectory)/../../.m2/repository
-        displayName: 'Download/upload cache'
-
-      - script: |
-          mvn help:evaluate -Dexpression=settings.localRepository
+      - template: ../steps/cache-maven-repository.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
@@ -251,19 +229,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - task: CacheBeta@0
-        inputs:
-          key: |
-            $(Agent.JobName)
-            $(Build.SourcesDirectory)/sdk/core/pom.xml
-            $(Build.SourcesDirectory)/pom.xml
-            $(Build.SourcesDirectory)/pom.client.xml
-            $(Build.SourcesDirectory)/parent/pom.xml
-          path: $(Agent.WorkDirectory)/../../.m2/repository
-        displayName: 'Download/upload cache'
-
-      - script: |
-          mvn help:evaluate -Dexpression=settings.localRepository
+      - template: ../steps/cache-maven-repository.yml
 
       - powershell: |
           Invoke-WebRequest -Uri "https://github.com/Azure/azure-sdk-tools/releases/download/sdk-tools_14793/sdk-tools.zip" `
