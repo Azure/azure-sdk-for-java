@@ -57,11 +57,11 @@ public final class ServicesImpl {
     }
 
     /**
-     * The interface defining all the services for Services to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureBlobStorageServices to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Services")
+    @ServiceInterface(name = "AzureBlobStorageServices")
     private interface ServicesService {
         @Put("")
         @ExpectedResponses({202})

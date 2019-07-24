@@ -55,11 +55,11 @@ public final class DirectorysImpl {
     }
 
     /**
-     * The interface defining all the services for Directorys to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureFileStorageDirectorys
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Directorys")
+    @ServiceInterface(name = "AzureFileStorageDirectorys")
     private interface DirectorysService {
         @Put("{shareName}/{directory}")
         @ExpectedResponses({201})

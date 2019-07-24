@@ -61,11 +61,11 @@ public final class SharesImpl {
     }
 
     /**
-     * The interface defining all the services for Shares to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureFileStorageShares to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Shares")
+    @ServiceInterface(name = "AzureFileStorageShares")
     private interface SharesService {
         @Put("{shareName}")
         @ExpectedResponses({201})

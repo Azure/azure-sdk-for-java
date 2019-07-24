@@ -43,11 +43,10 @@ import com.azure.storage.blob.models.ModifiedAccessConditions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.SignedIdentifier;
 import com.azure.storage.blob.models.StorageErrorException;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -75,11 +74,11 @@ public final class ContainersImpl {
     }
 
     /**
-     * The interface defining all the services for Containers to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureBlobStorageContainers
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Containers")
+    @ServiceInterface(name = "AzureBlobStorageContainers")
     private interface ContainersService {
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -109,7 +108,7 @@ public final class ContainersImpl {
         @Put("{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifiersWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
+        Mono<ContainersSetAccessPolicyResponse> setAccessPolicy(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") SignedIdentifierWrapper containerAcl, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -382,7 +381,7 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "acl";
         final String leaseId = null;
-        SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(null);
+        SignedIdentifierWrapper containerAclConverted = new SignedIdentifierWrapper(null);
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         return service.setAccessPolicy(containerName, this.client.url(), containerAclConverted, timeout, access, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);
@@ -418,7 +417,7 @@ public final class ContainersImpl {
         if (modifiedAccessConditions != null) {
             ifUnmodifiedSince = modifiedAccessConditions.ifUnmodifiedSince();
         }
-        SignedIdentifiersWrapper containerAclConverted = new SignedIdentifiersWrapper(containerAcl);
+        SignedIdentifierWrapper containerAclConverted = new SignedIdentifierWrapper(containerAcl);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.setAccessPolicy(containerName, this.client.url(), containerAclConverted, timeout, access, this.client.version(), requestId, restype, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, context);

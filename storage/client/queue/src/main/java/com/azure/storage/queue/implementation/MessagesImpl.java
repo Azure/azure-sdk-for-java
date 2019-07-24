@@ -53,11 +53,11 @@ public final class MessagesImpl {
     }
 
     /**
-     * The interface defining all the services for Messages to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureQueueStorageMessages to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Messages")
+    @ServiceInterface(name = "AzureQueueStorageMessages")
     private interface MessagesService {
         @Get("{queueName}/messages")
         @ExpectedResponses({200})

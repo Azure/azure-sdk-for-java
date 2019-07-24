@@ -57,11 +57,11 @@ public final class QueuesImpl {
     }
 
     /**
-     * The interface defining all the services for Queues to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureQueueStorageQueues to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Queues")
+    @ServiceInterface(name = "AzureQueueStorageQueues")
     private interface QueuesService {
         @Put("{queueName}")
         @ExpectedResponses({201, 204})

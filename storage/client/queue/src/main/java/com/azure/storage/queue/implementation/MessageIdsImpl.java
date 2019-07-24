@@ -50,11 +50,11 @@ public final class MessageIdsImpl {
     }
 
     /**
-     * The interface defining all the services for MessageIds to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureQueueStorageMessageIds
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "MessageIds")
+    @ServiceInterface(name = "AzureQueueStorageMessageIds")
     private interface MessageIdsService {
         @Put("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})

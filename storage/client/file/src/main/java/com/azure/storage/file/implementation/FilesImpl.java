@@ -67,11 +67,11 @@ public final class FilesImpl {
     }
 
     /**
-     * The interface defining all the services for Files to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureFileStorageFiles to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "Files")
+    @ServiceInterface(name = "AzureFileStorageFiles")
     private interface FilesService {
         @Put("{shareName}/{directory}/{fileName}")
         @ExpectedResponses({201})

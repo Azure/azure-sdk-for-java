@@ -1432,7 +1432,7 @@
         "name": "QueueMessage"
       }
     },
-    "PeekedMessageItem": {
+    "PeekedMessage": {
       "description": "The object returned in the QueueMessageList array when calling Peek Messages on a Queue",
       "type": "object",
       "required": [
@@ -1530,7 +1530,7 @@
       "description": "The object returned when calling Peek Messages on a Queue",
       "type": "array",
       "items": {
-        "$ref": "#/definitions/PeekedMessageItem",
+        "$ref": "#/definitions/PeekedMessage",
         "xml": {
           "name": "QueueMessage"
         }
