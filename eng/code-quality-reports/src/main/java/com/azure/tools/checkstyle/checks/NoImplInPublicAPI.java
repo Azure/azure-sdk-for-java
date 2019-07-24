@@ -18,8 +18,6 @@ public class NoImplInPublicAPI extends AbstractCheck {
     private static final String PARAM_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be used as a parameter type in public API. Alternatively, it can be removed from the implementation package and made public API, after appropriate API review.";
     private static final String RETURN_TYPE_ERROR = "\"%s\" class is in an implementation package, and it should not be a return type from public API. Alternatively, it can be removed from the implementation package and made public API.";
 
-    private static boolean isTrackTwo;
-    private static boolean isImplPackage;
     private Set<String> implementationClassSet = new HashSet<>();
 
     @Override
@@ -43,28 +41,11 @@ public class NoImplInPublicAPI extends AbstractCheck {
 
     @Override
     public void beginTree(DetailAST root) {
-        this.isImplPackage = false;
-        this.isTrackTwo = false;
         this.implementationClassSet.clear();
     }
 
     @Override
     public void visitToken(DetailAST ast) {
-        if (ast.getType() == TokenTypes.PACKAGE_DEF) {
-            String packageName = FullIdent.createFullIdent(ast.findFirstToken(TokenTypes.DOT)).getText();
-            this.isTrackTwo = packageName.startsWith(COM_AZURE);
-            this.isImplPackage = packageName.contains(DOT_IMPLEMENTATION);
-            return;
-        } else {
-            if (this.isTrackTwo) {
-                if (this.isImplPackage) {
-                    return;
-                }
-            } else {
-                return;
-            }
-        }
-
         switch (ast.getType()) {
             case TokenTypes.IMPORT:
                 String importClassPath = FullIdent.createFullIdentBelow(ast).getText();
