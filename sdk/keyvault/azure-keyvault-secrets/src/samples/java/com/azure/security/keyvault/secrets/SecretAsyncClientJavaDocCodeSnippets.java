@@ -154,7 +154,7 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
             .subscriberContext(Context.of(key1, value1, key2, value2))
             .subscribe(secretResponse ->
                 System.out.printf("Secret is created with name %s and value %s \n",
-                    secretResponse.value().name(), secretResponse.value().value()));
+                    secretResponse.name(), secretResponse.value()));
         // END: com.azure.keyvault.secrets.secretclient.setSecret#string-string
     }
 

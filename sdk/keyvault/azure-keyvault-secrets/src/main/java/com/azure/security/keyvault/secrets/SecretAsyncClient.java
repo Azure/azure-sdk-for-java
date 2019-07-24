@@ -86,7 +86,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> setSecret(Secret secret) {
-        return withContext(context -> setSecret(secret, context))
+        return withContext(context -> setSecretWithResponse(secret))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -140,14 +140,14 @@ public final class SecretAsyncClient {
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value}
-     * contains the {@link Secret created secret}.
+     * @return A {@link Mono} containing the {@link Secret created secret}.
      * @throws ResourceModifiedException if invalid {@code name} or {@code value} are specified.
      * @throws HttpRequestException if {@code name} or {@code value} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Secret>> setSecret(String name, String value) {
-        return withContext(context -> setSecret(name, value, context));
+    public Mono<Secret> setSecret(String name, String value) {
+        return withContext(context -> setSecret(name, value, context))
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     Mono<Response<Secret>> setSecret(String name, String value, Context context) {
@@ -181,7 +181,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name, String version) {
-        return withContext(context -> getSecret(name, version, context))
+        return withContext(context -> getSecretWithResponse(name, version))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -236,8 +236,7 @@ public final class SecretAsyncClient {
      *
      * @param secretBase The {@link SecretBase base secret} secret base holding attributes of the
      * secret being requested.
-     * @return A {@link Response} whose {@link Response#value() value} contains the requested {@link
-     * Secret secret}.
+     * @return A {@link Mono} containing the requested {@link Secret secret}.
      * @throws ResourceNotFoundException when a secret with {@link SecretBase#name() name} and {@link
      * SecretBase#version() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link SecretBase#name()}  name} or {@link SecretBase#version()
@@ -249,7 +248,8 @@ public final class SecretAsyncClient {
         if (secretBase.version() == null) {
             return getSecret(secretBase.name());
         }
-        return getSecret(secretBase.name(), secretBase.version());
+        return getSecretWithResponse(secretBase.name(), secretBase.version())
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     /**
@@ -302,11 +302,12 @@ public final class SecretAsyncClient {
      * @param name The name of the secret.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code name} is empty string.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#value() value} contains the requested {@link Secret secret}.
+     * @return A {@link Mono} containing the requested {@link Secret secret}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name) {
-        return getSecret(name, "");
+        return getSecretWithResponse(name, "")
+            .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
     Mono<Response<Secret>> getSecret(String name, Context context) {
@@ -333,7 +334,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBase> updateSecret(SecretBase secret) {
-        return withContext(context -> updateSecret(secret, context))
+        return withContext(context -> updateSecretWithResponse(secret))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -390,7 +391,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> deleteSecret(String name) {
-        return withContext(context -> deleteSecret(name, context))
+        return withContext(context -> deleteSecretWithResponse(name))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -441,7 +442,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> getDeletedSecret(String name) {
-        return withContext(context -> getDeletedSecret(name, context))
+        return withContext(context -> getDeletedSecretWithResponse(name))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -525,7 +526,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> recoverDeletedSecret(String name) {
-        return withContext(context -> recoverDeletedSecret(name, context))
+        return withContext(context -> recoverDeletedSecretWithResponse(name))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -576,7 +577,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupSecret(String name) {
-        return withContext(context -> backupSecret(name, context))
+        return withContext(context -> backupSecretWithResponse(name))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 
@@ -629,7 +630,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> restoreSecret(byte[] backup) {
-        return withContext(context -> restoreSecret(backup, context))
+        return withContext(context -> restoreSecretWithResponse(backup))
             .flatMap(response -> Mono.justOrEmpty(response.value()));
     }
 

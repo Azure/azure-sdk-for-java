@@ -59,7 +59,7 @@ public class HelloWorldAsync {
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
         secretAsyncClient.setSecret("BankAccountPassword", "bhjd4DDgsa").subscribe(secretResponse ->
-            System.out.printf("Secret is created with name %s and value %s \n", secretResponse.value().name(), secretResponse.value().value()));
+            System.out.printf("Secret is created with name %s and value %s \n", secretResponse.name(), secretResponse.value()));
 
         Thread.sleep(2000);
 
