@@ -21,7 +21,7 @@ public final class AzureFileStorageImpl {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -31,7 +31,7 @@ public final class AzureFileStorageImpl {
      * @param version the version value.
      * @return the service client itself.
      */
-    AzureFileStorageImpl version(String version) {
+    AzureFileStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -46,7 +46,7 @@ public final class AzureFileStorageImpl {
      *
      * @return the url value.
      */
-    public String url() {
+    public String getUrl() {
         return this.url;
     }
 
@@ -56,7 +56,7 @@ public final class AzureFileStorageImpl {
      * @param url the url value.
      * @return the service client itself.
      */
-    AzureFileStorageImpl url(String url) {
+    AzureFileStorageImpl setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -71,7 +71,7 @@ public final class AzureFileStorageImpl {
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline httpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

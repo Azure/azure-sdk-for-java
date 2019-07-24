@@ -21,7 +21,7 @@ public final class AzureBlobStorageImpl {
      *
      * @return the url value.
      */
-    public String url() {
+    public String getUrl() {
         return this.url;
     }
 
@@ -31,7 +31,7 @@ public final class AzureBlobStorageImpl {
      * @param url the url value.
      * @return the service client itself.
      */
-    AzureBlobStorageImpl url(String url) {
+    AzureBlobStorageImpl setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -46,7 +46,7 @@ public final class AzureBlobStorageImpl {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -56,7 +56,7 @@ public final class AzureBlobStorageImpl {
      * @param version the version value.
      * @return the service client itself.
      */
-    AzureBlobStorageImpl version(String version) {
+    AzureBlobStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -71,7 +71,7 @@ public final class AzureBlobStorageImpl {
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline httpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

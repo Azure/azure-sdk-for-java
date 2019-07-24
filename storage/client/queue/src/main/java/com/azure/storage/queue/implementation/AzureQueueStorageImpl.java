@@ -21,7 +21,7 @@ public final class AzureQueueStorageImpl {
      *
      * @return the url value.
      */
-    public String url() {
+    public String getUrl() {
         return this.url;
     }
 
@@ -31,7 +31,7 @@ public final class AzureQueueStorageImpl {
      * @param url the url value.
      * @return the service client itself.
      */
-    AzureQueueStorageImpl url(String url) {
+    AzureQueueStorageImpl setUrl(String url) {
         this.url = url;
         return this;
     }
@@ -46,7 +46,7 @@ public final class AzureQueueStorageImpl {
      *
      * @return the version value.
      */
-    public String version() {
+    public String getVersion() {
         return this.version;
     }
 
@@ -56,7 +56,7 @@ public final class AzureQueueStorageImpl {
      * @param version the version value.
      * @return the service client itself.
      */
-    AzureQueueStorageImpl version(String version) {
+    AzureQueueStorageImpl setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -71,7 +71,7 @@ public final class AzureQueueStorageImpl {
      *
      * @return the httpPipeline value.
      */
-    public HttpPipeline httpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 

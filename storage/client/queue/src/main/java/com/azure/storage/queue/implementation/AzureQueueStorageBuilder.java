@@ -75,10 +75,10 @@ public final class AzureQueueStorageBuilder {
         }
         AzureQueueStorageImpl client = new AzureQueueStorageImpl(pipeline);
         if (this.url != null) {
-            client.url(this.url);
+            client.setUrl(this.url);
         }
         if (this.version != null) {
-            client.version(this.version);
+            client.setVersion(this.version);
         }
         return client;
     }

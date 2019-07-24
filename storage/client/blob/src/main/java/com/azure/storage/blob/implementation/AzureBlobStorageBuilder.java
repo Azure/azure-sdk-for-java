@@ -75,10 +75,10 @@ public final class AzureBlobStorageBuilder {
         }
         AzureBlobStorageImpl client = new AzureBlobStorageImpl(pipeline);
         if (this.url != null) {
-            client.url(this.url);
+            client.setUrl(this.url);
         }
         if (this.version != null) {
-            client.version(this.version);
+            client.setVersion(this.version);
         }
         return client;
     }

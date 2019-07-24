@@ -52,7 +52,7 @@ public final class ServicesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public ServicesImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(ServicesService.class, client.httpPipeline());
+        this.service = RestProxy.create(ServicesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -108,7 +108,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -125,7 +125,7 @@ public final class ServicesImpl {
     public Mono<ServicesSetPropertiesResponse> setPropertiesWithRestResponseAsync(StorageServiceProperties storageServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.setProperties(this.client.url(), storageServiceProperties, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.setProperties(this.client.getUrl(), storageServiceProperties, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -141,7 +141,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -157,7 +157,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetPropertiesResponse> getPropertiesWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
-        return service.getProperties(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getProperties(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -173,7 +173,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -189,7 +189,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetStatisticsResponse> getStatisticsWithRestResponseAsync(Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
-        return service.getStatistics(this.client.url(), timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getStatistics(this.client.getUrl(), timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -208,7 +208,7 @@ public final class ServicesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
+        return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -227,7 +227,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicesListContainersSegmentResponse> listContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListContainersIncludeType include, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        return service.listContainersSegment(this.client.url(), prefix, marker, maxresults, include, timeout, this.client.version(), requestId, comp, context);
+        return service.listContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -244,7 +244,7 @@ public final class ServicesImpl {
         final String requestId = null;
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -261,7 +261,7 @@ public final class ServicesImpl {
     public Mono<ServicesGetUserDelegationKeyResponse> getUserDelegationKeyWithRestResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "userdelegationkey";
-        return service.getUserDelegationKey(this.client.url(), keyInfo, timeout, this.client.version(), requestId, restype, comp, context);
+        return service.getUserDelegationKey(this.client.getUrl(), keyInfo, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
@@ -275,6 +275,6 @@ public final class ServicesImpl {
     public Mono<ServicesGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(this.client.url(), this.client.version(), restype, comp, context);
+        return service.getAccountInfo(this.client.getUrl(), this.client.getVersion(), restype, comp, context);
     }
 }

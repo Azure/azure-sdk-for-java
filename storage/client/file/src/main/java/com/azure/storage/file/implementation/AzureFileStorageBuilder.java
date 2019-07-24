@@ -75,10 +75,10 @@ public final class AzureFileStorageBuilder {
         }
         AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline);
         if (this.version != null) {
-            client.version(this.version);
+            client.setVersion(this.version);
         }
         if (this.url != null) {
-            client.url(this.url);
+            client.setUrl(this.url);
         }
         return client;
     }

@@ -57,7 +57,7 @@ public final class SharesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public SharesImpl(AzureFileStorageImpl client) {
-        this.service = RestProxy.create(SharesService.class, client.httpPipeline());
+        this.service = RestProxy.create(SharesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -128,7 +128,7 @@ public final class SharesImpl {
         final Map<String, String> metadata = null;
         final Integer quota = null;
         final String restype = "share";
-        return service.create(shareName, this.client.url(), timeout, metadata, quota, this.client.version(), restype, context);
+        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -145,7 +145,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharesCreateResponse> createWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota, Context context) {
         final String restype = "share";
-        return service.create(shareName, this.client.url(), timeout, metadata, quota, this.client.version(), restype, context);
+        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -161,7 +161,7 @@ public final class SharesImpl {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String restype = "share";
-        return service.getProperties(shareName, this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(shareName, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -177,7 +177,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String sharesnapshot, Integer timeout, Context context) {
         final String restype = "share";
-        return service.getProperties(shareName, this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(shareName, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -194,7 +194,7 @@ public final class SharesImpl {
         final Integer timeout = null;
         final DeleteSnapshotsOptionType deleteSnapshots = null;
         final String restype = "share";
-        return service.delete(shareName, this.client.url(), sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
+        return service.delete(shareName, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), deleteSnapshots, restype, context);
     }
 
     /**
@@ -211,7 +211,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharesDeleteResponse> deleteWithRestResponseAsync(String shareName, String sharesnapshot, Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, Context context) {
         final String restype = "share";
-        return service.delete(shareName, this.client.url(), sharesnapshot, timeout, this.client.version(), deleteSnapshots, restype, context);
+        return service.delete(shareName, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), deleteSnapshots, restype, context);
     }
 
     /**
@@ -228,7 +228,7 @@ public final class SharesImpl {
         final Map<String, String> metadata = null;
         final String restype = "share";
         final String comp = "snapshot";
-        return service.createSnapshot(shareName, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.createSnapshot(shareName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -245,7 +245,7 @@ public final class SharesImpl {
     public Mono<SharesCreateSnapshotResponse> createSnapshotWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "snapshot";
-        return service.createSnapshot(shareName, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.createSnapshot(shareName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -262,7 +262,7 @@ public final class SharesImpl {
         final Integer quota = null;
         final String restype = "share";
         final String comp = "properties";
-        return service.setQuota(shareName, this.client.url(), timeout, this.client.version(), quota, restype, comp, context);
+        return service.setQuota(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, restype, comp, context);
     }
 
     /**
@@ -279,7 +279,7 @@ public final class SharesImpl {
     public Mono<SharesSetQuotaResponse> setQuotaWithRestResponseAsync(String shareName, Integer timeout, Integer quota, Context context) {
         final String restype = "share";
         final String comp = "properties";
-        return service.setQuota(shareName, this.client.url(), timeout, this.client.version(), quota, restype, comp, context);
+        return service.setQuota(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, restype, comp, context);
     }
 
     /**
@@ -296,7 +296,7 @@ public final class SharesImpl {
         final Map<String, String> metadata = null;
         final String restype = "share";
         final String comp = "metadata";
-        return service.setMetadata(shareName, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(shareName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -313,7 +313,7 @@ public final class SharesImpl {
     public Mono<SharesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "share";
         final String comp = "metadata";
-        return service.setMetadata(shareName, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(shareName, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -329,7 +329,7 @@ public final class SharesImpl {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "acl";
-        return service.getAccessPolicy(shareName, this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getAccessPolicy(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -345,7 +345,7 @@ public final class SharesImpl {
     public Mono<SharesGetAccessPolicyResponse> getAccessPolicyWithRestResponseAsync(String shareName, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "acl";
-        return service.getAccessPolicy(shareName, this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getAccessPolicy(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -362,7 +362,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(null);
-        return service.setAccessPolicy(shareName, this.client.url(), shareAclConverted, timeout, this.client.version(), restype, comp, context);
+        return service.setAccessPolicy(shareName, this.client.getUrl(), shareAclConverted, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -380,7 +380,7 @@ public final class SharesImpl {
         final String restype = "share";
         final String comp = "acl";
         SignedIdentifiersWrapper shareAclConverted = new SignedIdentifiersWrapper(shareAcl);
-        return service.setAccessPolicy(shareName, this.client.url(), shareAclConverted, timeout, this.client.version(), restype, comp, context);
+        return service.setAccessPolicy(shareName, this.client.getUrl(), shareAclConverted, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -396,7 +396,7 @@ public final class SharesImpl {
         final Integer timeout = null;
         final String restype = "share";
         final String comp = "stats";
-        return service.getStatistics(shareName, this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getStatistics(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -412,6 +412,6 @@ public final class SharesImpl {
     public Mono<SharesGetStatisticsResponse> getStatisticsWithRestResponseAsync(String shareName, Integer timeout, Context context) {
         final String restype = "share";
         final String comp = "stats";
-        return service.getStatistics(shareName, this.client.url(), timeout, this.client.version(), restype, comp, context);
+        return service.getStatistics(shareName, this.client.getUrl(), timeout, this.client.getVersion(), restype, comp, context);
     }
 }

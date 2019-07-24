@@ -51,7 +51,7 @@ public final class DirectorysImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public DirectorysImpl(AzureFileStorageImpl client) {
-        this.service = RestProxy.create(DirectorysService.class, client.httpPipeline());
+        this.service = RestProxy.create(DirectorysService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -112,7 +112,7 @@ public final class DirectorysImpl {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String restype = "directory";
-        return service.create(shareName, directoryPath, this.client.url(), timeout, metadata, this.client.version(), restype, context);
+        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class DirectorysImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysCreateResponse> createWithRestResponseAsync(String shareName, String directoryPath, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
-        return service.create(shareName, directoryPath, this.client.url(), timeout, metadata, this.client.version(), restype, context);
+        return service.create(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class DirectorysImpl {
         final String sharesnapshot = null;
         final Integer timeout = null;
         final String restype = "directory";
-        return service.getProperties(shareName, directoryPath, this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(shareName, directoryPath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -163,7 +163,7 @@ public final class DirectorysImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String directoryPath, String sharesnapshot, Integer timeout, Context context) {
         final String restype = "directory";
-        return service.getProperties(shareName, directoryPath, this.client.url(), sharesnapshot, timeout, this.client.version(), restype, context);
+        return service.getProperties(shareName, directoryPath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -179,7 +179,7 @@ public final class DirectorysImpl {
     public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(String shareName, String directoryPath, Context context) {
         final Integer timeout = null;
         final String restype = "directory";
-        return service.delete(shareName, directoryPath, this.client.url(), timeout, this.client.version(), restype, context);
+        return service.delete(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class DirectorysImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysDeleteResponse> deleteWithRestResponseAsync(String shareName, String directoryPath, Integer timeout, Context context) {
         final String restype = "directory";
-        return service.delete(shareName, directoryPath, this.client.url(), timeout, this.client.version(), restype, context);
+        return service.delete(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), restype, context);
     }
 
     /**
@@ -213,7 +213,7 @@ public final class DirectorysImpl {
         final Map<String, String> metadata = null;
         final String restype = "directory";
         final String comp = "metadata";
-        return service.setMetadata(shareName, directoryPath, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -231,7 +231,7 @@ public final class DirectorysImpl {
     public Mono<DirectorysSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, String directoryPath, Integer timeout, Map<String, String> metadata, Context context) {
         final String restype = "directory";
         final String comp = "metadata";
-        return service.setMetadata(shareName, directoryPath, this.client.url(), timeout, metadata, this.client.version(), restype, comp, context);
+        return service.setMetadata(shareName, directoryPath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -252,7 +252,7 @@ public final class DirectorysImpl {
         final Integer timeout = null;
         final String restype = "directory";
         final String comp = "list";
-        return service.listFilesAndDirectoriesSegment(shareName, directoryPath, this.client.url(), prefix, sharesnapshot, marker, maxresults, timeout, this.client.version(), restype, comp, context);
+        return service.listFilesAndDirectoriesSegment(shareName, directoryPath, this.client.getUrl(), prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -273,7 +273,7 @@ public final class DirectorysImpl {
     public Mono<DirectorysListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegmentWithRestResponseAsync(String shareName, String directoryPath, String prefix, String sharesnapshot, String marker, Integer maxresults, Integer timeout, Context context) {
         final String restype = "directory";
         final String comp = "list";
-        return service.listFilesAndDirectoriesSegment(shareName, directoryPath, this.client.url(), prefix, sharesnapshot, marker, maxresults, timeout, this.client.version(), restype, comp, context);
+        return service.listFilesAndDirectoriesSegment(shareName, directoryPath, this.client.getUrl(), prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), restype, comp, context);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class DirectorysImpl {
         final String sharesnapshot = null;
         final Boolean recursive = null;
         final String comp = "listhandles";
-        return service.listHandles(shareName, directoryPath, this.client.url(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.version(), comp, context);
+        return service.listHandles(shareName, directoryPath, this.client.getUrl(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -313,7 +313,7 @@ public final class DirectorysImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysListHandlesResponse> listHandlesWithRestResponseAsync(String shareName, String directoryPath, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "listhandles";
-        return service.listHandles(shareName, directoryPath, this.client.url(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.version(), comp, context);
+        return service.listHandles(shareName, directoryPath, this.client.getUrl(), marker, maxresults, timeout, sharesnapshot, recursive, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -333,7 +333,7 @@ public final class DirectorysImpl {
         final String sharesnapshot = null;
         final Boolean recursive = null;
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(shareName, directoryPath, this.client.url(), timeout, marker, sharesnapshot, handleId, recursive, this.client.version(), comp, context);
+        return service.forceCloseHandles(shareName, directoryPath, this.client.getUrl(), timeout, marker, sharesnapshot, handleId, recursive, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -353,6 +353,6 @@ public final class DirectorysImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DirectorysForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String shareName, String directoryPath, String handleId, Integer timeout, String marker, String sharesnapshot, Boolean recursive, Context context) {
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(shareName, directoryPath, this.client.url(), timeout, marker, sharesnapshot, handleId, recursive, this.client.version(), comp, context);
+        return service.forceCloseHandles(shareName, directoryPath, this.client.getUrl(), timeout, marker, sharesnapshot, handleId, recursive, this.client.getVersion(), comp, context);
     }
 }

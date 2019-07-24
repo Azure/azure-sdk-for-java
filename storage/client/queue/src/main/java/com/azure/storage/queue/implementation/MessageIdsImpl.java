@@ -46,7 +46,7 @@ public final class MessageIdsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public MessageIdsImpl(AzureQueueStorageImpl client) {
-        this.service = RestProxy.create(MessageIdsService.class, client.httpPipeline());
+        this.service = RestProxy.create(MessageIdsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -84,7 +84,7 @@ public final class MessageIdsImpl {
     public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.update(queueName, messageid, this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
+        return service.update(queueName, messageid, this.client.getUrl(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -103,7 +103,7 @@ public final class MessageIdsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageid, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
-        return service.update(queueName, messageid, this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
+        return service.update(queueName, messageid, this.client.getUrl(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -120,7 +120,7 @@ public final class MessageIdsImpl {
     public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String queueName, String messageid, String popReceipt, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.delete(queueName, messageid, this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
+        return service.delete(queueName, messageid, this.client.getUrl(), popReceipt, timeout, this.client.getVersion(), requestId, context);
     }
 
     /**
@@ -137,6 +137,6 @@ public final class MessageIdsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String queueName, String messageid, String popReceipt, Integer timeout, String requestId, Context context) {
-        return service.delete(queueName, messageid, this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
+        return service.delete(queueName, messageid, this.client.getUrl(), popReceipt, timeout, this.client.getVersion(), requestId, context);
     }
 }

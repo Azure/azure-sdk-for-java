@@ -62,7 +62,7 @@ public final class BlockBlobsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public BlockBlobsImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(BlockBlobsService.class, client.httpPipeline());
+        this.service = RestProxy.create(BlockBlobsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -130,7 +130,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.upload(containerName, blob, this.client.url(), body, timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -203,7 +203,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.upload(containerName, blob, this.client.url(), body, timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.upload(containerName, blob, this.client.getUrl(), body, timeout, contentLength, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, blobType, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobCacheControl, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -228,7 +228,7 @@ public final class BlockBlobsImpl {
         final String comp = "block";
         final String leaseId = null;
         String transactionalContentMD5Converted = null;
-        return service.stageBlock(containerName, blob, this.client.url(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, context);
+        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class BlockBlobsImpl {
             leaseId = leaseAccessConditions.leaseId();
         }
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        return service.stageBlock(containerName, blob, this.client.url(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, context);
+        return service.stageBlock(containerName, blob, this.client.getUrl(), blockId, contentLength, transactionalContentMD5Converted, body, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -288,7 +288,7 @@ public final class BlockBlobsImpl {
         String sourceContentMD5Converted = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
-        return service.stageBlockFromURL(containerName, blob, this.client.url(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -338,7 +338,7 @@ public final class BlockBlobsImpl {
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return service.stageBlockFromURL(containerName, blob, this.client.url(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
+        return service.stageBlockFromURL(containerName, blob, this.client.getUrl(), blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, context);
     }
 
     /**
@@ -371,7 +371,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.commitBlockList(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, blocks, this.client.version(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -443,7 +443,7 @@ public final class BlockBlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.commitBlockList(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, blocks, this.client.version(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.commitBlockList(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, blocks, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentEncoding, blobContentLanguage, blobContentMD5Converted, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -464,7 +464,7 @@ public final class BlockBlobsImpl {
         final String requestId = null;
         final String comp = "blocklist";
         final String leaseId = null;
-        return service.getBlockList(containerName, blob, this.client.url(), snapshot, versionId, listType, timeout, this.client.version(), requestId, comp, leaseId, context);
+        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, versionId, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -489,6 +489,6 @@ public final class BlockBlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.getBlockList(containerName, blob, this.client.url(), snapshot, versionId, listType, timeout, this.client.version(), requestId, comp, leaseId, context);
+        return service.getBlockList(containerName, blob, this.client.getUrl(), snapshot, versionId, listType, timeout, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 }

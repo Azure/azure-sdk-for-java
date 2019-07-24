@@ -63,7 +63,7 @@ public final class FilesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public FilesImpl(AzureFileStorageImpl client) {
-        this.service = RestProxy.create(FilesService.class, client.httpPipeline());
+        this.service = RestProxy.create(FilesService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -155,7 +155,7 @@ public final class FilesImpl {
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.create(shareName, filePath, this.client.url(), timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -199,7 +199,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.create(shareName, filePath, this.client.url(), timeout, this.client.version(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.create(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, metadata, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -216,7 +216,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String range = null;
         final Boolean rangeGetContentMD5 = null;
-        return service.download(shareName, filePath, this.client.url(), timeout, this.client.version(), range, rangeGetContentMD5, context);
+        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, context);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDownloadResponse> downloadWithRestResponseAsync(String shareName, String filePath, Integer timeout, String range, Boolean rangeGetContentMD5, Context context) {
-        return service.download(shareName, filePath, this.client.url(), timeout, this.client.version(), range, rangeGetContentMD5, context);
+        return service.download(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), range, rangeGetContentMD5, context);
     }
 
     /**
@@ -249,7 +249,7 @@ public final class FilesImpl {
     public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String filePath, Context context) {
         final String sharesnapshot = null;
         final Integer timeout = null;
-        return service.getProperties(shareName, filePath, this.client.url(), sharesnapshot, timeout, this.client.version(), context);
+        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -265,7 +265,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetPropertiesResponse> getPropertiesWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, Context context) {
-        return service.getProperties(shareName, filePath, this.client.url(), sharesnapshot, timeout, this.client.version(), context);
+        return service.getProperties(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -280,7 +280,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(String shareName, String filePath, Context context) {
         final Integer timeout = null;
-        return service.delete(shareName, filePath, this.client.url(), timeout, this.client.version(), context);
+        return service.delete(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -295,7 +295,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesDeleteResponse> deleteWithRestResponseAsync(String shareName, String filePath, Integer timeout, Context context) {
-        return service.delete(shareName, filePath, this.client.url(), timeout, this.client.version(), context);
+        return service.delete(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), context);
     }
 
     /**
@@ -318,7 +318,7 @@ public final class FilesImpl {
         final String fileCacheControl = null;
         final String fileContentDisposition = null;
         String fileContentMD5Converted = null;
-        return service.setHTTPHeaders(shareName, filePath, this.client.url(), timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -361,7 +361,7 @@ public final class FilesImpl {
             fileContentDisposition = fileHTTPHeaders.fileContentDisposition();
         }
         String fileContentMD5Converted = Base64Util.encodeToString(fileContentMD5);
-        return service.setHTTPHeaders(shareName, filePath, this.client.url(), timeout, this.client.version(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
+        return service.setHTTPHeaders(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), fileContentLength, comp, fileContentType, fileContentEncoding, fileContentLanguage, fileCacheControl, fileContentMD5Converted, fileContentDisposition, context);
     }
 
     /**
@@ -378,7 +378,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
         final String comp = "metadata";
-        return service.setMetadata(shareName, filePath, this.client.url(), timeout, metadata, this.client.version(), comp, context);
+        return service.setMetadata(shareName, filePath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -395,7 +395,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesSetMetadataResponse> setMetadataWithRestResponseAsync(String shareName, String filePath, Integer timeout, Map<String, String> metadata, Context context) {
         final String comp = "metadata";
-        return service.setMetadata(shareName, filePath, this.client.url(), timeout, metadata, this.client.version(), comp, context);
+        return service.setMetadata(shareName, filePath, this.client.getUrl(), timeout, metadata, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -416,7 +416,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String comp = "range";
         String contentMD5Converted = null;
-        return service.uploadRange(shareName, filePath, this.client.url(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
+        return service.uploadRange(shareName, filePath, this.client.getUrl(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -438,7 +438,7 @@ public final class FilesImpl {
     public Mono<FilesUploadRangeResponse> uploadRangeWithRestResponseAsync(String shareName, String filePath, String range, FileRangeWriteType fileRangeWrite, long contentLength, Flux<ByteBuf> optionalbody, Integer timeout, byte[] contentMD5, Context context) {
         final String comp = "range";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
-        return service.uploadRange(shareName, filePath, this.client.url(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.version(), comp, context);
+        return service.uploadRange(shareName, filePath, this.client.getUrl(), optionalbody, timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -456,7 +456,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String range = null;
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.url(), sharesnapshot, timeout, this.client.version(), range, comp, context);
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, context);
     }
 
     /**
@@ -474,7 +474,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, String range, Context context) {
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.url(), sharesnapshot, timeout, this.client.version(), range, comp, context);
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, comp, context);
     }
 
     /**
@@ -491,7 +491,7 @@ public final class FilesImpl {
     public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String shareName, String filePath, String copySource, Context context) {
         final Integer timeout = null;
         final Map<String, String> metadata = null;
-        return service.startCopy(shareName, filePath, this.client.url(), timeout, this.client.version(), metadata, copySource, context);
+        return service.startCopy(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), metadata, copySource, context);
     }
 
     /**
@@ -508,7 +508,7 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesStartCopyResponse> startCopyWithRestResponseAsync(String shareName, String filePath, String copySource, Integer timeout, Map<String, String> metadata, Context context) {
-        return service.startCopy(shareName, filePath, this.client.url(), timeout, this.client.version(), metadata, copySource, context);
+        return service.startCopy(shareName, filePath, this.client.getUrl(), timeout, this.client.getVersion(), metadata, copySource, context);
     }
 
     /**
@@ -526,7 +526,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
-        return service.abortCopy(shareName, filePath, this.client.url(), copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
+        return service.abortCopy(shareName, filePath, this.client.getUrl(), copyId, timeout, copyActionAbortConstant, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -544,7 +544,7 @@ public final class FilesImpl {
     public Mono<FilesAbortCopyResponse> abortCopyWithRestResponseAsync(String shareName, String filePath, String copyId, Integer timeout, Context context) {
         final String copyActionAbortConstant = "abort";
         final String comp = "copy";
-        return service.abortCopy(shareName, filePath, this.client.url(), copyId, timeout, copyActionAbortConstant, this.client.version(), comp, context);
+        return service.abortCopy(shareName, filePath, this.client.getUrl(), copyId, timeout, copyActionAbortConstant, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -563,7 +563,7 @@ public final class FilesImpl {
         final Integer timeout = null;
         final String sharesnapshot = null;
         final String comp = "listhandles";
-        return service.listHandles(shareName, filePath, this.client.url(), marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
+        return service.listHandles(shareName, filePath, this.client.getUrl(), marker, maxresults, timeout, sharesnapshot, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -582,7 +582,7 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesListHandlesResponse> listHandlesWithRestResponseAsync(String shareName, String filePath, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
         final String comp = "listhandles";
-        return service.listHandles(shareName, filePath, this.client.url(), marker, maxresults, timeout, sharesnapshot, this.client.version(), comp, context);
+        return service.listHandles(shareName, filePath, this.client.getUrl(), marker, maxresults, timeout, sharesnapshot, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -601,7 +601,7 @@ public final class FilesImpl {
         final String marker = null;
         final String sharesnapshot = null;
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(shareName, filePath, this.client.url(), timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
+        return service.forceCloseHandles(shareName, filePath, this.client.getUrl(), timeout, marker, sharesnapshot, handleId, this.client.getVersion(), comp, context);
     }
 
     /**
@@ -620,6 +620,6 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesForceCloseHandlesResponse> forceCloseHandlesWithRestResponseAsync(String shareName, String filePath, String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
         final String comp = "forceclosehandles";
-        return service.forceCloseHandles(shareName, filePath, this.client.url(), timeout, marker, sharesnapshot, handleId, this.client.version(), comp, context);
+        return service.forceCloseHandles(shareName, filePath, this.client.getUrl(), timeout, marker, sharesnapshot, handleId, this.client.getVersion(), comp, context);
     }
 }

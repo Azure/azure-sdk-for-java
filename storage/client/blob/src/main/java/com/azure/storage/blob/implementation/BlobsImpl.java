@@ -73,7 +73,7 @@ public final class BlobsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     public BlobsImpl(AzureBlobStorageImpl client) {
-        this.service = RestProxy.create(BlobsService.class, client.httpPipeline());
+        this.service = RestProxy.create(BlobsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -195,7 +195,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.download(containerName, blob, this.client.url(), snapshot, versionId, timeout, range, rangeGetContentMD5, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.download(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, range, rangeGetContentMD5, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -242,7 +242,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.download(containerName, blob, this.client.url(), snapshot, versionId, timeout, range, rangeGetContentMD5, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.download(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, range, rangeGetContentMD5, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -268,7 +268,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.getProperties(containerName, blob, this.client.url(), snapshot, versionId, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -313,7 +313,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.getProperties(containerName, blob, this.client.url(), snapshot, versionId, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.getProperties(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -337,7 +337,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.delete(containerName, blob, this.client.url(), snapshot, versionId, timeout, deleteSnapshots, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, deleteSnapshots, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -380,7 +380,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.delete(containerName, blob, this.client.url(), snapshot, versionId, timeout, deleteSnapshots, this.client.version(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.delete(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, deleteSnapshots, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -397,7 +397,7 @@ public final class BlobsImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "undelete";
-        return service.undelete(containerName, blob, this.client.url(), timeout, this.client.version(), requestId, comp, context);
+        return service.undelete(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -414,7 +414,7 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsUndeleteResponse> undeleteWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String comp = "undelete";
-        return service.undelete(containerName, blob, this.client.url(), timeout, this.client.version(), requestId, comp, context);
+        return service.undelete(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -442,7 +442,7 @@ public final class BlobsImpl {
         String blobContentMD5Converted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setHTTPHeaders(containerName, blob, this.client.url(), timeout, this.client.version(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -509,7 +509,7 @@ public final class BlobsImpl {
         String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setHTTPHeaders(containerName, blob, this.client.url(), timeout, this.client.version(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setHTTPHeaders(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, blobCacheControl, blobContentType, blobContentMD5Converted, blobContentEncoding, blobContentLanguage, blobContentDisposition, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -535,7 +535,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.setMetadata(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -580,7 +580,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.setMetadata(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.setMetadata(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -604,7 +604,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.acquireLease(containerName, blob, this.client.url(), timeout, duration, proposedLeaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.acquireLease(containerName, blob, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -643,7 +643,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.acquireLease(containerName, blob, this.client.url(), timeout, duration, proposedLeaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.acquireLease(containerName, blob, this.client.getUrl(), timeout, duration, proposedLeaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -666,7 +666,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.releaseLease(containerName, blob, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.releaseLease(containerName, blob, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -704,7 +704,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.releaseLease(containerName, blob, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.releaseLease(containerName, blob, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -727,7 +727,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.renewLease(containerName, blob, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.renewLease(containerName, blob, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -765,7 +765,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.renewLease(containerName, blob, this.client.url(), timeout, leaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.renewLease(containerName, blob, this.client.getUrl(), timeout, leaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -789,7 +789,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.changeLease(containerName, blob, this.client.url(), timeout, leaseId, proposedLeaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.changeLease(containerName, blob, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -828,7 +828,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.changeLease(containerName, blob, this.client.url(), timeout, leaseId, proposedLeaseId, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.changeLease(containerName, blob, this.client.getUrl(), timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -851,7 +851,7 @@ public final class BlobsImpl {
         final String ifNoneMatch = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.breakLease(containerName, blob, this.client.url(), timeout, breakPeriod, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.breakLease(containerName, blob, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -889,7 +889,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.breakLease(containerName, blob, this.client.url(), timeout, breakPeriod, this.client.version(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
+        return service.breakLease(containerName, blob, this.client.getUrl(), timeout, breakPeriod, this.client.getVersion(), requestId, comp, action, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -915,7 +915,7 @@ public final class BlobsImpl {
         final String leaseId = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.createSnapshot(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -960,7 +960,7 @@ public final class BlobsImpl {
         }
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.createSnapshot(containerName, blob, this.client.url(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.version(), requestId, comp, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.createSnapshot(containerName, blob, this.client.getUrl(), timeout, metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, this.client.getVersion(), requestId, comp, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -987,7 +987,7 @@ public final class BlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.startCopyFromURL(containerName, blob, this.client.url(), timeout, metadata, copySource, this.client.version(), requestId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, copySource, this.client.getVersion(), requestId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -1048,7 +1048,7 @@ public final class BlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.startCopyFromURL(containerName, blob, this.client.url(), timeout, metadata, copySource, this.client.version(), requestId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, copySource, this.client.getVersion(), requestId, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -1076,7 +1076,7 @@ public final class BlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.copyFromURL(containerName, blob, this.client.url(), timeout, metadata, copySource, this.client.version(), requestId, xMsRequiresSync, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, copySource, this.client.getVersion(), requestId, xMsRequiresSync, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -1138,7 +1138,7 @@ public final class BlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.copyFromURL(containerName, blob, this.client.url(), timeout, metadata, copySource, this.client.version(), requestId, xMsRequiresSync, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
+        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, copySource, this.client.getVersion(), requestId, xMsRequiresSync, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, leaseId, context);
     }
 
     /**
@@ -1158,7 +1158,7 @@ public final class BlobsImpl {
         final String comp = "copy";
         final String copyActionAbortConstant = "abort";
         final String leaseId = null;
-        return service.abortCopyFromURL(containerName, blob, this.client.url(), copyId, timeout, this.client.version(), requestId, comp, copyActionAbortConstant, leaseId, context);
+        return service.abortCopyFromURL(containerName, blob, this.client.getUrl(), copyId, timeout, this.client.getVersion(), requestId, comp, copyActionAbortConstant, leaseId, context);
     }
 
     /**
@@ -1182,7 +1182,7 @@ public final class BlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.abortCopyFromURL(containerName, blob, this.client.url(), copyId, timeout, this.client.version(), requestId, comp, copyActionAbortConstant, leaseId, context);
+        return service.abortCopyFromURL(containerName, blob, this.client.getUrl(), copyId, timeout, this.client.getVersion(), requestId, comp, copyActionAbortConstant, leaseId, context);
     }
 
     /**
@@ -1201,7 +1201,7 @@ public final class BlobsImpl {
         final String requestId = null;
         final String comp = "tier";
         final String leaseId = null;
-        return service.setTier(containerName, blob, this.client.url(), timeout, tier, this.client.version(), requestId, comp, leaseId, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -1224,7 +1224,7 @@ public final class BlobsImpl {
         if (leaseAccessConditions != null) {
             leaseId = leaseAccessConditions.leaseId();
         }
-        return service.setTier(containerName, blob, this.client.url(), timeout, tier, this.client.version(), requestId, comp, leaseId, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, this.client.getVersion(), requestId, comp, leaseId, context);
     }
 
     /**
@@ -1240,6 +1240,6 @@ public final class BlobsImpl {
     public Mono<BlobsGetAccountInfoResponse> getAccountInfoWithRestResponseAsync(String containerName, String blob, Context context) {
         final String restype = "account";
         final String comp = "properties";
-        return service.getAccountInfo(containerName, blob, this.client.url(), this.client.version(), restype, comp, context);
+        return service.getAccountInfo(containerName, blob, this.client.getUrl(), this.client.getVersion(), restype, comp, context);
     }
 }

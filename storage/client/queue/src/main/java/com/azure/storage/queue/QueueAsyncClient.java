@@ -55,7 +55,7 @@ public final class QueueAsyncClient {
     private final String queueName;
 
     /**
-     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code AzureQueueStorageImpl#url() endpoint}.
+     * Creates a QueueAsyncClient that sends requests to the storage queue service at {@code AzureQueueStorageImpl#getUrl() endpoint}.
      * Each service call goes through the {@link HttpPipeline pipeline} in the {@code AzureQueueStorageImpl client}.
      *
      * @param client Client that interacts with the service interfaces
@@ -64,9 +64,9 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName) {
         this.queueName = queueName;
 
-        this.client = new AzureQueueStorageBuilder().pipeline(client.httpPipeline())
-            .url(client.url())
-            .version(client.version())
+        this.client = new AzureQueueStorageBuilder().pipeline(client.getHttpPipeline())
+            .url(client.getUrl())
+            .version(client.getVersion())
             .build();
     }
 
@@ -92,7 +92,7 @@ public final class QueueAsyncClient {
      */
     public URL getQueueUrl() {
         try {
-            return new URL(client.url());
+            return new URL(client.getUrl());
         } catch (MalformedURLException ex) {
             LOGGER.error("Queue URL is malformed");
             throw new RuntimeException("Queue URL is malformed");
