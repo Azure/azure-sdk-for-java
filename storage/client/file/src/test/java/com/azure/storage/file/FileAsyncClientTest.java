@@ -60,10 +60,10 @@ public class FileAsyncClientTest extends FileClientTestBase {
         if (FileTestHelpers.getTestMode() == TestMode.PLAYBACK) {
             return;
         }
-        FileServiceClient fileServiceClient = new FileServiceClientBuilder()
+        FileStorageClient fileStorageClient = new FileStorageClientBuilder()
                                                   .connectionString(ConfigurationManager.getConfiguration().get("AZURE_STORAGE_CONNECTION_STRING"))
                                                   .buildClient();
-        shareClient = fileServiceClient.getShareClient(shareName);
+        shareClient = fileStorageClient.getShareClient(shareName);
         shareClient.create();
         shareClient.createDirectory(dirName);
     }

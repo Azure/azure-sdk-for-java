@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share783156eb?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share484840ed?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a4781f7b-001a-006b-6b75-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a4781f7b-001a-006b-6b75-4192c4000000\nTime:2019-07-23T16:43:44.4843579Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
+      "x-ms-request-id" : "8a41dbf9-601a-0070-1e79-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41dbf9-601a-0070-1e79-42bc56000000\nTime:2019-07-24T23:46:21.6508087Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share783156eb?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share484840ed?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "329",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a4781f7c-001a-006b-6c75-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:a4781f7c-001a-006b-6c75-4192c4000000\nTime:2019-07-23T16:43:44.5303917Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
+      "x-ms-request-id" : "8a41dbfa-601a-0070-1f79-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41dbfa-601a-0070-1f79-42bc56000000\nTime:2019-07-24T23:46:21.6988424Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999999</HeaderValue></Error>",
+      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share783156eb&include=&comp=list",
+    "Uri" : "https://sima.file.core.windows.net?prefix=share484840ed&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "a4781f7d-001a-006b-6d75-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share783156eb</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 23 Jul 2019 16:43:43 GMT",
+      "x-ms-request-id" : "8a41dbfb-601a-0070-2079-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share484840ed</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share783156eb" ]
+  "variables" : [ "share484840ed" ]
 }

@@ -111,21 +111,21 @@ The queue service do operations on the queues in the storage account and manage 
 
 ### Queue Service Client
 
-The client performs the interactions with the Queue service, create or delete a queue, getting and setting Queue properties, list queues in account, and get queue statistics. An asynchronous, `QueueServiceAsyncClient`, and synchronous, `QueueClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
+The client performs the interactions with the Queue service, create or delete a queue, getting and setting Queue properties, list queues in account, and get queue statistics. An asynchronous, `QueueStoragesyncClient`, and synchronous, `QueueClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
 Once you have the value of the SASToken you can create the queue service client with `${accountName}`, `${sasToken}`.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageRL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStoragelient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
-QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
+QueueClient newQueueStorageClient = queueStorageClient.createQueue("myqueue");
 ```
 
 or
 
 ```Java
-String queueServiceAsyncURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceAsyncClient queueServiceAsyncClient = QueueServiceAsyncClient.builder().endpoint(queueServiceAsyncURL).build();
-queueServiceAsyncClient.createQueue("newAsyncQueue").subscribe(
+String queueStorageAsyncURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageAsyncClient queueStorageAsyncClient = QueueStorageAsyncClient.builder().endpoint(queueStorageAsyncURL).build();
+queueStorageAsyncClient.createQueue("newAsyncQueue").subscribe(
     result -> {
       // do something when new queue created
     },
@@ -188,30 +188,30 @@ The following sections provide several code snippets covering some of the most c
 Create a queue in the Storage Account. Throws StorageErrorException If the queue fails to be created.
 
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
-QueueClient newQueueServiceClient = queueServiceClient.createQueue("myqueue");
+QueueClient newQueueStorageClient = queueStorageClient.createQueue("myqueue");
 ```
 ### Delete a queue
 
 Delete a queue in the Storage Account. Throws StorageErrorException If the queue fails to be deleted.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
-QueueClient newQueueServiceClient = queueServiceClient.deleteQueue("myqueue");
+QueueClient newQueueStorageClient = queueStorageClient.deleteQueue("myqueue");
 ```
 
 ### List queues in account
 
 List all the queues in account.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 // @param marker: Starting point to list the queues
 // @param options: Filter for queue selection
-queueServiceClient.listQueuesSegment(marker, options).forEach{
+queueStorageClient.listQueuesSegment(marker, options).forEach{
     queueItem -> {//do something}
 };
 ```
@@ -220,18 +220,18 @@ queueServiceClient.listQueuesSegment(marker, options).forEach{
 
 Get queue properties in account, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
-Response<StorageServiceProperties> properties = queueServiceClient.getProperties();
+Response<StorageServiceProperties> properties = queueStorageClient.getProperties();
 ```
 
 ### Set properties in queue account
 
 Set queue properties in account, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
 StorageServiceProperties properties = new StorageServiceProperties() {
     // logging: some logging;
@@ -240,17 +240,17 @@ StorageServiceProperties properties = new StorageServiceProperties() {
     // Cors: some cors
 }
 
-queueServiceClient.setProperties(properties);
+queueStorageClient.setProperties(properties);
 ```
 
 ### Get queue service statistics 
 he `Get Queue Service Stats` operation retrieves statistics related to replication for the Queue service. 
 It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
 ```Java
-String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
-QueueServiceClient queueServiceClient = QueueServiceClient.builder().endpoint(queueURL).build();
+String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", accountName, sasToken)
+QueueStorageClient queueStorageClient = QueueStorageClient.builder().endpoint(queueURL).build();
 
-Response<StorageServiceStats> queueStats = queueServiceClient.getStatistics();
+Response<StorageServiceStats> queueStats = queueStorageClient.getStatistics();
 ```
 
 ### Enqueue message into a queue
@@ -335,7 +335,7 @@ When you interact with queue using this Java client library, errors returned by 
 ## Next steps
 
 ### More Samples
-- QueueServiceSample
+- QueueStorageSample
 - MessageSample
 - QueueExceptionSample
 - AsyncSample

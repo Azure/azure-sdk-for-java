@@ -8,7 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public abstract class QueueServiceClientTestsBase extends TestBase {
+public abstract class QueueStorageClientTestsBase extends TestBase {
     String queueName;
     TestHelpers helper;
 

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory04212f?restype=directory",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory24824a?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70F8CB53321EA\"",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:42:10 GMT",
+      "ETag" : "\"0x8D7109104AA93FA\"",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:45:33 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a4781eba-001a-006b-1275-4192c4000000",
+      "x-ms-request-id" : "8a41db7d-601a-0070-5279-42bc56000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 23 Jul 2019 16:42:09 GMT"
+      "Date" : "Wed, 24 Jul 2019 23:45:32 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory04212f?restype=directory&comp=metadata",
+    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory24824a?restype=directory&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -32,11 +32,11 @@
       "retry-after" : "0",
       "Content-Length" : "260",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a4781ebb-001a-006b-1375-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:a4781ebb-001a-006b-1375-4192c4000000\nTime:2019-07-23T16:42:10.6604019Z</Message></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:42:09 GMT",
+      "x-ms-request-id" : "8a41db7f-601a-0070-5479-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidMetadata</Code><Message>The metadata specified is invalid. It has characters that are not permitted.\nRequestId:8a41db7f-601a-0070-5479-42bc56000000\nTime:2019-07-24T23:45:33.1432765Z</Message></Error>",
+      "Date" : "Wed, 24 Jul 2019 23:45:32 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory04212f" ]
+  "variables" : [ "directory24824a" ]
 }

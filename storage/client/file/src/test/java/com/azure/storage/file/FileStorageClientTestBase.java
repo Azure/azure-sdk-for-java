@@ -9,7 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public abstract class FileServiceClientTestBase extends TestBase {
+public abstract class FileStorageClientTestBase extends TestBase {
     String shareName;
 
     String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
@@ -60,13 +60,13 @@ public abstract class FileServiceClientTestBase extends TestBase {
     public abstract void deleteShareDoesNotExist();
 
     @Test
-    public abstract void deleteThenCreateShareFromFileServiceClient();
+    public abstract void deleteThenCreateShareFromFileStorageClient();
 
     /**
      * Cannot re-create a share within 30 seconds of it being deleted.
      */
     @Test
-    public abstract void deleteThenCreateShareTooSoonFromFileServiceClient();
+    public abstract void deleteThenCreateShareTooSoonFromFileStorageClient();
 
     @Test
     public abstract void listShares();

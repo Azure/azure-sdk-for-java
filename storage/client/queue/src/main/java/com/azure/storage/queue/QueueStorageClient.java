@@ -23,32 +23,32 @@ import java.util.Map;
  *
  * <p><strong>Instantiating an Synchronous Queue Service Client</strong></p>
  *
- * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation}
+ * {@codesnippet com.azure.storage.queue.queueStorageClient.instantiation}
  *
- * <p>View {@link QueueServiceClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link QueueStorageClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see QueueServiceClientBuilder
- * @see QueueServiceAsyncClient
+ * @see QueueStorageClientBuilder
+ * @see QueueStorageAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
-public final class QueueServiceClient {
-    private final QueueServiceAsyncClient client;
+public final class QueueStorageClient {
+    private final QueueStorageAsyncClient client;
 
     /**
-     * Creates a QueueServiceClient that wraps a QueueServiceAsyncClient and blocks requests.
+     * Creates a QueueStorageClient that wraps a QueueStorageAsyncClient and blocks requests.
      *
-     * @param client QueueServiceAsyncClient that is used to send requests
+     * @param client QueueStorageAsyncClient that is used to send requests
      */
-    QueueServiceClient(QueueServiceAsyncClient client) {
+    QueueStorageClient(QueueStorageAsyncClient client) {
         this.client = client;
     }
 
     /**
      * @return the URL of the storage queue
      */
-    public URL getQueueServiceUrl() {
-        return client.getQueueServiceUrl();
+    public URL getQueueStorageUrl() {
+        return client.getQueueStorageUrl();
     }
 
     /**
@@ -70,7 +70,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueue#string}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.createQueue#string}
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
@@ -88,7 +88,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueue#string-map}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.createQueue#string-map}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
@@ -108,7 +108,7 @@ public final class QueueServiceClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
      * @return A response containing the status of deleting the queue
@@ -125,7 +125,7 @@ public final class QueueServiceClient {
      *
      * <p>List all queues in the account</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.listQueues}
      *
      * @return {@link QueueItem Queues} in the storage account
      */
@@ -143,7 +143,7 @@ public final class QueueServiceClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.listQueues#queueSergmentOptions}
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -174,7 +174,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.getProperties}
      *
      * @return Storage account Queue service properties
      */
@@ -193,11 +193,11 @@ public final class QueueServiceClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setProperties#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.setProperties#storageServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.setPropertiesEnableMetrics#storageServiceProperties}
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -224,7 +224,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

@@ -25,40 +25,40 @@ import reactor.test.StepVerifier;
 import static com.azure.storage.file.FileTestHelpers.setupClient;
 import static org.junit.Assert.fail;
 
-public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
-    private final ClientLogger fileServiceAsyncLogger = new ClientLogger(FileServiceClientAsyncTests.class);
+public class FileStorageClientAsyncTests extends FileStorageClientTestBase {
+    private final ClientLogger fileStorageAsyncLogger = new ClientLogger(FileStorageClientAsyncTests.class);
 
-    private FileServiceAsyncClient fileServiceAsyncClient;
+    private FileStorageAsyncClient fileStorageAsyncClient;
 
     @Override
     public void beforeTest() {
         shareName = getShareName();
 
         if (interceptorManager.isPlaybackMode()) {
-            fileServiceAsyncClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
+            fileStorageAsyncClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildAsyncClient(), true, fileServiceAsyncLogger);
+                .buildAsyncClient(), true, fileStorageAsyncLogger);
         } else {
-            fileServiceAsyncClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
+            fileStorageAsyncClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildAsyncClient(), false, fileServiceAsyncLogger);
+                .buildAsyncClient(), false, fileStorageAsyncLogger);
         }
     }
 
     @Override
     public void afterTest() {
-        fileServiceAsyncClient.listShares(new ListSharesOptions().prefix(shareName))
+        fileStorageAsyncClient.listShares(new ListSharesOptions().prefix(shareName))
             .collectList()
             .block()
             .forEach(share -> {
-                ShareAsyncClient client = fileServiceAsyncClient.getShareAsyncClient(share.name());
+                ShareAsyncClient client = fileStorageAsyncClient.getShareAsyncClient(share.name());
                 try {
                     client.delete().block();
                 } catch (StorageErrorException ex) {
@@ -69,7 +69,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
 
     @Override
     public void getShareDoesNotCreateAShare() {
-        ShareAsyncClient client = fileServiceAsyncClient.getShareAsyncClient(shareName);
+        ShareAsyncClient client = fileStorageAsyncClient.getShareAsyncClient(shareName);
         try {
             client.getStatistics().block();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
@@ -80,18 +80,18 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
 
     @Override
     public void createShare() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
     @Override
     public void createShareTwiceSameMetadata() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 409));
     }
 
@@ -99,68 +99,68 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
     public void createShareTwiceDifferentMetadata() {
         Map<String, String> metadata = Collections.singletonMap("test", "metadata");
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName, metadata, null))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName, metadata, null))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 409));
     }
 
     @Override
     public void createShareInvalidQuota() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName, null, -1))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName, null, -1))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName, null, 9999999))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName, null, 9999999))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
     @Override
     public void deleteShare() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.deleteShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.deleteShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
     }
 
     @Override
     public void deleteShareDoesNotExist() {
-        StepVerifier.create(fileServiceAsyncClient.deleteShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.deleteShare(shareName))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 404));
     }
 
     @Override
-    public void deleteThenCreateShareFromFileServiceClient() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+    public void deleteThenCreateShareFromFileStorageClient() {
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.deleteShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.deleteShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
         FileTestHelpers.sleepInRecordMode(Duration.ofSeconds(45));
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
     }
 
     @Override
-    public void deleteThenCreateShareTooSoonFromFileServiceClient() {
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+    public void deleteThenCreateShareTooSoonFromFileStorageClient() {
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.deleteShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.deleteShare(shareName))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.createShare(shareName))
+        StepVerifier.create(fileStorageAsyncClient.createShare(shareName))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 409));
     }
 
@@ -172,12 +172,12 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            StepVerifier.create(fileServiceAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
+            StepVerifier.create(fileStorageAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions()))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions()))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
@@ -197,12 +197,12 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
                 share.name(shareName + i);
             }
 
-            StepVerifier.create(fileServiceAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
+            StepVerifier.create(fileStorageAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().prefix(shareName + "prefix")))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().prefix(shareName + "prefix")))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .verifyComplete();
@@ -216,12 +216,12 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            StepVerifier.create(fileServiceAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
+            StepVerifier.create(fileStorageAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().maxResults(2)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().maxResults(2)))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .verifyComplete();
@@ -229,10 +229,10 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
 
     @Override
     public void listSharesInvalidMaxResults() {
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().maxResults(-1)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().maxResults(-1)))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().maxResults(0)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().maxResults(0)))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -250,12 +250,12 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             }
 
             testShares.add(share);
-            StepVerifier.create(fileServiceAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
+            StepVerifier.create(fileStorageAsyncClient.createShare(share.name(), share.metadata(), share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
                 .verifyComplete();
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().includeMetadata(true)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().includeMetadata(true)))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
@@ -269,7 +269,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             ShareItem share = new ShareItem().name(shareName + i)
                 .properties(new ShareProperties().quota(2));
 
-            ShareAsyncClient client = fileServiceAsyncClient.getShareAsyncClient(share.name());
+            ShareAsyncClient client = fileStorageAsyncClient.getShareAsyncClient(share.name());
 
             StepVerifier.create(client.create(null, share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
@@ -290,7 +290,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             testShares.add(share);
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().includeSnapshots(true)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().includeSnapshots(true)))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
@@ -312,7 +312,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
                 share.metadata(metadata);
             }
 
-            ShareAsyncClient client = fileServiceAsyncClient.getShareAsyncClient(share.name());
+            ShareAsyncClient client = fileStorageAsyncClient.getShareAsyncClient(share.name());
 
             StepVerifier.create(client.create(share.metadata(), share.properties().quota()))
                 .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 201))
@@ -333,7 +333,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             testShares.add(share);
         }
 
-        StepVerifier.create(fileServiceAsyncClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)))
+        StepVerifier.create(fileStorageAsyncClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
             .assertNext(share -> FileTestHelpers.assertSharesAreEqual(testShares.pop(), share))
@@ -344,7 +344,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
 
     @Override
     public void setFileServiceProperties() {
-        FileServiceProperties originalProperties = fileServiceAsyncClient.getProperties().block().value();
+        FileServiceProperties originalProperties = fileStorageAsyncClient.getProperties().block().value();
 
         RetentionPolicy retentionPolicy = new RetentionPolicy().enabled(true)
             .days(3);
@@ -358,19 +358,19 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(new ArrayList<>());
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(updatedProperties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(updatedProperties))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.getProperties())
+        StepVerifier.create(fileStorageAsyncClient.getProperties())
             .assertNext(response -> FileTestHelpers.assertFileServicePropertiesAreEqual(updatedProperties, response.value()))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(originalProperties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(originalProperties))
             .assertNext(response -> FileTestHelpers.assertResponseStatusCode(response, 202))
             .verifyComplete();
 
-        StepVerifier.create(fileServiceAsyncClient.getProperties())
+        StepVerifier.create(fileStorageAsyncClient.getProperties())
             .assertNext(response -> FileTestHelpers.assertFileServicePropertiesAreEqual(originalProperties, response.value()))
             .verifyComplete();
     }
@@ -394,7 +394,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(cors);
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(properties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(properties))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -412,7 +412,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(Collections.singletonList(new CorsRule().allowedHeaders(reallyLongString)));
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(properties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(properties))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -430,7 +430,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(Collections.singletonList(new CorsRule().exposedHeaders(reallyLongString)));
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(properties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(properties))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -448,7 +448,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(Collections.singletonList(new CorsRule().allowedOrigins(reallyLongString)));
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(properties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(properties))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 
@@ -466,7 +466,7 @@ public class FileServiceClientAsyncTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(Collections.singletonList(new CorsRule().allowedMethods("NOTAREALHTTPMETHOD")));
 
-        StepVerifier.create(fileServiceAsyncClient.setProperties(properties))
+        StepVerifier.create(fileStorageAsyncClient.setProperties(properties))
             .verifyErrorSatisfies(throwable -> FileTestHelpers.assertExceptionStatusCode(throwable, 400));
     }
 }

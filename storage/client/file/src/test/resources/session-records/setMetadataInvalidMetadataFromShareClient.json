@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share911321d2?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share31988471?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70F8C95EA6042\"",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:41:18 GMT",
+      "ETag" : "\"0x8D71090E5A2D0A4\"",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:44:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a4781dde-001a-006b-1175-4192c4000000",
-      "Date" : "Tue, 23 Jul 2019 16:41:17 GMT"
+      "x-ms-request-id" : "8a41da9e-601a-0070-5279-42bc56000000",
+      "Date" : "Wed, 24 Jul 2019 23:44:40 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share911321d2?restype=share&comp=metadata",
+    "Uri" : "https://sima.file.core.windows.net/share31988471?restype=share&comp=metadata",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "281",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a4781de1-001a-006b-1275-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:a4781de1-001a-006b-1275-4192c4000000\nTime:2019-07-23T16:41:18.1748228Z</Message><MetadataValue>metadata</MetadataValue></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:41:17 GMT",
+      "x-ms-request-id" : "8a41daa0-601a-0070-5379-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:8a41daa0-601a-0070-5379-42bc56000000\nTime:2019-07-24T23:44:41.0702627Z</Message><MetadataValue>metadata</MetadataValue></Error>",
+      "Date" : "Wed, 24 Jul 2019 23:44:40 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share911321d2?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share31988471?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -49,9 +49,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "a4781de2-001a-006b-1375-4192c4000000",
-      "Date" : "Tue, 23 Jul 2019 16:41:17 GMT"
+      "x-ms-request-id" : "8a41daa1-601a-0070-5479-42bc56000000",
+      "Date" : "Wed, 24 Jul 2019 23:44:40 GMT"
     }
   } ],
-  "variables" : [ "share911321d2" ]
+  "variables" : [ "share31988471" ]
 }

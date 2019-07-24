@@ -16,17 +16,17 @@ public class QueueExceptionSamples {
     /**
      * The main method shows how to handle the storage exception.
      * @param args No args needed for the main method.
-     * @throws RuntimeException If queueServiceClient failed to create a queue.
+     * @throws RuntimeException If queueStorageClient failed to create a queue.
      */
     public static void main(String[] args) {
         // Create a queue service client.
-        String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
-        QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
+        String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
+        QueueStorageClient queueStorageClient = new QueueStorageClientBuilder().endpoint(queueStorageURL).buildClient();
 
         // Create queue client.
         Response<QueueClient> queueClientResponse;
         try {
-            queueClientResponse = queueServiceClient.createQueue(generateRandomName("delete-not-exist", 16));
+            queueClientResponse = queueStorageClient.createQueue(generateRandomName("delete-not-exist", 16));
             System.out.println("Successfully create the queue! Status code: " + String.valueOf(queueClientResponse.statusCode()));
         } catch (StorageErrorException e) {
             System.out.println(String.format("Error creating a queue. Error message: %s", e.value().message()));

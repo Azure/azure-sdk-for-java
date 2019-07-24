@@ -21,11 +21,11 @@ public class MessageSamples {
      */
     public static void main(String[] args) throws InterruptedException {
         // Build Queue Client using SAS Token
-        String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
-        QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
+        String queueStorageURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
+        QueueStorageClient queueStorageClient = new QueueStorageClientBuilder().endpoint(queueStorageURL).buildClient();
 
         // Create a queue client
-        Response<QueueClient> queueClientResponse = queueServiceClient.createQueue(generateRandomName("enqueue", 16));
+        Response<QueueClient> queueClientResponse = queueStorageClient.createQueue(generateRandomName("enqueue", 16));
         QueueClient queueClient = queueClientResponse.value();
         // Using queue client to enqueue several "Hello World" messages into queue.
         for (int i = 0; i < 3; i++) {

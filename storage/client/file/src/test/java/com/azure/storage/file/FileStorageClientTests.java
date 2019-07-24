@@ -29,37 +29,37 @@ import static com.azure.storage.file.FileTestHelpers.setupClient;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-public class FileServiceClientTests extends FileServiceClientTestBase {
-    private final ClientLogger fileServiceLogger = new ClientLogger(FileServiceClientTests.class);
+public class FileStorageClientTests extends FileStorageClientTestBase {
+    private final ClientLogger fileStorageLogger = new ClientLogger(FileStorageClientTests.class);
 
-    private FileServiceClient fileServiceClient;
+    private FileStorageClient fileStorageClient;
 
     @Override
     public void beforeTest() {
         shareName = getShareName();
 
         if (interceptorManager.isPlaybackMode()) {
-            fileServiceClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
+            fileStorageClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildClient(), true, fileServiceLogger);
+                .buildClient(), true, fileStorageLogger);
         } else {
-            fileServiceClient = setupClient((connectionString, endpoint) -> new FileServiceClientBuilder()
+            fileStorageClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildClient(), false, fileServiceLogger);
+                .buildClient(), false, fileStorageLogger);
         }
     }
 
     @Override
     public void afterTest() {
-        for (ShareItem share : fileServiceClient.listShares(new ListSharesOptions().prefix(shareName))) {
-            ShareClient client = fileServiceClient.getShareClient(share.name());
+        for (ShareItem share : fileStorageClient.listShares(new ListSharesOptions().prefix(shareName))) {
+            ShareClient client = fileStorageClient.getShareClient(share.name());
             try {
                 client.delete();
             } catch (StorageErrorException ex) {
@@ -70,7 +70,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
 
     @Override
     public void getShareDoesNotCreateAShare() {
-        ShareClient client = fileServiceClient.getShareClient(shareName);
+        ShareClient client = fileStorageClient.getShareClient(shareName);
         try {
             client.getStatistics();
             fail("getShareAsyncClient shouldn't create a share in Azure.");
@@ -81,15 +81,15 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
 
     @Override
     public void createShare() {
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
     }
 
     @Override
     public void createShareTwiceSameMetadata() {
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
 
         try {
-            fileServiceClient.createShare(shareName);
+            fileStorageClient.createShare(shareName);
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 409);
         }
@@ -99,10 +99,10 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
     public void createShareTwiceDifferentMetadata() {
         Map<String, String> metadata = Collections.singletonMap("test", "metadata");
 
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
 
         try {
-            fileServiceClient.createShare(shareName, metadata, null);
+            fileStorageClient.createShare(shareName, metadata, null);
             fail("Attempting to create the share twice with different metadata should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 409);
@@ -112,14 +112,14 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
     @Override
     public void createShareInvalidQuota() {
         try {
-            fileServiceClient.createShare(shareName, null, -1);
+            fileStorageClient.createShare(shareName, null, -1);
             fail("Attempting to create a share with a negative quota should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
         }
 
         try {
-            fileServiceClient.createShare(shareName, null, 9999999);
+            fileStorageClient.createShare(shareName, null, 9999999);
             fail("Attempting to create a share with a quota above 5120 GB should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -128,14 +128,14 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
 
     @Override
     public void deleteShare() {
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.deleteShare(shareName), 202);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.deleteShare(shareName), 202);
     }
 
     @Override
     public void deleteShareDoesNotExist() {
         try {
-            fileServiceClient.deleteShare(shareName);
+            fileStorageClient.deleteShare(shareName);
             fail("Attempting to delete a share that doesn't exist should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 404);
@@ -143,22 +143,22 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
     }
 
     @Override
-    public void deleteThenCreateShareFromFileServiceClient() {
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.deleteShare(shareName), 202);
+    public void deleteThenCreateShareFromFileStorageClient() {
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.deleteShare(shareName), 202);
 
         FileTestHelpers.sleepInRecordMode(Duration.ofSeconds(45));
 
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
     }
 
     @Override
-    public void deleteThenCreateShareTooSoonFromFileServiceClient() {
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(shareName), 201);
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.deleteShare(shareName), 202);
+    public void deleteThenCreateShareTooSoonFromFileStorageClient() {
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(shareName), 201);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.deleteShare(shareName), 202);
 
         try {
-            fileServiceClient.createShare(shareName);
+            fileStorageClient.createShare(shareName);
             fail("Attempting to re-create a share within 30 seconds of deleting it should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 409);
@@ -173,10 +173,10 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
+            FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions()).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions()).iterator();
         for (int i = 0; i < 3; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -196,10 +196,10 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
                 share.name(shareName + i);
             }
 
-            FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
+            FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions().prefix(shareName + "prefix")).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions().prefix(shareName + "prefix")).iterator();
         for (int i = 0; i < 2; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -214,10 +214,10 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
                 .properties(new ShareProperties().quota(2));
 
             testShares.add(share);
-            FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
+            FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions().maxResults(2)).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions().maxResults(2)).iterator();
         for (int i = 0; i < 2; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -227,14 +227,14 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
     @Override
     public void listSharesInvalidMaxResults() {
         try {
-            fileServiceClient.listShares(defaultOptions().maxResults(-1)).iterator().hasNext();
+            fileStorageClient.listShares(defaultOptions().maxResults(-1)).iterator().hasNext();
             fail("Attempting to list shares with a negative maximum should throw an error");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
         }
 
         try {
-            fileServiceClient.listShares(defaultOptions().maxResults(0)).iterator().hasNext();
+            fileStorageClient.listShares(defaultOptions().maxResults(0)).iterator().hasNext();
             fail("Attempting to list shares with a zero maximum should throw an error");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -255,10 +255,10 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             }
 
             testShares.add(share);
-            FileTestHelpers.assertResponseStatusCode(fileServiceClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
+            FileTestHelpers.assertResponseStatusCode(fileStorageClient.createShare(share.name(), share.metadata(), share.properties().quota()), 201);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions().includeMetadata(true)).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions().includeMetadata(true)).iterator();
         for (int i = 0; i < 3; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -272,7 +272,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             ShareItem share = new ShareItem().name(shareName + i)
                 .properties(new ShareProperties().quota(2));
 
-            ShareClient client = fileServiceClient.getShareClient(share.name());
+            ShareClient client = fileStorageClient.getShareClient(share.name());
 
             Response<ShareInfo> createResponse = client.create(null, share.properties().quota());
             FileTestHelpers.assertResponseStatusCode(createResponse, 201);
@@ -289,7 +289,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             testShares.add(share);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions().includeSnapshots(true)).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions().includeSnapshots(true)).iterator();
         for (int i = 0; i < 5; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -309,7 +309,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
                 share.metadata(metadata);
             }
 
-            ShareClient client = fileServiceClient.getShareClient(share.name());
+            ShareClient client = fileStorageClient.getShareClient(share.name());
 
             Response<ShareInfo> createResponse = client.create(share.metadata(), share.properties().quota());
             FileTestHelpers.assertResponseStatusCode(createResponse, 201);
@@ -326,7 +326,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             testShares.add(share);
         }
 
-        Iterator<ShareItem> shares = fileServiceClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)).iterator();
+        Iterator<ShareItem> shares = fileStorageClient.listShares(defaultOptions().includeMetadata(true).includeSnapshots(true)).iterator();
         for (int i = 0; i < 5; i++) {
             FileTestHelpers.assertSharesAreEqual(testShares.pop(), shares.next());
         }
@@ -335,7 +335,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
 
     @Override
     public void setFileServiceProperties() {
-        FileServiceProperties originalProperties = fileServiceClient.getProperties().value();
+        FileServiceProperties originalProperties = fileStorageClient.getProperties().value();
 
         RetentionPolicy retentionPolicy = new RetentionPolicy().enabled(true)
             .days(3);
@@ -349,15 +349,15 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .minuteMetrics(metrics)
             .cors(new ArrayList<>());
 
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.setProperties(updatedProperties), 202);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.setProperties(updatedProperties), 202);
 
-        Response<FileServiceProperties> getResponse = fileServiceClient.getProperties();
+        Response<FileServiceProperties> getResponse = fileStorageClient.getProperties();
         FileTestHelpers.assertResponseStatusCode(getResponse, 200);
         FileTestHelpers.assertFileServicePropertiesAreEqual(updatedProperties, getResponse.value());
 
-        FileTestHelpers.assertResponseStatusCode(fileServiceClient.setProperties(originalProperties), 202);
+        FileTestHelpers.assertResponseStatusCode(fileStorageClient.setProperties(originalProperties), 202);
 
-        getResponse = fileServiceClient.getProperties();
+        getResponse = fileStorageClient.getProperties();
         FileTestHelpers.assertResponseStatusCode(getResponse, 200);
         FileTestHelpers.assertFileServicePropertiesAreEqual(originalProperties, getResponse.value());
     }
@@ -382,7 +382,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .cors(cors);
 
         try {
-            fileServiceClient.setProperties(properties);
+            fileStorageClient.setProperties(properties);
             fail("Attempting to set more than 5 CorsRules on files should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -404,7 +404,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .cors(Collections.singletonList(new CorsRule().allowedHeaders(reallyLongString)));
 
         try {
-            fileServiceClient.setProperties(properties);
+            fileStorageClient.setProperties(properties);
             fail("Attempting to set an allowed header longer than 64 characters should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -426,7 +426,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .cors(Collections.singletonList(new CorsRule().exposedHeaders(reallyLongString)));
 
         try {
-            fileServiceClient.setProperties(properties);
+            fileStorageClient.setProperties(properties);
             fail("Attempting to set an exposed header longer than 64 characters should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -448,7 +448,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .cors(Collections.singletonList(new CorsRule().allowedOrigins(reallyLongString)));
 
         try {
-            fileServiceClient.setProperties(properties);
+            fileStorageClient.setProperties(properties);
             fail("Attempting to set an allowed origin longer than 64 characters should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);
@@ -470,7 +470,7 @@ public class FileServiceClientTests extends FileServiceClientTestBase {
             .cors(Collections.singletonList(new CorsRule().allowedMethods("NOTAREALHTTPMETHOD")));
 
         try {
-            fileServiceClient.setProperties(properties);
+            fileStorageClient.setProperties(properties);
             fail("Attempting to set an invalid allowed method should throw an exception.");
         } catch (Exception exception) {
             FileTestHelpers.assertExceptionStatusCode(exception, 400);

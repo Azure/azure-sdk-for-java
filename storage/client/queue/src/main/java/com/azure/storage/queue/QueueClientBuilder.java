@@ -237,7 +237,7 @@ public final class QueueClientBuilder {
      * Sets the {@link SharedKeyCredential} used to authenticate requests sent to the Queue.
      *
      * @param credential Shared key credential can retrieve from the Storage account that authorizes requests
-     * @return the updated QueueServiceClientBuilder object
+     * @return the updated QueueStorageClientBuilder object
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public QueueClientBuilder credential(SharedKeyCredential credential) {

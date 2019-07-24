@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile11163511",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile05223ccd",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70F8C3E4050F6\"",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:38:51 GMT",
+      "ETag" : "\"0x8D710908E6B9426\"",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a4781c2d-001a-006b-3275-4192c4000000",
+      "x-ms-request-id" : "8a41d8fd-601a-0070-7879-42bc56000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 23 Jul 2019 16:38:50 GMT"
+      "Date" : "Wed, 24 Jul 2019 23:42:14 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile11163511?comp=range",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile05223ccd?comp=range",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -29,19 +29,19 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70F8C3E4ED28D\"",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:38:51 GMT",
+      "ETag" : "\"0x8D710908E742131\"",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a4781c2e-001a-006b-3375-4192c4000000",
+      "x-ms-request-id" : "8a41d8fe-601a-0070-7979-42bc56000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 23 Jul 2019 16:38:50 GMT",
+      "Date" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "Content-MD5" : "/CTzx8jXJ1MqqUsC1dJBUQ=="
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile11163511",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile05223ccd",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -49,21 +49,21 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:38:51 GMT",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 23 Jul 2019 16:38:50 GMT",
+      "Date" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "\"0x8D70F8C3E4ED28D\"",
+      "ETag" : "\"0x8D710908E742131\"",
       "Content-Length" : "14",
-      "x-ms-request-id" : "a4781c2f-001a-006b-3475-4192c4000000",
+      "x-ms-request-id" : "8a41d8ff-601a-0070-7a79-42bc56000000",
       "Body" : "",
       "Content-Type" : "application/octet-stream"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile11163511",
+    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile05223ccd",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -72,19 +72,19 @@
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "Content-Range" : "bytes 0-13/14",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:38:51 GMT",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "retry-after" : "0",
       "StatusCode" : "206",
-      "Date" : "Tue, 23 Jul 2019 16:38:51 GMT",
+      "Date" : "Wed, 24 Jul 2019 23:42:14 GMT",
       "Accept-Ranges" : "bytes",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "\"0x8D70F8C3E4ED28D\"",
+      "ETag" : "\"0x8D710908E742131\"",
       "Content-Length" : "14",
-      "x-ms-request-id" : "a4781c30-001a-006b-3575-4192c4000000",
+      "x-ms-request-id" : "8a41d900-601a-0070-7b79-42bc56000000",
       "Body" : "Hello world!\r\n",
       "Content-Type" : "application/octet-stream"
     }
   } ],
-  "variables" : [ "file11163511" ]
+  "variables" : [ "file05223ccd" ]
 }

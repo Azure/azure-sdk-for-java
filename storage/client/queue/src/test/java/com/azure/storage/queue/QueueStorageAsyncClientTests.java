@@ -4,19 +4,15 @@ package com.azure.storage.queue;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.queue.models.EnqueuedMessage;
 import com.azure.storage.queue.models.Logging;
 import com.azure.storage.queue.models.Metrics;
-import com.azure.storage.queue.models.PeekedMessage;
 import com.azure.storage.queue.models.QueueItem;
-import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.RetentionPolicy;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +20,11 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
-public class QueueServiceClientTests extends QueueServiceClientTestsBase {
-    private final ClientLogger logger = new ClientLogger(QueueServiceClientTests.class);
+public class QueueStorageAsyncClientTests extends QueueStorageClientTestsBase {
+    private final ClientLogger logger = new ClientLogger(QueueStorageAsyncClientTests.class);
 
-    private QueueServiceClient serviceClient;
+    private QueueStorageAsyncClient serviceClient;
 
     @Override
     protected void beforeTest() {
@@ -38,31 +32,32 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         helper = new TestHelpers();
 
         if (interceptorManager.isPlaybackMode()) {
-            serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueServiceClientBuilder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .buildClient(), true, logger);
+                .buildAsyncClient(), true, logger);
         } else {
-            serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueServiceClientBuilder()
+            serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueStorageClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .buildClient(), false, logger);
+                .buildAsyncClient(), false, logger);
         }
     }
 
     @Override
     protected void afterTest() {
         serviceClient.listQueues(new QueuesSegmentOptions().prefix(queueName))
-            .forEach(queueToDelete -> {
+            .collectList()
+            .block()
+            .forEach(queue -> {
+                QueueAsyncClient client = serviceClient.getQueueAsyncClient(queue.name());
                 try {
-                    QueueClient client = serviceClient.getQueueClient(queueToDelete.name());
-                    client.clearMessages();
-                    client.delete();
+                    client.clearMessages().then(client.delete()).block();
                 } catch (StorageErrorException ex) {
                     // Queue already delete, that's what we wanted anyways.
                 }
@@ -71,19 +66,14 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
 
     @Override
     public void getQueueDoesNotCreateAQueue() {
-        try {
-            serviceClient.getQueueClient(queueName).enqueueMessage("Expecting an exception");
-            fail("getQueueClient doesn't create a queue in Azure Storage.");
-        } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 404);
-        }
+        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"));
     }
 
     @Override
     public void createQueue() {
-        QueueClient client = serviceClient.createQueue(queueName).value();
-        Response<EnqueuedMessage> response = client.enqueueMessage("Testing service client creating a queue");
-        helper.assertResponseStatusCode(response, 201);
+        StepVerifier.create(serviceClient.createQueue(queueName).block().value().enqueueMessage("Testing service client creating a queue"))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
     }
 
     @Override
@@ -91,11 +81,13 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
-        QueueClient client = serviceClient.createQueue(queueName, metadata).value();
+        QueueAsyncClient client = serviceClient.createQueue(queueName, metadata).block().value();
 
-        Response<QueueProperties> propertiesResponse = client.getProperties();
-        helper.assertResponseStatusCode(propertiesResponse, 200);
-        assertEquals(metadata, propertiesResponse.value().metadata());
+        StepVerifier.create(client.getProperties())
+            .assertNext(response -> {
+                assertEquals(metadata, response.value().metadata());
+            })
+            .verifyComplete();
     }
 
     @Override
@@ -105,11 +97,13 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
 
-        EnqueuedMessage enqueuedMessage = serviceClient.createQueue(queueName, metadata).value().enqueueMessage(messageText).value();
-        assertNotNull(enqueuedMessage);
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().enqueueMessage(messageText))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
 
-        PeekedMessage peekedMessage = serviceClient.createQueue(queueName, metadata).value().peekMessages().iterator().next();
-        assertEquals(messageText, peekedMessage.messageText());
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata).block().value().peekMessages())
+            .assertNext(response -> assertEquals(messageText, response.messageText()))
+            .verifyComplete();
     }
 
     @Override
@@ -121,32 +115,23 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         try {
             serviceClient.createQueue(queueName);
             serviceClient.createQueue(queueName, metadata);
-            fail("Creating a queue twice with different metadata should throw an exception.");
         } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 409);
         }
     }
 
     @Override
     public void deleteExistingQueue() {
-        QueueClient client = serviceClient.createQueue(queueName).value();
-        serviceClient.deleteQueue(queueName);
+        QueueAsyncClient client = serviceClient.createQueue(queueName).block().value();
+        serviceClient.deleteQueue(queueName).block();
 
-        try {
-            client.enqueueMessage("Expecting an exception");
-            fail("Attempting to enqueue a message on a client that has been delete should throw an exception.");
-        } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 404);
-        }
+        StepVerifier.create(client.enqueueMessage("Expecting an exception"));
     }
 
     @Override
     public void deleteNonExistentQueue() {
         try {
             serviceClient.deleteQueue(queueName);
-            fail("Attempting to delete a queue that doesn't exist should throw an exception.");
         } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 404);
         }
     }
 
@@ -156,12 +141,14 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         for (int i = 0; i < 3; i++) {
             QueueItem queue = new QueueItem().name(queueName + i);
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions())) {
-            helper.assertQueuesAreEqual(testQueues.pop(), queue);
-        }
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions()))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .verifyComplete();
     }
 
     @Override
@@ -178,12 +165,14 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             }
 
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true))) {
-            helper.assertQueuesAreEqual(testQueues.pop(), queue);
-        }
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().includeMetadata(true)))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .verifyComplete();
     }
 
     @Override
@@ -198,12 +187,13 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
                 queue.name(queueName + i);
             }
 
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix"))) {
-            helper.assertQueuesAreEqual(testQueues.pop(), queue);
-        }
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().prefix(queueName + "prefix")))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .assertNext(result -> helper.assertQueuesAreEqual(testQueues.pop(), result))
+            .verifyComplete();
     }
 
     @Override
@@ -212,17 +202,16 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
         for (int i = 0; i < 3; i++) {
             QueueItem queue = new QueueItem().name(queueName + i);
             testQueues.add(queue);
-            serviceClient.createQueue(queue.name(), queue.metadata());
+            serviceClient.createQueue(queue.name(), queue.metadata()).block();
         }
 
-        for (QueueItem queue : serviceClient.listQueues(defaultSegmentOptions().maxResults(2))) {
-            helper.assertQueuesAreEqual(testQueues.pop(), queue);
-        }
+        StepVerifier.create(serviceClient.listQueues(defaultSegmentOptions().maxResults(2)))
+            .verifyComplete();
     }
 
     @Override
     public void setProperties() {
-        StorageServiceProperties originalProperties = serviceClient.getProperties().value();
+        StorageServiceProperties originalProperties = serviceClient.getProperties().block().value();
 
         RetentionPolicy retentionPolicy = new RetentionPolicy().enabled(true)
             .days(3);
@@ -242,16 +231,20 @@ public class QueueServiceClientTests extends QueueServiceClientTestsBase {
             .minuteMetrics(metrics)
             .cors(new ArrayList<>());
 
-        VoidResponse setResponse = serviceClient.setProperties(updatedProperties);
-        helper.assertResponseStatusCode(setResponse, 202);
+        StepVerifier.create(serviceClient.setProperties(updatedProperties))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 202))
+            .verifyComplete();
 
-        Response<StorageServiceProperties> getResponse = serviceClient.getProperties();
-        helper.assertQueueServicePropertiesAreEqual(updatedProperties, getResponse.value());
+        StepVerifier.create(serviceClient.getProperties())
+            .assertNext(response -> helper.assertQueueServicePropertiesAreEqual(updatedProperties, response.value()))
+            .verifyComplete();
 
-        setResponse = serviceClient.setProperties(originalProperties);
-        helper.assertResponseStatusCode(setResponse, 202);
+        StepVerifier.create(serviceClient.setProperties(originalProperties))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 202))
+            .verifyComplete();
 
-        getResponse = serviceClient.getProperties();
-        helper.assertQueueServicePropertiesAreEqual(originalProperties, getResponse.value());
+        StepVerifier.create(serviceClient.getProperties())
+            .assertNext(response -> helper.assertQueueServicePropertiesAreEqual(originalProperties, response.value()))
+            .verifyComplete();
     }
 }

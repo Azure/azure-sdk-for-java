@@ -36,27 +36,27 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Instantiating an Asynchronous Queue Service Client</strong></p>
  *
- * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.instantiation}
+ * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.instantiation}
  *
- * <p>View {@link QueueServiceClientBuilder this} for additional ways to construct the client.</p>
+ * <p>View {@link QueueStorageClientBuilder this} for additional ways to construct the client.</p>
  *
- * @see QueueServiceClientBuilder
- * @see QueueServiceClient
+ * @see QueueStorageClientBuilder
+ * @see QueueStorageClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
-public final class QueueServiceAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceAsyncClient.class);
+public final class QueueStorageAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueStorageAsyncClient.class);
     private final AzureQueueStorageImpl client;
 
     /**
-     * Creates a QueueServiceAsyncClient that sends requests to the storage account at {@code endpoint}.
+     * Creates a QueueStorageAsyncClient that sends requests to the storage account at {@code endpoint}.
      * Each service call goes through the {@code httpPipeline}.
      *
      * @param endpoint URL for the Storage Queue service
      * @param httpPipeline HttpPipeline that the HTTP requests and response flow through
      */
-    QueueServiceAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
+    QueueStorageAsyncClient(URL endpoint, HttpPipeline httpPipeline) {
         this.client = new AzureQueueStorageBuilder().pipeline(httpPipeline)
             .url(endpoint.toString())
             .build();
@@ -66,7 +66,7 @@ public final class QueueServiceAsyncClient {
      * @return the URL of the storage queue
      * @throws RuntimeException If the queue service is using a malformed URL.
      */
-    public URL getQueueServiceUrl() {
+    public URL getQueueStorageUrl() {
         try {
             return new URL(client.url());
         } catch (MalformedURLException ex) {
@@ -95,7 +95,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.createQueue#string}
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueAsyncClient and the status of creating the queue
@@ -113,7 +113,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueue#string-map}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.createQueue#string-map}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue
@@ -134,7 +134,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.deleteQueue#string}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
      * @return A response that only contains headers and response status code
@@ -151,7 +151,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues in the account</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.listQueues}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.listQueues}
      *
      * @return {@link QueueItem Queues} in the storage account
      */
@@ -169,7 +169,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions}
+     * {@codesnippet com.azure.storage.queue.queueStorageClient.listQueues#queueSergmentOptions}
      *
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
@@ -238,7 +238,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.getProperties}
      *
      * @return Storage account Queue service properties
      */
@@ -258,11 +258,11 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setProperties#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.setProperties#storageServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.setPropertiesEnableMetrics#storageServiceProperties}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.setPropertiesEnableMetrics#storageServiceProperties}
      *
      * @param properties Storage account Queue service properties
      * @return A response that only contains headers and response status code
@@ -290,7 +290,7 @@ public final class QueueServiceAsyncClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.getStatistics}
+     * {@codesnippet com.azure.storage.queue.queueStorageAsyncClient.getStatistics}
      *
      * @return The geo replication information about the Queue service
      */

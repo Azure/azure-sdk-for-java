@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share5654566a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share291549a0?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D70F8C954995E4\"",
-      "Last-Modified" : "Tue, 23 Jul 2019 16:41:17 GMT",
+      "ETag" : "\"0x8D71090E4FC874B\"",
+      "Last-Modified" : "Wed, 24 Jul 2019 23:44:39 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "a4781dc8-001a-006b-8075-4192c4000000",
-      "Date" : "Tue, 23 Jul 2019 16:41:16 GMT"
+      "x-ms-request-id" : "8a41da88-601a-0070-4179-42bc56000000",
+      "Date" : "Wed, 24 Jul 2019 23:44:39 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share5654566a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share291549a0?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -30,12 +30,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "a4781dca-001a-006b-0175-4192c4000000",
-      "Date" : "Tue, 23 Jul 2019 16:41:16 GMT"
+      "x-ms-request-id" : "8a41da8a-601a-0070-4279-42bc56000000",
+      "Date" : "Wed, 24 Jul 2019 23:44:39 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share5654566a?restype=share",
+    "Uri" : "https://sima.file.core.windows.net/share291549a0?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -47,11 +47,11 @@
       "retry-after" : "0",
       "Content-Length" : "244",
       "StatusCode" : "409",
-      "x-ms-request-id" : "a4781dcb-001a-006b-0275-4192c4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:a4781dcb-001a-006b-0275-4192c4000000\nTime:2019-07-23T16:41:17.1721039Z</Message></Error>",
-      "Date" : "Tue, 23 Jul 2019 16:41:16 GMT",
+      "x-ms-request-id" : "8a41da8b-601a-0070-4379-42bc56000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:8a41da8b-601a-0070-4379-42bc56000000\nTime:2019-07-24T23:44:40.0365290Z</Message></Error>",
+      "Date" : "Wed, 24 Jul 2019 23:44:39 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share5654566a" ]
+  "variables" : [ "share291549a0" ]
 }

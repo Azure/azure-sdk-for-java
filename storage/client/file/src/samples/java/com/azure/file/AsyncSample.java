@@ -3,8 +3,8 @@
 package com.azure.file;
 
 import com.azure.core.util.configuration.ConfigurationManager;
-import com.azure.storage.file.FileServiceAsyncClient;
-import com.azure.storage.file.FileServiceClientBuilder;
+import com.azure.storage.file.FileStorageAsyncClient;
+import com.azure.storage.file.FileStorageClientBuilder;
 import java.util.UUID;
 
 /**
@@ -24,11 +24,11 @@ public class AsyncSample {
      */
     public static void main(String[] args) {
         // Create a file service client
-        FileServiceAsyncClient fileServiceAsyncClient = new FileServiceClientBuilder().endpoint(ENDPOINT)
+        FileStorageAsyncClient fileStorageAsyncClient = new FileStorageClientBuilder().endpoint(ENDPOINT)
                                                             .buildAsyncClient();
         // Create a share
         String shareName = generateRandomName();
-        fileServiceAsyncClient.createShare(shareName).subscribe(
+        fileStorageAsyncClient.createShare(shareName).subscribe(
             response -> {
                 System.out.printf("Successfully created a share with status code: %d.", response.statusCode());
             },
@@ -41,10 +41,10 @@ public class AsyncSample {
         );
 
         // List all shares and delete them.
-        fileServiceAsyncClient.listShares().subscribe(
+        fileStorageAsyncClient.listShares().subscribe(
             shareItem -> {
                 System.out.println("There is a share named: " + shareItem.name());
-                fileServiceAsyncClient.deleteShare(shareItem.name()).subscribe(
+                fileStorageAsyncClient.deleteShare(shareItem.name()).subscribe(
                     response -> {
                         System.out.printf("Successfully delete the share: %s.", shareItem.name());
                     },

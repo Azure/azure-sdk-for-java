@@ -142,8 +142,8 @@ The File Service REST API provides operations on accounts and manage file servic
 Once you have the SASToken, you can construct the file service client with `${accountName}`, `${sasToken}`
 
 ```
-String fileServiceURL = String.format("https://%s.file.core.windows.net", accountName);
-FileServiceClient fileServiceClient = new FileServiceClientBuilder().endpoint(fileServiceURL)
+String fileStorageURL = String.format("https://%s.file.core.windows.net", accountName);
+FileStorageClient fileStorageClient = new FileStorageClientBuilder().endpoint(fileStorageURL)
     .credential(sasToken).buildClient();
 ```
 
@@ -209,19 +209,19 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a share
 Create a share in the Storage Account. Throws StorageErrorException If the share fails to be created.
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileStorageClient in KeyConcept, [`${fileStorageClient}`](#File-services) .
 
 ```Java
 String shareName = "testshare";
-fileServiceClient.createShare(shareName);
+fileStorageClient.createShare(shareName);
 ```
 
 ### Create a snapshot on Share
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileStorageClient in KeyConcept, [`${fileStorageClient}`](#File-services) .
 
 ```Java
 String shareName = "testshare";
-ShareClient shareClient = fileServiceClient.getShareClient(shareName);
+ShareClient shareClient = fileStorageClient.getShareClient(shareName);
 shareClient.createSnapshot();
 ```
 
@@ -250,10 +250,10 @@ directoryClient.createFile(fileName);
 ```
 
 ### List all Shares
-Taking the fileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services)
+Taking the fileStorageClient in KeyConcept, [`${fileStorageClient}`](#File-services)
 
 ```Java
-fileServiceClient.listShares();
+fileStorageClient.listShares();
 ```
 
 ### Create all subdirectories and files
@@ -347,22 +347,22 @@ fileClient.downloadToFile(filePath);
 ```
 
 ### Get a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileStorageClient in KeyConcept, [`${fileStorageClient}`](#File-services) .
 
 ```Java
-fileServiceClient.getProperties();
+fileStorageClient.getProperties();
 ```
 
 ### Set a file service properties
-Taking a FileServiceClient in KeyConcept, [`${fileServiceClient}`](#File-services) .
+Taking a FileStorageClient in KeyConcept, [`${fileStorageClient}`](#File-services) .
 
 ```Java
-FileServiceProperties properties = fileServiceClient.getProperties().value();
+FileServiceProperties properties = fileStorageClient.getProperties().value();
 
 properties.minuteMetrics().enabled(true);
 properties.hourMetrics().enabled(true);
 
-VoidResponse response = fileServiceClient.setProperties(properties);
+VoidResponse response = fileStorageClient.setProperties(properties);
 ```
 
 ### Set a share metadata
@@ -432,7 +432,7 @@ When you interact with file using this Java client library, errors returned by t
 ## Next steps
 
 ### More Samples
-- [FileServiceSample](src/samples/java/file/FileServiceSample.java)
+- [FileStorageSample](src/samples/java/file/FileStorageSample.java)
 - [ShareSample](src/samples/java/file/ShareSample.java)
 - [DirectorySample](src/samples/java/file/DirectorySample.java)
 - [FileSample](src/samples/java/file/FileSample.java)

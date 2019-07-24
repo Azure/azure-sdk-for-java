@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue.models;
 
-import com.azure.storage.queue.QueueServiceAsyncClient;
-import com.azure.storage.queue.QueueServiceClient;
+import com.azure.storage.queue.QueueStorageAsyncClient;
+import com.azure.storage.queue.QueueStorageClient;
 
 /**
  * A set of options for selecting queues from Storage Queue service.
@@ -23,8 +23,8 @@ import com.azure.storage.queue.QueueServiceClient;
  *     </li>
  * </ul>
  *
- * @see QueueServiceClient
- * @see QueueServiceAsyncClient
+ * @see QueueStorageClient
+ * @see QueueStorageAsyncClient
  */
 public final class QueuesSegmentOptions {
     private boolean includeMetadata;

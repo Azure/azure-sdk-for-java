@@ -17,31 +17,31 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * This class provides a fileServiceAsyncClient that contains all the operations for interacting with a file account in Azure Storage.
- * Operations allowed by the fileServiceAsyncClient are creating, listing, and deleting shares and retrieving and updating properties
+ * This class provides a fileStorageAsyncClient that contains all the operations for interacting with a file account in Azure Storage.
+ * Operations allowed by the fileStorageAsyncClient are creating, listing, and deleting shares and retrieving and updating properties
  * of the account.
  *
  * <p><strong>Instantiating a Synchronous File Service Client</strong></p>
  *
- * {@codesnippet com.azure.storage.file.fileServiceClient.instantiation}
+ * {@codesnippet com.azure.storage.file.fileStorageClient.instantiation}
  *
- * <p>View {@link FileServiceClientBuilder this} for additional ways to construct the fileServiceAsyncClient.</p>
+ * <p>View {@link FileStorageClientBuilder this} for additional ways to construct the fileStorageAsyncClient.</p>
  *
- * @see FileServiceClientBuilder
- * @see FileServiceAsyncClient
+ * @see FileStorageClientBuilder
+ * @see FileStorageAsyncClient
  * @see SharedKeyCredential
  * @see SASTokenCredential
  */
-public final class FileServiceClient {
-    private final FileServiceAsyncClient fileServiceAsyncClient;
+public final class FileStorageClient {
+    private final FileStorageAsyncClient fileStorageAsyncClient;
 
     /**
-     * Creates a FileServiceClient that wraps a FileServiceAsyncClient and blocks requests.
+     * Creates a FileStorageClient that wraps a FileStorageAsyncClient and blocks requests.
      *
-     * @param client FileServiceAsyncClient that is used to send requests
+     * @param client FileStorageAsyncClient that is used to send requests
      */
-    FileServiceClient(FileServiceAsyncClient client) {
-        this.fileServiceAsyncClient = client;
+    FileStorageClient(FileStorageAsyncClient client) {
+        this.fileStorageAsyncClient = client;
     }
 
     /**
@@ -49,21 +49,21 @@ public final class FileServiceClient {
      * @return the url of the Storage File service.
      * @throws RuntimeException If the directory is using a malformed URL.
      */
-    public URL getFileServiceUrl() {
-        return fileServiceAsyncClient.getFileServiceUrl();
+    public URL getFileStorageUrl() {
+        return fileStorageAsyncClient.getFileStorageUrl();
     }
 
     /**
      * Constructs a ShareClient that interacts with the specified share.
      *
-     * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the fileServiceAsyncClient will
+     * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the fileStorageAsyncClient will
      * need to be called before interaction with the share can happen.</p>
      *
      * @param shareName Name of the share
      * @return a ShareClient that interacts with the specified share
      */
     public ShareClient getShareClient(String shareName) {
-        return new ShareClient(fileServiceAsyncClient.getShareAsyncClient(shareName));
+        return new ShareClient(fileStorageAsyncClient.getShareAsyncClient(shareName));
     }
 
     /**
@@ -73,7 +73,7 @@ public final class FileServiceClient {
      *
      * <p>List all shares in the account</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.listShares}
      *
      * @return {@link ShareItem Shares} in the storage account without their metadata or snapshots
      */
@@ -97,17 +97,17 @@ public final class FileServiceClient {
      *
      * <p>List all shares that begin with "azure"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.prefix}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.listShares#ListSharesOptions.prefix}
      *
      * <p>List all shares including their snapshots and metadata</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.listShares#ListSharesOptions.metadata.snapshot}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.listShares#ListSharesOptions.metadata.snapshot}
      *
      * @param options Options for listing shares
      * @return {@link ShareItem Shares} in the storage account that satisfy the filter requirements
      */
     public Iterable<ShareItem> listShares(ListSharesOptions options) {
-        return fileServiceAsyncClient.listShares(options).toIterable();
+        return fileStorageAsyncClient.listShares(options).toIterable();
     }
 
     /**
@@ -118,12 +118,12 @@ public final class FileServiceClient {
      *
      * <p>Retrieve File service properties</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.getProperties}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.getProperties}
      *
      * @return Storage account File service properties
      */
     public Response<FileServiceProperties> getProperties() {
-        return fileServiceAsyncClient.getProperties().block();
+        return fileStorageAsyncClient.getProperties().block();
     }
 
     /**
@@ -137,11 +137,11 @@ public final class FileServiceClient {
      *
      * <p>Clear CORS in the File service</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties.clearCORS}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.setProperties#fileServiceProperties.clearCORS}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.setProperties#fileServiceProperties}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.setProperties#fileServiceProperties}
      *
      * @param properties Storage account File service properties
      * @return A response that only contains headers and response status code
@@ -158,7 +158,7 @@ public final class FileServiceClient {
      * </ul>
      */
     public VoidResponse setProperties(FileServiceProperties properties) {
-        return fileServiceAsyncClient.setProperties(properties).block();
+        return fileStorageAsyncClient.setProperties(properties).block();
     }
 
     /**
@@ -167,7 +167,7 @@ public final class FileServiceClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Create the share with share name of "myshare"</p>
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.createShare#string}
      *
      * @param shareName Name of the share
      * @return A response containing the ShareClient and the status of creating the share.
@@ -185,11 +185,11 @@ public final class FileServiceClient {
      *
      * <p>Create the share "test" with metadata "share:metadata"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.metadata}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.createShare#string-map-integer.metadata}
      *
      * <p>Create the share "test" with a quota of 10 GB</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.createShare#string-map-integer.quota}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.createShare#string-map-integer.quota}
      *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
@@ -211,7 +211,7 @@ public final class FileServiceClient {
      *
      * <p>Delete the share "test"</p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.deleteShare#string}
      *
      * @param shareName Name of the share
      * @return A response that only contains headers and response status code
@@ -229,7 +229,7 @@ public final class FileServiceClient {
      *
      * <p>Delete the snapshot of share "test" that was created at current time. </p>
      *
-     * {@codesnippet com.azure.storage.file.fileServiceClient.deleteShare#string-string}
+     * {@codesnippet com.azure.storage.file.fileStorageClient.deleteShare#string-string}
      *
      * @param shareName Name of the share
      * @param snapshot Identifier of the snapshot
@@ -237,6 +237,6 @@ public final class FileServiceClient {
      * @throws StorageErrorException If the share doesn't exist or the snapshot doesn't exist
      */
     public VoidResponse deleteShare(String shareName, String snapshot) {
-        return fileServiceAsyncClient.deleteShare(shareName, snapshot).block();
+        return fileStorageAsyncClient.deleteShare(shareName, snapshot).block();
     }
 }
