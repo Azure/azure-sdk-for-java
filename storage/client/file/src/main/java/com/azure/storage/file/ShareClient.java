@@ -84,6 +84,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.create}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
      * @return A response containing information about the share and the status its creation.
      * @throws StorageErrorException If the share already exists with different metadata
      */
@@ -104,6 +107,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.create#map-integer.quota}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
      * @param metadata Optional metadata to associate with the share
      * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
      * less than or equal to 5120. The default value is 5120.
@@ -122,7 +128,9 @@ public class ShareClient {
      *
      * <p>Create a snapshot</p>
      *
-     * {@codesnippet com.azure.storage.file.shareClient.createSnapshot}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @return A response containing information about the snapshot of share.
      * @throws StorageErrorException If the share doesn't exist, there are 200 snapshots of the share, or a snapshot is
@@ -140,6 +148,9 @@ public class ShareClient {
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.createSnapshot#map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the snapshot. If {@code null} the metadata of the share
      * will be copied to the snapshot.
@@ -160,6 +171,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -176,6 +190,9 @@ public class ShareClient {
      * <p>Retrieve the share properties</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
      *
      * @return the properties of the share
      * @throws StorageErrorException If the share doesn't exist
@@ -216,6 +233,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.clearMetadata#map}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
+     *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared
      * @return information about the share
      * @throws StorageErrorException If the share doesn't exist or the metadata contains invalid keys
@@ -233,6 +253,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.getAccessPolicy}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
+     *
      * @return The stored access policies specified on the queue.
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -248,6 +271,9 @@ public class ShareClient {
      * <p>Set a read only stored access policy</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.setAccessPolicy}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -267,6 +293,9 @@ public class ShareClient {
      *
      * {@codesnippet com.azure.storage.file.shareClient.getStatistics}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
+     *
      * @return the storage statistics of the share
      */
     public Response<ShareStatistics> getStatistics() {
@@ -281,6 +310,9 @@ public class ShareClient {
      * <p>Create the directory "documents"</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.createDirectory#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @return A response containing a {@link DirectoryClient} to interact with the created directory and the
@@ -300,6 +332,9 @@ public class ShareClient {
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.createDirectory#string-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @param metadata Optional metadata to associate with the directory
@@ -322,6 +357,9 @@ public class ShareClient {
      * <p>Delete the directory "empty"</p>
      *
      * {@codesnippet com.azure.storage.file.shareClient.deleteDirectory#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
      *
      * @param directoryName Name of the directory
      * @return A response that only contains headers and response status code

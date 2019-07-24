@@ -68,6 +68,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.create}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @return A response containing the file info and the status of creating the file.
      * @throws StorageErrorException If the file has already existed, the parent directory does not exist or fileName is an invalid resource name.
@@ -85,10 +88,13 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.create#long-filehttpheaders-map}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
      * @param maxSize The maximum size in bytes for the file, up to 1 TiB.
      * @param httpHeaders Additional parameters for the operation.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
-     *                           @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
+     * @see <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/">C# identifiers</a>
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory is an invalid resource name.
      */
@@ -104,6 +110,9 @@ public class FileClient {
      * <p>Copy file from source getDirectoryUrl to the {@code filePath} </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.startCopy#string-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-file">Azure Docs</a>.</p>
      *
      * @param sourceUrl Specifies the URL of the source file or blob, up to 2 KB in length.
      * @param metadata Optional name-value pairs associated with the file as metadata. Metadata names must adhere to the naming rules.
@@ -123,6 +132,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.abortCopy#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-file">Azure Docs</a>.</p>
+     *
      * @param copyId Specifies the copy id which has copying pending status associate with it.
      * @return A response containing the status of aborting copy the file.
      */
@@ -139,6 +151,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
+     *
      * @param downloadFilePath The path where store the downloaded file
      */
     public void downloadToFile(String downloadFilePath) {
@@ -153,6 +168,9 @@ public class FileClient {
      * <p>Download the file from 1024 to 2048 bytes to current folder. </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.downloadToFile#string-filerange}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file">Azure Docs</a>.</p>
      *
      * @param downloadFilePath The path where store the downloaded file
      * @param range Optional byte range which returns file data only from the specified range.
@@ -202,6 +220,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the directory doesn't exist or the file doesn't exist.
      */
@@ -218,6 +239,9 @@ public class FileClient {
      * <p>Retrieve file properties</p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-file-properties">Azure Docs</a>.</p>
      *
      * @return Storage file properties
      */
@@ -264,6 +288,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.setMetadata#map.clearMetadata}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-file-metadata">Azure Docs</a>.</p>
+     *
      * @param metadata Options.Metadata to set on the file, if null is passed the metadata for the file is cleared
      * @return information about the file
      * @throws StorageErrorException If the file doesn't exist or the metadata contains invalid keys
@@ -280,6 +307,9 @@ public class FileClient {
      * <p>Upload "default" to the file. </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.upload#flux-long}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the FileRangeWriteType is set to clear, the value of this header must be set to zero..
@@ -298,6 +328,9 @@ public class FileClient {
      * <p>Upload the file from 1024 to 2048 bytes with its metadata and properties and without the contentMD5. </p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.upload#bytebuf-long-int-filerangewritetype}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param data The data which will upload to the storage file.
      * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code null}
@@ -358,6 +391,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.listRanges}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
+     *
      * @return {@link FileRange ranges} in the files.
      */
     public Iterable<FileRange> listRanges() {
@@ -372,6 +408,9 @@ public class FileClient {
      * <p>List all ranges within the file range from 1KB to 2KB.</p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.listRanges#filerange}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-ranges">Azure Docs</a>.</p>
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @return {@link FileRange ranges} in the files that satisfy the requirements
@@ -389,6 +428,9 @@ public class FileClient {
      *
      * {@codesnippet com.azure.storage.file.fileClient.listHandles}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
+     *
      * @return {@link HandleItem handles} in the files that satisfy the requirements
      */
     public Iterable<HandleItem> listHandles() {
@@ -403,6 +445,9 @@ public class FileClient {
      * <p>List 10 handles for the file client.</p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.listHandles#integer}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
      *
      * @param maxResults Optional max number of results returned per page
      * @return {@link HandleItem handles} in the file that satisfy the requirements
@@ -421,6 +466,9 @@ public class FileClient {
      * <p>Force close handles with handles returned by list handles in recursive.</p>
      *
      * {@codesnippet com.azure.storage.file.fileClient.forceCloseHandles#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @return The counts of number of handles closed

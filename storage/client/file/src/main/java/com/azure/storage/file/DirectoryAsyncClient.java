@@ -141,6 +141,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.create}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
      * @return A response containing the directory info and the status of creating the directory.
      * @throws StorageErrorException If the directory has already existed, the parent directory does not exist or directory name is an invalid resource name.
      */
@@ -156,6 +159,9 @@ public class DirectoryAsyncClient {
      * <p>Create the directory</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.create#map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
      *
      * @param metadata Optional metadata to associate with the directory
      * @return A response containing the directory info and the status of creating the directory.
@@ -175,6 +181,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.delete}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the share doesn't exist
      */
@@ -192,6 +201,9 @@ public class DirectoryAsyncClient {
      * <p>Retrieve directory properties</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.getProperties}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties">Azure Docs</a>.</p>
      *
      * @return Storage directory properties
      */
@@ -215,6 +227,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.setMetadata#map.clearMetadata}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
+     *
      * @param metadata Optional metadata to set on the directory, if null is passed the metadata for the directory is cleared
      * @return information about the directory
      * @throws StorageErrorException If the directory doesn't exist or the metadata contains invalid keys
@@ -233,6 +248,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.listFilesAndDirectories}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
+     *
      * @return {@link FileRef File info} in the storage directory
      */
     public Flux<FileRef> listFilesAndDirectories() {
@@ -247,6 +265,9 @@ public class DirectoryAsyncClient {
      * <p>List all sub-directories with "subdir" prefix and return 10 results in the account</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.listFilesAndDirectories#string-integer}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files">Azure Docs</a>.</p>
      *
      * @param prefix Optional prefix which filters the results to return only files and directories whose name begins with.
      * @param maxResults Optional maximum number of files and/or directories to return per page.
@@ -267,6 +288,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.getHandles}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
+     *
      * @param maxResult Optional maximum number of results will return per page
      * @param recursive Specifies operation should apply to the directory specified in the URI, its files, its subdirectories and their files.
      * @return {@link HandleItem handles} in the directory that satisfy the requirements
@@ -286,6 +310,9 @@ public class DirectoryAsyncClient {
      * <p>Force close handles with handles returned by get handles in recursive.</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.forceCloseHandles}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
      *
      * @param handleId Specifies the handle ID to be closed. Use an asterisk ('*') as a wildcard string to specify all handles.
      * @param recursive A boolean value that specifies if the operation should also apply to the files and subdirectories of the directory specified in the URI.
@@ -322,6 +349,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryClient.createSubDirectory#string-map}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
      * @param subDirectoryName Name of the subdirectory
      * @param metadata Optional metadata to associate with the subdirectory
      * @return A response containing the subdirectory client and the status of creating the directory.
@@ -342,6 +372,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.deleteSubDirectory#string}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
      * @param subDirectoryName Name of the subdirectory
      * @return A response that only contains headers and response status code
      * @throws StorageErrorException If the subdirectory doesn't exist, the parent directory does not exist or subdirectory name is an invalid resource name.
@@ -360,6 +393,9 @@ public class DirectoryAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFile#string-long}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return A response containing the FileAsyncClient and the status of creating the directory.
@@ -377,6 +413,9 @@ public class DirectoryAsyncClient {
      * <p>Create the file named "myFile"</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.createFile#string-long-fileHTTPHeaders-map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @param maxSize Max size of the file
@@ -398,6 +437,9 @@ public class DirectoryAsyncClient {
      * <p>Delete the file "filetest"</p>
      *
      * {@codesnippet com.azure.storage.file.directoryAsyncClient.deleteFile#string}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
      *
      * @param fileName Name of the file
      * @return A response that only contains headers and response status code
