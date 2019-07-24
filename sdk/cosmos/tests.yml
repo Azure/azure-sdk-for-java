@@ -49,14 +49,14 @@ jobs:
     strategy:
       maxParallel: 1
       matrix:
-        Session_Single_Region_ReadMyWrites:
-          OSVmImage: 'vs2017-win2016'
-          CosmosAccountHost: $(java-cosmos-session-singleregion-host)
-          CosmosAccountKey: $(java-cosmos-session-singleregion-key)
-          Consistency: 'Session'
-          TestDisplayName: 'ReadMyWrites Integration Tests'
-          ProfileFlag: '-Pe2e'
-          cosmos.directModeProtocol: 'Https'
+        # Session_Single_Region_ReadMyWrites:
+        #   OSVmImage: 'vs2017-win2016'
+        #   CosmosAccountHost: $(java-cosmos-session-singleregion-host)
+        #   CosmosAccountKey: $(java-cosmos-session-singleregion-key)
+        #   Consistency: 'Session'
+        #   TestDisplayName: 'ReadMyWrites Integration Tests'
+        #   ProfileFlag: '-Pe2e'
+        #   cosmos.directModeProtocol: 'Https'
 
 
         Strong_Single_Region_ReadMyWrites:
