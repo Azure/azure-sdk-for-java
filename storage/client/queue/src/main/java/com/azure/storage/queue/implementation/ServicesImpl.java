@@ -25,9 +25,8 @@ import com.azure.storage.queue.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.models.ServicesSetPropertiesResponse;
 import com.azure.storage.queue.models.StorageErrorException;
 import com.azure.storage.queue.models.StorageServiceProperties;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
