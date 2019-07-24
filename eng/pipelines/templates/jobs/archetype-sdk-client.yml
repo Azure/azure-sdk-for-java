@@ -38,7 +38,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - publish:
+      - publish: $(Build.ArtifactStagingDirectory)
         artifact: $(ArtifactName)
         displayName: 'Publish artifacts - $(ArtifactName)'
 
@@ -177,7 +177,7 @@ jobs:
         displayName: 'Copy reports to artifact staging'
         condition: ne(variables['Build.Reason'], 'PullRequest')
 
-      - publish:
+      - publish: $(Build.ArtifactStagingDirectory)
         artifact: reports
         condition: succeededOrFailed()
         displayName: Publish report artifacts
