@@ -102,11 +102,11 @@ public class EventHubConsumer implements Closeable {
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
                 if (existingLink == null) {
-                    logger.info("AmqpReceiveLink not set yet.");
+                    logger.warning("AmqpReceiveLink not set yet.");
                     return;
                 }
 
-                logger.info("Subscription received for consumer.");
+                logger.verbose("Subscription received for consumer.");
                 if (existingLink.getCredits() == 0) {
                     logger.info("Subscription received and there are no remaining credits on the link. Adding more.");
                     existingLink.addCredits(creditsToRequest.get());

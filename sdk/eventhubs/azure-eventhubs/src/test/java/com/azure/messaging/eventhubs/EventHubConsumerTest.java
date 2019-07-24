@@ -209,7 +209,7 @@ public class EventHubConsumerTest {
                     count.set(0);
                 }
 
-                logger.info("Event Received. {}", countDownLatch.getCount());
+                logger.verbose("Event Received. {}", countDownLatch.getCount());
                 countDownLatch.countDown();
                 super.hookOnNext(value);
             }
@@ -327,34 +327,58 @@ public class EventHubConsumerTest {
         Assert.assertEquals(0, actualCredits);
     }
 
+    /**
+     * Verifies that the consumer closes and completes any listeners on a shutdown signal.
+     */
     @Test
     public void listensToShutdownSignals() throws InterruptedException, IOException {
         // Arrange
         final int numberOfEvents = 7;
-        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final CountDownLatch shutdownReceived = new CountDownLatch(3);
         final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false,
             "Test message");
 
         when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
-        // Act
-        consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
-            .subscribe(
-                event -> logger.verbose("Received: {}", event.sequenceNumber()),
-                error -> Assert.fail(error.toString()),
-                () -> {
-                    logger.info("Shutdown received");
-                    shutdownReceived.countDown();
-                });
+        final Disposable.Composite subscriptions = Disposables.composite(
+            consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
+                .subscribe(
+                    event -> logger.verbose("1. Received: {}", event.sequenceNumber()),
+                    error -> Assert.fail(error.toString()),
+                    () -> {
+                        logger.info("1. Shutdown received");
+                        shutdownReceived.countDown();
+                    }),
+            consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
+                .subscribe(
+                    event -> logger.verbose("2. Received: {}", event.sequenceNumber()),
+                    error -> Assert.fail(error.toString()),
+                    () -> {
+                        logger.info("2. Shutdown received");
+                        shutdownReceived.countDown();
+                    }),
+            consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
+                .subscribe(
+                    event -> logger.verbose("3. Received: {}", event.sequenceNumber()),
+                    error -> Assert.fail(error.toString()),
+                    () -> {
+                        logger.info("3. Shutdown received");
+                        shutdownReceived.countDown();
+                    }));
 
+        // Act
         sendMessages(numberOfEvents);
         shutdownProcessor.onNext(shutdownSignal);
 
         // Assert
-        boolean successful = shutdownReceived.await(10, TimeUnit.SECONDS);
-        Assert.assertTrue(successful);
-        Assert.assertEquals(0, shutdownReceived.getCount());
-        verify(amqpReceiveLink, times(1)).close();
+        try {
+            boolean successful = shutdownReceived.await(5, TimeUnit.SECONDS);
+            Assert.assertTrue(successful);
+            Assert.assertEquals(0, shutdownReceived.getCount());
+            verify(amqpReceiveLink, times(1)).close();
+        } finally {
+            subscriptions.dispose();
+        }
     }
 
     private void sendMessages(int numberOfEvents) {
