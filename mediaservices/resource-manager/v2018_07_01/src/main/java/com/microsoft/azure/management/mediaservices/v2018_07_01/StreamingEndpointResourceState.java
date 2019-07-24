@@ -8,58 +8,46 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for StreamingEndpointResourceState.
  */
-public enum StreamingEndpointResourceState {
-    /** Enum value Stopped. */
-    STOPPED("Stopped"),
+public final class StreamingEndpointResourceState extends ExpandableStringEnum<StreamingEndpointResourceState> {
+    /** Static value Stopped for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState STOPPED = fromString("Stopped");
 
-    /** Enum value Starting. */
-    STARTING("Starting"),
+    /** Static value Starting for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState STARTING = fromString("Starting");
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Static value Running for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState RUNNING = fromString("Running");
 
-    /** Enum value Stopping. */
-    STOPPING("Stopping"),
+    /** Static value Stopping for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState STOPPING = fromString("Stopping");
 
-    /** Enum value Deleting. */
-    DELETING("Deleting"),
+    /** Static value Deleting for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState DELETING = fromString("Deleting");
 
-    /** Enum value Scaling. */
-    SCALING("Scaling");
+    /** Static value Scaling for StreamingEndpointResourceState. */
+    public static final StreamingEndpointResourceState SCALING = fromString("Scaling");
 
-    /** The actual serialized value for a StreamingEndpointResourceState instance. */
-    private String value;
-
-    StreamingEndpointResourceState(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StreamingEndpointResourceState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding StreamingEndpointResourceState
+     */
+    @JsonCreator
+    public static StreamingEndpointResourceState fromString(String name) {
+        return fromString(name, StreamingEndpointResourceState.class);
     }
 
     /**
-     * Parses a serialized value to a StreamingEndpointResourceState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StreamingEndpointResourceState object, or null if unable to parse.
+     * @return known StreamingEndpointResourceState values
      */
-    @JsonCreator
-    public static StreamingEndpointResourceState fromString(String value) {
-        StreamingEndpointResourceState[] items = StreamingEndpointResourceState.values();
-        for (StreamingEndpointResourceState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StreamingEndpointResourceState> values() {
+        return values(StreamingEndpointResourceState.class);
     }
 }

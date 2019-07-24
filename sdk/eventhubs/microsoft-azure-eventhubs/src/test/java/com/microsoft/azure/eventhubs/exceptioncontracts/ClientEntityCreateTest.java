@@ -40,7 +40,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
             final ConnectionStringBuilder localConnStr = new ConnectionStringBuilder(connStr.toString());
             localConnStr.setOperationTimeout(Duration.ofSeconds(SHORT_TIMEOUT)); // to retry atleast once
 
-            final EventHubClient eventHubClient = EventHubClient.createSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
+            final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
 
             try {
                 eventHubClient.createReceiverSync("nonexistantcg", PARTITION_ID, EventPosition.fromStartOfStream());
@@ -63,7 +63,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
             final ConnectionStringBuilder localConnStr = new ConnectionStringBuilder(connStr.toString());
             localConnStr.setOperationTimeout(Duration.ofSeconds(SHORT_TIMEOUT)); // to retry atleast once
             localConnStr.setEventHubName("nonexistanteventhub");
-            final EventHubClient eventHubClient = EventHubClient.createSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
+            final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
 
             try {
                 eventHubClient.createPartitionSenderSync(PARTITION_ID);
@@ -86,7 +86,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
             final ConnectionStringBuilder localConnStr = new ConnectionStringBuilder(connStr.toString());
             localConnStr.setOperationTimeout(Duration.ofSeconds(SHORT_TIMEOUT)); // to retry atleast once
             localConnStr.setEventHubName("nonexistanteventhub");
-            final EventHubClient eventHubClient = EventHubClient.createSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
+            final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
 
             try {
                 eventHubClient.sendSync(EventData.create("Testmessage".getBytes()));
@@ -137,7 +137,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         try {
             ConnectionStringBuilder localConnectionStringBuilder = new ConnectionStringBuilder(connStr.toString());
             localConnectionStringBuilder.setEventHubName(nonExistentEventHubName);
-            final EventHubClient eventHubClient = EventHubClient.createSync(localConnectionStringBuilder.toString(), TestContext.EXECUTOR_SERVICE);
+            final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnectionStringBuilder.toString(), TestContext.EXECUTOR_SERVICE);
             eventHubClient.createReceiverSync(EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
             eventHubClient.closeSync();
         } finally {
@@ -185,7 +185,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         try {
             ConnectionStringBuilder localConnectionStringBuilder = new ConnectionStringBuilder(connStr.toString());
             localConnectionStringBuilder.setEventHubName(nonExistentEventHubName);
-            final EventHubClient eventHubClient = EventHubClient.createSync(localConnectionStringBuilder.toString(), TestContext.EXECUTOR_SERVICE);
+            final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnectionStringBuilder.toString(), TestContext.EXECUTOR_SERVICE);
             eventHubClient.createPartitionSenderSync(PARTITION_ID);
             eventHubClient.closeSync();
         } finally {
@@ -201,7 +201,7 @@ public class ClientEntityCreateTest extends ApiTestBase {
         final ConnectionStringBuilder localConnStr = new ConnectionStringBuilder(connStr.toString());
         localConnStr.setOperationTimeout(Duration.ofSeconds(SHORT_TIMEOUT)); // to retry atleast once
 
-        final EventHubClient eventHubClient = EventHubClient.createSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
+        final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(localConnStr.toString(), TestContext.EXECUTOR_SERVICE);
 
         try {
             eventHubClient.createReceiverSync("nonexistantcg", PARTITION_ID, EventPosition.fromStartOfStream());

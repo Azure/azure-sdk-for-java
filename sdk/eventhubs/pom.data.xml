@@ -15,7 +15,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-clients</artifactId>
   <packaging>pom</packaging>
-  <version>2.3.1</version>
+  <version>3.0.0</version>
 
   <name>Microsoft Azure Event Hubs SDK Parent</name>
   <description>Java libraries for talking to Windows Azure Event Hubs</description>
