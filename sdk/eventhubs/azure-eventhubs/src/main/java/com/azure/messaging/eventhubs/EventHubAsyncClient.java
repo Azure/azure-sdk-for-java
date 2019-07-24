@@ -11,10 +11,10 @@ import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.implementation.AmqpResponseMapper;
 import com.azure.messaging.eventhubs.implementation.AmqpSendLink;
-import com.azure.messaging.eventhubs.implementation.AmqpConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.EventHubConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -268,7 +268,7 @@ public class EventHubAsyncClient implements Closeable {
                 clonedOptions.retry(), options.ownerLevel(), options.identifier()).cast(AmqpReceiveLink.class);
         });
 
-        return new EventHubConsumer(receiveLinkMono, clonedOptions, connectionOptions.timeout());
+        return new EventHubConsumer(receiveLinkMono, clonedOptions);
     }
 
     /**

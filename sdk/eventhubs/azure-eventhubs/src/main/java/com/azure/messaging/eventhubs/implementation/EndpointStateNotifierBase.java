@@ -55,7 +55,7 @@ abstract class EndpointStateNotifierBase implements EndpointStateNotifier, Close
     void notifyError(Throwable error) {
         Objects.requireNonNull(error);
 
-        logger.info("Notify error: {}", error);
+        logger.error("Error occurred. {}", error.toString());
         errorContextProcessor.onNext(error);
     }
 
