@@ -85,7 +85,7 @@ jobs:
         displayName: 'Install all client libraries (for SpotBugs analysis)'
         inputs:
           mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip'
+          options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
