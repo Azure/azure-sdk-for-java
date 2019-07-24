@@ -934,7 +934,7 @@
                 }
             ]
         },
-        "/{shareName}/{directory}?restype=directory": {
+        "/{shareName}/{directoryPath}?restype=directory": {
             "put": {
                 "tags": [
                     "directory"
@@ -946,7 +946,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Timeout"
@@ -1019,7 +1019,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/ShareSnapshot"
@@ -1098,7 +1098,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Timeout"
@@ -1152,7 +1152,7 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}?restype=directory&comp=metadata": {
+        "/{shareName}/{directoryPath}?restype=directory&comp=metadata": {
             "put": {
                 "tags": [
                     "directory"
@@ -1164,7 +1164,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Timeout"
@@ -1241,7 +1241,7 @@
                 }
             ]
         },
-        "/{shareName}/{directory}?restype=directory&comp=list": {
+        "/{shareName}/{directoryPath}?restype=directory&comp=list": {
             "get": {
                 "tags": [
                     "directory"
@@ -1253,7 +1253,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Prefix"
@@ -1339,7 +1339,7 @@
                 }
             ]
         },
-        "/{shareName}/{directory}?comp=listhandles": {
+        "/{shareName}/{directoryPath}?comp=listhandles": {
             "get":{
                 "tags": [
                     "directory"
@@ -1351,7 +1351,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Marker"
@@ -1425,7 +1425,7 @@
                 }
             ]
         },
-        "/{shareName}/{directory}?comp=forceclosehandles": {
+        "/{shareName}/{directoryPath}?comp=forceclosehandles": {
             "put": {
                 "tags": [
                     "directory"
@@ -1437,7 +1437,7 @@
                         "$ref": "#/parameters/ShareName"
                     },
                     {
-                        "$ref": "#/parameters/DirectoryName"
+                        "$ref": "#/parameters/DirectoryPath"
                     },
                     {
                         "$ref": "#/parameters/Timeout"
@@ -3538,13 +3538,14 @@
             },
             "x-ms-parameter-location": "method"
         },
-        "DirectoryName": {
-            "name": "directory",
+        "DirectoryPath": {
+            "name": "directoryPath",
             "in": "path",
-            "description": "The name of the target directory.",
+            "description": "The path of the target directory.",
             "required": true,
             "type": "string",
-            "x-ms-parameter-location": "method"
+            "x-ms-parameter-location": "method",
+            "x-ms-skip-url-encoding": true
         },
         "FileCacheControl": {
             "name": "x-ms-cache-control",
