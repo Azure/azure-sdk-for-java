@@ -46,7 +46,7 @@ public class SendTest extends ApiTestBase {
     }
 
     public static void initializeEventHub(final ConnectionStringBuilder connectionString) throws Exception {
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 
     @AfterClass

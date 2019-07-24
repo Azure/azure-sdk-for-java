@@ -28,7 +28,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
+ * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asBlockBlobClient()}, or via the method
  * {@link ContainerClient#getBlockBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -61,7 +61,7 @@ public final class BlockBlobClient extends BlobClient {
     public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link BlockBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param blockBlobAsyncClient the async block blob client
      */
     BlockBlobClient(BlockBlobAsyncClient blockBlobAsyncClient) {
