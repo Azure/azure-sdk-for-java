@@ -9,6 +9,7 @@ import com.azure.core.implementation.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Properties of a share.
@@ -32,7 +33,13 @@ public final class ShareProperties {
      * The quota property.
      */
     @JsonProperty(value = "Quota", required = true)
-    private long quota;
+    private int quota;
+
+    /*
+     * The metadata property.
+     */
+    @JsonProperty(value = "Metadata")
+    private Map<String, String> metadata;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -86,7 +93,7 @@ public final class ShareProperties {
      *
      * @return the quota value.
      */
-    public long quota() {
+    public int quota() {
         return this.quota;
     }
 
@@ -96,8 +103,28 @@ public final class ShareProperties {
      * @param quota the quota value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties quota(long quota) {
+    public ShareProperties quota(int quota) {
         this.quota = quota;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The metadata property.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The metadata property.
+     *
+     * @param metadata the metadata value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties metadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

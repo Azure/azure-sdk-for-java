@@ -48,7 +48,7 @@ public class LargeFileTest extends TestBase {
         if (dirPath.exists() || dirPath.mkdir()) {
             largeFile = new File(folderUrl.getPath() + LARGE_TEST_FOLDER + fileName);
         } else {
-            largeFileLogger.asWarning().log("Failed to create the large file dir.");
+            largeFileLogger.warning("Failed to create the large file dir.");
         }
         String shareName = testResourceNamer.randomName("largefileshare", 32);
         shareClient = new ShareClientBuilder().connectionString(azureStorageConnectionString).shareName(shareName)
@@ -67,7 +67,7 @@ public class LargeFileTest extends TestBase {
         largeFileClient.create(fileSize);
         if (largeFile.exists()) {
             largeFileClient.uploadFromFile(largeFile.getPath());
-            largeFileLogger.asWarning().log("Uploaded success!");
+            largeFileLogger.warning("Uploaded success!");
         } else {
             fail("Did not find the upload file.");
         }

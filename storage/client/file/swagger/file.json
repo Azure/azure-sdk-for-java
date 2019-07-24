@@ -44,7 +44,7 @@
                 "operationId": "Service_SetProperties",
                 "description": "Sets properties for a storage account's File service endpoint, including properties for Storage Analytics metrics and CORS (Cross-Origin Resource Sharing) rules.",
                 "parameters": [{
-                        "$ref": "#/parameters/StorageServiceProperties"
+                        "$ref": "#/parameters/FileServiceProperties"
                     },
                     {
                         "$ref": "#/parameters/Timeout"
@@ -112,7 +112,7 @@
                             }
                         },
                         "schema": {
-                            "$ref": "#/definitions/StorageServiceProperties"
+                            "$ref": "#/definitions/FileServiceProperties"
                         }
                     },
                     "default": {
@@ -228,7 +228,11 @@
                 ],
                 "operationId": "Share_Create",
                 "description": "Creates a new share under the specified account. If the share with the same name already exists, the operation fails.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -292,7 +296,11 @@
                 ],
                 "operationId": "Share_GetProperties",
                 "description": "Returns all user-defined metadata and system properties for the specified share or share snapshot. The data returned does not include the share's list of files.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
@@ -340,7 +348,6 @@
                             "x-ms-share-quota": {
                                 "x-ms-client-name": "Quota",
                                 "type": "integer",
-                                "format": "int64",
                                 "description": "Returns the current share quota in GB."
                             }
                         }
@@ -365,7 +372,11 @@
                 ],
                 "operationId": "Share_Delete",
                 "description": "Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files contained within it are later deleted during garbage collection.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
@@ -430,7 +441,11 @@
                 ],
                 "operationId": "Share_CreateSnapshot",
                 "description": "Creates a read-only snapshot of a share.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -517,7 +532,11 @@
                 ],
                 "operationId": "Share_SetQuota",
                 "description": "Sets quota for the specified share.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -599,7 +618,11 @@
                 ],
                 "operationId": "Share_SetMetadata",
                 "description": "Sets one or more user-defined name-value pairs for the specified share.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -681,7 +704,11 @@
                 ],
                 "operationId": "Share_GetAccessPolicy",
                 "description": "Returns information about stored access policies specified on the share.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -742,7 +769,11 @@
                 ],
                 "operationId": "Share_SetAccessPolicy",
                 "description": "Sets a stored access policy for use with shared access signatures.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/ShareAcl"
                     },
                     {
@@ -824,7 +855,11 @@
                 ],
                 "operationId": "Share_GetStatistics",
                 "description": "Retrieves statistics related to the share.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -906,7 +941,14 @@
                 ],
                 "operationId": "Directory_Create",
                 "description": "Creates a new directory under the specified share or parent directory.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -972,7 +1014,14 @@
                 ],
                 "operationId": "Directory_GetProperties",
                 "description": "Returns all system properties for the specified directory, and can also be used to check the existence of a directory. The data returned does not include the files in the directory or any subdirectories.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
@@ -1044,7 +1093,14 @@
                 ],
                 "operationId": "Directory_Delete",
                 "description": "Removes the specified empty directory. Note that the directory must be empty before it can be deleted.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -1103,7 +1159,14 @@
                 ],
                 "operationId": "Directory_SetMetadata",
                 "description": "Updates user defined metadata for the specified directory.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -1186,6 +1249,12 @@
                 "operationId": "Directory_ListFilesAndDirectoriesSegment",
                 "description": "Returns a list of files or directories under the specified share or directory. It lists the contents only for a single level of the directory hierarchy.",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
                     {
                         "$ref": "#/parameters/Prefix"
                     },
@@ -1279,6 +1348,12 @@
                 "description": "Lists handles for directory.",
                 "parameters":[
                     {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/Marker"
                     },
                     {
@@ -1359,6 +1434,12 @@
                 "description": "Closes all handles open for given directory.",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/DirectoryName"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -1433,14 +1514,21 @@
             }
         ]
         },
-        "/{shareName}/{directory}/{fileName}": {
+        "/{shareName}/{filePath}": {
             "put": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_Create",
                 "description": "Creates a new file or replaces a file. Note it only initializes the file with no content.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -1536,7 +1624,14 @@
                 ],
                 "operationId": "File_Download",
                 "description": "Reads or downloads a file from the system, including its metadata and properties.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -1830,7 +1925,14 @@
                 ],
                 "operationId": "File_GetProperties",
                 "description": "Returns all user-defined metadata, standard HTTP properties, and system properties for the file. It does not return the content of the file.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
@@ -1978,7 +2080,14 @@
                 ],
                 "operationId": "File_Delete",
                 "description": "removes the file from the storage account.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -2024,14 +2133,21 @@
 
             ]
         },
-        "/{shareName}/{directory}/{fileName}?comp=properties": {
+        "/{shareName}/{filePath}?comp=properties": {
             "put": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_SetHTTPHeaders",
                 "description": "Sets HTTP headers on the file.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -2125,14 +2241,21 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}/{fileName}?comp=metadata": {
+        "/{shareName}/{filePath}?comp=metadata": {
             "put": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_SetMetadata",
                 "description": "Updates user-defined metadata for the specified file.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -2197,7 +2320,7 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}/{fileName}?comp=range": {
+        "/{shareName}/{filePath}?comp=range": {
             "put": {
                 "tags": [
                     "file"
@@ -2207,7 +2330,14 @@
                 "consumes": [
                     "application/octet-stream"
                 ],
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/OptionalBody"
                     },
                     {
@@ -2313,14 +2443,21 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}/{fileName}?comp=rangelist": {
+        "/{shareName}/{filePath}?comp=rangelist": {
             "get": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_GetRangeList",
                 "description": "Returns the list of valid ranges for a file.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/ShareSnapshot"
                     },
                     {
@@ -2402,14 +2539,21 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}/{fileName}?comp=copy": {
+        "/{shareName}/{filePath}?comp=copy": {
             "put": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_StartCopy",
                 "description": "Copies a blob or file to a destination file within the storage account.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/Timeout"
                     },
                     {
@@ -2491,14 +2635,21 @@
 
             ]
         },
-        "/{shareName}/{directory}/{fileName}?comp=copy&copyid={CopyId}": {
+        "/{shareName}/{filePath}?comp=copy&copyid={CopyId}": {
             "put": {
                 "tags": [
                     "file"
                 ],
                 "operationId": "File_AbortCopy",
                 "description": "Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.",
-                "parameters": [{
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
+                    {
                         "$ref": "#/parameters/CopyId"
                     },
                     {
@@ -2556,7 +2707,7 @@
                 ]
             }]
         },
-        "/{shareName}/{directory}/{fileName}?comp=listhandles": {
+        "/{shareName}/{filePath}?comp=listhandles": {
             "get":{
                 "tags": [
                     "file"
@@ -2564,6 +2715,12 @@
                 "operationId": "File_ListHandles",
                 "description": "Lists handles for file",
                 "parameters":[
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
                     {
                         "$ref": "#/parameters/Marker"
                     },
@@ -2633,7 +2790,7 @@
                 }
             ]
         },
-        "/{shareName}/{directory}/{fileName}?comp=forceclosehandles": {
+        "/{shareName}/{filePath}?comp=forceclosehandles": {
             "put": {
                 "tags": [
                     "file"
@@ -2641,6 +2798,12 @@
                 "operationId": "File_ForceCloseHandles",
                 "description": "Closes all handles open for given file",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/ShareName"
+                    },
+                    {
+                        "$ref": "#/parameters/FilePath"
+                    },
                     {
                         "$ref": "#/parameters/Timeout"
                     },
@@ -3219,8 +3382,10 @@
                     "format": "etag"
                 },
                 "Quota": {
-                    "type": "integer",
-                    "format": "int64",
+                    "type": "integer"
+                },
+                "Metadata": {
+                    "$ref": "#/definitions/Metadata"
                 }
             }
         },
@@ -3268,7 +3433,7 @@
                 "name": "SignedIdentifiers"
             }
         },
-        "StorageServiceProperties": {
+        "FileServiceProperties": {
             "description": "Storage service properties.",
             "type": "object",
             "properties": {
@@ -3290,6 +3455,9 @@
                         "wrapped": true
                     }
                 }
+            },
+            "xml": {
+                "name": "StorageServiceProperties"
             }
         }
     },
@@ -3370,6 +3538,14 @@
             },
             "x-ms-parameter-location": "method"
         },
+        "DirectoryName": {
+            "name": "directory",
+            "in": "path",
+            "description": "The name of the target directory.",
+            "required": true,
+            "type": "string",
+            "x-ms-parameter-location": "method"
+        },
         "FileCacheControl": {
             "name": "x-ms-cache-control",
             "x-ms-client-name": "fileCacheControl",
@@ -3442,6 +3618,15 @@
             "x-ms-parameter-grouping": {
                 "name": "file-HTTP-headers"
             }
+        },
+        "FilePath": {
+            "name": "filePath",
+            "in": "path",
+            "description": "The path of the target file.",
+            "required": true,
+            "type": "string",
+            "x-ms-parameter-location": "method",
+            "x-ms-skip-url-encoding": true
         },
         "FileType": {
             "name": "x-ms-type",
@@ -3574,6 +3759,14 @@
             },
             "x-ms-parameter-location": "method"
         },
+        "ShareName": {
+            "name": "shareName",
+            "in": "path",
+            "description": "The name of the target share.",
+            "required": true,
+            "type": "string",
+            "x-ms-parameter-location": "method"
+        },
         "ShareQuota": {
             "name": "x-ms-share-quota",
             "x-ms-client-name": "quota",
@@ -3581,7 +3774,6 @@
             "description": "Specifies the maximum size of the share, in gigabytes.",
             "required": false,
             "type": "integer",
-            "format": "int64",
             "minimum": 1,
             "x-ms-parameter-location": "method"
         },
@@ -3593,13 +3785,13 @@
             "type": "string",
             "x-ms-parameter-location": "method"
         },
-        "StorageServiceProperties": {
-            "name": "StorageServiceProperties",
+        "FileServiceProperties": {
+            "name": "FileServiceProperties",
             "in": "body",
             "description": "The StorageService properties.",
             "required": true,
             "schema": {
-                "$ref": "#/definitions/StorageServiceProperties"
+                "$ref": "#/definitions/FileServiceProperties"
             },
             "x-ms-parameter-location": "method"
         },

@@ -64,7 +64,7 @@ public final class ShareGetPropertiesHeaders {
      * Returns the current share quota in GB.
      */
     @JsonProperty(value = "x-ms-share-quota")
-    private Long quota;
+    private Integer quota;
 
     /*
      * The errorCode property.
@@ -225,7 +225,7 @@ public final class ShareGetPropertiesHeaders {
      *
      * @return the quota value.
      */
-    public Long quota() {
+    public Integer quota() {
         return this.quota;
     }
 
@@ -235,7 +235,7 @@ public final class ShareGetPropertiesHeaders {
      * @param quota the quota value to set.
      * @return the ShareGetPropertiesHeaders object itself.
      */
-    public ShareGetPropertiesHeaders quota(Long quota) {
+    public ShareGetPropertiesHeaders quota(Integer quota) {
         this.quota = quota;
         return this;
     }
