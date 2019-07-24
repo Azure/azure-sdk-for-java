@@ -218,7 +218,7 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -241,7 +241,7 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -265,7 +265,7 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransformInner&gt; object
      */
@@ -286,7 +286,7 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransformInner&gt; object
      */
@@ -311,7 +311,7 @@ public class TransformsInner {
     ServiceResponse<PageImpl<TransformInner>> * @param resourceGroupName The name of the resource group within the Azure subscription.
     ServiceResponse<PageImpl<TransformInner>> * @param accountName The Media Services account name.
     ServiceResponse<PageImpl<TransformInner>> * @param filter Restricts the set of items returned.
-    ServiceResponse<PageImpl<TransformInner>> * @param orderby Specifies the the key by which the result collection should be ordered.
+    ServiceResponse<PageImpl<TransformInner>> * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TransformInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

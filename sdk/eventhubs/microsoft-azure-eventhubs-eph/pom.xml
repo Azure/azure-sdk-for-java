@@ -7,14 +7,14 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-eventhubs-clients</artifactId>
-    <version>2.3.1</version>
+    <version>3.0.0</version>
     <relativePath>../pom.data.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-eph</artifactId>
-  <version>2.5.1</version>
+  <version>3.0.0</version>
 
   <name>Microsoft Azure SDK for Event Hubs Event Processor Host(EPH)</name>
   <description>EPH is built on top of the Azure Event Hubs Client and provides a number of features not present in that lower layer</description>
@@ -44,6 +44,12 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>msal4j</artifactId>
+    	<version>0.4.0-preview</version>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
 

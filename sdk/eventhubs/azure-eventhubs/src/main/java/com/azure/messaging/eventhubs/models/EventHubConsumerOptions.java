@@ -4,17 +4,15 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.Retry;
+import com.azure.core.implementation.annotation.Fluent;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumer;
 import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.Locale;
 import java.util.Optional;
-
-import com.azure.core.implementation.annotation.Fluent;
 
 /**
  * The baseline set of options that can be specified when creating a {@link EventHubConsumer} to configure its
@@ -73,7 +71,6 @@ public class EventHubConsumerOptions implements Cloneable {
         this.identifier = identifier;
         return this;
     }
-
 
     /**
      * Sets the {@code ownerLevel} value on this consumer. When populated, the level indicates that a consumer is
@@ -204,10 +201,6 @@ public class EventHubConsumerOptions implements Cloneable {
 
     /**
      * Creates a shallow clone of this instance.
-     *
-     * The object is cloned, but this instance's fields are not cloned. {@link Duration} and {@link String} are
-     * immutable objects and are not an issue. The implementation of {@link Retry} could be mutable. In addition, the
-     * {@link #scheduler()} set is not cloned.
      *
      * @return A shallow clone of this object.
      */

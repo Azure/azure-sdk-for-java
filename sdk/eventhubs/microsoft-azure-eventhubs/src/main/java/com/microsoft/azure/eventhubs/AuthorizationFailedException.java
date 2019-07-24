@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Authorization failed exception is thrown when error is encountered during authorizing user's permission to run the intended operations.
  * When encountered this exception user should check whether the token/key provided in the connection string (e.g. one passed to
- * {@link EventHubClient#create(String, ScheduledExecutorService)}) is valid, and has correct execution right for the intended operations (e.g.
+ * {@link EventHubClient#createFromConnectionString(String, ScheduledExecutorService)}) is valid, and has correct execution right for the intended operations (e.g.
  * Receive call will need Listen claim associated with the key/token).
  *
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
