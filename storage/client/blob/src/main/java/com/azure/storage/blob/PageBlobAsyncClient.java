@@ -29,7 +29,7 @@ import java.net.URL;
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link PageBlobClientBuilder}, via
+ * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -63,7 +63,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
     /**
-     * Package-private constructor for use by {@link PageBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
