@@ -156,7 +156,7 @@ public final class BlobClientBuilder {
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
-     * append blob specific actions such as {@link AppendBlobClient#appendBlock(InputStream, long) append block},
+     * append blob specific operations such as {@link AppendBlobClient#appendBlock(InputStream, long) append block},
      * only use this when the blob is known to be an append blob.
      *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
@@ -168,8 +168,8 @@ public final class BlobClientBuilder {
 
     /**
      * Creates a {@link AppendBlobAsyncClient} based on options set in the Builder. AppendBlobAsyncClients are used to
-     * perform append blob specific actions such as {@link AppendBlobAsyncClient#appendBlock(Flux, long)}, only use this
-     * when the blob is known to be an append blob.
+     * perform append blob specific operations such as {@link AppendBlobAsyncClient#appendBlock(Flux, long) append blob},
+     * only use this when the blob is known to be an append blob.
      *
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
@@ -179,8 +179,9 @@ public final class BlobClientBuilder {
     }
 
     /**
-     * Creates a {@link BlockBlobClient} based on options set in the Builder. BlockBlobClients are used to perform block
-     * blob specific actions such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and
+     * Creates a {@link BlockBlobClient} based on options set in the Builder. BlockBlobClients are used to perform
+     * generic upload operations such as {@link BlockBlobClient#uploadFromFile(String) upload from file} and block
+     * blob specific operations such as {@link BlockBlobClient#stageBlock(String, InputStream, long) stage block} and
      * {@link BlockBlobClient#commitBlockList(List)}, only use this when the blob is known to be a block blob.
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
@@ -192,7 +193,8 @@ public final class BlobClientBuilder {
 
     /**
      * Creates a {@link BlockBlobAsyncClient} based on options set in the Builder. BlockBlobAsyncClients are used to
-     * perform block blob specific actions such as {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stage block}
+     * perform generic upload operations such as {@link BlockBlobAsyncClient#uploadFromFile(String) upload from file}
+     * and block blob specific operations such as {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stage block}
      * and {@link BlockBlobAsyncClient#commitBlockList(List) commit block list}, only use this when the blob is known to
      * be a block blob.
      *
@@ -205,7 +207,7 @@ public final class BlobClientBuilder {
 
     /**
      * Creates a {@link PageBlobClient} based on options set in the Builder. PageBlobClients are used to perform page
-     * blob specific tasks such as {@link PageBlobClient#uploadPages(PageRange, InputStream) upload pages} and
+     * blob specific operations such as {@link PageBlobClient#uploadPages(PageRange, InputStream) upload pages} and
      * {@link PageBlobClient#clearPages(PageRange) clear pages}, only use this when the blob is known to be a page blob.
      *
      * @return a {@link PageBlobClient} created from the configurations in this builder.
@@ -217,7 +219,7 @@ public final class BlobClientBuilder {
 
     /**
      * Creates a {@link PageBlobAsyncClient} based on options set in the Builder. PageBlobAsyncClients are used to
-     * perform page blob specific tasks such as {@link PageBlobAsyncClient#uploadPages(PageRange, Flux) upload pages}
+     * perform page blob specific operations such as {@link PageBlobAsyncClient#uploadPages(PageRange, Flux) upload pages}
      * and {@link PageBlobAsyncClient#clearPages(PageRange) clear pages}, only use this when the blob is known to be a
      * page blob.
      *
