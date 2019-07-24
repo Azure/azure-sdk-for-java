@@ -78,7 +78,7 @@ jobs:
         displayName: 'Install reporting tools'
         inputs:
           mavenPomFile: eng/code-quality-reports/pom.xml
-          options: ''
+          options: '--batch-mode'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
