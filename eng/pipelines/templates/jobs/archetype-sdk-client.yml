@@ -91,7 +91,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'site:site site:stage'
+          goals: 'install site:site site:stage'
 
         # We run a separate SpotBugs aggregate report step here to roll-up all the issues identified per-module in the
         # previous step.
