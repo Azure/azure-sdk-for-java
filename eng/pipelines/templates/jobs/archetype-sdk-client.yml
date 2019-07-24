@@ -82,7 +82,7 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          publishJUnitResults: false3
+          publishJUnitResults: false
           goals: 'install'
 
       - task: Maven@3
