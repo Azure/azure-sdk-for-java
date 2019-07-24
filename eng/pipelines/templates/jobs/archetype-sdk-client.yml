@@ -81,8 +81,10 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
+      # This is only done for nightly builds, as we only care about the full aggregate report for our build reports
       - task: Maven@3
         displayName: 'Install all client libraries (for SpotBugs analysis)'
+        condition: ne(variables['Build.Reason'], 'PullRequest')
         inputs:
           mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) -Djava-lts -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
