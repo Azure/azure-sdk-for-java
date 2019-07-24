@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.amqp.Retry;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducer;
 
@@ -99,9 +99,6 @@ public class EventHubProducerOptions implements Cloneable {
 
     /**
      * Creates a clone of this instance.
-     *
-     * The object and {@link #retry()} is cloned, but the objects {@link #timeout()} and {@link #partitionId()} are not
-     * cloned. {@link Duration} and {@link String} are immutable objects and are not an issue.
      *
      * @return A shallow clone of this object.
      */
