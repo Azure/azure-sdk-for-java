@@ -19,7 +19,12 @@ import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -494,6 +499,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         assertThat(clientWrapper.capturedRequests).asList().hasSize(0);
     }
 
+    //FIXME times out inconsistently
     @Ignore
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void tryGetAddresses_ForMasterPartition_ForceRefresh() throws Exception {

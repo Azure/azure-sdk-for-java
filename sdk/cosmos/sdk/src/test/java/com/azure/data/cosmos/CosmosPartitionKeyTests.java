@@ -9,7 +9,11 @@ import com.azure.data.cosmos.internal.http.HttpHeaders;
 import com.azure.data.cosmos.internal.http.HttpRequest;
 import com.azure.data.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpMethod;
-import org.testng.annotations.*;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -107,6 +111,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
+    //FIXME test is flaky
     @Ignore
     @Test(groups = { "simple" })
     public void testNonPartitionedCollectionOperations() throws Exception {

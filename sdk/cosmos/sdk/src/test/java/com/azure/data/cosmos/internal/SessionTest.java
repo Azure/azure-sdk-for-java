@@ -10,7 +10,13 @@ import com.azure.data.cosmos.internal.http.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;

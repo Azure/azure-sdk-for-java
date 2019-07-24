@@ -12,7 +12,11 @@ import com.azure.data.cosmos.CosmosTriggerProperties;
 import com.azure.data.cosmos.CosmosTriggerResponse;
 import com.azure.data.cosmos.TriggerOperation;
 import com.azure.data.cosmos.TriggerType;
-import org.testng.annotations.*;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -73,6 +77,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
+    //FIXME test is flaky
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteTrigger() throws Exception {

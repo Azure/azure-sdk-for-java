@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConsistencyTests1 extends ConsistencyTestsBase {
 
-
+    //FIXME test is flaky
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnSyncReplication() throws Exception {
@@ -133,12 +133,14 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateConsistentLSNAndQuorumAckedLSN();
     }
 
+    //FIXME test is flaky
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationGW() throws InterruptedException {
         validateStrongConsistencyOnAsyncReplication(true);
     }
 
+    //FIXME test is flaky
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateStrongConsistencyOnAsyncReplicationDirect() throws InterruptedException {
@@ -156,6 +158,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         validateSessionContainerAfterCollectionCreateReplace(true);
     }
 
+    // FIXME test is flaky
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnSyncReplication() throws InterruptedException {
@@ -179,6 +182,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         assertThat(readLagging).isFalse();
     }
 
+    //FIXME test is flaky
     @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {

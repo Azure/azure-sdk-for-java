@@ -15,7 +15,11 @@ import com.azure.data.cosmos.internal.RetryAnalyzer;
 import com.azure.data.cosmos.internal.Utils.ValueHolder;
 import com.azure.data.cosmos.internal.query.TakeContinuationToken;
 import io.reactivex.subscribers.TestSubscriber;
-import org.testng.annotations.*;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;

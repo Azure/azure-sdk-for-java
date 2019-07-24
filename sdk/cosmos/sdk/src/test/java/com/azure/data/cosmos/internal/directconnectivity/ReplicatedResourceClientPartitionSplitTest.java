@@ -34,6 +34,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
         };
     }
 
+    //FIXME test times out inconsistently
     @Ignore
     @Test(groups = { "unit" }, dataProvider = "partitionIsSplittingArgProvider", timeOut = TIMEOUT)
     public void partitionSplit_RefreshCache_Read(ConsistencyLevel consistencyLevel, int partitionIsSplitting) {

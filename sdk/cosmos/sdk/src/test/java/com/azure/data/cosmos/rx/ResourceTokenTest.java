@@ -14,7 +14,12 @@ import com.azure.data.cosmos.PartitionKeyDefinition;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.internal.TestSuiteBase;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;

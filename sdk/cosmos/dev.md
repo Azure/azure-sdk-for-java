@@ -19,18 +19,6 @@ cd azure-cosmosdb-java
 maven clean package -DskipTests
 ```
 
-## How to generate directory structure for publishing
-
-- Run the following maven command to collect the jars needed for publishing
-
-```bash
-mvn antrun:run -N
-```
-
-Note: the `-N` is required to assert this command is only run in the parent pom.
-
-Afterwards, you can upload the contents of `./target/collectedArtifactsForRelease` for publishing.
-
 ## Running Tests from Command Line
 
 Running tests require Azure Cosmos DB Endpoint credentials:

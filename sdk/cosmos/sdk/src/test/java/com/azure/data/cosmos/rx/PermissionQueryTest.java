@@ -11,7 +11,11 @@ import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PermissionMode;
 import com.azure.data.cosmos.internal.TestSuiteBase;
-import org.testng.annotations.*;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
+//FIXME beforeClass times out inconsistently
 @Ignore
 public class PermissionQueryTest extends TestSuiteBase {
 

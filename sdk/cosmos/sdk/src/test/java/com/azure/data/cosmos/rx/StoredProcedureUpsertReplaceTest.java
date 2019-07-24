@@ -12,7 +12,11 @@ import com.azure.data.cosmos.CosmosStoredProcedureProperties;
 import com.azure.data.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.data.cosmos.CosmosStoredProcedureResponse;
 import com.azure.data.cosmos.PartitionKey;
-import org.testng.annotations.*;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -63,6 +67,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
+    // FIXME test times out inconsistently
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {

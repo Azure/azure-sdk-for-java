@@ -68,7 +68,7 @@ import static org.hamcrest.Matchers.is;
  * transform a flux to CompletableFuture. Please see
  * {@link #transformObservableToCompletableFuture()}
  */
-//FIXME: Test times out inconsistently
+//FIXME: beforeClass times out inconsistently
 @Ignore
 public class DocumentCRUDAsyncAPITest extends DocumentClientTest {
 

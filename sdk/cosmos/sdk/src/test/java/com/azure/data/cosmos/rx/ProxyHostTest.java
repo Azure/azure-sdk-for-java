@@ -19,7 +19,12 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.WriterAppender;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.Ignore;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
@@ -92,6 +97,7 @@ public class ProxyHostTest extends TestSuiteBase {
      *
      * @throws Exception
      */
+    //FIXME test is flaky
     @Ignore
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
