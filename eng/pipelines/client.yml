@@ -72,13 +72,13 @@ jobs:
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
 
-      # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
-      # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the proejct report.
       - task: Maven@3
         displayName: 'Install reporting tools'
         inputs:
-          mavenPomFile: pom.client.xml
-          options: '$(DefaultOptions) -Djava-lts -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+          mavenPomFile: eng/code-quality-reports/pom.xml
+          options: ''
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
