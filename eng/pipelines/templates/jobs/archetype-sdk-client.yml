@@ -19,7 +19,8 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
-      - template: ../steps/cache-maven-repository.yml
+      - ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
+        - template: ../steps/cache-maven-repository.yml
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
