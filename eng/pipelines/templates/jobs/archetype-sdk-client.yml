@@ -81,7 +81,7 @@ jobs:
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
+          publishJUnitResults: false3
           goals: 'install'
 
       - task: Maven@3
@@ -250,7 +250,7 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'jetty:run-forked'
-        condition: eq(variables['EnableJetty'], 'true')
+        condition: ne(variables['EnableJetty'], 'false')
 
       - task: Maven@3
         displayName: 'Run tests'
