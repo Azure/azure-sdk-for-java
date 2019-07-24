@@ -140,6 +140,8 @@ public class EventHubConsumer implements Closeable {
             if (receiveLink != null) {
                 receiveLink.close();
             }
+
+            emitterProcessor.onComplete();
         }
     }
 

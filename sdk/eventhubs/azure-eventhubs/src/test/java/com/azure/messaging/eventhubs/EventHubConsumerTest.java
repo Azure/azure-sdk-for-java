@@ -327,6 +327,36 @@ public class EventHubConsumerTest {
         Assert.assertEquals(0, actualCredits);
     }
 
+    @Test
+    public void listensToShutdownSignals() throws InterruptedException, IOException {
+        // Arrange
+        final int numberOfEvents = 7;
+        final CountDownLatch shutdownReceived = new CountDownLatch(1);
+        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false,
+            "Test message");
+
+        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
+
+        // Act
+        consumer.receive().filter(e -> isMatchingEvent(e, messageTrackingUUID))
+            .subscribe(
+                event -> logger.verbose("Received: {}", event.sequenceNumber()),
+                error -> Assert.fail(error.toString()),
+                () -> {
+                    logger.info("Shutdown received");
+                    shutdownReceived.countDown();
+                });
+
+        sendMessages(numberOfEvents);
+        shutdownProcessor.onNext(shutdownSignal);
+
+        // Assert
+        boolean successful = shutdownReceived.await(10, TimeUnit.SECONDS);
+        Assert.assertTrue(successful);
+        Assert.assertEquals(0, shutdownReceived.getCount());
+        verify(amqpReceiveLink, times(1)).close();
+    }
+
     private void sendMessages(int numberOfEvents) {
         // When we start receiving, then send those 10 messages.
         FluxSink<Message> sink = messageProcessor.sink();
