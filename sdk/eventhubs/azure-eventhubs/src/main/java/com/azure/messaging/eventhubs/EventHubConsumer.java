@@ -67,7 +67,7 @@ public class EventHubConsumer implements Closeable {
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
-        this.messageFlux = receiveLinkMono.flatMapMany(link -> {
+        this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
                 logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.prefetchCount());
                 link.addCredits(options.prefetchCount());
