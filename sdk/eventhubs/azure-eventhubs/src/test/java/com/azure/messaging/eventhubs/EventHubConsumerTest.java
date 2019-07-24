@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.Retry;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
@@ -57,6 +58,10 @@ public class EventHubConsumerTest {
 
     private final ClientLogger logger = new ClientLogger(EventHubConsumerTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
+    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
+    private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
+    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
+    private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -68,9 +73,6 @@ public class EventHubConsumerTest {
     private List<Message> messages = new ArrayList<>();
     private EventHubConsumerOptions options;
     private EventHubConsumer consumer;
-    private DirectProcessor<Message> messageProcessor = DirectProcessor.create();
-    private DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
-    private DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
 
     @Before
     public void setup() {
@@ -80,6 +82,7 @@ public class EventHubConsumerTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
         when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
         when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
+        when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
 
         options = new EventHubConsumerOptions()
             .identifier("an-identifier")
