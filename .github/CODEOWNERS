@@ -16,7 +16,7 @@
 # /sdk/eventhubs/
 # /sdk/identity/
 # /sdk/keyvault/
-# /sdk/storage/
+/sdk/storage/ @rickle-msft @jaschrep-msft @alzimmermsft @jianghaolu
 
 ###########
 # Eng Sys
