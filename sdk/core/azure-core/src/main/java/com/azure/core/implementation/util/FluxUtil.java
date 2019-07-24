@@ -202,11 +202,6 @@ public final class FluxUtil {
 
     /**
      * Converts the incoming content to Mono.
-     *<p>
-     * If the response {@link Response#value() value} is empty, an empty Mono is returned.
-     *</p>
-     * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.toMono}
      *
      * @param response whose {@link Response#value() value} is to be converted
      * @return The converted {@link Mono}

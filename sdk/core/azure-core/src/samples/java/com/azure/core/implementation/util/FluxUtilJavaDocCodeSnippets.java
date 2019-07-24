@@ -38,15 +38,6 @@ public class FluxUtilJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for using {@link FluxUtil} with collection response
-     */
-    public void toMonoCodeSnippet() {
-        // BEGIN: com.azure.core.implementation.util.fluxutil.toMono
-        getMonoRestResponse("Hello").flatMap(FluxUtil::toMono);
-        // END: com.azure.core.implementation.util.fluxutil.toMono
-    }
-
-    /**
      * Implementation not provided
      * @param prefix The prefix
      * @param context Azure context
