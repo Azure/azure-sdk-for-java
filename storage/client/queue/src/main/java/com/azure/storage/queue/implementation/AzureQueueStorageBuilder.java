@@ -77,7 +77,9 @@ public final class AzureQueueStorageBuilder {
         if (this.url != null) {
             client.url(this.url);
         }
-        client.version(this.version);
+        if (this.version != null) {
+            client.version(this.version);
+        }
         return client;
     }
 }

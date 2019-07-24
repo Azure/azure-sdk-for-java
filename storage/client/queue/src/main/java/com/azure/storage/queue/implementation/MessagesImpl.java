@@ -62,22 +62,22 @@ public final class MessagesImpl {
         @Get("{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessagesDequeueResponse> dequeue(@HostParam("url") String url, @PathParam("queueName") String queueName, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<MessagesDequeueResponse> dequeue(@HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Delete("{queueName}/messages")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessagesClearResponse> clear(@HostParam("url") String url, @PathParam("queueName") String queueName, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<MessagesClearResponse> clear(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Post("{queueName}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessagesEnqueueResponse> enqueue(@HostParam("url") String url, @PathParam("queueName") String queueName, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<MessagesEnqueueResponse> enqueue(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("visibilitytimeout") Integer visibilitytimeout, @QueryParam("messagettl") Integer messageTimeToLive, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @Get("{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessagesPeekResponse> peek(@HostParam("url") String url, @PathParam("queueName") String queueName, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("peekonly") String peekonly, Context context);
+        Mono<MessagesPeekResponse> peek(@HostParam("url") String url, @QueryParam("numofmessages") Integer numberOfMessages, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("peekonly") String peekonly, Context context);
     }
 
     /**
@@ -93,7 +93,7 @@ public final class MessagesImpl {
         final Integer visibilitytimeout = null;
         final Integer timeout = null;
         final String requestId = null;
-        return service.dequeue(this.client.url(), queueName, numberOfMessages, visibilitytimeout, timeout, this.client.version(), requestId, context);
+        return service.dequeue(this.client.url(), numberOfMessages, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class MessagesImpl {
     public Mono<MessagesClearResponse> clearWithRestResponseAsync(Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.clear(this.client.url(), queueName, timeout, this.client.version(), requestId, context);
+        return service.clear(this.client.url(), timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -154,7 +154,7 @@ public final class MessagesImpl {
         final Integer messageTimeToLive = null;
         final Integer timeout = null;
         final String requestId = null;
-        return service.enqueue(this.client.url(), queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.version(), requestId, context);
+        return service.enqueue(this.client.url(), queueMessage, visibilitytimeout, messageTimeToLive, timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -187,7 +187,7 @@ public final class MessagesImpl {
         final Integer timeout = null;
         final String requestId = null;
         final String peekonly = "true";
-        return service.peek(this.client.url(), queueName, numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);
+        return service.peek(this.client.url(), numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);
     }
 
     /**
@@ -203,6 +203,6 @@ public final class MessagesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MessagesPeekResponse> peekWithRestResponseAsync(Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
-        return service.peek(this.client.url(), queueName, numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);
+        return service.peek(this.client.url(), numberOfMessages, timeout, this.client.version(), requestId, peekonly, context);
     }
 }

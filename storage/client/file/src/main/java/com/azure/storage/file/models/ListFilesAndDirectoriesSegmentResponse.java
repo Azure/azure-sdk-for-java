@@ -28,7 +28,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     private String shareName;
 
     /*
-     * The snapshot property.
+     * The shareSnapshot property.
      */
     @JacksonXmlProperty(localName = "ShareSnapshot", isAttribute = true)
     private String shareSnapshot;
@@ -110,18 +110,18 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the snapshot property: The snapshot property.
+     * Get the shareSnapshot property: The shareSnapshot property.
      *
-     * @return the snapshot value.
+     * @return the shareSnapshot value.
      */
     public String shareSnapshot() {
         return this.shareSnapshot;
     }
 
     /**
-     * Set the snapshot property: The snapshot property.
+     * Set the shareSnapshot property: The shareSnapshot property.
      *
-     * @param shareSnapshot the snapshot value to set.
+     * @param shareSnapshot the shareSnapshot value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
     public ListFilesAndDirectoriesSegmentResponse shareSnapshot(String shareSnapshot) {
