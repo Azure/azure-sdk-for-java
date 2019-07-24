@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.util.ImplUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,6 +52,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
+    private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
+
     private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -107,7 +110,8 @@ public final class SecretClientBuilder {
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            return null;
         }
 
         if (pipeline != null) {
@@ -115,7 +119,8 @@ public final class SecretClientBuilder {
         }
 
         if (credential == null) {
-            throw new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED));
+            logger.logAndThrow(new IllegalStateException(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
+            return null;
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -145,7 +150,8 @@ public final class SecretClientBuilder {
         try {
             this.endpoint = new URL(endpoint);
         } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.");
+            logger.logAndThrow(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed."));
+            return null;
         }
         return this;
     }

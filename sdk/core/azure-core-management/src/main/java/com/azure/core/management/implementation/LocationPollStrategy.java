@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.SwaggerMethodParser;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -21,6 +22,8 @@ import java.util.Locale;
  * operation.
  */
 public final class LocationPollStrategy extends PollStrategy {
+    private final ClientLogger logger = new ClientLogger(LocationPollStrategy.class);
+
     LocationPollStrategyData data;
 
     /**
@@ -91,7 +94,8 @@ public final class LocationPollStrategy extends PollStrategy {
                             try {
                                 data.locationUrl = new URL(newLocationUrl);
                             } catch (MalformedURLException mfue) {
-                                throw Exceptions.propagate(mfue);
+                                logger.logAndThrow(Exceptions.propagate(mfue));
+                                return null;
                             }
                         }
                     } else {

@@ -3,6 +3,7 @@
 
 package com.azure.core.management;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -207,6 +208,8 @@ public class PagedListTests {
                 return list;
             }
         }) {
+            private final ClientLogger logger = new ClientLogger(PagedList.class);
+
             @Override
             public Page<Integer> nextPage(String nextPageLink) {
                 if (nextPageLink == "A") {
@@ -252,7 +255,8 @@ public class PagedListTests {
                         }
                     };
                 }
-                throw new RuntimeException("nextPage should not be called after a page with next link as null");
+                logger.logAndThrow(new RuntimeException("nextPage should not be called after a page with next link as null"));
+                return null;
             }
         };
         ListIterator<Integer> itr = pagedList.listIterator();

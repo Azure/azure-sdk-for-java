@@ -64,8 +64,9 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions identifier(String identifier) {
         if (!ImplUtils.isNullOrEmpty(identifier) && identifier.length() > MAXIMUM_IDENTIFIER_LENGTH) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH));
+            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
+                "identifier length cannot exceed %s", MAXIMUM_IDENTIFIER_LENGTH)));
+            return null;
         }
 
         this.identifier = identifier;
@@ -92,7 +93,8 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions ownerLevel(Long priority) {
         if (priority != null && priority < 0) {
-            throw new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value.");
+            logger.logAndThrow(new IllegalArgumentException("'priority' cannot be a negative value. Please specify a zero or positive long value."));
+            return null;
         }
 
         this.ownerLevel = priority;
@@ -122,13 +124,15 @@ public class EventHubConsumerOptions implements Cloneable {
      */
     public EventHubConsumerOptions prefetchCount(int prefetchCount) {
         if (prefetchCount < MINIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT));
+            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s' has to be above %s", prefetchCount, MINIMUM_PREFETCH_COUNT)));
+            return null;
         }
 
         if (prefetchCount > MAXIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT));
+            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
+                "PrefetchCount, '%s', has to be below %s", prefetchCount, MAXIMUM_PREFETCH_COUNT)));
+            return null;
         }
 
         this.prefetchCount = prefetchCount;

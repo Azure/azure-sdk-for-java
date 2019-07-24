@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -18,6 +19,7 @@ import java.security.GeneralSecurityException;
  * This class contains code samples for generating javadocs through doclets for {@link ConfigurationClient}
  */
 public final class ConfigurationClientJavaDocCodeSnippets {
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientJavaDocCodeSnippets.class);
 
     private String key1 = "key1";
     private String key2 = "key2";
@@ -44,7 +46,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
             return configurationClient;
         } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
+            logger.logAndThrow(new IllegalStateException("Failed to create configuration client credentials", ex));
+            return null;
         }
     }
 
@@ -63,7 +66,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             // END: com.azure.data.applicationconfig.async.configurationclient.instantiation
             return configurationAsyncClient;
         } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
+            logger.logAndThrow(new IllegalStateException("Failed to create configuration client credentials", ex));
+            return null;
         }
     }
 
@@ -82,7 +86,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             // END: com.azure.data.applicationconfig.configurationclient.instantiation
             return configurationClient;
         } catch (GeneralSecurityException ex) {
-            throw new IllegalStateException("Failed to create configuration client credentials", ex);
+            logger.logAndThrow(new IllegalStateException("Failed to create configuration client credentials", ex));
+            return null;
         }
     }
 

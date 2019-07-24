@@ -95,13 +95,16 @@ class RequestResponseChannel implements Closeable {
         start();
 
         if (message == null) {
-            throw new IllegalArgumentException("message cannot be null");
+            logger.logAndThrow(new IllegalArgumentException("message cannot be null"));
+            return null;
         }
         if (message.getMessageId() != null) {
-            throw new IllegalArgumentException("message.getMessageId() should be null");
+            logger.logAndThrow(new IllegalArgumentException("message.getMessageId() should be null"));
+            return null;
         }
         if (message.getReplyTo() != null) {
-            throw new IllegalArgumentException("message.getReplyTo() should be null");
+            logger.logAndThrow(new IllegalArgumentException("message.getReplyTo() should be null"));
+            return null;
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());

@@ -18,6 +18,7 @@ import com.azure.core.management.OperationState;
 import com.azure.core.management.implementation.AzureAsyncOperationPollStrategy;
 import com.azure.core.management.implementation.LocationPollStrategy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ import java.util.function.Supplier;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockAzureHttpClient implements HttpClient {
+    private final ClientLogger logger = new ClientLogger(MockAzureHttpClient.class);
+
     private int pollsRemaining;
 
     private int getRequests;
@@ -256,17 +259,20 @@ public class MockAzureHttpClient implements HttpClient {
 
     @Override
     public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-        throw new IllegalStateException("MockHttpClient.proxy");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy"));
+        return null;
     }
 
     @Override
     public HttpClient wiretap(boolean enableWiretap) {
-        throw new IllegalStateException("MockHttpClient.wiretap");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap"));
+        return null;
     }
 
     @Override
     public HttpClient port(int port) {
-        throw new IllegalStateException("MockHttpClient.port");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.port"));
+        return null;
     }
 
     private static Map<String, String> queryToMap(String url) {

@@ -14,6 +14,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -42,9 +43,11 @@ import org.junit.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 public class FluxUtilTests {
+    private final ClientLogger logger = new ClientLogger(FluxUtilTests.class);
 
     @Test
     public void testCanReadSlice() throws IOException {
@@ -65,7 +68,8 @@ public class FluxUtilTests {
                             try {
                                 bos.write(b);
                             } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
+                                logger.logAndThrow(Exceptions.propagate(ioe));
+                                return;
                             }
                         })
                     .block()
@@ -93,7 +97,8 @@ public class FluxUtilTests {
                             try {
                                 bos.write(b);
                             } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
+                                logger.logAndThrow(Exceptions.propagate(ioe));
+                                return;
                             }
                         })
                     .block().toByteArray();
@@ -116,14 +121,15 @@ public class FluxUtilTests {
                         return bt;
                     })
                     .limitRequest(1)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                    .subscribeOn(Schedulers.newElastic("io", 30))
+                    .publishOn(Schedulers.newElastic("io", 30))
                     .collect(() -> new ByteArrayOutputStream(),
                         (bos, b) -> {
                             try {
                                 bos.write(b);
                             } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
+                                logger.logAndThrow(Exceptions.propagate(ioe));
+                                return;
                             }
                         })
                     .block()

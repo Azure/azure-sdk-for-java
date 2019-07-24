@@ -243,10 +243,12 @@ public class EventHubAsyncClient implements Closeable {
         Objects.requireNonNull(options);
 
         if (ImplUtils.isNullOrEmpty(consumerGroup)) {
-            throw new IllegalArgumentException("'consumerGroup' cannot be null or empty.");
+            logger.logAndThrow(new IllegalArgumentException("'consumerGroup' cannot be null or empty."));
+            return null;
         }
         if (ImplUtils.isNullOrEmpty(partitionId)) {
-            throw new IllegalArgumentException("'partitionId' cannot be null or empty.");
+            logger.logAndThrow(new IllegalArgumentException("'partitionId' cannot be null or empty."));
+            return null;
         }
 
         final EventHubConsumerOptions clonedOptions = options.clone();
@@ -284,8 +286,9 @@ public class EventHubAsyncClient implements Closeable {
                     connection.close();
                 }
             } catch (IOException exception) {
-                throw new AmqpException(false, "Unable to close connection to service", exception,
-                    new ErrorContext(connectionOptions.host()));
+                logger.logAndThrow(new AmqpException(false, "Unable to close connection to service", exception,
+                    new ErrorContext(connectionOptions.host())));
+                return;
             }
         }
     }

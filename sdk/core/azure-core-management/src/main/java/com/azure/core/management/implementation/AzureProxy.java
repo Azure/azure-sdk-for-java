@@ -29,6 +29,7 @@ import com.azure.core.management.OperationState;
 import com.azure.core.management.annotations.AzureHost;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,6 +52,7 @@ import java.util.function.Supplier;
  */
 public final class AzureProxy extends RestProxy {
     private static long defaultPollingDelayInMilliseconds = 30 * 1000;
+    private final ClientLogger logger = new ClientLogger(AzureProxy.class);
 
     /**
      * Create a new instance of RestProxy.
@@ -225,7 +227,8 @@ public final class AzureProxy extends RestProxy {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-                throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
+                logger.logAndThrow(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
+                return null;
             } else {
                 // Get ResultTypeT in OperationStatus<ResultTypeT>
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
@@ -256,7 +259,8 @@ public final class AzureProxy extends RestProxy {
                                            Context context) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-            throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
+            logger.logAndThrow(new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ")."));
+            return null;
         }
 
         PollStrategy.PollStrategyData pollStrategyData =
@@ -306,7 +310,8 @@ public final class AzureProxy extends RestProxy {
                                         if (pollStrategy == null) {
                                             pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                             if (pollStrategy == null) {
-                                                throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
+                                                logger.logAndThrow(new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse));
+                                                return null;
                                             }
                                         }
                                     }
@@ -341,7 +346,8 @@ public final class AzureProxy extends RestProxy {
             pollStrategyMono = bufferedOriginalHttpResponse.bodyAsString()
                     .map(originalHttpResponseBody -> {
                         if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
-                            throw new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse);
+                            logger.logAndThrow(new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse));
+                            return null;
                         }
                         PollStrategy pollStrategy;
                         try {
@@ -357,7 +363,8 @@ public final class AzureProxy extends RestProxy {
                                                 AzureProxy.this, methodParser, bufferedOriginalHttpResponse));
                             }
                         } catch (IOException e) {
-                            throw Exceptions.propagate(e);
+                            logger.logAndThrow(Exceptions.propagate(e));
+                            return null;
                         }
                         return pollStrategy;
                     });

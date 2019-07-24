@@ -23,6 +23,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
@@ -45,6 +46,8 @@ import static org.junit.Assert.assertNull;
 
 public class RestProxyXMLTests {
     static class MockXMLHTTPClient implements HttpClient {
+        private final ClientLogger logger = new ClientLogger(MockXMLHTTPClient.class);
+
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
@@ -69,17 +72,20 @@ public class RestProxyXMLTests {
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-            throw new IllegalStateException("MockHttpClient.proxy");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy"));
+            return null;
         }
 
         @Override
         public HttpClient wiretap(boolean enableWiretap) {
-            throw new IllegalStateException("MockHttpClient.wiretap");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap"));
+            return null;
         }
 
         @Override
         public HttpClient port(int port) {
-            throw new IllegalStateException("MockHttpClient.port");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.port"));
+            return null;
         }
     }
 
@@ -110,6 +116,8 @@ public class RestProxyXMLTests {
     }
 
     static class MockXMLReceiverClient implements HttpClient {
+        private final ClientLogger logger = new ClientLogger(MockXMLReceiverClient.class);
+
         byte[] receivedBytes = null;
 
         @Override
@@ -127,17 +135,20 @@ public class RestProxyXMLTests {
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-            throw new IllegalStateException("MockHttpClient.proxy");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy"));
+            return null;
         }
 
         @Override
         public HttpClient wiretap(boolean enableWiretap) {
-            throw new IllegalStateException("MockHttpClient.wiretap");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap"));
+            return null;
         }
 
         @Override
         public HttpClient port(int port) {
-            throw new IllegalStateException("MockHttpClient.port");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.port"));
+            return null;
         }
     }
 

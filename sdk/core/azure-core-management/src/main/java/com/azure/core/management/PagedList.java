@@ -4,6 +4,7 @@
 package com.azure.core.management;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import java.util.NoSuchElementException;
  * @param <E> the element type.
  */
 public abstract class PagedList<E> implements List<E> {
+    private final ClientLogger logger = new ClientLogger(PagedList.class);
+
     /** The actual items in the list. */
     private List<E> items;
     /** Stores the latest page fetched. */
@@ -67,7 +70,8 @@ public abstract class PagedList<E> implements List<E> {
                 }
             }
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            logger.logAndThrow(new RuntimeException(ex));
+            return;
         }
     }
 
@@ -137,6 +141,8 @@ public abstract class PagedList<E> implements List<E> {
      * The implementation of {@link ListIterator} for PagedList.
      */
     private class ListItr implements ListIterator<E> {
+        private final ClientLogger logger = new ClientLogger(ListItr.class);
+
         /**
          * index of next element to return.
          */
@@ -164,7 +170,8 @@ public abstract class PagedList<E> implements List<E> {
         public E next() {
             if (this.nextIndex >= items.size()) {
                 if (!hasNextPage()) {
-                    throw new NoSuchElementException();
+                    logger.logAndThrow(new NoSuchElementException());
+                    return null;
                 } else {
                     loadNextPage();
                 }
@@ -179,7 +186,8 @@ public abstract class PagedList<E> implements List<E> {
                 } catch (IndexOutOfBoundsException ex) {
                     // The nextIndex got invalid means a different instance of iterator
                     // removed item from this index.
-                    throw new ConcurrentModificationException();
+                    logger.logAndThrow(new ConcurrentModificationException());
+                    return null;
                 }
             }
         }
@@ -187,14 +195,16 @@ public abstract class PagedList<E> implements List<E> {
         @Override
         public void remove() {
             if (this.lastRetIndex < 0) {
-                throw new IllegalStateException();
+                logger.logAndThrow(new IllegalStateException());
+                return;
             } else {
                 try {
                     items.remove(this.lastRetIndex);
                     this.nextIndex = this.lastRetIndex;
                     this.lastRetIndex = -1;
                 } catch (IndexOutOfBoundsException ex) {
-                    throw new ConcurrentModificationException();
+                    logger.logAndThrow(new ConcurrentModificationException());
+                    return;
                 }
             }
         }
@@ -208,16 +218,19 @@ public abstract class PagedList<E> implements List<E> {
         public E previous() {
             int i = this.nextIndex - 1;
             if (i < 0) {
-                throw new NoSuchElementException();
+                logger.logAndThrow(new NoSuchElementException());
+                return null;
             } else if (i >= items.size()) {
-                throw new ConcurrentModificationException();
+                logger.logAndThrow(new ConcurrentModificationException());
+                return null;
             } else {
                 try {
                     this.nextIndex = i;
                     this.lastRetIndex = i;
                     return items.get(this.lastRetIndex);
                 } catch (IndexOutOfBoundsException ex) {
-                    throw new ConcurrentModificationException();
+                    logger.logAndThrow(new ConcurrentModificationException());
+                    return null;
                 }
             }
         }
@@ -235,12 +248,14 @@ public abstract class PagedList<E> implements List<E> {
         @Override
         public void set(E e) {
             if (this.lastRetIndex < 0) {
-                throw new IllegalStateException();
+                logger.logAndThrow(new IllegalStateException());
+                return;
             } else {
                 try {
                     items.set(this.lastRetIndex, e);
                 } catch (IndexOutOfBoundsException ex) {
-                    throw new ConcurrentModificationException();
+                    logger.logAndThrow(new ConcurrentModificationException());
+                    return;
                 }
             }
         }
@@ -252,7 +267,8 @@ public abstract class PagedList<E> implements List<E> {
                 this.nextIndex = this.nextIndex + 1;
                 this.lastRetIndex = -1;
             } catch (IndexOutOfBoundsException ex) {
-                throw new ConcurrentModificationException();
+                logger.logAndThrow(new ConcurrentModificationException());
+                return;
             }
         }
     }

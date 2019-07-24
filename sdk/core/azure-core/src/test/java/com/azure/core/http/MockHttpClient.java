@@ -10,6 +10,7 @@ import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
@@ -31,6 +32,8 @@ import java.util.function.Supplier;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient implements HttpClient {
+    private final ClientLogger logger = new ClientLogger(MockHttpClient.class);
+
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
             .put("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
             .put("Via", "1.1 vegur")
@@ -193,17 +196,20 @@ public class MockHttpClient implements HttpClient {
 
     @Override
     public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-        throw new IllegalStateException("MockHttpClient.proxy");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy"));
+        return null;
     }
 
     @Override
     public HttpClient wiretap(boolean enableWiretap) {
-        throw new IllegalStateException("MockHttpClient.wiretap");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap"));
+        return null;
     }
 
     @Override
     public HttpClient port(int port) {
-        throw new IllegalStateException("MockHttpClient.port");
+        logger.logAndThrow(new IllegalStateException("MockHttpClient.port"));
+        return null;
     }
 
     private static String createHttpBinResponseDataForRequest(HttpRequest request) {

@@ -321,13 +321,15 @@ public class EventHubProducer implements Closeable {
         }
 
         if (isPartitionSender) {
-            throw new IllegalArgumentException(String.format(Locale.US,
+            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
                 "BatchOptions.partitionKey() cannot be set when an EventHubProducer is created with"
                     + "EventHubProducerOptions.partitionId() set. This EventHubProducer can only send events to partition '%s'.",
-                senderOptions.partitionId()));
+                senderOptions.partitionId())));
+            return;
         } else if (partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH));
+            logger.logAndThrow(new IllegalArgumentException(String.format(Locale.US,
+                "PartitionKey '%s' exceeds the maximum allowed length: '%s'.", partitionKey, MAX_PARTITION_KEY_LENGTH)));
+            return;
         }
     }
 

@@ -283,7 +283,8 @@ public class RestProxyStressTests {
                 try {
                     return Files.readAllBytes(filePath);
                 } catch (IOException ioe) {
-                    throw Exceptions.propagate(ioe);
+                    logger.logAndThrow(Exceptions.propagate(ioe));
+                    return null;
                 }
             });
         //
@@ -321,7 +322,8 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
+                        logger.logAndThrow(Exceptions.propagate(ioe));
+                        return null;
                     }
                 });
 
@@ -375,7 +377,8 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
+                        logger.logAndThrow(Exceptions.propagate(ioe));
+                        return null;
                     }
                 });
         //
@@ -419,7 +422,8 @@ public class RestProxyStressTests {
                     try {
                         return Files.readAllBytes(filePath);
                     } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
+                        logger.logAndThrow(Exceptions.propagate(ioe));
+                        return null;
                     }
                 });
         //

@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.http.ContentType;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.Test;
@@ -422,23 +423,27 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     private abstract static class SimpleMockHttpClient implements HttpClient {
+        private final ClientLogger logger = new ClientLogger(SimpleMockHttpClient.class);
 
         @Override
         public abstract Mono<HttpResponse> send(HttpRequest request);
 
         @Override
         public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
-            throw new IllegalStateException("MockHttpClient.proxy not implemented.");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.proxy not implemented."));
+            return null;
         }
 
         @Override
         public HttpClient wiretap(boolean enableWiretap) {
-            throw new IllegalStateException("MockHttpClient.wiretap not implemented.");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.wiretap not implemented."));
+            return null;
         }
 
         @Override
         public HttpClient port(int port) {
-            throw new IllegalStateException("MockHttpClient.port not implemented.");
+            logger.logAndThrow(new IllegalStateException("MockHttpClient.port not implemented."));
+            return null;
         }
     }
 

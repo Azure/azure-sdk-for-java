@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.models.webkey;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,6 +51,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
+    private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
     /**
      * Key Identifier.
@@ -448,11 +450,14 @@ public class JsonWebKey {
         try {
             return mapper.writeValueAsString(this);
         } catch (JsonGenerationException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return "";
         } catch (JsonMappingException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return "";
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return "";
         }
     }
 
@@ -559,7 +564,8 @@ public class JsonWebKey {
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return null;
         }
     }
 
@@ -578,7 +584,8 @@ public class JsonWebKey {
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return null;
         }
     }
 
@@ -610,7 +617,8 @@ public class JsonWebKey {
      */
     private void checkRSACompatible() {
         if (!KeyType.RSA.equals(kty) && !KeyType.RSA_HSM.equals(kty)) {
-            throw new UnsupportedOperationException("Not an RSA key");
+            logger.logAndThrow(new UnsupportedOperationException("Not an RSA key"));
+            return;
         }
     }
 
@@ -746,7 +754,8 @@ public class JsonWebKey {
         }
 
         if (!KeyType.EC.equals(kty) && !KeyType.EC_HSM.equals(kty)) {
-            throw new IllegalArgumentException("Not an EC key.");
+            logger.logAndThrow(new IllegalArgumentException("Not an EC key."));
+            return null;
         }
 
         try {
@@ -773,7 +782,8 @@ public class JsonWebKey {
 
             return realKeyPair;
         } catch (GeneralSecurityException e) {
-            throw new IllegalStateException(e);
+            logger.logAndThrow(new IllegalStateException(e));
+            return null;
         }
     }
 

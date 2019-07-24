@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.credentials;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.policy.ConfigurationCredentialsPolicy;
 import com.azure.core.implementation.util.ImplUtils;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
  * @see ConfigurationClientBuilder
  */
 public class ConfigurationClientCredentials {
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientCredentials.class);
+
     private static final String HOST_HEADER = "Host";
     private static final String DATE_HEADER = "Date";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -80,7 +83,8 @@ public class ConfigurationClientCredentials {
                 try {
                     return MessageDigest.getInstance("SHA-256");
                 } catch (NoSuchAlgorithmException e) {
-                    throw Exceptions.propagate(e);
+                    logger.logAndThrow(Exceptions.propagate(e));
+                    return null;
                 }
             }, (messageDigest, byteBuffer) -> {
                     if (messageDigest != null) {

@@ -4,6 +4,7 @@
 package com.azure.core;
 
 
+import com.azure.core.util.logging.ClientLogger;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -23,6 +24,8 @@ import java.util.Random;
 
 public class MockServer {
     private static class TestHandler extends HandlerWrapper {
+        private final ClientLogger logger = new ClientLogger(TestHandler.class);
+
         @Override
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
             LoggerFactory.getLogger(getClass()).info("Received request for " + baseRequest.getRequestURL());
@@ -35,7 +38,8 @@ public class MockServer {
             try {
                 md5 = MessageDigest.getInstance("MD5");
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
+                logger.logAndThrow(new RuntimeException(e));
+                return;
             }
 
             while (true) {
