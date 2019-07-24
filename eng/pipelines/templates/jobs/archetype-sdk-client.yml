@@ -19,7 +19,7 @@ jobs:
           JavaVersion: '1.11'
 
     steps:
-      - ${{if ne(variables['Build.Reason'], 'PullRequest')}}:
+      - ${{if ne(parameters['Build.Reason'], 'PullRequest')}}:
         - template: ../steps/cache-maven-repository.yml
 
       - script: |
