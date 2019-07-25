@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -361,9 +362,9 @@ public final class Utility {
             byte[] key = Base64.getDecoder().decode(base64Key);
             Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
-            byte[] utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
+            byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
             return Base64.getEncoder().encodeToString(hmacSHA256.doFinal(utf8Bytes));
-        } catch (NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
             throw new RuntimeException(ex);
         }
     }

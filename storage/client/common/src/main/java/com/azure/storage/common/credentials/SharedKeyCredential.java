@@ -84,7 +84,8 @@ public final class SharedKeyCredential {
      * @return the SharedKey authorization value
      */
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
-        return Utility.computeHMac256(accountKey, buildStringToSign(requestURL, httpMethod, headers));
+        String signature = Utility.computeHMac256(accountKey, buildStringToSign(requestURL, httpMethod, headers));
+        return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
     }
 
     /**

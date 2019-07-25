@@ -1,7 +1,5 @@
 package com.azure.storage.common;
 
-import java.nio.charset.StandardCharsets;
-
 public final class Constants {
     private static final int KB = 1024;
 
@@ -18,7 +16,7 @@ public final class Constants {
     /**
      * The default type for content-type and accept.
      */
-    static final String UTF8_CHARSET = StandardCharsets.UTF_8.toString();
+    static final String UTF8_CHARSET = "UTF-8";
 
     /**
      * The query parameter for snapshots.
