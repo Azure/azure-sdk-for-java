@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
@@ -165,7 +166,7 @@ public final class ConfigurationClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
