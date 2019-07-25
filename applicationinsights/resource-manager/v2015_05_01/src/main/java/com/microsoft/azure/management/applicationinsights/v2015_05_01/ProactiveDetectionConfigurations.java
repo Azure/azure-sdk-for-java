@@ -19,7 +19,7 @@ public interface ProactiveDetectionConfigurations extends HasInner<ProactiveDete
     /**
      * Get the ProactiveDetection configuration for this configuration id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param configurationId The ProactiveDetection configuration ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -30,7 +30,7 @@ public interface ProactiveDetectionConfigurations extends HasInner<ProactiveDete
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

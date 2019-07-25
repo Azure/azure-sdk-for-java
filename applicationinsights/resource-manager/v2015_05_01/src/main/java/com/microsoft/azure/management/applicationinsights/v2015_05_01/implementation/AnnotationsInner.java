@@ -78,7 +78,7 @@ public class AnnotationsInner {
     /**
      * Gets the list of annotations for a component for given time range.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
      * @param end The end time to query for annotations.
@@ -94,7 +94,7 @@ public class AnnotationsInner {
     /**
      * Gets the list of annotations for a component for given time range.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
      * @param end The end time to query for annotations.
@@ -109,7 +109,7 @@ public class AnnotationsInner {
     /**
      * Gets the list of annotations for a component for given time range.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
      * @param end The end time to query for annotations.
@@ -128,7 +128,7 @@ public class AnnotationsInner {
     /**
      * Gets the list of annotations for a component for given time range.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param start The start time to query from for annotations, cannot be older than 90 days from current date.
      * @param end The end time to query for annotations.
@@ -183,7 +183,7 @@ public class AnnotationsInner {
     /**
      * Create an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -198,7 +198,7 @@ public class AnnotationsInner {
     /**
      * Create an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -212,7 +212,7 @@ public class AnnotationsInner {
     /**
      * Create an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -230,7 +230,7 @@ public class AnnotationsInner {
     /**
      * Create an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -277,7 +277,7 @@ public class AnnotationsInner {
     /**
      * Delete an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -292,7 +292,7 @@ public class AnnotationsInner {
     /**
      * Delete an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -306,7 +306,7 @@ public class AnnotationsInner {
     /**
      * Delete an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -324,7 +324,7 @@ public class AnnotationsInner {
     /**
      * Delete an Annotation of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -370,7 +370,7 @@ public class AnnotationsInner {
     /**
      * Get the annotation for given id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -385,7 +385,7 @@ public class AnnotationsInner {
     /**
      * Get the annotation for given id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -399,7 +399,7 @@ public class AnnotationsInner {
     /**
      * Get the annotation for given id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -417,7 +417,7 @@ public class AnnotationsInner {
     /**
      * Get the annotation for given id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation

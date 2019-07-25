@@ -11,8 +11,8 @@ package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error reponse indicates Insights service is not able to process the incoming
- * request. The reason is provided in the error message.
+ * Error response indicates Insights service is not able to process the
+ * incoming request. The reason is provided in the error message.
  */
 public class ErrorResponse {
     /**
