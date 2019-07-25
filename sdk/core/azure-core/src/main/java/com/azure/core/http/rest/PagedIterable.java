@@ -58,7 +58,7 @@ public class PagedIterable<T> {
     }
 
     /**
-     *
+     *  This is representation of Single PageResponse with Flux and no next page to retrieve.
      * @param <T> value
      */
     public class SinglePagedResponse<T> implements PagedResponse<T> {
@@ -85,7 +85,7 @@ public class PagedIterable<T> {
 
         @Override
         public int statusCode() {
-            return -1;
+            return 0;
         }
 
         @Override

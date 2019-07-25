@@ -62,7 +62,6 @@ public class PagedFlux<T> extends Flux<T> {
      * Creates an instance of {@link PagedFlux} using argument as a supplier that fetches the first page of {@code T}.
 
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.http.rest.pagedflux.instantiation}
      * @param firstPageRetriever Supplier that retrieves the first page
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
