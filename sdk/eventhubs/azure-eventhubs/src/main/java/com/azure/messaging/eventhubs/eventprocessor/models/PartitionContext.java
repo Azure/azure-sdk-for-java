@@ -7,11 +7,21 @@ import com.azure.core.implementation.annotation.Fluent;
 
 @Fluent
 public class PartitionContext {
+    private String instanceId;
     private String partitionId;
     private String eventHubName;
     private String consumerGroupName;
     public String partitionId() {
         return partitionId;
+    }
+
+    public PartitionContext instanceId(String instanceId) {
+        this.instanceId = instanceId;
+        return this;
+    }
+
+    public String instanceId() {
+        return this.instanceId;
     }
 
     public PartitionContext partitionId(String partitionId) {

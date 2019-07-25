@@ -12,7 +12,7 @@ public class PartitionOwnership {
     private String partitionId;
     private String instanceId;
     private long ownerLevel;
-    private Long offset; // can be null
+    private String offset; // can be null
     private Long sequenceNumber; // can be null
     private Long lastModifiedTime; // can be null
     private String eTag; // can be null
@@ -62,11 +62,11 @@ public class PartitionOwnership {
         return this;
     }
 
-    public Long offset() {
+    public String offset() {
         return offset;
     }
 
-    public PartitionOwnership offset(Long offset) {
+    public PartitionOwnership offset(String offset) {
         this.offset = offset;
         return this;
     }

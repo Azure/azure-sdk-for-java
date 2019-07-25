@@ -11,8 +11,8 @@ public class Checkpoint {
     private String consumerGroupName;
     private String instanceId;
     private String partitionId;
+    private String offset;
     private long sequenceNumber;
-    private long offsetNumber;
 
     public String eventHubName() {
         return eventHubName;
@@ -59,12 +59,12 @@ public class Checkpoint {
         return this;
     }
 
-    public long offsetNumber() {
-        return offsetNumber;
+    public String offsetNumber() {
+        return offset;
     }
 
-    public Checkpoint offsetNumber(long offsetNumber) {
-        this.offsetNumber = offsetNumber;
+    public Checkpoint offset(String offset) {
+        this.offset = offset;
         return this;
     }
 }

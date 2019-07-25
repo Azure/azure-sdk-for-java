@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
 import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
 
 import reactor.core.publisher.Mono;
@@ -22,13 +23,27 @@ public class CheckpointManager {
      * Updates a checkpoint using the event data
      */
     public Mono<Void> updateCheckpoint(EventData eventData){
-        return Mono.empty();
+        Checkpoint checkpoint = new Checkpoint()
+            .consumerGroupName(partitionContext.consumerGroupName())
+            .eventHubName(partitionContext.eventHubName())
+            .instanceId(partitionContext.instanceId())
+            .partitionId(partitionContext.partitionId())
+            .sequenceNumber(eventData.sequenceNumber())
+            .offset(eventData.offset());
+        return this.partitionManager.updateCheckpoint(checkpoint);
     }
 
     /**
      * Updates a checkpoint using the given offset and sequence number
      */
-    public Mono<Void> updateCheckpoint(long sequenceNumber, long offset){
-        return Mono.empty();
+    public Mono<Void> updateCheckpoint(long sequenceNumber, String offset){
+        Checkpoint checkpoint = new Checkpoint()
+            .consumerGroupName(partitionContext.consumerGroupName())
+            .eventHubName(partitionContext.eventHubName())
+            .instanceId(partitionContext.instanceId())
+            .partitionId(partitionContext.partitionId())
+            .sequenceNumber(sequenceNumber)
+            .offset(offset);
+        return this.partitionManager.updateCheckpoint(checkpoint);
     }
 }

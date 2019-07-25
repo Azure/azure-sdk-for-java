@@ -114,13 +114,14 @@ public class EventProcessor {
      */
     private void receiveEvents(String partitionId) {
         EventHubConsumer consumer = this.eventHubAsyncClient
-            .createConsumer(this.consumerGroupName, partitionId, EventPosition.earliest());
+            .createConsumer(this.consumerGroupName, partitionId, this.initialEventPosition);
         this.partitionConsumers.put(partitionId, consumer);
         PartitionContext partitionContext = new PartitionContext()
             .partitionId(partitionId)
             .eventHubName("")
             .consumerGroupName(this.consumerGroupName);
         CheckpointManager checkpointManager = new CheckpointManager(partitionContext, this.partitionManager);
+
         logger.info("Subscribing to receive events from partition {}", partitionId);
         consumer.receive().subscribe(
             this.partitionProcessorFactory.apply(partitionContext, checkpointManager));
