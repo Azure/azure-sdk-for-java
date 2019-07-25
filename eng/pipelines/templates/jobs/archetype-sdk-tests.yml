@@ -35,7 +35,8 @@ jobs:
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          # TODO: use pom.service.xml when it's ready
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
