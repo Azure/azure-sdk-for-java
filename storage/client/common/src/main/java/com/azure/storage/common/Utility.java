@@ -82,7 +82,7 @@ public final class Utility {
         return pieces;
     }
 
-    /*
+    /**
      * Performs a safe decoding of the passed string, taking care to preserve each {@code +} character rather than
      * replacing it with a space character.
      *
@@ -90,7 +90,7 @@ public final class Utility {
      * @return the decoded string value
      * @throws RuntimeException If the UTF-8 charset isn't supported
      */
-    private static String URLDecode(final String stringToDecode) {
+    public static String URLDecode(final String stringToDecode) {
         if (ImplUtils.isNullOrEmpty(stringToDecode)) {
             return "";
         }

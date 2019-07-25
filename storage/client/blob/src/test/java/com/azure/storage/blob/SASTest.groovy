@@ -4,8 +4,10 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.*
+import com.azure.storage.common.Constants
 import com.azure.storage.common.IPRange
 import com.azure.storage.common.SASProtocol
+import com.azure.storage.common.Utility
 import com.azure.storage.common.credentials.SASTokenCredential
 import com.azure.storage.common.credentials.SharedKeyCredential
 import spock.lang.Unroll
@@ -1072,6 +1074,6 @@ class SASTest extends APISpec {
         parts.sasQueryParameters().permissions() == "r"
         parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.sasQueryParameters().signature() == Utility.URLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
     }
 }
