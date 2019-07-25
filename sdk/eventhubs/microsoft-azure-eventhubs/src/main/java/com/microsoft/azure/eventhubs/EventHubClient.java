@@ -92,22 +92,22 @@ public interface EventHubClient {
      * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
      * @param eventHubName  EventHub name
      * @param authCallback  A callback which returns a JSON Web Token obtained from AAD.
-     * @param authority		Address of the AAD authority to issue the token.
+     * @param authority        Address of the AAD authority to issue the token.
      * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If the EventHubs service encountered problems during connection creation.
      * @throws IOException If the underlying Proton-J layer encounter network errors.
      */
-    public static CompletableFuture<EventHubClient> createWithAzureActiveDirectory(
+    static CompletableFuture<EventHubClient> createWithAzureActiveDirectory(
             final URI endpointAddress,
             final String eventHubName,
             final AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback,
             final String authority,
             final ScheduledExecutorService executor,
             final EventHubClientOptions options) throws EventHubException, IOException {
-    	ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(authCallback, authority, null);
-    	return createWithTokenProvider(endpointAddress, eventHubName, tokenProvider, executor, options);
+        ITokenProvider tokenProvider = new AzureActiveDirectoryTokenProvider(authCallback, authority, null);
+        return createWithTokenProvider(endpointAddress, eventHubName, tokenProvider, executor, options);
     }
     
     /**
@@ -119,18 +119,18 @@ public interface EventHubClient {
      * @param eventHubName  EventHub name
      * @param tokenProvider The {@link ITokenProvider} implementation to be used to authenticate
      * @param executor      An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
-     * @param options		Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
+     * @param options        Options {@link EventHubClientOptions} for creating the client. Uses all defaults if null. 
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If the EventHubs service encountered problems during connection creation.
      * @throws IOException If the underlying Proton-J layer encounter network errors.
      */
-    public static CompletableFuture<EventHubClient> createWithTokenProvider(
+    static CompletableFuture<EventHubClient> createWithTokenProvider(
             final URI endpointAddress,
             final String eventHubName,
             final ITokenProvider tokenProvider,
             final ScheduledExecutorService executor,
             final EventHubClientOptions options) throws EventHubException, IOException {
-    	return EventHubClientImpl.create(endpointAddress, eventHubName, tokenProvider, executor, options);
+        return EventHubClientImpl.create(endpointAddress, eventHubName, tokenProvider, executor, options);
     }
 
     /**
