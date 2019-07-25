@@ -12,7 +12,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run Live tests'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
           mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
           javaHomeOption: 'JDKVersion'

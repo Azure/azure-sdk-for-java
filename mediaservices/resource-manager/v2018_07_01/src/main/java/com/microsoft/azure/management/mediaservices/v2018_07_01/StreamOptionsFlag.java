@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for StreamOptionsFlag.
  */
-public enum StreamOptionsFlag {
-    /** Enum value Default. */
-    DEFAULT("Default"),
+public final class StreamOptionsFlag extends ExpandableStringEnum<StreamOptionsFlag> {
+    /** Static value Default for StreamOptionsFlag. */
+    public static final StreamOptionsFlag DEFAULT = fromString("Default");
 
-    /** Enum value LowLatency. */
-    LOW_LATENCY("LowLatency");
+    /** Static value LowLatency for StreamOptionsFlag. */
+    public static final StreamOptionsFlag LOW_LATENCY = fromString("LowLatency");
 
-    /** The actual serialized value for a StreamOptionsFlag instance. */
-    private String value;
-
-    StreamOptionsFlag(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a StreamOptionsFlag from its string representation.
+     * @param name a name to look for
+     * @return the corresponding StreamOptionsFlag
+     */
+    @JsonCreator
+    public static StreamOptionsFlag fromString(String name) {
+        return fromString(name, StreamOptionsFlag.class);
     }
 
     /**
-     * Parses a serialized value to a StreamOptionsFlag instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed StreamOptionsFlag object, or null if unable to parse.
+     * @return known StreamOptionsFlag values
      */
-    @JsonCreator
-    public static StreamOptionsFlag fromString(String value) {
-        StreamOptionsFlag[] items = StreamOptionsFlag.values();
-        for (StreamOptionsFlag item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StreamOptionsFlag> values() {
+        return values(StreamOptionsFlag.class);
     }
 }
