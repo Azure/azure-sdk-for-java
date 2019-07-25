@@ -1,7 +1,6 @@
 parameters:
   ServiceDirectory: ''
   EnvVars: {}
-  Goals: 'test'
   MaxParallel: 0
   Matrix:
     Win2016:
@@ -10,7 +9,15 @@ parameters:
   PreRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60 # TODO: USE WHATEVER THE DEVOPS DEFAULT IS
-  TestOptions: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
+  TestStepMavenInputs:
+    options: '--batch-mode -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3'
+    mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'test'
+
 
 jobs:
   - job: ${{ parameters.TestName }}
@@ -29,13 +36,7 @@ jobs:
         displayName: $(DisplayName)
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: ${{ parameters.TestOptions }}
-          mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.8'
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: ${{ parameters.Goals }}
+          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
       - task: PublishTestResults@2

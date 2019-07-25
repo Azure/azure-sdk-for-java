@@ -11,23 +11,23 @@ jobs:
     parameters:
       TestName: Test
       ServiceDirectory: cosmos
-      Goals: 'verify'
       TimeoutInMinutes: 240
+      MaxParallel: 1
       Matrix:
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          Consistency: 'Session'
           DisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
+          DESIRED_CONSISTENCY: 'Session'
           COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
           COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         Strong_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          Consistency: 'Strong'
           DisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
+          DESIRED_CONSISTENCY: 'Strong'
           COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
           COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later by cosmos team.
@@ -53,4 +53,7 @@ jobs:
             publishJUnitResults: false
             goals: 'install'
 
-      TestOptions: '$(ProfileFlag) -Dgpg.skip -DargLine="-Dcosmos.directModeProtocol=$(DirectModeProtocol)" -DDESIRED_CONSISTENCY=$(Consistency)'
+      TestStepMavenInputs:
+        goals: verify
+        options: '$(ProfileFlag) -Dgpg.skip -DargLine="-Dcosmos.directModeProtocol=$(DirectModeProtocol)" -DDESIRED_CONSISTENCY=$(Consistency)'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
