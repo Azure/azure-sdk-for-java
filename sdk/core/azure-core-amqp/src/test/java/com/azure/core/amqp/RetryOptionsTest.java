@@ -83,6 +83,7 @@ public class RetryOptionsTest {
         // Act
         final Object clone = original.clone();
         Assert.assertTrue(clone instanceof RetryOptions);
+        Assert.assertEquals(original, clone);
 
         final RetryOptions actual = ((RetryOptions) clone)
             .retryMode(newRetryMode)
@@ -104,5 +105,26 @@ public class RetryOptionsTest {
         Assert.assertEquals(newTryTimeout, actual.tryTimeout());
         Assert.assertEquals(newRetries, actual.maxRetries());
         Assert.assertEquals(newRetryMode, actual.retryMode());
+    }
+
+    @Test
+    public void isEqual() {
+        // Arrange
+        final RetryOptions first = new RetryOptions()
+            .retryMode(RetryMode.FIXED)
+            .maxDelay(Duration.ofMinutes(10))
+            .delay(Duration.ofMillis(1000))
+            .maxRetries(10)
+            .tryTimeout(Duration.ofMinutes(2));
+
+        final RetryOptions second = new RetryOptions()
+            .retryMode(RetryMode.FIXED)
+            .maxDelay(Duration.ofMinutes(10))
+            .delay(Duration.ofMillis(1000))
+            .maxRetries(10)
+            .tryTimeout(Duration.ofMinutes(2));
+
+        Assert.assertEquals(first, second);
+        Assert.assertEquals(first.hashCode(), second.hashCode());
     }
 }
