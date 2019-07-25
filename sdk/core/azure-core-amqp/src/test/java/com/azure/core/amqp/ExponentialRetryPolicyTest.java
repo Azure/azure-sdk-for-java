@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 
-public class ExponentialRetryTest {
+public class ExponentialRetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
@@ -24,7 +24,7 @@ public class ExponentialRetryTest {
     @Test
     public void retryDurationIncreases() {
         // Arrange
-        final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
+        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(minBackoff, maxBackoff, retryAttempts);
         final Duration remainingTime = Duration.ofSeconds(60);
 
         // Act
@@ -47,8 +47,8 @@ public class ExponentialRetryTest {
     @Test
     public void retryCloneBehavesSame() {
         // Arrange
-        final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
-        final ExponentialRetry clone = (ExponentialRetry) retry.clone();
+        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(minBackoff, maxBackoff, retryAttempts);
+        final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
 
         final Duration remainingTime = Duration.ofSeconds(60);
 
@@ -72,8 +72,8 @@ public class ExponentialRetryTest {
     @Test
     public void retryClone() {
         // Arrange
-        final ExponentialRetry retry = new ExponentialRetry(minBackoff, maxBackoff, retryAttempts);
-        final ExponentialRetry clone = (ExponentialRetry) retry.clone();
+        final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(minBackoff, maxBackoff, retryAttempts);
+        final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
 
         final Duration remainingTime = Duration.ofSeconds(60);
 

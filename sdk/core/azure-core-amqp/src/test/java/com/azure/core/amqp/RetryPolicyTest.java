@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.time.Duration;
 
-public class RetryTest {
+public class RetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
 
     /**
@@ -20,7 +20,7 @@ public class RetryTest {
     @Test
     public void defaultRetryPolicy() {
         // Arrange
-        final Retry retry = Retry.getDefaultRetry();
+        final RetryPolicy retry = RetryPolicy.getDefaultRetry();
         final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
         final Duration remainingTime = Duration.ofSeconds(60);
 
@@ -43,7 +43,7 @@ public class RetryTest {
      */
     @Test
     public void canIncrementRetryCount() {
-        Retry retry = Retry.getDefaultRetry();
+        RetryPolicy retry = RetryPolicy.getDefaultRetry();
         Assert.assertEquals(0, retry.getRetryCount());
         Assert.assertEquals(0, retry.incrementRetryCount());
 
@@ -64,19 +64,19 @@ public class RetryTest {
     @Test
     public void isRetriableException() {
         final Exception exception = new AmqpException(true, "error message", errorContext);
-        Assert.assertTrue(Retry.isRetriableException(exception));
+        Assert.assertTrue(RetryPolicy.isRetriableException(exception));
     }
 
     @Test
     public void notRetriableException() {
         final Exception invalidException = new RuntimeException("invalid exception");
-        Assert.assertFalse(Retry.isRetriableException(invalidException));
+        Assert.assertFalse(RetryPolicy.isRetriableException(invalidException));
     }
 
     @Test
     public void notRetriableExceptionNotTransient() {
         final Exception invalidException = new AmqpException(false, "Some test exception", errorContext);
-        Assert.assertFalse(Retry.isRetriableException(invalidException));
+        Assert.assertFalse(RetryPolicy.isRetriableException(invalidException));
     }
 
     /**
@@ -85,7 +85,7 @@ public class RetryTest {
     @Test
     public void noRetryPolicy() {
         // Arrange
-        final Retry noRetry = Retry.getNoRetry();
+        final RetryPolicy noRetry = RetryPolicy.getNoRetry();
         final Exception exception = new AmqpException(true, "error message", errorContext);
         final Duration remainingTime = Duration.ofSeconds(60);
 
@@ -105,7 +105,7 @@ public class RetryTest {
     @Test
     public void excessMaxRetry() {
         // Arrange
-        final Retry retry = Retry.getDefaultRetry();
+        final RetryPolicy retry = RetryPolicy.getDefaultRetry();
         final Exception exception = new AmqpException(true, "error message", errorContext);
         final Duration sixtySec = Duration.ofSeconds(60);
 
@@ -118,7 +118,7 @@ public class RetryTest {
         final Duration nextRetryInterval = retry.getNextRetryInterval(exception, sixtySec);
 
         // Assert
-        Assert.assertEquals(Retry.DEFAULT_MAX_RETRY_COUNT, retry.getRetryCount());
+        Assert.assertEquals(RetryPolicy.DEFAULT_MAX_RETRY_COUNT, retry.getRetryCount());
         Assert.assertNull(nextRetryInterval);
     }
 }
