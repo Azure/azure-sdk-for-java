@@ -285,6 +285,21 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector, Context)}
+     */
+    public void listSettingsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector, ctx);
+        csStream.streamByPage().forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettings#SettingSelector-Context
+    }
+
+    /**
      * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}
      */
     public void listSettingRevisions() {
@@ -297,6 +312,22 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector, Context)}
+     */
+    public void listSettingRevisionsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+        SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
+        Context ctx = new Context(key2, value2);
+        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector, ctx);
+        csStream.streamByPage().forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#SettingSelector-Context
+    }
+
     /**
      * Implementation not provided for this method
      * @return {@code null}

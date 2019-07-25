@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.Range;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -16,9 +17,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -302,6 +304,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
+
     public void listWithKeyAndLabel() {
         final String value = "myValue";
         final String key = getKey();
@@ -309,6 +312,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value(value).label(label);
 
         assertConfigurationEquals(expected, client.setSetting(expected));
+
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().keys(key).labels(label)).iterator().next());
         assertConfigurationEquals(expected, client.listSettings(new SettingSelector().keys(key)).iterator().next());
     }
@@ -339,9 +343,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         String label2 = getLabel();
 
         listWithMultipleLabelsRunner(key, label, label2, (setting, setting2) -> {
+            logger.info("$$$$ listWithMultipleLabels adding setting");
             assertConfigurationEquals(setting, client.addSetting(setting));
             assertConfigurationEquals(setting2, client.addSetting(setting2));
-
+            logger.info("$$$$ listWithMultipleLabels listSettings");
             return client.listSettings(new SettingSelector().keys(key).labels(label, label2));
         });
     }
@@ -525,7 +530,32 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         }
 
         SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
-        assertEquals(numberExpected, client.listSettingRevisions(filter).stream().count());
+        List<ConfigurationSetting> configurationSettingList = new ArrayList<>();
+
+        client.listSettingRevisions(filter).streamByPage().forEach(c -> configurationSettingList.addAll(c.value()));
+        assertEquals(numberExpected, configurationSettingList.size());
+    }
+
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatStream() {
+        final int numberExpected = 50;
+        for (int value = 0; value < numberExpected; value++) {
+            client.setSetting(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+        PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
+
+        configurationSettingPagedIterable.streamByPage().forEach(c -> configurationSettingList1.addAll(c.value()));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedIterable.forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
     }
 
     /**
@@ -537,8 +567,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         for (int value = 0; value < numberExpected; value++) {
             client.setSetting(new ConfigurationSetting().key(keyPrefix + "-" + value).value("myValue").label(labelPrefix));
         }
-
         SettingSelector filter = new SettingSelector().keys(keyPrefix + "-*").labels(labelPrefix);
+
         assertEquals(numberExpected, client.listSettings(filter).stream().count());
     }
 
@@ -558,6 +588,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     public void deleteAllSettings() {
+
         client.listSettings(new SettingSelector().keys("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
             client.deleteSetting(configurationSetting);

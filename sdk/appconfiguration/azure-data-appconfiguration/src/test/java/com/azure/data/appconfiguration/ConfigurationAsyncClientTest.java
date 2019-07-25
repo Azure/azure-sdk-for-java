@@ -7,7 +7,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -415,7 +415,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
-            return new IterableResponse<>(Flux.fromStream(selected.stream()));
+            return new PagedIterable<>(Flux.fromIterable(selected));
         });
     }
 
@@ -444,7 +444,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new IterableResponse<>(Flux.fromStream(selected.stream()));
+            return new PagedIterable<>(Flux.fromIterable(selected));
         });
     }
 
@@ -467,7 +467,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(settingsReturned::add)
                 .verifyComplete();
 
-            return new IterableResponse<>(Flux.fromStream(settingsReturned.stream()));
+            return new PagedIterable<>(Flux.fromIterable(settingsReturned));
         });
     }
 
@@ -572,7 +572,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new IterableResponse<>(Flux.fromIterable(selected));
+            return new PagedIterable<>(Flux.fromIterable(selected));
         });
     }
 
@@ -610,7 +610,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .verifyComplete();
 
-            return new IterableResponse<>(Flux.fromIterable(selected));
+            return new PagedIterable<>(Flux.fromIterable(selected));
         });
     }
 
@@ -714,6 +714,32 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .expectNextCount(numberExpected)
             .verifyComplete();
     }
+
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatStream() {
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        for (int value = 0; value < numberExpected; value++) {
+            settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
+        }
+
+        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.setSettingWithResponse(setting));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+
+        Flux.merge(results).blockLast();
+
+        StepVerifier.create(client.listSettingRevisions(filter))
+            .expectNextCount(numberExpected)
+            .verifyComplete();
+    }
+
 
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination

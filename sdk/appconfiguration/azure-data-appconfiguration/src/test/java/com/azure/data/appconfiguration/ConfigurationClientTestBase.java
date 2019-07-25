@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -308,29 +308,26 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listWithMultipleKeys();
 
-    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, IterableResponse<ConfigurationSetting>> testRunner) {
+    void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, PagedIterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
-
-        testRunner.apply(setting, setting2).forEach(actual -> {
+        for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        });
-
+        }
         assertTrue(expectedSelection.isEmpty());
     }
 
     @Test
     public abstract void listWithMultipleLabels();
 
-    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, IterableResponse<ConfigurationSetting>> testRunner) {
+    void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, PagedIterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(Arrays.asList(setting, setting2));
-
-        testRunner.apply(setting, setting2).forEach(actual -> {
+        for (ConfigurationSetting actual : testRunner.apply(setting, setting2)) {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        });
+        }
 
         assertTrue(expectedSelection.isEmpty());
     }
@@ -338,7 +335,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listSettingsSelectFields();
 
-    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, IterableResponse<ConfigurationSetting>> testRunner) {
+    void listSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, PagedIterable<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
         final String label2 = "my-second-mylabel";
         final int numberToCreate = 8;
@@ -357,16 +354,16 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             String lbl = value / 4 == 0 ? label : label2;
             settings.add(new ConfigurationSetting().key(key).value("myValue2").label(lbl).tags(tags));
         }
-        testRunner.apply(settings, selector).forEach(setting -> {
-            assertNotNull(setting.etag());
-            assertNotNull(setting.key());
-            assertTrue(setting.key().contains(keyPrefix));
-            assertNotNull(setting.tags());
-            assertEquals(tags.size(), setting.tags().size());
+        testRunner.apply(settings, selector).streamByPage().forEach(setting -> {
+            assertNotNull(setting.value().get(0).etag());
+            assertNotNull(setting.value().get(0).key());
+            assertTrue(setting.value().get(0).key().contains(keyPrefix));
+            assertNotNull(setting.value().get(0).tags());
+            assertEquals(tags.size(), setting.value().get(0).tags().size());
 
-            assertNull(setting.lastModified());
-            assertNull(setting.contentType());
-            assertNull(setting.label());
+            assertNull(setting.value().get(0).lastModified());
+            assertNull(setting.value().get(0).contentType());
+            assertNull(setting.value().get(0).label());
         });
     }
 
@@ -386,32 +383,32 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithMultipleKeys();
 
-    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, IterableResponse<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, PagedIterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value");
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key2).value("value");
         final ConfigurationSetting setting2Update = new ConfigurationSetting().key(setting2.key()).value("updatedValue");
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
-
-        testRunner.apply(testInput).forEach(actual ->  expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual))));
+        for (ConfigurationSetting actual : testRunner.apply(testInput)) {
+            expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
+        }
 
         assertTrue(expectedSelection.isEmpty());
     }
     @Test
     public abstract void listRevisionsWithMultipleLabels();
 
-    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, IterableResponse<ConfigurationSetting>> testRunner) {
+    void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, PagedIterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().key(key).value("value").label(label);
         final ConfigurationSetting settingUpdate = new ConfigurationSetting().key(setting.key()).label(setting.label()).value("updatedValue");
         final ConfigurationSetting setting2 = new ConfigurationSetting().key(key).value("value").label(label2);
         final ConfigurationSetting setting2Update = new ConfigurationSetting().key(setting2.key()).label(setting2.label()).value("updatedValue");
         final List<ConfigurationSetting> testInput = Arrays.asList(setting, settingUpdate, setting2, setting2Update);
         final Set<ConfigurationSetting> expectedSelection = new HashSet<>(testInput);
-
-        testRunner.apply(testInput).forEach(actual -> {
+        for (ConfigurationSetting actual : testRunner.apply(testInput)) {
             expectedSelection.removeIf(expected -> expected.equals(cleanResponse(expected, actual)));
-        });
+        }
 
         assertTrue(expectedSelection.isEmpty());
     }
@@ -431,6 +428,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listSettingsWithPagination();
 
+    @Test
+    public abstract void listRevisionsWithPaginationAndRepeatStream();
+
+
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test
     public abstract void getSettingWhenValueNotUpdated();
@@ -438,6 +439,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
     public abstract void deleteAllSettings();
+
+
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
