@@ -3,16 +3,19 @@
 
 package com.azure.messaging.eventhubs.implementation.handler;
 
+import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
@@ -24,7 +27,6 @@ import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHan
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.MAX_FRAME_SIZE;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PLATFORM;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.PRODUCT;
-import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.USER_AGENT;
 import static com.azure.messaging.eventhubs.implementation.handler.ConnectionHandler.VERSION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -46,19 +48,35 @@ public class ConnectionHandlerTest {
         handler = new ConnectionHandler(CONNECTION_ID, HOSTNAME);
     }
 
+    @After
+    public void teardown() {
+        Mockito.framework().clearInlineMocks();
+        argumentCaptor = null;
+    }
+
     @Test
     public void createHandler() {
+        // Arrange
+        final Map<String, String> expected = new HashMap<>();
+        expected.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
+        expected.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
+        expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
+        expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
+
         // Assert
         Assert.assertEquals(HOSTNAME, handler.getHostname());
         Assert.assertEquals(MAX_FRAME_SIZE, handler.getMaxFrameSize());
         Assert.assertEquals(AMQPS_PORT, handler.getProtocolPort());
 
         final Map<String, Object> properties = handler.getConnectionProperties();
-        Assert.assertTrue(properties.containsKey(PRODUCT.toString()));
-        Assert.assertTrue(properties.containsKey(VERSION.toString()));
-        Assert.assertTrue(properties.containsKey(PLATFORM.toString()));
-        Assert.assertTrue(properties.containsKey(FRAMEWORK.toString()));
-        Assert.assertTrue(properties.containsKey(USER_AGENT.toString()));
+        expected.forEach((key, value) -> {
+            Assert.assertTrue(properties.containsKey(key));
+
+            final Object actual = properties.get(key);
+
+            Assert.assertTrue(actual instanceof String);
+            Assert.assertEquals(value, actual);
+        });
     }
 
     @Test

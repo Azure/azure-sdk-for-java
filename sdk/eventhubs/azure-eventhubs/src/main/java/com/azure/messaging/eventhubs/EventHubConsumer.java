@@ -3,8 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.implementation.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLink;
 import com.azure.messaging.eventhubs.models.EventHubConsumerOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -64,13 +63,13 @@ public class EventHubConsumer implements Closeable {
 
     private volatile AmqpReceiveLink receiveLink;
 
-    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options, Duration operationTimeout) {
+    EventHubConsumer(Mono<AmqpReceiveLink> receiveLinkMono, EventHubConsumerOptions options) {
         this.emitterProcessor = EmitterProcessor.create(options.prefetchCount(), false);
 
         // Caching the created link so we don't invoke another link creation.
-        this.messageFlux = receiveLinkMono.flatMapMany(link -> {
+        this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
             if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initialising prefetch credit: {}", options.prefetchCount());
+                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", options.prefetchCount());
                 link.addCredits(options.prefetchCount());
 
                 link.setEmptyCreditListener(() -> {
@@ -81,19 +80,33 @@ public class EventHubConsumer implements Closeable {
                         return 0;
                     }
                 });
+
+                link.getErrors().subscribe(error -> {
+                    logger.info("Error received in ReceiveLink. {}", error.toString());
+                });
+
+                link.getShutdownSignals().subscribe(signal -> {
+                    logger.info("Shutting down. Initiated by client? {}. Reason: {}",
+                        signal.isInitiatedByClient(), signal.toString());
+
+                    try {
+                        close();
+                    } catch (IOException e) {
+                        logger.error("Error closing consumer: {}", e.toString());
+                    }
+                });
             }
 
             return link.receive().map(EventData::new);
-        }).timeout(operationTimeout)
-            .subscribeWith(emitterProcessor)
+        }).subscribeWith(emitterProcessor)
             .doOnSubscribe(subscription -> {
                 AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
                 if (existingLink == null) {
-                    logger.info("AmqpReceiveLink not set yet.");
+                    logger.warning("AmqpReceiveLink not set yet.");
                     return;
                 }
 
-                logger.info("Subscription received for consumer.");
+                logger.verbose("Subscription received for consumer.");
                 if (existingLink.getCredits() == 0) {
                     logger.info("Subscription received and there are no remaining credits on the link. Adding more.");
                     existingLink.addCredits(creditsToRequest.get());
@@ -110,7 +123,7 @@ public class EventHubConsumer implements Closeable {
                     ? MAXIMUM_REQUEST
                     : (int) request;
 
-                logger.info("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
+                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(), newRequest);
                 creditsToRequest.set(newRequest);
             });
     }
@@ -127,12 +140,14 @@ public class EventHubConsumer implements Closeable {
             if (receiveLink != null) {
                 receiveLink.close();
             }
+
+            emitterProcessor.onComplete();
         }
     }
 
     /**
-     * Begin consuming events until there are no longer any subscribers, or the parent {@link EventHubAsyncClient#close()
-     * EventHubAsyncClient.close()} is called.
+     * Begin consuming events until there are no longer any subscribers, or the parent {@link
+     * EventHubAsyncClient#close() EventHubAsyncClient.close()} is called.
      *
      * <p><strong>Consuming events from Event Hub</strong></p>
      *

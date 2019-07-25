@@ -9,6 +9,9 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <!--<module>microsoft-azure-batch</module>-->
+    <module>azure-core</module>
+    <module>azure-core-amqp</module>
+    <module>azure-core-management</module>
+    <module>azure-core-test</module>
   </modules>
 </project>
