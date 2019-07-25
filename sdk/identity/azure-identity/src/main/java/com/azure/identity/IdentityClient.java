@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credentials.AccessToken;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.implementation.serializer.SerializerAdapter;
 import com.azure.core.implementation.serializer.SerializerEncoding;
 import com.azure.core.implementation.serializer.jackson.JacksonAdapter;
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -157,17 +160,19 @@ public final class IdentityClient {
         }
     }
 
-    //TODO: Convert DeviceCode to our own type
-    public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCode> deviceCodeConsumer) {
+    public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
         try {
-            PublicClientApplication application = PublicClientApplication.builder(clientId)
+            PublicClientApplication.Builder applicationBuilder = PublicClientApplication.builder(clientId)
                 .authority(authorityUrl)
-                .executorService(executor)
-                .build();
+                .executorService(executor);
+            if (options.proxyOptions() != null) {
+                applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.proxyOptions()));
+            }
+            PublicClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(() -> {
-                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)), deviceCodeConsumer).build();
+                DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(Arrays.asList(scopes)), deviceCodeInternal -> deviceCodeConsumer.accept(new DeviceCodeChallenge(deviceCodeInternal))).build();
                 return application.acquireToken(parameters);
             })
                 .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
@@ -192,7 +197,7 @@ public final class IdentityClient {
         }
     }
 
-    public Mono<AccessToken> authenticateWithBrowserPrompt(String tenantId, String clientId, String[] scopes, int port) {
+    public Mono<AccessToken> authenticateWithBrowserInteraction(String tenantId, String clientId, String[] scopes, int port) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         return AuthorizationCodeListener.create(port)
             .flatMap(server -> {
@@ -349,6 +354,18 @@ public final class IdentityClient {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
+        switch (options.type()) {
+            case HTTP:
+                return new Proxy(Type.HTTP, options.address());
+            case SOCKS4:
+            case SOCKS5:
+                return new Proxy(Type.SOCKS, options.address());
+            default:
+                return new Proxy(Type.HTTP, options.address());
         }
     }
 }
