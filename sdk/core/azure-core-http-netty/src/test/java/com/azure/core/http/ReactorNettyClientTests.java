@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -26,11 +29,14 @@ import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.core.http.netty.ReactorNettyClient.ReactorNettyHttpResponse;
 
 public class ReactorNettyClientTests {
 
@@ -84,7 +90,7 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testDispose() throws InterruptedException {
-        HttpResponse response = getResponse("/long");
+        ReactorNettyHttpResponse response = getResponse("/long");
         response.body().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
@@ -93,7 +99,7 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testCancel() {
-        HttpResponse response = getResponse("/long");
+        ReactorNettyHttpResponse response = getResponse("/long");
         //
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
@@ -156,7 +162,7 @@ public class ReactorNettyClientTests {
                 .header("Content-Length", String.valueOf(contentChunk.length() * repetitions))
                 .body(Flux.just(contentChunk)
                         .repeat(repetitions)
-                        .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
+                        .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
         StepVerifier.create(client.send(request))
                 // .awaitDone(10, TimeUnit.SECONDS)
@@ -218,7 +224,7 @@ public class ReactorNettyClientTests {
         long t = System.currentTimeMillis();
         int numRequests = 100; // 100 = 1GB of data read
         long timeoutSeconds = 60;
-        HttpClient client = HttpClient.createDefault();
+        ReactorNettyClient client = new ReactorNettyClient();
         byte[] expectedDigest = digest(LONG_BODY);
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
@@ -294,14 +300,14 @@ public class ReactorNettyClientTests {
         }
     }
 
-    private static HttpResponse getResponse(String path) {
-        HttpClient client = HttpClient.createDefault();
+    private static ReactorNettyHttpResponse getResponse(String path) {
+        ReactorNettyClient client = new ReactorNettyClient();
         return getResponse(client, path);
     }
 
-    private static HttpResponse getResponse(HttpClient client, String path) {
+    private static ReactorNettyHttpResponse getResponse(ReactorNettyClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request).block();
+        return (ReactorNettyHttpResponse) client.send(request).block();
     }
 
     private static URL url(WireMockServer server, String path) {
@@ -321,16 +327,16 @@ public class ReactorNettyClientTests {
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        HttpClient client = HttpClient.createDefault();
+        ReactorNettyClient client = new ReactorNettyClient();
         HttpResponse response = doRequest(client, path);
         String s = new String(response.bodyAsByteArray().block(),
                 StandardCharsets.UTF_8);
         Assert.assertEquals(expectedBody, s);
     }
 
-    private HttpResponse doRequest(HttpClient client, String path) {
+    private ReactorNettyHttpResponse doRequest(ReactorNettyClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        HttpResponse response = client.send(request).block();
+        ReactorNettyHttpResponse response = (ReactorNettyHttpResponse) client.send(request).block();
         return response;
     }
 }

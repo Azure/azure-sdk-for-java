@@ -133,7 +133,7 @@ class ReactorNettyClient implements HttpClient {
         return new ReactorNettyClient(this.httpClient, client -> client.port(port));
     }
 
-    private static class ReactorNettyHttpResponse extends HttpResponse {
+    static class ReactorNettyHttpResponse extends HttpResponse {
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
 
