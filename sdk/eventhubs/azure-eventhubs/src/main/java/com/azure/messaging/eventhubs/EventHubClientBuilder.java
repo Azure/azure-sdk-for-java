@@ -12,14 +12,19 @@ import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.BaseConfigurations;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
 import com.azure.messaging.eventhubs.implementation.CBSAuthorizationType;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.ConnectionOptions;
 import com.azure.messaging.eventhubs.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.implementation.ReactorHandlerProvider;
 import com.azure.messaging.eventhubs.implementation.ReactorProvider;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
+import java.util.function.BiFunction;
+import org.reactivestreams.Subscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -70,6 +75,10 @@ public class EventHubClientBuilder {
     private TransportType transport;
     private String host;
     private String eventHubPath;
+    private EventPosition initialEventPosition;
+    private BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory;
+    private String consumerGroupName;
+    private PartitionManager partitionManager;
 
     /**
      * Creates a new instance with the default transport {@link TransportType#AMQP}.
@@ -351,5 +360,40 @@ public class EventHubClientBuilder {
         final String password = configuration.get(ProxyConfiguration.PROXY_PASSWORD);
 
         return new ProxyConfiguration(authentication, proxy, username, password);
+    }
+
+    public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
+        this.consumerGroupName = consumerGroupName;
+        return this;
+    }
+
+    public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
+        this.initialEventPosition = initialEventPosition;
+        return this;
+    }
+
+    public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
+        this.partitionManager = partitionManager;
+        return this;
+    }
+
+    public EventHubClientBuilder partitionProcessorFactory(
+        BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory) {
+        this.partitionProcessorFactory = partitionProcessorFactory;
+        return this;
+    }
+
+    /**
+     * This will build the EventHubAsyncClient and then use it to build EventProcessor
+     */
+    public EventProcessor buildEventProcessorAsyncClient() {
+        // this will build the EventHubAsyncClient and then use it to
+        // build EventProcessor
+        EventPosition initialEventPosition =
+            this.initialEventPosition == null ? EventPosition.earliest()
+                : this.initialEventPosition;
+
+        return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
+            this.partitionProcessorFactory, initialEventPosition, partitionManager);
     }
 }
