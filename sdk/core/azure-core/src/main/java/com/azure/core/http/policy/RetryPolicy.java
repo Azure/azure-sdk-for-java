@@ -70,9 +70,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
         int code = response.statusCode();
         return tryCount < maxRetries
                 && (code == 408  // Request timeout
-                || (code >= 500) // Internal server error
+                || (code >= 500  // Internal server error
                 && code != 501   // Not implemented
-                && code != 505); // Http version not supported
+                && code != 505)); // Http version not supported
     }
 
     /**
