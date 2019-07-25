@@ -4,14 +4,15 @@
 package com.azure.core.amqp;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * A set of options that can be specified to influence how retry attempts are made.
  */
 public class RetryOptions implements Cloneable {
-    private int maximumNumberOfRetries;
+    private int maxRetries;
     private Duration delay;
-    private Duration maximumDelay;
+    private Duration maxDelay;
     private Duration tryTimeout;
     private RetryMode retryMode;
 
@@ -19,9 +20,9 @@ public class RetryOptions implements Cloneable {
      * Creates an instance with the default retry options set.
      */
     public RetryOptions() {
-        maximumNumberOfRetries = 3;
+        maxRetries = 3;
         delay = Duration.ofMillis(800);
-        maximumDelay = Duration.ofMinutes(1);
+        maxDelay = Duration.ofMinutes(1);
         tryTimeout = Duration.ofMinutes(1);
         retryMode = RetryMode.EXPONENTIAL;
     }
@@ -43,8 +44,8 @@ public class RetryOptions implements Cloneable {
      * @param numberOfRetries The maximum number of retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions maximumNumberOfRetries(int numberOfRetries) {
-        this.maximumNumberOfRetries = numberOfRetries;
+    public RetryOptions maxRetries(int numberOfRetries) {
+        this.maxRetries = numberOfRetries;
         return this;
     }
 
@@ -66,8 +67,8 @@ public class RetryOptions implements Cloneable {
      * @param maximumDelay the maximum permissible delay between retry attempts.
      * @return The updated {@link RetryOptions} object.
      */
-    public RetryOptions maximumDelay(Duration maximumDelay) {
-        this.maximumDelay = maximumDelay;
+    public RetryOptions maxDelay(Duration maximumDelay) {
+        this.maxDelay = maximumDelay;
         return this;
     }
 
@@ -96,8 +97,8 @@ public class RetryOptions implements Cloneable {
      *
      * @return The maximum number of retry attempts before considering the associated operation to have failed.
      */
-    public int maximumNumberOfRetries() {
-        return maximumNumberOfRetries;
+    public int maxRetries() {
+        return maxRetries;
     }
 
     /**
@@ -115,8 +116,8 @@ public class RetryOptions implements Cloneable {
      *
      * @return The maximum permissible delay between retry attempts.
      */
-    public Duration maximumDelay() {
-        return maximumDelay;
+    public Duration maxDelay() {
+        return maxDelay;
     }
 
     /**
@@ -143,11 +144,41 @@ public class RetryOptions implements Cloneable {
         }
 
         clone.delay(delay);
-        clone.maximumDelay(maximumDelay);
-        clone.maximumNumberOfRetries(maximumNumberOfRetries);
+        clone.maxDelay(maxDelay);
+        clone.maxRetries(maxRetries);
         clone.tryTimeout(tryTimeout);
         clone.retryMode(retryMode);
 
         return clone;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof RetryOptions)) {
+            return false;
+        }
+
+        final RetryOptions other = (RetryOptions) obj;
+
+        return this.maxRetries() == other.maxRetries()
+            && this.retryMode() == other.retryMode()
+            && Objects.equals(this.maxDelay(), other.maxDelay())
+            && Objects.equals(this.delay(), other.delay())
+            && Objects.equals(this.tryTimeout(), other.tryTimeout());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxRetries, retryMode, maxDelay, delay, tryTimeout);
     }
 }
