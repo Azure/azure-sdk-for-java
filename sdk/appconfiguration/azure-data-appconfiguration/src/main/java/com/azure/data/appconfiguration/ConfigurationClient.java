@@ -474,7 +474,7 @@ public final class ConfigurationClient {
      * contains all of the current settings in the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedIterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector options, Context context) {
         return new PagedIterable<>(client.listSettings(options, context));
     }
 
@@ -500,7 +500,7 @@ public final class ConfigurationClient {
         return listSettingRevisions(selector, Context.NONE);
     }
 
-    /*
+    /**
      * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
      * in descending order from their {@link ConfigurationSetting#lastModified() lastModified} date. Revisions expire
      * after a period of time. The service maintains change history for up to 7 days.
@@ -519,7 +519,7 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
         return new PagedIterable<>(client.listSettingRevisions(selector, context));
     }
 }

@@ -271,7 +271,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector)}  }
+     * Generates code sample for using {@link ConfigurationClient#listSettings(SettingSelector)}
      */
     public void listSettings() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
@@ -285,7 +285,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}  }
+     * Generates code sample for using {@link ConfigurationClient#listSettingRevisions(SettingSelector)}
      */
     public void listSettingRevisions() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();

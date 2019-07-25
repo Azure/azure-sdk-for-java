@@ -65,9 +65,7 @@ public class PagedFlux<T> extends Flux<T> {
      * @param firstPageRetriever Supplier that retrieves the first page
      */
     public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever) {
-        Objects.requireNonNull(firstPageRetriever, "First page supplier cannot be null");
-        this.firstPageRetriever = firstPageRetriever;
-        this.nextPageRetriever = (nextUrl) -> Mono.empty();
+        this(firstPageRetriever, nextUrl -> Mono.empty());
     }
 
     /**
