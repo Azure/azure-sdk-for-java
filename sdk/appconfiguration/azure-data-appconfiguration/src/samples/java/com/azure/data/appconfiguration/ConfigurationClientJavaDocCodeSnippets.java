@@ -4,7 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.IterableResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -277,9 +277,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        IterableResponse<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
-        csStream.forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettings(settingSelector);
+        csStream.streamByPage().forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettings#settingSelector
     }
@@ -291,9 +291,9 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().keys("prodDBConnection");
-        IterableResponse<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
-        csStream.forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.key(), setting.value());
+        PagedIterable<ConfigurationSetting> csStream =  configurationClient.listSettingRevisions(settingSelector);
+        csStream.streamByPage().forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.value().get(0).key(), setting.value().get(0).value());
         });
         // END: com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector
     }

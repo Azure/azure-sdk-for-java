@@ -3,7 +3,6 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.rest.IterableResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
@@ -494,10 +493,10 @@ public final class ConfigurationClient {
      * {@codesnippet com.azure.data.applicationconfig.configurationclient.listSettingRevisions#settingSelector}
      *
      * @param selector Optional. Used to filter configuration setting revisions from the service.
-     * @return {@link IterableResponse} of the ConfigurationSetting
+     * @return {@link PagedIterable} of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableResponse<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
+    public PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector) {
         return listSettingRevisions(selector, Context.NONE);
     }
 
@@ -520,8 +519,7 @@ public final class ConfigurationClient {
      * @return Revisions of the ConfigurationSetting
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private IterableResponse<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
-        return new IterableResponse<ConfigurationSetting>(client.listSettingRevisions(selector, context));
-
+    private PagedIterable<ConfigurationSetting> listSettingRevisions(SettingSelector selector, Context context) {
+        return new PagedIterable<>(client.listSettingRevisions(selector, context));
     }
 }
