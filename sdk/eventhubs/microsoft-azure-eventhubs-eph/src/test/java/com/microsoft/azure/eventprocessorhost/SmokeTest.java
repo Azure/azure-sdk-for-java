@@ -3,11 +3,20 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ClientSecret;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
 import com.microsoft.azure.eventhubs.EventPosition;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executors;
 
 
@@ -21,6 +30,50 @@ public class SmokeTest extends TestBase {
         waitForTelltale(settings);
 
         testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+    }
+    
+    /**
+     * This JUnit test case is all commented out by default because it can only be run with special setup. 
+     * It extracts the namespace (endpoint) and event hub name from the connection string in the environment variable
+     * which all test cases use, but it assumes that the namespace (or event hub) has been set up with special permissions.
+     * Within the AAD directory indicated by "authority", there is a registered application with id "clientId" and a secret
+     * "clientSecret". This application has been granted the "Azure Event Hubs Data Owner" role on the namespace or
+     * event hub.
+     */
+    //@Test
+    public void sendRecv1MsgAADTest() throws Exception {
+        PerTestSettings settings = new PerTestSettings("SendRecv1MsgAAD");
+        AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback = new MsalAuthCallback();
+        String authAuthority = "https://login.windows.net/replaceWithTenantIdGuid";
+        settings.inoutEPHConstructorArgs.setAuthCallback(authCallback, authAuthority);
+        settings = testSetup(settings);
+
+        settings.outUtils.sendToAny(settings.outTelltale);
+        waitForTelltale(settings);
+
+        testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
+    }
+    
+    private class MsalAuthCallback implements AzureActiveDirectoryTokenProvider.AuthenticationCallback {
+        private final String clientId = "replaceWithClientIdGuid";
+        private final String clientSecret = "replaceWithClientSecret";
+        
+        @Override
+        public CompletableFuture<String> acquireToken(String audience, String authority, Object state) {
+            try {
+                ConfidentialClientApplication app = ConfidentialClientApplication.builder(this.clientId, new ClientSecret(this.clientSecret))
+                        .authority(authority)
+                        .build();
+                
+                ClientCredentialParameters parameters = ClientCredentialParameters.builder(Collections.singleton(audience + ".default")).build();
+    
+                IAuthenticationResult result = app.acquireToken(parameters).get();
+    
+                return CompletableFuture.completedFuture(result.accessToken());
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        }
     }
 
     @Test

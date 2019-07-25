@@ -4,10 +4,13 @@
 
 package com.azure.storage.file.models;
 
+import com.azure.core.annotations.HeaderCollection;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Properties of a share.
@@ -31,6 +34,9 @@ public final class ShareProperties {
      */
     @JsonProperty(value = "Quota", required = true)
     private int quota;
+
+    @HeaderCollection(value = "x-ms-meta-")
+    private Map<String, String> metadata;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -96,6 +102,15 @@ public final class ShareProperties {
      */
     public ShareProperties quota(int quota) {
         this.quota = quota;
+        return this;
+    }
+
+    public Map<String, String> metadata() {
+        return metadata;
+    }
+
+    public ShareProperties metadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

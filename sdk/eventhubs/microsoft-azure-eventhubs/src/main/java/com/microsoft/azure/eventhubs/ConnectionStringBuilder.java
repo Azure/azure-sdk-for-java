@@ -61,10 +61,13 @@ public final class ConnectionStringBuilder {
     static final String SHARED_ACCESS_KEY_CONFIG_NAME = "SharedAccessKey";
     static final String SHARED_ACCESS_SIGNATURE_CONFIG_NAME = "SharedAccessSignature";
     static final String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
+    static final String AUTHENTICATION_CONFIG_NAME = "Authentication";
+    
+    public static final String MANAGED_IDENTITY_AUTHENTICATION = "Managed Identity";
 
     private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOST_NAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NANE_CONFIG_NAME
             + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + SHARED_ACCESS_SIGNATURE_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
-            + "|" + TRANSPORT_TYPE_CONFIG_NAME + ")";
+            + "|" + TRANSPORT_TYPE_CONFIG_NAME + "|" + AUTHENTICATION_CONFIG_NAME + ")";
 
     private static final String KEYS_WITH_DELIMITERS_REGEX = KEY_VALUE_PAIR_DELIMITER + ALL_KEY_ENUMERATE_REGEX
             + KEY_VALUE_SEPARATOR;
@@ -76,6 +79,7 @@ public final class ConnectionStringBuilder {
     private String sharedAccessSignature;
     private Duration operationTimeout;
     private TransportType transportType;
+    private String authentication;
 
     /**
      * Creates an empty {@link ConnectionStringBuilder}. At minimum, a namespace name, an entity path, SAS key name, and SAS key
@@ -278,6 +282,26 @@ public final class ConnectionStringBuilder {
         this.transportType = transportType;
         return this;
     }
+    
+    /**
+     * Get the authentication type in the Connection String.
+     * 
+     * @return authentication 
+     */
+    public String getAuthentication() {
+        return this.authentication;
+    }
+    
+    /**
+     * Set the authentication type in the Connection String. The only valid values are "Managed Identity" or null.
+     * 
+     * @param authentication
+     * @return the {@link ConnectionStringBuilder} instance being set.
+     */
+    public ConnectionStringBuilder setAuthentication(final String authentication) {
+        this.authentication = authentication;
+        return this;
+    }
 
     /**
      * Returns an inter-operable connection string that can be used to connect to EventHubs instances.
@@ -320,6 +344,11 @@ public final class ConnectionStringBuilder {
         if (this.transportType != null) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", TRANSPORT_TYPE_CONFIG_NAME,
                     KEY_VALUE_SEPARATOR, this.transportType.toString(), KEY_VALUE_PAIR_DELIMITER));
+        }
+        
+        if (!StringUtil.isNullOrWhiteSpace(this.authentication)) {
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", AUTHENTICATION_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.authentication, KEY_VALUE_PAIR_DELIMITER));
         }
 
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
@@ -409,6 +438,8 @@ public final class ConnectionStringBuilder {
                             String.format(Locale.US, "Invalid value specified for property '%s' in the ConnectionString.", TRANSPORT_TYPE_CONFIG_NAME),
                             exception);
                 }
+            } else if (key.equalsIgnoreCase(AUTHENTICATION_CONFIG_NAME)) {
+                this.authentication = values[valueIndex];
             } else {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));

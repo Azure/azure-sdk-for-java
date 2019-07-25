@@ -8,24 +8,27 @@ import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubClientOptions;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
 import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.ITokenProvider;
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.impl.MessagingFactory.MessagingFactoryBuilder;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
@@ -49,20 +52,57 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 
     private CompletableFuture<Void> createSender;
 
-    private EventHubClientImpl(final ConnectionStringBuilder connectionString, final ScheduledExecutorService executor) {
+    private EventHubClientImpl(final String eventHubName, final ScheduledExecutorService executor) {
         super(StringUtil.getRandomString("EC"), null, executor);
 
-        this.eventHubName = connectionString.getEventHubName();
+        this.eventHubName = eventHubName;
         this.senderCreateSync = new Object();
     }
 
     public static CompletableFuture<EventHubClient> create(
             final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws IOException {
+        if (StringUtil.isNullOrWhiteSpace(connectionString)) {
+            throw new IllegalArgumentException("Connection string cannot be null or empty");
+        }
+        Objects.requireNonNull(executor, "Executor cannot be null");
+        
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
-        final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
+        final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
 
         return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor)
+                .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
+                    @Override
+                    public EventHubClient apply(MessagingFactory factory) {
+                        eventHubClient.underlyingFactory = factory;
+                        eventHubClient.timer = new Timer(factory);
+                        return eventHubClient;
+                    }
+                }, executor);
+    }
+
+    public static CompletableFuture<EventHubClient> create(
+            final URI endpoint,
+            final String eventHubName,
+            final ITokenProvider tokenProvider,
+            final ScheduledExecutorService executor,
+            final EventHubClientOptions options) throws IOException {
+        if (StringUtil.isNullOrWhiteSpace(endpoint.getHost())) {
+            throw new IllegalArgumentException("Endpoint must contain a hostname");
+        }
+        if (StringUtil.isNullOrWhiteSpace(eventHubName)) {
+            throw new IllegalArgumentException("Event hub name cannot be null or empty");
+        }
+        Objects.requireNonNull(tokenProvider, "Token provider cannot be null");
+        
+        final EventHubClientImpl eventHubClient = new EventHubClientImpl(eventHubName, executor);
+        final MessagingFactoryBuilder builder = new MessagingFactoryBuilder(endpoint.getHost(), tokenProvider, executor);
+        if (options != null) {
+            builder.setOperationTimeout(options.getOperationTimeout()).setTransportType(options.getTransportType()).
+                    setRetryPolicy(options.getRetryPolicy());
+        }
+
+        return builder.build()
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
@@ -250,38 +290,24 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 
     @Override
     public CompletableFuture<EventHubRuntimeInformation> getRuntimeInformation() {
-        CompletableFuture<EventHubRuntimeInformation> future1 = null;
-
         throwIfClosed();
 
         Map<String, Object> request = new HashMap<String, Object>();
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        future1 = this.<EventHubRuntimeInformation>addManagementToken(request);
-
-        if (future1 == null) {
-            future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<EventHubRuntimeInformation>>() {
-                @Override
-                public CompletableFuture<EventHubRuntimeInformation> apply(Map<String, Object> rawdata) {
-                    CompletableFuture<EventHubRuntimeInformation> future2 = new CompletableFuture<EventHubRuntimeInformation>();
-                    future2.complete(new EventHubRuntimeInformation(
+        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+                thenApplyAsync((rawdata) -> {
+                    return new EventHubRuntimeInformation(
                             (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
                             ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_CREATED_AT)).toInstant(),
                             (int) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_COUNT),
-                            (String[]) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IDS)));
-                    return future2;
-                }
-            }, this.executor);
-        }
-
-        return future1;
+                            (String[]) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IDS));
+                }, this.executor);
     }
 
     @Override
     public CompletableFuture<PartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
-        CompletableFuture<PartitionRuntimeInformation> future1 = null;
-
         throwIfClosed();
 
         Map<String, Object> request = new HashMap<String, Object>();
@@ -289,40 +315,25 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        future1 = this.<PartitionRuntimeInformation>addManagementToken(request);
-
-        if (future1 == null) {
-            future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<PartitionRuntimeInformation>>() {
-                @Override
-                public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawData) {
-                    CompletableFuture<PartitionRuntimeInformation> future2 = new CompletableFuture<PartitionRuntimeInformation>();
-                    future2.complete(new PartitionRuntimeInformation(
-                            (String) rawData.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
-                            (String) rawData.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
-                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-                            (String) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-                            ((Date) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                            (boolean) rawData.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IS_EMPTY)));
-                    return future2;
-                }
-            }, this.executor);
-        }
-
-        return future1;
+        return addManagementToken(request).thenComposeAsync((requestWithToken) -> managementWithRetry(requestWithToken), this.executor).
+                thenApplyAsync((rawdata) -> {
+                    return new PartitionRuntimeInformation(
+                            (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
+                            (String) rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
+                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                            (String) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                            ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                            (boolean) rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IS_EMPTY));
+                }, this.executor);    
     }
 
-    private <T> CompletableFuture<T> addManagementToken(Map<String, Object> request) {
-        CompletableFuture<T> retval = null;
-        try {
-            String audience = String.format(Locale.US, "amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
-            String token = this.underlyingFactory.getTokenProvider().getToken(audience, ClientConstants.TOKEN_REFRESH_INTERVAL);
-            request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, token);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
-            retval = new CompletableFuture<T>();
-            retval.completeExceptionally(e);
-        }
-        return retval;
+    private CompletableFuture<Map<String, Object>> addManagementToken(Map<String, Object> request) {
+        String audience = String.format(Locale.US, "amqp://%s/%s", this.underlyingFactory.getHostName(), this.eventHubName);
+        return this.underlyingFactory.getTokenProvider().getToken(audience, ClientConstants.TOKEN_REFRESH_INTERVAL).thenApplyAsync((securityToken) -> {
+            request.put(ClientConstants.MANAGEMENT_SECURITY_TOKEN_KEY, securityToken.getToken());
+            return request;
+        }, this.executor);
     }
 
     private CompletableFuture<Map<String, Object>> managementWithRetry(Map<String, Object> request) {

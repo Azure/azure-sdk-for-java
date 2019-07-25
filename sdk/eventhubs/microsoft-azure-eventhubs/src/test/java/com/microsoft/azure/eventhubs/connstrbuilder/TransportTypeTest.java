@@ -34,7 +34,7 @@ public class TransportTypeTest extends ApiTestBase {
         ConnectionStringBuilder builder = new ConnectionStringBuilder(TestContext.getConnectionString().toString());
         builder.setTransportType(TransportType.AMQP);
 
-        EventHubClient ehClient = EventHubClient.createSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             EventHubClientImpl eventHubClientImpl = (EventHubClientImpl) ehClient;
             final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
@@ -63,7 +63,7 @@ public class TransportTypeTest extends ApiTestBase {
         ConnectionStringBuilder builder = new ConnectionStringBuilder(TestContext.getConnectionString().toString());
         builder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
 
-        EventHubClient ehClient = EventHubClient.createSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
+        EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             EventHubClientImpl eventHubClientImpl = (EventHubClientImpl) ehClient;
             final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
@@ -115,7 +115,7 @@ public class TransportTypeTest extends ApiTestBase {
             ConnectionStringBuilder builder = new ConnectionStringBuilder(TestContext.getConnectionString().toString());
             builder.setTransportType(TransportType.AMQP_WEB_SOCKETS);
 
-            EventHubClient ehClient = EventHubClient.createSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
+            EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
             try {
                 EventHubClientImpl eventHubClientImpl = (EventHubClientImpl) ehClient;
                 final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");

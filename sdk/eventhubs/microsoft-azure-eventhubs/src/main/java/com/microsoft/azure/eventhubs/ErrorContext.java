@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Locale;
 
 public abstract class ErrorContext implements Serializable {
+    private static final long serialVersionUID = -841174412304936908L;
+    
     private final String namespaceName;
 
     protected ErrorContext(final String namespaceName) {

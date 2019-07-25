@@ -23,7 +23,7 @@ import java.time.Duration;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder}, via
+ * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asAppendBlobClient()}, or via the method
  * {@link ContainerClient#getAppendBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -51,7 +51,7 @@ public final class AppendBlobClient extends BlobClient {
     public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
 
     /**
-     * Package-private constructor for use by {@link AppendBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param appendBlobAsyncClient the async append blob client
      */
     AppendBlobClient(AppendBlobAsyncClient appendBlobAsyncClient) {

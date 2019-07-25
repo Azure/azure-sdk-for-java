@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the getProperties operation.
  */
-public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGetPropertiesHeaders, StorageServiceProperties> {
+public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGetPropertiesHeaders, FileServiceProperties> {
     /**
      * Creates an instance of ServicesGetPropertiesResponse.
      *
@@ -21,7 +21,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ServicesGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, StorageServiceProperties value, ServiceGetPropertiesHeaders headers) {
+    public ServicesGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, FileServiceProperties value, ServiceGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -29,7 +29,7 @@ public final class ServicesGetPropertiesResponse extends ResponseBase<ServiceGet
      * @return the deserialized response body.
      */
     @Override
-    public StorageServiceProperties value() {
+    public FileServiceProperties value() {
         return super.value();
     }
 }

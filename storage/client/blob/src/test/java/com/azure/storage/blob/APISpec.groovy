@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.configuration.ConfigurationManager
 import com.azure.identity.credential.EnvironmentCredential
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import com.azure.storage.common.credentials.SharedKeyCredential
 import io.netty.buffer.ByteBuf
@@ -265,11 +264,13 @@ class APISpec extends Specification {
         }
         catch (Exception e) {
         }
+
         try {
             blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
         }
         catch (Exception e) {
         }
+
         try {
             premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
         }
