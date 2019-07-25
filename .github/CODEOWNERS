@@ -6,17 +6,19 @@
 ###########
 
 # Catch all
-# /sdk/ @joshfree
-
-# Core
-# /sdk/core/
+/sdk/ @joshfree @jonathangiles
 
 # Service teams
-# /sdk/appconfiguration/
-# /sdk/eventhubs/
-# /sdk/identity/
-# /sdk/keyvault/
-/sdk/storage/ @rickle-msft @jaschrep-msft @alzimmermsft @jianghaolu
+/sdk/appconfiguration/       @alzimmermsft @conniey @sima-zhu
+/sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
+/sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
+/sdk/eventhubs/              @conniey @srnagar @mssfang
+/sdk/identity/               @jianghaolu @g2vinay
+/sdk/keyvault/               @g2vinay @samvaity
+/sdk/servicebus/             @yvgopal @nemakam
+/sdk/tracing/                @samvaity @alzimmermsft
+
+/storage/                    @rickle-msft @jaschrep-msft @alzimmermsft @sima-zhu
 
 ###########
 # Eng Sys
