@@ -24,6 +24,7 @@ import com.microsoft.aad.msal4j.IntegratedWindowsAuthenticationParameters.Integr
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.UserAssertion;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.awt.*;
@@ -160,6 +161,43 @@ public final class IdentityClient {
         }
     }
 
+    /**
+     * Asynchronously acquire a token from Active Directory with a username and a password.
+     *
+     * @param tenantId           the tenant ID of the application
+     * @param clientId           the client ID of the application
+     * @param scopes             the scopes to authenticate to
+     * @param username           the username of the user
+     * @param password           the password of the user
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithUsernamePassword(String tenantId, String clientId, String[] scopes, String username, String password) {
+        String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            PublicClientApplication application = PublicClientApplication.builder(clientId)
+                .authority(authorityUrl)
+                .executorService(executor)
+                .build();
+            return Mono.fromFuture(application.acquireToken(UserNamePasswordParameters.builder(new HashSet<>(Arrays.asList(scopes)), username, password.toCharArray()).build()))
+                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(), ZoneOffset.UTC)))
+                .doFinally(s -> executor.shutdown());
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
+        }
+    }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with a device code challenge. Active Directory will provide
+     * a device code for login and the user must meet the challenge by authenticating in a browser on the current or a
+     * different device.
+     *
+     * @param tenantId           the tenant ID of the application
+     * @param clientId           the client ID of the application
+     * @param scopes             the scopes to authenticate to
+     * @param deviceCodeConsumer the user provided closure that will consume the device code challenge
+     * @return a Publisher that emits an AccessToken when the device challenge is met, or an exception if the device code expires
+     */
     public Mono<AccessToken> authenticateWithDeviceCode(String tenantId, String clientId, String[] scopes, Consumer<DeviceCodeChallenge> deviceCodeConsumer) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -181,6 +219,17 @@ public final class IdentityClient {
             return Mono.error(e);
         }
     }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with an authorization code from an oauth flow.
+     *
+     * @param tenantId           the tenant ID of the application
+     * @param clientId           the client ID of the application
+     * @param scopes             the scopes to authenticate to
+     * @param authorizationCode  the oauth2 authorization code
+     * @param redirectUri        the redirectUri where the authorization code is sent to
+     * @return a Publisher that emits an AccessToken
+     */
     public Mono<AccessToken> authenticateWithAuthorizationCode(String tenantId, String clientId, String[] scopes, String authorizationCode, URI redirectUri) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -197,6 +246,17 @@ public final class IdentityClient {
         }
     }
 
+    /**
+     * Asynchronously acquire a token from Active Directory by opening a browser and wait for the user to login. The
+     * credential will run a minimal local HttpServer at the given port, so {@code http://localhost:{port}} must be
+     * listed as a valid reply URL for the application.
+     *
+     * @param tenantId           the tenant ID of the application
+     * @param clientId           the client ID of the application
+     * @param scopes             the scopes to authenticate to
+     * @param port               the port on which the HTTP server is listening
+     * @return a Publisher that emits an AccessToken
+     */
     public Mono<AccessToken> authenticateWithBrowserInteraction(String tenantId, String clientId, String[] scopes, int port) {
         String authorityUrl = options.authorityHost().replaceAll("/+$", "") + "/" + tenantId;
         return AuthorizationCodeListener.create(port)
