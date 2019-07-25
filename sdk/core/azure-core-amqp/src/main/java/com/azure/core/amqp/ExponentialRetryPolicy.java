@@ -3,6 +3,9 @@
 
 package com.azure.core.amqp;
 
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.ErrorCondition;
+
 import java.time.Duration;
 import java.util.Objects;
 
@@ -11,39 +14,38 @@ import java.util.Objects;
  * manner, allowing more time to recover as the number of retries increases.
  */
 public final class ExponentialRetryPolicy extends RetryPolicy {
+    // Base sleep wait time.
+    private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
     private static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
 
-    private final Duration minBackoff;
-    private final Duration maxBackoff;
     private final double retryFactor;
 
     /**
      * Creates a new instance with a minimum and maximum retry period in addition to maximum number of retry attempts.
      *
-     * @param minBackoff The minimum time period permissible for backing off between retries.
-     * @param maxBackoff The maximum time period permissible for backing off between retries.
-     * @param maxRetryCount The maximum number of retries allowed.
-     * @throws NullPointerException if {@code minBackoff} or {@code maxBackoff} is {@code null}.
+     * @param retryOptions The options to apply to this retry policy.
+     * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
-    public ExponentialRetryPolicy(Duration minBackoff, Duration maxBackoff, int maxRetryCount) {
-        super(maxRetryCount);
-        Objects.requireNonNull(minBackoff);
-        Objects.requireNonNull(maxBackoff);
-
-        this.minBackoff = minBackoff;
-        this.maxBackoff = maxBackoff;
+    public ExponentialRetryPolicy(RetryOptions retryOptions) {
+        super(retryOptions);
 
         this.retryFactor = computeRetryFactor();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected Duration calculateNextRetryInterval(final Exception lastException,
-                                                  final Duration remainingTime,
-                                                  final int baseWaitSeconds,
-                                                  final int retryCount) {
+    public Duration calculateRetryDelay(Exception lastException, Duration remainingTime, int retryCount) {
+        if (!isRetriableException(lastException) || retryCount >= retryOptions.maxRetries()) {
+            return null;
+        }
+
+        if (!(lastException instanceof AmqpException)) {
+            return null;
+        }
+
+        final Duration baseWaitTime = ((AmqpException) lastException).getErrorCondition() == ErrorCondition.SERVER_BUSY_ERROR
+            ? SERVER_BUSY_WAIT_TIME
+            : Duration.ZERO;
+
         final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
         final long nextRetryIntervalSeconds = (long) nextRetryInterval;
         final long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
@@ -52,21 +54,28 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
             return null;
         }
 
-        final Duration retryAfter = minBackoff.plus(Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano));
-        return retryAfter.plus(Duration.ofSeconds(baseWaitSeconds));
+        final Duration interval = Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano);
+        final Duration retryAfter = retryOptions.delay().plus(interval);
+
+        return retryAfter.plus(baseWaitTime);
     }
 
     private double computeRetryFactor() {
+        final Duration maxBackoff = retryOptions.maxDelay();
+        final Duration minBackoff = retryOptions.delay();
+        final int maximumRetries = retryOptions.maxRetries();
         final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
-        if (deltaBackoff <= 0 || super.getMaxRetryCount() <= 0) {
+
+        if (deltaBackoff <= 0 || maximumRetries <= 0) {
             return 0;
         }
-        return Math.log(deltaBackoff) / Math.log(super.getMaxRetryCount());
+
+        return Math.log(deltaBackoff) / Math.log(maximumRetries);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(maxBackoff, minBackoff, getMaxRetryCount(), getRetryCount());
+        return Objects.hash(retryFactor, retryOptions);
     }
 
     @Override
@@ -75,29 +84,20 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
             return true;
         }
 
-        if (!(obj instanceof ExponentialRetryPolicy)) {
-            return false;
-        }
-
-        ExponentialRetryPolicy other = (ExponentialRetryPolicy) obj;
-
-        return this.maxBackoff.equals(other.maxBackoff)
-            && this.minBackoff.equals(other.minBackoff)
-            && this.getMaxRetryCount() == other.getMaxRetryCount()
-            && this.getRetryCount() == other.getRetryCount();
+        return obj instanceof ExponentialRetryPolicy
+            && retryFactor == ((ExponentialRetryPolicy) obj).retryFactor
+            && super.equals(obj);
     }
 
     /**
      * Creates a clone of this instance.
-     *
-     * The {@code minBackoff}, {@code maxBackoff}, and {@code maxRetryCount} are not cloned, but these objects are
-     * immutable and not subject to change.
      *
      * @return A clone of the {@link ExponentialRetryPolicy} instance.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
     public Object clone() {
-        return new ExponentialRetryPolicy(minBackoff, maxBackoff, getMaxRetryCount());
+        final RetryOptions cloned = (RetryOptions) retryOptions.clone();
+        return new ExponentialRetryPolicy(cloned);
     }
 }
