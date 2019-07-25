@@ -23,6 +23,8 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * </ol>
  */
 public class ThrownClientLoggerCheck extends AbstractCheck {
+    private static final String LOGGER_LOG_AND_THROW = "logger.logAndThrow";
+
     @Override
     public int[] getDefaultTokens() {
         return getRequiredTokens();
@@ -36,7 +38,8 @@ public class ThrownClientLoggerCheck extends AbstractCheck {
     @Override
     public int[] getRequiredTokens() {
         return new int[] {
-            TokenTypes.LITERAL_THROW
+            TokenTypes.LITERAL_THROW,
+            TokenTypes.METHOD_CALL
         };
     }
 
@@ -71,17 +74,17 @@ public class ThrownClientLoggerCheck extends AbstractCheck {
                     parentToken = parentToken.getParent();
                 }
 
-                log(token, "To throw an exception, must do it through a ''logger.logAndThrow'', rather than "
-                    + "by directly calling ''throw exception''.");
+                log(token, String.format("To throw an exception, must do it through a ''%s'', rather than "
+                    + "by directly calling ''throw exception''.", LOGGER_LOG_AND_THROW));
                 break;
             case TokenTypes.METHOD_CALL:
                 String methodCall = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
-                if (!"logger.logAndThrow".equals(methodCall)) {
+                if (!LOGGER_LOG_AND_THROW.equals(methodCall)) {
                     return;
                 }
                 DetailAST exprToken = token.getParent();
                 if (exprToken.getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
-                    log(token, "Always call ''return'' after called ''logger.logAndThrow''");
+                    log(token, String.format("Always call ''return'' after called ''%s''", LOGGER_LOG_AND_THROW));
                 }
                 break;
             default:
