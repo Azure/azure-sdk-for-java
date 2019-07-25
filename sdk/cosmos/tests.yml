@@ -10,10 +10,9 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       TestName: Test
+      ServiceDirectory: cosmos
+      Goals: 'verify'
       TimeoutInMinutes: 240
-      EnvVars:
-        COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-        COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
       Matrix:
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
@@ -21,13 +20,16 @@ jobs:
           DisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
+          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
+          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         Strong_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
           Consistency: 'Strong'
           DisplayName: 'ReadMyWrites Integration Tests'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
-
+          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
+          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later by cosmos team.
         # Strong_Multi_Region_ReadMyWrites:
         #   OSVmImage: 'macOS-10.13'
