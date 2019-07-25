@@ -37,6 +37,7 @@ public abstract class RetryPolicy implements Cloneable {
      *
      * @param lastException The last exception that was observed for the operation to be retried.
      * @param remainingTime The amount of time remaining for the cumulative timeout across retry attempts.
+     * @param retryCount The number of times the request has been retried.
      * @return The amount of time to delay before retrying the associated operation; if {@code null}, then the operation
      *         is no longer eligible to be retried.
      */
