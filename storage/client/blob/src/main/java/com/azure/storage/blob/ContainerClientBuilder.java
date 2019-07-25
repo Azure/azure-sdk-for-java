@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
@@ -63,6 +64,7 @@ public final class ContainerClientBuilder {
     private TokenCredential tokenCredential;
     private SASTokenCredential sasTokenCredential;
     private HttpClient httpClient;
+    private HttpPipeline pipeline;
     private HttpLogDetailLevel logLevel;
     private RequestRetryOptions retryOptions;
     private Configuration configuration;
@@ -85,12 +87,19 @@ public final class ContainerClientBuilder {
         Objects.requireNonNull(endpoint);
         Objects.requireNonNull(containerName);
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (pipeline != null) {
+            return new AzureBlobStorageBuilder()
+                .url(String.format("%s/%s", endpoint, containerName))
+                .pipeline(pipeline);
+        }
 
         if (configuration == null) {
             configuration = ConfigurationManager.getConfiguration();
         }
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
         policies.add(new UserAgentPolicy(BlobConfiguration.NAME, BlobConfiguration.VERSION, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
@@ -101,13 +110,14 @@ public final class ContainerClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         } else if (sasTokenCredential != null) {
             policies.add(new SASTokenCredentialPolicy(sasTokenCredential));
-        } else {
-            policies.add(new AnonymousCredentialPolicy());
         }
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(logLevel));
 
         HttpPipeline pipeline = HttpPipeline.builder()
@@ -154,7 +164,7 @@ public final class ContainerClientBuilder {
             this.endpoint = parts.scheme() + "://" + parts.host();
             this.containerName = parts.containerName();
 
-            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            this.sasTokenCredential = SASTokenCredential.fromSASTokenString(parts.sasQueryParameters().encode());
             if (this.sasTokenCredential != null) {
                 this.tokenCredential = null;
                 this.sharedKeyCredential = null;
@@ -292,6 +302,22 @@ public final class ContainerClientBuilder {
      */
     public ContainerClientBuilder httpLogDetailLevel(HttpLogDetailLevel logLevel) {
         this.logLevel = logLevel;
+        return this;
+    }
+
+    /**
+     * Sets the HTTP pipeline to use for the service client.
+     *
+     * If {@code pipeline} is set, all other settings are ignored, aside from
+     * {@link ContainerClientBuilder#endpoint(String) endpoint} when building clients.
+     *
+     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @return The updated ContainerClientBuilder object.
+     * @throws NullPointerException If {@code pipeline} is {@code null}.
+     */
+    public ContainerClientBuilder pipeline(HttpPipeline pipeline) {
+        Objects.requireNonNull(pipeline);
+        this.pipeline = pipeline;
         return this;
     }
 

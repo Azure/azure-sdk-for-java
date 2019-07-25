@@ -13,18 +13,20 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
+import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.util.configuration.ConfigurationManager;
+import com.azure.storage.common.Constants;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SASTokenCredential;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import com.azure.storage.common.policy.SASTokenCredentialPolicy;
 import com.azure.storage.common.policy.SharedKeyCredentialPolicy;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -102,9 +104,12 @@ public final class FileServiceClientBuilder {
      * </p>
      *
      * @return A FileServiceAsyncClient with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link SharedKeyCredential} or {@link SASTokenCredential} has been set.
      */
     public FileServiceAsyncClient buildAsyncClient() {
+        Objects.requireNonNull(endpoint);
+
         if (pipeline != null) {
             return new FileServiceAsyncClient(endpoint, pipeline);
         }
@@ -163,7 +168,7 @@ public final class FileServiceClientBuilder {
     /**
      * Sets the endpoint for the Azure Storage File instance that the client will interact with.
      *
-     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQuery(String) fromQuery} in an
+     * <p>Query parameters of the endpoint will be parsed using {@link SASTokenCredential#fromQueryParameters(Map)} in an
      * attempt to generate a {@link SASTokenCredential} to authenticate requests sent to the service.</p>
      *
      * @param endpoint The URL of the Azure Storage File instance to send service requests to and receive responses from.
@@ -176,7 +181,7 @@ public final class FileServiceClientBuilder {
             this.endpoint = new URL(fullURL.getProtocol() + "://" + fullURL.getHost());
 
             // Attempt to get the SAS token from the URL passed
-            this.sasTokenCredential = SASTokenCredential.fromQuery(fullURL.getQuery());
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(Utility.parseQueryString(fullURL.getQuery()));
             if (this.sasTokenCredential != null) {
                 this.sharedKeyCredential = null;
             }
@@ -219,28 +224,28 @@ public final class FileServiceClientBuilder {
      *
      * @param connectionString Connection string from the Access Keys section in the Storage account
      * @return the updated FileServiceClientBuilder object
-     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     * @throws NullPointerException If {@code connectionString} is {@code null}
+     * @throws IllegalArgumentException If {@code connectionString} doesn't contain AccountName or AccountKey.
      */
     public FileServiceClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString);
-        this.sharedKeyCredential = SharedKeyCredential.fromConnectionString(connectionString);
-        getEndPointFromConnectionString(connectionString);
-        return this;
-    }
 
-    private void getEndPointFromConnectionString(String connectionString) {
-        Map<String, String> connectionStringPieces = new HashMap<>();
-        for (String connectionStringPiece : connectionString.split(";")) {
-            String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
+        Map<String, String> connectionStringParts = Utility.parseConnectionString(connectionString);
+
+        String accountName = connectionStringParts.get(Constants.ConnectionStringConstants.ACCOUNT_NAME);
+        String accountKey = connectionStringParts.get(Constants.ConnectionStringConstants.ACCOUNT_KEY);
+        String endpointProtocol = connectionStringParts.get(Constants.ConnectionStringConstants.ENDPOINT_PROTOCOL);
+        String endpointSuffix = connectionStringParts.get(Constants.ConnectionStringConstants.ENDPOINT_SUFFIX);
+
+        if (ImplUtils.isNullOrEmpty(accountName) || ImplUtils.isNullOrEmpty(accountKey)) {
+            throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'");
         }
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        try {
-            this.endpoint = new URL(String.format("https://%s.file.core.windows.net", accountName));
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(String.format("There is no valid endpoint for the connection string. "
-                                                                 + "Connection String: %s", connectionString));
+
+        if (!ImplUtils.isNullOrEmpty(endpointProtocol) && !ImplUtils.isNullOrEmpty(endpointSuffix)) {
+            endpoint(String.format("%s://%s.file%s", endpointProtocol, accountName, endpointSuffix));
         }
+
+        return credential(new SharedKeyCredential(accountName, accountKey));
     }
 
     /**
@@ -302,10 +307,9 @@ public final class FileServiceClientBuilder {
      *
      * @param configuration The configuration store used to
      * @return The updated FileServiceClientBuilder object.
-     * @throws NullPointerException If {@code configuration} is {@code null}.
      */
     public FileServiceClientBuilder configuration(Configuration configuration) {
-        this.configuration = Objects.requireNonNull(configuration);
+        this.configuration = configuration;
         return this;
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.storage.common.Constants;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import org.junit.Assert;
 import org.junit.BeforeClass;

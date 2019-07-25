@@ -9,6 +9,7 @@ import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.LeaseAccessConditions;
 import com.azure.storage.blob.models.PageBlobAccessConditions;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.models.StorageException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import org.reactivestreams.Subscriber;
@@ -249,7 +250,7 @@ public class BlobOutputStream extends OutputStream {
             return Mono.empty();
         }
 
-        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % Constants.PAGE_SIZE != 0)) {
+        if (this.streamType == BlobType.PAGE_BLOB && (writeLength % PageBlobClient.PAGE_BYTES != 0)) {
             return Mono.error(new IOException(String.format(SR.INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
         }
 

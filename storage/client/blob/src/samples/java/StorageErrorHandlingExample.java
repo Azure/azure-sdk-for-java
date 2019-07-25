@@ -4,8 +4,8 @@
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.blob.ContainerClient;
 import com.azure.storage.blob.ContainerClientBuilder;
-import com.azure.storage.blob.StorageException;
 import com.azure.storage.blob.models.StorageErrorCode;
+import com.azure.storage.blob.models.StorageException;
 
 /**
  * This example shows how to handle errors thrown by various XxxURL methods. Any client-side error will be

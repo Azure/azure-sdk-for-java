@@ -21,6 +21,9 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.StorageServiceProperties;
 import com.azure.storage.blob.models.StorageServiceStats;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.common.IPRange;
+import com.azure.storage.common.SASProtocol;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.credentials.SharedKeyCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,8 +31,6 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link StorageClientBuilder}. This class does not
@@ -177,7 +178,7 @@ public final class StorageAsyncClient {
     private Mono<ServicesListContainersSegmentResponse> listContainersSegment(String marker, ListContainersOptions options) {
         options = options == null ? new ListContainersOptions() : options;
 
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.services().listContainersSegmentWithRestResponseAsync(
                 options.prefix(), marker, options.maxResults(), options.details().toIncludeType(), null,
                 null, Context.NONE));
@@ -203,7 +204,7 @@ public final class StorageAsyncClient {
      * @return A reactive response containing the storage account properties.
      */
     public Mono<Response<StorageServiceProperties>> getProperties() {
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
@@ -218,7 +219,7 @@ public final class StorageAsyncClient {
      * @return A reactive response containing the storage account properties.
      */
     public Mono<VoidResponse> setProperties(StorageServiceProperties properties) {
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(properties, null, null, Context.NONE))
             .map(VoidResponse::new);
     }
@@ -238,7 +239,7 @@ public final class StorageAsyncClient {
             throw new IllegalArgumentException("`start` must be null or a datetime before `expiry`.");
         }
 
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
                     .start(start == null ? "" : Utility.ISO_8601_UTC_DATE_FORMATTER.format(start))
@@ -256,7 +257,7 @@ public final class StorageAsyncClient {
      * @return A reactive response containing the storage account statistics.
      */
     public Mono<Response<StorageServiceStats>> getStatistics() {
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.value()));
     }
@@ -268,7 +269,7 @@ public final class StorageAsyncClient {
      * @return A reactive response containing the storage account info.
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfo() {
-        return postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(Context.NONE))
+        return PostProcessor.postProcessResponse(this.azureBlobStorage.services().getAccountInfoWithRestResponseAsync(Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new StorageAccountInfo(rb.deserializedHeaders())));
     }
 

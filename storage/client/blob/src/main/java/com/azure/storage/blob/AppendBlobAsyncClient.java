@@ -14,13 +14,12 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import com.azure.storage.common.Constants;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-
-import static com.azure.storage.blob.Utility.postProcessResponse;
 
 
 /**
@@ -92,7 +91,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         metadata = (metadata == null) ? new Metadata() : metadata;
         accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
 
-        return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
+        return PostProcessor.postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
             null, 0, null, metadata, null, null,
             null, null, headers, accessConditions.leaseAccessConditions(),
             accessConditions.modifiedAccessConditions(), Context.NONE))
@@ -142,7 +141,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
             : appendBlobAccessConditions;
 
-        return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
+        return PostProcessor.postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, null,
             null, null, null, null,
             appendBlobAccessConditions.leaseAccessConditions(),
@@ -198,7 +197,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
         destAccessConditions = destAccessConditions == null
             ? new AppendBlobAccessConditions() : destAccessConditions;
 
-        return postProcessResponse(
+        return PostProcessor.postProcessResponse(
             this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
                 sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null,
                 destAccessConditions.leaseAccessConditions(),
