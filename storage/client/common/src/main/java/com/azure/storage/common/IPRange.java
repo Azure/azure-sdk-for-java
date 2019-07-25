@@ -32,14 +32,17 @@ public final class IPRange {
     }
 
     /**
-     * The minimum IP address of the range.
+     * @return the minimum IP address of the range
      */
     public String ipMin() {
         return ipMin;
     }
 
     /**
-     * The minimum IP address of the range.
+     * Sets the minimum IP address of the range.
+     *
+     * @param ipMin IP address to set as the minimum
+     * @return the updated IPRange object
      */
     public IPRange ipMin(String ipMin) {
         this.ipMin = ipMin;
@@ -47,14 +50,17 @@ public final class IPRange {
     }
 
     /**
-     * The maximum IP address of the range.
+     * @return the maximum IP address of the range
      */
     public String ipMax() {
         return ipMax;
     }
 
     /**
-     * The maximum IP address of the range.
+     * Sets the maximum IP address of the range.
+     *
+     * @param ipMax IP address to set as the maximum
+     * @return the updated IPRange object
      */
     public IPRange ipMax(String ipMax) {
         this.ipMax = ipMax;

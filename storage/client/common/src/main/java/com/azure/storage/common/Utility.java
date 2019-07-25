@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -36,11 +35,6 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 public final class Utility {
-    private static final String UTF8_CHARSET = StandardCharsets.UTF_8.toString();
-    private static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
-    private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
-    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
-    private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
     private static final String DESERIALIZED_HEADERS = "deserializedHeaders";
     private static final String ETAG = "eTag";
 
@@ -130,7 +124,7 @@ public final class Utility {
      */
     private static String decode(final String stringToDecode) {
         try {
-            return URLDecoder.decode(stringToDecode, UTF8_CHARSET);
+            return URLDecoder.decode(stringToDecode, Constants.UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -183,7 +177,7 @@ public final class Utility {
      */
     private static String encode(final String stringToEncode) {
         try {
-            return URLEncoder.encode(stringToEncode, UTF8_CHARSET);
+            return URLEncoder.encode(stringToEncode, Constants.UTF8_CHARSET);
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
@@ -232,7 +226,7 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, ARGUMENT_NULL_OR_EMPTY, param));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -248,7 +242,7 @@ public final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 
@@ -285,7 +279,7 @@ public final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.INVALID_DATE_STRING, dateString));
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
@@ -367,7 +361,7 @@ public final class Utility {
             byte[] key = Base64.getDecoder().decode(base64Key);
             Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
-            byte[] utf8Bytes = stringToSign.getBytes(UTF8_CHARSET);
+            byte[] utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
             return Base64.getEncoder().encodeToString(hmacSHA256.doFinal(utf8Bytes));
         } catch (NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
@@ -412,7 +406,7 @@ public final class Utility {
         UrlBuilder builder = UrlBuilder.parse(baseURL);
 
         if (builder.path() == null || !builder.path().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, NO_PATH_SEGMENTS, baseURL));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, Constants.MessageConstants.NO_PATH_SEGMENTS, baseURL));
         }
 
         builder.path(builder.path().substring(0, builder.path().lastIndexOf("/")));

@@ -1,5 +1,7 @@
 package com.azure.storage.common;
 
+import java.nio.charset.StandardCharsets;
+
 public final class Constants {
     private static final int KB = 1024;
 
@@ -16,7 +18,7 @@ public final class Constants {
     /**
      * The default type for content-type and accept.
      */
-    public static final String UTF8_CHARSET = "UTF-8";
+    static final String UTF8_CHARSET = StandardCharsets.UTF_8.toString();
 
     /**
      * The query parameter for snapshots.
@@ -201,6 +203,16 @@ public final class Constants {
 
         private UrlConstants() {
             // Private to prevent construction.
+        }
+    }
+
+    static final class MessageConstants {
+        static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
+        static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
+        static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
+        static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
+
+        private MessageConstants() {
         }
     }
 }
