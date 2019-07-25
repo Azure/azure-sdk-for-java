@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.BiFunction;
 import org.reactivestreams.Subscriber;
 import reactor.core.Disposable;
@@ -42,10 +40,10 @@ public class EventProcessor {
     public EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory,
         EventPosition initialEventPosition, PartitionManager partitionManager) {
-        this.eventHubAsyncClient = Objects.requireNonNull(eventHubAsyncClient);
-        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "Consumer name cannot be null");
+        this.eventHubAsyncClient = Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
+        this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
         this.partitionProcessorFactory = Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
-        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionProcessorFactory cannot be null");
+        this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
         this.initialEventPosition = Objects
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
     }
@@ -55,21 +53,21 @@ public class EventProcessor {
      */
     public void start() {
         scheduler = Schedulers.newElastic("EventProcessor");
-        disposable = scheduler.schedule(() -> run());
+        disposable = scheduler.schedule(this::run);
     }
 
     /**
      * Stops the event processor
      */
     public void stop() {
-        this.partitionConsumers.entrySet().stream().forEach(entry -> {
+        this.partitionConsumers.forEach((key, value) -> {
             try {
-                logger.info("Closing event hub consumer for partition {}", entry.getKey());
-                entry.getValue().close();
-                partitionConsumers.remove(entry.getKey());
+                logger.info("Closing event hub consumer for partition {}", key);
+                value.close();
+                partitionConsumers.remove(key);
             } catch (IOException ex) {
                 logger
-                    .warning("Unable to close event hub consumer for partition " + entry.getKey());
+                    .warning("Unable to close event hub consumer for partition {}", key);
             }
         });
         disposable.dispose();
@@ -89,41 +87,42 @@ public class EventProcessor {
         List<PartitionOwnership> ownership = new ArrayList<>();
         this.partitionManager
             .listOwnership("", this.consumerGroupName)
-            .doOnNext(partitionOwnership -> ownership.add(partitionOwnership))
+            .doOnNext(ownership::add)
             .blockLast();
 
         logger.info("Got ownership info from partition manager");
         List<PartitionOwnership> myOwnership = new ArrayList<>();
 
-        // Find the partitions to claim ownership of
+        // Find the partitions to claim ownership
         this.partitionManager
             .claimOwnership(ownership)
-            .doOnNext(partitionOwnership -> myOwnership.add(partitionOwnership))
+            .doOnNext(myOwnership::add)
             .blockLast();
         logger.info("Claimed ownership");
 
         // use the successfully owned partition list to create new consumers
         // and receive events
 
-
-        // for poc, create consumer for all partitions and start from earliest event position
-
-        // for actual implementation, consumers will be created for newly owned partitions only and will
+        // For poc, create consumer for all partitions and start from earliest event position.
+        // For actual implementation, consumers will be created for newly owned partitions only and will
         // start from the sequence number coming from the data store or from the initial event position (if none exists)
-        eventHubPartitionIds.stream().forEach(partitionId -> {
-            EventHubConsumer consumer = this.eventHubAsyncClient
-                .createConsumer(this.consumerGroupName, partitionId, EventPosition.earliest());
+        eventHubPartitionIds.forEach(this::receiveEvents);
+    }
 
-            this.partitionConsumers.put(partitionId, consumer);
-
-            PartitionContext partitionContext = new PartitionContext()
-                .partitionId(partitionId)
-                .eventHubName("")
-                .consumerGroupName(this.consumerGroupName);
-            CheckpointManager checkpointManager = new CheckpointManager(partitionContext, this.partitionManager);
-            logger.info("Subscribing to receive events from partition {}", partitionId);
-            consumer.receive().subscribe(
-                this.partitionProcessorFactory.apply(partitionContext, checkpointManager));
-        });
+    /**
+     * Creates a new consumer for given partition and starts receiving events for that partition
+     */
+    private void receiveEvents(String partitionId) {
+        EventHubConsumer consumer = this.eventHubAsyncClient
+            .createConsumer(this.consumerGroupName, partitionId, EventPosition.earliest());
+        this.partitionConsumers.put(partitionId, consumer);
+        PartitionContext partitionContext = new PartitionContext()
+            .partitionId(partitionId)
+            .eventHubName("")
+            .consumerGroupName(this.consumerGroupName);
+        CheckpointManager checkpointManager = new CheckpointManager(partitionContext, this.partitionManager);
+        logger.info("Subscribing to receive events from partition {}", partitionId);
+        consumer.receive().subscribe(
+            this.partitionProcessorFactory.apply(partitionContext, checkpointManager));
     }
 }
