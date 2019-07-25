@@ -1539,11 +1539,11 @@ class ContainerAPITest extends APISpec {
             cu.create()
         }
 
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
                 .credential(primaryCreds)
                 .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/\$root/rootblob")
                 .httpClient(getHttpClient())
-                .buildClient()
+                .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.create()
@@ -1565,11 +1565,11 @@ class ContainerAPITest extends APISpec {
             cu.create()
         }
 
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
             .credential(primaryCreds)
             .endpoint("http://" + primaryCreds.accountName() + ".blob.core.windows.net/rootblob")
             .httpClient(getHttpClient())
-            .buildClient()
+            .buildAppendBlobClient()
 
         when:
         Response<AppendBlobItem> createResponse = bu.create()

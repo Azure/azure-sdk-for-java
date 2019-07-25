@@ -19,7 +19,7 @@ import static com.azure.storage.blob.Utility.safeURLEncode;
  * are existing query parameters, which might affect the appropriate means of appending these query parameters).
  * NOTE: Instances of this class are immutable to ensure thread safety.
  */
-final class SASQueryParameters {
+public final class SASQueryParameters {
 
     private final String version;
 
@@ -297,26 +297,44 @@ final class SASQueryParameters {
         return contentType;
     }
 
+    /**
+     * @return the object ID of the key.
+     */
     public String keyOid() {
         return keyOid;
     }
 
+    /**
+     * @return the tenant ID of the key.
+     */
     public String keyTid() {
         return keyTid;
     }
 
+    /**
+     * @return the datetime when the key becomes active.
+     */
     public OffsetDateTime keyStart() {
         return keyStart;
     }
 
+    /**
+     * @return the datetime when the key expires.
+     */
     public OffsetDateTime keyExpiry() {
         return keyExpiry;
     }
 
+    /**
+     * @return the services that are permitted by the key.
+     */
     public String keyService() {
         return keyService;
     }
 
+    /**
+     * @return the service version that created the key.
+     */
     public String keyVersion() {
         return keyVersion;
     }
@@ -333,9 +351,7 @@ final class SASQueryParameters {
 
     private void tryAppendQueryParameter(StringBuilder sb, String param, Object value) {
         if (value != null) {
-            if (sb.length() == 0) {
-                sb.append('?');
-            } else {
+            if (sb.length() != 0) {
                 sb.append('&');
             }
             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
