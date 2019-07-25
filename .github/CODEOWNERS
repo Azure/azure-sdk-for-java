@@ -10,6 +10,7 @@
 
 # Service teams
 /sdk/appconfiguration/       @alzimmermsft @conniey @sima-zhu
+/sdk/batch/                  @xingwu1 @bgklein @matthchr
 /sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
 /sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
 /sdk/eventhubs/              @conniey @srnagar @mssfang
