@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ import java.util.stream.Stream;
  *  This class provides utility to iterate over {@link PagedResponse}.
  * @param  <T> value
  */
-public class PagedIterable<T> {
+public class PagedIterable<T> implements Iterable<T> {
     private final PagedFlux<T> pagedFlux;
 
     /**
@@ -26,19 +27,36 @@ public class PagedIterable<T> {
      * @param flux  the flux value
      */
     public PagedIterable(Flux<T> flux) {
-        Supplier<Mono<PagedResponse<T>>> supp = getSupplier(flux);
-        this.pagedFlux = new PagedFlux<>(supp);
+        this.pagedFlux = new PagedFlux<>(getSupplier(flux));
     }
 
-    private Supplier<Mono<PagedResponse<T>>> getSupplier(Flux<T> flux) {
-        return () -> Mono.just(new SinglePagedResponse<>(flux));
-    }
     /**
      * Creates instance given {@link PagedFlux}.
      * @param pagedFlux to use as iterable
      */
     public PagedIterable(PagedFlux<T> pagedFlux) {
         this.pagedFlux = pagedFlux;
+    }
+
+    private Supplier<Mono<PagedResponse<T>>> getSupplier(Flux<T> flux) {
+        return () -> Mono.just(new SinglePagedResponse<>(flux));
+    }
+
+    /**
+     *  {@link Stream} of T value. It will replay {@link Stream} from starting if called multiple times.
+     * @return stream
+     */
+    public Stream<T> stream() {
+        return pagedFlux.toStream();
+    }
+
+    /**
+     * {@link Iterator} for T value. It will replay {@link Iterator} from starting if called multiple times.
+     * @return iterator
+     */
+    @Override
+    public Iterator<T> iterator() {
+        return pagedFlux.toIterable().iterator();
     }
 
     /**

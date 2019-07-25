@@ -7,6 +7,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
@@ -716,7 +717,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
@@ -735,12 +736,47 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         Flux.merge(results).blockLast();
 
-        StepVerifier.create(client.listSettingRevisions(filter))
-            .expectNextCount(numberExpected)
-            .verifyComplete();
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedFlux.toStream().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
     }
 
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatIterator() {
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
+        for (int value = 0; value < numberExpected; value++) {
+            settings.add(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
+        }
 
+        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.setSettingWithResponse(setting));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+
+        Flux.merge(results).blockLast();
+
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+
+        PagedFlux<ConfigurationSetting> configurationSettingPagedFlux = client.listSettingRevisions(filter);
+        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
+    }
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.

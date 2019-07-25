@@ -431,6 +431,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     @Test
     public abstract void listRevisionsWithPaginationAndRepeatStream();
 
+    @Test
+    public abstract void listRevisionsWithPaginationAndRepeatIterator();
+
+
 
     @Ignore("Getting a configuration setting only when the value has changed is not a common scenario.")
     @Test

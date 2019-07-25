@@ -537,7 +537,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     public void listRevisionsWithPaginationAndRepeatStream() {
@@ -551,10 +551,33 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
         PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
 
-        configurationSettingPagedIterable.streamByPage().forEach(c -> configurationSettingList1.addAll(c.value()));
+        configurationSettingPagedIterable.stream().forEach(configurationSetting -> configurationSettingList1.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList1.size());
 
-        configurationSettingPagedIterable.forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        configurationSettingPagedIterable.stream().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList2.size());
+    }
+
+
+    /**
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and iterator is invoked multiple times.
+     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     */
+    public void listRevisionsWithPaginationAndRepeatIterator() {
+        final int numberExpected = 50;
+        for (int value = 0; value < numberExpected; value++) {
+            client.setSetting(new ConfigurationSetting().key(keyPrefix).value("myValue" + value).label(labelPrefix));
+        }
+
+        SettingSelector filter = new SettingSelector().keys(keyPrefix).labels(labelPrefix);
+        List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
+        List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
+        PagedIterable<ConfigurationSetting> configurationSettingPagedIterable = client.listSettingRevisions(filter);
+
+        configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList1.add(configurationSetting));
+        assertEquals(numberExpected, configurationSettingList1.size());
+
+        configurationSettingPagedIterable.iterator().forEachRemaining(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
