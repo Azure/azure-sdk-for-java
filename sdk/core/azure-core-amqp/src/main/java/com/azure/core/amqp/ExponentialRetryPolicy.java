@@ -85,7 +85,6 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
         }
 
         return obj instanceof ExponentialRetryPolicy
-            && retryFactor == ((ExponentialRetryPolicy) obj).retryFactor
             && super.equals(obj);
     }
 
