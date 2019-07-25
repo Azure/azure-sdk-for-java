@@ -26,7 +26,6 @@ public class HttpPipelineTests {
         HttpPipeline pipeline = HttpPipeline.builder().build();
         assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
-        assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }
 
     @Test
@@ -42,7 +41,6 @@ public class HttpPipelineTests {
         assertEquals(ProtocolPolicy.class, pipeline.getPolicy(1).getClass());
         assertEquals(RetryPolicy.class, pipeline.getPolicy(2).getClass());
         assertNotNull(pipeline.httpClient());
-        assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }
 
     @Test
@@ -56,7 +54,6 @@ public class HttpPipelineTests {
         HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
         assertNotNull(pipeline.httpClient());
-        assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }
 
     @Test

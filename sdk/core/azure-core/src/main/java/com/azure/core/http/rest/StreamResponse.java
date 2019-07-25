@@ -4,15 +4,15 @@ package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
-import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
+import java.nio.ByteBuffer;
 
 /**
  * REST response with a streaming content.
  */
-public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implements Closeable {
+public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
     /**
      * Creates StreamResponse.
      *
@@ -21,7 +21,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implemen
      * @param headers the headers of the HTTP response
      * @param value the streaming value
      */
-    public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuf> value) {
+    public StreamResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value) {
         super(request, statusCode, headers, value);
     }
 
@@ -29,7 +29,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuf>> implemen
      * @return the stream content
      */
     @Override
-    public Flux<ByteBuf> value() {
+    public Flux<ByteBuffer> value() {
         return super.value();
     }
 

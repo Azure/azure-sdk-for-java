@@ -10,8 +10,6 @@ import com.azure.core.entities.HttpBinJSON;
 import com.azure.core.implementation.Base64Url;
 import com.azure.core.implementation.DateTimeRfc1123;
 import com.azure.core.implementation.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -173,7 +171,6 @@ public class MockHttpClient implements HttpClient {
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
                 return request.body()
-                    .map(ByteBuf::nioBuffer)
                     .collectList()
                     .map(list ->  {
                         byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();

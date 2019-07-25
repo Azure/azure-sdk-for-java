@@ -3,12 +3,11 @@
 
 package com.azure.core.http;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -20,7 +19,7 @@ public class HttpRequest implements Serializable {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private Flux<ByteBuf> body;
+    private Flux<ByteBuffer> body;
 
     /**
      * Create a new HttpRequest instance.
@@ -42,7 +41,7 @@ public class HttpRequest implements Serializable {
      * @param headers the HTTP headers to use with this request
      * @param body the request content
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuf> body) {
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
@@ -127,7 +126,7 @@ public class HttpRequest implements Serializable {
      *
      * @return the content to be send
      */
-    public Flux<ByteBuf> body() {
+    public Flux<ByteBuffer> body() {
         return body;
     }
 
@@ -151,8 +150,7 @@ public class HttpRequest implements Serializable {
      */
     public HttpRequest body(byte[] content) {
         headers.put("Content-Length", String.valueOf(content.length));
-        // Unpooled.wrappedBuffer(body) allocates ByteBuf from unpooled heap
-        return body(Flux.defer(() -> Flux.just(Unpooled.wrappedBuffer(content))));
+        return body(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
     }
 
     /**
@@ -164,7 +162,7 @@ public class HttpRequest implements Serializable {
      * @param content the request content
      * @return this HttpRequest
      */
-    public HttpRequest body(Flux<ByteBuf> content) {
+    public HttpRequest body(Flux<ByteBuffer> content) {
         this.body = content;
         return this;
     }

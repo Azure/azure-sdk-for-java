@@ -1,8 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.ProxyOptions;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -14,7 +20,9 @@ import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
+import reactor.netty.tcp.ProxyProvider;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -104,7 +112,14 @@ class ReactorNettyClient implements HttpClient {
     public final HttpClient proxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
         return new ReactorNettyClient(this.httpClient, client -> client.tcpConfiguration(c -> {
             ProxyOptions options = proxyOptionsSupplier.get();
-            return c.proxy(ts -> ts.type(options.type().value()).address(options.address()));
+            ProxyProvider.Proxy nettyProxy;
+            switch (options.type()) {
+                case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
+                case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
+                case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
+                default: nettyProxy = null;
+            }
+            return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
         }));
     }
 
@@ -145,7 +160,7 @@ class ReactorNettyClient implements HttpClient {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Flux<ByteBuffer> body() {
             return bodyIntern().doFinally(s -> {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
@@ -191,7 +206,6 @@ class ReactorNettyClient implements HttpClient {
             return reactorNettyConnection.inbound().receive();
         }
 
-        @Override
         Connection internConnection() {
             return reactorNettyConnection;
         }

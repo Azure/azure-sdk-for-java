@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.PagedResponseBase;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -126,7 +125,7 @@ public class PagedFluxTest {
 
     private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
         HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, HttpResponseStatus.OK.code(),
+        return new PagedResponseBase<>(httpRequest, 200,
             httpHeaders,
             getItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,

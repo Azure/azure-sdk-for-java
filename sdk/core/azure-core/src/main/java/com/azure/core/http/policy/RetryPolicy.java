@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -70,10 +69,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == HttpResponseStatus.REQUEST_TIMEOUT.code()
-                || (code >= HttpResponseStatus.INTERNAL_SERVER_ERROR.code()
-                && code != HttpResponseStatus.NOT_IMPLEMENTED.code()
-                && code != HttpResponseStatus.HTTP_VERSION_NOT_SUPPORTED.code()));
+                && (code == 408  // Request timeout
+                || (code >= 500) // Internal server error
+                && code != 501   // Not implemented
+                && code != 505); // Http version not supported
     }
 
     /**
@@ -86,8 +85,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         int code = response.statusCode();
 
         // Response will not have a retry-after-ms header.
-        if (code != HttpResponseStatus.TOO_MANY_REQUESTS.code()
-            && code != HttpResponseStatus.SERVICE_UNAVAILABLE.code()) {
+        if (code != 429        // too many requests
+            && code != 503) {  // service unavailable
             return this.delayDuration;
         }
 

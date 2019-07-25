@@ -5,11 +5,10 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -52,8 +51,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<ByteBuf> body() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes)));
+    public Flux<ByteBuffer> body() {
+        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
     }
 
     @Override

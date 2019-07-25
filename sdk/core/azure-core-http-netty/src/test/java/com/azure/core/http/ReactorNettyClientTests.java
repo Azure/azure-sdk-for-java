@@ -32,8 +32,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.Assert.assertEquals;
-
 public class ReactorNettyClientTests {
 
     private static final String SHORT_BODY = "hi there";
@@ -115,7 +113,7 @@ public class ReactorNettyClientTests {
         StepVerifier.create(response.bodyAsString())
                 .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
                 .verifyComplete();
-        assertEquals(500, response.statusCode());
+        Assert.assertEquals(500, response.statusCode());
     }
 
     @Test
@@ -203,7 +201,7 @@ public class ReactorNettyClientTests {
             HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
-            assertEquals(200, response.statusCode());
+            Assert.assertEquals(200, response.statusCode());
             System.out.println("reading body");
             //
             StepVerifier.create(response.bodyAsByteArray())
@@ -327,7 +325,7 @@ public class ReactorNettyClientTests {
         HttpResponse response = doRequest(client, path);
         String s = new String(response.bodyAsByteArray().block(),
                 StandardCharsets.UTF_8);
-        assertEquals(expectedBody, s);
+        Assert.assertEquals(expectedBody, s);
     }
 
     private HttpResponse doRequest(HttpClient client, String path) {

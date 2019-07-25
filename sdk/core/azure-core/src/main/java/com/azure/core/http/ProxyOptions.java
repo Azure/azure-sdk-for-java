@@ -3,8 +3,6 @@
 
 package com.azure.core.http;
 
-import reactor.netty.tcp.ProxyProvider.Proxy;
-
 import java.net.InetSocketAddress;
 
 /**
@@ -46,24 +44,14 @@ public class ProxyOptions {
         /**
          * HTTP proxy type.
          */
-        HTTP(Proxy.HTTP),
+        HTTP(),
         /**
          * SOCKS4 proxy type.
          */
-        SOCKS4(Proxy.SOCKS4),
+        SOCKS4(),
         /**
          * SOCKS5 proxy type.
          */
-        SOCKS5(Proxy.SOCKS5);
-
-        private final Proxy value;
-
-        Type(Proxy reactorProxyType) {
-            this.value = reactorProxyType;
-        }
-
-        Proxy value() {
-            return value;
-        }
+        SOCKS5();
     }
 }

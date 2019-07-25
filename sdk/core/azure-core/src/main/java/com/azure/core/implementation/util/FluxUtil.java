@@ -4,13 +4,9 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.Context;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.CompositeByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.util.ReferenceCountUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.Map;
@@ -19,6 +15,7 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -37,10 +34,10 @@ public final class FluxUtil {
      * @param entityType the type to check
      * @return whether the type represents a Flux that emits ByteBuf
      */
-    public static boolean isFluxByteBuf(Type entityType) {
+    public static boolean isFluxByteBuffer(Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Flux.class)) {
             final Type innerType = TypeUtil.getTypeArguments(entityType)[0];
-            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuf.class)) {
+            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class)) {
                 return true;
             }
         }
@@ -53,7 +50,7 @@ public final class FluxUtil {
      * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
      * @return A Mono which emits the concatenation of all the ByteBuf instances given by the source Flux.
      */
-    public static Mono<byte[]> collectBytesInByteBufStream(Flux<ByteBuf> stream, boolean autoReleaseEnabled) {
+    public static Mono<byte[]> collectBytesInByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
         if (autoReleaseEnabled) {
             // A stream is auto-release enabled means - the ByteBuf chunks in the stream get
             // released as consumer consumes each chunk.
@@ -78,7 +75,7 @@ public final class FluxUtil {
      * @param chunkSize the maximum size of each ByteBuf chunk
      * @return A stream that emits chunks of the original whole ByteBuf
      */
-    public static Flux<ByteBuf> split(final ByteBuf whole, final int chunkSize) {
+    public static Flux<ByteBuffer> split(final ByteBuffer whole, final int chunkSize) {
         return Flux.generate(whole::readerIndex, (readFromIndex, synchronousSync) -> {
             final int writerIndex = whole.writerIndex();
             //
@@ -108,7 +105,7 @@ public final class FluxUtil {
      * @param byteBuf the byte buffer
      * @return the byte array
      */
-    public static byte[] byteBufToArray(ByteBuf byteBuf) {
+    public static byte[] byteBufToArray(ByteBuffer byteBuf) {
         int length = byteBuf.readableBytes();
         byte[] byteArray = new byte[length];
         byteBuf.getBytes(byteBuf.readerIndex(), byteArray);
@@ -122,9 +119,9 @@ public final class FluxUtil {
      * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
      * @return A Mono which emits the concatenation of all the byte buffers given by the source Flux.
      */
-    public static Mono<ByteBuf> collectByteBufStream(Flux<ByteBuf> stream, boolean autoReleaseEnabled) {
+    public static Mono<ByteBuffer> collectByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
         if (autoReleaseEnabled) {
-            Mono<ByteBuf> mergedCbb = Mono.using(
+            Mono<ByteBuffer> mergedCbb = Mono.using(
                     // Resource supplier
                 () -> {
                     CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
@@ -161,7 +158,7 @@ public final class FluxUtil {
      * @param outFile the file channel
      * @return a Completable which performs the write operation when subscribed
      */
-    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile) {
+    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile) {
         return bytebufStreamToFile(content, outFile, 0);
     }
 
@@ -174,7 +171,7 @@ public final class FluxUtil {
      * @param position the position in the file to begin writing
      * @return a Mono&lt;Void&gt; which performs the write operation when subscribed
      */
-    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuf> content, AsynchronousFileChannel outFile, long position) {
+    public static Mono<Void> bytebufStreamToFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
         return Mono.create(emitter -> content.subscribe(new ByteBufToFileSubscriber(outFile, position, emitter)));
     }
 
@@ -236,7 +233,7 @@ public final class FluxUtil {
         return Context.of(keyValues);
     }
 
-    private static class ByteBufToFileSubscriber implements Subscriber<ByteBuf> {
+    private static class ByteBufToFileSubscriber implements Subscriber<ByteBuffer> {
         private ByteBufToFileSubscriber(AsynchronousFileChannel outFile, long position, MonoSink<Void> emitter) {
             this.outFile = outFile;
             this.pos = position;
@@ -260,9 +257,9 @@ public final class FluxUtil {
         }
 
         @Override
-        public void onNext(ByteBuf bytes) {
+        public void onNext(ByteBuffer bytes) {
             isWriting = true;
-            outFile.write(bytes.nioBuffer(), pos, null, onWriteCompleted);
+            outFile.write(bytes, pos, null, onWriteCompleted);
         }
 
         CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
@@ -317,7 +314,7 @@ public final class FluxUtil {
      * @param length The number of bytes to read from the file.
      * @return the Flowable.
      */
-    public static Flux<ByteBuf> byteBufStreamFromFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
+    public static Flux<ByteBuffer> byteBufStreamFromFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
         return new ByteBufStreamFromFile(fileChannel, chunkSize, offset, length);
     }
 
@@ -330,7 +327,7 @@ public final class FluxUtil {
      * @param length The number of bytes to read from the file.
      * @return the Flowable.
      */
-    public static Flux<ByteBuf> byteBufStreamFromFile(AsynchronousFileChannel fileChannel, long offset, long length) {
+    public static Flux<ByteBuffer> byteBufStreamFromFile(AsynchronousFileChannel fileChannel, long offset, long length) {
         return byteBufStreamFromFile(fileChannel, DEFAULT_CHUNK_SIZE, offset, length);
     }
 
@@ -341,7 +338,7 @@ public final class FluxUtil {
      * @param fileChannel The file channel.
      * @return The AsyncInputStream.
      */
-    public static Flux<ByteBuf> byteBufStreamFromFile(AsynchronousFileChannel fileChannel) {
+    public static Flux<ByteBuffer> byteBufStreamFromFile(AsynchronousFileChannel fileChannel) {
         try {
             long size = fileChannel.size();
             return byteBufStreamFromFile(fileChannel, DEFAULT_CHUNK_SIZE, 0, size);
@@ -352,7 +349,7 @@ public final class FluxUtil {
     //endregion
 
     //region ByteBufStreamFromFile implementation
-    private static final class ByteBufStreamFromFile extends Flux<ByteBuf> {
+    private static final class ByteBufStreamFromFile extends Flux<ByteBuffer> {
         private final ByteBufAllocator alloc;
         private final AsynchronousFileChannel fileChannel;
         private final int chunkSize;
@@ -368,16 +365,16 @@ public final class FluxUtil {
         }
 
         @Override
-        public void subscribe(CoreSubscriber<? super ByteBuf> actual) {
+        public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
             FileReadSubscription subscription = new FileReadSubscription(actual, fileChannel, alloc, chunkSize, offset, length);
             actual.onSubscribe(subscription);
         }
 
-        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuf> {
+        static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuffer> {
             private static final int NOT_SET = -1;
             private static final long serialVersionUID = -6831808726875304256L;
             //
-            private final Subscriber<? super ByteBuf> subscriber;
+            private final Subscriber<? super ByteBuffer> subscriber;
             private volatile long position;
             //
             private final AsynchronousFileChannel fileChannel;
@@ -388,7 +385,7 @@ public final class FluxUtil {
             //
             private volatile boolean done;
             private Throwable error;
-            private volatile ByteBuf next;
+            private volatile ByteBuffer next;
             private volatile boolean cancelled;
             //
             volatile int wip;
@@ -399,7 +396,7 @@ public final class FluxUtil {
             static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED = AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
-            FileReadSubscription(Subscriber<? super ByteBuf> subscriber, AsynchronousFileChannel fileChannel, ByteBufAllocator alloc, int chunkSize, long offset, long length) {
+            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel, ByteBufAllocator alloc, int chunkSize, long offset, long length) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;
@@ -431,7 +428,7 @@ public final class FluxUtil {
             //region CompletionHandler implementation
 
             @Override
-            public void completed(Integer bytesRead, ByteBuf buffer) {
+            public void completed(Integer bytesRead, ByteBuffer buffer) {
                 if (!cancelled) {
                     if (bytesRead == -1) {
                         done = true;
@@ -454,7 +451,7 @@ public final class FluxUtil {
             }
 
             @Override
-            public void failed(Throwable exc, ByteBuf attachment) {
+            public void failed(Throwable exc, ByteBuffer attachment) {
                 if (!cancelled) {
                     // must set error before setting done to true
                     // so that is visible in drain loop
@@ -484,7 +481,7 @@ public final class FluxUtil {
                         boolean emitted = false;
                         // read d before next to avoid race
                         boolean d = done;
-                        ByteBuf bb = next;
+                        ByteBuffer bb = next;
                         if (bb != null) {
                             next = null;
                             //
@@ -531,7 +528,7 @@ public final class FluxUtil {
                 // use local variable to limit volatile reads
                 long pos = position;
                 int readSize = Math.min(chunkSize, maxRequired(pos));
-                ByteBuf innerBuf = alloc.buffer(readSize, readSize);
+                ByteBuffer innerBuf = alloc.buffer(readSize, readSize);
                 fileChannel.read(innerBuf.nioBuffer(0, readSize), pos, innerBuf, this);
             }
 

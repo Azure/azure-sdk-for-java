@@ -61,5 +61,6 @@
     <module>azure-core-amqp</module>
     <module>azure-core-management</module>
     <module>azure-core-test</module>
+    <module>azure-core-http-netty</module>
   </modules>
 </project>

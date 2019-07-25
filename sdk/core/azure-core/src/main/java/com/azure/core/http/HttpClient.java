@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.http.spi.HttpClientProviders;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
@@ -25,7 +26,7 @@ public interface HttpClient {
      * @return the HttpClient
      */
     static HttpClient createDefault() {
-        return new ReactorNettyClient();
+        return HttpClientProviders.createInstance();
     }
 
     /**
