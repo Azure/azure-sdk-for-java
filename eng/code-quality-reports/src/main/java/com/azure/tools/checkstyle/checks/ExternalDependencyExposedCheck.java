@@ -170,7 +170,6 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         }
         // Checks multiple type arguments
         for (DetailAST ast = typeArgumentsToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-//            log(ast, "ast type (getInvalidTypeFromTypeArguments) ==== " + ast.getText());
             if (ast.getType() == TokenTypes.IDENT) {
                 final String identName = ast.getText();
                 if (!isValidClassDependency(identName)) {
@@ -179,12 +178,10 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
             } else if (ast.getType() == TokenTypes.TYPE_ARGUMENT) {
                 final String invalidTypeName = getInvalidTypeNameFromTypeArgument(ast);
                 if (invalidTypeName != null) {
-//                    log(ast, "Invalid Type Name ===== " + invalidTypeName);
                     invalidTypesMap.put(ast, invalidTypeName);
                 }
             }
         }
-//        log(typeArgumentsToken, "Invalid Type (typeArgumentsToken) MAP size = " + invalidTypesMap.size());
         return invalidTypesMap;
     }
 
