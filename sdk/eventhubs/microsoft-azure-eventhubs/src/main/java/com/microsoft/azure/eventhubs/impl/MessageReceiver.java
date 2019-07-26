@@ -24,8 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -77,7 +75,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile CompletableFuture<?> closeTimer;
     private int prefetchCount;
     private Exception lastKnownLinkError;
-    private String linkCreationTime;
+    private String linkCreationTime;        // Used when looking at Java dumps, do not remove.
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -149,40 +147,39 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            underlyingFactory.getCBSChannel().sendToken(
-                                    underlyingFactory.getReactorDispatcher(),
-                                    underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
-                                    tokenAudience,
-                                    new OperationResult<Void, Exception>() {
-                                        @Override
-                                        public void onComplete(Void result) {
-                                            if (TRACE_LOGGER.isDebugEnabled()) {
-                                                TRACE_LOGGER.debug(
-                                                        String.format(Locale.US,
-                                                                "clientId[%s], path[%s], linkName[%s] - token renewed",
-                                                                getClientId(), receivePath, getReceiveLinkName()));
-                                            }
+                        underlyingFactory.getCBSChannel().sendToken(
+                                underlyingFactory.getReactorDispatcher(),
+                                underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
+                                tokenAudience,
+                                new OperationResult<Void, Exception>() {
+                                    @Override
+                                    public void onComplete(Void result) {
+                                        if (TRACE_LOGGER.isDebugEnabled()) {
+                                            TRACE_LOGGER.debug(
+                                                    String.format(Locale.US,
+                                                            "clientId[%s], path[%s], linkName[%s] - token renewed",
+                                                            getClientId(), receivePath, getReceiveLinkName()));
                                         }
+                                    }
 
-                                        @Override
-                                        public void onError(Exception error) {
-                                            if (TRACE_LOGGER.isInfoEnabled()) {
-                                                TRACE_LOGGER.info(
-                                                        String.format(Locale.US,
-                                                                "clientId[%s], path[%s], linkName[%s], tokenRenewalFailure[%s]",
-                                                                getClientId(), receivePath, getReceiveLinkName(), error.getMessage()));
-                                            }
+                                    @Override
+                                    public void onError(Exception error) {
+                                        if (TRACE_LOGGER.isInfoEnabled()) {
+                                            TRACE_LOGGER.info(
+                                                    String.format(Locale.US,
+                                                            "clientId[%s], path[%s], linkName[%s], tokenRenewalFailure[%s]",
+                                                            getClientId(), receivePath, getReceiveLinkName(), error.getMessage()));
                                         }
-                                    });
-                        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-                            if (TRACE_LOGGER.isInfoEnabled()) {
-                                TRACE_LOGGER.info(
-                                        String.format(Locale.US,
-                                                "clientId[%s], path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]",
-                                                getClientId(), receivePath, getReceiveLinkName(), exception.getMessage()));
-                            }
-                        }
+                                    }
+                                },
+                            (exception) -> {
+                                if (TRACE_LOGGER.isInfoEnabled()) {
+                                    TRACE_LOGGER.info(
+                                                String.format(Locale.US,
+                                                        "clientId[%s], path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]",
+                                                        getClientId(), receivePath, getReceiveLinkName(), exception.getMessage()));
+                                }
+                            });
                     }
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
@@ -578,41 +575,40 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             }
         };
 
-        try {
-            this.underlyingFactory.getCBSChannel().sendToken(
-                    this.underlyingFactory.getReactorDispatcher(),
-                    this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
-                    tokenAudience,
-                    new OperationResult<Void, Exception>() {
-                        @Override
-                        public void onComplete(Void result) {
-                            if (MessageReceiver.this.getIsClosingOrClosed()) {
-                                return;
+        this.underlyingFactory.getCBSChannel().sendToken(
+                this.underlyingFactory.getReactorDispatcher(),
+                this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
+                tokenAudience,
+                new OperationResult<Void, Exception>() {
+                    @Override
+                    public void onComplete(Void result) {
+                        if (MessageReceiver.this.getIsClosingOrClosed()) {
+                            return;
+                        }
+                        underlyingFactory.getSession(
+                                receivePath,
+                                onSessionOpen,
+                                onSessionOpenFailed);
+                    }
+
+                    @Override
+                    public void onError(Exception error) {
+                        final Exception completionException;
+                        if (error != null && error instanceof AmqpException) {
+                            completionException = ExceptionUtil.toException(((AmqpException) error).getError());
+                            if (completionException != error && completionException.getCause() == null) {
+                                completionException.initCause(error);
                             }
-                            underlyingFactory.getSession(
-                                    receivePath,
-                                    onSessionOpen,
-                                    onSessionOpenFailed);
+                        } else {
+                            completionException = error;
                         }
 
-                        @Override
-                        public void onError(Exception error) {
-                            final Exception completionException;
-                            if (error != null && error instanceof AmqpException) {
-                                completionException = ExceptionUtil.toException(((AmqpException) error).getError());
-                                if (completionException != error && completionException.getCause() == null) {
-                                    completionException.initCause(error);
-                                }
-                            } else {
-                                completionException = error;
-                            }
-
-                            MessageReceiver.this.onError(completionException);
-                        }
-                    });
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
-            MessageReceiver.this.onError(exception);
-        }
+                        MessageReceiver.this.onError(completionException);
+                    }
+                },
+            (exception) -> {
+                MessageReceiver.this.onError(exception);
+            });
     }
 
     // CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only via Poll on prefetchqueue

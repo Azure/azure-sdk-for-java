@@ -52,7 +52,7 @@ public class ProxySelectorTest extends ApiTestBase {
             builder.setOperationTimeout(Duration.ofSeconds(10));
 
             try {
-                EventHubClient.createSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
+                EventHubClient.createFromConnectionStringSync(builder.toString(), TestContext.EXECUTOR_SERVICE);
                 Assert.fail();
             } catch (EventHubException ex) {
                 // The message can vary because it is returned from proton-j, so we don't want to compare against that.

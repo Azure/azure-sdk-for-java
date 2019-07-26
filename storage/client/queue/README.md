@@ -369,10 +369,10 @@ When you interact with queue using this Java client library, errors returned by 
 
 ### More Samples
 Get started with our [Queue samples][samples]:
-- [QueueServiceSample](src/samples/java/blob/QueueServiceSample.java): Create, list and delete queues
-- [MessageSample](src/samples/java/blob/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
-- [QueueExceptionSample](src/samples/java/blob/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
-- [AsyncSample](src/samples/java/blob/AsyncSample.java): Create queue and enqueue message using async queue client call.
+- [QueueServiceSample](src/samples/java/queue/QueueServiceSample.java): Create, list and delete queues
+- [MessageSample](src/samples/java/queue/MessageSample.java): Enqueue, peek dequeue, update, clear and delete messages. Get properties of the queue.
+- [QueueExceptionSample](src/samples/java/queue/QueueExceptionSample.java): Handle the exceptions from storage queue service side.
+- [AsyncSample](src/samples/java/queue/AsyncSample.java): Create queue and enqueue message using async queue client call.
 
 [Quickstart: Create a Java Spring app with App Configuration](https://docs.microsoft.com/en-us/azure/azure-app-configuration/quickstart-java-spring-app)
 
