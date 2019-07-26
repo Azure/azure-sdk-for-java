@@ -57,28 +57,27 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     @Override
-    public synchronized Mono<Lease> addOrUpdateLease(Lease lease) {
+    public synchronized Mono<Lease> addOrUpdateLease(final Lease lease) {
+        PartitionControllerImpl self = this;
+
         WorkerTask workerTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
         if ( workerTask != null && workerTask.isRunning()) {
-            Lease updatedLease = this.leaseManager.updateProperties(lease).block();
-            logger.debug(String.format("Partition %s: updated.", lease.getLeaseToken()));
-            return Mono.just(updatedLease);
+            return self.leaseManager.updateProperties(lease)
+                .map(updatedLease -> {
+                    logger.debug("Partition {}: updated.", updatedLease.getLeaseToken());
+                    return updatedLease;
+                });
         }
 
-        try {
-            Lease updatedLease = this.leaseManager.acquire(lease).block();
-            if (updatedLease != null) lease = updatedLease;
-
-            logger.info(String.format("Partition %s: acquired.", lease.getLeaseToken()));
-        } catch (RuntimeException ex) {
-            this.removeLease(lease).block();
-            throw ex;
-        }
-
-        PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(lease);
-        this.currentlyOwnedPartitions.put(lease.getLeaseToken(), this.processPartition(supervisor, lease));
-
-        return Mono.just(lease);
+        return self.leaseManager.acquire(lease)
+            .defaultIfEmpty(lease)
+            .map(updatedLease -> {
+                logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
+                PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
+                self.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
+                return updatedLease;
+            })
+            .onErrorResume(throwable -> self.removeLease(lease).then(Mono.error(throwable)));
     }
 
     @Override
@@ -96,7 +95,7 @@ class PartitionControllerImpl implements PartitionController {
 
         return this.leaseContainer.getOwnedLeases()
             .flatMap( lease -> {
-                logger.info(String.format("Acquired lease for PartitionId '%s' on startup.", lease.getLeaseToken()));
+                logger.info("Acquired lease for PartitionId '{}' on startup.", lease.getLeaseToken());
                 return self.addOrUpdateLease(lease);
             }).then();
     }
@@ -109,12 +108,12 @@ class PartitionControllerImpl implements PartitionController {
                     workerTask.interrupt();
                 }
 
-                logger.info(String.format("Partition %s: released.", lease.getLeaseToken()));
+                logger.info("Partition {}: released.", lease.getLeaseToken());
             }
 
             return this.leaseManager.release(lease)
                 .onErrorResume(e -> {
-                        logger.warn(String.format("Partition %s: failed to remove lease.", lease.getLeaseToken()), e);
+                        logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
                         return Mono.empty();
                     }
                 ).doOnSuccess(aVoid -> {
@@ -134,9 +133,9 @@ class PartitionControllerImpl implements PartitionController {
                         PartitionSplitException ex = (PartitionSplitException) throwable;
                         return self.handleSplit(lease, ex.getLastContinuation());
                     } else if (throwable instanceof TaskCancelledException) {
-                        logger.debug(String.format("Partition %s: processing canceled.", lease.getLeaseToken()));
+                        logger.debug("Partition %s: processing canceled.", lease.getLeaseToken());
                     } else {
-                        logger.warn(String.format("Partition %s: processing failed.", lease.getLeaseToken()), throwable);
+                        logger.warn("Partition %s: processing failed.", lease.getLeaseToken(), throwable);
                     }
 
                     return Mono.empty();
@@ -159,7 +158,7 @@ class PartitionControllerImpl implements PartitionController {
                 return self.addOrUpdateLease(l);
             }).then(self.leaseManager.delete(lease))
             .onErrorResume(throwable -> {
-                logger.warn(String.format("partition %s: failed to split", lease.getLeaseToken()), throwable);
+                logger.warn("Partition %s: failed to split", lease.getLeaseToken(), throwable);
                 return  Mono.empty();
             });
     }

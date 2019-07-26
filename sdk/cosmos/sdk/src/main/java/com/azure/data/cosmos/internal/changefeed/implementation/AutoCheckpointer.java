@@ -7,6 +7,7 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.CheckpointFrequency;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.ZoneId;
@@ -42,15 +43,26 @@ class AutoCheckpointer implements ChangeFeedObserver {
     }
 
     @Override
-    public void processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
-        this.observer.processChanges(context, docs);
-        this.processedDocCount ++;
+    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
+        AutoCheckpointer self = this;
 
-        if (this.isCheckpointNeeded()) {
-            context.checkpoint().block();
-            this.processedDocCount = 0;
-            this.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+        return self.observer.processChanges(context, docs)
+            .then(self.afterProcessChanges(context));
+    }
+
+    private Mono<Void> afterProcessChanges(ChangeFeedObserverContext context) {
+        AutoCheckpointer self = this;
+
+        self.processedDocCount ++;
+
+        if (self.isCheckpointNeeded()) {
+            return context.checkpoint()
+                .doOnSuccess((Void) -> {
+                    self.processedDocCount = 0;
+                    self.lastCheckpointTime = ZonedDateTime.now(ZoneId.of("UTC"));
+                });
         }
+        return Mono.empty();
     }
 
     private boolean isCheckpointNeeded() {

@@ -66,7 +66,8 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
             Thread processorThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    self.processor.run(self.processorCancellation.getToken()).block();
+                    self.processor.run(self.processorCancellation.getToken())
+                        .subscribe();
                 }
             });
 
@@ -75,7 +76,8 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
             Thread renewerThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    self.renewer.run(self.renewerCancellation.getToken()).block();
+                    self.renewer.run(self.renewerCancellation.getToken())
+                        .subscribe();
                 }
             });
 

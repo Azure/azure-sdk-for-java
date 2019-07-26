@@ -81,7 +81,19 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      */
     @Override
     public Mono<Void> start() {
-        return partitionManager.start();
+        if (this.partitionManager == null) {
+            ChangeFeedProcessorBuilderImpl self = this;
+            return this.initializeCollectionPropertiesForBuild()
+                .then(self.getLeaseStoreManager()
+                    .flatMap(leaseStoreManager -> self.buildPartitionManager(leaseStoreManager)))
+                .flatMap(partitionManager1 -> {
+                    self.partitionManager = partitionManager1;
+                    return self.partitionManager.start();
+                });
+
+        } else {
+            return partitionManager.start();
+        }
     }
 
     /**
@@ -294,13 +306,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             this.executorService = Executors.newCachedThreadPool();
         }
 
-        // TBD: Move this initialization code as part of the start() call.
-        return this.initializeCollectionPropertiesForBuild()
-            .then(self.getLeaseStoreManager().flatMap(leaseStoreManager -> self.buildPartitionManager(leaseStoreManager)))
-            .map(partitionManager1 -> {
-                self.partitionManager = partitionManager1;
-                return self;
-            }).block();
+        return this;
     }
 
     public ChangeFeedProcessorBuilderImpl() {

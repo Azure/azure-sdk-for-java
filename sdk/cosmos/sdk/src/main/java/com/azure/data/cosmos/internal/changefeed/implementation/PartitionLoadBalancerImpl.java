@@ -11,6 +11,7 @@ import com.azure.data.cosmos.internal.changefeed.PartitionLoadBalancer;
 import com.azure.data.cosmos.internal.changefeed.PartitionLoadBalancingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -60,64 +61,72 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
     public Mono<Void> start() {
         PartitionLoadBalancerImpl self = this;
 
-        return Mono.fromRunnable( () -> {
-            synchronized (lock) {
-                if (this.started) {
-                    throw new IllegalStateException("Partition load balancer already started");
-                }
-
-                this.started = true;
-                this.cancellationTokenSource = new CancellationTokenSource();
+        synchronized (lock) {
+            if (this.started) {
+                throw new IllegalStateException("Partition load balancer already started");
             }
 
-            CancellationToken cancellationToken = this.cancellationTokenSource.getToken();
+            this.started = true;
+            this.cancellationTokenSource = new CancellationTokenSource();
+        }
 
-            this.executorService.execute(() -> self.run(cancellationToken).block());
+        return Mono.fromRunnable( () -> {
+            Thread thread = new Thread(() -> self.run(self.cancellationTokenSource.getToken()).subscribe());
+            executorService.execute(thread);
         });
     }
 
     @Override
     public Mono<Void> stop() {
-        return Mono.fromRunnable( () -> {
-            synchronized (lock) {
-                this.started = false;
-                this.cancellationTokenSource.cancel();
-            }
+        synchronized (lock) {
+            this.started = false;
+            this.cancellationTokenSource.cancel();
+        }
 
-            this.partitionController.shutdown().block();
-            this.cancellationTokenSource = null;
-        });
+        return this.partitionController.shutdown();
     }
 
     private Mono<Void> run(CancellationToken cancellationToken) {
         PartitionLoadBalancerImpl self = this;
 
-        return Mono.fromRunnable( () -> {
-            try {
-                while (!cancellationToken.isCancellationRequested()) {
-                    List<Lease> allLeases = self.leaseContainer.getAllLeases().collectList().block();
-                    List<Lease> leasesToTake = self.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
-                    for (Lease lease : leasesToTake) {
-                        self.partitionController.addOrUpdateLease(lease).block();
-                    }
+        return Flux.just(self)
+            .flatMap(value -> self.leaseContainer.getAllLeases())
+            .collectList()
+            .flatMap(allLeases -> {
+                if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                List<Lease> leasesToTake = self.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
 
-                    long remainingWork = this.leaseAcquireInterval.toMillis();
+                if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                return Flux.fromIterable(leasesToTake)
+                    .flatMap(lease -> {
+                        if (cancellationToken.isCancellationRequested()) return Mono.empty();
+                        return self.partitionController.addOrUpdateLease(lease);
+                    })
+                    .then();
+            })
+            .repeat(() -> {
+                if (cancellationToken.isCancellationRequested()) return false;
 
-                    try {
-                        while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
-                            Thread.sleep(100);
-                            remainingWork -= 100;
-                        }
-                    } catch (InterruptedException ex) {
-                        // exception caught
-                        logger.warn("Partition load balancer caught an interrupted exception", ex);
+                long remainingWork = this.leaseAcquireInterval.toMillis();
+
+                try {
+                    while (!cancellationToken.isCancellationRequested() && remainingWork > 0) {
+                        Thread.sleep(100);
+                        remainingWork -= 100;
                     }
+                } catch (InterruptedException ex) {
+                    // exception caught
+                    logger.warn("Partition load balancer caught an interrupted exception", ex);
                 }
-            } catch (Exception ex) {
+                if (cancellationToken.isCancellationRequested()) return false;
+
+                return true;
+            })
+            .then()
+            .onErrorResume(throwable -> {
                 // We should not get here.
                 logger.info("Partition load balancer task stopped.");
-                this.stop();
-            }
-        });
+                return this.stop();
+            });
     }
 }

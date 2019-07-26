@@ -141,7 +141,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
-        if (leaseToken == null) throw new IllegalArgumentException("leaseToken");
+        if (leaseToken == null) throw Exceptions.propagate(new IllegalArgumentException("leaseToken"));
 
         String leaseDocId = this.getDocumentId(leaseToken);
         ServiceItemLease documentServiceLease = new ServiceItemLease()

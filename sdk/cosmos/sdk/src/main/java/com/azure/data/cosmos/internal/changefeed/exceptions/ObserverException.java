@@ -13,7 +13,7 @@ public class ObserverException extends RuntimeException {
      *
      * @param originalException {@link Exception} thrown by the user code.
      */
-    public ObserverException(Exception originalException) {
-        super(DefaultMessage, originalException.getCause());
+    public ObserverException(Throwable originalException) {
+        super(DefaultMessage, originalException);
     }
 }

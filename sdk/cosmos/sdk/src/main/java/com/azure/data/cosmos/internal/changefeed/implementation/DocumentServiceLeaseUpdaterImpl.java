@@ -96,53 +96,6 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 }
                 return false;
             });
-
-//        Lease lease = cachedLease;
-//
-//        for (int retryCount = RETRY_COUNT_ON_CONFLICT; retryCount > 0; retryCount--) {
-//            lease = updateLease.apply(lease);
-//
-//            if (lease == null) {
-//                return Mono.empty();
-//            }
-//
-//            lease.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
-//            CosmosItemProperties leaseDocument = this.tryReplaceLease(lease, itemLink).block();
-//
-//            if (leaseDocument != null) {
-//                return Mono.just(ServiceItemLease.fromDocument(leaseDocument));
-//            }
-//
-//            // Partition lease update conflict. Reading the current version of lease.
-//            CosmosItemProperties document = null;
-//            try {
-//                CosmosItemResponse response = this.client.readItem(itemLink, requestOptions)
-//                    .block();
-//                document = response.properties();
-//            } catch (RuntimeException re) {
-//                if (re.getCause() instanceof CosmosClientException) {
-//                    CosmosClientException ex = (CosmosClientException) re.getCause();
-//                    if (ex.statusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
-//                        // Partition lease no longer exists
-//                        throw new LeaseLostException(lease);
-//                    }
-//                }
-//                throw  re;
-//            }
-//
-//            ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
-//            logger.info(
-//                "Partition {} update failed because the lease with token '{}' was updated by host '{}' with token '{}'. Will retry, {} retry(s) left.",
-//                lease.getLeaseToken(),
-//                lease.getConcurrencyToken(),
-//                serverLease.getOwner(),
-//                serverLease.getConcurrencyToken(),
-//                retryCount);
-//
-//            lease = serverLease;
-//        }
-//
-//        throw new LeaseLostException(lease);
     }
 
     private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, CosmosItem itemLink) throws LeaseLostException {

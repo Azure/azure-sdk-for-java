@@ -3,6 +3,7 @@
 package com.azure.data.cosmos.internal.changefeed;
 
 import com.azure.data.cosmos.CosmosItemProperties;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public interface ChangeFeedObserver {
      *
      * @param context the context specifying partition for this observer, etc.
      * @param docs the documents changed.
+     * @return a deferred operation of this call.
      */
-    void processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs);
+    Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs);
 }

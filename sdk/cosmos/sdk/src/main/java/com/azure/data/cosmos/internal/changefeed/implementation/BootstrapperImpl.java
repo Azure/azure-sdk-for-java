@@ -21,6 +21,9 @@ class BootstrapperImpl implements Bootstrapper {
     private final Duration lockTime;
     private final Duration sleepTime;
 
+    private boolean isInitialized;
+    private boolean isLockAcquired;
+
     public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime)
     {
         if (synchronizer == null) throw new IllegalArgumentException("synchronizer");
@@ -32,45 +35,53 @@ class BootstrapperImpl implements Bootstrapper {
         this.leaseStore = leaseStore;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
+
+        this.isInitialized = false;
     }
 
     @Override
     public Mono<Void> initialize() {
         BootstrapperImpl self = this;
+        self.isInitialized = false;
 
-        return Mono.fromRunnable( () -> {
-            while (true) {
-                boolean initialized = self.leaseStore.isInitialized().block();
+        return Mono.just(self)
+            .flatMap( value -> self.leaseStore.isInitialized())
+            .flatMap(initialized -> {
+                self.isInitialized = initialized;
 
-                if (initialized) break;
+                if (initialized) {
+                    return Mono.empty();
+                } else {
+                    return self.leaseStore.acquireInitializationLock(self.lockTime)
+                        .flatMap(lockAcquired -> {
+                            self.isLockAcquired = lockAcquired;
 
-                boolean isLockAcquired = self.leaseStore.acquireInitializationLock(self.lockTime).block();
-
-                try {
-                    if (!isLockAcquired) {
-                        logger.info("Another instance is initializing the store");
-                        try {
-                            Thread.sleep(self.sleepTime.toMillis());
-                        } catch (InterruptedException ex) {
-                            logger.warn("Unexpected exception caught", ex);
-                        }
-                        continue;
-                    }
-
-                    logger.info("Initializing the store");
-                    self.synchronizer.createMissingLeases().block();
-                    self.leaseStore.markInitialized().block();
-
-                } catch (RuntimeException ex) {
-                    break;
-                } finally {
-                    if (isLockAcquired) {
-                        self.leaseStore.releaseInitializationLock().block();
-                    }
+                            if (!self.isLockAcquired) {
+                                logger.info("Another instance is initializing the store");
+                                try {
+                                    Thread.sleep(self.sleepTime.toMillis());
+                                } catch (InterruptedException ex) {
+                                    logger.warn("Unexpected exception caught", ex);
+                                }
+                                return Mono.just(isLockAcquired);
+                            } else {
+                                return self.synchronizer.createMissingLeases()
+                                    .then(self.leaseStore.markInitialized());
+                            }
+                        })
+                        .onErrorResume(throwable -> {
+                            logger.warn("Unexpected exception caught", throwable);
+                            return Mono.just(self.isLockAcquired);
+                        })
+                        .flatMap(lockAcquired -> {
+                            if (self.isLockAcquired) {
+                                return self.leaseStore.releaseInitializationLock();
+                            }
+                            return Mono.just(lockAcquired);
+                        });
                 }
-            }
-
-            logger.info("The store is initialized");
-        });
+            })
+            .repeat( () -> !self.isInitialized)
+            .then();
     }
 }

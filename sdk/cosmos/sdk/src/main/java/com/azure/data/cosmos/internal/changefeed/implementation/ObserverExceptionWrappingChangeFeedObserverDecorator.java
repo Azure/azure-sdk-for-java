@@ -7,6 +7,9 @@ import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserver;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.data.cosmos.internal.changefeed.ChangeFeedObserverContext;
 import com.azure.data.cosmos.internal.changefeed.exceptions.ObserverException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -14,6 +17,8 @@ import java.util.List;
  * Exception wrapping decorator implementation for {@link ChangeFeedObserver}.
  */
 class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeedObserver {
+    private final Logger logger = LoggerFactory.getLogger(ObserverExceptionWrappingChangeFeedObserverDecorator.class);
+
     private ChangeFeedObserver changeFeedObserver;
 
     public ObserverExceptionWrappingChangeFeedObserverDecorator(ChangeFeedObserver changeFeedObserver)
@@ -29,7 +34,7 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
         }
         catch (RuntimeException userException)
         {
-            // Logger.WarnException("Exception happened on Observer.OpenAsync", userException);
+            this.logger.warn("Exception happened on ChangeFeedObserver.open", userException);
             throw new ObserverException(userException);
         }
     }
@@ -42,21 +47,17 @@ class ObserverExceptionWrappingChangeFeedObserverDecorator implements ChangeFeed
         }
         catch (RuntimeException userException)
         {
-            // Logger.WarnException("Exception happened on Observer.CloseAsync", userException);
+            this.logger.warn("Exception happened on ChangeFeedObserver.close", userException);
             throw new ObserverException(userException);
         }
     }
 
     @Override
-    public void processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
-        try
-        {
-            this.changeFeedObserver.processChanges(context, docs);
-        }
-        catch (Exception userException)
-        {
-            // Logger.WarnException("Exception happened on Observer.OpenAsync", userException);
-            throw new ObserverException(userException);
-        }
+    public Mono<Void> processChanges(ChangeFeedObserverContext context, List<CosmosItemProperties> docs) {
+        return this.changeFeedObserver.processChanges(context, docs)
+            .onErrorResume(throwable -> {
+                this.logger.warn("Exception happened on ChangeFeedObserver.processChanges", throwable);
+                return Mono.error(new ObserverException(throwable));
+            });
     }
 }
