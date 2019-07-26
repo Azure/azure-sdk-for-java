@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpShutdownSignal;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.handler.ReceiveLinkHandler;
 import org.apache.qpid.proton.Proton;
@@ -33,12 +35,14 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
     private final ActiveClientTokenManager tokenManager;
     private final Disposable.Composite subscriptions;
     private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
+    private final AtomicBoolean isDisposed;
     private FluxSink<Message> messageSink = messagesProcessor.sink();
 
     private volatile Supplier<Integer> creditSupplier;
 
     ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, ActiveClientTokenManager tokenManager) {
         super(new ClientLogger(ReactorReceiver.class));
+        this.isDisposed = new AtomicBoolean();
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
@@ -55,7 +59,23 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
                     notifyEndpointState(EndpointState.CLOSED);
                 }),
 
-            handler.getErrors().subscribe(this::notifyError),
+            handler.getErrors().subscribe(error -> {
+                if (!(error instanceof AmqpException)) {
+                    logger.error("Error occurred that is not an AmqpException.", error);
+                    notifyShutdown(new AmqpShutdownSignal(false, false, error.toString()));
+                    close();
+                    return;
+                }
+
+                final AmqpException amqpException = (AmqpException) error;
+                if (!amqpException.isTransient()) {
+                    logger.warning("Error occurred that is not retriable.", amqpException);
+                    notifyShutdown(new AmqpShutdownSignal(false, false, amqpException.toString()));
+                    close();
+                } else {
+                    notifyError(error);
+                }
+            }),
 
             tokenManager.getAuthorizationResults().subscribe(
                 response -> {
@@ -102,6 +122,10 @@ public class ReactorReceiver extends EndpointStateNotifierBase implements AmqpRe
 
     @Override
     public void close() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
         subscriptions.dispose();
         tokenManager.close();
 

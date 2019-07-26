@@ -75,7 +75,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile CompletableFuture<?> closeTimer;
     private int prefetchCount;
     private Exception lastKnownLinkError;
-    private String linkCreationTime;		// Used when looking at Java dumps, do not remove.
+    private String linkCreationTime;        // Used when looking at Java dumps, do not remove.
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -172,14 +172,14 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                                         }
                                     }
                                 },
-                                (exception) -> {
-		                            if (TRACE_LOGGER.isInfoEnabled()) {
-		                                TRACE_LOGGER.info(
-		                                        String.format(Locale.US,
-		                                                "clientId[%s], path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]",
-		                                                getClientId(), receivePath, getReceiveLinkName(), exception.getMessage()));
-		                            }
-                                });
+                            (exception) -> {
+                                if (TRACE_LOGGER.isInfoEnabled()) {
+                                    TRACE_LOGGER.info(
+                                                String.format(Locale.US,
+                                                        "clientId[%s], path[%s], linkName[%s], tokenRenewalScheduleFailure[%s]",
+                                                        getClientId(), receivePath, getReceiveLinkName(), exception.getMessage()));
+                                }
+                            });
                     }
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
@@ -606,9 +606,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         MessageReceiver.this.onError(completionException);
                     }
                 },
-                (exception) -> {
-                    MessageReceiver.this.onError(exception);
-                });
+            (exception) -> {
+                MessageReceiver.this.onError(exception);
+            });
     }
 
     // CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only via Poll on prefetchqueue

@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.sendrecv;
 
 import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
 
-import org.junit.Test;
+//import org.junit.Test;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -20,45 +23,45 @@ import com.microsoft.azure.eventhubs.EventHubClient;
  * event hub.
  */
 public class AdalTest extends AadBase {
-	final private String authority = "https://login.windows.net/replaceWithTenantIdGuid";
-	final private String clientId = "replaceWithClientIdGuid";
-	final private String clientSecret = "replaceWithClientSecret";
-	
-	//@Test
-	public void runSendReceiveWithAuthCallbackTest() throws Exception {
-		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
-		final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
-				callback, this.authority, this.executorService, null).get();
+    private final String authority = "https://login.windows.net/replaceWithTenantIdGuid";
+    private final String clientId = "replaceWithClientIdGuid";
+    private final String clientSecret = "replaceWithClientSecret";
+    
+    //@Test
+    public void runSendReceiveWithAuthCallbackTest() throws Exception {
+        final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
+        final EventHubClient ehc = EventHubClient.createWithAzureActiveDirectory(MsalTest.endpoint, MsalTest.eventHubName,
+                callback, this.authority, this.executorService, null).get();
 
-		innerTest(ehc);
-	}
-	
-	//@Test
-	public void runSendReceiveWithAADTokenProvider() throws Exception {
-		final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
-		final AzureActiveDirectoryTokenProvider aadTokenProvider =
-				new AzureActiveDirectoryTokenProvider(callback, this.authority, null);
-		final EventHubClient ehc = EventHubClient.createWithTokenProvider(MsalTest.endpoint, MsalTest.eventHubName, aadTokenProvider,
-				this.executorService, null).get();
-		
-		innerTest(ehc);
-	}
-	
-	//@Test
-	public void runSendReceiveWithCustomTokenProvider() throws Exception {
-		final CustomTokenProvider tokenProvider = new CustomTokenProvider(this.authority, this.clientId, this.clientSecret);
-		final EventHubClient ehc = EventHubClient.createWithTokenProvider(MsalTest.endpoint, MsalTest.eventHubName, tokenProvider,
-				this.executorService, null).get();
-		
-		innerTest(ehc);
-	}
-	
-	@Override
-	String tokenGet(final String authority, final String clientId, final String clientSecret, final String audience, final String extra)
-			throws MalformedURLException, InterruptedException, ExecutionException {
-		AuthenticationContext context = new AuthenticationContext(authority, true, this.executorService);
-		ClientCredential creds = new ClientCredential(clientId, clientSecret);
-		AuthenticationResult result = context.acquireToken(audience, creds, null).get();
-		return result.getAccessToken();
-	}
+        innerTest(ehc);
+    }
+    
+    //@Test
+    public void runSendReceiveWithAADTokenProvider() throws Exception {
+        final AuthCallback callback = new AuthCallback(this.clientId, this.clientSecret);
+        final AzureActiveDirectoryTokenProvider aadTokenProvider =
+                new AzureActiveDirectoryTokenProvider(callback, this.authority, null);
+        final EventHubClient ehc = EventHubClient.createWithTokenProvider(MsalTest.endpoint, MsalTest.eventHubName, aadTokenProvider,
+                this.executorService, null).get();
+        
+        innerTest(ehc);
+    }
+    
+    //@Test
+    public void runSendReceiveWithCustomTokenProvider() throws Exception {
+        final CustomTokenProvider tokenProvider = new CustomTokenProvider(this.authority, this.clientId, this.clientSecret);
+        final EventHubClient ehc = EventHubClient.createWithTokenProvider(MsalTest.endpoint, MsalTest.eventHubName, tokenProvider,
+                this.executorService, null).get();
+        
+        innerTest(ehc);
+    }
+    
+    @Override
+    String tokenGet(final String authority, final String clientId, final String clientSecret, final String audience, final String extra)
+            throws MalformedURLException, InterruptedException, ExecutionException {
+        AuthenticationContext context = new AuthenticationContext(authority, true, this.executorService);
+        ClientCredential creds = new ClientCredential(clientId, clientSecret);
+        AuthenticationResult result = context.acquireToken(audience, creds, null).get();
+        return result.getAccessToken();
+    }
 }

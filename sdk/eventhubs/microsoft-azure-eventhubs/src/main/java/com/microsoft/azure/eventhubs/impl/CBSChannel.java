@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 
 final class CBSChannel {
-	final ScheduledExecutorService executor;
+    final ScheduledExecutorService executor;
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
 
     CBSChannel(
@@ -25,7 +25,7 @@ final class CBSChannel {
             final AmqpConnection connection,
             final String clientId,
             final ScheduledExecutorService executor) {
-    	this.executor = executor;
+        this.executor = executor;
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
                 new RequestResponseOpener(sessionProvider, clientId, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
@@ -38,18 +38,18 @@ final class CBSChannel {
             final CompletableFuture<SecurityToken> tokenFuture,
             final String tokenAudience,
             final OperationResult<Void, Exception> sendTokenCallback,
-    		final Consumer<Exception> errorCallback) {
-    	tokenFuture.thenAcceptAsync((token) -> {
-				innerSendToken(dispatcher, token, tokenAudience, sendTokenCallback);
-			}, this.executor)
-    	.whenCompleteAsync((empty, exception) -> {
-			// TODO: whenCompleteAsync presents a Throwable. But many of the error callbacks expect
-			// an Exception. For now, do a cast here. Will we ever actually get an error that is
-			// not an Exception?
-			if ((exception != null) && (exception instanceof Exception)) {
-				errorCallback.accept((Exception)exception);
-			}
-		}, this.executor);
+            final Consumer<Exception> errorCallback) {
+        tokenFuture.thenAcceptAsync((token) -> {
+            innerSendToken(dispatcher, token, tokenAudience, sendTokenCallback);
+        }, this.executor)
+            .whenCompleteAsync((empty, exception) -> {
+            // TODO: whenCompleteAsync presents a Throwable. But many of the error callbacks expect
+            // an Exception. For now, do a cast here. Will we ever actually get an error that is
+            // not an Exception?
+                if ((exception != null) && (exception instanceof Exception)) {
+                    errorCallback.accept((Exception) exception);
+                }
+            }, this.executor);
     }
 
     private void innerSendToken(
