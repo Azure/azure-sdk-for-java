@@ -35,7 +35,7 @@ public class ReceiverEpochTest extends ApiTestBase {
     @BeforeClass
     public static void initializeEventHub() throws EventHubException, IOException {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 
     @AfterClass

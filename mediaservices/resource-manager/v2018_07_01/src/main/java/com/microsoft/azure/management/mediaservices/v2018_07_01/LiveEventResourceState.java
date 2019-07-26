@@ -8,55 +8,43 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for LiveEventResourceState.
  */
-public enum LiveEventResourceState {
-    /** Enum value Stopped. */
-    STOPPED("Stopped"),
+public final class LiveEventResourceState extends ExpandableStringEnum<LiveEventResourceState> {
+    /** Static value Stopped for LiveEventResourceState. */
+    public static final LiveEventResourceState STOPPED = fromString("Stopped");
 
-    /** Enum value Starting. */
-    STARTING("Starting"),
+    /** Static value Starting for LiveEventResourceState. */
+    public static final LiveEventResourceState STARTING = fromString("Starting");
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Static value Running for LiveEventResourceState. */
+    public static final LiveEventResourceState RUNNING = fromString("Running");
 
-    /** Enum value Stopping. */
-    STOPPING("Stopping"),
+    /** Static value Stopping for LiveEventResourceState. */
+    public static final LiveEventResourceState STOPPING = fromString("Stopping");
 
-    /** Enum value Deleting. */
-    DELETING("Deleting");
+    /** Static value Deleting for LiveEventResourceState. */
+    public static final LiveEventResourceState DELETING = fromString("Deleting");
 
-    /** The actual serialized value for a LiveEventResourceState instance. */
-    private String value;
-
-    LiveEventResourceState(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LiveEventResourceState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding LiveEventResourceState
+     */
+    @JsonCreator
+    public static LiveEventResourceState fromString(String name) {
+        return fromString(name, LiveEventResourceState.class);
     }
 
     /**
-     * Parses a serialized value to a LiveEventResourceState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LiveEventResourceState object, or null if unable to parse.
+     * @return known LiveEventResourceState values
      */
-    @JsonCreator
-    public static LiveEventResourceState fromString(String value) {
-        LiveEventResourceState[] items = LiveEventResourceState.values();
-        for (LiveEventResourceState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LiveEventResourceState> values() {
+        return values(LiveEventResourceState.class);
     }
 }

@@ -129,21 +129,20 @@ public final class StorageClientBuilder {
      * Sets the blob service endpoint, additionally parses it for information (SAS token, queue name)
      * @param endpoint URL of the service
      * @return the updated StorageClientBuilder object
-     * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
+     * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
     public StorageClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint);
-        URL url;
         try {
-            url = new URL(endpoint);
+            URL url = new URL(endpoint);
             this.endpoint = url.getProtocol() + "://" + url.getAuthority();
+
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(URLParser.parse(url).sasQueryParameters());
+            if (this.sasTokenCredential != null) {
+                this.tokenCredential = null;
+                this.sharedKeyCredential = null;
+            }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage endpoint url is malformed.");
-        }
-
-        SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
-        if (credential != null) {
-            this.credential(credential);
         }
 
         return this;
@@ -157,9 +156,10 @@ public final class StorageClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public StorageClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -169,9 +169,10 @@ public final class StorageClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated StorageClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public StorageClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -181,9 +182,10 @@ public final class StorageClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated StorageClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public StorageClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -237,9 +239,10 @@ public final class StorageClientBuilder {
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
      * @return the updated StorageClientBuilder object
+     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public StorageClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = Objects.requireNonNull(httpClient);
         return this;
     }
 
@@ -247,9 +250,10 @@ public final class StorageClientBuilder {
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
      * @return the updated StorageClientBuilder object
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public StorageClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(pipelinePolicy);
+        this.policies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
@@ -278,9 +282,10 @@ public final class StorageClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      * @param retryOptions the options to configure retry behaviors
      * @return the updated StorageClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public StorageClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+        this.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
     }
 }

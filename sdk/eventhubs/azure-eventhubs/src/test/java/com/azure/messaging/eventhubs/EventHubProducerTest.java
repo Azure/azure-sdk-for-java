@@ -37,7 +37,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubProducerTest {
-
     @Mock
     private AmqpSendLink sendLink;
 
@@ -50,6 +49,7 @@ public class EventHubProducerTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(EventHubProducer.MAX_MESSAGE_LENGTH_BYTES));
     }
 
     @After
@@ -75,7 +75,6 @@ public class EventHubProducerTest {
 
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
-        final int maxMessageSize = 16 * 1024;
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
         final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
@@ -155,21 +154,226 @@ public class EventHubProducerTest {
      */
     @Test
     public void sendTooManyMessages() {
-        final Flux<EventData> testData = Flux.range(0, 500).flatMap(number -> {
+        // Arrange
+        int maxLinkSize = 1024;
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // We believe 20 events is enough for that EventDataBatch to be greater than max size.
+        final Flux<EventData> testData = Flux.range(0, 20).flatMap(number -> {
             final EventData data = new EventData(CONTENTS.getBytes(UTF_8));
             return Flux.just(data);
         });
 
-        final AmqpSendLink sendLink = mock(AmqpSendLink.class);
         final SendOptions options = new SendOptions();
         final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
-        final EventHubProducer producer = new EventHubProducer(Mono.just(sendLink), producerOptions);
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
 
+        // Act & Assert
         StepVerifier.create(producer.send(testData, options))
             .verifyErrorMatches(error -> error instanceof AmqpException
                 && ((AmqpException) error).getErrorCondition() == ErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
-        verify(sendLink, times(0)).send(any(Message.class));
+        verify(link, times(0)).send(any(Message.class));
+    }
+
+    /**
+     * Verifies that the producer can create an {@link EventDataBatch} with the size given by the underlying AMQP send
+     * link.
+     */
+    @Test
+    public void createsEventDataBatch() {
+        // Arrange
+        int maxLinkSize = 1024;
+
+        // Overhead when serializing an event, to figure out what the maximum size we can use for an event payload.
+        int eventOverhead = 24;
+        int maxEventPayload = maxLinkSize - eventOverhead;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // This event is 1024 bytes when serialized.
+        final EventData event = new EventData(new byte[maxEventPayload]);
+
+        // This event will be 1025 bytes when serialized.
+        final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
+
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch())
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertTrue(batch.tryAdd(event));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(producer.createBatch())
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+            })
+            .verifyComplete();
+
+        verify(link, times(2)).getLinkSize();
+    }
+
+    /**
+     * Verifies we can create an EventDataBatch with partition key and link size.
+     */
+    @Test
+    public void createsEventDataBatchWithPartitionKey() {
+        // Arrange
+        int maxLinkSize = 1024;
+
+        // No idea what the overhead for adding partition key is. But we know this will be smaller than the max size.
+        int eventPayload = maxLinkSize - 100;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // This event is 1024 bytes when serialized.
+        final EventData event = new EventData(new byte[eventPayload]);
+        final BatchOptions options = new BatchOptions().partitionKey("some-key");
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch(options))
+            .assertNext(batch -> {
+                Assert.assertEquals(options.partitionKey(), batch.getPartitionKey());
+                Assert.assertTrue(batch.tryAdd(event));
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies we cannot create an EventDataBatch if the BatchOptions size is larger than the link.
+     */
+    @Test
+    public void createEventDataBatchWhenMaxSizeIsTooBig() {
+        // Arrange
+        int maxLinkSize = 1024;
+        int batchSize = maxLinkSize + 10;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // This event is 1024 bytes when serialized.
+        final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch(options))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+    }
+
+    /**
+     * Verifies that the producer can create an {@link EventDataBatch} with a given {@link
+     * BatchOptions#maximumSizeInBytes()}.
+     */
+    @Test
+    public void createsEventDataBatchWithSize() {
+        // Arrange
+        int maxLinkSize = 10000;
+        int batchSize = 1024;
+
+        // Overhead when serializing an event, to figure out what the maximum size we can use for an event payload.
+        int eventOverhead = 24;
+        int maxEventPayload = batchSize - eventOverhead;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // This event is 1024 bytes when serialized.
+        final EventData event = new EventData(new byte[maxEventPayload]);
+
+        // This event will be 1025 bytes when serialized.
+        final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
+
+        final BatchOptions options = new BatchOptions().maximumSizeInBytes(batchSize);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch(options))
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertTrue(batch.tryAdd(event));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(producer.createBatch(options))
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void batchOptionsIsCloned() {
+        // Arrange
+        int maxLinkSize = 1024;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        final String originalKey = "some-key";
+        final BatchOptions options = new BatchOptions().partitionKey(originalKey);
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch(options))
+            .assertNext(batch -> {
+                options.partitionKey("something-else");
+                Assert.assertEquals(originalKey, batch.getPartitionKey());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void sendsAnEventDataBatch() {
+        // Arrange
+        int maxLinkSize = 1024;
+
+        // Overhead when serializing an event, to figure out what the maximum size we can use for an event payload.
+        int eventOverhead = 24;
+        int maxEventPayload = maxLinkSize - eventOverhead;
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // This event is 1024 bytes when serialized.
+        final EventData event = new EventData(new byte[maxEventPayload]);
+
+        // This event will be 1025 bytes when serialized.
+        final EventData tooLargeEvent = new EventData(new byte[maxEventPayload + 1]);
+
+        final EventHubProducerOptions producerOptions = new EventHubProducerOptions().retry(Retry.getNoRetry()).timeout(Duration.ofSeconds(30));
+        final EventHubProducer producer = new EventHubProducer(Mono.just(link), producerOptions);
+
+        // Act & Assert
+        StepVerifier.create(producer.createBatch())
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertTrue(batch.tryAdd(event));
+            })
+            .verifyComplete();
+
+        StepVerifier.create(producer.createBatch())
+            .assertNext(batch -> {
+                Assert.assertNull(batch.getPartitionKey());
+                Assert.assertFalse(batch.tryAdd(tooLargeEvent));
+            })
+            .verifyComplete();
+
+        verify(link, times(2)).getLinkSize();
     }
 
     private static final String CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \n"

@@ -19,7 +19,7 @@ final class ActiveClientTokenManager {
     private final Duration tokenRefreshInterval;
     private final SchedulerProvider schedulerProvider;
     private final Timer timerScheduler;
-    private CompletableFuture timer;
+    private CompletableFuture<?> timer;
 
     ActiveClientTokenManager(
             final ClientEntity clientEntity,

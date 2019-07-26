@@ -37,7 +37,7 @@ public final class ClientConstants {
     public static final String NO_RETRY = "NoRetry";
     public static final String DEFAULT_RETRY = "Default";
     public static final String PRODUCT_NAME = "MSJavaClient";
-    public static final String CURRENT_JAVACLIENT_VERSION = "2.3.1";
+    public static final String CURRENT_JAVACLIENT_VERSION = "3.0.0";
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
     public static final String CBS_ADDRESS = "$cbs";
@@ -45,10 +45,12 @@ public final class ClientConstants {
     public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
     public static final String PUT_TOKEN_TYPE = "type";
     public static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
+    public static final String JWT_TOKEN_TYPE = "jwt";
     public static final String PUT_TOKEN_AUDIENCE = "name";
     public static final String PUT_TOKEN_EXPIRY = "expiration";
     public static final String PUT_TOKEN_STATUS_CODE = "status-code";
     public static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
+    public static final String EVENTHUBS_AUDIENCE = "https://eventhubs.azure.net/";
     public static final String MANAGEMENT_ADDRESS = "$management";
     public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";

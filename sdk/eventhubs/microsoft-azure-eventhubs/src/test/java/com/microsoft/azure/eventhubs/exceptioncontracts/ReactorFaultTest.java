@@ -38,7 +38,7 @@ public class ReactorFaultTest extends ApiTestBase {
     @Ignore("TODO: Investigate testcase. This fails.")
     @Test()
     public void verifyReactorRestartsOnProtonBugs() throws Exception {
-        final EventHubClient eventHubClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
+        final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             final PartitionReceiver partitionReceiver = eventHubClient.createEpochReceiverSync(
                     "$default", "0", EventPosition.fromStartOfStream(), System.currentTimeMillis());
@@ -84,7 +84,7 @@ public class ReactorFaultTest extends ApiTestBase {
 
     @Test()
     public void verifyTransportAbort() throws Exception {
-        final EventHubClient eventHubClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
+        final EventHubClient eventHubClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         try {
             final PartitionReceiver partitionReceiver = eventHubClient.createEpochReceiverSync(
                     "$default", "0", EventPosition.fromStartOfStream(), System.currentTimeMillis());

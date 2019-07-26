@@ -2,17 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.Range;
-import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.Range;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.List;
@@ -118,7 +118,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             // This etag is not the correct format. It is not the correct hash that the service is expecting.
             assertRestException(() -> client.setSetting(initial.etag("badEtag")), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
 
-            final String etag = client.addSetting(initial).value().etag();
+            final String etag = client.addSetting(initial).etag();
 
             assertConfigurationEquals(update, client.setSetting(update.etag(etag)));
             assertRestException(() -> client.setSetting(initial), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
@@ -191,8 +191,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             final ConfigurationSetting update = settings.get(1);
             final ConfigurationSetting last = settings.get(2);
 
-            final String initialEtag = client.addSetting(initial).value().etag();
-            final String updateEtag = client.updateSetting(update).value().etag();
+            final String initialEtag = client.addSetting(initial).etag();
+            final String updateEtag = client.updateSetting(update).etag();
 
             // The setting does not exist in the service yet, so we cannot update it.
             assertRestException(() -> client.updateSetting(new ConfigurationSetting().key(last.key()).label(last.label()).value(last.value()).etag(initialEtag)),
@@ -266,8 +266,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         assertConfigurationEquals(neverDeletedConfiguation, client.addSetting(neverDeletedConfiguation));
 
-        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"), HttpResponseStatus.NO_CONTENT.code());
-        assertConfigurationEquals(null, client.deleteSetting(notFoundDelete), HttpResponseStatus.NO_CONTENT.code());
+        assertConfigurationEquals(null, client.deleteSetting("myNonExistentKey"));
+        assertConfigurationEquals(null, client.deleteSettingWithResponse(notFoundDelete, Context.NONE), HttpResponseStatus.NO_CONTENT.code());
 
         assertConfigurationEquals(neverDeletedConfiguation, client.getSetting(neverDeletedConfiguation.key()));
     }
@@ -278,8 +278,8 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     public void deleteSettingWithETag() {
         deleteSettingWithETagRunner((initial, update) -> {
-            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial).value();
-            final ConfigurationSetting updatedConfig = client.updateSetting(update).value();
+            final ConfigurationSetting initiallyAddedConfig = client.addSetting(initial);
+            final ConfigurationSetting updatedConfig = client.updateSetting(update);
 
             assertConfigurationEquals(update, client.getSetting(initial));
             assertRestException(() -> client.deleteSetting(initiallyAddedConfig), ResourceNotFoundException.class, HttpResponseStatus.PRECONDITION_FAILED.code());
@@ -548,7 +548,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().key(key).value("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().key(key).value("myNewValue");
-        final Response<ConfigurationSetting> block = client.addSetting(expected);
+        final ConfigurationSetting block = client.addSetting(expected);
 
         assertNotNull(block);
         assertConfigurationEquals(expected, block);

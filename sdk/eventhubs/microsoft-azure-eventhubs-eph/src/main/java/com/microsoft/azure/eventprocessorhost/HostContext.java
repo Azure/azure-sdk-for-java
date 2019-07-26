@@ -3,8 +3,6 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import com.microsoft.azure.eventhubs.RetryPolicy;
-
 import java.util.concurrent.ScheduledExecutorService;
 
 final class HostContext {
@@ -18,8 +16,7 @@ final class HostContext {
 
     private final String eventHubPath;
     private final String consumerGroupName;
-    private final String eventHubConnectionString;
-    private final RetryPolicy retryPolicy;
+    private final EventHubClientFactory eventHubClientFactory;
 
     private final ILeaseManager leaseManager;
     private final ICheckpointManager checkpointManager;
@@ -33,7 +30,7 @@ final class HostContext {
 
     HostContext(ScheduledExecutorService executor,
                 EventProcessorHost host, String hostName,
-                String eventHubPath, String consumerGroupName, String eventHubConnectionString, RetryPolicy retryPolicy,
+                String eventHubPath, String consumerGroupName, EventHubClientFactory eventHubClientFactory,
                 ILeaseManager leaseManager, ICheckpointManager checkpointManager) {
         this.executor = executor;
 
@@ -42,8 +39,7 @@ final class HostContext {
 
         this.eventHubPath = eventHubPath;
         this.consumerGroupName = consumerGroupName;
-        this.eventHubConnectionString = eventHubConnectionString;
-        this.retryPolicy = retryPolicy;
+        this.eventHubClientFactory = eventHubClientFactory;
 
         this.leaseManager = leaseManager;
         this.checkpointManager = checkpointManager;
@@ -65,12 +61,8 @@ final class HostContext {
         return this.consumerGroupName;
     }
 
-    String getEventHubConnectionString() {
-        return this.eventHubConnectionString;
-    }
-
-    RetryPolicy getRetryPolicy() {
-        return this.retryPolicy;
+    EventHubClientFactory getEventHubClientFactory() {
+        return this.eventHubClientFactory;
     }
 
     ILeaseManager getLeaseManager() {

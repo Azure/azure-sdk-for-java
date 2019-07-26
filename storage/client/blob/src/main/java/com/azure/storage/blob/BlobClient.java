@@ -46,7 +46,6 @@ import java.time.OffsetDateTime;
  * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
 public class BlobClient {
     private final BlobAsyncClient blobAsyncClient;
 

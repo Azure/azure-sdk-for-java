@@ -49,7 +49,6 @@ import java.util.Objects;
  * Once all the configurations are set on this builder, call {@code .buildClient()} to create a
  * {@link ContainerClient} or {@code .buildAsyncClient()} to create a {@link ContainerAsyncClient}.
  */
-@SuppressWarnings({"unused", "WeakerAccess"})
 public final class ContainerClientBuilder {
     private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
@@ -137,20 +136,15 @@ public final class ContainerClientBuilder {
     public ContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
-            this.endpoint = url.getProtocol() + "://" + url.getAuthority();
-            String path = url.getPath();
-            if (path != null && !path.isEmpty() && !path.equals("/")) {
-                path = path.replaceAll("^/", "").replaceAll("/$", "");
-                if (path.contains("/")) {
-                    throw new IllegalArgumentException("Endpoint should contain exactly 0 or 1 path segments");
-                } else {
-                    this.containerName = path;
-                }
-            }
+            BlobURLParts parts = URLParser.parse(url);
 
-            SASTokenCredential credential = SASTokenCredential.fromQuery(url.getQuery());
-            if (credential != null) {
-                this.credential(credential);
+            this.endpoint = parts.scheme() + "://" + parts.host();
+            this.containerName = parts.containerName();
+
+            this.sasTokenCredential = SASTokenCredential.fromQueryParameters(parts.sasQueryParameters());
+            if (this.sasTokenCredential != null) {
+                this.tokenCredential = null;
+                this.sharedKeyCredential = null;
             }
         } catch (MalformedURLException ex) {
             throw new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed.");
@@ -177,9 +171,10 @@ public final class ContainerClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(SharedKeyCredential credential) {
-        this.sharedKeyCredential = credential;
+        this.sharedKeyCredential = Objects.requireNonNull(credential);
         this.tokenCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -189,9 +184,10 @@ public final class ContainerClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        this.tokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.sasTokenCredential = null;
         return this;
@@ -201,9 +197,10 @@ public final class ContainerClientBuilder {
      * Sets the credential used to authorize requests sent to the service
      * @param credential authorization credential
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ContainerClientBuilder credential(SASTokenCredential credential) {
-        this.sasTokenCredential = credential;
+        this.sasTokenCredential = Objects.requireNonNull(credential);
         this.sharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -257,9 +254,10 @@ public final class ContainerClientBuilder {
      * Sets the http client used to send service requests
      * @param httpClient http client to send requests
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public ContainerClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient = Objects.requireNonNull(httpClient);
         return this;
     }
 
@@ -267,9 +265,10 @@ public final class ContainerClientBuilder {
      * Adds a pipeline policy to apply on each request sent
      * @param pipelinePolicy a pipeline policy
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public ContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.policies.add(pipelinePolicy);
+        this.policies.add(Objects.requireNonNull(pipelinePolicy));
         return this;
     }
 
@@ -298,9 +297,10 @@ public final class ContainerClientBuilder {
      * Sets the request retry options for all the requests made through the client.
      * @param retryOptions the options to configure retry behaviors
      * @return the updated ContainerClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public ContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+        this.retryOptions = Objects.requireNonNull(retryOptions);
         return this;
     }
 }
