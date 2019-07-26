@@ -110,7 +110,7 @@ class BlobAPITest extends APISpec {
             .endpoint(bu.getBlobUrl().toString())
             .credential(primaryCreds)
             .addPolicy(mockPolicy)
-            .buildClient()
+            .buildBlobClient()
 
         when:
         BlobRange range = new BlobRange(2, 5L)
