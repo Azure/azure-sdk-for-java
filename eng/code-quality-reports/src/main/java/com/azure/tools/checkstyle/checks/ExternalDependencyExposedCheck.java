@@ -147,12 +147,10 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
     private Map<DetailAST, String> getInvalidParameterTypes(DetailAST parametersTypeToken) {
         final Map<DetailAST, String> invalidParameterTypesMap = new HashMap<>();
         for (DetailAST ast = parametersTypeToken.getFirstChild(); ast != null; ast = ast.getNextSibling()) {
-//            log(ast, "ast type (getInvalidParameterTypes) ==== " + ast.getText());
             if (ast.getType() == TokenTypes.PARAMETER_DEF) {
                 invalidParameterTypesMap.putAll(getInvalidTypeFromTypeArguments(ast.findFirstToken(TokenTypes.TYPE)));
             }
         }
-//        log(parametersTypeToken, "Invalid Type (parametersTypeToken) MAP size = " + invalidParameterTypesMap.size());
         return invalidParameterTypesMap;
     }
 
