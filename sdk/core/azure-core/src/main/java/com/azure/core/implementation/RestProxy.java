@@ -11,6 +11,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -624,7 +625,7 @@ public class RestProxy implements InvocationHandler {
             policies.add(credentialsPolicy);
         }
 
-        return HttpPipeline.builder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }

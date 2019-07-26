@@ -15,17 +15,18 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link PageBlobClientBuilder}, via
+ * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobClient#asPageBlobClient()}, or via the method
  * {@link ContainerClient#getPageBlobClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -45,15 +46,15 @@ public final class PageBlobClient extends BlobClient {
     /**
      * Indicates the number of bytes in a page.
      */
-    public static final int PAGE_BYTES = 512;
+    public static final int PAGE_BYTES = PageBlobAsyncClient.PAGE_BYTES;
 
     /**
      * Indicates the maximum number of bytes that may be sent in a call to putPage.
      */
-    public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
+    public static final int MAX_PUT_PAGES_BYTES = PageBlobAsyncClient.MAX_PUT_PAGES_BYTES;
 
     /**
-     * Package-private constructor for use by {@link PageBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param pageBlobAsyncClient the async page blob client
      */
     PageBlobClient(PageBlobAsyncClient pageBlobAsyncClient) {
@@ -189,7 +190,7 @@ public final class PageBlobClient extends BlobClient {
     public Response<PageBlobItem> uploadPages(PageRange pageRange, InputStream body,
             PageBlobAccessConditions pageBlobAccessConditions, Duration timeout) {
         long length = pageRange.end() - pageRange.start();
-        Flux<ByteBuffer> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
+        Flux<ByteBuf> fbb = Flux.range(0, (int) Math.ceil((double) length / (double) PAGE_BYTES))
             .map(i -> i * PAGE_BYTES)
             .concatMap(pos -> Mono.fromCallable(() -> {
                 byte[] cache = new byte[PAGE_BYTES];
@@ -197,7 +198,8 @@ public final class PageBlobClient extends BlobClient {
                 while (read < PAGE_BYTES) {
                     read += body.read(cache, read, PAGE_BYTES - read);
                 }
-                return ByteBuffer.wrap(cache);
+
+                return ByteBufAllocator.DEFAULT.buffer(read).writeBytes(cache);
             }));
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPages(pageRange,
