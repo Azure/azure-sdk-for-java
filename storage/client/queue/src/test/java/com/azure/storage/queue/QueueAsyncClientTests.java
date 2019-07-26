@@ -38,7 +38,6 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         if (interceptorManager.isPlaybackMode()) {
             client = helper.setupClient((connectionString, endpoint) -> new QueueClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -46,7 +45,6 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         } else {
             client = helper.setupClient((connectionString, endpoint) -> new QueueClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)

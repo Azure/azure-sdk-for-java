@@ -40,14 +40,12 @@ public class QueueStorageClientTests extends QueueStorageClientTestsBase {
         if (interceptorManager.isPlaybackMode()) {
             serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient(), true, logger);
         } else {
             serviceClient = helper.setupClient((connectionString, endpoint) -> new QueueStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
