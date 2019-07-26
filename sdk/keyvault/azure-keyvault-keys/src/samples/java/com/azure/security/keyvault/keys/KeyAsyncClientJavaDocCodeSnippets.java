@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.credentials.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -71,7 +72,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
         RecordedData networkData = new RecordedData();
-        HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
             .endpoint("https://myvault.azure.net/")

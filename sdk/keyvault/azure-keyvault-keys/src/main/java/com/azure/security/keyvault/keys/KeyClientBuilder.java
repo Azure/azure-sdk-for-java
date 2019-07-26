@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.http.policy.spi.HttpPolicyProviders;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
