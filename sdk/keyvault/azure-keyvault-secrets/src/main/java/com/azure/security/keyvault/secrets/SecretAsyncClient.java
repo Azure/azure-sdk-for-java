@@ -13,6 +13,7 @@ import com.azure.core.implementation.RestProxy;
 import com.azure.core.implementation.annotation.ReturnType;
 import com.azure.core.implementation.annotation.ServiceClient;
 import com.azure.core.implementation.annotation.ServiceMethod;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -87,7 +88,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> setSecret(Secret secret) {
         return withContext(context -> setSecretWithResponse(secret))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -147,7 +148,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> setSecret(String name, String value) {
         return withContext(context -> setSecret(name, value, context))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Secret>> setSecret(String name, String value, Context context) {
@@ -182,7 +183,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name, String version) {
         return withContext(context -> getSecretWithResponse(name, version))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -249,7 +250,7 @@ public final class SecretAsyncClient {
             return getSecret(secretBase.name());
         }
         return getSecretWithResponse(secretBase.name(), secretBase.version())
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -307,7 +308,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> getSecret(String name) {
         return getSecretWithResponse(name, "")
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     Mono<Response<Secret>> getSecret(String name, Context context) {
@@ -335,7 +336,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBase> updateSecret(SecretBase secret) {
         return withContext(context -> updateSecretWithResponse(secret))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -392,7 +393,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> deleteSecret(String name) {
         return withContext(context -> deleteSecretWithResponse(name))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -443,7 +444,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecret> getDeletedSecret(String name) {
         return withContext(context -> getDeletedSecretWithResponse(name))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -527,7 +528,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> recoverDeletedSecret(String name) {
         return withContext(context -> recoverDeletedSecretWithResponse(name))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -578,7 +579,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupSecret(String name) {
         return withContext(context -> backupSecretWithResponse(name))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -631,7 +632,7 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Secret> restoreSecret(byte[] backup) {
         return withContext(context -> restoreSecretWithResponse(backup))
-            .flatMap(response -> Mono.justOrEmpty(response.value()));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
