@@ -21,6 +21,7 @@ import java.util.Set;
  *  No external dependency exposed in public API
  */
 public class ExternalDependencyExposedCheck extends AbstractCheck {
+    private static final String EXTERNAL_DEPENDENCY_ERROR = "Class ''%s'', is a class from external dependency. You should not use it as a %s type.";
     private static final Set<String> VALID_DEPENDENCY_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         "java", "com.azure", "reactor", "io.netty.buffer.ByteBuf"
     )));
@@ -99,14 +100,14 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
         final DetailAST typeToken = methodDefToken.findFirstToken(TokenTypes.TYPE);
         if (typeToken != null) {
             getInvalidReturnTypes(typeToken).forEach(
-                (token, returnTypeName) -> log(token, String.format("Class ''%s'', is a class from external dependency. You should not use it as a return type.", returnTypeName)));
+                (token, returnTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, returnTypeName, "return")));
         }
 
         // Checks for the parameters of the method
         final DetailAST parametersToken = methodDefToken.findFirstToken(TokenTypes.PARAMETERS);
         if (parametersToken != null) {
             getInvalidParameterTypes(parametersToken).forEach(
-                (token, parameterTypeName) -> log(token, String.format("Class ''%s'', is a class from external dependency. You should not use it as a method argument type.", parameterTypeName)));
+                (token, parameterTypeName) -> log(token, String.format(EXTERNAL_DEPENDENCY_ERROR, parameterTypeName, "method argument")));
         }
     }
 
