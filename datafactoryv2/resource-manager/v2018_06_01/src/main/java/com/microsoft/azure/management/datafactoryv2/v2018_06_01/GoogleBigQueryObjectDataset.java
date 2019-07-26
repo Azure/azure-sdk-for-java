@@ -22,13 +22,28 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.D
 @JsonFlatten
 public class GoogleBigQueryObjectDataset extends DatasetInner {
     /**
-     * The table name. Type: string (or Expression with resultType string).
+     * This property will be retired. Please consider using database + table
+     * properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /**
-     * Get the table name. Type: string (or Expression with resultType string).
+     * The table name of the Google BigQuery. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.table")
+    private Object table;
+
+    /**
+     * The database name of the Google BigQuery. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.dataset")
+    private Object dataset;
+
+    /**
+     * Get this property will be retired. Please consider using database + table properties instead.
      *
      * @return the tableName value
      */
@@ -37,13 +52,53 @@ public class GoogleBigQueryObjectDataset extends DatasetInner {
     }
 
     /**
-     * Set the table name. Type: string (or Expression with resultType string).
+     * Set this property will be retired. Please consider using database + table properties instead.
      *
      * @param tableName the tableName value to set
      * @return the GoogleBigQueryObjectDataset object itself.
      */
     public GoogleBigQueryObjectDataset withTableName(Object tableName) {
         this.tableName = tableName;
+        return this;
+    }
+
+    /**
+     * Get the table name of the Google BigQuery. Type: string (or Expression with resultType string).
+     *
+     * @return the table value
+     */
+    public Object table() {
+        return this.table;
+    }
+
+    /**
+     * Set the table name of the Google BigQuery. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set
+     * @return the GoogleBigQueryObjectDataset object itself.
+     */
+    public GoogleBigQueryObjectDataset withTable(Object table) {
+        this.table = table;
+        return this;
+    }
+
+    /**
+     * Get the database name of the Google BigQuery. Type: string (or Expression with resultType string).
+     *
+     * @return the dataset value
+     */
+    public Object dataset() {
+        return this.dataset;
+    }
+
+    /**
+     * Set the database name of the Google BigQuery. Type: string (or Expression with resultType string).
+     *
+     * @param dataset the dataset value to set
+     * @return the GoogleBigQueryObjectDataset object itself.
+     */
+    public GoogleBigQueryObjectDataset withDataset(Object dataset) {
+        this.dataset = dataset;
         return this;
     }
 
