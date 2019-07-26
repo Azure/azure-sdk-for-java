@@ -26,6 +26,7 @@ import com.azure.storage.file.models.DirectorysGetPropertiesResponse;
 import com.azure.storage.file.models.DirectorysListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.models.DirectorysListHandlesResponse;
 import com.azure.storage.file.models.DirectorysSetMetadataResponse;
+import com.azure.storage.file.models.FilesDeleteResponse;
 import com.azure.storage.file.models.StorageErrorException;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -181,6 +182,7 @@ public final class DirectorysImpl {
         final String restype = "directory";
         return service.delete(shareName, directoryPath, this.client.getUrl(), timeout, this.client.getVersion(), restype, context);
     }
+
 
     /**
      * Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
