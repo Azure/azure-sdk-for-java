@@ -41,7 +41,11 @@ public class HttpPipelineBuilder {
     private List<HttpPipelinePolicy> pipelinePolicies;
 
 
-    HttpPipelineBuilder() {
+    /**
+     *  Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
+     *  creating an instance of it.
+     */
+    public HttpPipelineBuilder() {
     }
 
     /**

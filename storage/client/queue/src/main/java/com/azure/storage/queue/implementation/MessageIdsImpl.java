@@ -10,6 +10,7 @@ import com.azure.core.annotations.ExpectedResponses;
 import com.azure.core.annotations.HeaderParam;
 import com.azure.core.annotations.Host;
 import com.azure.core.annotations.HostParam;
+import com.azure.core.annotations.PathParam;
 import com.azure.core.annotations.PUT;
 import com.azure.core.annotations.QueryParam;
 import com.azure.core.annotations.Service;
@@ -57,12 +58,12 @@ public final class MessageIdsImpl {
         @PUT("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessageIdsUpdateResponse> update(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<MessageIdsUpdateResponse> update(@HostParam("url") String url, @PathParam("queueName") String queueName, @PathParam("messageid") String messageId, @BodyParam("application/xml; charset=utf-8") QueueMessage queueMessage, @QueryParam("popreceipt") String popReceipt, @QueryParam("visibilitytimeout") int visibilitytimeout, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
 
         @DELETE("{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(StorageErrorException.class)
-        Mono<MessageIdsDeleteResponse> delete(@HostParam("url") String url, @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
+        Mono<MessageIdsDeleteResponse> delete(@HostParam("url") String url, @PathParam("queueName") String queueName, @PathParam("messageid") String messageId, @QueryParam("popreceipt") String popReceipt, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, Context context);
     }
 
     /**
@@ -75,10 +76,10 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageId, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.update(this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
+        return service.update(this.client.url(), queueName, messageId, queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -93,8 +94,8 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
-        return service.update(this.client.url(), queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
+    public Mono<MessageIdsUpdateResponse> updateWithRestResponseAsync(String queueName, String messageId, QueueMessage queueMessage, String popReceipt, int visibilitytimeout, Integer timeout, String requestId, Context context) {
+        return service.update(this.client.url(), queueName, messageId, queueMessage, popReceipt, visibilitytimeout, timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -105,10 +106,10 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Context context) {
+    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String queueName, String messageId, String popReceipt, Context context) {
         final Integer timeout = null;
         final String requestId = null;
-        return service.delete(this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
+        return service.delete(this.client.url(), queueName, messageId, popReceipt, timeout, this.client.version(), requestId, context);
     }
 
     /**
@@ -121,7 +122,7 @@ public final class MessageIdsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String popReceipt, Integer timeout, String requestId, Context context) {
-        return service.delete(this.client.url(), popReceipt, timeout, this.client.version(), requestId, context);
+    public Mono<MessageIdsDeleteResponse> deleteWithRestResponseAsync(String queueName, String messageId, String popReceipt, Integer timeout, String requestId, Context context) {
+        return service.delete(this.client.url(), queueName, messageId, popReceipt, timeout, this.client.version(), requestId, context);
     }
 }

@@ -5,6 +5,8 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.implementation.http.UrlBuilder;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.BlobAccessConditions;
 import com.azure.storage.blob.models.BlobHTTPHeaders;
@@ -17,15 +19,17 @@ import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
+
+import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a page blob. It may only be instantiated through a {@link PageBlobClientBuilder}, via
+ * Client to a page blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asPageBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getPageBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -48,9 +52,6 @@ import java.nio.ByteBuffer;
  * object through {@link Mono#toFuture()}.
  */
 public final class PageBlobAsyncClient extends BlobAsyncClient {
-
-    final PageBlobAsyncRawClient pageBlobAsyncRawClient;
-
     /**
      * Indicates the number of bytes in a page.
      */
@@ -62,12 +63,11 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_PUT_PAGES_BYTES = 4 * Constants.MB;
 
     /**
-     * Package-private constructor for use by {@link PageBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     PageBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        this.pageBlobAsyncRawClient = new PageBlobAsyncRawClient(azureBlobStorageBuilder.build(), snapshot);
     }
 
     /**
@@ -104,13 +104,30 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return
-     *      A reactive response containing the information of the created page blob.
+     * @return A reactive response containing the information of the created page blob.
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
+     * or {@code sequenceNumber} isn't null and is less than 0.
      */
     public Mono<Response<PageBlobItem>> create(long size, Long sequenceNumber, BlobHTTPHeaders headers,
                                                Metadata metadata, BlobAccessConditions accessConditions) {
-        return pageBlobAsyncRawClient
-            .create(size, sequenceNumber, headers, metadata, accessConditions)
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        if (size % PAGE_BYTES != 0) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+        }
+        if (sequenceNumber != null && sequenceNumber < 0) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+        }
+        metadata = metadata == null ? new Metadata() : metadata;
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null,
+            null, 0, size, null, metadata, null, null,
+            null, sequenceNumber, null, headers, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -133,7 +150,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the uploaded pages.
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body) {
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body) {
         return this.uploadPages(pageRange, body, null);
     }
 
@@ -155,13 +172,25 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
-     * @return
-     *      A reactive response containing the information of the uploaded pages.
+     * @return A reactive response containing the information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
-    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuffer> body,
+    public Mono<Response<PageBlobItem>> uploadPages(PageRange pageRange, Flux<ByteBuf> body,
             PageBlobAccessConditions pageBlobAccessConditions) {
-        return pageBlobAsyncRawClient
-            .uploadPages(pageRange, body.map(Unpooled::wrappedBuffer), pageBlobAccessConditions)
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
+
+        if (pageRange == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("pageRange cannot be null.");
+        }
+        String pageRangeStr = pageRangeToString(pageRange);
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null,
+            null, body, pageRange.end() - pageRange.start() + 1, null,
+            null, pageRangeStr, null, null, null, null,
+            pageBlobAccessConditions.leaseAccessConditions(), pageBlobAccessConditions.sequenceNumberAccessConditions(),
+            pageBlobAccessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -218,15 +247,33 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param sourceAccessConditions
      *          {@link SourceModifiedAccessConditions}
      *
-     * @return
-     *      A reactive response containing the information of the uploaded pages.
+     * @return A reactive response containing the information of the uploaded pages.
+     * @throws IllegalArgumentException If {@code range} is {@code null}
      */
     public Mono<Response<PageBlobItem>> uploadPagesFromURL(PageRange range, URL sourceURL, Long sourceOffset,
             byte[] sourceContentMD5, PageBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions) {
+        if (range == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("range cannot be null.");
+        }
 
-        return pageBlobAsyncRawClient
-            .uploadPagesFromURL(range, sourceURL, sourceOffset, sourceContentMD5, destAccessConditions, sourceAccessConditions)
+        String rangeString = pageRangeToString(range);
+
+        if (sourceOffset == null) {
+            sourceOffset = 0L;
+        }
+
+        String sourceRangeString = pageRangeToString(new PageRange().start(sourceOffset).end(sourceOffset + (range.end() - range.start())));
+
+        destAccessConditions = destAccessConditions == null ? new PageBlobAccessConditions() : destAccessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
+            null, null, sourceURL, sourceRangeString, 0, rangeString, sourceContentMD5,
+            null, null, destAccessConditions.leaseAccessConditions(),
+            destAccessConditions.sequenceNumberAccessConditions(), destAccessConditions.modifiedAccessConditions(),
+            sourceAccessConditions, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -259,13 +306,23 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param pageBlobAccessConditions
      *         {@link PageBlobAccessConditions}
      *
-     * @return
-     *      A reactive response containing the information of the cleared pages.
+     * @return A reactive response containing the information of the cleared pages.
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
      */
     public Mono<Response<PageBlobItem>> clearPages(PageRange pageRange,
             PageBlobAccessConditions pageBlobAccessConditions) {
-        return pageBlobAsyncRawClient
-            .clearPages(pageRange, pageBlobAccessConditions)
+        pageBlobAccessConditions = pageBlobAccessConditions == null ? new PageBlobAccessConditions() : pageBlobAccessConditions;
+        if (pageRange == null) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("pageRange cannot be null.");
+        }
+        String pageRangeStr = pageRangeToString(pageRange);
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().clearPagesWithRestResponseAsync(null,
+            null, 0, null, pageRangeStr, null,
+            pageBlobAccessConditions.leaseAccessConditions(), pageBlobAccessConditions.sequenceNumberAccessConditions(),
+            pageBlobAccessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -295,10 +352,14 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response emitting all the page ranges.
      */
-    public Flux<PageRange> getPageRanges(BlobRange blobRange,
-                                                            BlobAccessConditions accessConditions) {
-        return pageBlobAsyncRawClient
-            .getPageRanges(blobRange, accessConditions)
+    public Flux<PageRange> getPageRanges(BlobRange blobRange, BlobAccessConditions accessConditions) {
+        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(
+            null, null, snapshot, null, null, blobRange.toHeaderValue(),
+            null, accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(),
+            Context.NONE))
             .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
     }
 
@@ -333,13 +394,21 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return
-     *      A reactive response emitting all the different page ranges.
+     * @return A reactive response emitting all the different page ranges.
+     * @throws IllegalArgumentException If {@code prevSnapshot} is {@code null}
      */
-    public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot,
-            BlobAccessConditions accessConditions) {
-        return pageBlobAsyncRawClient
-            .getPageRangesDiff(blobRange, prevSnapshot, accessConditions)
+    public Flux<PageRange> getPageRangesDiff(BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
+        blobRange = blobRange == null ? new BlobRange(0) : blobRange;
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        if (prevSnapshot == null) {
+            throw new IllegalArgumentException("prevSnapshot cannot be null");
+        }
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(
+            null, null, snapshot, null, null, prevSnapshot,
+            blobRange.toHeaderValue(), null, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), Context.NONE))
             .flatMapMany(response -> Flux.fromIterable(response.value().pageRange()));
     }
 
@@ -368,12 +437,20 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return
-     *      A reactive response emitting the resized page blob.
+     * @return A reactive response emitting the resized page blob.
+     * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES}
      */
     public Mono<Response<PageBlobItem>> resize(long size, BlobAccessConditions accessConditions) {
-        return pageBlobAsyncRawClient
-            .resize(size, accessConditions)
+        if (size % PAGE_BYTES != 0) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES.");
+        }
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null,
+            null, size, null, null, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -407,13 +484,22 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      * @param accessConditions
      *         {@link BlobAccessConditions}
      *
-     * @return
-     *      A reactive response emitting the updated page blob.
+     * @return A reactive response emitting the updated page blob.
+     * @throws IllegalArgumentException If {@code sequenceNumber} isn't null and is less than 0
      */
-    public Mono<Response<PageBlobItem>> updateSequenceNumber(SequenceNumberActionType action,
-            Long sequenceNumber, BlobAccessConditions accessConditions) {
-        return pageBlobAsyncRawClient
-            .updateSequenceNumber(action, sequenceNumber, accessConditions)
+    public Mono<Response<PageBlobItem>> updateSequenceNumber(SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
+        if (sequenceNumber != null && sequenceNumber < 0) {
+            // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
+        }
+        accessConditions = accessConditions == null ? new BlobAccessConditions() : accessConditions;
+        sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
+
+        return postProcessResponse(
+            this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null,
+                null, action, null, sequenceNumber, null,
+                accessConditions.leaseAccessConditions(), accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new PageBlobItem(rb.deserializedHeaders())));
     }
 
@@ -454,13 +540,37 @@ public final class PageBlobAsyncClient extends BlobAsyncClient {
      *         to construct conditions related to when the blob was changed relative to the given request. The request
      *         will fail if the specified condition is not satisfied.
      *
-     * @return
-     *      A reactive response emitting the copy status.
+     * @return A reactive response emitting the copy status.
+     * @throws Error If {@code source} and {@code snapshot} form a malformed URL.
      */
-    public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot,
-            ModifiedAccessConditions modifiedAccessConditions) {
-        return pageBlobAsyncRawClient
-            .copyIncremental(source, snapshot, modifiedAccessConditions)
+    public Mono<Response<CopyStatusType>> copyIncremental(URL source, String snapshot, ModifiedAccessConditions modifiedAccessConditions) {
+        UrlBuilder builder = UrlBuilder.parse(source);
+        builder.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, snapshot);
+        try {
+            source = builder.toURL();
+        } catch (MalformedURLException e) {
+            // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
+            throw new Error(e);
+        }
+        return postProcessResponse(this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(
+            null, null, source, null, null, modifiedAccessConditions, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, rb.deserializedHeaders().copyStatus()));
+    }
+
+    private static String pageRangeToString(PageRange pageRange) {
+        if (pageRange.start() < 0 || pageRange.end() <= 0) {
+            throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to "
+                + "0 if specified.");
+        }
+        if (pageRange.start() % PAGE_BYTES != 0) {
+            throw new IllegalArgumentException("PageRange's start value must be a multiple of 512.");
+        }
+        if (pageRange.end() % PAGE_BYTES != PAGE_BYTES - 1) {
+            throw new IllegalArgumentException("PageRange's end value must be 1 less than a multiple of 512.");
+        }
+        if (pageRange.end() <= pageRange.start()) {
+            throw new IllegalArgumentException("PageRange's End value must be after the start.");
+        }
+        return "bytes=" + pageRange.start() + '-' + pageRange.end();
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Contains all response data for the dequeue operation.
  */
-public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueHeaders, List<DequeuedMessageItem>> {
+public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueHeaders, List<DequeuedMessage>> {
     /**
      * Creates an instance of MessagesDequeueResponse.
      *
@@ -22,7 +22,7 @@ public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MessagesDequeueResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<DequeuedMessageItem> value, MessagesDequeueHeaders headers) {
+    public MessagesDequeueResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<DequeuedMessage> value, MessagesDequeueHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
@@ -30,7 +30,7 @@ public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueH
      * @return the deserialized response body.
      */
     @Override
-    public List<DequeuedMessageItem> value() {
+    public List<DequeuedMessage> value() {
         return super.value();
     }
 }
