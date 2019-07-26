@@ -290,42 +290,42 @@ public final class SASQueryParameters {
     }
 
     /**
-     * @return the key OBJECT_ID
+     * @return the object ID of the key.
      */
     public String keyOid() {
         return keyOid;
     }
 
     /**
-     * @return the key TENANT_ID
+     * @return the tenant ID of the key.
      */
     public String keyTid() {
         return keyTid;
     }
 
     /**
-     * @return when the key becomes valid
+     * @return the datetime when the key becomes active.
      */
     public OffsetDateTime keyStart() {
         return keyStart;
     }
 
     /**
-     * @return when the key becomes no longer valid
+     * @return the datetime when the key expires.
      */
     public OffsetDateTime keyExpiry() {
         return keyExpiry;
     }
 
     /**
-     * @return Services allowed by the key
+     * @return the services that are permitted by the key.
      */
     public String keyService() {
         return keyService;
     }
 
     /**
-     * @return Version of the key
+     * @return the service version that created the key.
      */
     public String keyVersion() {
         return keyVersion;

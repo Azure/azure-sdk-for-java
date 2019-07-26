@@ -44,11 +44,11 @@ class ProgressReporterTest extends APISpec {
             .map({ it -> Unpooled.wrappedBuffer(it) })
 
         when:
-        BlockBlobAsyncClient bu = new BlockBlobClientBuilder()
+        BlockBlobAsyncClient bu = new BlobClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
             .blobName(generateBlobName())
             .credential(primaryCreds)
-            .buildAsyncClient()
+            .buildBlockBlobAsyncClient()
         bu.upload(data, buffer.remaining()).block()
 
         then:

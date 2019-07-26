@@ -104,10 +104,10 @@ class HelperTest extends APISpec {
         when:
         BlobURLParts parts = URLParser.parse(cu.getBlobClient(blobName).getBlobUrl())
         parts.sasQueryParameters(v.generateSASQueryParameters(primaryCreds)).scheme("https")
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
             .anonymousCredential()
-            .buildClient()
+            .buildAppendBlobClient()
 
         then:
         bu.create()
@@ -162,9 +162,9 @@ class HelperTest extends APISpec {
         BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
         parts.sasQueryParameters(v.generateSASQueryParameters(primaryCreds)).scheme("https")
         // base blob with snapshot SAS
-        AppendBlobClient bsu = new AppendBlobClientBuilder()
+        AppendBlobClient bsu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
-            .buildClient()
+            .buildAppendBlobClient()
 
         bsu.download(new ByteArrayOutputStream())
 
@@ -175,10 +175,10 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.snapshot(snapshotId)
-        bsu = new AppendBlobClientBuilder()
+        bsu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
-            .credential(new SASTokenCredential())
-            .buildClient()
+            .credential(SASTokenCredential.fromQueryParameters(parts.sasQueryParameters()))
+            .buildAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
         bsu.download(data)
@@ -285,10 +285,10 @@ class HelperTest extends APISpec {
         when:
         BlobURLParts parts = URLParser.parse(cu.getBlobClient(blobName).getBlobUrl())
         parts.sasQueryParameters(v.generateSASQueryParameters(key)).scheme("https")
-        AppendBlobClient bu = new AppendBlobClientBuilder()
+        AppendBlobClient bu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
             .anonymousCredential()
-            .buildClient()
+            .buildAppendBlobClient()
 
         then:
         bu.create()
@@ -345,10 +345,10 @@ class HelperTest extends APISpec {
         BlobURLParts parts = URLParser.parse(bu.getBlobUrl())
         parts.sasQueryParameters(v.generateSASQueryParameters(key)).scheme("https")
         // base blob with snapshot SAS
-        AppendBlobClient bsu = new AppendBlobClientBuilder()
+        AppendBlobClient bsu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
             .anonymousCredential()
-            .buildClient()
+            .buildAppendBlobClient()
         bsu.download(new ByteArrayOutputStream())
 
         then:
@@ -358,10 +358,10 @@ class HelperTest extends APISpec {
         when:
         // blob snapshot with snapshot SAS
         parts.snapshot(snapshotId)
-        bsu = new AppendBlobClientBuilder()
+        bsu = new BlobClientBuilder()
             .endpoint(parts.toURL().toString())
             .anonymousCredential()
-            .buildClient()
+            .buildAppendBlobClient()
 
         ByteArrayOutputStream data = new ByteArrayOutputStream()
         bsu.download(data)

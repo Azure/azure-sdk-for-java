@@ -1,1 +1,32 @@
-# See for instructions on this file https://help.github.com/articles/about-codeowners/
+# Instructions for CODEOWNERS file format and automatic build failure notifications:
+# https://github.com/Azure/azure-sdk/blob/master/docs/engineering-system/codeowners.md
+
+###########
+# SDK
+###########
+
+# Catch all
+/sdk/ @joshfree @jonathangiles
+
+# Service teams
+/sdk/appconfiguration/       @alzimmermsft @conniey @sima-zhu
+/sdk/core/                   @alzimmermsft @jianghaolu @srnagar @hemanttanwar
+/sdk/cosmos/                 @moderakh @christopheranderson @kushagraThapar
+/sdk/eventhubs/              @conniey @srnagar @mssfang
+/sdk/identity/               @jianghaolu @g2vinay
+/sdk/keyvault/               @g2vinay @samvaity
+/sdk/servicebus/             @yvgopal @nemakam
+/sdk/tracing/                @samvaity @alzimmermsft
+
+# TODO: Once storage libraries are migrated to /sdk folder, fix this line
+/storage/                    @rickle-msft @jaschrep-msft @alzimmermsft @sima-zhu
+
+# Management Plane
+/**/resource-manager/        @yaohaizh
+
+###########
+# Eng Sys
+###########
+/eng/   @weshaggard @mitchdenny @danieljurek
+/**/tests.yml   @danieljurek
+/**/ci.yml      @mitchdenny

@@ -5,8 +5,6 @@ package com.microsoft.azure.servicebus.security;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.microsoft.azure.servicebus.primitives.StringUtil;
-
 /**
  * This is a token provider that obtains tokens from Azure Active Directory. It supports multiple modes of authentication with active directory
  * to obtain tokens.
@@ -20,7 +18,7 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider {
     
     AzureActiveDirectoryTokenProvider(AuthenticationCallback callback, String authority, Object callbackState) {
         this.authCallback = callback;
-        this.authority = (StringUtil.isNullOrEmpty(authority)) ? "https://login.microsoftonline.com/common" : authority;
+        this.authority = authority;
         this.authCallbackState = callbackState;
     }
 

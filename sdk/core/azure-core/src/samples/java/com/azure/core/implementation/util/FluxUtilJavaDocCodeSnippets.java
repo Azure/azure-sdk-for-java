@@ -16,11 +16,11 @@ public class FluxUtilJavaDocCodeSnippets {
      * Code snippet for using {@link FluxUtil} with single item response
      */
     public void codeSnippetForCallWithSingleResponse() {
-        // BEGIN: com.azure.core.implementation.util.fluxutil.monocontext
+        // BEGIN: com.azure.core.implementation.util.fluxutil.withcontext
         String prefix = "Hello, ";
         Mono<String> response = FluxUtil
-            .monoContext(context -> serviceCallReturnsSingle(prefix, context));
-        // END: com.azure.core.implementation.util.fluxutil.monocontext
+            .withContext(context -> serviceCallReturnsSingle(prefix, context));
+        // END: com.azure.core.implementation.util.fluxutil.withcontext
     }
 
     /**

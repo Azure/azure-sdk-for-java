@@ -121,12 +121,12 @@ class SASTest extends APISpec {
         when:
         def sas = bu.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        def builder = new BlockBlobClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        def client = new BlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -173,13 +173,13 @@ class SASTest extends APISpec {
         when:
         def sas = snapshotBlob.generateSAS(null, permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        def builder = new BlockBlobClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        def client = new BlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
             .snapshot(snapshotId)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -216,7 +216,7 @@ class SASTest extends APISpec {
 
         ContainerClient client1 = new ContainerClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
-            .credential(new SASTokenCredential(sasWithId))
+            .credential(SASTokenCredential.fromSASTokenString(sasWithId))
             .httpClient(getHttpClient())
             .buildClient()
 
@@ -226,7 +226,7 @@ class SASTest extends APISpec {
 
         ContainerClient client2 = new ContainerClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
-            .credential(new SASTokenCredential(sasWithPermissions))
+            .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
             .httpClient(getHttpClient())
             .buildClient()
 
@@ -270,12 +270,12 @@ class SASTest extends APISpec {
         when:
         String sas = bu.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
-        BlockBlobClient client = new BlockBlobClientBuilder()
+        BlockBlobClient client = new BlobClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
-            .buildClient()
+            .buildBlockBlobClient()
 
         OutputStream os = new ByteArrayOutputStream()
         client.download(os)
@@ -327,13 +327,13 @@ class SASTest extends APISpec {
         String sas = snapshotBlob.generateUserDelegationSAS(key, primaryCreds.accountName(), permissions, expiryTime, startTime, null, sasProtocol, ipRange, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentType)
 
         // base blob with snapshot SAS
-        BlockBlobClient client1 = new BlockBlobClientBuilder()
+        BlockBlobClient client1 = new BlobClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .buildClient()
+            .buildBlockBlobClient()
         client1.download(new ByteArrayOutputStream())
 
         then:
@@ -342,14 +342,14 @@ class SASTest extends APISpec {
 
         when:
         // blob snapshot with snapshot SAS
-        BlockBlobClient client2 = new BlockBlobClientBuilder()
+        BlockBlobClient client2 = new BlobClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
             .snapshot(snapshotId)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
             .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-            .buildClient()
+            .buildBlockBlobClient()
 
         OutputStream os = new ByteArrayOutputStream()
         client2.download(os)
@@ -387,7 +387,7 @@ class SASTest extends APISpec {
 
         ContainerClient client = new ContainerClientBuilder()
             .endpoint(cu.getContainerUrl().toString())
-            .credential(new SASTokenCredential(sasWithPermissions))
+            .credential(SASTokenCredential.fromSASTokenString(sasWithPermissions))
             .httpClient(getHttpClient())
             .buildClient()
 
@@ -417,12 +417,12 @@ class SASTest extends APISpec {
         when:
         def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def builder = new BlockBlobClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        def client = new BlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildBlockBlobClient()
 
         def os = new ByteArrayOutputStream()
         client.download(os)
@@ -451,12 +451,12 @@ class SASTest extends APISpec {
         when:
         def sas = primaryServiceURL.generateAccountSAS(service, resourceType, permissions, expiryTime, null, null, null, null)
 
-        def builder = new BlockBlobClientBuilder()
-        builder.endpoint(cu.getContainerUrl().toString())
+        def client = new BlobClientBuilder()
+            .endpoint(cu.getContainerUrl().toString())
             .blobName(blobName)
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
             .httpClient(getHttpClient())
-        def client = builder.buildClient()
+            .buildBlockBlobClient()
         client.delete()
 
         then:
@@ -482,7 +482,7 @@ class SASTest extends APISpec {
         def scBuilder = new StorageClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
             .httpClient(getHttpClient())
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createContainer("container")
 
@@ -509,7 +509,7 @@ class SASTest extends APISpec {
         def scBuilder = new StorageClientBuilder()
         scBuilder.endpoint(primaryServiceURL.getAccountUrl().toString())
             .httpClient(getHttpClient())
-            .credential(new SASTokenCredential(sas))
+            .credential(SASTokenCredential.fromSASTokenString(sas))
         def sc = scBuilder.buildClient()
         sc.createContainer("container")
 

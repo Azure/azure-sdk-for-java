@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.http.rest.VoidResponse
 import com.azure.core.implementation.util.ImplUtils
-import com.azure.storage.blob.BlobProperties
 import com.azure.storage.blob.models.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -111,7 +110,7 @@ class BlobAPITest extends APISpec {
             .endpoint(bu.getBlobUrl().toString())
             .credential(primaryCreds)
             .addPolicy(mockPolicy)
-            .buildClient()
+            .buildBlobClient()
 
         when:
         BlobRange range = new BlobRange(2, 5L)
@@ -246,7 +245,7 @@ class BlobAPITest extends APISpec {
             .endpoint(bu.getBlobUrl().toString())
             .snapshot(snapshot)
             .credential(primaryCreds)
-            .buildClient()
+            .buildBlobClient()
         ByteArrayOutputStream snapshotStream = new ByteArrayOutputStream()
         bu3.download(snapshotStream)
         snapshotStream.toByteArray() == originalStream.toByteArray()
@@ -991,7 +990,7 @@ class BlobAPITest extends APISpec {
             .endpoint(bu.getBlobUrl().toString())
             .credential(primaryCreds)
             .snapshot(snapshotResponse.value())
-            .buildClient()
+            .buildBlobClient()
 
         then:
         bu2.getProperties().statusCode() == 200
@@ -1019,7 +1018,7 @@ class BlobAPITest extends APISpec {
             .endpoint(bu.getBlobUrl().toString())
             .credential(primaryCreds)
             .snapshot(response.value())
-            .buildClient()
+            .buildBlobClient()
 
         expect:
         response.statusCode() == 201

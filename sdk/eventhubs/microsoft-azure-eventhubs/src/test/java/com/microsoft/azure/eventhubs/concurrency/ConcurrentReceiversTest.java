@@ -41,7 +41,7 @@ public class ConcurrentReceiversTest extends ApiTestBase {
     public static void initialize() throws InterruptedException, ExecutionException, EventHubException, IOException {
         connStr = TestContext.getConnectionString();
 
-        sender = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
+        sender = EventHubClient.createFromConnectionString(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
         partitionCount = sender.getRuntimeInformation().get().getPartitionCount();
         receivers = new PartitionReceiver[partitionCount];
         consumerGroupName = TestContext.getConsumerGroupName();
@@ -56,7 +56,7 @@ public class ConcurrentReceiversTest extends ApiTestBase {
 
     @Test()
     public void testParallelCreationOfReceivers() throws EventHubException, IOException, InterruptedException, ExecutionException, TimeoutException {
-        ehClient = EventHubClient.createSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString(), TestContext.EXECUTOR_SERVICE);
         ReceiveAtleastOneEventValidator[] counter = new ReceiveAtleastOneEventValidator[partitionCount];
 
         @SuppressWarnings("unchecked") CompletableFuture<Void>[] validationSignals = new CompletableFuture[partitionCount];

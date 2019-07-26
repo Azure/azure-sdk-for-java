@@ -43,7 +43,6 @@ public class EventPositionIntegrationTest extends ApiTestBase {
     // our own.
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static final AtomicReference<EventData[]> EVENTS_PUSHED = new AtomicReference<>();
-    private static final String MESSAGE_POSITION_ID = "message-position";
     private static final String MESSAGE_TRACKING_VALUE = UUID.randomUUID().toString();
     private static final AtomicReference<Instant> MESSAGES_PUSHED_INSTANT = new AtomicReference<>();
 

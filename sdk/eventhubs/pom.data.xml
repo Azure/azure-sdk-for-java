@@ -7,7 +7,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <relativePath>../../pom.data.xml</relativePath>
   </parent>
 
@@ -15,7 +15,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs-clients</artifactId>
   <packaging>pom</packaging>
-  <version>2.3.1</version>
+  <version>3.0.0</version>
 
   <name>Microsoft Azure Event Hubs SDK Parent</name>
   <description>Java libraries for talking to Windows Azure Event Hubs</description>
@@ -74,9 +74,9 @@
   </build>
 
   <modules>
-    <module>azure-eventhubs</module>
-    <module>azure-eventhubs-eph</module>
-    <module>azure-eventhubs-extensions</module>
+    <module>microsoft-azure-eventhubs</module>
+    <module>microsoft-azure-eventhubs-eph</module>
+    <module>microsoft-azure-eventhubs-extensions</module>
   </modules>
 
 </project>

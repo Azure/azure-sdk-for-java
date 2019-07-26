@@ -75,7 +75,7 @@ public class BlobAsyncClient {
     private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
 
-    protected final AzureBlobStorageImpl azureBlobStorage;
+    final AzureBlobStorageImpl azureBlobStorage;
     protected final String snapshot;
 
     /**
