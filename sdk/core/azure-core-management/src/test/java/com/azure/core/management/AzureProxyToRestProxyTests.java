@@ -3,6 +3,7 @@
 
 package com.azure.core.management;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.BodyParam;
 import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
@@ -764,7 +765,7 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     private <T> T createService(Class<T> serviceClass) {
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(createHttpClient())
             .build();
         //

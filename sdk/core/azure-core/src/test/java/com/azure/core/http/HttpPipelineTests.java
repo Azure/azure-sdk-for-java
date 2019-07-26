@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 public class HttpPipelineTests {
     @Test
     public void constructorWithNoArguments() {
-        HttpPipeline pipeline = HttpPipeline.builder().build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().build();
         assertEquals(0, pipeline.getPolicyCount());
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
@@ -32,7 +32,7 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestPolicy() {
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new PortPolicy(80, true),
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy())
@@ -48,7 +48,7 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestOptions() throws MalformedURLException {
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new PortPolicy(80, true),
                 new ProtocolPolicy("ftp", true),
                 new RetryPolicy())
@@ -64,7 +64,7 @@ public class HttpPipelineTests {
     public void withNoRequestPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com");
-        final HttpPipeline httpPipeline = HttpPipeline.builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
@@ -97,7 +97,7 @@ public class HttpPipelineTests {
             }
         };
 
-        final HttpPipeline httpPipeline = HttpPipeline.builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new UserAgentPolicy(expectedUserAgent))
             .build();
@@ -111,7 +111,7 @@ public class HttpPipelineTests {
     public void withRequestIdRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com/1");
-        final HttpPipeline httpPipeline = HttpPipeline.builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {

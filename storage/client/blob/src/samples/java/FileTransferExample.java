@@ -9,7 +9,6 @@ import com.azure.storage.common.credentials.SharedKeyCredential;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
@@ -139,7 +138,7 @@ public class FileTransferExample {
         }
     }
 
-    private static void createTempFileWithFileSize(File f, long size) throws FileNotFoundException, IOException {
+    private static void createTempFileWithFileSize(File f, long size) throws IOException {
         RandomAccessFile raf = new RandomAccessFile(f, "rw");
         raf.setLength(size);
         raf.close();
@@ -148,7 +147,7 @@ public class FileTransferExample {
     private static void checkTwoFilesAreTheSame(File f1, File f2) throws IOException, NoSuchAlgorithmException {
         String checksumUpload = getFileChecksum(f1);
         String checksumDownload = getFileChecksum(f2);
-        if (checksumUpload.equals(checksumDownload)) {
+        if (!checksumUpload.equals(checksumDownload)) {
             throw new RuntimeException("The file upload does not match the file download.");
         }
     }

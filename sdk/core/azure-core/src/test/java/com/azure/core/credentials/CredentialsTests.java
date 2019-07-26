@@ -5,6 +5,7 @@ package com.azure.core.credentials;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockHttpClient;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -28,7 +29,7 @@ public class CredentialsTests {
             return next.process();
         };
         //
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient())
             .policies((context, next) -> credentials.getToken("scope./default")
                 .flatMap(token -> {
@@ -56,7 +57,7 @@ public class CredentialsTests {
             return next.process();
         };
 
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient())
             .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();

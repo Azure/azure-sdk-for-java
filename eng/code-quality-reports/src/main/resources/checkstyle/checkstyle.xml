@@ -60,7 +60,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
     <module name="MemberName"/>
-    <module name="MethodName"/>
+    <module name="MethodName">
+      <!-- Use default MethodName but block the use of 'builder' as method name -->
+      <property name="format" value="(?=^[a-z][a-zA-Z0-9]*$)(?!^(?i)builder$)"/>
+      <!-- allow the name on private methods  -->
+      <property name="applyToPrivate" value="false"/>
+    </module>
     <module name="PackageName"/>
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
