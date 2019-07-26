@@ -11,7 +11,10 @@ public final class IPRange {
     private String ipMin;
     private String ipMax;
 
-    private IPRange() {
+    /**
+     * Constructs an IPRange object.
+     */
+    public IPRange() {
     }
 
     /**
