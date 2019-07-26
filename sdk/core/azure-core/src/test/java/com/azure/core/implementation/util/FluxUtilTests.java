@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
@@ -401,4 +402,40 @@ public class FluxUtilTests {
         return file;
     }
 
+    /**
+     * Collects byte buffers emitted by a Flux into a ByteBuf.
+     *
+     * @param stream A stream which emits ByteBuf instances.
+     * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
+     * @return A Mono which emits the concatenation of all the byte buffers given by the source Flux.
+     */
+    public static Mono<ByteBuffer> collectByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
+        if (autoReleaseEnabled) {
+            Mono<ByteBuffer> mergedCbb = Mono.using(
+                // Resource supplier
+                () -> {
+                    CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
+                    return initialCbb;
+                },
+                // source Mono creator
+                (CompositeByteBuf initialCbb) -> {
+                    Mono<CompositeByteBuf> reducedCbb = stream.reduce(initialCbb, (CompositeByteBuf currentCbb, ByteBuf nextBb) -> {
+                        CompositeByteBuf updatedCbb = currentCbb.addComponent(nextBb.retain());
+                        return updatedCbb;
+                    });
+                    //
+                    return reducedCbb
+                               .doOnNext((CompositeByteBuf cbb) -> cbb.writerIndex(cbb.capacity()))
+                               .filter((CompositeByteBuf cbb) -> cbb.isReadable());
+                },
+                // Resource cleaner
+                (CompositeByteBuf finalCbb) -> finalCbb.release());
+            return mergedCbb;
+        } else {
+            return stream.collect(Unpooled::compositeBuffer,
+                (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
+                       .filter((CompositeByteBuf cbb) -> cbb.isReadable())
+                       .map(bb -> bb);
+        }
+    }
 }

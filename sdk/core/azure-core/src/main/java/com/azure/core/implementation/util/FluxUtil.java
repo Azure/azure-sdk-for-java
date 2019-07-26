@@ -28,26 +28,26 @@ import reactor.core.publisher.Operators;
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
-    /**
-     * Checks if a type is Flux&lt;ByteBuf&gt;.
-     *
-     * @param entityType the type to check
-     * @return whether the type represents a Flux that emits ByteBuf
-     */
-    public static boolean isFluxByteBuffer(Type entityType) {
-        if (TypeUtil.isTypeOrSubTypeOf(entityType, Flux.class)) {
-            final Type innerType = TypeUtil.getTypeArguments(entityType)[0];
-            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class)) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    /**
+//     * Checks if a type is Flux&lt;ByteBuf&gt;.
+//     *
+//     * @param entityType the type to check
+//     * @return whether the type represents a Flux that emits ByteBuf
+//     */
+//    public static boolean isFluxByteBuffer(Type entityType) {
+//        if (TypeUtil.isTypeOrSubTypeOf(entityType, Flux.class)) {
+//            final Type innerType = TypeUtil.getTypeArguments(entityType)[0];
+//            if (TypeUtil.isTypeOrSubTypeOf(innerType, ByteBuffer.class)) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
-     * Collects ByteBuf emitted by a Flux into a byte array.
+     * Collects ByteBuffer emitted by a Flux into a byte array.
      * @param stream A stream which emits ByteBuf instances.
-     * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
+     * @param autoReleaseEnabled if ByteBuffer instances in stream gets automatically released as they consumed
      * @return A Mono which emits the concatenation of all the ByteBuf instances given by the source Flux.
      */
     public static Mono<byte[]> collectBytesInByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
@@ -59,25 +59,25 @@ public final class FluxUtil {
                     (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer).retain())),
                     ReferenceCountUtil::release)
                     .filter((CompositeByteBuf cbb) -> cbb.isReadable())
-                    .map(FluxUtil::byteBufToArray);
+                    .map(FluxUtil::byteBufferToArray);
         } else {
             return stream.collect(Unpooled::compositeBuffer,
                 (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
                     .filter((CompositeByteBuf cbb) -> cbb.isReadable())
-                    .map(FluxUtil::byteBufToArray);
+                    .map(FluxUtil::byteBufferToArray);
         }
     }
 
     /**
-     * Splits a ByteBuf into ByteBuf chunks.
+     * Splits a ByteBuffer into ByteBuffer chunks.
      *
-     * @param whole the ByteBuf to split
+     * @param whole the ByteBuffer to split
      * @param chunkSize the maximum size of each ByteBuf chunk
      * @return A stream that emits chunks of the original whole ByteBuf
      */
     public static Flux<ByteBuffer> split(final ByteBuffer whole, final int chunkSize) {
-        return Flux.generate(whole::readerIndex, (readFromIndex, synchronousSync) -> {
-            final int writerIndex = whole.writerIndex();
+        return Flux.generate(whole::position, (readFromIndex, synchronousSync) -> {
+            final int writerIndex = whole.limit();
             //
             if (readFromIndex >= writerIndex) {
                 synchronousSync.complete();
@@ -105,49 +105,52 @@ public final class FluxUtil {
      * @param byteBuf the byte buffer
      * @return the byte array
      */
-    public static byte[] byteBufToArray(ByteBuffer byteBuf) {
-        int length = byteBuf.readableBytes();
-        byte[] byteArray = new byte[length];
-        byteBuf.getBytes(byteBuf.readerIndex(), byteArray);
-        return byteArray;
+    public static byte[] byteBufferToArray(ByteBuffer byteBuf) {
+//        int length = byteBuf.readableBytes();
+//        byte[] byteArray = new byte[length];
+//        byteBuf.getBytes(byteBuf.readerIndex(), byteArray);
+//        return byteArray;
+
+        // FIXME this is not good code!
+        return byteBuf.array();
     }
 
-    /**
-     * Collects byte buffers emitted by a Flux into a ByteBuf.
-     *
-     * @param stream A stream which emits ByteBuf instances.
-     * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
-     * @return A Mono which emits the concatenation of all the byte buffers given by the source Flux.
-     */
-    public static Mono<ByteBuffer> collectByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
-        if (autoReleaseEnabled) {
-            Mono<ByteBuffer> mergedCbb = Mono.using(
-                    // Resource supplier
-                () -> {
-                    CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
-                    return initialCbb;
-                },
-                    // source Mono creator
-                (CompositeByteBuf initialCbb) -> {
-                    Mono<CompositeByteBuf> reducedCbb = stream.reduce(initialCbb, (CompositeByteBuf currentCbb, ByteBuf nextBb) -> {
-                        CompositeByteBuf updatedCbb = currentCbb.addComponent(nextBb.retain());
-                        return updatedCbb;
-                    });
-                    //
-                    return reducedCbb
-                            .doOnNext((CompositeByteBuf cbb) -> cbb.writerIndex(cbb.capacity()))
-                            .filter((CompositeByteBuf cbb) -> cbb.isReadable());
-                },
-                    // Resource cleaner
-                (CompositeByteBuf finalCbb) -> finalCbb.release());
-            return mergedCbb;
-        } else {
-            return stream.collect(Unpooled::compositeBuffer,
-                (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
-                    .filter((CompositeByteBuf cbb) -> cbb.isReadable())
-                    .map(bb -> bb);
-        }
-    }
+//    /**
+//     * Collects byte buffers emitted by a Flux into a ByteBuf.
+//     *
+//     * @param stream A stream which emits ByteBuf instances.
+//     * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
+//     * @return A Mono which emits the concatenation of all the byte buffers given by the source Flux.
+//     */
+//    public static Mono<ByteBuffer> collectByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
+//        if (autoReleaseEnabled) {
+//            Mono<ByteBuffer> mergedCbb = Mono.using(
+//                    // Resource supplier
+//                () -> {
+//                    CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
+//                    return initialCbb;
+//                },
+//                    // source Mono creator
+//                (CompositeByteBuf initialCbb) -> {
+//                    Mono<CompositeByteBuf> reducedCbb = stream.reduce(initialCbb, (CompositeByteBuf currentCbb, ByteBuf nextBb) -> {
+//                        CompositeByteBuf updatedCbb = currentCbb.addComponent(nextBb.retain());
+//                        return updatedCbb;
+//                    });
+//                    //
+//                    return reducedCbb
+//                            .doOnNext((CompositeByteBuf cbb) -> cbb.writerIndex(cbb.capacity()))
+//                            .filter((CompositeByteBuf cbb) -> cbb.isReadable());
+//                },
+//                    // Resource cleaner
+//                (CompositeByteBuf finalCbb) -> finalCbb.release());
+//            return mergedCbb;
+//        } else {
+//            return stream.collect(Unpooled::compositeBuffer,
+//                (cbb1, buffer) -> cbb1.addComponent(true, Unpooled.wrappedBuffer(buffer)))
+//                    .filter((CompositeByteBuf cbb) -> cbb.isReadable())
+//                    .map(bb -> bb);
+//        }
+//    }
 
     private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
 

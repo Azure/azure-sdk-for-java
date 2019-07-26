@@ -3,18 +3,8 @@
 package com.azure.core.implementation.http.spi;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.implementation.http.policy.spi.AfterRetryPolicyProvider;
-import com.azure.core.implementation.http.policy.spi.BeforeRetryPolicyProvider;
-import com.azure.core.implementation.http.policy.spi.PolicyProvider;
-import com.azure.core.implementation.http.spi.HttpClientProvider;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.function.Supplier;
 
 /**
  * This class handles loading available HTTP clients
@@ -42,6 +32,6 @@ public final class HttpClientProviders {
             // FIXME throw error
         }
 
-        return defaultProvider.createNewInstance();
+        return defaultProvider.createInstance();
     }
 }

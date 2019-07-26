@@ -28,9 +28,6 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.http.rest.VoidResponse;
 import com.azure.core.implementation.http.ContentType;
 import com.azure.core.implementation.util.FluxUtil;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.util.ResourceLeakDetector;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -46,6 +43,7 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
@@ -84,8 +82,8 @@ public class RestProxyStressTests {
                 "Set the environment variable JAVA_SDK_STRESS_TESTS to \"true\" to run stress tests",
                 Boolean.parseBoolean(System.getenv("JAVA_SDK_STRESS_TESTS")));
 
-        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
-        LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
+//        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
+//        LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
 
         String tempFolderPath = System.getenv("JAVA_STRESS_TEST_TEMP_PATH");
         if (tempFolderPath == null || tempFolderPath.isEmpty()) {
@@ -174,7 +172,7 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @Put("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
+        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
 
         @Get("/javasdktest/upload/100m-{id}.dat?{sas}")
         Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
@@ -218,10 +216,10 @@ public class RestProxyStressTests {
     }
 
     private static void create100MFiles(boolean recreate) throws IOException {
-        final Flux<ByteBuf> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
+        final Flux<ByteBuffer> contentGenerator = Flux.generate(Random::new, (random, emitter) -> {
             byte[] ba = new byte[CHUNK_SIZE];
             random.nextBytes(ba);
-            emitter.next(Unpooled.wrappedBuffer(ba));
+            emitter.next(ByteBuffer.wrap(ba));
             return random;
         });
 
@@ -244,7 +242,7 @@ public class RestProxyStressTests {
                     final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
                     final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
-                    Flux<ByteBuf> fileContent = contentGenerator
+                    Flux<ByteBuffer> fileContent = contentGenerator
                         .take(CHUNKS_PER_FILE)
                         .doOnNext(buf -> messageDigest.update(buf.array()));
 
@@ -333,8 +331,8 @@ public class RestProxyStressTests {
                         Exceptions.propagate(ioe);
                     }
                     //
-                    ByteBuf mappedByteBufFile = null;
-                    Flux<ByteBuf> stream = null;
+                    ByteBuffer mappedByteBufFile = null;
+                    Flux<ByteBuffer> stream = null;
                     try {
                         MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
                         mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
@@ -381,11 +379,11 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) -> {
                     return service.download100M(String.valueOf(id), sas).flatMap(response -> {
-                        Flux<ByteBuf> content;
+                        Flux<ByteBuffer> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
                             content = response.value()
-                                    .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
+                                    .doOnNext(buf -> messageDigest.update(buf.slice()));
 
                             return content.last().doOnSuccess(b -> {
                                 assertArrayEquals(md5, messageDigest.digest());
@@ -424,7 +422,7 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (integer, md5) -> {
                     final int id = integer;
-                    Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
+                    Flux<ByteBuffer> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
                             .flatMapMany(StreamResponse::value)

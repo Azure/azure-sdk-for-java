@@ -4,5 +4,5 @@ import com.azure.core.http.HttpClient;
 
 public interface HttpClientProvider {
 
-    HttpClient createNewInstance();
+    HttpClient createInstance();
 }

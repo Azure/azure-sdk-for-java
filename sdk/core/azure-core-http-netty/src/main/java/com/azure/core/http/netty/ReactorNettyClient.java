@@ -165,7 +165,7 @@ class ReactorNettyClient implements HttpClient {
                 if (!reactorNettyConnection.isDisposed()) {
                     reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                 }
-            });
+            }).map(ByteBuf::nioBuffer);
         }
 
         @Override
