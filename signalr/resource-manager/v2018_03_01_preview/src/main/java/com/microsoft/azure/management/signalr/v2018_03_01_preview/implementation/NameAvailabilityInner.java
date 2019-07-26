@@ -34,7 +34,7 @@ public class NameAvailabilityInner {
     private String message;
 
     /**
-     * Get the nameAvailable value.
+     * Get indicates whether the name is available or not.
      *
      * @return the nameAvailable value
      */
@@ -43,7 +43,7 @@ public class NameAvailabilityInner {
     }
 
     /**
-     * Set the nameAvailable value.
+     * Set indicates whether the name is available or not.
      *
      * @param nameAvailable the nameAvailable value to set
      * @return the NameAvailabilityInner object itself.
@@ -54,7 +54,7 @@ public class NameAvailabilityInner {
     }
 
     /**
-     * Get the reason value.
+     * Get the reason of the availability. Required if name is not available.
      *
      * @return the reason value
      */
@@ -63,7 +63,7 @@ public class NameAvailabilityInner {
     }
 
     /**
-     * Set the reason value.
+     * Set the reason of the availability. Required if name is not available.
      *
      * @param reason the reason value to set
      * @return the NameAvailabilityInner object itself.
@@ -74,7 +74,7 @@ public class NameAvailabilityInner {
     }
 
     /**
-     * Get the message value.
+     * Get the message of the operation.
      *
      * @return the message value
      */
@@ -83,7 +83,7 @@ public class NameAvailabilityInner {
     }
 
     /**
-     * Set the message value.
+     * Set the message of the operation.
      *
      * @param message the message value to set
      * @return the NameAvailabilityInner object itself.
