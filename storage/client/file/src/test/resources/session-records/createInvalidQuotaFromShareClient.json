@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share92769589?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7059843f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -13,14 +13,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8a41da69-601a-0070-2a79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41da69-601a-0070-2a79-42bc56000000\nTime:2019-07-24T23:44:38.7516139Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT",
+      "x-ms-request-id" : "86be85a4-101a-010f-7809-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:86be85a4-101a-010f-7809-449bd5000000\nTime:2019-07-26T23:26:28.9754196Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share92769589?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7059843f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "323",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8a41da6a-601a-0070-2b79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41da6a-601a-0070-2b79-42bc56000000\nTime:2019-07-24T23:44:38.7976484Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT",
+      "x-ms-request-id" : "86be85a5-101a-010f-7909-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:86be85a5-101a-010f-7909-449bd5000000\nTime:2019-07-26T23:26:29.0054480Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>0</HeaderValue></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share92769589?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7059843f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -51,11 +51,11 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "8a41da6b-601a-0070-2c79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8a41da6b-601a-0070-2c79-42bc56000000\nTime:2019-07-24T23:44:38.8546878Z</Message></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT",
+      "x-ms-request-id" : "86be85a6-101a-010f-7a09-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:86be85a6-101a-010f-7a09-449bd5000000\nTime:2019-07-26T23:26:29.0354774Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share92769589" ]
+  "variables" : [ "share7059843f" ]
 }

@@ -50,6 +50,7 @@ public class QueueClientTests extends QueueClientTestsBase {
                 .buildClient(), true, logger);
         } else {
             client = helper.setupClient((connectionString, endpoint) -> new QueueClientBuilder()
+                .connectionString(connectionString)
                 .endpoint(endpoint)
                 .queueName(queueName)
                 .httpClient(HttpClient.createDefault().wiretap(true))
@@ -245,7 +246,7 @@ public class QueueClientTests extends QueueClientTestsBase {
             client.getAccessPolicy().iterator().hasNext();
             fail("Attempting to get access policies on a queue that doesn't exist should throw an exception");
         } catch (Exception exception) {
-            helper.assertExceptionStatusCode(exception, 404);
+            helper.assertExceptionStatusCode(exception, 403);
         }
     }
 

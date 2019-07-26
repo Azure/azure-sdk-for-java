@@ -39,7 +39,6 @@ public class FileAsyncClientTest extends FileClientTestBase {
                                                                      .connectionString(connectionString)
                                                                      .shareName(shareName)
                                                                      .filePath(filePath)
-                                                                     .endpoint(endpoint)
                                                                      .httpClient(interceptorManager.getPlaybackClient())
                                                                      .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                                                                      .buildAsyncClient(), true, fileAsyncLogger);
@@ -48,7 +47,6 @@ public class FileAsyncClientTest extends FileClientTestBase {
                                                                      .connectionString(connectionString)
                                                                      .shareName(shareName)
                                                                      .filePath(filePath)
-                                                                     .endpoint(endpoint)
                                                                      .httpClient(HttpClient.createDefault().wiretap(true))
                                                                      .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                                                                      .addPolicy(interceptorManager.getRecordPolicy())
@@ -98,7 +96,7 @@ public class FileAsyncClientTest extends FileClientTestBase {
     }
 
     @Override
-    public void startCopy() throws Exception {
+    public void startCopy()  {
         fileAsyncClient.create(1024).block();
         String sourceURL = fileAsyncClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         StepVerifier.create(fileAsyncClient.startCopy(sourceURL, null))

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile07765eae",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile08738256",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,18 +9,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D710908EF3C883\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:42:15 GMT",
+      "ETag" : "\"0x8D712205A75B7CE\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:24:06 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d90d-601a-0070-0879-42bc56000000",
+      "x-ms-request-id" : "86be8408-101a-010f-2009-449bd5000000",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 24 Jul 2019 23:42:15 GMT"
+      "Date" : "Fri, 26 Jul 2019 23:24:05 GMT"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sima.file.core.windows.net/filesharename/testdir%2ffile07765eae",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/filesharename/testdir%2ffile08738256",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -28,18 +28,18 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:42:15 GMT",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:24:06 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 24 Jul 2019 23:42:15 GMT",
+      "Date" : "Fri, 26 Jul 2019 23:24:06 GMT",
       "x-ms-server-encrypted" : "true",
       "x-ms-type" : "File",
-      "ETag" : "\"0x8D710908EF3C883\"",
+      "ETag" : "\"0x8D712205A75B7CE\"",
       "Content-Length" : "0",
-      "x-ms-request-id" : "8a41d90e-601a-0070-0979-42bc56000000",
+      "x-ms-request-id" : "86be8409-101a-010f-2109-449bd5000000",
       "Body" : "",
       "Content-Type" : "application/octet-stream"
     }
   } ],
-  "variables" : [ "file07765eae" ]
+  "variables" : [ "file08738256" ]
 }

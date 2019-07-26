@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sima.queue.core.windows.net/queue48695d7f/messages?visibilitytimeout=0&messagettl=604800",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue941119fb/messages?visibilitytimeout=0&messagettl=604800",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -14,17 +14,17 @@
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "0d290a18-6003-009e-3676-37b6d5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:0d290a18-6003-009e-3676-37b6d5000000\nTime:2019-07-10T23:24:49.7390111Z</Message></Error>",
-      "Date" : "Wed, 10 Jul 2019 23:24:49 GMT",
+      "x-ms-request-id" : "f3da6198-1003-0000-7be1-433076000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:f3da6198-1003-0000-7be1-433076000000\nTime:2019-07-26T18:41:09.1648899Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 18:41:08 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.queue.core.windows.net?prefix=queue48695d7f&include=&comp=list",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net?prefix=queue941119fb&include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -33,11 +33,11 @@
       "Cache-Control" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0d290a2f-6003-009e-4876-37b6d5000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.queue.core.windows.net/\"><Prefix>queue48695d7f</Prefix><Queues /><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 10 Jul 2019 23:24:49 GMT",
+      "x-ms-request-id" : "f3da61a0-1003-0000-02e1-433076000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.queue.core.windows.net/\"><Prefix>queue941119fb</Prefix><Queues /><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 26 Jul 2019 18:41:08 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "queue48695d7f" ]
+  "variables" : [ "queue941119fb" ]
 }

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/dirsharename/directory021766%2ftestfile",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/dirsharename/directory741375%2ftestfile",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -13,11 +13,11 @@
       "retry-after" : "0",
       "Content-Length" : "224",
       "StatusCode" : "404",
-      "x-ms-request-id" : "8a41dba8-601a-0070-7979-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:8a41dba8-601a-0070-7979-42bc56000000\nTime:2019-07-24T23:45:35.1827771Z</Message></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:45:34 GMT",
+      "x-ms-request-id" : "86be9444-101a-010f-2d09-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.\nRequestId:86be9444-101a-010f-2d09-449bd5000000\nTime:2019-07-26T23:29:11.8779188Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:29:11 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "directory021766" ]
+  "variables" : [ "directory741375" ]
 }

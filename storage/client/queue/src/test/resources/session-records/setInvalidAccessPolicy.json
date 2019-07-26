@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.queue.core.windows.net/queue424460ef",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue22430b0a",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "dd226338-4003-0028-1475-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:18:39 GMT"
+      "x-ms-request-id" : "e3c24d46-d003-0095-4ed3-435145000000",
+      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.queue.core.windows.net/queue424460ef?comp=acl",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue22430b0a?comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
       "Content-Type" : "application/xml; charset=utf-8"
     },
     "Response" : {
@@ -30,17 +30,17 @@
       "retry-after" : "0",
       "Content-Length" : "371",
       "StatusCode" : "400",
-      "x-ms-request-id" : "dd22634c-4003-0028-2575-37b82d000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:dd22634c-4003-0028-2575-37b82d000000\nTime:2019-07-10T23:18:39.9250246Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
-      "Date" : "Wed, 10 Jul 2019 23:18:39 GMT",
+      "x-ms-request-id" : "e3c24d5b-d003-0095-61d3-435145000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:e3c24d5b-d003-0095-61d3-435145000000\nTime:2019-07-26T16:57:10.6107970Z</Message><LineNumber>1</LineNumber><LinePosition>304</LinePosition><Reason>Signed identifier ID cannot be empty or over 64 characters in length</Reason></Error>",
+      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.queue.core.windows.net/queue424460ef/messages",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue22430b0a/messages",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -48,15 +48,15 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "dd22635d-4003-0028-3675-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:18:39 GMT"
+      "x-ms-request-id" : "e3c24d6a-d003-0095-70d3-435145000000",
+      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.queue.core.windows.net/queue424460ef",
+    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queue22430b0a",
     "Headers" : {
       "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-storage-queue/1.0.0-SNAPSHOT 1.8.0_201; Windows 10 10.0"
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-03-28",
@@ -64,9 +64,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "x-ms-request-id" : "dd226363-4003-0028-3a75-37b82d000000",
-      "Date" : "Wed, 10 Jul 2019 23:18:39 GMT"
+      "x-ms-request-id" : "e3c24d79-d003-0095-7fd3-435145000000",
+      "Date" : "Fri, 26 Jul 2019 16:57:10 GMT"
     }
   } ],
-  "variables" : [ "queue424460ef" ]
+  "variables" : [ "queue22430b0a" ]
 }

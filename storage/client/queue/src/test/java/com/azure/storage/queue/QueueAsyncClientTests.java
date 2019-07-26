@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 public class QueueAsyncClientTests extends QueueClientTestsBase {
@@ -253,7 +254,6 @@ public class QueueAsyncClientTests extends QueueClientTestsBase {
         StepVerifier.create(client.create())
             .assertNext(response -> helper.assertResponseStatusCode(response, 201))
             .verifyComplete();
-
         StepVerifier.create(client.getAccessPolicy())
             .expectNextCount(0)
             .verifyComplete();

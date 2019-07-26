@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share42131a9e?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share80042dfb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C7B65728\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:50 GMT",
+      "ETag" : "\"0x8D71220935515C7\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:41 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d9e9-601a-0070-7079-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:50 GMT"
+      "x-ms-request-id" : "86be8516-101a-010f-2b09-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:41 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share42131a9e?restype=share&comp=acl",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share80042dfb?restype=share&comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -32,14 +32,14 @@
       "retry-after" : "0",
       "Content-Length" : "294",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8a41d9eb-601a-0070-7179-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:8a41d9eb-601a-0070-7179-42bc56000000\nTime:2019-07-24T23:43:50.8775848Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:43:50 GMT",
+      "x-ms-request-id" : "86be8518-101a-010f-2c09-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidXmlDocument</Code><Message>XML specified is not syntactically valid.\nRequestId:86be8518-101a-010f-2c09-449bd5000000\nTime:2019-07-26T23:25:41.6765299Z</Message><LineNumber>0</LineNumber><LinePosition>0</LinePosition><Reason /></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:25:41 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share42131a9e?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share80042dfb?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -50,9 +50,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41d9ec-601a-0070-7279-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:50 GMT"
+      "x-ms-request-id" : "86be8519-101a-010f-2d09-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:41 GMT"
     }
   } ],
-  "variables" : [ "share42131a9e" ]
+  "variables" : [ "share80042dfb" ]
 }

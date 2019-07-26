@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share810435cb?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share70884c2f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C6CFC4CF\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "ETag" : "\"0x8D71220928A418D\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d9c5-601a-0070-5579-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:48 GMT"
+      "x-ms-request-id" : "86be84f2-101a-010f-1109-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:39 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share810435cb?restype=share&comp=acl",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share70884c2f?restype=share&comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0",
@@ -28,17 +28,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C6D7761D\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "ETag" : "\"0x8D71220928FFA82\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8a41d9c7-601a-0070-5679-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT"
+      "x-ms-request-id" : "86be84f4-101a-010f-1209-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/share810435cb?restype=share&comp=acl",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share70884c2f?restype=share&comp=acl",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -47,18 +47,18 @@
       "Transfer-Encoding" : "chunked",
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C6D7761D\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "ETag" : "\"0x8D71220928FFA82\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8a41d9c8-601a-0070-5779-42bc56000000",
+      "x-ms-request-id" : "86be84f5-101a-010f-1309-449bd5000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>test</Id><AccessPolicy><Start>2000-01-01T00:00:00.0000000Z</Start><Expiry>2020-01-01T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share810435cb?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share70884c2f?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -69,9 +69,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41d9c9-601a-0070-5879-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT"
+      "x-ms-request-id" : "86be84f6-101a-010f-1409-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT"
     }
   } ],
-  "variables" : [ "share810435cb" ]
+  "variables" : [ "share70884c2f" ]
 }

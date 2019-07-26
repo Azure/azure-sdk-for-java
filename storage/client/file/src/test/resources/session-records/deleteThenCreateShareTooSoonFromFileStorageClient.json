@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share4789498f?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share96589d29?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D7109121E2894F\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:46:22 GMT",
+      "ETag" : "\"0x8D71221407CB916\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:30:32 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41dc02-601a-0070-2679-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT"
+      "x-ms-request-id" : "86be98ef-101a-010f-790a-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share4789498f?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share96589d29?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -30,12 +30,12 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41dc04-601a-0070-2779-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT"
+      "x-ms-request-id" : "86be98f1-101a-010f-7a0a-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share4789498f?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share96589d29?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -47,14 +47,14 @@
       "retry-after" : "0",
       "Content-Length" : "244",
       "StatusCode" : "409",
-      "x-ms-request-id" : "8a41dc05-601a-0070-2879-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:8a41dc05-601a-0070-2879-42bc56000000\nTime:2019-07-24T23:46:22.2092047Z</Message></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT",
+      "x-ms-request-id" : "86be98f2-101a-010f-7b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareBeingDeleted</Code><Message>The specified share is being deleted. Try operation later.\nRequestId:86be98f2-101a-010f-7b0a-449bd5000000\nTime:2019-07-26T23:30:32.2081629Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net?prefix=share4789498f&include=&comp=list",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net?include=&comp=list",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -65,11 +65,2823 @@
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "8a41dc06-601a-0070-2979-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://sima.file.core.windows.net/\"><Prefix>share4789498f</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 24 Jul 2019 23:46:21 GMT",
+      "x-ms-request-id" : "86be98f3-101a-010f-7c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.file.core.windows.net/\"><Shares><Share><Name>share00647b910</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:24:29 GMT</Last-Modified><Etag>\"0x8D7120742C3F60C\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share00647b912</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:24:29 GMT</Last-Modified><Etag>\"0x8D7120742D5D4BB\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share023786e1</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:17:51 GMT</Last-Modified><Etag>\"0x8D71206559E6985\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share0338648f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:14:25 GMT</Last-Modified><Etag>\"0x8D7120E3CCB0AF3\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share047674110</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:24:16 GMT</Last-Modified><Etag>\"0x8D712073B3C296A\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share047674112</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:24:17 GMT</Last-Modified><Etag>\"0x8D712073BC7C271\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share04894a98</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:54:13 GMT</Last-Modified><Etag>\"0x8D711FAA6FD95A1\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share058926b7</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:19:46 GMT</Last-Modified><Etag>\"0x8D711FE38C7B146\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share067091e1</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:49:12 GMT</Last-Modified><Etag>\"0x8D712131874E106\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share067818da</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:13:34 GMT</Last-Modified><Etag>\"0x8D7120E1EA5E4DD\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share07553283</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:49:11 GMT</Last-Modified><Etag>\"0x8D71213184847CD\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share08019c680</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:59:12 GMT</Last-Modified><Etag>\"0x8D711FB593A1F03\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share08019c682</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:59:12 GMT</Last-Modified><Etag>\"0x8D711FB594BFDAC\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share090580b0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:06 GMT</Last-Modified><Etag>\"0x8D71205CF90914E\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share12497974</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:10:35 GMT</Last-Modified><Etag>\"0x8D71205522317F1\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share13194301</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:49:12 GMT</Last-Modified><Etag>\"0x8D7121318CD7711\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share1461365e</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:20:39 GMT</Last-Modified><Etag>\"0x8D711FE580D2B98\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share1471432d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:26:30 GMT</Last-Modified><Etag>\"0x8D71220B0A6FD0D\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share15805b900</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:20:17 GMT</Last-Modified><Etag>\"0x8D7120F0E510D6E\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share15805b902</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:20:17 GMT</Last-Modified><Etag>\"0x8D7120F0E649A25\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share165757f6</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:17:50 GMT</Last-Modified><Etag>\"0x8D7120655619FB2\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share18125db3</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:14:24 GMT</Last-Modified><Etag>\"0x8D7120E3C65EF0F\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share18170c97</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:07 GMT</Last-Modified><Etag>\"0x8D71205D03ED5E0\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share182212b50</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:20:31 GMT</Last-Modified><Etag>\"0x8D7120F1702F984\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share182212b52</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:20:31 GMT</Last-Modified><Etag>\"0x8D7120F17159BB6\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share20065e58</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:23:13 GMT</Last-Modified><Etag>\"0x8D712203B06CA67\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share20354259</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:26:30 GMT</Last-Modified><Etag>\"0x8D71220B040CF5F\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share21294ed9</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:55 GMT</Last-Modified><Etag>\"0x8D711FCD8097F12\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share22340476</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:46:44 GMT</Last-Modified><Etag>\"0x8D71212C07FAC62\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share223865e2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:10 GMT</Last-Modified><Etag>\"0x8D71206CC38AFC5\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share225308c7</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:24:03 GMT</Last-Modified><Etag>\"0x8D7122058F53E93\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share24259add</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:51 GMT</Last-Modified><Etag>\"0x8D7120E9403AAC4\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share2507499d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:56:43 GMT</Last-Modified><Etag>\"0x8D711FB0084A0C9\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share25624b11</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:10 GMT</Last-Modified><Etag>\"0x8D71206CC9D2FA6\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share2667597f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:18:43 GMT</Last-Modified><Etag>\"0x8D7120674BCBF2B\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share271588af</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:56:45 GMT</Last-Modified><Etag>\"0x8D711FB014AB928\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share27906e3b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:01 GMT</Last-Modified><Etag>\"0x8D7120E764A0651\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share28008146</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:08 GMT</Last-Modified><Etag>\"0x8D711FCBC0B11C4\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share28057a16</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:10:38 GMT</Last-Modified><Etag>\"0x8D7120553948D5C\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share281737280</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:35 GMT</Last-Modified><Etag>\"0x8D711FB1F655A70\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share281737282</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:35 GMT</Last-Modified><Etag>\"0x8D711FB1F762764\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share28312006</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:11:26 GMT</Last-Modified><Etag>\"0x8D712057036030C\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share290663c8</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:20:20 GMT</Last-Modified><Etag>\"0x8D71206AE854007\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share29486e1a</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:13:35 GMT</Last-Modified><Etag>\"0x8D7120E1F2E21A7\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share2977154f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:49:14 GMT</Last-Modified><Etag>\"0x8D7121319B1F4E5\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share30341704</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:25:40 GMT</Last-Modified><Etag>\"0x8D7122092B0978D\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share31437c63</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:51 GMT</Last-Modified><Etag>\"0x8D7120E93AC4DD1\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share31471b7e</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:06:36 GMT</Last-Modified><Etag>\"0x8D711FC61D53F14\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share32523163</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:20:40 GMT</Last-Modified><Etag>\"0x8D711FE58897E2C\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share330285ee</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:23:11 GMT</Last-Modified><Etag>\"0x8D7122039DF8EBD\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share33848cb5</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:17:52 GMT</Last-Modified><Etag>\"0x8D71206562806DA\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share34364d47</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:46:48 GMT</Last-Modified><Etag>\"0x8D71212C2BBAA1E\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share3666393b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:10:35 GMT</Last-Modified><Etag>\"0x8D71205520ACF1D\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share3910192a</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:20:22 GMT</Last-Modified><Etag>\"0x8D71206B0145892\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share391562b5</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:57 GMT</Last-Modified><Etag>\"0x8D71205EDCDD127\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share39454d3c</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:11:25 GMT</Last-Modified><Etag>\"0x8D712056FD15C93\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share402510a4</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:25:43 GMT</Last-Modified><Etag>\"0x8D7122094614894\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share40438ae4</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:24:04 GMT</Last-Modified><Etag>\"0x8D712205948CA25\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share419315aa</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:07:28 GMT</Last-Modified><Etag>\"0x8D711FC80F50F30\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share419726ec</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:05 GMT</Last-Modified><Etag>\"0x8D711FCBA88F53D\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share42440e44</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:47:36 GMT</Last-Modified><Etag>\"0x8D71212DF4FF53D\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share42706de2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:46:46 GMT</Last-Modified><Etag>\"0x8D71212C1A20570\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share42982776</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:00 GMT</Last-Modified><Etag>\"0x8D71213358E8281\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share4333416f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:56:43 GMT</Last-Modified><Etag>\"0x8D711FB002B6E7C\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share4390933b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:19:44 GMT</Last-Modified><Etag>\"0x8D711FE379B6D29\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share44893313</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:13:36 GMT</Last-Modified><Etag>\"0x8D7120E1F5057F6\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share45426be8</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:06:35 GMT</Last-Modified><Etag>\"0x8D711FC613D1FA9\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share45583df7</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:07:28 GMT</Last-Modified><Etag>\"0x8D711FC808BFA75\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share486142eb</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:56 GMT</Last-Modified><Etag>\"0x8D71205ED78979A\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share4906185d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:02 GMT</Last-Modified><Etag>\"0x8D7120E76D7C2B5\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share501963720</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:36 GMT</Last-Modified><Etag>\"0x8D712134AAC6633\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share501963722</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:36 GMT</Last-Modified><Etag>\"0x8D712134ABE44F5\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share50730d1f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:01 GMT</Last-Modified><Etag>\"0x8D7121335E3953D\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share50758ebf0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:35 GMT</Last-Modified><Etag>\"0x8D71206DB6073DC\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share50758ebf2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:35 GMT</Last-Modified><Etag>\"0x8D71206DB720467\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share50841b82</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:07 GMT</Last-Modified><Etag>\"0x8D71205D01FD4AB\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share51069796</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:32 GMT</Last-Modified><Etag>\"0x8D711FB1D714DAB\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share51268352</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:19:52 GMT</Last-Modified><Etag>\"0x8D711FE3C1029C2\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share55306c18</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:25:41 GMT</Last-Modified><Etag>\"0x8D71220936BB088\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share56546d050</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:53:44 GMT</Last-Modified><Etag>\"0x8D71213BAA8D6C8\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share56546d052</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:53:44 GMT</Last-Modified><Etag>\"0x8D71213BABB51DB\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share56592e61</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:56:43 GMT</Last-Modified><Etag>\"0x8D711FAFFFE11DF\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share56766957</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:47:35 GMT</Last-Modified><Etag>\"0x8D71212DEE6B92B\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share57107671</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:06:39 GMT</Last-Modified><Etag>\"0x8D711FC63CC0B83\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share57160feb0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:47 GMT</Last-Modified><Etag>\"0x8D71206E2BF2EEE\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share57160feb2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:21:48 GMT</Last-Modified><Etag>\"0x8D71206E2D134C7\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share574940c70</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:34 GMT</Last-Modified><Etag>\"0x8D711FB1EE55CC1\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share574940c72</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:35 GMT</Last-Modified><Etag>\"0x8D711FB1EF629BC\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share59312cfb</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:23:12 GMT</Last-Modified><Etag>\"0x8D712203A81261A\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share601391ea0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:17:22 GMT</Last-Modified><Etag>\"0x8D7120EA64E203A\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share601391ea2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:17:22 GMT</Last-Modified><Etag>\"0x8D7120EA65FFEF9\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share60655c75</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:23:13 GMT</Last-Modified><Etag>\"0x8D712203B23F67B\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share6098536b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:13:34 GMT</Last-Modified><Etag>\"0x8D7120E1E634D6A\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share61118451</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:54:16 GMT</Last-Modified><Etag>\"0x8D711FAA85CDF0B\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share62465f330</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:10:14 GMT</Last-Modified><Etag>\"0x8D711FCE365DB58\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share62465f332</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:10:14 GMT</Last-Modified><Etag>\"0x8D711FCE378F2D7\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share62655ceb</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:02 GMT</Last-Modified><Etag>\"0x8D7120E76AE5EAE\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share645448460</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:54:01 GMT</Last-Modified><Etag>\"0x8D71213C4E3EEBD\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share645448462</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:54:01 GMT</Last-Modified><Etag>\"0x8D71213C4F642C2\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share64904824</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:17:52 GMT</Last-Modified><Etag>\"0x8D712065652075F\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share65962335</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:17:56 GMT</Last-Modified><Etag>\"0x8D7120658918860\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share6613297d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:49:12 GMT</Last-Modified><Etag>\"0x8D7121318E48741\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share67484ef6</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:23:16 GMT</Last-Modified><Etag>\"0x8D712203CB72D49\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share69198b9c</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:19:47 GMT</Last-Modified><Etag>\"0x8D711FE394F50F3\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share69376acb0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:12:18 GMT</Last-Modified><Etag>\"0x8D711FD2DBDD2D7\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share69376acb2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:12:18 GMT</Last-Modified><Etag>\"0x8D711FD2DCE0371\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share71260c730</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:27:12 GMT</Last-Modified><Etag>\"0x8D71220C974D6FB\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share71260c732</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:27:12 GMT</Last-Modified><Etag>\"0x8D71220C985A3EE\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share72843690</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:05 GMT</Last-Modified><Etag>\"0x8D711FCBABFF138\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share73533cfd</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:56:44 GMT</Last-Modified><Etag>\"0x8D711FB009DFB53\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share73858b48</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:25:41 GMT</Last-Modified><Etag>\"0x8D71220938A1555\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share75564ef5</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:06 GMT</Last-Modified><Etag>\"0x8D711FCBB46CE6C\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share75603ccf</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:18:44 GMT</Last-Modified><Etag>\"0x8D71206752B538F\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share7571599b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:05 GMT</Last-Modified><Etag>\"0x8D71205CF314334\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share7654162c</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:13:37 GMT</Last-Modified><Etag>\"0x8D7120E2064A368\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share77593c8b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:55 GMT</Last-Modified><Etag>\"0x8D711FCD86B6618\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share781167f1</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:46:46 GMT</Last-Modified><Etag>\"0x8D71212C1787A40\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share7839427b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:55:06 GMT</Last-Modified><Etag>\"0x8D711FAC6781CBF\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share811078e30</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:12:13 GMT</Last-Modified><Etag>\"0x8D711FD2A4C17F5\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share811078e32</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:12:13 GMT</Last-Modified><Etag>\"0x8D711FD2A608F58\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share81208ff7</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:04 GMT</Last-Modified><Etag>\"0x8D7120E77A9281D\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share81275d3c0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:53 GMT</Last-Modified><Etag>\"0x8D7121354DE2CE5\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share81275d3c2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:50:53 GMT</Last-Modified><Etag>\"0x8D7121354EED2C9\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share8149487e</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:19:47 GMT</Last-Modified><Etag>\"0x8D711FE396FB1F0\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share8204845d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:54:15 GMT</Last-Modified><Etag>\"0x8D711FAA840284B\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share82193f0e</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:06:34 GMT</Last-Modified><Etag>\"0x8D711FC60807F6E\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share82394f22</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:55:06 GMT</Last-Modified><Etag>\"0x8D711FAC6252D92\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share83640d3d</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:06:36 GMT</Last-Modified><Etag>\"0x8D711FC61F52AF3\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share838615e00</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:59:13 GMT</Last-Modified><Etag>\"0x8D711FB59B84772\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share838615e02</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:59:13 GMT</Last-Modified><Etag>\"0x8D711FB59C8ED55\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share84035c2d0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:10:08 GMT</Last-Modified><Etag>\"0x8D711FCDFDA76DE\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share84035c2d2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:10:08 GMT</Last-Modified><Etag>\"0x8D711FCDFEC0754\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share84947509</Name><Properties><Last-Modified>Fri, 26 Jul 2019 19:09:06 GMT</Last-Modified><Etag>\"0x8D711FCBB2EACA3\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share85738125</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:57:31 GMT</Last-Modified><Etag>\"0x8D711FB1D1CFE98\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share8640173b</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:25:40 GMT</Last-Modified><Etag>\"0x8D7122092F41992\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share875133cf</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:10:33 GMT</Last-Modified><Etag>\"0x8D7120551021FB9\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share88894e1e</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:20:20 GMT</Last-Modified><Etag>\"0x8D71206AEBC6322\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share902567c8</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:14:09 GMT</Last-Modified><Etag>\"0x8D71205D17AD702\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share91246a6f</Name><Properties><Last-Modified>Fri, 26 Jul 2019 18:54:18 GMT</Last-Modified><Etag>\"0x8D711FAA9F807BB\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share91457383</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:16:01 GMT</Last-Modified><Etag>\"0x8D7120E76194D96\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share92956104</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:46:45 GMT</Last-Modified><Etag>\"0x8D71212C0EF2B56\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share939310ce</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:10:34 GMT</Last-Modified><Etag>\"0x8D712055196E29E\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share95273efa0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:17:37 GMT</Last-Modified><Etag>\"0x8D7120EAF3F7B2A\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share95273efa2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 21:17:37 GMT</Last-Modified><Etag>\"0x8D7120EAF4FFA00\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share9863815b0</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:27:32 GMT</Last-Modified><Etag>\"0x8D71220D565A27E\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share9863815b2</Name><Properties><Last-Modified>Fri, 26 Jul 2019 23:27:32 GMT</Last-Modified><Etag>\"0x8D71220D5769697\"</Etag><Quota>2</Quota></Properties></Share><Share><Name>share990432c7</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:20:21 GMT</Last-Modified><Etag>\"0x8D71206AF405993\"</Etag><Quota>5120</Quota></Properties></Share><Share><Name>share99203b84</Name><Properties><Last-Modified>Fri, 26 Jul 2019 20:20:21 GMT</Last-Modified><Etag>\"0x8D71206AF2529BB\"</Etag><Quota>2</Quota></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share00647b910?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98f4-101a-010f-7d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98f4-101a-010f-7d0a-449bd5000000\nTime:2019-07-26T23:30:32.3272751Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share00647b912?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98f5-101a-010f-7e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98f5-101a-010f-7e0a-449bd5000000\nTime:2019-07-26T23:30:32.3583043Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share023786e1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98f6-101a-010f-7f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98f6-101a-010f-7f0a-449bd5000000\nTime:2019-07-26T23:30:32.3933382Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share0338648f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98f7-101a-010f-800a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98f7-101a-010f-800a-449bd5000000\nTime:2019-07-26T23:30:32.4243678Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share047674110?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98f9-101a-010f-010a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98f9-101a-010f-010a-449bd5000000\nTime:2019-07-26T23:30:32.4573989Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share047674112?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98fa-101a-010f-020a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98fa-101a-010f-020a-449bd5000000\nTime:2019-07-26T23:30:32.4894288Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share04894a98?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98fb-101a-010f-030a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98fb-101a-010f-030a-449bd5000000\nTime:2019-07-26T23:30:32.5204579Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share058926b7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98fc-101a-010f-040a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98fc-101a-010f-040a-449bd5000000\nTime:2019-07-26T23:30:32.5524887Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share067091e1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98fd-101a-010f-050a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98fd-101a-010f-050a-449bd5000000\nTime:2019-07-26T23:30:32.5835179Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share067818da?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98fe-101a-010f-060a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98fe-101a-010f-060a-449bd5000000\nTime:2019-07-26T23:30:32.6195525Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share07553283?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be98ff-101a-010f-070a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be98ff-101a-010f-070a-449bd5000000\nTime:2019-07-26T23:30:32.6525836Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share08019c680?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9900-101a-010f-080a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9900-101a-010f-080a-449bd5000000\nTime:2019-07-26T23:30:32.6866159Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:31 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share08019c682?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9902-101a-010f-090a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9902-101a-010f-090a-449bd5000000\nTime:2019-07-26T23:30:32.7206481Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share090580b0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9903-101a-010f-0a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9903-101a-010f-0a0a-449bd5000000\nTime:2019-07-26T23:30:32.7526780Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share12497974?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9904-101a-010f-0b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9904-101a-010f-0b0a-449bd5000000\nTime:2019-07-26T23:30:32.7867107Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share13194301?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9905-101a-010f-0c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9905-101a-010f-0c0a-449bd5000000\nTime:2019-07-26T23:30:32.8167392Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share1461365e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9906-101a-010f-0d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9906-101a-010f-0d0a-449bd5000000\nTime:2019-07-26T23:30:32.8487700Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share1471432d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9907-101a-010f-0e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9907-101a-010f-0e0a-449bd5000000\nTime:2019-07-26T23:30:32.8797987Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share15805b900?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9908-101a-010f-0f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9908-101a-010f-0f0a-449bd5000000\nTime:2019-07-26T23:30:32.9108283Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share15805b902?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9909-101a-010f-100a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9909-101a-010f-100a-449bd5000000\nTime:2019-07-26T23:30:32.9418580Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share165757f6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990a-101a-010f-110a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990a-101a-010f-110a-449bd5000000\nTime:2019-07-26T23:30:32.9738879Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share18125db3?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990b-101a-010f-120a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990b-101a-010f-120a-449bd5000000\nTime:2019-07-26T23:30:33.0059187Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share18170c97?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990c-101a-010f-130a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990c-101a-010f-130a-449bd5000000\nTime:2019-07-26T23:30:33.0379486Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share182212b50?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990d-101a-010f-140a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990d-101a-010f-140a-449bd5000000\nTime:2019-07-26T23:30:33.0679770Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share182212b52?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990e-101a-010f-150a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990e-101a-010f-150a-449bd5000000\nTime:2019-07-26T23:30:33.0990067Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share20065e58?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be990f-101a-010f-160a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be990f-101a-010f-160a-449bd5000000\nTime:2019-07-26T23:30:33.1300363Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share20354259?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9910-101a-010f-170a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9910-101a-010f-170a-449bd5000000\nTime:2019-07-26T23:30:33.1600652Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share21294ed9?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9911-101a-010f-180a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9911-101a-010f-180a-449bd5000000\nTime:2019-07-26T23:30:33.1920951Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share22340476?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9912-101a-010f-190a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9912-101a-010f-190a-449bd5000000\nTime:2019-07-26T23:30:33.2231243Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share223865e2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9913-101a-010f-1a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9913-101a-010f-1a0a-449bd5000000\nTime:2019-07-26T23:30:33.2541539Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share225308c7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9914-101a-010f-1b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9914-101a-010f-1b0a-449bd5000000\nTime:2019-07-26T23:30:33.2861843Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share24259add?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9915-101a-010f-1c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9915-101a-010f-1c0a-449bd5000000\nTime:2019-07-26T23:30:33.3162141Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share2507499d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9916-101a-010f-1d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9916-101a-010f-1d0a-449bd5000000\nTime:2019-07-26T23:30:33.3472429Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share25624b11?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9917-101a-010f-1e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9917-101a-010f-1e0a-449bd5000000\nTime:2019-07-26T23:30:33.3812746Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share2667597f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9918-101a-010f-1f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9918-101a-010f-1f0a-449bd5000000\nTime:2019-07-26T23:30:33.4123043Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share271588af?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9919-101a-010f-200a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9919-101a-010f-200a-449bd5000000\nTime:2019-07-26T23:30:33.4443342Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share27906e3b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991a-101a-010f-210a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991a-101a-010f-210a-449bd5000000\nTime:2019-07-26T23:30:33.4743631Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share28008146?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991b-101a-010f-220a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991b-101a-010f-220a-449bd5000000\nTime:2019-07-26T23:30:33.5053918Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share28057a16?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991c-101a-010f-230a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991c-101a-010f-230a-449bd5000000\nTime:2019-07-26T23:30:33.5374226Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share281737280?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991d-101a-010f-240a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991d-101a-010f-240a-449bd5000000\nTime:2019-07-26T23:30:33.5694534Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share281737282?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991e-101a-010f-250a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991e-101a-010f-250a-449bd5000000\nTime:2019-07-26T23:30:33.5984812Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share28312006?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be991f-101a-010f-260a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be991f-101a-010f-260a-449bd5000000\nTime:2019-07-26T23:30:33.6295094Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share290663c8?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9920-101a-010f-270a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9920-101a-010f-270a-449bd5000000\nTime:2019-07-26T23:30:33.6595379Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:32 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share29486e1a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9921-101a-010f-280a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9921-101a-010f-280a-449bd5000000\nTime:2019-07-26T23:30:33.6915678Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share2977154f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9923-101a-010f-290a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9923-101a-010f-290a-449bd5000000\nTime:2019-07-26T23:30:33.7225979Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share30341704?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9924-101a-010f-2a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9924-101a-010f-2a0a-449bd5000000\nTime:2019-07-26T23:30:33.7546287Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share31437c63?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9925-101a-010f-2b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9925-101a-010f-2b0a-449bd5000000\nTime:2019-07-26T23:30:33.7856569Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share31471b7e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9926-101a-010f-2c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9926-101a-010f-2c0a-449bd5000000\nTime:2019-07-26T23:30:33.8156873Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share32523163?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9927-101a-010f-2d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9927-101a-010f-2d0a-449bd5000000\nTime:2019-07-26T23:30:33.8467160Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share330285ee?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9928-101a-010f-2e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9928-101a-010f-2e0a-449bd5000000\nTime:2019-07-26T23:30:33.8767454Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share33848cb5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9929-101a-010f-2f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9929-101a-010f-2f0a-449bd5000000\nTime:2019-07-26T23:30:33.9077731Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share34364d47?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be992c-101a-010f-320a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be992c-101a-010f-320a-449bd5000000\nTime:2019-07-26T23:30:33.9388032Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share3666393b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be992d-101a-010f-330a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be992d-101a-010f-330a-449bd5000000\nTime:2019-07-26T23:30:33.9698324Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share3910192a?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be992e-101a-010f-340a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be992e-101a-010f-340a-449bd5000000\nTime:2019-07-26T23:30:33.9988597Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share391562b5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be992f-101a-010f-350a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be992f-101a-010f-350a-449bd5000000\nTime:2019-07-26T23:30:34.0268862Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share39454d3c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9930-101a-010f-360a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9930-101a-010f-360a-449bd5000000\nTime:2019-07-26T23:30:34.0589166Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share402510a4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9931-101a-010f-370a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9931-101a-010f-370a-449bd5000000\nTime:2019-07-26T23:30:34.0889451Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share40438ae4?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9932-101a-010f-380a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9932-101a-010f-380a-449bd5000000\nTime:2019-07-26T23:30:34.1189731Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share419315aa?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9933-101a-010f-390a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9933-101a-010f-390a-449bd5000000\nTime:2019-07-26T23:30:34.1500022Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share419726ec?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9934-101a-010f-3a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9934-101a-010f-3a0a-449bd5000000\nTime:2019-07-26T23:30:34.1810323Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share42440e44?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9935-101a-010f-3b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9935-101a-010f-3b0a-449bd5000000\nTime:2019-07-26T23:30:34.2120610Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share42706de2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9936-101a-010f-3c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9936-101a-010f-3c0a-449bd5000000\nTime:2019-07-26T23:30:34.2440919Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share42982776?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9937-101a-010f-3d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9937-101a-010f-3d0a-449bd5000000\nTime:2019-07-26T23:30:34.2751215Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share4333416f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9938-101a-010f-3e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9938-101a-010f-3e0a-449bd5000000\nTime:2019-07-26T23:30:34.3061511Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share4390933b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9939-101a-010f-3f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9939-101a-010f-3f0a-449bd5000000\nTime:2019-07-26T23:30:34.3391817Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share44893313?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993a-101a-010f-400a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993a-101a-010f-400a-449bd5000000\nTime:2019-07-26T23:30:34.3692107Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share45426be8?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993b-101a-010f-410a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993b-101a-010f-410a-449bd5000000\nTime:2019-07-26T23:30:34.4002417Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share45583df7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993c-101a-010f-420a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993c-101a-010f-420a-449bd5000000\nTime:2019-07-26T23:30:34.4302688Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share486142eb?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993d-101a-010f-430a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993d-101a-010f-430a-449bd5000000\nTime:2019-07-26T23:30:34.4633003Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share4906185d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993e-101a-010f-440a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993e-101a-010f-440a-449bd5000000\nTime:2019-07-26T23:30:34.4953302Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share501963720?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be993f-101a-010f-450a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be993f-101a-010f-450a-449bd5000000\nTime:2019-07-26T23:30:34.5263598Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share501963722?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9940-101a-010f-460a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9940-101a-010f-460a-449bd5000000\nTime:2019-07-26T23:30:34.5573890Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share50730d1f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9941-101a-010f-470a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9941-101a-010f-470a-449bd5000000\nTime:2019-07-26T23:30:34.5864163Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share50758ebf0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9942-101a-010f-480a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9942-101a-010f-480a-449bd5000000\nTime:2019-07-26T23:30:34.6154435Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share50758ebf2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9943-101a-010f-490a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9943-101a-010f-490a-449bd5000000\nTime:2019-07-26T23:30:34.6484765Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share50841b82?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9944-101a-010f-4a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9944-101a-010f-4a0a-449bd5000000\nTime:2019-07-26T23:30:34.6785040Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:33 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share51069796?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9945-101a-010f-4b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9945-101a-010f-4b0a-449bd5000000\nTime:2019-07-26T23:30:34.7105348Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share51268352?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9946-101a-010f-4c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9946-101a-010f-4c0a-449bd5000000\nTime:2019-07-26T23:30:34.7425643Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share55306c18?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9947-101a-010f-4d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9947-101a-010f-4d0a-449bd5000000\nTime:2019-07-26T23:30:34.7735939Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share56546d050?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9948-101a-010f-4e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9948-101a-010f-4e0a-449bd5000000\nTime:2019-07-26T23:30:34.8036228Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share56546d052?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9949-101a-010f-4f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9949-101a-010f-4f0a-449bd5000000\nTime:2019-07-26T23:30:34.8346520Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share56592e61?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994a-101a-010f-500a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994a-101a-010f-500a-449bd5000000\nTime:2019-07-26T23:30:34.8666819Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share56766957?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994b-101a-010f-510a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994b-101a-010f-510a-449bd5000000\nTime:2019-07-26T23:30:34.8977111Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share57107671?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994c-101a-010f-520a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994c-101a-010f-520a-449bd5000000\nTime:2019-07-26T23:30:34.9297419Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share57160feb0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994d-101a-010f-530a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994d-101a-010f-530a-449bd5000000\nTime:2019-07-26T23:30:34.9607710Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share57160feb2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994e-101a-010f-540a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994e-101a-010f-540a-449bd5000000\nTime:2019-07-26T23:30:34.9908004Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share574940c70?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be994f-101a-010f-550a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be994f-101a-010f-550a-449bd5000000\nTime:2019-07-26T23:30:35.0218296Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share574940c72?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9950-101a-010f-560a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9950-101a-010f-560a-449bd5000000\nTime:2019-07-26T23:30:35.0538595Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share59312cfb?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9951-101a-010f-570a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9951-101a-010f-570a-449bd5000000\nTime:2019-07-26T23:30:35.0858894Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share601391ea0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9952-101a-010f-580a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9952-101a-010f-580a-449bd5000000\nTime:2019-07-26T23:30:35.1179202Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share601391ea2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9953-101a-010f-590a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9953-101a-010f-590a-449bd5000000\nTime:2019-07-26T23:30:35.1499515Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share60655c75?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9954-101a-010f-5a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9954-101a-010f-5a0a-449bd5000000\nTime:2019-07-26T23:30:35.1809797Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share6098536b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9955-101a-010f-5b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9955-101a-010f-5b0a-449bd5000000\nTime:2019-07-26T23:30:35.2120094Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share61118451?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9956-101a-010f-5c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9956-101a-010f-5c0a-449bd5000000\nTime:2019-07-26T23:30:35.2430385Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share62465f330?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9957-101a-010f-5d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9957-101a-010f-5d0a-449bd5000000\nTime:2019-07-26T23:30:35.2750684Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share62465f332?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9958-101a-010f-5e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9958-101a-010f-5e0a-449bd5000000\nTime:2019-07-26T23:30:35.3060981Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share62655ceb?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9959-101a-010f-5f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9959-101a-010f-5f0a-449bd5000000\nTime:2019-07-26T23:30:35.3381284Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share645448460?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995a-101a-010f-600a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995a-101a-010f-600a-449bd5000000\nTime:2019-07-26T23:30:35.3711604Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share645448462?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995b-101a-010f-610a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995b-101a-010f-610a-449bd5000000\nTime:2019-07-26T23:30:35.4031908Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share64904824?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995c-101a-010f-620a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995c-101a-010f-620a-449bd5000000\nTime:2019-07-26T23:30:35.4342204Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share65962335?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995d-101a-010f-630a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995d-101a-010f-630a-449bd5000000\nTime:2019-07-26T23:30:35.4662508Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share6613297d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995e-101a-010f-640a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995e-101a-010f-640a-449bd5000000\nTime:2019-07-26T23:30:35.4962792Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share67484ef6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be995f-101a-010f-650a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be995f-101a-010f-650a-449bd5000000\nTime:2019-07-26T23:30:35.5283091Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share69198b9c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9960-101a-010f-660a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9960-101a-010f-660a-449bd5000000\nTime:2019-07-26T23:30:35.5603390Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share69376acb0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9961-101a-010f-670a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9961-101a-010f-670a-449bd5000000\nTime:2019-07-26T23:30:35.5913696Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share69376acb2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9962-101a-010f-680a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9962-101a-010f-680a-449bd5000000\nTime:2019-07-26T23:30:35.6223983Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share71260c730?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9963-101a-010f-690a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9963-101a-010f-690a-449bd5000000\nTime:2019-07-26T23:30:35.6524267Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share71260c732?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9964-101a-010f-6a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9964-101a-010f-6a0a-449bd5000000\nTime:2019-07-26T23:30:35.6834578Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:34 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share72843690?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9965-101a-010f-6b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9965-101a-010f-6b0a-449bd5000000\nTime:2019-07-26T23:30:35.7164884Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share73533cfd?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9966-101a-010f-6c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9966-101a-010f-6c0a-449bd5000000\nTime:2019-07-26T23:30:35.7475166Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share73858b48?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9967-101a-010f-6d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9967-101a-010f-6d0a-449bd5000000\nTime:2019-07-26T23:30:35.7785477Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share75564ef5?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9968-101a-010f-6e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9968-101a-010f-6e0a-449bd5000000\nTime:2019-07-26T23:30:35.8085744Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share75603ccf?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9969-101a-010f-6f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9969-101a-010f-6f0a-449bd5000000\nTime:2019-07-26T23:30:35.8386031Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7571599b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996a-101a-010f-700a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996a-101a-010f-700a-449bd5000000\nTime:2019-07-26T23:30:35.8686326Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7654162c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996b-101a-010f-710a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996b-101a-010f-710a-449bd5000000\nTime:2019-07-26T23:30:35.8986618Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share77593c8b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996c-101a-010f-720a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996c-101a-010f-720a-449bd5000000\nTime:2019-07-26T23:30:35.9306919Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share781167f1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996d-101a-010f-730a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996d-101a-010f-730a-449bd5000000\nTime:2019-07-26T23:30:35.9617203Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share7839427b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996e-101a-010f-740a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996e-101a-010f-740a-449bd5000000\nTime:2019-07-26T23:30:35.9937509Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share811078e30?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be996f-101a-010f-750a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be996f-101a-010f-750a-449bd5000000\nTime:2019-07-26T23:30:36.0257824Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share811078e32?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9970-101a-010f-760a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9970-101a-010f-760a-449bd5000000\nTime:2019-07-26T23:30:36.0578120Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share81208ff7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9971-101a-010f-770a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9971-101a-010f-770a-449bd5000000\nTime:2019-07-26T23:30:36.0908437Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share81275d3c0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9972-101a-010f-780a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9972-101a-010f-780a-449bd5000000\nTime:2019-07-26T23:30:36.1218755Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share81275d3c2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9973-101a-010f-790a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9973-101a-010f-790a-449bd5000000\nTime:2019-07-26T23:30:36.1529039Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share8149487e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9974-101a-010f-7a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9974-101a-010f-7a0a-449bd5000000\nTime:2019-07-26T23:30:36.1839328Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share8204845d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9976-101a-010f-7b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9976-101a-010f-7b0a-449bd5000000\nTime:2019-07-26T23:30:36.2159634Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share82193f0e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9977-101a-010f-7c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9977-101a-010f-7c0a-449bd5000000\nTime:2019-07-26T23:30:36.2459920Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share82394f22?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9978-101a-010f-7d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9978-101a-010f-7d0a-449bd5000000\nTime:2019-07-26T23:30:36.2780226Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share83640d3d?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9979-101a-010f-7e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9979-101a-010f-7e0a-449bd5000000\nTime:2019-07-26T23:30:36.3090524Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share838615e00?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997a-101a-010f-7f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997a-101a-010f-7f0a-449bd5000000\nTime:2019-07-26T23:30:36.3400818Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share838615e02?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997b-101a-010f-800a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997b-101a-010f-800a-449bd5000000\nTime:2019-07-26T23:30:36.3711126Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share84035c2d0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997c-101a-010f-010a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997c-101a-010f-010a-449bd5000000\nTime:2019-07-26T23:30:36.4061448Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share84035c2d2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997d-101a-010f-020a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997d-101a-010f-020a-449bd5000000\nTime:2019-07-26T23:30:36.4361740Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share84947509?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997e-101a-010f-030a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997e-101a-010f-030a-449bd5000000\nTime:2019-07-26T23:30:36.4672033Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share85738125?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be997f-101a-010f-040a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be997f-101a-010f-040a-449bd5000000\nTime:2019-07-26T23:30:36.4982332Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share8640173b?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9980-101a-010f-050a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9980-101a-010f-050a-449bd5000000\nTime:2019-07-26T23:30:36.5312640Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share875133cf?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9981-101a-010f-060a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9981-101a-010f-060a-449bd5000000\nTime:2019-07-26T23:30:36.5733046Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share88894e1e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9982-101a-010f-070a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9982-101a-010f-070a-449bd5000000\nTime:2019-07-26T23:30:36.6043344Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share902567c8?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9983-101a-010f-080a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9983-101a-010f-080a-449bd5000000\nTime:2019-07-26T23:30:36.6353647Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share91246a6f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9984-101a-010f-090a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9984-101a-010f-090a-449bd5000000\nTime:2019-07-26T23:30:36.6663936Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:35 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share91457383?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9985-101a-010f-0a0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9985-101a-010f-0a0a-449bd5000000\nTime:2019-07-26T23:30:36.7044290Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share92956104?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9986-101a-010f-0b0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9986-101a-010f-0b0a-449bd5000000\nTime:2019-07-26T23:30:36.7424653Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share939310ce?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9987-101a-010f-0c0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9987-101a-010f-0c0a-449bd5000000\nTime:2019-07-26T23:30:36.7774994Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share95273efa0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9988-101a-010f-0d0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9988-101a-010f-0d0a-449bd5000000\nTime:2019-07-26T23:30:36.8165363Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share95273efa2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be9989-101a-010f-0e0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be9989-101a-010f-0e0a-449bd5000000\nTime:2019-07-26T23:30:36.8505681Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share9863815b0?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be998a-101a-010f-0f0a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be998a-101a-010f-0f0a-449bd5000000\nTime:2019-07-26T23:30:36.8815977Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share9863815b2?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be998b-101a-010f-100a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be998b-101a-010f-100a-449bd5000000\nTime:2019-07-26T23:30:36.9126278Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share990432c7?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be998c-101a-010f-110a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be998c-101a-010f-110a-449bd5000000\nTime:2019-07-26T23:30:36.9456593Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
+      "Content-Type" : "application/xml"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share99203b84?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2018-11-09",
+      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
+    },
+    "Response" : {
+      "x-ms-version" : "2018-11-09",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareHasSnapshots",
+      "retry-after" : "0",
+      "Content-Length" : "250",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "86be998d-101a-010f-120a-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be998d-101a-010f-120a-449bd5000000\nTime:2019-07-26T23:30:36.9766881Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:30:36 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share4789498f" ]
+  "variables" : [ "share96589d29" ]
 }

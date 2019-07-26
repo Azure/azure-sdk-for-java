@@ -44,7 +44,7 @@ public abstract class FileClientTestBase extends TestBase {
     public abstract void createExcessMaxSizeFromFileClient();
 
     @Test
-    public abstract void startCopy() throws Exception;
+    public abstract void startCopy() ;
 
     @Test
     public abstract void abortCopy();

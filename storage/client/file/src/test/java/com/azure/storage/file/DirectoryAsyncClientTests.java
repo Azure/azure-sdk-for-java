@@ -35,7 +35,6 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             client = setupClient((connectionString, endpoint) -> new DirectoryClientBuilder()
                              .connectionString(connectionString)
-                             .endpoint(endpoint)
                              .shareName(shareName)
                              .directoryPath(dirName)
                              .httpClient(interceptorManager.getPlaybackClient())
@@ -44,7 +43,6 @@ public class DirectoryAsyncClientTests extends DirectoryClientTestBase {
         } else {
             client = setupClient((connectionString, endpoint) -> new DirectoryClientBuilder()
                              .connectionString(connectionString)
-                             .endpoint(endpoint)
                              .shareName(shareName)
                              .directoryPath(dirName)
                              .httpClient(HttpClient.createDefault().wiretap(true))

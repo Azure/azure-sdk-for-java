@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share55181a4b?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share963952fa?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C844A745\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:51 GMT",
+      "ETag" : "\"0x8D7122093C0C2FE\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:42 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d9fa-601a-0070-7d79-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:51 GMT"
+      "x-ms-request-id" : "86be8527-101a-010f-3809-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:42 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share55181a4b?restype=share&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share963952fa?restype=share&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "324",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8a41d9fc-601a-0070-7e79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41d9fc-601a-0070-7e79-42bc56000000\nTime:2019-07-24T23:43:51.8032426Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:43:51 GMT",
+      "x-ms-request-id" : "86be8529-101a-010f-3909-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:86be8529-101a-010f-3909-449bd5000000\nTime:2019-07-26T23:25:42.3681856Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>-1</HeaderValue></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:25:42 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share55181a4b?restype=share&comp=properties",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share963952fa?restype=share&comp=properties",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -50,14 +50,14 @@
       "retry-after" : "0",
       "Content-Length" : "326",
       "StatusCode" : "400",
-      "x-ms-request-id" : "8a41d9fd-601a-0070-7f79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8a41d9fd-601a-0070-7f79-42bc56000000\nTime:2019-07-24T23:43:51.8522772Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999</HeaderValue></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:43:51 GMT",
+      "x-ms-request-id" : "86be852a-101a-010f-3a09-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:86be852a-101a-010f-3a09-449bd5000000\nTime:2019-07-26T23:25:42.3952124Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>9999</HeaderValue></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:25:42 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share55181a4b?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share963952fa?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -68,9 +68,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41d9fe-601a-0070-8079-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:51 GMT"
+      "x-ms-request-id" : "86be852b-101a-010f-3b09-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:42 GMT"
     }
   } ],
-  "variables" : [ "share55181a4b" ]
+  "variables" : [ "share963952fa" ]
 }

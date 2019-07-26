@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share36469e0a?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share74261076?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090E48DF9E8\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:44:39 GMT",
+      "ETag" : "\"0x8D71220AFB7A7CE\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:26:29 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41da75-601a-0070-3479-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT"
+      "x-ms-request-id" : "86be85ae-101a-010f-8009-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/share36469e0a/testshare?restype=directory",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share74261076/testshare?restype=directory",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "223",
       "StatusCode" : "404",
-      "x-ms-request-id" : "8a41da77-601a-0070-3579-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:8a41da77-601a-0070-3579-42bc56000000\nTime:2019-07-24T23:44:39.2609762Z</Message></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT",
+      "x-ms-request-id" : "86be85b0-101a-010f-0109-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ResourceNotFound</Code><Message>The specified resource does not exist.\nRequestId:86be85b0-101a-010f-0109-449bd5000000\nTime:2019-07-26T23:26:29.2967243Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share36469e0a?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share74261076?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -49,9 +49,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41da78-601a-0070-3679-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:44:38 GMT"
+      "x-ms-request-id" : "86be85b1-101a-010f-0209-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:26:28 GMT"
     }
   } ],
-  "variables" : [ "share36469e0a" ]
+  "variables" : [ "share74261076" ]
 }

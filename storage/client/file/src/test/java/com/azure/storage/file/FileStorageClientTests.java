@@ -41,14 +41,12 @@ public class FileStorageClientTests extends FileStorageClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             fileStorageClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildClient(), true, fileStorageLogger);
         } else {
             fileStorageClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -58,7 +56,7 @@ public class FileStorageClientTests extends FileStorageClientTestBase {
 
     @Override
     public void afterTest() {
-        for (ShareItem share : fileStorageClient.listShares(new ListSharesOptions().prefix(shareName))) {
+        for (ShareItem share : fileStorageClient.listShares()) {
             ShareClient client = fileStorageClient.getShareClient(share.name());
             try {
                 client.delete();

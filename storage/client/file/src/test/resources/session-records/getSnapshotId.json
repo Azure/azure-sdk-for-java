@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share03093e82?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share30341704?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,36 +9,36 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C709F233\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "ETag" : "\"0x8D7122092B0978D\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d9cf-601a-0070-5c79-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT"
+      "x-ms-request-id" : "86be84fc-101a-010f-1809-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share03093e82?restype=share&comp=snapshot",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share30341704?restype=share&comp=snapshot",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
     },
     "Response" : {
       "x-ms-version" : "2018-11-09",
-      "x-ms-snapshot" : "2019-07-24T23:43:49.0000000Z",
+      "x-ms-snapshot" : "2019-07-26T23:25:40.0000000Z",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090C709F233\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "ETag" : "\"0x8D7122092B0978D\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41d9d2-601a-0070-5d79-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT"
+      "x-ms-request-id" : "86be84fe-101a-010f-1909-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share03093e82?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share30341704?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -50,11 +50,11 @@
       "retry-after" : "0",
       "Content-Length" : "250",
       "StatusCode" : "409",
-      "x-ms-request-id" : "8a41d9d4-601a-0070-5f79-42bc56000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:8a41d9d4-601a-0070-5f79-42bc56000000\nTime:2019-07-24T23:43:49.7968161Z</Message></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:43:49 GMT",
+      "x-ms-request-id" : "86be84ff-101a-010f-1a09-449bd5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareHasSnapshots</Code><Message>The share has snapshots and the operation requires no snapshots.\nRequestId:86be84ff-101a-010f-1a09-449bd5000000\nTime:2019-07-26T23:25:40.6435505Z</Message></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:25:40 GMT",
       "Content-Type" : "application/xml"
     }
   } ],
-  "variables" : [ "share03093e82" ]
+  "variables" : [ "share30341704" ]
 }

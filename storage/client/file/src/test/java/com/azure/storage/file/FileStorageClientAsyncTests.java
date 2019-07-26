@@ -37,14 +37,12 @@ public class FileStorageClientAsyncTests extends FileStorageClientTestBase {
         if (interceptorManager.isPlaybackMode()) {
             fileStorageAsyncClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(interceptorManager.getPlaybackClient())
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .buildAsyncClient(), true, fileStorageAsyncLogger);
         } else {
             fileStorageAsyncClient = setupClient((connectionString, endpoint) -> new FileStorageClientBuilder()
                 .connectionString(connectionString)
-                .endpoint(endpoint)
                 .httpClient(HttpClient.createDefault().wiretap(true))
                 .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -54,7 +52,7 @@ public class FileStorageClientAsyncTests extends FileStorageClientTestBase {
 
     @Override
     public void afterTest() {
-        fileStorageAsyncClient.listShares(new ListSharesOptions().prefix(shareName))
+        fileStorageAsyncClient.listShares()
             .collectList()
             .block()
             .forEach(share -> {

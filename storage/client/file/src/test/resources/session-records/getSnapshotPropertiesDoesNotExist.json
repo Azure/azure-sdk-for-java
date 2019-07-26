@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://sima.file.core.windows.net/share69016920?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share31089dd6?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -9,17 +9,17 @@
     "Response" : {
       "x-ms-version" : "2018-11-09",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "\"0x8D71090E5280BFF\"",
-      "Last-Modified" : "Wed, 24 Jul 2019 23:44:40 GMT",
+      "ETag" : "\"0x8D71220B0300264\"",
+      "Last-Modified" : "Fri, 26 Jul 2019 23:26:30 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8a41da8f-601a-0070-4679-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:44:39 GMT"
+      "x-ms-request-id" : "86be85c6-101a-010f-1209-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:26:29 GMT"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sima.file.core.windows.net/share69016920?sharesnapshot=snapshot&restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share31089dd6?sharesnapshot=snapshot&restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -31,14 +31,14 @@
       "retry-after" : "0",
       "Content-Length" : "445",
       "StatusCode" : "400",
-      "x-ms-request-id" : "a702f4a0-401a-0082-1779-426ec2000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:a702f4a0-401a-0082-1779-426ec2000000\nTime:2019-07-24T23:44:40.2677834Z</Message><QueryParameterName>sharesnapshot</QueryParameterName><QueryParameterValue>snapshot</QueryParameterValue><Reason>Must be in the specific snapshot date time format.</Reason></Error>",
-      "Date" : "Wed, 24 Jul 2019 23:44:40 GMT",
+      "x-ms-request-id" : "65e43b8b-401a-011c-6409-44ae34000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidQueryParameterValue</Code><Message>Value for one of the query parameters specified in the request URI is invalid.\nRequestId:65e43b8b-401a-011c-6409-44ae34000000\nTime:2019-07-26T23:26:30.0760942Z</Message><QueryParameterName>sharesnapshot</QueryParameterName><QueryParameterValue>snapshot</QueryParameterValue><Reason>Must be in the specific snapshot date time format.</Reason></Error>",
+      "Date" : "Fri, 26 Jul 2019 23:26:30 GMT",
       "Content-Type" : "application/xml"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sima.file.core.windows.net/share69016920?restype=share",
+    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/share31089dd6?restype=share",
     "Headers" : {
       "x-ms-version" : "2018-11-09",
       "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.1 1.8.0_201; Windows 10 10.0"
@@ -49,9 +49,9 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "8a41da91-601a-0070-4779-42bc56000000",
-      "Date" : "Wed, 24 Jul 2019 23:44:39 GMT"
+      "x-ms-request-id" : "86be85c8-101a-010f-1309-449bd5000000",
+      "Date" : "Fri, 26 Jul 2019 23:26:29 GMT"
     }
   } ],
-  "variables" : [ "share69016920" ]
+  "variables" : [ "share31089dd6" ]
 }

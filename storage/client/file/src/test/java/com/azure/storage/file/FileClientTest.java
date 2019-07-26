@@ -42,7 +42,6 @@ public class FileClientTest extends FileClientTestBase {
                              .connectionString(connectionString)
                              .shareName(shareName)
                              .filePath(filePath)
-                             .endpoint(endpoint)
                              .httpClient(interceptorManager.getPlaybackClient())
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .buildClient(), true, fileLogger);
@@ -51,7 +50,6 @@ public class FileClientTest extends FileClientTestBase {
                              .connectionString(connectionString)
                              .shareName(shareName)
                              .filePath(filePath)
-                             .endpoint(endpoint)
                              .httpClient(HttpClient.createDefault().wiretap(true))
                              .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                              .addPolicy(interceptorManager.getRecordPolicy())
@@ -93,7 +91,7 @@ public class FileClientTest extends FileClientTestBase {
     }
 
     @Override
-    public void startCopy() throws Exception {
+    public void startCopy() {
         FileTestHelpers.assertResponseStatusCode(fileClient.create(1024, null, null), 201);
         String sourceURL = fileClient.getFileUrl().toString() + "/" + shareName + "/" + filePath;
         Response<FileCopyInfo> copyInfoResponse = fileClient.startCopy(sourceURL, null);

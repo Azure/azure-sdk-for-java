@@ -66,7 +66,8 @@ public class QueueStorageAsyncClientTests extends QueueStorageClientTestsBase {
 
     @Override
     public void getQueueDoesNotCreateAQueue() {
-        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"));
+        StepVerifier.create(serviceClient.getQueueAsyncClient(queueName).enqueueMessage("Expecting an exception"))
+            .verifyErrorSatisfies(exception -> helper.assertExceptionStatusCode(exception, 404));
     }
 
     @Override
@@ -112,27 +113,28 @@ public class QueueStorageAsyncClientTests extends QueueStorageClientTestsBase {
         metadata.put("metadata1", "value1");
         metadata.put("metadata2", "value2");
 
-        try {
-            serviceClient.createQueue(queueName);
-            serviceClient.createQueue(queueName, metadata);
-        } catch (Exception exception) {
-        }
+        StepVerifier.create(serviceClient.createQueue(queueName))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 201))
+            .verifyComplete();
+        StepVerifier.create(serviceClient.createQueue(queueName, metadata))
+            .verifyErrorSatisfies(exception -> helper.assertExceptionStatusCode(exception, 409));
+
     }
 
     @Override
     public void deleteExistingQueue() {
         QueueAsyncClient client = serviceClient.createQueue(queueName).block().value();
-        serviceClient.deleteQueue(queueName).block();
-
-        StepVerifier.create(client.enqueueMessage("Expecting an exception"));
+        StepVerifier.create(serviceClient.deleteQueue(queueName))
+            .assertNext(response -> helper.assertResponseStatusCode(response, 204))
+            .verifyComplete();
+        StepVerifier.create(client.enqueueMessage("Expecting an exception"))
+            .verifyErrorSatisfies(exception -> helper.assertExceptionStatusCode(exception, 404));
     }
 
     @Override
     public void deleteNonExistentQueue() {
-        try {
-            serviceClient.deleteQueue(queueName);
-        } catch (Exception exception) {
-        }
+        StepVerifier.create(serviceClient.deleteQueue(queueName))
+            .verifyErrorSatisfies(exception -> helper.assertExceptionStatusCode(exception, 404));
     }
 
     @Override

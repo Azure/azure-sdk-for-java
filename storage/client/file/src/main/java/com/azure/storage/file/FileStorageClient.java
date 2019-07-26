@@ -17,15 +17,15 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * This class provides a fileStorageAsyncClient that contains all the operations for interacting with a file account in Azure Storage.
- * Operations allowed by the fileStorageAsyncClient are creating, listing, and deleting shares and retrieving and updating properties
+ * This class provides operations for interacting with a file account in Azure Storage.
+ * Operations allowed by the FileStorageClient are creating, listing, and deleting shares and retrieving and updating properties
  * of the account.
  *
  * <p><strong>Instantiating a Synchronous File Service Client</strong></p>
  *
  * {@codesnippet com.azure.storage.file.fileStorageClient.instantiation}
  *
- * <p>View {@link FileStorageClientBuilder this} for additional ways to construct the fileStorageAsyncClient.</p>
+ * <p>View {@link FileStorageClientBuilder this} for additional ways to construct the FileStorageClient.</p>
  *
  * @see FileStorageClientBuilder
  * @see FileStorageAsyncClient
@@ -56,7 +56,7 @@ public final class FileStorageClient {
     /**
      * Constructs a ShareClient that interacts with the specified share.
      *
-     * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the fileStorageAsyncClient will
+     * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the ShareClient will
      * need to be called before interaction with the share can happen.</p>
      *
      * @param shareName Name of the share
