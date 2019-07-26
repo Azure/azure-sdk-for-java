@@ -32,6 +32,9 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
         this.retryFactor = computeRetryFactor();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Duration calculateRetryDelay(Exception lastException, Duration remainingTime, int retryCount) {
         if (!isRetriableException(lastException) || retryCount >= retryOptions.maxRetries()) {
@@ -60,24 +63,17 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
         return retryAfter.plus(baseWaitTime);
     }
 
-    private double computeRetryFactor() {
-        final Duration maxBackoff = retryOptions.maxDelay();
-        final Duration minBackoff = retryOptions.delay();
-        final int maximumRetries = retryOptions.maxRetries();
-        final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
-
-        if (deltaBackoff <= 0 || maximumRetries <= 0) {
-            return 0;
-        }
-
-        return Math.log(deltaBackoff) / Math.log(maximumRetries);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(retryFactor, retryOptions);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -99,4 +95,18 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
         final RetryOptions cloned = (RetryOptions) retryOptions.clone();
         return new ExponentialRetryPolicy(cloned);
     }
+
+    private double computeRetryFactor() {
+        final Duration maxBackoff = retryOptions.maxDelay();
+        final Duration minBackoff = retryOptions.delay();
+        final int maximumRetries = retryOptions.maxRetries();
+        final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
+
+        if (deltaBackoff <= 0 || maximumRetries <= 0) {
+            return 0;
+        }
+
+        return Math.log(deltaBackoff) / Math.log(maximumRetries);
+    }
+
 }
