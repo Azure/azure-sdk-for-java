@@ -76,7 +76,7 @@ public final class SecretClient {
      * @return The {@link Secret created secret}.
      */
     public Secret setSecret(String name, String value) {
-        return client.setSecret(name, value, Context.NONE).block().value();
+        return this.setSecretWithResponse(name, value, Context.NONE).value();
     }
 
     /**
@@ -152,7 +152,7 @@ public final class SecretClient {
      * @return The requested {@link Secret secret}.
      */
     public Secret getSecret(SecretBase secretBase) {
-        return client.getSecret(secretBase, Context.NONE).block().value();
+        return this.getSecretWithResponse(secretBase, Context.NONE).value();
     }
 
     /**
@@ -230,7 +230,7 @@ public final class SecretClient {
      * @return The {@link SecretBase updated secret}.
      */
     public SecretBase updateSecret(SecretBase secret) {
-        return client.updateSecret(secret, Context.NONE).block().value();
+        return this.updateSecretWithResponse(secret, Context.NONE).value();
     }
 
     /**
@@ -248,7 +248,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link DeletedSecret deleted secret}.
      */
     public DeletedSecret deleteSecret(String name) {
-        return client.deleteSecret(name, Context.NONE).block().value();
+        return this.deleteSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -286,7 +286,7 @@ public final class SecretClient {
      * @return The {@link DeletedSecret deleted secret}.
      */
     public DeletedSecret getDeletedSecret(String name) {
-        return client.getDeletedSecret(name, Context.NONE).block().value();
+        return this.getDeletedSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -362,7 +362,7 @@ public final class SecretClient {
      * @return The {@link Secret recovered secret}.
      */
     public Secret recoverDeletedSecret(String name) {
-        return client.recoverDeletedSecret(name, Context.NONE).block().value();
+        return this.recoverDeletedSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -399,7 +399,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the backed up secret blob.
      */
     public byte[] backupSecret(String name) {
-        return client.backupSecret(name, Context.NONE).block().value();
+        return this.backupSecretWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -435,7 +435,7 @@ public final class SecretClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link Secret restored secret}.
      */
     public Secret restoreSecret(byte[] backup) {
-        return client.restoreSecret(backup, Context.NONE).block().value();
+        return this.restoreSecretWithResponse(backup, Context.NONE).value();
     }
 
     /**
