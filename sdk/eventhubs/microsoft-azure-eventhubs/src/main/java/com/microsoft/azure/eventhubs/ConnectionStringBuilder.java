@@ -63,7 +63,7 @@ public final class ConnectionStringBuilder {
     static final String TRANSPORT_TYPE_CONFIG_NAME = "TransportType";
     static final String AUTHENTICATION_CONFIG_NAME = "Authentication";
     
-    static public final String MANAGED_IDENTITY_AUTHENTICATION = "Managed Identity";
+    public static final String MANAGED_IDENTITY_AUTHENTICATION = "Managed Identity";
 
     private static final String ALL_KEY_ENUMERATE_REGEX = "(" + HOST_NAME_CONFIG_NAME + "|" + ENDPOINT_CONFIG_NAME + "|" + SHARED_ACCESS_KEY_NANE_CONFIG_NAME
             + "|" + SHARED_ACCESS_KEY_CONFIG_NAME + "|" + SHARED_ACCESS_SIGNATURE_CONFIG_NAME + "|" + ENTITY_PATH_CONFIG_NAME + "|" + OPERATION_TIMEOUT_CONFIG_NAME
@@ -289,7 +289,7 @@ public final class ConnectionStringBuilder {
      * @return authentication 
      */
     public String getAuthentication() {
-    	return this.authentication;
+        return this.authentication;
     }
     
     /**
@@ -299,8 +299,8 @@ public final class ConnectionStringBuilder {
      * @return the {@link ConnectionStringBuilder} instance being set.
      */
     public ConnectionStringBuilder setAuthentication(final String authentication) {
-    	this.authentication = authentication;
-    	return this;
+        this.authentication = authentication;
+        return this;
     }
 
     /**
@@ -347,8 +347,8 @@ public final class ConnectionStringBuilder {
         }
         
         if (!StringUtil.isNullOrWhiteSpace(this.authentication)) {
-        	connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", AUTHENTICATION_CONFIG_NAME,
-        			KEY_VALUE_SEPARATOR, this.authentication, KEY_VALUE_PAIR_DELIMITER));
+            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", AUTHENTICATION_CONFIG_NAME,
+                    KEY_VALUE_SEPARATOR, this.authentication, KEY_VALUE_PAIR_DELIMITER));
         }
 
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
@@ -439,8 +439,8 @@ public final class ConnectionStringBuilder {
                             exception);
                 }
             } else if (key.equalsIgnoreCase(AUTHENTICATION_CONFIG_NAME)) {
-            	this.authentication = values[valueIndex];
-        	} else {
+                this.authentication = values[valueIndex];
+            } else {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));
             }

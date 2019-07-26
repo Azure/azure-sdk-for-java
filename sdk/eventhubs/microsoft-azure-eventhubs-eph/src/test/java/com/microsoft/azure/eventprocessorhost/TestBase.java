@@ -161,9 +161,9 @@ public class TestBase {
                     : new BogusLeaseManager();
 
             settings.outHost = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
-            	.useUserCheckpointAndLeaseManagers(effectiveCheckpointManager, effectiveLeaseManager)
-            	.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath)
-            	.setExecutor(effectiveExecutor).build();
+                .useUserCheckpointAndLeaseManagers(effectiveCheckpointManager, effectiveLeaseManager)
+                .useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath)
+                .setExecutor(effectiveExecutor).build();
         } else {
             String effectiveStorageConnectionString = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.STORAGE_CONNECTION_OVERRIDE)
                     ? settings.inoutEPHConstructorArgs.getStorageConnection()
@@ -184,14 +184,14 @@ public class TestBase {
                     : null;
 
             AuthStep intermediate = EventProcessorHost.EventProcessorHostBuilder.newBuilder(effectiveHostName, effectiveConsumerGroup)
-            		.useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix);
+                    .useAzureStorageCheckpointLeaseManager(effectiveStorageConnectionString, effectiveStorageContainerName, effectiveBlobPrefix);
             OptionalStep almostDone = null;
             if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.AUTH_CALLBACK)) {
-            	ConnectionStringBuilder csb = new ConnectionStringBuilder(effectiveConnectionString);
-            	almostDone = intermediate.useAADAuthentication(csb.getEndpoint(), effectiveEntityPath)
-            			.useAuthenticationCallback(settings.inoutEPHConstructorArgs.getAuthCallback(), settings.inoutEPHConstructorArgs.getAuthAuthority());
+                ConnectionStringBuilder csb = new ConnectionStringBuilder(effectiveConnectionString);
+                almostDone = intermediate.useAADAuthentication(csb.getEndpoint(), effectiveEntityPath)
+                        .useAuthenticationCallback(settings.inoutEPHConstructorArgs.getAuthCallback(), settings.inoutEPHConstructorArgs.getAuthAuthority());
             } else {
-            	almostDone = intermediate.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath);
+                almostDone = intermediate.useEventHubConnectionString(effectiveConnectionString, effectiveEntityPath);
             }
             settings.outHost = almostDone.setExecutor(effectiveExecutor).build();
         }

@@ -26,17 +26,17 @@ public final class AzureActiveDirectoryTokenProvider implements ITokenProvider {
 
     @Override
     public CompletableFuture<SecurityToken> getToken(String resource, Duration timeout) {
-    	return this.authCallback.acquireToken(ClientConstants.EVENTHUBS_AUDIENCE, this.authority, this.authCallbackState)
-    			.thenApply((rawToken) -> {
-		    		try {
-						return new JsonSecurityToken(rawToken, resource);
-					} catch (ParseException e) {
-						throw new CompletionException(e);
-					}
-		    	});
+        return this.authCallback.acquireToken(ClientConstants.EVENTHUBS_AUDIENCE, this.authority, this.authCallbackState)
+                .thenApply((rawToken) -> {
+                    try {
+                        return new JsonSecurityToken(rawToken, resource);
+                    } catch (ParseException e) {
+                        throw new CompletionException(e);
+                    }
+                });
     }
 
     public interface AuthenticationCallback {
-        CompletableFuture<String> acquireToken(final String audience, final String authority, final Object state);
+        CompletableFuture<String> acquireToken(String audience, String authority, Object state);
     }
 }

@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
-
 /**
  * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder#buildAppendBlobAsyncClient()},
  * via the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
