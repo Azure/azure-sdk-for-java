@@ -3,21 +3,14 @@
 
 package com.azure.core.amqp;
 
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.ErrorCondition;
-
 import java.time.Duration;
-import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A policy to govern retrying of messaging operations in which the delay between retries will grow in an exponential
  * manner, allowing more time to recover as the number of retries increases.
  */
 public final class ExponentialRetryPolicy extends RetryPolicy {
-    // Base sleep wait time.
-    private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
-    private static final Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
-
     private final double retryFactor;
 
     /**
@@ -33,34 +26,23 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
     }
 
     /**
-     * {@inheritDoc}
+     * Calculates the retry delay using exponential backoff.
+     *
+     * @param retryCount The number of attempts that have been made, including the initial attempt before any
+     *         retries.
+     * @param baseDelay The delay to use for the basis of the exponential backoff.
+     * @param baseJitter The duration to use for the basis of the random jitter value.
+     * @param random The random number generator used to calculate the jitter.
+     * @return The duration to delay before retrying a request.
      */
     @Override
-    public Duration calculateRetryDelay(Exception lastException, Duration remainingTime, int retryCount) {
-        if (!isRetriableException(lastException) || retryCount >= retryOptions.maxRetries()) {
-            return null;
-        }
+    protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+                                           ThreadLocalRandom random) {
+        final double jitterSeconds = random.nextDouble() * baseJitter.getSeconds();
+        final double nextRetrySeconds = Math.pow(retryFactor, (double) retryCount) * baseDelay.getSeconds();
+        final Double nextRetryNanos = (jitterSeconds + nextRetrySeconds) * NANOS_PER_SECOND;
 
-        if (!(lastException instanceof AmqpException)) {
-            return null;
-        }
-
-        final Duration baseWaitTime = ((AmqpException) lastException).getErrorCondition() == ErrorCondition.SERVER_BUSY_ERROR
-            ? SERVER_BUSY_WAIT_TIME
-            : Duration.ZERO;
-
-        final double nextRetryInterval = Math.pow(retryFactor, (double) retryCount);
-        final long nextRetryIntervalSeconds = (long) nextRetryInterval;
-        final long nextRetryIntervalNano = (long) ((nextRetryInterval - (double) nextRetryIntervalSeconds) * 1000000000);
-
-        if (remainingTime.getSeconds() < Math.max(nextRetryInterval, TIMER_TOLERANCE.getSeconds())) {
-            return null;
-        }
-
-        final Duration interval = Duration.ofSeconds(nextRetryIntervalSeconds, nextRetryIntervalNano);
-        final Duration retryAfter = retryOptions.delay().plus(interval);
-
-        return retryAfter.plus(baseWaitTime);
+        return Duration.ofNanos(nextRetryNanos.longValue());
     }
 
     /**
@@ -68,7 +50,7 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(retryFactor, retryOptions);
+        return super.hashCode();
     }
 
     /**
@@ -92,14 +74,15 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Override
     public Object clone() {
-        final RetryOptions cloned = (RetryOptions) retryOptions.clone();
+        final RetryOptions cloned = (RetryOptions) getRetryOptions().clone();
         return new ExponentialRetryPolicy(cloned);
     }
 
     private double computeRetryFactor() {
-        final Duration maxBackoff = retryOptions.maxDelay();
-        final Duration minBackoff = retryOptions.delay();
-        final int maximumRetries = retryOptions.maxRetries();
+        final RetryOptions options = getRetryOptions();
+        final Duration maxBackoff = options.maxDelay();
+        final Duration minBackoff = options.delay();
+        final int maximumRetries = options.maxRetries();
         final long deltaBackoff = maxBackoff.minus(minBackoff).getSeconds();
 
         if (deltaBackoff <= 0 || maximumRetries <= 0) {
@@ -108,5 +91,4 @@ public final class ExponentialRetryPolicy extends RetryPolicy {
 
         return Math.log(deltaBackoff) / Math.log(maximumRetries);
     }
-
 }
