@@ -1,0 +1,12 @@
+steps:
+  - task: Maven@3
+    displayName: 'Install reporting tools'
+    inputs:
+      mavenPomFile: ./eng/code-quality-reports/pom.xml
+      options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+      mavenOptions: '$(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'

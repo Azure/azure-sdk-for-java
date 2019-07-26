@@ -44,4 +44,4 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }}'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'

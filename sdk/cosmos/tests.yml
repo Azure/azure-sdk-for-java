@@ -16,7 +16,7 @@ jobs:
       Matrix:
         Session_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          DisplayName: 'ReadMyWrites Integration Tests'
+          DisplayName: 'ReadMyWrites Integration Tests (Session Consistency)'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
           DESIRED_CONSISTENCY: 'Session'
@@ -24,7 +24,7 @@ jobs:
           COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         Strong_Single_Region_ReadMyWrites:
           OSVmImage: 'vs2017-win2016'
-          DisplayName: 'ReadMyWrites Integration Tests'
+          DisplayName: 'ReadMyWrites Integration Tests (Strong Consistency)'
           ProfileFlag: '-Pe2e'
           DirectModeProtocol: 'Https'
           DESIRED_CONSISTENCY: 'Strong'
@@ -41,19 +41,73 @@ jobs:
         #   cosmos.directModeProtocol: 'Https'
 
       PreRunSteps:
-        - task: Maven@3
-          displayName: 'Install reporting tools'
-          inputs:
-            mavenPomFile: ./eng/code-quality-reports/pom.xml
-            options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-            mavenOptions: '$(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: '1.11'
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-            goals: 'install'
+        - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
         options: '$(ProfileFlag) -Dgpg.skip -DargLine="-Dcosmos.directModeProtocol=$(DirectModeProtocol)" -DDESIRED_CONSISTENCY=$(Consistency)'
-        testResultsFiles: '**/junitreports/TEST-*.xml'
+        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: Long_Tests
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      MaxParallel: 1
+      Matrix:
+        MultiMaster_Multi_Region_Long:
+          OSVmImage: 'vs2017-win2016'
+          DisplayName: 'Long Integration Tests (Multi-Master)'
+          ProfileFlag: '-e -Plong'
+          PreferredLocations: '["East US 2"]'
+          COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
+          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
+          DESIRED_CONSISTENCY: '["Session"]'
+        Session_Single_Region_Long:
+          OSVmImage: 'vs2017-win2016'
+          DisplayName: 'Long Integration Tests (Single Region)'
+          ProfileFlag: '-e -Plong'
+          PreferredLocations: null
+          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
+          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
+          DESIRED_CONSISTENCY: '["Session"]'
+
+      PreRunSteps:
+        - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+        goals: verify
+        options: '$(ProfileFlag) -Dgpg.skip'
+        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      TestName: MultiMaster
+      ServiceDirectory: cosmos
+      TimeoutInMinutes: 240
+      MaxParallel: 1
+      Matrix:
+        Single_Region:
+         OSVmImage: 'macOS-10.13'
+         ProfileFlag: '-Pfast'
+         COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
+         COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
+         PREFERRED_LOCATIONS: null
+
+
+        Multi_Region:
+          OSVmImage: 'macOS-10.13'
+          ProfileFlag: '-Pfast'
+          COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
+          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
+          PREFERRED_LOCATIONS: '["East US 2"]'
+
+      PreRunSteps:
+        - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+
+      TestStepMavenInputs:
+        goals: verify
+        options: '$(ProfileFlag) -Dgpg.skip'
+        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
+
+
