@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -34,7 +35,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             String connectionString = getConnectionString();
             // BEGIN: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation
             RecordedData networkData = new RecordedData();
-            HttpPipeline pipeline = HttpPipeline.builder().policies(new RecordNetworkCallPolicy(networkData)).build();
+            HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(networkData)).build();
 
             ConfigurationClient configurationClient = new ConfigurationClientBuilder()
                 .pipeline(pipeline)
