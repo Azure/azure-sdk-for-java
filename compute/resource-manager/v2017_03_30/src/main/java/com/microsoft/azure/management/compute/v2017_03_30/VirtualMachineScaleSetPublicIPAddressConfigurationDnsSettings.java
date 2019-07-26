@@ -24,7 +24,7 @@ public class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings {
     private String domainNameLabel;
 
     /**
-     * Get the domainNameLabel value.
+     * Get the Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of the PublicIPAddress resources that will be created.
      *
      * @return the domainNameLabel value
      */
@@ -33,7 +33,7 @@ public class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings {
     }
 
     /**
-     * Set the domainNameLabel value.
+     * Set the Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of the PublicIPAddress resources that will be created.
      *
      * @param domainNameLabel the domainNameLabel value to set
      * @return the VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings object itself.

@@ -27,7 +27,7 @@ public class DiskSku {
     private String tier;
 
     /**
-     * Get the name value.
+     * Get the sku name. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class DiskSku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name. Possible values include: 'Standard_LRS', 'Premium_LRS'.
      *
      * @param name the name value to set
      * @return the DiskSku object itself.
@@ -47,7 +47,7 @@ public class DiskSku {
     }
 
     /**
-     * Get the tier value.
+     * Get the sku tier.
      *
      * @return the tier value
      */
