@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpClient;
 import io.netty.buffer.ByteBuf;
@@ -62,7 +63,7 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 String firstRequestId = null;
                 @Override
@@ -89,7 +90,7 @@ public class RequestIdPolicyTests {
 
     @Test
     public void sameRequestIdForRetry() throws Exception {
-        final HttpPipeline pipeline = HttpPipeline.builder()
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockHttpClient() {
                 String firstRequestId = null;
 

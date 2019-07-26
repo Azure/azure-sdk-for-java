@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.util.ImplUtils;
 import com.azure.core.util.configuration.Configuration;
 import com.azure.core.credentials.TokenCredential;
@@ -126,7 +127,7 @@ public final class KeyClientBuilder {
         policies.addAll(this.policies);
         policies.add(new HttpLoggingPolicy(httpLogDetailLevel));
 
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
