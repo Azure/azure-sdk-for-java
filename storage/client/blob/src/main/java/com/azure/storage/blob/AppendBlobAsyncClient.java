@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.models.AppendBlobAccessConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
@@ -13,17 +14,18 @@ import com.azure.storage.blob.models.BlobHTTPHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.Metadata;
 import com.azure.storage.blob.models.SourceModifiedAccessConditions;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
-import java.nio.ByteBuffer;
+
+import static com.azure.storage.blob.Utility.postProcessResponse;
 
 
 /**
- * Client to an append blob. It may only be instantiated through a {@link AppendBlobClientBuilder#buildAsyncClient()}, via
- * the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
+ * Client to an append blob. It may only be instantiated through a {@link BlobClientBuilder#buildAppendBlobAsyncClient()},
+ * via the method {@link BlobAsyncClient#asAppendBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getAppendBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
  * requests to the resource on the service.
@@ -45,8 +47,6 @@ import java.nio.ByteBuffer;
  * object through {@link Mono#toFuture()}.
  */
 public final class AppendBlobAsyncClient extends BlobAsyncClient {
-    final AppendBlobAsyncRawClient appendBlobAsyncRawClient;
-
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
@@ -58,12 +58,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Package-private constructor for use by {@link AppendBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     AppendBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
         super(azureBlobStorageBuilder, snapshot);
-        appendBlobAsyncRawClient = new AppendBlobAsyncRawClient(azureBlobStorageBuilder.build());
     }
 
     /**
@@ -90,8 +89,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      *      A reactive response containing the information of the created appended blob.
      */
     public Mono<Response<AppendBlobItem>> create(BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
-        return appendBlobAsyncRawClient
-            .create(headers, metadata, accessConditions)
+        metadata = (metadata == null) ? new Metadata() : metadata;
+        accessConditions = (accessConditions == null) ? new BlobAccessConditions() : accessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null,
+            null, 0, null, metadata, null, null,
+            null, null, headers, accessConditions.leaseAccessConditions(),
+            accessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
@@ -111,7 +115,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length) {
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length) {
         return this.appendBlock(data, length, null);
     }
 
@@ -133,10 +137,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
      * @return
      *      A reactive response containing the information of the append blob operation.
      */
-    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuffer> data, long length,
-                                                           AppendBlobAccessConditions appendBlobAccessConditions) {
-        return appendBlobAsyncRawClient
-            .appendBlock(data.map(Unpooled::wrappedBuffer), length, appendBlobAccessConditions)
+    public Mono<Response<AppendBlobItem>> appendBlock(Flux<ByteBuf> data, long length,
+                                                      AppendBlobAccessConditions appendBlobAccessConditions) {
+        appendBlobAccessConditions = appendBlobAccessConditions == null ? new AppendBlobAccessConditions()
+            : appendBlobAccessConditions;
+
+        return postProcessResponse(this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
+            null, null, data, length, null, null,
+            null, null, null, null,
+            appendBlobAccessConditions.leaseAccessConditions(),
+            appendBlobAccessConditions.appendPositionAccessConditions(),
+            appendBlobAccessConditions.modifiedAccessConditions(), Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 
@@ -183,8 +194,16 @@ public final class AppendBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<AppendBlobItem>> appendBlockFromUrl(URL sourceURL, BlobRange sourceRange,
             byte[] sourceContentMD5, AppendBlobAccessConditions destAccessConditions,
             SourceModifiedAccessConditions sourceAccessConditions) {
-        return appendBlobAsyncRawClient
-            .appendBlockFromUrl(sourceURL, sourceRange, sourceContentMD5, destAccessConditions, sourceAccessConditions)
+        sourceRange = sourceRange == null ? new BlobRange(0) : sourceRange;
+        destAccessConditions = destAccessConditions == null
+            ? new AppendBlobAccessConditions() : destAccessConditions;
+
+        return postProcessResponse(
+            this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null,
+                sourceURL, 0, sourceRange.toString(), sourceContentMD5, null, null,
+                destAccessConditions.leaseAccessConditions(),
+                destAccessConditions.appendPositionAccessConditions(),
+                destAccessConditions.modifiedAccessConditions(), sourceAccessConditions, Context.NONE))
             .map(rb -> new SimpleResponse<>(rb, new AppendBlobItem(rb.deserializedHeaders())));
     }
 }
