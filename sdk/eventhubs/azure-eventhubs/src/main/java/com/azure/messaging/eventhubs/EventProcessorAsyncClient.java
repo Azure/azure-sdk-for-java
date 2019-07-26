@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import org.reactivestreams.Subscriber;
@@ -21,9 +22,13 @@ import reactor.core.scheduler.Schedulers;
 
 /**
  * This is the starting point for event processor.
+ *
+ * Event Processor based application consists of one or more instances of {@link EventProcessorAsyncClient}
+ * class which are set up to consume from the same event hub+consumer group and to balance
+ * the workload across different instances and track progress when events are processed.
  */
-public class EventProcessor {
-    private final ClientLogger logger = new ClientLogger(EventProcessor.class);
+public class EventProcessorAsyncClient {
+    private final ClientLogger logger = new ClientLogger(EventProcessorAsyncClient.class);
 
     private final EventHubAsyncClient eventHubAsyncClient;
     private final String consumerGroupName;
@@ -31,28 +36,33 @@ public class EventProcessor {
     private final BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory;
     private final PartitionManager partitionManager;
     private final Map<String, EventHubConsumer> partitionConsumers = new ConcurrentHashMap<>();
+    private final String instanceId;
+    private final String eventHubName;
     private Disposable disposable;
     private Scheduler scheduler;
 
     /**
-     * Package-private constructor.
+     * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance
      */
-    public EventProcessor(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
+    EventProcessorAsyncClient(EventHubAsyncClient eventHubAsyncClient, String consumerGroupName,
         BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory,
-        EventPosition initialEventPosition, PartitionManager partitionManager) {
+        EventPosition initialEventPosition, PartitionManager partitionManager, String eventHubName) {
         this.eventHubAsyncClient = Objects.requireNonNull(eventHubAsyncClient, "eventHubAsyncClient cannot be null");
         this.consumerGroupName = Objects.requireNonNull(consumerGroupName, "consumerGroupname cannot be null");
         this.partitionProcessorFactory = Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null");
         this.partitionManager = Objects.requireNonNull(partitionManager, "partitionManager cannot be null");
         this.initialEventPosition = Objects
             .requireNonNull(initialEventPosition, "initialEventPosition cannot be null");
+        this.instanceId = UUID.randomUUID().toString();
+        this.eventHubName = eventHubName;
     }
 
     /**
      * Starts the event processor
      */
     public void start() {
-        scheduler = Schedulers.newElastic("EventProcessor");
+
+        scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
         disposable = scheduler.schedule(this::run);
     }
 
@@ -66,8 +76,7 @@ public class EventProcessor {
                 value.close();
                 partitionConsumers.remove(key);
             } catch (IOException ex) {
-                logger
-                    .warning("Unable to close event hub consumer for partition {}", key);
+                logger.warning("Unable to close event hub consumer for partition {}", key);
             }
         });
         disposable.dispose();
@@ -76,9 +85,11 @@ public class EventProcessor {
     }
 
     /* Internal implementation. This is only a simple demo to show how it may look
-    - will need to move it to a different class and add more details to this*/
+    - will need to move it to a different class and add more details to this */
     void run() {
-        /* This method should run periodically */
+        /* This should run periodically get new ownership details and close/open new
+        consumers when ownership of this instance has changed */
+
         List<String> eventHubPartitionIds = new ArrayList<>();
         this.eventHubAsyncClient.getPartitionIds().doOnNext(eventHubPartitionIds::add).blockLast();
         logger.info("Found {} partitions", eventHubPartitionIds.size());
@@ -120,7 +131,7 @@ public class EventProcessor {
             .partitionId(partitionId)
             .eventHubName("")
             .consumerGroupName(this.consumerGroupName);
-        CheckpointManager checkpointManager = new CheckpointManager(partitionContext, this.partitionManager);
+        CheckpointManager checkpointManager = new CheckpointManager(partitionContext, this.partitionManager, null);
 
         logger.info("Subscribing to receive events from partition {}", partitionId);
         consumer.receive().subscribe(

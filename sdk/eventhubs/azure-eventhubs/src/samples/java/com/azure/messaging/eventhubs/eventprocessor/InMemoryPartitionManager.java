@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,17 +34,20 @@ public class InMemoryPartitionManager implements PartitionManager {
             .filter(partitionOwnership -> !partitionOwnershipMap
                 .containsKey(partitionOwnership.partitionId()))
             .map(partitionOwnership -> {
+                partitionOwnership.eTag(UUID.randomUUID().toString()); // set new etag
                 partitionOwnershipMap.put(partitionOwnership.partitionId(), partitionOwnership);
                 return partitionOwnership;
             }));
     }
 
     @Override
-    public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+    public Mono<String> updateCheckpoint(Checkpoint checkpoint) {
         partitionOwnershipMap.get(checkpoint.partitionId())
             .sequenceNumber(checkpoint.sequenceNumber());
         partitionOwnershipMap.get(checkpoint.partitionId())
-            .offset(checkpoint.offsetNumber());
-        return Mono.empty();
+            .offset(checkpoint.offset());
+        String updatedeTag = UUID.randomUUID().toString();
+        partitionOwnershipMap.get(checkpoint.partitionId()).eTag(updatedeTag);
+        return Mono.just(updatedeTag);
     }
 }

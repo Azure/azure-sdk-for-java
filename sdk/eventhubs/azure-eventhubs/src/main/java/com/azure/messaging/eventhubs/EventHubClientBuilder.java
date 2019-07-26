@@ -24,7 +24,6 @@ import com.azure.messaging.eventhubs.models.ProxyAuthenticationType;
 import com.azure.messaging.eventhubs.models.ProxyConfiguration;
 import java.util.function.BiFunction;
 import org.reactivestreams.Subscriber;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -362,21 +361,57 @@ public class EventHubClientBuilder {
         return new ProxyConfiguration(authentication, proxy, username, password);
     }
 
+    /**
+     * This property must be set for building an {@link EventProcessorAsyncClient}.
+     *
+     * The consumer group name from which the {@link EventProcessorAsyncClient} should consume
+     * the events from
+     * @param consumerGroupName The consumer group name
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
     public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
         this.consumerGroupName = consumerGroupName;
         return this;
     }
 
+    /**
+     * This property can be optionally set when building an {@link EventProcessorAsyncClient}
+     *
+     * This event position will be used if event position for a partition is not available.
+     * If this property is not set and if checkpoint for a partition doesn't exist, {@link EventPosition#earliest()}
+     * will be used as the initial event position to start consuming events.
+     *
+     * @param initialEventPosition The initial event position
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
     public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
         this.initialEventPosition = initialEventPosition;
         return this;
     }
 
+    /**
+     * This property must be set or a class implementing {@link PartitionManager} should be available in classpath
+     * when building an {@link EventProcessorAsyncClient}
+     *
+     * @param partitionManager Implementation of {@link PartitionManager}
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
     public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
+        // If this is not set, look for classes implementing PartitionManager interface
+        // in the classpath and use it automatically. (To be implemented)
         this.partitionManager = partitionManager;
         return this;
     }
 
+    /**
+     * This property must be set when building an {@link EventProcessorAsyncClient}
+     *
+     * The bi-function acts as a factory method for creating new subscribers for processing each
+     * partition
+     * @param partitionProcessorFactory The lambda function that creates new instances of
+     * subscribers for a given partition
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
     public EventHubClientBuilder partitionProcessorFactory(
         BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory) {
         this.partitionProcessorFactory = partitionProcessorFactory;
@@ -384,16 +419,18 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This will build the EventHubAsyncClient and then use it to build EventProcessor
+     * This will create a new instance of {@link EventProcessorAsyncClient} configured with the options
+     * set in this builder
+     * @return A new instance of {@link EventProcessorAsyncClient}
      */
-    public EventProcessor buildEventProcessorAsyncClient() {
+    public EventProcessorAsyncClient buildEventProcessorAsyncClient() {
         // this will build the EventHubAsyncClient and then use it to
-        // build EventProcessor
+        // build EventProcessorAsyncClient
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;
 
-        return new EventProcessor(buildAsyncClient(), this.consumerGroupName,
-            this.partitionProcessorFactory, initialEventPosition, partitionManager);
+        return new EventProcessorAsyncClient(buildAsyncClient(), this.consumerGroupName,
+            this.partitionProcessorFactory, initialEventPosition, partitionManager, eventHubPath);
     }
 }
