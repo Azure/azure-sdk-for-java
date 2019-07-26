@@ -558,7 +558,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertEquals(numberExpected, configurationSettingList2.size());
     }
 
-
     /**
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and iterator is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
