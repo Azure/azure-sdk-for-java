@@ -37,7 +37,7 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
     public static void initializeEventHub() throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         ReceiverOptions options = new ReceiverOptions();
         options.setReceiverRuntimeMetricEnabled(true);

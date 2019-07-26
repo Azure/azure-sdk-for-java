@@ -760,8 +760,7 @@ public class BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The renewed lease ID.
      */
-    public Response<String> renewLease(String leaseId, ModifiedAccessConditions modifiedAccessConditions,
-                                       Duration timeout) {
+    public Response<String> renewLease(String leaseId, ModifiedAccessConditions modifiedAccessConditions, Duration timeout) {
         Mono<Response<String>> response = blobAsyncClient
             .renewLease(leaseId, modifiedAccessConditions);
 

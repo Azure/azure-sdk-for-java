@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for LiveEventInputProtocol.
  */
-public enum LiveEventInputProtocol {
-    /** Enum value FragmentedMP4. */
-    FRAGMENTED_MP4("FragmentedMP4"),
+public final class LiveEventInputProtocol extends ExpandableStringEnum<LiveEventInputProtocol> {
+    /** Static value FragmentedMP4 for LiveEventInputProtocol. */
+    public static final LiveEventInputProtocol FRAGMENTED_MP4 = fromString("FragmentedMP4");
 
-    /** Enum value RTMP. */
-    RTMP("RTMP");
+    /** Static value RTMP for LiveEventInputProtocol. */
+    public static final LiveEventInputProtocol RTMP = fromString("RTMP");
 
-    /** The actual serialized value for a LiveEventInputProtocol instance. */
-    private String value;
-
-    LiveEventInputProtocol(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LiveEventInputProtocol from its string representation.
+     * @param name a name to look for
+     * @return the corresponding LiveEventInputProtocol
+     */
+    @JsonCreator
+    public static LiveEventInputProtocol fromString(String name) {
+        return fromString(name, LiveEventInputProtocol.class);
     }
 
     /**
-     * Parses a serialized value to a LiveEventInputProtocol instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed LiveEventInputProtocol object, or null if unable to parse.
+     * @return known LiveEventInputProtocol values
      */
-    @JsonCreator
-    public static LiveEventInputProtocol fromString(String value) {
-        LiveEventInputProtocol[] items = LiveEventInputProtocol.values();
-        for (LiveEventInputProtocol item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LiveEventInputProtocol> values() {
+        return values(LiveEventInputProtocol.class);
     }
 }

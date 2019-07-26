@@ -4,6 +4,7 @@
 package com.microsoft.azure.eventhubs;
 
 public class QuotaExceededException extends EventHubException {
+    private static final long serialVersionUID = 1L;
 
     public QuotaExceededException(String message) {
         super(false, message);

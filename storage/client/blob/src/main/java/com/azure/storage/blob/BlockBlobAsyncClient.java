@@ -42,7 +42,7 @@ import java.util.UUID;
 import static com.azure.storage.blob.Utility.postProcessResponse;
 
 /**
- * Client to a block blob. It may only be instantiated through a {@link BlockBlobClientBuilder}, via
+ * Client to a block blob. It may only be instantiated through a {@link BlobClientBuilder}, via
  * the method {@link BlobAsyncClient#asBlockBlobAsyncClient()}, or via the method
  * {@link ContainerAsyncClient#getBlockBlobAsyncClient(String)}. This class does not hold
  * any state about a particular blob, but is instead a convenient way of sending appropriate
@@ -84,7 +84,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClient {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Package-private constructor for use by {@link BlockBlobClientBuilder}.
+     * Package-private constructor for use by {@link BlobClientBuilder}.
      * @param azureBlobStorageBuilder the API client builder for blob storage API
      */
     BlockBlobAsyncClient(AzureBlobStorageBuilder azureBlobStorageBuilder, String snapshot) {
