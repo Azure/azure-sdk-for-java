@@ -145,18 +145,17 @@ public class PerTestSettings {
         }
         
         AzureActiveDirectoryTokenProvider.AuthenticationCallback getAuthCallback() {
-        	return this.authCallback;
+            return this.authCallback;
         }
         
         String getAuthAuthority() {
-        	return this.authAuthority;
+            return this.authAuthority;
         }
 
-        void setAuthCallback(AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback, String authAuthority)
-        {
-        	this.authCallback = authCallback;
-        	this.authAuthority = authAuthority;
-        	this.flags |= AUTH_CALLBACK;
+        void setAuthCallback(AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback, String authAuthority) {
+            this.authCallback = authCallback;
+            this.authAuthority = authAuthority;
+            this.flags |= AUTH_CALLBACK;
         }
 
         String getStorageConnection() {

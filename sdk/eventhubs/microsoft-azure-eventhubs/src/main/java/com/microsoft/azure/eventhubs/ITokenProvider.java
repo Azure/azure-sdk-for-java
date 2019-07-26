@@ -7,5 +7,5 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
 public interface ITokenProvider {
-    CompletableFuture<SecurityToken> getToken(final String resource, final Duration timeout);
+    CompletableFuture<SecurityToken> getToken(String resource, Duration timeout);
 }

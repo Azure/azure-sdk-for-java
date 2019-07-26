@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs;
 
 import java.text.ParseException;
@@ -13,19 +16,19 @@ import com.nimbusds.jwt.JWTParser;
  *
  */
 public class JsonSecurityToken extends SecurityToken {
-	/**
-	 * Construct from a raw JWT.
-	 * @param rawToken   the JWT token data
-	 * @param audience   audience of the token
-	 * @throws ParseException if the token cannot be parsed
-	 */
-	public JsonSecurityToken(final String rawToken, final String audience) throws ParseException {
-		super(rawToken, GetExpirationDateTimeUtcFromToken(rawToken), audience, ClientConstants.JWT_TOKEN_TYPE);
-	}
-	
-	static Date GetExpirationDateTimeUtcFromToken(final String token) throws ParseException {
-		JWT jwt = JWTParser.parse(token);
-		JWTClaimsSet claims = jwt.getJWTClaimsSet();
-		return claims.getExpirationTime();
-	}
+    /**
+     * Construct from a raw JWT.
+     * @param rawToken   the JWT token data
+     * @param audience   audience of the token
+     * @throws ParseException if the token cannot be parsed
+     */
+    public JsonSecurityToken(final String rawToken, final String audience) throws ParseException {
+        super(rawToken, getExpirationDateTimeUtcFromToken(rawToken), audience, ClientConstants.JWT_TOKEN_TYPE);
+    }
+    
+    static Date getExpirationDateTimeUtcFromToken(final String token) throws ParseException {
+        JWT jwt = JWTParser.parse(token);
+        JWTClaimsSet claims = jwt.getJWTClaimsSet();
+        return claims.getExpirationTime();
+    }
 }

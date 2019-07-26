@@ -42,11 +42,11 @@ public class SmokeTest extends TestBase {
      */
     //@Test
     public void sendRecv1MsgAADTest() throws Exception {
-    	PerTestSettings settings = new PerTestSettings("SendRecv1MsgAAD");
-    	AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback = new MsalAuthCallback();
-    	String authAuthority = "https://login.windows.net/replaceWithTenantIdGuid";
-    	settings.inoutEPHConstructorArgs.setAuthCallback(authCallback, authAuthority);
-    	settings = testSetup(settings);
+        PerTestSettings settings = new PerTestSettings("SendRecv1MsgAAD");
+        AzureActiveDirectoryTokenProvider.AuthenticationCallback authCallback = new MsalAuthCallback();
+        String authAuthority = "https://login.windows.net/replaceWithTenantIdGuid";
+        settings.inoutEPHConstructorArgs.setAuthCallback(authCallback, authAuthority);
+        settings = testSetup(settings);
 
         settings.outUtils.sendToAny(settings.outTelltale);
         waitForTelltale(settings);
@@ -54,28 +54,27 @@ public class SmokeTest extends TestBase {
         testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
     }
     
-	private class MsalAuthCallback implements AzureActiveDirectoryTokenProvider.AuthenticationCallback {
-		final private String clientId = "replaceWithClientIdGuid";
-		final private String clientSecret = "replaceWithClientSecret";
-		
-		@Override
-		public CompletableFuture<String> acquireToken(String audience, String authority, Object state) {
-			try {
-				ConfidentialClientApplication app = ConfidentialClientApplication.builder(this.clientId, new ClientSecret(this.clientSecret))
-						.authority(authority)
-						.build();
-				
-				ClientCredentialParameters parameters = ClientCredentialParameters.builder(Collections.singleton(audience + ".default")).build();
-	
-				IAuthenticationResult result = app.acquireToken(parameters).get();
-	
-				return CompletableFuture.completedFuture(result.accessToken());
-			}
-			catch (Exception e) {
-				throw new CompletionException(e);
-			}
-		}
-	}
+    private class MsalAuthCallback implements AzureActiveDirectoryTokenProvider.AuthenticationCallback {
+        private final String clientId = "replaceWithClientIdGuid";
+        private final String clientSecret = "replaceWithClientSecret";
+        
+        @Override
+        public CompletableFuture<String> acquireToken(String audience, String authority, Object state) {
+            try {
+                ConfidentialClientApplication app = ConfidentialClientApplication.builder(this.clientId, new ClientSecret(this.clientSecret))
+                        .authority(authority)
+                        .build();
+                
+                ClientCredentialParameters parameters = ClientCredentialParameters.builder(Collections.singleton(audience + ".default")).build();
+    
+                IAuthenticationResult result = app.acquireToken(parameters).get();
+    
+                return CompletableFuture.completedFuture(result.accessToken());
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        }
+    }
 
     @Test
     public void receiverRuntimeMetricsTest() throws Exception {
