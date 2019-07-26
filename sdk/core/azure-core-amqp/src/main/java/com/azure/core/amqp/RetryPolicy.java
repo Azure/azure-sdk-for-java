@@ -6,6 +6,7 @@ package com.azure.core.amqp;
 import com.azure.core.amqp.exception.AmqpException;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.azure.core.amqp.exception.ErrorCondition.SERVER_BUSY_ERROR;
@@ -24,15 +25,20 @@ public abstract class RetryPolicy implements Cloneable {
     private final Duration baseJitter;
 
     /**
-     * Creates an instance with the given retry options.
+     * Creates an instance with the given retry options. If {@link RetryOptions#maxDelay()}, {@link
+     * RetryOptions#delay()}, or {@link RetryOptions#maxRetries()} is equal to {@link Duration#ZERO} or zero, requests
+     * failing with a retriable exception will not be retried.
      *
      * @param retryOptions The options to set on this retry policy.
+     * @throws NullPointerException if {@code retryOptions} is {@code null}.
      */
     protected RetryPolicy(RetryOptions retryOptions) {
-        this.retryOptions = (RetryOptions) retryOptions.clone();
+        Objects.requireNonNull(retryOptions);
+
+        this.retryOptions = retryOptions;
 
         // 1 second = 1.0 * 10^9 nanoseconds.
-        final Double jitterInNanos = (retryOptions.delay().getSeconds() * JITTER_FACTOR) * NANOS_PER_SECOND;
+        final Double jitterInNanos = retryOptions.delay().getSeconds() * JITTER_FACTOR * NANOS_PER_SECOND;
         baseJitter = Duration.ofNanos(jitterInNanos.longValue());
     }
 
