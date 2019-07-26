@@ -12,17 +12,17 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * To throw an exception,
  * <ol>
  *   <li>Must do it through a 'logger.logAndThrow', rather than by directly calling 'throw exception'</li>
- *   <li>Always call return after called 'logger.logAndThrow'.</li>
+ *   <li>Always call return after calling 'logger.logAndThrow'.</li>
  * </ol>
  *
- * Skip check if throw exception from
+ * Skip check if throwing exception from
  * <ol>
  *   <li>Static method</li>
  *   <li>Static class</li>
  *   <li>Constructor</li>
  * </ol>
  */
-public class ThrownClientLoggerCheck extends AbstractCheck {
+public class ThrowFromClientLoggerCheck extends AbstractCheck {
     private static final String LOGGER_LOG_AND_THROW = "logger.logAndThrow";
 
     @Override
@@ -74,8 +74,8 @@ public class ThrownClientLoggerCheck extends AbstractCheck {
                     parentToken = parentToken.getParent();
                 }
 
-                log(token, String.format("To throw an exception, must do it through a ''%s'', rather than "
-                    + "by directly calling ''throw exception''.", LOGGER_LOG_AND_THROW));
+                log(token, String.format("Directly throwing an exception is disallowed. Replace the throw statement with" +
+                    " a call to ''%s''.", LOGGER_LOG_AND_THROW));
                 break;
             case TokenTypes.METHOD_CALL:
                 String methodCall = FullIdent.createFullIdent(token.findFirstToken(TokenTypes.DOT)).getText();
@@ -84,7 +84,7 @@ public class ThrownClientLoggerCheck extends AbstractCheck {
                 }
                 DetailAST exprToken = token.getParent();
                 if (exprToken.getNextSibling().getType() != TokenTypes.LITERAL_RETURN) {
-                    log(token, String.format("Always call ''return'' after called ''%s''", LOGGER_LOG_AND_THROW));
+                    log(token, String.format("Always call ''return'' after calling ''%s''.", LOGGER_LOG_AND_THROW));
                 }
                 break;
             default:

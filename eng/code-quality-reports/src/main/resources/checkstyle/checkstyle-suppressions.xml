@@ -97,7 +97,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientInstantiationCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- Custom checkstyle rules that don't apply to files under test or implementation package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="(.*[/\\]src[/\\]test[/\\]java[/\\].*)|(.*[/\\]implementation[/\\].*)\.java"/>
@@ -109,17 +109,17 @@
   <!-- OpenCensus should only be depended on from within the tracing-opencensus module -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]tracing[/\\]opentelemetry[/\\]*"/>
 
-  <!-- Skip ThrownClientLoggerCheck on ClientLogger class, ClientLogger is allowed to throw exception directly -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files="com.azure.core.util.logging.ClientLogger.java"/>
+  <!-- Skip ThrowFromClientLoggerCheck on ClientLogger class, ClientLogger is allowed to throw exception directly -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.util.logging.ClientLogger.java"/>
 
   <!-- Suppress IO exception for now, which need code owner's attention -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files="com.azure.core.implementation.util.ClientLoggerJavaDocCodeSnippets.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.core.implementation.util.ClientLoggerJavaDocCodeSnippets.java"/>
 
   <!-- Identity still depends on 1.0.0-preview.1 azure core. suppress this rule for now until storage has upgraded to preview-3 azure core -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files="com.azure.identity.credential.AadCredential.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files="com.azure.identity.credential.EnvironmentCredential.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.identity.credential.AadCredential.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.identity.credential.EnvironmentCredential.java"/>
 
   <!-- Storage still depends on 1.0.0-preview.2 azure core. suppress this rule for now until storage has upgraded to preview-3 azure core -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*[/\\]storage[/\\].*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrownClientLoggerCheck" files=".*[/\\]storage[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]storage[/\\].*\.java"/>
 </suppressions>
