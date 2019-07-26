@@ -41,7 +41,7 @@ jobs:
         #   cosmos.directModeProtocol: 'Https'
 
       PreRunSteps:
-        - template: ./templates/steps/install-reporting-tools.yml
+        - template: ../steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
@@ -73,7 +73,7 @@ jobs:
           DESIRED_CONSISTENCY: '["Session"]'
 
       PreRunSteps:
-        - template: ./templates/steps/install-reporting-tools.yml
+        - template: ../steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
@@ -103,7 +103,7 @@ jobs:
           PREFERRED_LOCATIONS: '["East US 2"]'
 
       PreRunSteps:
-        - template: ./templates/steps/install-reporting-tools.yml
+        - template: ../steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
