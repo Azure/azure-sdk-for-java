@@ -90,7 +90,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createKey(KeyCreateOptions keyCreateOptions) {
-        return client.createKey(keyCreateOptions, Context.NONE).block().value();
+        return this.createKeyWithResponse(keyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -140,7 +140,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createRsaKey(RsaKeyCreateOptions rsaKeyCreateOptions) {
-        return client.createRsaKey(rsaKeyCreateOptions, Context.NONE).block().value();
+        return this.createKeyWithResponse(rsaKeyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -192,7 +192,7 @@ public final class KeyClient {
      * @return The {@link Key created key}.
      */
     public Key createEcKey(EcKeyCreateOptions ecKeyCreateOptions) {
-        return client.createEcKey(ecKeyCreateOptions, Context.NONE).block().value();
+        return this.createEcKeyWithResponse(ecKeyCreateOptions, Context.NONE).value();
     }
 
     /**
@@ -268,7 +268,7 @@ public final class KeyClient {
      * @return The {@link Key imported key}.
      */
     public Key importKey(KeyImportOptions keyImportOptions) {
-        return client.importKey(keyImportOptions, Context.NONE).block().value();
+        return this.importKeyWithResponse(keyImportOptions, Context.NONE).value();
     }
 
     /**
@@ -315,7 +315,7 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(String name, String version) {
-        return client.getKey(name, version, Context.NONE).block().value();
+        return this.getKeyWithResponse(name, version, Context.NONE).value();
     }
 
     /**
@@ -350,7 +350,7 @@ public final class KeyClient {
      * @return The requested {@link Key key}.
      */
     public Key getKey(String name) {
-        return getKey(name, "");
+        return this.getKeyWithResponse(name, "", Context.NONE).value();
     }
 
     /**
@@ -372,7 +372,7 @@ public final class KeyClient {
         if (keyBase.version() == null) {
             return getKey(keyBase.name());
         }
-        return getKey(keyBase.name(), keyBase.version());
+        return getKeyWithResponse(keyBase.name(), keyBase.version(), Context.NONE).value();
     }
 
     /**
@@ -391,7 +391,7 @@ public final class KeyClient {
      * @return The {@link KeyBase updated key}.
      */
     public Key updateKey(KeyBase key) {
-        return client.updateKey(key, Context.NONE).block().value();
+        return this.updateKeyWithResponse(key, Context.NONE).value();
     }
 
     /**
@@ -411,7 +411,7 @@ public final class KeyClient {
      * @return A {@link Response} whose {@link Response#value() value} contains the {@link KeyBase updated key}.
      */
     public Key updateKey(KeyBase key, KeyOperation... keyOperations) {
-        return client.updateKey(key, Context.NONE, keyOperations).block().value();
+        return this.updateKeyWithResponse(key, Context.NONE, keyOperations).value();
     }
 
     /**
@@ -452,7 +452,7 @@ public final class KeyClient {
      * @return The {@link DeletedKey deleted key}.
      */
     public DeletedKey deleteKey(String name) {
-        return client.deleteKey(name, Context.NONE).block().value();
+        return this.deleteKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -494,7 +494,7 @@ public final class KeyClient {
      * @return The {@link DeletedKey deleted key}.
      */
     public DeletedKey getDeletedKey(String name) {
-        return client.getDeletedKey(name, Context.NONE).block().value();
+        return this.getDeletedKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -571,7 +571,7 @@ public final class KeyClient {
      * @return The {@link Key recovered key}.
      */
     public Key recoverDeletedKey(String name) {
-        return client.recoverDeletedKey(name, Context.NONE).block().value();
+        return this.recoverDeletedKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -614,7 +614,7 @@ public final class KeyClient {
      * @return The backed up key blob.
      */
     public byte[] backupKey(String name) {
-        return client.backupKey(name, Context.NONE).block().value();
+        return this.backupKeyWithResponse(name, Context.NONE).value();
     }
 
     /**
@@ -660,7 +660,7 @@ public final class KeyClient {
      * @return The {@link Key restored key}.
      */
     public Key restoreKey(byte[] backup) {
-        return client.restoreKey(backup, Context.NONE).block().value();
+        return this.restoreKeyWithResponse(backup, Context.NONE).value();
     }
 
     /**
