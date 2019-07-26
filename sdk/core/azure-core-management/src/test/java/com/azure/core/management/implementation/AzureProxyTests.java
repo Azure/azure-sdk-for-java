@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation;
 
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.implementation.annotation.Delete;
 import com.azure.core.implementation.annotation.ExpectedResponses;
 import com.azure.core.implementation.annotation.Get;
@@ -851,7 +852,7 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        HttpPipeline pipeline = HttpPipeline.builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .build();
 

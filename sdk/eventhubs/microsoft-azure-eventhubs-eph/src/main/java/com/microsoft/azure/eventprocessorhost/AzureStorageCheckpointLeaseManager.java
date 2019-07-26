@@ -120,9 +120,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         CloudStorageAccount storageAccount = null;
         if (this.storageConnectionString != null) {
-        	storageAccount = CloudStorageAccount.parse(this.storageConnectionString);
+            storageAccount = CloudStorageAccount.parse(this.storageConnectionString);
         } else {
-        	storageAccount = new CloudStorageAccount(this.storageCredentials);
+            storageAccount = new CloudStorageAccount(this.storageCredentials);
         }
         this.storageClient = storageAccount.createCloudBlobClient();
 
