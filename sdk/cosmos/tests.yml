@@ -16,8 +16,8 @@ jobs:
          OSVmImage: 'macOS-10.13'
          ProfileFlag: '-Pfast'
          DisplayName: Multi Master Integration Tests (Single Region)
-         COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
-         COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
+         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
+         ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
          PREFERRED_LOCATIONS: null
 
       PreRunSteps:
