@@ -1,85 +1,10 @@
 trigger: none
 
 variables:
-  pomFile: './sdk/cosmos/pom.service.xml'
   DefaultOptions: '--batch-mode -Dmaven.wagon.http.pool=false'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 
 jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Test
-      ServiceDirectory: cosmos
-      TimeoutInMinutes: 240
-      MaxParallel: 1
-      Matrix:
-        Session_Single_Region_ReadMyWrites:
-          OSVmImage: 'vs2017-win2016'
-          DisplayName: 'ReadMyWrites Integration Tests (Session Consistency)'
-          ProfileFlag: '-Pe2e'
-          DirectModeProtocol: 'Https'
-          DESIRED_CONSISTENCY: 'Session'
-          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-        Strong_Single_Region_ReadMyWrites:
-          OSVmImage: 'vs2017-win2016'
-          DisplayName: 'ReadMyWrites Integration Tests (Strong Consistency)'
-          ProfileFlag: '-Pe2e'
-          DirectModeProtocol: 'Https'
-          DESIRED_CONSISTENCY: 'Strong'
-          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-        # Temporarily Disabled as V3 code lacks the support to run this pipeline. Will be enabled later by cosmos team.
-        # Strong_Multi_Region_ReadMyWrites:
-        #   OSVmImage: 'macOS-10.13'
-        #   CosmosAccountHost: $(MULTI_STRONG_ACCOUNT_HOST)
-        #   CosmosAccountKey: $(MULTI_STRONG_ACCOUNT_KEY)
-        #   Consistency: 'Strong'
-        #   DisplayName: 'ReadMyWrites Integration Tests'
-        #   ProfileFlag: '-Pe2e'
-        #   cosmos.directModeProtocol: 'Https'
-
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-        goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip -DargLine="-Dcosmos.directModeProtocol=$(DirectModeProtocol)" -DDESIRED_CONSISTENCY=$(Consistency)'
-        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Long_Tests
-      ServiceDirectory: cosmos
-      TimeoutInMinutes: 240
-      MaxParallel: 1
-      Matrix:
-        MultiMaster_Multi_Region_Long:
-          OSVmImage: 'vs2017-win2016'
-          DisplayName: 'Long Integration Tests (Multi-Master)'
-          ProfileFlag: '-e -Plong'
-          PreferredLocations: '["East US 2"]'
-          COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
-          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
-          DESIRED_CONSISTENCY: '["Session"]'
-        Session_Single_Region_Long:
-          OSVmImage: 'vs2017-win2016'
-          DisplayName: 'Long Integration Tests (Single Region)'
-          ProfileFlag: '-e -Plong'
-          PreferredLocations: null
-          COSMOS_ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-          COSMOS_ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-          DESIRED_CONSISTENCY: '["Session"]'
-
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-        goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip'
-        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
-
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       TestName: MultiMaster
@@ -87,20 +12,13 @@ jobs:
       TimeoutInMinutes: 240
       MaxParallel: 1
       Matrix:
-        Single_Region:
+        Single_Region_Fast:
          OSVmImage: 'macOS-10.13'
          ProfileFlag: '-Pfast'
+         DisplayName: Multi Master Integration Tests (Single Region)
          COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
          PREFERRED_LOCATIONS: null
-
-
-        Multi_Region:
-          OSVmImage: 'macOS-10.13'
-          ProfileFlag: '-Pfast'
-          COSMOS_ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
-          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
-          PREFERRED_LOCATIONS: '["East US 2"]'
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml

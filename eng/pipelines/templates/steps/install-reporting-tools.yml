@@ -1,10 +1,13 @@
+parameters:
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+
 steps:
   - task: Maven@3
     displayName: 'Install reporting tools'
     inputs:
       mavenPomFile: ./eng/code-quality-reports/pom.xml
       options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-      mavenOptions: '$(LoggingOptions)'
+      mavenOptions: ${{ parameters.LoggingOptions }}
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
