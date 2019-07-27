@@ -15,8 +15,9 @@ public class ExponentialRetryPolicyTest {
     private final ErrorContext errorContext = new ErrorContext("test-namespace");
     private final AmqpException exception = new AmqpException(true, ErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
-    private final Duration maxBackoff = Duration.ofSeconds(45);
-    private final int retryAttempts = 4;
+    private final Duration maxBackoff = Duration.ofSeconds(60);
+    private final Duration tolerance = Duration.ofSeconds(1);
+    private final int retryAttempts = 5;
     private final RetryOptions options = new RetryOptions()
         .delay(minBackoff)
         .maxDelay(maxBackoff)
@@ -54,10 +55,10 @@ public class ExponentialRetryPolicyTest {
         final ExponentialRetryPolicy retry = new ExponentialRetryPolicy(options);
         final ExponentialRetryPolicy clone = (ExponentialRetryPolicy) retry.clone();
 
-        final Duration remainingTime = Duration.ofSeconds(60);
+        final Duration remainingTime = Duration.ofSeconds(120);
 
         final Duration retryInterval = retry.calculateRetryDelay(exception, remainingTime, 1);
-        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, remainingTime, 3);
+        final Duration cloneRetryInterval = clone.calculateRetryDelay(exception, remainingTime, 4);
 
         // Assert
         Assert.assertNotNull(retryInterval);
@@ -65,7 +66,7 @@ public class ExponentialRetryPolicyTest {
 
         // The retry interval for the clone will be larger because we've incremented the retry count, so it should
         // calculate a longer waiting period.
-        Assert.assertTrue(cloneRetryInterval.toNanos() > retryInterval.toNanos());
+        Assert.assertTrue(cloneRetryInterval.compareTo(retryInterval) > 0);
     }
 
     /**
@@ -107,6 +108,11 @@ public class ExponentialRetryPolicyTest {
 
         Assert.assertNotNull(retryInterval);
         Assert.assertNotNull(cloneRetryInterval);
-        Assert.assertEquals(retryInterval, cloneRetryInterval);
+
+        // Assert that the cloned interval is within our jitter threshold.
+        final Duration minValue = retryInterval.minus(tolerance);
+        final Duration maxValue = retryInterval.plus(tolerance);
+        Assert.assertTrue(minValue.compareTo(cloneRetryInterval) < 0
+            && maxValue.compareTo(cloneRetryInterval) > 0);
     }
 }
