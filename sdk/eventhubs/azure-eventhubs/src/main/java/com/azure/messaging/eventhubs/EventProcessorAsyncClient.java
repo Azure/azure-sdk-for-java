@@ -73,33 +73,41 @@ public class EventProcessorAsyncClient {
     }
 
     /**
-     * Starts the event processor.
+     * Starts the event processor. This method is synchronized. Only one thread can run either {@link #start()} or {@link
+     * #stop()}.
      */
-    public void start() {
-        if (started.compareAndSet(false, true)) {
-            scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
-            runner = scheduler.schedule(this::run);
+    public synchronized void start() {
+        if (!started.compareAndSet(false, true)) {
+            logger.info("Event processor is already running");
+            return;
         }
+
+        scheduler = Schedulers.newElastic("EventProcessorAsyncClient");
+        runner = scheduler.schedule(this::run);
     }
 
     /**
-     * Stops the event processor.
+     * Stops the event processor. This method is synchronized. Only one thread can run either {@link #start()} or {@link
+     * #stop()}.
      */
-    public void stop() {
-        if (started.compareAndSet(true, false)) {
-            this.partitionConsumers.forEach((key, value) -> {
-                try {
-                    logger.info("Closing event hub consumer for partition {}", key);
-                    value.close();
-                    logger.info("Closed event hub consumer for partition {}", key);
-                    partitionConsumers.remove(key);
-                } catch (IOException ex) {
-                    logger.warning("Unable to close event hub consumer for partition {}", key);
-                }
-            });
-            runner.dispose();
-            scheduler.dispose();
+    public synchronized void stop() {
+        if (!started.compareAndSet(true, false)) {
+            logger.info("Event processor has already stopped");
+            return;
         }
+
+        this.partitionConsumers.forEach((key, value) -> {
+            try {
+                logger.info("Closing event hub consumer for partition {}", key);
+                value.close();
+                logger.info("Closed event hub consumer for partition {}", key);
+                partitionConsumers.remove(key);
+            } catch (IOException ex) {
+                logger.warning("Unable to close event hub consumer for partition {}", key);
+            }
+        });
+        runner.dispose();
+        scheduler.dispose();
     }
 
     /* Internal implementation. This is only a simple demo to show how it may look

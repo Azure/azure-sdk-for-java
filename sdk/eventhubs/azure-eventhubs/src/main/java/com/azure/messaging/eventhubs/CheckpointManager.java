@@ -69,9 +69,7 @@ public class CheckpointManager {
             .offset(offset)
             .eTag(eTag);
 
-        return this.partitionManager.updateCheckpoint(checkpoint).flatMap(eTag -> {
-            this.eTag = eTag;
-            return Mono.empty();
-        });
+        return this.partitionManager.updateCheckpoint(checkpoint).map(eTag -> this.eTag = eTag)
+            .then();
     }
 }
