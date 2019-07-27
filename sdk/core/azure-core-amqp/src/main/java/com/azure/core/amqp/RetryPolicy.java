@@ -79,11 +79,24 @@ public abstract class RetryPolicy implements Cloneable {
 
         final Duration delay = calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
 
-        return delay.compareTo(remainingTime) <= 0
+        return delay != null && delay.compareTo(remainingTime) <= 0
             ? delay
             : null;
     }
 
+    /**
+     * Calculates the amount of time to delay before the next retry attempt based on the {@code retryCound}, {@code
+     * baseDelay}, and {@code baseJitter}.
+     *
+     * @param retryCount The number of attempts that have been made, including the initial attempt before any
+     *         retries.
+     * @param baseDelay The base delay for a retry attempt.
+     * @param baseJitter The base jitter delay.
+     * @param random The random number generator. Can be utilised to calculate a random jitter value for the
+     *         retry.
+     * @return The amount of time to delay before retrying to associated operation; or {@code null} if the it cannot be
+     *         retried.
+     */
     protected abstract Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
                                                     ThreadLocalRandom random);
 
