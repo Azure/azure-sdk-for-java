@@ -20,8 +20,8 @@ jobs:
          COSMOS_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
          PREFERRED_LOCATIONS: null
 
-      PreRunSteps:
-        - template: ../steps/install-reporting-tools.yml
+      # PreRunSteps:
+      #   - template: ../steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
