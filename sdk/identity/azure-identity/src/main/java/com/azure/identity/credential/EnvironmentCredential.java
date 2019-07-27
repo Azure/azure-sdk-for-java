@@ -32,7 +32,7 @@ public class EnvironmentCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     public EnvironmentCredential(IdentityClientOptions identityClientOptions) {
-        this.configuration = ConfigurationManager.getConfiguration();
+        this.configuration = ConfigurationManager.getConfiguration().clone();
         this.identityClientOptions = identityClientOptions;
     }
 
