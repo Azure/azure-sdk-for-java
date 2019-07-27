@@ -3,11 +3,9 @@
 
 package com.azure.messaging.eventhubs.eventprocessor;
 
-
 import com.azure.messaging.eventhubs.PartitionManager;
 import com.azure.messaging.eventhubs.eventprocessor.models.Checkpoint;
 import com.azure.messaging.eventhubs.eventprocessor.models.PartitionOwnership;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -16,28 +14,28 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * A simple in-memory implementation of a {@link PartitionManager}
+ * A simple in-memory implementation of a {@link PartitionManager}.
  */
 public class InMemoryPartitionManager implements PartitionManager {
 
-    private Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
+    private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
 
     @Override
     public Flux<PartitionOwnership> listOwnership(String eventHubName, String consumerGroupName) {
-        return Flux.fromIterable(new ArrayList<>(partitionOwnershipMap.values()));
+        return Flux.fromIterable(partitionOwnershipMap.values());
     }
 
     @Override
     public Flux<PartitionOwnership> claimOwnership(
         List<PartitionOwnership> requestedPartitionOwnerships) {
-        return Flux.fromStream(requestedPartitionOwnerships.stream()
+        return Flux.fromIterable(requestedPartitionOwnerships)
             .filter(partitionOwnership -> !partitionOwnershipMap
                 .containsKey(partitionOwnership.partitionId()))
             .map(partitionOwnership -> {
                 partitionOwnership.eTag(UUID.randomUUID().toString()); // set new etag
                 partitionOwnershipMap.put(partitionOwnership.partitionId(), partitionOwnership);
                 return partitionOwnership;
-            }));
+            });
     }
 
     @Override

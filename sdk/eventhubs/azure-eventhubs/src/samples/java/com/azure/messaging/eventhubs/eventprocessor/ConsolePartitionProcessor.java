@@ -12,13 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A simple implementation of a partition processor that logs the
- * methods called in this implementation to a console
+ * A simple implementation of a partition processor that logs the methods called in this implementation to a console.
  */
 public class ConsolePartitionProcessor implements Subscriber<EventData> {
-    private Logger logger = LoggerFactory.getLogger(ConsolePartitionProcessor.class);
-    private PartitionContext partitionContext;
-    private CheckpointManager checkpointManager;
+
+    private final Logger logger = LoggerFactory.getLogger(ConsolePartitionProcessor.class);
+    private final PartitionContext partitionContext;
+    private final CheckpointManager checkpointManager;
     private Subscription subscription;
 
     public ConsolePartitionProcessor(PartitionContext partitionContext,
@@ -60,6 +60,11 @@ public class ConsolePartitionProcessor implements Subscriber<EventData> {
     public void onComplete() {
         logger.info(
             "Closing partition processor event hub name = " + partitionContext.eventHubName()
+                + "; consumer group name = " + partitionContext.consumerGroupName()
+                + "; partition id = " + partitionContext.partitionId());
+        this.subscription.cancel();
+        logger.info(
+            "Closed partition processor event hub name = " + partitionContext.eventHubName()
                 + "; consumer group name = " + partitionContext.consumerGroupName()
                 + "; partition id = " + partitionContext.partitionId());
     }

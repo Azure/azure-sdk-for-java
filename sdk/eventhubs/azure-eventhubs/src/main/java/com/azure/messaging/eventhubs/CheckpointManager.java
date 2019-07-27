@@ -9,29 +9,36 @@ import com.azure.messaging.eventhubs.eventprocessor.models.PartitionContext;
 import reactor.core.publisher.Mono;
 
 /**
- * The checkpoint manager that clients should use to update checkpoints to track progress
- * of events processed
+ * The checkpoint manager that clients should use to update checkpoints to track progress of events processed.
  */
 public class CheckpointManager {
-    private PartitionContext partitionContext;
-    // The update checkpoint methods in this class will forward the request to
-    // underlying partition manager
-    private PartitionManager partitionManager;
+
+    private final PartitionContext partitionContext;
+    private final PartitionManager partitionManager;
     private String eTag;
 
-    CheckpointManager(PartitionContext partitionContext, PartitionManager partitionManager, String eTag) {
+    /**
+     * Creates a new checkpoint manager which clients of {@link EventProcessorAsyncClient} can use to update checkpoints
+     * of a partition.
+     *
+     * @param partitionContext The partition context.
+     * @param partitionManager The partition manager.
+     * @param eTag The last known eTag for this partition.
+     */
+    CheckpointManager(PartitionContext partitionContext, PartitionManager partitionManager,
+        String eTag) {
         this.partitionContext = partitionContext;
         this.partitionManager = partitionManager;
         this.eTag = eTag;
     }
 
     /**
-     * Updates a checkpoint using the event data
+     * Updates a checkpoint using the event data.
      *
-     * @param eventData The event data to use for updating the checkpoint
-     * @return A mono void
+     * @param eventData The event data to use for updating the checkpoint.
+     * @return A mono void.
      */
-    public Mono<Void> updateCheckpoint(EventData eventData){
+    public Mono<Void> updateCheckpoint(EventData eventData) {
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())
@@ -41,20 +48,18 @@ public class CheckpointManager {
             .offset(eventData.offset())
             .eTag(eTag);
 
-        return this.partitionManager.updateCheckpoint(checkpoint).flatMap(eTag -> {
-            this.eTag = eTag;
-            return Mono.empty();
-        });
+        return this.partitionManager.updateCheckpoint(checkpoint).map(eTag -> this.eTag = eTag)
+            .then();
     }
 
     /**
-     * Updates a checkpoint using the given offset and sequence number
+     * Updates a checkpoint using the given offset and sequence number.
      *
-     * @param sequenceNumber The sequence number to update the checkpoint
-     * @param offset The offset to update the checkpoint
-     * @return A mono void
+     * @param sequenceNumber The sequence number to update the checkpoint.
+     * @param offset The offset to update the checkpoint.
+     * @return A mono void.
      */
-    public Mono<Void> updateCheckpoint(long sequenceNumber, String offset){
+    public Mono<Void> updateCheckpoint(long sequenceNumber, String offset) {
         Checkpoint checkpoint = new Checkpoint()
             .consumerGroupName(partitionContext.consumerGroupName())
             .eventHubName(partitionContext.eventHubName())

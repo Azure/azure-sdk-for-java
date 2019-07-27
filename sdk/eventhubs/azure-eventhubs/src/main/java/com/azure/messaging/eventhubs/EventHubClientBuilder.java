@@ -75,7 +75,7 @@ public class EventHubClientBuilder {
     private String host;
     private String eventHubPath;
     private EventPosition initialEventPosition;
-    private BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory;
+    private PartitionProcessorFactory partitionProcessorFactory;
     private String consumerGroupName;
     private PartitionManager partitionManager;
 
@@ -364,9 +364,9 @@ public class EventHubClientBuilder {
     /**
      * This property must be set for building an {@link EventProcessorAsyncClient}.
      *
-     * The consumer group name from which the {@link EventProcessorAsyncClient} should consume
-     * the events from
-     * @param consumerGroupName The consumer group name
+     * The consumer group name from which the {@link EventProcessorAsyncClient} should consume the events from.
+     *
+     * @param consumerGroupName The consumer group name.
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder consumerGroupName(String consumerGroupName) {
@@ -375,13 +375,13 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property can be optionally set when building an {@link EventProcessorAsyncClient}
+     * This property can be optionally set when building an {@link EventProcessorAsyncClient}.
      *
-     * This event position will be used if event position for a partition is not available.
-     * If this property is not set and if checkpoint for a partition doesn't exist, {@link EventPosition#earliest()}
-     * will be used as the initial event position to start consuming events.
+     * This event position will be used if event position for a partition is not available. If this property is not set
+     * and if checkpoint for a partition doesn't exist, {@link EventPosition#earliest()} will be used as the initial event
+     * position to start consuming events.
      *
-     * @param initialEventPosition The initial event position
+     * @param initialEventPosition The initial event position.
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder initialEventPosition(EventPosition initialEventPosition) {
@@ -390,10 +390,10 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property must be set or a class implementing {@link PartitionManager} should be available in classpath
-     * when building an {@link EventProcessorAsyncClient}
+     * This property must be set or a class implementing {@link PartitionManager} should be available in classpath when
+     * building an {@link EventProcessorAsyncClient}.
      *
-     * @param partitionManager Implementation of {@link PartitionManager}
+     * @param partitionManager Implementation of {@link PartitionManager}.
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder partitionManager(PartitionManager partitionManager) {
@@ -404,28 +404,25 @@ public class EventHubClientBuilder {
     }
 
     /**
-     * This property must be set when building an {@link EventProcessorAsyncClient}
+     * This property must be set when building an {@link EventProcessorAsyncClient}.
      *
-     * The bi-function acts as a factory method for creating new subscribers for processing each
-     * partition
-     * @param partitionProcessorFactory The lambda function that creates new instances of
-     * subscribers for a given partition
+     * The bi-function acts as a factory method for creating new subscribers for processing each partition.
+     *
+     * @param partitionProcessorFactory The factory that creates new processor for each partition.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    public EventHubClientBuilder partitionProcessorFactory(
-        BiFunction<PartitionContext, CheckpointManager, Subscriber<EventData>> partitionProcessorFactory) {
+    public EventHubClientBuilder partitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
         this.partitionProcessorFactory = partitionProcessorFactory;
         return this;
     }
 
     /**
-     * This will create a new instance of {@link EventProcessorAsyncClient} configured with the options
-     * set in this builder
-     * @return A new instance of {@link EventProcessorAsyncClient}
+     * This will create a new instance of {@link EventProcessorAsyncClient} configured with the options set in this
+     * builder.
+     *
+     * @return A new instance of {@link EventProcessorAsyncClient}.
      */
     public EventProcessorAsyncClient buildEventProcessorAsyncClient() {
-        // this will build the EventHubAsyncClient and then use it to
-        // build EventProcessorAsyncClient
         EventPosition initialEventPosition =
             this.initialEventPosition == null ? EventPosition.earliest()
                 : this.initialEventPosition;

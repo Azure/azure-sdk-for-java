@@ -6,10 +6,11 @@ package com.azure.messaging.eventhubs.eventprocessor.models;
 import com.azure.core.implementation.annotation.Fluent;
 
 /**
- * A model class to hold partition ownership information
+ * A model class to hold partition ownership information.
  */
 @Fluent
 public class PartitionOwnership {
+
     private String eventHubName;
     private String consumerGroupName;
     private String partitionId;
@@ -21,17 +22,19 @@ public class PartitionOwnership {
     private String eTag; // can be null
 
     /**
-     * Gets the event hub name
-     * @return The event hub name
+     * Gets the event hub name.
+     *
+     * @return The event hub name.
      */
     public String eventHubName() {
         return eventHubName;
     }
 
     /**
-     * Sets the event hub name
-     * @param eventHubName The event hub name
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the event hub name.
+     *
+     * @param eventHubName The event hub name.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eventHubName(String eventHubName) {
         this.eventHubName = eventHubName;
@@ -39,17 +42,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the consumer group name
-     * @return The consumer group name
+     * Gets the consumer group name.
+     *
+     * @return The consumer group name.
      */
     public String consumerGroupName() {
         return consumerGroupName;
     }
 
     /**
-     * Sets the consumer group name
-     * @param consumerGroupName The consumer group name
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the consumer group name.
+     *
+     * @param consumerGroupName The consumer group name.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership consumerGroupName(String consumerGroupName) {
         this.consumerGroupName = consumerGroupName;
@@ -57,17 +62,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the partition id
-     * @return The partition id
+     * Gets the partition id.
+     *
+     * @return The partition id.
      */
     public String partitionId() {
         return partitionId;
     }
 
     /**
-     * Sets the partition id
-     * @param partitionId The partition id
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the partition id.
+     *
+     * @param partitionId The partition id.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership partitionId(String partitionId) {
         this.partitionId = partitionId;
@@ -75,17 +82,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Sets the unique instance identifier
-     * @return The instance identifier
+     * Sets the unique instance identifier.
+     *
+     * @return The instance identifier.
      */
     public String instanceId() {
         return instanceId;
     }
 
     /**
-     * Returns the instance identifier
-     * @param instanceId The instance identifier
-     * @return The updated {@link PartitionOwnership} instance
+     * Returns the instance identifier.
+     *
+     * @param instanceId The instance identifier.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership instanceId(String instanceId) {
         this.instanceId = instanceId;
@@ -93,17 +102,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the owner level
-     * @return The owner level
+     * Gets the owner level.
+     *
+     * @return The owner level.
      */
     public long ownerLevel() {
         return ownerLevel;
     }
 
     /**
-     * Sets the owner level
-     * @param ownerLevel The owner level
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the owner level.
+     *
+     * @param ownerLevel The owner level.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership ownerLevel(long ownerLevel) {
         this.ownerLevel = ownerLevel;
@@ -111,17 +122,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the offset
-     * @return The offset
+     * Gets the offset.
+     *
+     * @return The offset.
      */
     public String offset() {
         return offset;
     }
 
     /**
-     * Sets the offset
-     * @param offset The offset
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the offset.
+     *
+     * @param offset The offset.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership offset(String offset) {
         this.offset = offset;
@@ -129,17 +142,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the sequence number
-     * @return The sequence number
+     * Gets the sequence number.
+     *
+     * @return The sequence number.
      */
     public Long sequenceNumber() {
         return sequenceNumber;
     }
 
     /**
-     * Sets the sequence number
-     * @param sequenceNumber The sequence number
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the sequence number.
+     *
+     * @param sequenceNumber The sequence number.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership sequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
@@ -147,17 +162,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the last modified time as epoch millis
-     * @return The last modified time
+     * Gets the last modified time as epoch millis.
+     *
+     * @return The last modified time.
      */
     public Long lastModifiedTime() {
         return lastModifiedTime;
     }
 
     /**
-     * Sets the last modified time as epoch millis
-     * @param lastModifiedTime The last modified time
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the last modified time as epoch millis.
+     *
+     * @param lastModifiedTime The last modified time.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership lastModifiedTime(Long lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
@@ -165,17 +182,19 @@ public class PartitionOwnership {
     }
 
     /**
-     * Gets the eTag
-     * @return The eTag
+     * Gets the eTag.
+     *
+     * @return The eTag.
      */
     public String eTag() {
         return eTag;
     }
 
     /**
-     * Sets the eTag
-     * @param eTag The eTag
-     * @return The updated {@link PartitionOwnership} instance
+     * Sets the eTag.
+     *
+     * @param eTag The eTag.
+     * @return The updated {@link PartitionOwnership} instance.
      */
     public PartitionOwnership eTag(String eTag) {
         this.eTag = eTag;
