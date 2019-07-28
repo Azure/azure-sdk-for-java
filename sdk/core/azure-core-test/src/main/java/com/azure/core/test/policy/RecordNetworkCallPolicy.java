@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -19,6 +18,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +72,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                 // Remove pre-added header if this is a waiting or redirection
                 if (body != null && body.contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(responseData.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
+                    || Integer.parseInt(responseData.get("StatusCode")) == HttpURLConnection.HTTP_MOVED_TEMP) {
                     if (logger.isInfoEnabled()) {
                         logger.info("Waiting for a response or redirection.");
                     }

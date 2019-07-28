@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.util;
+package com.azure.core.http.netty;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -13,9 +13,11 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.http.PagedResponseBase;
+import com.azure.core.implementation.util.FluxUtil;
 import com.azure.core.util.Context;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.CompositeByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.ReferenceCountUtil;
@@ -26,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
@@ -45,7 +46,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-public class FluxUtilTests {
+public class NettyFluxTests {
 
     @Test
     public void testCanReadSlice() throws IOException {
@@ -55,7 +56,7 @@ public class FluxUtilTests {
         stream.close();
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
+            byte[] bytes = NettyFluxTestUtils.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
                         byte[] bt = toBytes(bb);
                         ReferenceCountUtil.release(bb);
@@ -83,9 +84,9 @@ public class FluxUtilTests {
         File file = createFileIfNotExist("target/test2");
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            byte[] bytes = FluxUtil.byteBufStreamFromFile(channel, 1, 3)
+            byte[] bytes = NettyFluxTestUtils.byteBufStreamFromFile(channel, 1, 3)
                     .map(bb -> {
-                        byte[] bt = toBytes(bb);
+                        byte[] bt = bb.array();
                         ReferenceCountUtil.release(bb);
                         return bt;
                     })
@@ -105,63 +106,65 @@ public class FluxUtilTests {
 
     @Test
     public void testAsynchronyShortInput() throws IOException {
-        File file = createFileIfNotExist("target/test3");
-        FileOutputStream stream = new FileOutputStream(file);
-        stream.write("hello there".getBytes(StandardCharsets.UTF_8));
-        stream.close();
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
-                    .map(bb -> {
-                        byte[] bt = toBytes(bb);
-                        ReferenceCountUtil.release(bb);
-                        return bt;
-                    })
-                    .limitRequest(1)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .collect(() -> new ByteArrayOutputStream(),
-                        (bos, b) -> {
-                            try {
-                                bos.write(b);
-                            } catch (IOException ioe) {
-                                throw Exceptions.propagate(ioe);
-                            }
-                        })
-                    .block()
-                    .toByteArray();
-            assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
-        }
-        assertTrue(file.delete());
+//        File file = createFileIfNotExist("target/test3");
+//        FileOutputStream stream = new FileOutputStream(file);
+//        stream.write("hello there".getBytes(StandardCharsets.UTF_8));
+//        stream.close();
+//        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+//            byte[] bytes = FluxUtil.byteBufStreamFromFile(channel)
+//                    .map(bb -> {
+//                        byte[] bt = bb.array();
+//                        ReferenceCountUtil.release(bb);
+//                        return bt;
+//                    })
+//                    .limitRequest(1)
+//                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                    .collect(() -> new ByteArrayOutputStream(),
+//                        (bos, b) -> {
+//                            try {
+//                                bos.write(b);
+//                            } catch (IOException ioe) {
+//                                throw Exceptions.propagate(ioe);
+//                            }
+//                        })
+//                    .block()
+//                    .toByteArray();
+//            assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
+//        }
+//        assertTrue(file.delete());
+        Assert.fail("Need to implement this test again");
     }
 
     private static final int NUM_CHUNKS_IN_LONG_INPUT = 10_000_000;
 
     @Test
     public void testAsynchronyLongInput() throws IOException, NoSuchAlgorithmException {
-        File file = createFileIfNotExist("target/test4");
-        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-            for (int i = 0; i < NUM_CHUNKS_IN_LONG_INPUT; i++) {
-                out.write(array);
-                digest.update(array);
-            }
-        }
-        System.out.println("long input file size=" + file.length() / (1024 * 1024) + "MB");
-        byte[] expected = digest.digest();
-        digest.reset();
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            FluxUtil.byteBufStreamFromFile(channel)
-                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                    .toIterable().forEach(bb -> {
-                        digest.update(bb.nioBuffer());
-                        ReferenceCountUtil.release(bb);
-                    });
-
-            assertArrayEquals(expected, digest.digest());
-        }
-        assertTrue(file.delete());
+//        File file = createFileIfNotExist("target/test4");
+//        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
+//        MessageDigest digest = MessageDigest.getInstance("MD5");
+//        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+//            for (int i = 0; i < NUM_CHUNKS_IN_LONG_INPUT; i++) {
+//                out.write(array);
+//                digest.update(array);
+//            }
+//        }
+//        System.out.println("long input file size=" + file.length() / (1024 * 1024) + "MB");
+//        byte[] expected = digest.digest();
+//        digest.reset();
+//        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+//            FluxUtil.byteBufStreamFromFile(channel)
+//                    .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                    .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                    .toIterable().forEach(bb -> {
+//                        digest.update(bb);
+//                        ReferenceCountUtil.release(bb);
+//                    });
+//
+//            assertArrayEquals(expected, digest.digest());
+//        }
+//        assertTrue(file.delete());
+        Assert.fail("Need to implement this test again");
     }
 
     @Test
@@ -220,8 +223,9 @@ public class FluxUtilTests {
                 digest.reset();
                 bb.readerIndex(0);
                 //
-                FluxUtil.split(bb, 3).doOnNext(b -> digest.update(b.nioBuffer()))
-                        .subscribe();
+                NettyFluxTestUtils.split(bb, 3)
+                    .doOnNext(b -> digest.update(b.nioBuffer()))
+                    .subscribe();
 //
 //            StepVerifier.create(FluxUtil1.split(bb, 3).doOnNext(b -> digest.update(b)))
 //                    .expectNextCount(?) // TODO: ? is Unknown. Check with smaldini - what is the Verifier way to ignore all next calls and simply check stream completes?
@@ -241,7 +245,7 @@ public class FluxUtilTests {
         ByteBuf bb = null;
         try {
             bb = Unpooled.directBuffer(16);
-            StepVerifier.create(FluxUtil.split(bb, 3))
+            StepVerifier.create(NettyFluxTestUtils.split(bb, 3))
                     .expectNextCount(0)
                     .expectComplete()
                     .verify();
@@ -254,14 +258,14 @@ public class FluxUtilTests {
 
     @Test
     public void toByteArrayWithEmptyByteBuffer() {
-        assertArrayEquals(new byte[0], FluxUtil.byteBufToArray(Unpooled.wrappedBuffer(new byte[0])));
+        assertArrayEquals(new byte[0], byteBufToArray(Unpooled.wrappedBuffer(new byte[0])));
     }
 
     @Test
     public void toByteArrayWithNonEmptyByteBuffer() {
         final ByteBuf byteBuffer = Unpooled.wrappedBuffer(new byte[] { 0, 1, 2, 3, 4 });
         assertEquals(5, byteBuffer.readableBytes());
-        final byte[] byteArray = FluxUtil.byteBufToArray(byteBuffer);
+        final byte[] byteArray = byteBufToArray(byteBuffer);
         assertArrayEquals(new byte[] { 0, 1, 2, 3, 4 }, byteArray);
         assertEquals(5, byteBuffer.readableBytes());
     }
@@ -270,7 +274,7 @@ public class FluxUtilTests {
     public void testCollectByteBufStream() {
         Flux<ByteBuf> byteBufFlux = Flux
             .just(Unpooled.copyInt(1), Unpooled.copyInt(255), Unpooled.copyInt(256));
-        Mono<ByteBuf> result = FluxUtil.collectByteBufStream(byteBufFlux, false);
+        Mono<ByteBuf> result = collectByteBufStream(byteBufFlux, false);
         byte[] bytes = ByteBufUtil.getBytes(result.block());
         assertEquals(12, bytes.length);
         assertArrayEquals(new byte[]{
@@ -409,9 +413,9 @@ public class FluxUtilTests {
      * @param autoReleaseEnabled if ByteBuf instances in stream gets automatically released as they consumed
      * @return A Mono which emits the concatenation of all the byte buffers given by the source Flux.
      */
-    public static Mono<ByteBuffer> collectByteBufStream(Flux<ByteBuffer> stream, boolean autoReleaseEnabled) {
+    public static Mono<ByteBuf> collectByteBufStream(Flux<ByteBuf> stream, boolean autoReleaseEnabled) {
         if (autoReleaseEnabled) {
-            Mono<ByteBuffer> mergedCbb = Mono.using(
+            Mono<ByteBuf> mergedCbb = Mono.using(
                 // Resource supplier
                 () -> {
                     CompositeByteBuf initialCbb = Unpooled.compositeBuffer();
@@ -437,5 +441,21 @@ public class FluxUtilTests {
                        .filter((CompositeByteBuf cbb) -> cbb.isReadable())
                        .map(bb -> bb);
         }
+    }
+
+    /**
+     * Gets the content of the provided ByteBuf as a byte array.
+     * This method will create a new byte array even if the ByteBuf can
+     * have optionally backing array.
+     *
+     *
+     * @param byteBuf the byte buffer
+     * @return the byte array
+     */
+    public static byte[] byteBufToArray(ByteBuf byteBuf) {
+        int length = byteBuf.readableBytes();
+        byte[] byteArray = new byte[length];
+        byteBuf.getBytes(byteBuf.readerIndex(), byteArray);
+        return byteArray;
     }
 }

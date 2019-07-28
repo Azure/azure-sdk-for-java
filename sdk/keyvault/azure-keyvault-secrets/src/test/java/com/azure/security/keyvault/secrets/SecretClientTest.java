@@ -11,8 +11,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.SecretBase;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +59,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that we cannot create a secret when the secret is an empty string.
      */
     public void setSecretEmptyName() {
-        assertRestException(() -> client.setSecret("", "A value"), HttpResponseStatus.METHOD_NOT_ALLOWED.code());
+        assertRestException(() -> client.setSecret("", "A value"), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     /**
@@ -97,7 +97,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public void updateDisabledSecret() {
         updateDisabledSecretRunner((original, updated) -> {
             assertSecretEquals(original, client.setSecret(original));
-            assertRestException(() -> client.getSecret(original.name()), ResourceModifiedException.class, HttpResponseStatus.FORBIDDEN.code());
+            assertRestException(() -> client.getSecret(original.name()), ResourceModifiedException.class, HttpURLConnection.HTTP_FORBIDDEN);
         });
     }
 
@@ -127,7 +127,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to get a non-existing secret throws an error.
      */
     public void getSecretNotFound() {
-        assertRestException(() -> client.getSecret("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -148,7 +148,7 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     public void deleteSecretNotFound() {
-        assertRestException(() -> client.deleteSecret("non-existing"), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.deleteSecret("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -175,7 +175,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to retrieve a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void getDeletedSecretNotFound() {
-        assertRestException(() -> client.getDeletedSecret("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.getDeletedSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
 
@@ -198,7 +198,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
      */
     public void recoverDeletedSecretNotFound() {
-        assertRestException(() -> client.recoverDeletedSecret("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.recoverDeletedSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -217,7 +217,7 @@ public class SecretClientTest extends SecretClientTestBase {
      * Tests that an attempt to backup a non existing secret throws an error.
      */
     public void backupSecretNotFound() {
-        assertRestException(() -> client.backupSecret("non-existing"),  ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
+        assertRestException(() -> client.backupSecret("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
@@ -245,7 +245,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     public void restoreSecretFromMalformedBackup() {
         byte[] secretBackupBytes = "non-existing".getBytes();
-        assertRestException(() -> client.restoreSecret(secretBackupBytes), ResourceModifiedException.class, HttpResponseStatus.BAD_REQUEST.code());
+        assertRestException(() -> client.restoreSecret(secretBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**

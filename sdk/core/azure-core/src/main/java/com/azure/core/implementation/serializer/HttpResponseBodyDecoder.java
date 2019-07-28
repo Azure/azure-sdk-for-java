@@ -397,7 +397,7 @@ final class HttpResponseBodyDecoder {
         if (returnType == null) {
             return false;
         } else {
-            return !FluxUtil.isFluxByteBuf(returnType)
+            return !FluxUtil.isFluxByteBuffer(returnType)
                     && !(TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(returnType), Void.class))
                     && !TypeUtil.isTypeOrSubTypeOf(returnType, byte[].class)
                     && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(returnType, Void.class);

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -69,10 +70,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private boolean shouldRetry(HttpResponse response, int tryCount) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == 408  // Request timeout
-                || (code >= 500  // Internal server error
-                && code != 501   // Not implemented
-                && code != 505)); // Http version not supported
+                && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                && code != HttpURLConnection.HTTP_VERSION));
     }
 
     /**

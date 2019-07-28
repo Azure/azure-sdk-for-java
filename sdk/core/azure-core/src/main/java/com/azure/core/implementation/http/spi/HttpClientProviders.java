@@ -3,6 +3,7 @@
 package com.azure.core.implementation.http.spi;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ServiceLoader;
 
@@ -29,7 +30,8 @@ public final class HttpClientProviders {
 
         // we return the first item found in the service loader iterator
         if (defaultProvider == null) {
-            // FIXME throw error
+            throw new IllegalStateException(
+                "Cannot find any HttpClient provider on the classpath - unable to create a default HttpClient instance");
         }
 
         return defaultProvider.createInstance();

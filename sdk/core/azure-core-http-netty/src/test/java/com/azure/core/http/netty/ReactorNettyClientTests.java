@@ -221,58 +221,60 @@ public class ReactorNettyClientTests {
     @Ignore("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
-        long t = System.currentTimeMillis();
-        int numRequests = 100; // 100 = 1GB of data read
-        long timeoutSeconds = 60;
-        ReactorNettyClient client = new ReactorNettyClient();
-        byte[] expectedDigest = digest(LONG_BODY);
-
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-                .parallel(10)
-                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
-                    MessageDigest md = md5Digest();
-                    return response.body()
-                            .doOnNext(bb -> {
-                                bb.retain();
-                                if (bb.hasArray()) {
-                                    // Heap buffer
-                                    md.update(bb.array());
-                                } else {
-                                    // Direct buffer
-                                    int len = bb.readableBytes();
-                                    byte[] array = new byte[len];
-                                    bb.getBytes(bb.readerIndex(), array);
-                                    md.update(array);
-                                }
-                            })
-                            .map(bb -> new NumberedByteBuf(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
-                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
-                                    md.digest()));
-                }))
-                .sequential()
-                // enable the doOnNext call to see request numbers and thread names
-                // .doOnNext(g -> System.out.println(g.n + " " +
-                // Thread.currentThread().getName()))
-                .map(nbb -> {
-                    long bytesCount = (long) nbb.bb.readableBytes();
-                    ReferenceCountUtil.release(nbb.bb);
-                    return bytesCount;
-                })
-                .reduce((x, y) -> x + y)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
-
-        StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-                .verifyComplete();
+//        long t = System.currentTimeMillis();
+//        int numRequests = 100; // 100 = 1GB of data read
+//        long timeoutSeconds = 60;
+//        ReactorNettyClient client = new ReactorNettyClient();
+//        byte[] expectedDigest = digest(LONG_BODY);
 //
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+//        Mono<Long> numBytesMono = Flux.range(1, numRequests)
+//                .parallel(10)
+//                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
+//                    MessageDigest md = md5Digest();
+//                    return response.body()
+//                            .doOnNext(bb -> {
+//                                bb.retain();
+//                                if (bb.hasArray()) {
+//                                    // Heap buffer
+//                                    md.update(bb.array());
+//                                } else {
+//                                    // Direct buffer
+//                                    int len = bb.readableBytes();
+//                                    byte[] array = new byte[len];
+//                                    bb.getBytes(bb.readerIndex(), array);
+//                                    md.update(array);
+//                                }
+//                            })
+//                            .map(bb -> new NumberedByteBuf(n, bb))
+////                          .doOnComplete(() -> System.out.println("completed " + n))
+//                            .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
+//                                    md.digest()));
+//                }))
+//                .sequential()
+//                // enable the doOnNext call to see request numbers and thread names
+//                // .doOnNext(g -> System.out.println(g.n + " " +
+//                // Thread.currentThread().getName()))
+//                .map(nbb -> {
+//                    long bytesCount = (long) nbb.bb.readableBytes();
+//                    ReferenceCountUtil.release(nbb.bb);
+//                    return bytesCount;
+//                })
+//                .reduce((x, y) -> x + y)
+//                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+//                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+//
+//        StepVerifier.create(numBytesMono)
+////              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
+//                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
+//                .verifyComplete();
+////
+////        long numBytes = numBytesMono.block();
+////        t = System.currentTimeMillis() - t;
+////        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
+////        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+
+        Assert.fail("Method needs to be reimplemented");
     }
 
     private static MessageDigest md5Digest() {

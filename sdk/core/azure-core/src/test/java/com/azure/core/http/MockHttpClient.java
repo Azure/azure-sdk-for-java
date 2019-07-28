@@ -173,8 +173,9 @@ public class MockHttpClient implements HttpClient {
                 return request.body()
                     .collectList()
                     .map(list ->  {
-                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
-                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
+//                        byte[] bytes = Unpooled.wrappedBuffer(list.toArray(new ByteBuffer[0])).array();
+//                        return new MockHttpResponse(request, 200, new HttpHeaders(request.headers()), bytes);
+                        throw new IllegalStateException("Code needs to be reimplemented");
                     });
             }
         } catch (Exception ex) {
@@ -215,7 +216,7 @@ public class MockHttpClient implements HttpClient {
     private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.body() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufStream(request.body(), true)
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.body(), true)
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }

@@ -270,7 +270,7 @@ public class RestProxy implements InvocationHandler {
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
                 request.body(bodyContentString);
-            } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
+            } else if (FluxUtil.isFluxByteBuffer(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
                 request.body((Flux<ByteBuffer>) bodyContentObject);
@@ -482,8 +482,8 @@ public class RestProxy implements InvocationHandler {
                 responseBodyBytesAsync = responseBodyBytesAsync.map(base64UrlBytes -> new Base64Url(base64UrlBytes).decodedBytes());
             }
             asyncResult = responseBodyBytesAsync;
-        } else if (FluxUtil.isFluxByteBuf(entityType)) {
-            // Mono<Flux<ByteBuf>>
+        } else if (FluxUtil.isFluxByteBuffer(entityType)) {
+            // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(response.sourceResponse().body());
         } else {
             // Mono<Object> or Mono<Page<T>>
@@ -526,8 +526,8 @@ public class RestProxy implements InvocationHandler {
                 result = asyncExpectedResponse.flatMap(response ->
                         handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }
-        } else if (FluxUtil.isFluxByteBuf(returnType)) {
-            // ProxyMethod ReturnType: Flux<ByteBuf>
+        } else if (FluxUtil.isFluxByteBuffer(returnType)) {
+            // ProxyMethod ReturnType: Flux<ByteBuffer>
             result = asyncExpectedResponse.flatMapMany(ar -> ar.sourceResponse().body());
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void

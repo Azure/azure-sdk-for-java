@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -33,6 +34,7 @@ import java.util.function.Supplier;
  * HttpClient that is implemented using reactor-netty.
  */
 class ReactorNettyClient implements HttpClient {
+    private final ClientLogger logger = new ClientLogger(ReactorNettyClient.class);
     private reactor.netty.http.client.HttpClient httpClient;
 
     /**
@@ -117,7 +119,10 @@ class ReactorNettyClient implements HttpClient {
                 case HTTP: nettyProxy = ProxyProvider.Proxy.HTTP; break;
                 case SOCKS4: nettyProxy = ProxyProvider.Proxy.SOCKS4; break;
                 case SOCKS5: nettyProxy = ProxyProvider.Proxy.SOCKS5; break;
-                default: nettyProxy = null;
+                default: {
+                    logger.logAndThrow(new IllegalStateException("Unknown Proxy type '" + options.type() + "' in use. Not configuring Netty proxy."));
+                    return c;
+                }
             }
             return c.proxy(ts -> ts.type(nettyProxy).address(options.address()));
         }));
