@@ -7,25 +7,24 @@ variables:
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TestName: MultiMaster
+      TestName: Single_Region
       ServiceDirectory: cosmos
       TimeoutInMinutes: 240
       MaxParallel: 1
       Matrix:
-        Single_Region_Fast:
-         OSVmImage: 'macOS-10.13'
-         ProfileFlag: '-Pmulti-master'
-         DisplayName: Multi Master Integration Tests (Single Region)
-         AccountHost: $(java-cosmos-multimaster-singleregion-host)
-         AccountKey: $(java-cosmos-multimaster-singleregion-key)
-         PREFERRED_LOCATIONS: ''
+        Strong_Http:
+          DisplayName: Single Region Strong Https
+          OSVmImage: 'macOS-10.13'
+          ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
+          ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
       PreRunSteps:
         - template: ../steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
         goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip -DACCOUNT_HOST=$(AccountHost) -DACCOUNT_KEY=($AccountKey)'
-        testResultsFiles: '**/junitreports/TEST-*.xml' # TODO: Do we need this?
-
-
+        options: '$(ProfileFlag) -Dgpg.skip'
+        testResultsFiles: '**/junitreports/TEST-*.xml'
+        testRunTitle: 'Live tests for cosmos $(DisplayName)'  # TODO: DRY "cosmos" up
