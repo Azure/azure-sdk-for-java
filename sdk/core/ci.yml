@@ -27,3 +27,13 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: core
+      Artifacts:
+        - name: azure-core
+          safeName: azurecore
+        - name: azure-core-amqp
+          safeName: azurecoreamqp
+        - name: azure-core-management
+          safeName: azurecoremanagement
+        - name: azure-core-test
+          safeName: azurecoretest
+          

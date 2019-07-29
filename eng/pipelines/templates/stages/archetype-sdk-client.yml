@@ -1,3 +1,6 @@
+parameters:
+  Artifacts: []
+
 stages:
   - stage: Build
     jobs:
@@ -266,3 +269,11 @@ stages:
           inputs:
             mergeTestResults: true
             testRunTitle: '$(OSName) on Java $(JavaVersion)'
+            
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
+      parameters:
+        DependsOn: Build
+        ArtifactName: packages
+        Artifacts: ${{parameters.Artifacts}}
