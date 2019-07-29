@@ -5,6 +5,9 @@ trigger:
   branches:
     include:
       - master
+      - feature/*
+      - release/*
+      - hotfix/*
   paths:
     include:
       - sdk/core/
@@ -13,11 +16,14 @@ pr:
   branches:
     include:
       - master
+      - feature/*
+      - release/*
+      - hotfix/*
   paths:
     include:
       - sdk/core/
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: core
